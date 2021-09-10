@@ -40,154 +40,98 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkProfilesClient. */
-public final class NetworkProfilesClientImpl
-    implements InnerSupportsGet<NetworkProfileInner>,
-        InnerSupportsListing<NetworkProfileInner>,
-        InnerSupportsDelete<Void>,
-        NetworkProfilesClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * NetworkProfilesClient.
+ */
+public final class NetworkProfilesClientImpl implements InnerSupportsGet<NetworkProfileInner>, InnerSupportsListing<NetworkProfileInner>, InnerSupportsDelete<Void>, NetworkProfilesClient {
     private final ClientLogger logger = new ClientLogger(NetworkProfilesClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkProfilesClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(NetworkProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NetworkProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientNetworkProfiles to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for
+     * NetworkManagementClientNetworkProfiles to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkProfilesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkProfiles/{networkProfileName}")
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles/{networkProfileName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkProfileName") String networkProfileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkProfileName") String networkProfileName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkProfiles/{networkProfileName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles/{networkProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkProfileName") String networkProfileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileInner>> getByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkProfileName") String networkProfileName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkProfiles/{networkProfileName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles/{networkProfileName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkProfileName") String networkProfileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") NetworkProfileInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileInner>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkProfileName") String networkProfileName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") NetworkProfileInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkProfiles/{networkProfileName}")
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles/{networkProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("networkProfileName") String networkProfileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileInner>> updateTags(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkProfileName") String networkProfileName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkProfiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/networkProfiles")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkProfiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileListResult>> listAllNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkProfileListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkProfileListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,48 +140,27 @@ public final class NetworkProfilesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkProfileName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkProfileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkProfileName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        final String apiVersion = "2018-11-01";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @param context The context to associate with this operation.
@@ -247,45 +170,27 @@ public final class NetworkProfilesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkProfileName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkProfileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkProfileName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,14 +201,12 @@ public final class NetworkProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkProfileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkProfileName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @param context The context to associate with this operation.
@@ -313,18 +216,15 @@ public final class NetworkProfilesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkProfileName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkProfileName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkProfileName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,12 +234,12 @@ public final class NetworkProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkProfileName) {
-        return beginDeleteAsync(resourceGroupName, networkProfileName).getSyncPoller();
-    }
+        return beginDeleteAsync(resourceGroupName, networkProfileName)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @param context The context to associate with this operation.
@@ -349,14 +249,13 @@ public final class NetworkProfilesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkProfileName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkProfileName, context).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkProfileName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkProfileName, context)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,7 +272,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @param context The context to associate with this operation.
@@ -391,7 +290,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,7 +304,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Deletes the specified network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the NetworkProfile.
      * @param context The context to associate with this operation.
@@ -420,9 +319,9 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Gets the specified network profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -430,51 +329,30 @@ public final class NetworkProfilesClientImpl
      * @return the specified network profile in a specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkProfileName, String expand) {
+    public Mono<Response<NetworkProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String networkProfileName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkProfileName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified network profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,48 +361,30 @@ public final class NetworkProfilesClientImpl
      * @return the specified network profile in a specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String networkProfileName, String expand, Context context) {
+    private Mono<Response<NetworkProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String networkProfileName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkProfileName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expand,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), expand, accept, context);
     }
 
     /**
      * Gets the specified network profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -532,24 +392,22 @@ public final class NetworkProfilesClientImpl
      * @return the specified network profile in a specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkProfileInner> getByResourceGroupAsync(
-        String resourceGroupName, String networkProfileName, String expand) {
+    public Mono<NetworkProfileInner> getByResourceGroupAsync(String resourceGroupName, String networkProfileName, String expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkProfileName, expand)
-            .flatMap(
-                (Response<NetworkProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<NetworkProfileInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified network profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -559,21 +417,20 @@ public final class NetworkProfilesClientImpl
     public Mono<NetworkProfileInner> getByResourceGroupAsync(String resourceGroupName, String networkProfileName) {
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkProfileName, expand)
-            .flatMap(
-                (Response<NetworkProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<NetworkProfileInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified network profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -587,9 +444,9 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Gets the specified network profile in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -598,14 +455,13 @@ public final class NetworkProfilesClientImpl
      * @return the specified network profile in a specified resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkProfileName, String expand, Context context) {
+    public Response<NetworkProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String networkProfileName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, networkProfileName, expand, context).block();
     }
 
     /**
      * Creates or updates a network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to the create or update network profile operation.
@@ -615,54 +471,33 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkProfileInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkProfileName, NetworkProfileInner parameters) {
+    public Mono<Response<NetworkProfileInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkProfileName, NetworkProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkProfileName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to the create or update network profile operation.
@@ -673,51 +508,33 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkProfileInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkProfileName, NetworkProfileInner parameters, Context context) {
+    private Mono<Response<NetworkProfileInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkProfileName, NetworkProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkProfileName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to the create or update network profile operation.
@@ -727,22 +544,20 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkProfileInner> createOrUpdateAsync(
-        String resourceGroupName, String networkProfileName, NetworkProfileInner parameters) {
+    public Mono<NetworkProfileInner> createOrUpdateAsync(String resourceGroupName, String networkProfileName, NetworkProfileInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, networkProfileName, parameters)
-            .flatMap(
-                (Response<NetworkProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<NetworkProfileInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Creates or updates a network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to the create or update network profile operation.
@@ -752,14 +567,13 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkProfileInner createOrUpdate(
-        String resourceGroupName, String networkProfileName, NetworkProfileInner parameters) {
+    public NetworkProfileInner createOrUpdate(String resourceGroupName, String networkProfileName, NetworkProfileInner parameters) {
         return createOrUpdateAsync(resourceGroupName, networkProfileName, parameters).block();
     }
 
     /**
      * Creates or updates a network profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to the create or update network profile operation.
@@ -770,14 +584,13 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkProfileInner> createOrUpdateWithResponse(
-        String resourceGroupName, String networkProfileName, NetworkProfileInner parameters, Context context) {
+    public Response<NetworkProfileInner> createOrUpdateWithResponse(String resourceGroupName, String networkProfileName, NetworkProfileInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, networkProfileName, parameters, context).block();
     }
 
     /**
      * Updates network profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to update network profile tags.
@@ -787,54 +600,33 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkProfileName, TagsObject parameters) {
+    public Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(String resourceGroupName, String networkProfileName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            networkProfileName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates network profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to update network profile tags.
@@ -845,51 +637,33 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkProfileName, TagsObject parameters, Context context) {
+    private Mono<Response<NetworkProfileInner>> updateTagsWithResponseAsync(String resourceGroupName, String networkProfileName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkProfileName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter networkProfileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                networkProfileName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkProfileName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates network profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to update network profile tags.
@@ -899,22 +673,20 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkProfileInner> updateTagsAsync(
-        String resourceGroupName, String networkProfileName, TagsObject parameters) {
+    public Mono<NetworkProfileInner> updateTagsAsync(String resourceGroupName, String networkProfileName, TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, parameters)
-            .flatMap(
-                (Response<NetworkProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<NetworkProfileInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Updates network profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to update network profile tags.
@@ -930,7 +702,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Updates network profile tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkProfileName The name of the network profile.
      * @param parameters Parameters supplied to update network profile tags.
@@ -941,14 +713,13 @@ public final class NetworkProfilesClientImpl
      * @return network profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkProfileInner> updateTagsWithResponse(
-        String resourceGroupName, String networkProfileName, TagsObject parameters, Context context) {
+    public Response<NetworkProfileInner> updateTagsWithResponse(String resourceGroupName, String networkProfileName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, networkProfileName, parameters, context).block();
     }
 
     /**
      * Gets all the network profiles in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network profiles in a subscription.
@@ -956,39 +727,27 @@ public final class NetworkProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<NetworkProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<NetworkProfileInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the network profiles in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -998,48 +757,41 @@ public final class NetworkProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all the network profiles in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network profiles in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkProfileInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(),
+            nextLink -> listAllNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the network profiles in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1049,12 +801,13 @@ public final class NetworkProfilesClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkProfileInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context),
+            nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the network profiles in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network profiles in a subscription.
@@ -1066,7 +819,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Gets all the network profiles in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1080,7 +833,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Gets all network profiles in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1090,49 +843,30 @@ public final class NetworkProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<NetworkProfileInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all network profiles in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1141,49 +875,32 @@ public final class NetworkProfilesClientImpl
      * @return all network profiles in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all network profiles in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1193,12 +910,13 @@ public final class NetworkProfilesClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkProfileInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all network profiles in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1215,7 +933,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Gets all network profiles in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1229,7 +947,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Gets all network profiles in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1244,7 +962,7 @@ public final class NetworkProfilesClientImpl
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1257,29 +975,23 @@ public final class NetworkProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkProfileInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1293,29 +1005,23 @@ public final class NetworkProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1328,29 +1034,23 @@ public final class NetworkProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkProfileInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1364,23 +1064,17 @@ public final class NetworkProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Allow to exclude some variable satisfy the condition for the WAF check. */
+/**
+ * Allow to exclude some variable satisfy the condition for the WAF check.
+ */
 @Fluent
 public final class ApplicationGatewayFirewallExclusion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallExclusion.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallExclusion.class);
 
     /*
      * The variable to be excluded.
@@ -36,7 +41,7 @@ public final class ApplicationGatewayFirewallExclusion {
 
     /**
      * Get the matchVariable property: The variable to be excluded.
-     *
+     * 
      * @return the matchVariable value.
      */
     public String matchVariable() {
@@ -45,7 +50,7 @@ public final class ApplicationGatewayFirewallExclusion {
 
     /**
      * Set the matchVariable property: The variable to be excluded.
-     *
+     * 
      * @param matchVariable the matchVariable value to set.
      * @return the ApplicationGatewayFirewallExclusion object itself.
      */
@@ -55,9 +60,10 @@ public final class ApplicationGatewayFirewallExclusion {
     }
 
     /**
-     * Get the selectorMatchOperator property: When matchVariable is a collection, operate on the selector to specify
-     * which elements in the collection this exclusion applies to.
-     *
+     * Get the selectorMatchOperator property: When matchVariable is a
+     * collection, operate on the selector to specify which elements in the
+     * collection this exclusion applies to.
+     * 
      * @return the selectorMatchOperator value.
      */
     public String selectorMatchOperator() {
@@ -65,9 +71,10 @@ public final class ApplicationGatewayFirewallExclusion {
     }
 
     /**
-     * Set the selectorMatchOperator property: When matchVariable is a collection, operate on the selector to specify
-     * which elements in the collection this exclusion applies to.
-     *
+     * Set the selectorMatchOperator property: When matchVariable is a
+     * collection, operate on the selector to specify which elements in the
+     * collection this exclusion applies to.
+     * 
      * @param selectorMatchOperator the selectorMatchOperator value to set.
      * @return the ApplicationGatewayFirewallExclusion object itself.
      */
@@ -77,9 +84,10 @@ public final class ApplicationGatewayFirewallExclusion {
     }
 
     /**
-     * Get the selector property: When matchVariable is a collection, operator used to specify which elements in the
-     * collection this exclusion applies to.
-     *
+     * Get the selector property: When matchVariable is a collection, operator
+     * used to specify which elements in the collection this exclusion applies
+     * to.
+     * 
      * @return the selector value.
      */
     public String selector() {
@@ -87,9 +95,10 @@ public final class ApplicationGatewayFirewallExclusion {
     }
 
     /**
-     * Set the selector property: When matchVariable is a collection, operator used to specify which elements in the
-     * collection this exclusion applies to.
-     *
+     * Set the selector property: When matchVariable is a collection, operator
+     * used to specify which elements in the collection this exclusion applies
+     * to.
+     * 
      * @param selector the selector value to set.
      * @return the ApplicationGatewayFirewallExclusion object itself.
      */
@@ -100,28 +109,18 @@ public final class ApplicationGatewayFirewallExclusion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
         }
         if (selectorMatchOperator() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectorMatchOperator in model"
-                            + " ApplicationGatewayFirewallExclusion"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property selectorMatchOperator in model ApplicationGatewayFirewallExclusion"));
         }
         if (selector() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selector in model ApplicationGatewayFirewallExclusion"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property selector in model ApplicationGatewayFirewallExclusion"));
         }
     }
 }

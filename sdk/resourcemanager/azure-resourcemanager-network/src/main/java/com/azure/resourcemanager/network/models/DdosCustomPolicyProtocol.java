@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DdosCustomPolicyProtocol. */
+/**
+ * Defines values for DdosCustomPolicyProtocol.
+ */
 public final class DdosCustomPolicyProtocol extends ExpandableStringEnum<DdosCustomPolicyProtocol> {
-    /** Static value Tcp for DdosCustomPolicyProtocol. */
+    /**
+     * Static value Tcp for DdosCustomPolicyProtocol.
+     */
     public static final DdosCustomPolicyProtocol TCP = fromString("Tcp");
 
-    /** Static value Udp for DdosCustomPolicyProtocol. */
+    /**
+     * Static value Udp for DdosCustomPolicyProtocol.
+     */
     public static final DdosCustomPolicyProtocol UDP = fromString("Udp");
 
-    /** Static value Syn for DdosCustomPolicyProtocol. */
+    /**
+     * Static value Syn for DdosCustomPolicyProtocol.
+     */
     public static final DdosCustomPolicyProtocol SYN = fromString("Syn");
 
     /**
      * Creates or finds a DdosCustomPolicyProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DdosCustomPolicyProtocol.
      */
@@ -30,7 +38,9 @@ public final class DdosCustomPolicyProtocol extends ExpandableStringEnum<DdosCus
         return fromString(name, DdosCustomPolicyProtocol.class);
     }
 
-    /** @return known DdosCustomPolicyProtocol values. */
+    /**
+     * @return known DdosCustomPolicyProtocol values.
+     */
     public static Collection<DdosCustomPolicyProtocol> values() {
         return values(DdosCustomPolicyProtocol.class);
     }

@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.EndpointServiceResultInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListAvailableEndpointServices API service call. */
+/**
+ * Response for the ListAvailableEndpointServices API service call.
+ */
 @Fluent
 public final class EndpointServicesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointServicesListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EndpointServicesListResult.class);
 
     /*
      * List of available endpoint services in a region.
@@ -30,7 +35,7 @@ public final class EndpointServicesListResult {
 
     /**
      * Get the value property: List of available endpoint services in a region.
-     *
+     * 
      * @return the value value.
      */
     public List<EndpointServiceResultInner> value() {
@@ -39,7 +44,7 @@ public final class EndpointServicesListResult {
 
     /**
      * Set the value property: List of available endpoint services in a region.
-     *
+     * 
      * @param value the value value to set.
      * @return the EndpointServicesListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class EndpointServicesListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class EndpointServicesListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EndpointServicesListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class EndpointServicesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

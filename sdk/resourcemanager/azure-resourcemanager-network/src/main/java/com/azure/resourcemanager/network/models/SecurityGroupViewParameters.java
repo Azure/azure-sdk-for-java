@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the VM to check security groups for. */
+/**
+ * Parameters that define the VM to check security groups for.
+ */
 @Fluent
 public final class SecurityGroupViewParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupViewParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SecurityGroupViewParameters.class);
 
     /*
      * ID of the target VM.
@@ -22,7 +27,7 @@ public final class SecurityGroupViewParameters {
 
     /**
      * Get the targetResourceId property: ID of the target VM.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -31,7 +36,7 @@ public final class SecurityGroupViewParameters {
 
     /**
      * Set the targetResourceId property: ID of the target VM.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the SecurityGroupViewParameters object itself.
      */
@@ -42,15 +47,12 @@ public final class SecurityGroupViewParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model SecurityGroupViewParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model SecurityGroupViewParameters"));
         }
     }
 }

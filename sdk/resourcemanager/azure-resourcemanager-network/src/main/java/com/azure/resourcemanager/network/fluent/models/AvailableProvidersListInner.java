@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AvailableProvidersListCountry;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of available countries with details. */
+/**
+ * List of available countries with details.
+ */
 @Fluent
 public final class AvailableProvidersListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AvailableProvidersListInner.class);
 
     /*
      * List of available countries.
@@ -24,7 +29,7 @@ public final class AvailableProvidersListInner {
 
     /**
      * Get the countries property: List of available countries.
-     *
+     * 
      * @return the countries value.
      */
     public List<AvailableProvidersListCountry> countries() {
@@ -33,7 +38,7 @@ public final class AvailableProvidersListInner {
 
     /**
      * Set the countries property: List of available countries.
-     *
+     * 
      * @param countries the countries value to set.
      * @return the AvailableProvidersListInner object itself.
      */
@@ -44,15 +49,12 @@ public final class AvailableProvidersListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (countries() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property countries in model AvailableProvidersListInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property countries in model AvailableProvidersListInner"));
         } else {
             countries().forEach(e -> e.validate());
         }

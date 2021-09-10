@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyDefinitionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response for ListServiceEndpointPolicyDefinition API service call. Retrieves all service endpoint policy definition
- * that belongs to a service endpoint policy.
+ * Response for ListServiceEndpointPolicyDefinition API service call. Retrieves
+ * all service endpoint policy definition that belongs to a service endpoint
+ * policy.
  */
 @Fluent
 public final class ServiceEndpointPolicyDefinitionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionListResult.class);
 
     /*
      * The service endpoint policy definition in a service endpoint policy.
@@ -32,8 +36,9 @@ public final class ServiceEndpointPolicyDefinitionListResult {
     private String nextLink;
 
     /**
-     * Get the value property: The service endpoint policy definition in a service endpoint policy.
-     *
+     * Get the value property: The service endpoint policy definition in a
+     * service endpoint policy.
+     * 
      * @return the value value.
      */
     public List<ServiceEndpointPolicyDefinitionInner> value() {
@@ -41,8 +46,9 @@ public final class ServiceEndpointPolicyDefinitionListResult {
     }
 
     /**
-     * Set the value property: The service endpoint policy definition in a service endpoint policy.
-     *
+     * Set the value property: The service endpoint policy definition in a
+     * service endpoint policy.
+     * 
      * @param value the value value to set.
      * @return the ServiceEndpointPolicyDefinitionListResult object itself.
      */
@@ -53,7 +59,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +68,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ServiceEndpointPolicyDefinitionListResult object itself.
      */
@@ -73,7 +79,7 @@ public final class ServiceEndpointPolicyDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

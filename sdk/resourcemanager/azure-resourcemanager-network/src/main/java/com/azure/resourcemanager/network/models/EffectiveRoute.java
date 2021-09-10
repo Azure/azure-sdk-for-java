@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Effective Route. */
+/**
+ * Effective Route.
+ */
 @Fluent
 public final class EffectiveRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveRoute.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EffectiveRoute.class);
 
     /*
      * The name of the user defined route. This is optional.
@@ -22,20 +27,15 @@ public final class EffectiveRoute {
     private String name;
 
     /*
-     * If true, on-premises routes are not propagated to the network interfaces
-     * in the subnet.
-     */
-    @JsonProperty(value = "disableBgpRoutePropagation")
-    private Boolean disableBgpRoutePropagation;
-
-    /*
-     * Who created the route.
+     * Who created the route. Possible values are: 'Unknown', 'User',
+     * 'VirtualNetworkGateway', and 'Default'.
      */
     @JsonProperty(value = "source")
     private EffectiveRouteSource source;
 
     /*
-     * The value of effective route.
+     * The value of effective route. Possible values are: 'Active' and
+     * 'Invalid'.
      */
     @JsonProperty(value = "state")
     private EffectiveRouteState state;
@@ -53,14 +53,17 @@ public final class EffectiveRoute {
     private List<String> nextHopIpAddress;
 
     /*
-     * The type of Azure hop the packet should be sent to.
+     * The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance',
+     * and 'None'.
      */
     @JsonProperty(value = "nextHopType")
     private RouteNextHopType nextHopType;
 
     /**
-     * Get the name property: The name of the user defined route. This is optional.
-     *
+     * Get the name property: The name of the user defined route. This is
+     * optional.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,8 +71,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Set the name property: The name of the user defined route. This is optional.
-     *
+     * Set the name property: The name of the user defined route. This is
+     * optional.
+     * 
      * @param name the name value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -79,30 +83,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Get the disableBgpRoutePropagation property: If true, on-premises routes are not propagated to the network
-     * interfaces in the subnet.
-     *
-     * @return the disableBgpRoutePropagation value.
-     */
-    public Boolean disableBgpRoutePropagation() {
-        return this.disableBgpRoutePropagation;
-    }
-
-    /**
-     * Set the disableBgpRoutePropagation property: If true, on-premises routes are not propagated to the network
-     * interfaces in the subnet.
-     *
-     * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
-     * @return the EffectiveRoute object itself.
-     */
-    public EffectiveRoute withDisableBgpRoutePropagation(Boolean disableBgpRoutePropagation) {
-        this.disableBgpRoutePropagation = disableBgpRoutePropagation;
-        return this;
-    }
-
-    /**
-     * Get the source property: Who created the route.
-     *
+     * Get the source property: Who created the route. Possible values are:
+     * 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'.
+     * 
      * @return the source value.
      */
     public EffectiveRouteSource source() {
@@ -110,8 +93,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Set the source property: Who created the route.
-     *
+     * Set the source property: Who created the route. Possible values are:
+     * 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'.
+     * 
      * @param source the source value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -121,8 +105,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Get the state property: The value of effective route.
-     *
+     * Get the state property: The value of effective route. Possible values
+     * are: 'Active' and 'Invalid'.
+     * 
      * @return the state value.
      */
     public EffectiveRouteState state() {
@@ -130,8 +115,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Set the state property: The value of effective route.
-     *
+     * Set the state property: The value of effective route. Possible values
+     * are: 'Active' and 'Invalid'.
+     * 
      * @param state the state value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -141,8 +127,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Get the addressPrefix property: The address prefixes of the effective routes in CIDR notation.
-     *
+     * Get the addressPrefix property: The address prefixes of the effective
+     * routes in CIDR notation.
+     * 
      * @return the addressPrefix value.
      */
     public List<String> addressPrefix() {
@@ -150,8 +137,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Set the addressPrefix property: The address prefixes of the effective routes in CIDR notation.
-     *
+     * Set the addressPrefix property: The address prefixes of the effective
+     * routes in CIDR notation.
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -161,8 +149,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Get the nextHopIpAddress property: The IP address of the next hop of the effective route.
-     *
+     * Get the nextHopIpAddress property: The IP address of the next hop of the
+     * effective route.
+     * 
      * @return the nextHopIpAddress value.
      */
     public List<String> nextHopIpAddress() {
@@ -170,8 +159,9 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Set the nextHopIpAddress property: The IP address of the next hop of the effective route.
-     *
+     * Set the nextHopIpAddress property: The IP address of the next hop of the
+     * effective route.
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -181,8 +171,10 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Get the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * Get the nextHopType property: The type of Azure hop the packet should be
+     * sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal',
+     * 'Internet', 'VirtualAppliance', and 'None'.
+     * 
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -190,8 +182,10 @@ public final class EffectiveRoute {
     }
 
     /**
-     * Set the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * Set the nextHopType property: The type of Azure hop the packet should be
+     * sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal',
+     * 'Internet', 'VirtualAppliance', and 'None'.
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -202,7 +196,7 @@ public final class EffectiveRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

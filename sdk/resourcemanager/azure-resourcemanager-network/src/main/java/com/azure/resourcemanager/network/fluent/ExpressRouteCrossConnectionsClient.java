@@ -8,6 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,16 +22,19 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnecti
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteCrossConnectionsClient. */
-public interface ExpressRouteCrossConnectionsClient
-    extends InnerSupportsGet<ExpressRouteCrossConnectionInner>, InnerSupportsListing<ExpressRouteCrossConnectionInner> {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteCrossConnectionsClient.
+ */
+public interface ExpressRouteCrossConnectionsClient extends InnerSupportsGet<ExpressRouteCrossConnectionInner>, InnerSupportsListing<ExpressRouteCrossConnectionInner> {
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteCrossConnection API service call.
@@ -39,7 +44,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteCrossConnection API service call.
@@ -49,7 +54,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,7 +66,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -73,7 +78,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -85,7 +90,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +103,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,12 +112,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return details about the specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCrossConnectionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String crossConnectionName);
+    Mono<Response<ExpressRouteCrossConnectionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String crossConnectionName);
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,12 +125,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return details about the specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCrossConnectionInner> getByResourceGroupAsync(
-        String resourceGroupName, String crossConnectionName);
+    Mono<ExpressRouteCrossConnectionInner> getByResourceGroupAsync(String resourceGroupName, String crossConnectionName);
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +142,7 @@ public interface ExpressRouteCrossConnectionsClient
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @param context The context to associate with this operation.
@@ -149,12 +152,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return details about the specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCrossConnectionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String crossConnectionName, Context context);
+    Response<ExpressRouteCrossConnectionInner> getByResourceGroupWithResponse(String resourceGroupName, String crossConnectionName, Context context);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -164,12 +166,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -179,12 +180,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
+    PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdateAsync(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -194,12 +194,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -210,15 +209,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String crossConnectionName,
-        ExpressRouteCrossConnectionInner parameters,
-        Context context);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters, Context context);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -228,12 +223,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCrossConnectionInner> createOrUpdateAsync(
-        String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
+    Mono<ExpressRouteCrossConnectionInner> createOrUpdateAsync(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -243,12 +237,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionInner createOrUpdate(
-        String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
+    ExpressRouteCrossConnectionInner createOrUpdate(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters);
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -259,15 +252,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String crossConnectionName,
-        ExpressRouteCrossConnectionInner parameters,
-        Context context);
+    ExpressRouteCrossConnectionInner createOrUpdate(String resourceGroupName, String crossConnectionName, ExpressRouteCrossConnectionInner parameters, Context context);
 
     /**
      * Updates an express route cross connection tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -277,12 +266,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCrossConnectionInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
 
     /**
      * Updates an express route cross connection tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -292,12 +280,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCrossConnectionInner> updateTagsAsync(
-        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
+    PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginUpdateTagsAsync(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
 
     /**
      * Updates an express route cross connection tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -307,12 +294,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionInner updateTags(
-        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginUpdateTags(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
 
     /**
      * Updates an express route cross connection tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -323,12 +309,54 @@ public interface ExpressRouteCrossConnectionsClient
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCrossConnectionInner> updateTagsWithResponse(
-        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginUpdateTags(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context);
+
+    /**
+     * Updates an express route cross connection tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the cross connection.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCrossConnection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteCrossConnectionInner> updateTagsAsync(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
+
+    /**
+     * Updates an express route cross connection tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the cross connection.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCrossConnection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCrossConnectionInner updateTags(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
+
+    /**
+     * Updates an express route cross connection tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the cross connection.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCrossConnection resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCrossConnectionInner updateTags(String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -336,16 +364,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -353,17 +379,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
-        beginListArpTableAsync(
-            String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner> beginListArpTableAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -371,16 +394,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
-        beginListArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner> beginListArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -389,21 +410,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
-        beginListArpTable(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            String devicePath,
-            Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner> beginListArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -411,16 +425,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -428,16 +440,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsArpTableListResultInner listArpTable(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -446,16 +456,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsArpTableListResultInner listArpTable(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
+    ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -466,12 +474,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -482,15 +489,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<
-            PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
-            ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
-        beginListRoutesTableSummaryAsync(
-            String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    PollerFlux<PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>, ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> beginListRoutesTableSummaryAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -501,71 +504,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
-            ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
-        beginListRoutesTableSummary(
-            String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>, ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> beginListRoutesTableSummary(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>,
-            ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>
-        beginListRoutesTableSummary(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            String devicePath,
-            Context context);
-
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
-
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner listRoutesTableSummary(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
-
-    /**
-     * Gets the route table summary associated with the express route cross connection in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -577,13 +520,11 @@ public interface ExpressRouteCrossConnectionsClient
      * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner listRoutesTableSummary(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner>, ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> beginListRoutesTableSummary(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
 
     /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
+     * Gets the route table summary associated with the express route cross connection in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -591,17 +532,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    Mono<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
+     * Gets the route table summary associated with the express route cross connection in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -609,39 +547,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<
-            PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
-        beginListRoutesTableAsync(
-            String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
-     * @param peeringName The name of the peering.
-     * @param devicePath The path of the device.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
-        beginListRoutesTable(
-            String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
-
-    /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
+     * Gets the route table summary associated with the express route cross connection in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -650,23 +563,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the route table summary associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
-        beginListRoutesTable(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            String devicePath,
-            Context context);
+    ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
 
     /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -674,17 +578,14 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -692,17 +593,29 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+    PollerFlux<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTableAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
-     * Gets the currently advertised routes table associated with the express route cross connection in a resource
-     * group.
-     *
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+
+    /**
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -711,10 +624,54 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(
-        String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
+
+    /**
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+
+    /**
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+
+    /**
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the currently advertised routes table associated with the express route cross connection in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath, Context context);
 }

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Hub identifier. */
+/**
+ * Virtual Hub identifier.
+ */
 @Fluent
 public final class VirtualHubId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubId.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualHubId.class);
 
     /*
      * The resource URI for the Virtual Hub where the ExpressRoute gateway is
@@ -23,9 +28,10 @@ public final class VirtualHubId {
     private String id;
 
     /**
-     * Get the id property: The resource URI for the Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     * The Virtual Hub resource and the ExpressRoute gateway resource reside in the same subscription.
-     *
+     * Get the id property: The resource URI for the Virtual Hub where the
+     * ExpressRoute gateway is or will be deployed. The Virtual Hub resource
+     * and the ExpressRoute gateway resource reside in the same subscription.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -33,9 +39,10 @@ public final class VirtualHubId {
     }
 
     /**
-     * Set the id property: The resource URI for the Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     * The Virtual Hub resource and the ExpressRoute gateway resource reside in the same subscription.
-     *
+     * Set the id property: The resource URI for the Virtual Hub where the
+     * ExpressRoute gateway is or will be deployed. The Virtual Hub resource
+     * and the ExpressRoute gateway resource reside in the same subscription.
+     * 
      * @param id the id value to set.
      * @return the VirtualHubId object itself.
      */
@@ -46,7 +53,7 @@ public final class VirtualHubId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

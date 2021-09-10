@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to an express route circuit. */
+/**
+ * The ExpressRouteCircuitReference model.
+ */
 @Fluent
 public final class ExpressRouteCircuitReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitReference.class);
 
     /*
      * Corresponding Express Route Circuit Id.
@@ -22,7 +27,7 @@ public final class ExpressRouteCircuitReference {
 
     /**
      * Get the id property: Corresponding Express Route Circuit Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +36,7 @@ public final class ExpressRouteCircuitReference {
 
     /**
      * Set the id property: Corresponding Express Route Circuit Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteCircuitReference object itself.
      */
@@ -42,7 +47,7 @@ public final class ExpressRouteCircuitReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

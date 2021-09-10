@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list VirtualWANs. It contains a list of VirtualWANs and a URL nextLink to get the next set
- * of results.
+ * Result of the request to list VirtualWANs. It contains a list of VirtualWANs
+ * and a URL nextLink to get the next set of results.
  */
 @Fluent
 public final class ListVirtualWansResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVirtualWansResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListVirtualWansResult.class);
 
     /*
      * List of VirtualWANs.
@@ -33,7 +36,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Get the value property: List of VirtualWANs.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualWanInner> value() {
@@ -42,7 +45,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Set the value property: List of VirtualWANs.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVirtualWansResult object itself.
      */
@@ -52,8 +55,9 @@ public final class ListVirtualWansResult {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Get the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,8 +65,9 @@ public final class ListVirtualWansResult {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Set the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVirtualWansResult object itself.
      */
@@ -73,7 +78,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** BGP settings details. */
+/**
+ * BGP settings details.
+ */
 @Fluent
 public final class BgpSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BgpSettings.class);
 
     /*
      * The BGP speaker's ASN.
@@ -33,16 +37,9 @@ public final class BgpSettings {
     @JsonProperty(value = "peerWeight")
     private Integer peerWeight;
 
-    /*
-     * BGP peering address with IP configuration ID for virtual network
-     * gateway.
-     */
-    @JsonProperty(value = "bgpPeeringAddresses")
-    private List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses;
-
     /**
      * Get the asn property: The BGP speaker's ASN.
-     *
+     * 
      * @return the asn value.
      */
     public Long asn() {
@@ -51,7 +48,7 @@ public final class BgpSettings {
 
     /**
      * Set the asn property: The BGP speaker's ASN.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the BgpSettings object itself.
      */
@@ -61,8 +58,9 @@ public final class BgpSettings {
     }
 
     /**
-     * Get the bgpPeeringAddress property: The BGP peering address and BGP identifier of this BGP speaker.
-     *
+     * Get the bgpPeeringAddress property: The BGP peering address and BGP
+     * identifier of this BGP speaker.
+     * 
      * @return the bgpPeeringAddress value.
      */
     public String bgpPeeringAddress() {
@@ -70,8 +68,9 @@ public final class BgpSettings {
     }
 
     /**
-     * Set the bgpPeeringAddress property: The BGP peering address and BGP identifier of this BGP speaker.
-     *
+     * Set the bgpPeeringAddress property: The BGP peering address and BGP
+     * identifier of this BGP speaker.
+     * 
      * @param bgpPeeringAddress the bgpPeeringAddress value to set.
      * @return the BgpSettings object itself.
      */
@@ -81,8 +80,9 @@ public final class BgpSettings {
     }
 
     /**
-     * Get the peerWeight property: The weight added to routes learned from this BGP speaker.
-     *
+     * Get the peerWeight property: The weight added to routes learned from
+     * this BGP speaker.
+     * 
      * @return the peerWeight value.
      */
     public Integer peerWeight() {
@@ -90,8 +90,9 @@ public final class BgpSettings {
     }
 
     /**
-     * Set the peerWeight property: The weight added to routes learned from this BGP speaker.
-     *
+     * Set the peerWeight property: The weight added to routes learned from
+     * this BGP speaker.
+     * 
      * @param peerWeight the peerWeight value to set.
      * @return the BgpSettings object itself.
      */
@@ -101,33 +102,10 @@ public final class BgpSettings {
     }
 
     /**
-     * Get the bgpPeeringAddresses property: BGP peering address with IP configuration ID for virtual network gateway.
-     *
-     * @return the bgpPeeringAddresses value.
-     */
-    public List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses() {
-        return this.bgpPeeringAddresses;
-    }
-
-    /**
-     * Set the bgpPeeringAddresses property: BGP peering address with IP configuration ID for virtual network gateway.
-     *
-     * @param bgpPeeringAddresses the bgpPeeringAddresses value to set.
-     * @return the BgpSettings object itself.
-     */
-    public BgpSettings withBgpPeeringAddresses(List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses) {
-        this.bgpPeeringAddresses = bgpPeeringAddresses;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (bgpPeeringAddresses() != null) {
-            bgpPeeringAddresses().forEach(e -> e.validate());
-        }
     }
 }

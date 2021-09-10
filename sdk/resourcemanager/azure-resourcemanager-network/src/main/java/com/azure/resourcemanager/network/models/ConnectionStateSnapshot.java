@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Connection state snapshot. */
+/**
+ * Connection state snapshot.
+ */
 @Fluent
 public final class ConnectionStateSnapshot {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionStateSnapshot.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConnectionStateSnapshot.class);
 
     /*
      * The connection state.
@@ -44,31 +49,31 @@ public final class ConnectionStateSnapshot {
      * Average latency in ms.
      */
     @JsonProperty(value = "avgLatencyInMs")
-    private Long avgLatencyInMs;
+    private Integer avgLatencyInMs;
 
     /*
      * Minimum latency in ms.
      */
     @JsonProperty(value = "minLatencyInMs")
-    private Long minLatencyInMs;
+    private Integer minLatencyInMs;
 
     /*
      * Maximum latency in ms.
      */
     @JsonProperty(value = "maxLatencyInMs")
-    private Long maxLatencyInMs;
+    private Integer maxLatencyInMs;
 
     /*
      * The number of sent probes.
      */
     @JsonProperty(value = "probesSent")
-    private Long probesSent;
+    private Integer probesSent;
 
     /*
      * The number of failed probes.
      */
     @JsonProperty(value = "probesFailed")
-    private Long probesFailed;
+    private Integer probesFailed;
 
     /*
      * List of hops between the source and the destination.
@@ -78,7 +83,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the connectionState property: The connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ConnectionState connectionState() {
@@ -87,7 +92,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the connectionState property: The connection state.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -98,7 +103,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the startTime property: The start time of the connection snapshot.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -107,7 +112,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the startTime property: The start time of the connection snapshot.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -118,7 +123,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the endTime property: The end time of the connection snapshot.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -127,7 +132,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the endTime property: The end time of the connection snapshot.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -137,8 +142,9 @@ public final class ConnectionStateSnapshot {
     }
 
     /**
-     * Get the evaluationState property: Connectivity analysis evaluation state.
-     *
+     * Get the evaluationState property: Connectivity analysis evaluation
+     * state.
+     * 
      * @return the evaluationState value.
      */
     public EvaluationState evaluationState() {
@@ -146,8 +152,9 @@ public final class ConnectionStateSnapshot {
     }
 
     /**
-     * Set the evaluationState property: Connectivity analysis evaluation state.
-     *
+     * Set the evaluationState property: Connectivity analysis evaluation
+     * state.
+     * 
      * @param evaluationState the evaluationState value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -158,107 +165,108 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the avgLatencyInMs property: Average latency in ms.
-     *
+     * 
      * @return the avgLatencyInMs value.
      */
-    public Long avgLatencyInMs() {
+    public Integer avgLatencyInMs() {
         return this.avgLatencyInMs;
     }
 
     /**
      * Set the avgLatencyInMs property: Average latency in ms.
-     *
+     * 
      * @param avgLatencyInMs the avgLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withAvgLatencyInMs(Long avgLatencyInMs) {
+    public ConnectionStateSnapshot withAvgLatencyInMs(Integer avgLatencyInMs) {
         this.avgLatencyInMs = avgLatencyInMs;
         return this;
     }
 
     /**
      * Get the minLatencyInMs property: Minimum latency in ms.
-     *
+     * 
      * @return the minLatencyInMs value.
      */
-    public Long minLatencyInMs() {
+    public Integer minLatencyInMs() {
         return this.minLatencyInMs;
     }
 
     /**
      * Set the minLatencyInMs property: Minimum latency in ms.
-     *
+     * 
      * @param minLatencyInMs the minLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withMinLatencyInMs(Long minLatencyInMs) {
+    public ConnectionStateSnapshot withMinLatencyInMs(Integer minLatencyInMs) {
         this.minLatencyInMs = minLatencyInMs;
         return this;
     }
 
     /**
      * Get the maxLatencyInMs property: Maximum latency in ms.
-     *
+     * 
      * @return the maxLatencyInMs value.
      */
-    public Long maxLatencyInMs() {
+    public Integer maxLatencyInMs() {
         return this.maxLatencyInMs;
     }
 
     /**
      * Set the maxLatencyInMs property: Maximum latency in ms.
-     *
+     * 
      * @param maxLatencyInMs the maxLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withMaxLatencyInMs(Long maxLatencyInMs) {
+    public ConnectionStateSnapshot withMaxLatencyInMs(Integer maxLatencyInMs) {
         this.maxLatencyInMs = maxLatencyInMs;
         return this;
     }
 
     /**
      * Get the probesSent property: The number of sent probes.
-     *
+     * 
      * @return the probesSent value.
      */
-    public Long probesSent() {
+    public Integer probesSent() {
         return this.probesSent;
     }
 
     /**
      * Set the probesSent property: The number of sent probes.
-     *
+     * 
      * @param probesSent the probesSent value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withProbesSent(Long probesSent) {
+    public ConnectionStateSnapshot withProbesSent(Integer probesSent) {
         this.probesSent = probesSent;
         return this;
     }
 
     /**
      * Get the probesFailed property: The number of failed probes.
-     *
+     * 
      * @return the probesFailed value.
      */
-    public Long probesFailed() {
+    public Integer probesFailed() {
         return this.probesFailed;
     }
 
     /**
      * Set the probesFailed property: The number of failed probes.
-     *
+     * 
      * @param probesFailed the probesFailed value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withProbesFailed(Long probesFailed) {
+    public ConnectionStateSnapshot withProbesFailed(Integer probesFailed) {
         this.probesFailed = probesFailed;
         return this;
     }
 
     /**
-     * Get the hops property: List of hops between the source and the destination.
-     *
+     * Get the hops property: List of hops between the source and the
+     * destination.
+     * 
      * @return the hops value.
      */
     public List<ConnectivityHop> hops() {
@@ -267,7 +275,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

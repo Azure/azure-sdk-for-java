@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ContainerNetworkInterfaceIpConfigurationPropertiesFormat;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ip configuration for a container network interface. */
+/**
+ * The ip configuration for a container network interface.
+ */
 @Fluent
 public final class ContainerNetworkInterfaceIpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceIpConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceIpConfiguration.class);
 
     /*
      * Properties of the container network interface IP configuration.
@@ -36,12 +41,13 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the container network interface IP configuration.
-     *
+     * Get the innerProperties property: Properties of the container network
+     * interface IP configuration.
+     * 
      * @return the innerProperties value.
      */
     private ContainerNetworkInterfaceIpConfigurationPropertiesFormat innerProperties() {
@@ -49,8 +55,9 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Get the name property: The name of the resource. This name can be used to access the resource.
-     *
+     * Get the name property: The name of the resource. This name can be used
+     * to access the resource.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,8 +65,9 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Set the name property: The name of the resource. This name can be used to access the resource.
-     *
+     * Set the name property: The name of the resource. This name can be used
+     * to access the resource.
+     * 
      * @param name the name value to set.
      * @return the ContainerNetworkInterfaceIpConfiguration object itself.
      */
@@ -70,7 +78,7 @@ public final class ContainerNetworkInterfaceIpConfiguration {
 
     /**
      * Get the type property: Sub Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -78,8 +86,9 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -87,18 +96,30 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface IP configuration
+     * Set the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the ContainerNetworkInterfaceIpConfiguration object itself.
+     */
+    public ContainerNetworkInterfaceIpConfiguration withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the
      * resource.
-     *
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information gained from troubleshooting of specified resource. */
+/**
+ * Information gained from troubleshooting of specified resource.
+ */
 @Fluent
 public final class TroubleshootingDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingDetails.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TroubleshootingDetails.class);
 
     /*
      * The id of the get troubleshoot operation.
@@ -47,7 +52,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Get the id property: The id of the get troubleshoot operation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +61,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Set the id property: The id of the get troubleshoot operation.
-     *
+     * 
      * @param id the id value to set.
      * @return the TroubleshootingDetails object itself.
      */
@@ -67,7 +72,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Get the reasonType property: Reason type of failure.
-     *
+     * 
      * @return the reasonType value.
      */
     public String reasonType() {
@@ -76,7 +81,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Set the reasonType property: Reason type of failure.
-     *
+     * 
      * @param reasonType the reasonType value to set.
      * @return the TroubleshootingDetails object itself.
      */
@@ -87,7 +92,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Get the summary property: A summary of troubleshooting.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -96,7 +101,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Set the summary property: A summary of troubleshooting.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the TroubleshootingDetails object itself.
      */
@@ -107,7 +112,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Get the detail property: Details on troubleshooting results.
-     *
+     * 
      * @return the detail value.
      */
     public String detail() {
@@ -116,7 +121,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Set the detail property: Details on troubleshooting results.
-     *
+     * 
      * @param detail the detail value to set.
      * @return the TroubleshootingDetails object itself.
      */
@@ -127,7 +132,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Get the recommendedActions property: List of recommended actions.
-     *
+     * 
      * @return the recommendedActions value.
      */
     public List<TroubleshootingRecommendedActions> recommendedActions() {
@@ -136,7 +141,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Set the recommendedActions property: List of recommended actions.
-     *
+     * 
      * @param recommendedActions the recommendedActions value to set.
      * @return the TroubleshootingDetails object itself.
      */
@@ -147,7 +152,7 @@ public final class TroubleshootingDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

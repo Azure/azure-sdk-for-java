@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.RouteInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListRoute API service call. */
+/**
+ * Response for the ListRoute API service call.
+ */
 @Fluent
 public final class RouteListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RouteListResult.class);
 
     /*
-     * A list of routes in a resource group.
+     * Gets a list of routes in a resource group.
      */
     @JsonProperty(value = "value")
     private List<RouteInner> value;
@@ -29,8 +34,8 @@ public final class RouteListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of routes in a resource group.
-     *
+     * Get the value property: Gets a list of routes in a resource group.
+     * 
      * @return the value value.
      */
     public List<RouteInner> value() {
@@ -38,8 +43,8 @@ public final class RouteListResult {
     }
 
     /**
-     * Set the value property: A list of routes in a resource group.
-     *
+     * Set the value property: Gets a list of routes in a resource group.
+     * 
      * @param value the value value to set.
      * @return the RouteListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class RouteListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class RouteListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RouteListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class RouteListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

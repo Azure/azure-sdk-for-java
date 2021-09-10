@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A reference to VirtualNetworkGateway or LocalNetworkGateway resource. */
+/**
+ * A reference to VirtualNetworkGateway or LocalNetworkGateway resource.
+ */
 @Fluent
 public final class VirtualNetworkConnectionGatewayReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConnectionGatewayReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkConnectionGatewayReference.class);
 
     /*
      * The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
@@ -21,8 +26,9 @@ public final class VirtualNetworkConnectionGatewayReference {
     private String id;
 
     /**
-     * Get the id property: The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
-     *
+     * Get the id property: The ID of VirtualNetworkGateway or
+     * LocalNetworkGateway resource.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -30,8 +36,9 @@ public final class VirtualNetworkConnectionGatewayReference {
     }
 
     /**
-     * Set the id property: The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
-     *
+     * Set the id property: The ID of VirtualNetworkGateway or
+     * LocalNetworkGateway resource.
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkConnectionGatewayReference object itself.
      */
@@ -42,15 +49,12 @@ public final class VirtualNetworkConnectionGatewayReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property id in model VirtualNetworkConnectionGatewayReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property id in model VirtualNetworkConnectionGatewayReference"));
         }
     }
 }

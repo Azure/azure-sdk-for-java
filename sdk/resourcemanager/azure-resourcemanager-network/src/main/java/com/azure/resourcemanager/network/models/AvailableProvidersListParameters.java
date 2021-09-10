@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Constraints that determine the list of available Internet service providers. */
+/**
+ * Constraints that determine the list of available Internet service providers.
+ */
 @Fluent
 public final class AvailableProvidersListParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AvailableProvidersListParameters.class);
 
     /*
      * A list of Azure regions.
@@ -41,7 +46,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the azureLocations property: A list of Azure regions.
-     *
+     * 
      * @return the azureLocations value.
      */
     public List<String> azureLocations() {
@@ -50,7 +55,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the azureLocations property: A list of Azure regions.
-     *
+     * 
      * @param azureLocations the azureLocations value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -61,7 +66,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the country property: The country for available providers list.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -70,7 +75,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the country property: The country for available providers list.
-     *
+     * 
      * @param country the country value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -81,7 +86,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the state property: The state for available providers list.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -90,7 +95,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the state property: The state for available providers list.
-     *
+     * 
      * @param state the state value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -101,7 +106,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the city property: The city or town for available providers list.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -110,7 +115,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the city property: The city or town for available providers list.
-     *
+     * 
      * @param city the city value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -121,7 +126,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

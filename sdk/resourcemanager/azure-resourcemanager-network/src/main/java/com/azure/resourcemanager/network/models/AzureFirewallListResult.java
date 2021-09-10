@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListAzureFirewalls API service call. */
+/**
+ * Response for ListAzureFirewalls API service call.
+ */
 @Fluent
 public final class AzureFirewallListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureFirewallListResult.class);
 
     /*
      * List of Azure Firewalls in a resource group.
@@ -30,7 +35,7 @@ public final class AzureFirewallListResult {
 
     /**
      * Get the value property: List of Azure Firewalls in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureFirewallInner> value() {
@@ -39,7 +44,7 @@ public final class AzureFirewallListResult {
 
     /**
      * Set the value property: List of Azure Firewalls in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the AzureFirewallListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class AzureFirewallListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class AzureFirewallListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AzureFirewallListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class AzureFirewallListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

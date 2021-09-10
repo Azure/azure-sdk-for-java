@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IkeIntegrity. */
+/**
+ * Defines values for IkeIntegrity.
+ */
 public final class IkeIntegrity extends ExpandableStringEnum<IkeIntegrity> {
-    /** Static value MD5 for IkeIntegrity. */
+    /**
+     * Static value MD5 for IkeIntegrity.
+     */
     public static final IkeIntegrity MD5 = fromString("MD5");
 
-    /** Static value SHA1 for IkeIntegrity. */
+    /**
+     * Static value SHA1 for IkeIntegrity.
+     */
     public static final IkeIntegrity SHA1 = fromString("SHA1");
 
-    /** Static value SHA256 for IkeIntegrity. */
+    /**
+     * Static value SHA256 for IkeIntegrity.
+     */
     public static final IkeIntegrity SHA256 = fromString("SHA256");
 
-    /** Static value SHA384 for IkeIntegrity. */
+    /**
+     * Static value SHA384 for IkeIntegrity.
+     */
     public static final IkeIntegrity SHA384 = fromString("SHA384");
 
-    /** Static value GCMAES256 for IkeIntegrity. */
+    /**
+     * Static value GCMAES256 for IkeIntegrity.
+     */
     public static final IkeIntegrity GCMAES256 = fromString("GCMAES256");
 
-    /** Static value GCMAES128 for IkeIntegrity. */
+    /**
+     * Static value GCMAES128 for IkeIntegrity.
+     */
     public static final IkeIntegrity GCMAES128 = fromString("GCMAES128");
 
     /**
      * Creates or finds a IkeIntegrity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IkeIntegrity.
      */
@@ -39,7 +53,9 @@ public final class IkeIntegrity extends ExpandableStringEnum<IkeIntegrity> {
         return fromString(name, IkeIntegrity.class);
     }
 
-    /** @return known IkeIntegrity values. */
+    /**
+     * @return known IkeIntegrity values.
+     */
     public static Collection<IkeIntegrity> values() {
         return values(IkeIntegrity.class);
     }

@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfiguration;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRouteConnection resource. */
+/**
+ * ExpressRouteConnection resource.
+ */
 @Fluent
 public final class ExpressRouteConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionInner.class);
 
     /*
-     * Properties of the express route connection.
+     * Properties of the ExpressRouteConnection subresource.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteConnectionProperties innerProperties;
@@ -31,8 +35,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     private String name;
 
     /**
-     * Get the innerProperties property: Properties of the express route connection.
-     *
+     * Get the innerProperties property: Properties of the
+     * ExpressRouteConnection subresource.
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteConnectionProperties innerProperties() {
@@ -41,7 +46,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +55,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -59,7 +64,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteConnectionInner withId(String id) {
         super.withId(id);
@@ -67,8 +74,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route connection resource.
-     *
+     * Get the provisioningState property: The provisioning state of the
+     * resource.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,8 +84,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
-     *
+     * Get the expressRouteCircuitPeering property: The ExpressRoute circuit
+     * peering.
+     * 
      * @return the expressRouteCircuitPeering value.
      */
     public ExpressRouteCircuitPeeringId expressRouteCircuitPeering() {
@@ -85,13 +94,14 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Set the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
-     *
-     * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
+     * Set the expressRouteCircuitPeering property: The ExpressRoute circuit
+     * peering.
+     * 
+     * @param expressRouteCircuitPeering the expressRouteCircuitPeering value
+     * to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
-    public ExpressRouteConnectionInner withExpressRouteCircuitPeering(
-        ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
+    public ExpressRouteConnectionInner withExpressRouteCircuitPeering(ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteConnectionProperties();
         }
@@ -100,8 +110,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the authorizationKey property: Authorization key to establish the connection.
-     *
+     * Get the authorizationKey property: Authorization key to establish the
+     * connection.
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -109,8 +120,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Set the authorizationKey property: Authorization key to establish the connection.
-     *
+     * Set the authorizationKey property: Authorization key to establish the
+     * connection.
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -123,8 +135,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the routingWeight property: The routing weight associated to the connection.
-     *
+     * Get the routingWeight property: The routing weight associated to the
+     * connection.
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -132,8 +145,9 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Set the routingWeight property: The routing weight associated to the connection.
-     *
+     * Set the routingWeight property: The routing weight associated to the
+     * connection.
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the ExpressRouteConnectionInner object itself.
      */
@@ -146,79 +160,8 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the enableInternetSecurity property: Enable internet security.
-     *
-     * @return the enableInternetSecurity value.
-     */
-    public Boolean enableInternetSecurity() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableInternetSecurity();
-    }
-
-    /**
-     * Set the enableInternetSecurity property: Enable internet security.
-     *
-     * @param enableInternetSecurity the enableInternetSecurity value to set.
-     * @return the ExpressRouteConnectionInner object itself.
-     */
-    public ExpressRouteConnectionInner withEnableInternetSecurity(Boolean enableInternetSecurity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteConnectionProperties();
-        }
-        this.innerProperties().withEnableInternetSecurity(enableInternetSecurity);
-        return this;
-    }
-
-    /**
-     * Get the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
-     * @return the expressRouteGatewayBypass value.
-     */
-    public Boolean expressRouteGatewayBypass() {
-        return this.innerProperties() == null ? null : this.innerProperties().expressRouteGatewayBypass();
-    }
-
-    /**
-     * Set the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
-     * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
-     * @return the ExpressRouteConnectionInner object itself.
-     */
-    public ExpressRouteConnectionInner withExpressRouteGatewayBypass(Boolean expressRouteGatewayBypass) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteConnectionProperties();
-        }
-        this.innerProperties().withExpressRouteGatewayBypass(expressRouteGatewayBypass);
-        return this;
-    }
-
-    /**
-     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @return the routingConfiguration value.
-     */
-    public RoutingConfiguration routingConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
-    }
-
-    /**
-     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @param routingConfiguration the routingConfiguration value to set.
-     * @return the ExpressRouteConnectionInner object itself.
-     */
-    public ExpressRouteConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteConnectionProperties();
-        }
-        this.innerProperties().withRoutingConfiguration(routingConfiguration);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -226,10 +169,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
             innerProperties().validate();
         }
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ExpressRouteConnectionInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model ExpressRouteConnectionInner"));
         }
     }
 }

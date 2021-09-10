@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of redirect configuration of the application gateway. */
+/**
+ * Properties of redirect configuration of the application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayRedirectConfigurationPropertiesFormat.class);
 
     /*
-     * HTTP redirection type.
+     * Supported http redirection types - Permanent, Temporary, Found,
+     * SeeOther.
      */
     @JsonProperty(value = "redirectType")
     private ApplicationGatewayRedirectType redirectType;
@@ -67,8 +72,9 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     private List<SubResource> pathRules;
 
     /**
-     * Get the redirectType property: HTTP redirection type.
-     *
+     * Get the redirectType property: Supported http redirection types -
+     * Permanent, Temporary, Found, SeeOther.
+     * 
      * @return the redirectType value.
      */
     public ApplicationGatewayRedirectType redirectType() {
@@ -76,20 +82,22 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the redirectType property: HTTP redirection type.
-     *
+     * Set the redirectType property: Supported http redirection types -
+     * Permanent, Temporary, Found, SeeOther.
+     * 
      * @param redirectType the redirectType value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
-    public ApplicationGatewayRedirectConfigurationPropertiesFormat withRedirectType(
-        ApplicationGatewayRedirectType redirectType) {
+    public ApplicationGatewayRedirectConfigurationPropertiesFormat withRedirectType(ApplicationGatewayRedirectType redirectType) {
         this.redirectType = redirectType;
         return this;
     }
 
     /**
-     * Get the targetListener property: Reference to a listener to redirect the request to.
-     *
+     * Get the targetListener property: Reference to a listener to redirect the
+     * request to.
+     * 
      * @return the targetListener value.
      */
     public SubResource targetListener() {
@@ -97,10 +105,12 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the targetListener property: Reference to a listener to redirect the request to.
-     *
+     * Set the targetListener property: Reference to a listener to redirect the
+     * request to.
+     * 
      * @param targetListener the targetListener value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayRedirectConfigurationPropertiesFormat withTargetListener(SubResource targetListener) {
         this.targetListener = targetListener;
@@ -109,7 +119,7 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
 
     /**
      * Get the targetUrl property: Url to redirect the request to.
-     *
+     * 
      * @return the targetUrl value.
      */
     public String targetUrl() {
@@ -118,9 +128,10 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
 
     /**
      * Set the targetUrl property: Url to redirect the request to.
-     *
+     * 
      * @param targetUrl the targetUrl value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayRedirectConfigurationPropertiesFormat withTargetUrl(String targetUrl) {
         this.targetUrl = targetUrl;
@@ -129,7 +140,7 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
 
     /**
      * Get the includePath property: Include path in the redirected url.
-     *
+     * 
      * @return the includePath value.
      */
     public Boolean includePath() {
@@ -138,9 +149,10 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
 
     /**
      * Set the includePath property: Include path in the redirected url.
-     *
+     * 
      * @param includePath the includePath value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayRedirectConfigurationPropertiesFormat withIncludePath(Boolean includePath) {
         this.includePath = includePath;
@@ -148,8 +160,9 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the includeQueryString property: Include query string in the redirected url.
-     *
+     * Get the includeQueryString property: Include query string in the
+     * redirected url.
+     * 
      * @return the includeQueryString value.
      */
     public Boolean includeQueryString() {
@@ -157,10 +170,12 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the includeQueryString property: Include query string in the redirected url.
-     *
+     * Set the includeQueryString property: Include query string in the
+     * redirected url.
+     * 
      * @param includeQueryString the includeQueryString value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayRedirectConfigurationPropertiesFormat withIncludeQueryString(Boolean includeQueryString) {
         this.includeQueryString = includeQueryString;
@@ -168,8 +183,9 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the requestRoutingRules property: Request routing specifying redirect configuration.
-     *
+     * Get the requestRoutingRules property: Request routing specifying
+     * redirect configuration.
+     * 
      * @return the requestRoutingRules value.
      */
     public List<SubResource> requestRoutingRules() {
@@ -177,20 +193,22 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the requestRoutingRules property: Request routing specifying redirect configuration.
-     *
+     * Set the requestRoutingRules property: Request routing specifying
+     * redirect configuration.
+     * 
      * @param requestRoutingRules the requestRoutingRules value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
-    public ApplicationGatewayRedirectConfigurationPropertiesFormat withRequestRoutingRules(
-        List<SubResource> requestRoutingRules) {
+    public ApplicationGatewayRedirectConfigurationPropertiesFormat withRequestRoutingRules(List<SubResource> requestRoutingRules) {
         this.requestRoutingRules = requestRoutingRules;
         return this;
     }
 
     /**
-     * Get the urlPathMaps property: Url path maps specifying default redirect configuration.
-     *
+     * Get the urlPathMaps property: Url path maps specifying default redirect
+     * configuration.
+     * 
      * @return the urlPathMaps value.
      */
     public List<SubResource> urlPathMaps() {
@@ -198,10 +216,12 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the urlPathMaps property: Url path maps specifying default redirect configuration.
-     *
+     * Set the urlPathMaps property: Url path maps specifying default redirect
+     * configuration.
+     * 
      * @param urlPathMaps the urlPathMaps value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayRedirectConfigurationPropertiesFormat withUrlPathMaps(List<SubResource> urlPathMaps) {
         this.urlPathMaps = urlPathMaps;
@@ -209,8 +229,9 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the pathRules property: Path rules specifying redirect configuration.
-     *
+     * Get the pathRules property: Path rules specifying redirect
+     * configuration.
+     * 
      * @return the pathRules value.
      */
     public List<SubResource> pathRules() {
@@ -218,10 +239,12 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the pathRules property: Path rules specifying redirect configuration.
-     *
+     * Set the pathRules property: Path rules specifying redirect
+     * configuration.
+     * 
      * @param pathRules the pathRules value to set.
-     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.
+     * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayRedirectConfigurationPropertiesFormat withPathRules(List<SubResource> pathRules) {
         this.pathRules = pathRules;
@@ -230,7 +253,7 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

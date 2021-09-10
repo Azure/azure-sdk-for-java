@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A DDoS protection plan in a resource group. */
+/**
+ * A DDoS protection plan in a resource group.
+ */
 @Fluent
 public final class DdosProtectionPlanInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DdosProtectionPlanInner.class);
 
     /*
      * Properties of the DDoS protection plan.
@@ -32,8 +37,9 @@ public final class DdosProtectionPlanInner extends Resource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the DDoS protection plan.
-     *
+     * Get the innerProperties property: Properties of the DDoS protection
+     * plan.
+     * 
      * @return the innerProperties value.
      */
     private DdosProtectionPlanPropertiesFormat innerProperties() {
@@ -41,22 +47,27 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DdosProtectionPlanInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DdosProtectionPlanInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -64,10 +75,11 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the DDoS protection plan resource. It uniquely
-     * identifies the resource, even if the user changes its name or migrate the resource across subscriptions or
-     * resource groups.
-     *
+     * Get the resourceGuid property: The resource GUID property of the DDoS
+     * protection plan resource. It uniquely identifies the resource, even if
+     * the user changes its name or migrate the resource across subscriptions
+     * or resource groups.
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -75,18 +87,21 @@ public final class DdosProtectionPlanInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the DDoS protection plan resource.
-     *
+     * Get the provisioningState property: The provisioning state of the DDoS
+     * protection plan resource. Possible values are: 'Succeeded', 'Updating',
+     * 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the virtualNetworks property: The list of virtual networks associated with the DDoS protection plan resource.
-     * This list is read-only.
-     *
+     * Get the virtualNetworks property: The list of virtual networks
+     * associated with the DDoS protection plan resource. This list is
+     * read-only.
+     * 
      * @return the virtualNetworks value.
      */
     public List<SubResource> virtualNetworks() {
@@ -95,7 +110,7 @@ public final class DdosProtectionPlanInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

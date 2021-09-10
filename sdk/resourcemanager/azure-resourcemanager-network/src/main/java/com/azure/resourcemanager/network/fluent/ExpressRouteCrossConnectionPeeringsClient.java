@@ -8,23 +8,27 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in ExpressRouteCrossConnectionPeeringsClient.
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteCrossConnectionPeeringsClient.
  */
 public interface ExpressRouteCrossConnectionPeeringsClient {
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +41,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +54,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param context The context to associate with this operation.
@@ -60,12 +64,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(
-        String resourceGroupName, String crossConnectionName, Context context);
+    PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(String resourceGroupName, String crossConnectionName, Context context);
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -75,12 +78,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -90,12 +92,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -105,12 +106,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String crossConnectionName, String peeringName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -121,12 +121,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String crossConnectionName, String peeringName, Context context);
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -140,7 +139,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -153,7 +152,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -167,7 +166,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -177,12 +176,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName);
+    Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -192,12 +190,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCrossConnectionPeeringInner> getAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName);
+    Mono<ExpressRouteCrossConnectionPeeringInner> getAsync(String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -207,12 +204,11 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionPeeringInner get(
-        String resourceGroupName, String crossConnectionName, String peeringName);
+    ExpressRouteCrossConnectionPeeringInner get(String resourceGroupName, String crossConnectionName, String peeringName);
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -223,79 +219,60 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCrossConnectionPeeringInner> getWithResponse(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context);
+    Response<ExpressRouteCrossConnectionPeeringInner> getWithResponse(String resourceGroupName, String crossConnectionName, String peeringName, Context context);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters);
+    PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -303,62 +280,45 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters,
-            Context context);
+    SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters);
+    Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters);
+    ExpressRouteCrossConnectionPeeringInner createOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -366,10 +326,5 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCrossConnectionPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters,
-        Context context);
+    ExpressRouteCrossConnectionPeeringInner createOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context);
 }

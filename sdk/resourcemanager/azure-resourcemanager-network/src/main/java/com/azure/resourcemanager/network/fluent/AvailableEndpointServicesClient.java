@@ -8,14 +8,20 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.EndpointServiceResultInner;
+import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AvailableEndpointServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * AvailableEndpointServicesClient.
+ */
 public interface AvailableEndpointServicesClient {
     /**
      * List what values of endpoint services are available for use.
-     *
+     * 
      * @param location The location to check available endpoint services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +33,7 @@ public interface AvailableEndpointServicesClient {
 
     /**
      * List what values of endpoint services are available for use.
-     *
+     * 
      * @param location The location to check available endpoint services.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +45,7 @@ public interface AvailableEndpointServicesClient {
 
     /**
      * List what values of endpoint services are available for use.
-     *
+     * 
      * @param location The location to check available endpoint services.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

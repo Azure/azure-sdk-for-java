@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DdosSettingsProtectionCoverage. */
+/**
+ * Defines values for DdosSettingsProtectionCoverage.
+ */
 public final class DdosSettingsProtectionCoverage extends ExpandableStringEnum<DdosSettingsProtectionCoverage> {
-    /** Static value Basic for DdosSettingsProtectionCoverage. */
+    /**
+     * Static value Basic for DdosSettingsProtectionCoverage.
+     */
     public static final DdosSettingsProtectionCoverage BASIC = fromString("Basic");
 
-    /** Static value Standard for DdosSettingsProtectionCoverage. */
+    /**
+     * Static value Standard for DdosSettingsProtectionCoverage.
+     */
     public static final DdosSettingsProtectionCoverage STANDARD = fromString("Standard");
 
     /**
      * Creates or finds a DdosSettingsProtectionCoverage from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DdosSettingsProtectionCoverage.
      */
@@ -27,7 +33,9 @@ public final class DdosSettingsProtectionCoverage extends ExpandableStringEnum<D
         return fromString(name, DdosSettingsProtectionCoverage.class);
     }
 
-    /** @return known DdosSettingsProtectionCoverage values. */
+    /**
+     * @return known DdosSettingsProtectionCoverage values.
+     */
     public static Collection<DdosSettingsProtectionCoverage> values() {
         return values(DdosSettingsProtectionCoverage.class);
     }

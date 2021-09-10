@@ -5,22 +5,27 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A ExpressRouteResourceProvider object. */
+/**
+ * A ExpressRouteResourceProvider object.
+ */
 @Fluent
 public final class ExpressRouteServiceProviderInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderInner.class);
 
     /*
-     * Properties of the express route service provider.
+     * Properties of ExpressRouteServiceProvider.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteServiceProviderPropertiesFormat innerProperties;
@@ -32,8 +37,9 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the express route service provider.
-     *
+     * Get the innerProperties property: Properties of
+     * ExpressRouteServiceProvider.
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteServiceProviderPropertiesFormat innerProperties() {
@@ -42,7 +48,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +57,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
      */
@@ -60,14 +66,18 @@ public final class ExpressRouteServiceProviderInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteServiceProviderInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteServiceProviderInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,8 +85,8 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the peeringLocations property: A list of peering locations.
-     *
+     * Get the peeringLocations property: Get a list of peering locations.
+     * 
      * @return the peeringLocations value.
      */
     public List<String> peeringLocations() {
@@ -84,8 +94,8 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the peeringLocations property: A list of peering locations.
-     *
+     * Set the peeringLocations property: Get a list of peering locations.
+     * 
      * @param peeringLocations the peeringLocations value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
      */
@@ -98,8 +108,8 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the bandwidthsOffered property: A list of bandwidths offered.
-     *
+     * Get the bandwidthsOffered property: Gets bandwidths offered.
+     * 
      * @return the bandwidthsOffered value.
      */
     public List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered() {
@@ -107,13 +117,12 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the bandwidthsOffered property: A list of bandwidths offered.
-     *
+     * Set the bandwidthsOffered property: Gets bandwidths offered.
+     * 
      * @param bandwidthsOffered the bandwidthsOffered value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
      */
-    public ExpressRouteServiceProviderInner withBandwidthsOffered(
-        List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
+    public ExpressRouteServiceProviderInner withBandwidthsOffered(List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteServiceProviderPropertiesFormat();
         }
@@ -122,17 +131,33 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route service provider resource.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the
+     * resource.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state of the
+     * resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteServiceProviderInner object itself.
+     */
+    public ExpressRouteServiceProviderInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteServiceProviderPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

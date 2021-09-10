@@ -13,7 +13,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -35,26 +34,32 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 import com.azure.resourcemanager.network.models.SubnetListResult;
-import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SubnetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * SubnetsClient.
+ */
 public final class SubnetsClientImpl implements SubnetsClient {
     private final ClientLogger logger = new ClientLogger(SubnetsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SubnetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of SubnetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SubnetsClientImpl(NetworkManagementClientImpl client) {
@@ -63,125 +68,47 @@ public final class SubnetsClientImpl implements SubnetsClient {
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientSubnets to be used by the proxy service to
+     * The interface defining all the services for
+     * NetworkManagementClientSubnets to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface SubnetsService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualNetworkName") String virtualNetworkName, @PathParam("subnetName") String subnetName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubnetInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SubnetInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualNetworkName") String virtualNetworkName, @PathParam("subnetName") String subnetName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") SubnetInner subnetParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualNetworkName") String virtualNetworkName, @PathParam("subnetName") String subnetName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") SubnetInner subnetParameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/PrepareNetworkPolicies")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> prepareNetworkPolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/UnprepareNetworkPolicies")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubnetListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SubnetListResult>> list(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualNetworkName") String virtualNetworkName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubnetListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SubnetListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -191,52 +118,30 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (subnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        final String apiVersion = "2018-11-01";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -247,49 +152,30 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (subnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -299,18 +185,14 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -321,19 +203,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -343,14 +221,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -361,14 +238,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+        return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -386,7 +262,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -397,8 +273,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -406,7 +281,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -421,7 +296,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -437,7 +312,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -448,53 +323,31 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubnetInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
+    public Mono<Response<SubnetInner>> getWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (subnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion, this.client.getSubscriptionId(), expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -506,50 +359,31 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubnetInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context) {
+    private Mono<Response<SubnetInner>> getWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (subnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expand,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion, this.client.getSubscriptionId(), expand, accept, context);
     }
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -560,22 +394,20 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubnetInner> getAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
+    public Mono<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
         return getWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand)
-            .flatMap(
-                (Response<SubnetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<SubnetInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -588,19 +420,18 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public Mono<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand)
-            .flatMap(
-                (Response<SubnetInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<SubnetInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -617,7 +448,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -629,14 +460,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubnetInner> getWithResponse(
-        String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context) {
+    public Response<SubnetInner> getWithResponse(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, expand, context).block();
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -647,59 +477,36 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (subnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (subnetParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            subnetParameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion, this.client.getSubscriptionId(), subnetParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -711,60 +518,36 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        SubnetInner subnetParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (subnetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (subnetParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                subnetParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion, this.client.getSubscriptionId(), subnetParameters, accept, context);
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -775,19 +558,14 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters);
-        return this
-            .client
-            .<SubnetInner, SubnetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, Context.NONE);
+    public PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters);
+        return this.client.<SubnetInner, SubnetInner>getLroResult(mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, Context.NONE);
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -799,25 +577,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        SubnetInner subnetParameters,
-        Context context) {
+    private PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context);
-        return this
-            .client
-            .<SubnetInner, SubnetInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context);
+        return this.client.<SubnetInner, SubnetInner>getLroResult(mono, this.client.getHttpPipeline(), SubnetInner.class, SubnetInner.class, context);
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -828,15 +596,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+    public SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -848,19 +614,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        SubnetInner subnetParameters,
-        Context context) {
+    public SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -871,8 +631,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubnetInner> createOrUpdateAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+    public Mono<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -880,7 +639,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -892,12 +651,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubnetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        SubnetInner subnetParameters,
-        Context context) {
+    private Mono<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -905,7 +659,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -916,14 +670,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubnetInner createOrUpdate(
-        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+    public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         return createOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters).block();
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -935,707 +688,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubnetInner createOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        SubnetInner subnetParameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context)
-            .block();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> prepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (prepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            prepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .prepareNetworkPolicies(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            prepareNetworkPoliciesRequestParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> prepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (prepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            prepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .prepareNetworkPolicies(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                prepareNetworkPoliciesRequestParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            prepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            prepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> prepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> prepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void prepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        prepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
-            .block();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void prepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        prepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context)
-            .block();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (unprepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter unprepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            unprepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .unprepareNetworkPolicies(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            unprepareNetworkPoliciesRequestParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (unprepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter unprepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            unprepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .unprepareNetworkPolicies(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                unprepareNetworkPoliciesRequestParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            unprepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            unprepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> unprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> unprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        unprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
-            .block();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        unprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context)
-            .block();
+    public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context).block();
     }
 
     /**
      * Gets all subnets in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1646,54 +705,33 @@ public final class SubnetsClientImpl implements SubnetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubnetInner>> listSinglePageAsync(String resourceGroupName, String virtualNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SubnetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SubnetInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all subnets in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1703,54 +741,35 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @return all subnets in a virtual network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubnetInner>> listSinglePageAsync(
-        String resourceGroupName, String virtualNetworkName, Context context) {
+    private Mono<PagedResponse<SubnetInner>> listSinglePageAsync(String resourceGroupName, String virtualNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all subnets in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1767,7 +786,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1785,7 +804,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1800,7 +819,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1816,7 +835,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1829,29 +848,23 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SubnetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SubnetInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1865,23 +878,17 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

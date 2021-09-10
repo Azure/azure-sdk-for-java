@@ -5,20 +5,24 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request routing rule of an application gateway. */
+/**
+ * Request routing rule of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRequestRoutingRuleInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayRequestRoutingRuleInner.class);
 
     /*
-     * Properties of the application gateway request routing rule.
+     * Properties of request routing rule of the application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayRequestRoutingRulePropertiesFormat innerProperties;
@@ -33,18 +37,19 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway request routing rule.
-     *
+     * Get the innerProperties property: Properties of request routing rule of
+     * the application gateway.
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayRequestRoutingRulePropertiesFormat innerProperties() {
@@ -52,8 +57,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the name property: Name of the request routing rule that is unique within an Application Gateway.
-     *
+     * Get the name property: Name of the request routing rule that is unique
+     * within an Application Gateway.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,8 +67,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the name property: Name of the request routing rule that is unique within an Application Gateway.
-     *
+     * Set the name property: Name of the request routing rule that is unique
+     * within an Application Gateway.
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -72,8 +79,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,15 +89,40 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the type property: Type of the resource.
+     * 
+     * @param type the type value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayRequestRoutingRuleInner withId(String id) {
         super.withId(id);
@@ -98,7 +131,7 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
 
     /**
      * Get the ruleType property: Rule type.
-     *
+     * 
      * @return the ruleType value.
      */
     public ApplicationGatewayRequestRoutingRuleType ruleType() {
@@ -107,7 +140,7 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
 
     /**
      * Set the ruleType property: Rule type.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -120,31 +153,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the priority property: Priority of the request routing rule.
-     *
-     * @return the priority value.
-     */
-    public Integer priority() {
-        return this.innerProperties() == null ? null : this.innerProperties().priority();
-    }
-
-    /**
-     * Set the priority property: Priority of the request routing rule.
-     *
-     * @param priority the priority value to set.
-     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
-     */
-    public ApplicationGatewayRequestRoutingRuleInner withPriority(Integer priority) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
-        }
-        this.innerProperties().withPriority(priority);
-        return this;
-    }
-
-    /**
-     * Get the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * Get the backendAddressPool property: Backend address pool resource of
+     * the application gateway.
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -152,8 +163,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * Set the backendAddressPool property: Backend address pool resource of
+     * the application gateway.
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -166,8 +178,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the backendHttpSettings property: Backend http settings resource of the application gateway.
-     *
+     * Get the backendHttpSettings property: Backend http settings resource of
+     * the application gateway.
+     * 
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
@@ -175,8 +188,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the backendHttpSettings property: Backend http settings resource of the application gateway.
-     *
+     * Set the backendHttpSettings property: Backend http settings resource of
+     * the application gateway.
+     * 
      * @param backendHttpSettings the backendHttpSettings value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -189,8 +203,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the httpListener property: Http listener resource of the application gateway.
-     *
+     * Get the httpListener property: Http listener resource of the application
+     * gateway.
+     * 
      * @return the httpListener value.
      */
     public SubResource httpListener() {
@@ -198,8 +213,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the httpListener property: Http listener resource of the application gateway.
-     *
+     * Set the httpListener property: Http listener resource of the application
+     * gateway.
+     * 
      * @param httpListener the httpListener value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -212,8 +228,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the urlPathMap property: URL path map resource of the application gateway.
-     *
+     * Get the urlPathMap property: URL path map resource of the application
+     * gateway.
+     * 
      * @return the urlPathMap value.
      */
     public SubResource urlPathMap() {
@@ -221,8 +238,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the urlPathMap property: URL path map resource of the application gateway.
-     *
+     * Set the urlPathMap property: URL path map resource of the application
+     * gateway.
+     * 
      * @param urlPathMap the urlPathMap value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -235,8 +253,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule of the application gateway.
-     *
+     * Get the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule
+     * of the application gateway.
+     * 
      * @return the rewriteRuleSet value.
      */
     public SubResource rewriteRuleSet() {
@@ -244,8 +263,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule of the application gateway.
-     *
+     * Set the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule
+     * of the application gateway.
+     * 
      * @param rewriteRuleSet the rewriteRuleSet value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -258,8 +278,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the redirectConfiguration property: Redirect configuration resource of the application gateway.
-     *
+     * Get the redirectConfiguration property: Redirect configuration resource
+     * of the application gateway.
+     * 
      * @return the redirectConfiguration value.
      */
     public SubResource redirectConfiguration() {
@@ -267,8 +288,9 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Set the redirectConfiguration property: Redirect configuration resource of the application gateway.
-     *
+     * Set the redirectConfiguration property: Redirect configuration resource
+     * of the application gateway.
+     * 
      * @param redirectConfiguration the redirectConfiguration value to set.
      * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
      */
@@ -281,40 +303,35 @@ public final class ApplicationGatewayRequestRoutingRuleInner extends SubResource
     }
 
     /**
-     * Get the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
-     *
-     * @return the loadDistributionPolicy value.
-     */
-    public SubResource loadDistributionPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicy();
-    }
-
-    /**
-     * Set the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
-     *
-     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
-     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
-     */
-    public ApplicationGatewayRequestRoutingRuleInner withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
-        }
-        this.innerProperties().withLoadDistributionPolicy(loadDistributionPolicy);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the request routing rule resource.
-     *
+     * Get the provisioningState property: Provisioning state of the request
+     * routing rule resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the request
+     * routing rule resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRequestRoutingRulePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

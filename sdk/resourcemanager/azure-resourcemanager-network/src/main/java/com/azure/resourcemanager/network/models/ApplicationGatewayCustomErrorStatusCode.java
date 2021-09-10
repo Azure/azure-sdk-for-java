@@ -8,18 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayCustomErrorStatusCode. */
-public final class ApplicationGatewayCustomErrorStatusCode
-    extends ExpandableStringEnum<ApplicationGatewayCustomErrorStatusCode> {
-    /** Static value HttpStatus403 for ApplicationGatewayCustomErrorStatusCode. */
+/**
+ * Defines values for ApplicationGatewayCustomErrorStatusCode.
+ */
+public final class ApplicationGatewayCustomErrorStatusCode extends ExpandableStringEnum<ApplicationGatewayCustomErrorStatusCode> {
+    /**
+     * Static value HttpStatus403 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS403 = fromString("HttpStatus403");
 
-    /** Static value HttpStatus502 for ApplicationGatewayCustomErrorStatusCode. */
+    /**
+     * Static value HttpStatus502 for ApplicationGatewayCustomErrorStatusCode.
+     */
     public static final ApplicationGatewayCustomErrorStatusCode HTTP_STATUS502 = fromString("HttpStatus502");
 
     /**
      * Creates or finds a ApplicationGatewayCustomErrorStatusCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayCustomErrorStatusCode.
      */
@@ -28,7 +33,9 @@ public final class ApplicationGatewayCustomErrorStatusCode
         return fromString(name, ApplicationGatewayCustomErrorStatusCode.class);
     }
 
-    /** @return known ApplicationGatewayCustomErrorStatusCode values. */
+    /**
+     * @return known ApplicationGatewayCustomErrorStatusCode values.
+     */
     public static Collection<ApplicationGatewayCustomErrorStatusCode> values() {
         return values(ApplicationGatewayCustomErrorStatusCode.class);
     }

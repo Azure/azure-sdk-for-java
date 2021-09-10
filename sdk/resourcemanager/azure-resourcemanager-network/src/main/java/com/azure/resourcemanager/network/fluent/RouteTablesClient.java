@@ -8,6 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -18,16 +20,19 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RouteTablesClient. */
-public interface RouteTablesClient
-    extends InnerSupportsGet<RouteTableInner>, InnerSupportsListing<RouteTableInner>, InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * RouteTablesClient.
+ */
+public interface RouteTablesClient extends InnerSupportsGet<RouteTableInner>, InnerSupportsListing<RouteTableInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,7 +45,7 @@ public interface RouteTablesClient
 
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +58,7 @@ public interface RouteTablesClient
 
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,7 +71,7 @@ public interface RouteTablesClient
 
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -80,7 +85,7 @@ public interface RouteTablesClient
 
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +98,7 @@ public interface RouteTablesClient
 
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +110,7 @@ public interface RouteTablesClient
 
     /**
      * Deletes the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.
@@ -118,7 +123,7 @@ public interface RouteTablesClient
 
     /**
      * Gets the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
@@ -128,12 +133,11 @@ public interface RouteTablesClient
      * @return the specified route table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RouteTableInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String routeTableName, String expand);
+    Mono<Response<RouteTableInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String routeTableName, String expand);
 
     /**
      * Gets the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
@@ -147,7 +151,7 @@ public interface RouteTablesClient
 
     /**
      * Gets the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +164,7 @@ public interface RouteTablesClient
 
     /**
      * Gets the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +177,7 @@ public interface RouteTablesClient
 
     /**
      * Gets the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param expand Expands referenced resources.
@@ -184,12 +188,11 @@ public interface RouteTablesClient
      * @return the specified route table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteTableInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String routeTableName, String expand, Context context);
+    Response<RouteTableInner> getByResourceGroupWithResponse(String resourceGroupName, String routeTableName, String expand, Context context);
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -199,12 +202,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String routeTableName, RouteTableInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters);
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -214,12 +216,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String routeTableName, RouteTableInner parameters);
+    PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters);
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -229,12 +230,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
-        String resourceGroupName, String routeTableName, RouteTableInner parameters);
+    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters);
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -245,12 +245,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(
-        String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context);
+    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context);
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -260,12 +259,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteTableInner> createOrUpdateAsync(
-        String resourceGroupName, String routeTableName, RouteTableInner parameters);
+    Mono<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters);
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -279,7 +277,7 @@ public interface RouteTablesClient
 
     /**
      * Create or updates a route table in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to the create or update route table operation.
@@ -290,12 +288,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteTableInner createOrUpdate(
-        String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context);
+    RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters, Context context);
 
     /**
      * Updates a route table tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -305,12 +302,54 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RouteTableInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String routeTableName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String routeTableName, TagsObject parameters);
 
     /**
      * Updates a route table tags.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTagsAsync(String resourceGroupName, String routeTableName, TagsObject parameters);
+
+    /**
+     * Updates a route table tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTags(String resourceGroupName, String routeTableName, TagsObject parameters);
+
+    /**
+     * Updates a route table tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTags(String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
+
+    /**
+     * Updates a route table tags.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -324,7 +363,7 @@ public interface RouteTablesClient
 
     /**
      * Updates a route table tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -338,7 +377,7 @@ public interface RouteTablesClient
 
     /**
      * Updates a route table tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param parameters Parameters supplied to update route table tags.
@@ -349,12 +388,11 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteTableInner> updateTagsWithResponse(
-        String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
+    RouteTableInner updateTags(String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
 
     /**
      * Gets all route tables in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -366,7 +404,7 @@ public interface RouteTablesClient
 
     /**
      * Gets all route tables in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -378,7 +416,7 @@ public interface RouteTablesClient
 
     /**
      * Gets all route tables in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,7 +429,7 @@ public interface RouteTablesClient
 
     /**
      * Gets all route tables in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables in a subscription.
@@ -401,7 +439,7 @@ public interface RouteTablesClient
 
     /**
      * Gets all route tables in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables in a subscription.
@@ -411,7 +449,7 @@ public interface RouteTablesClient
 
     /**
      * Gets all route tables in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

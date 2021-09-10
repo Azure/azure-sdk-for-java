@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListVirtualNetworks API service call. */
+/**
+ * Response for the ListVirtualNetworks API service call.
+ */
 @Fluent
 public final class VirtualNetworkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkListResult.class);
 
     /*
-     * A list of VirtualNetwork resources in a resource group.
+     * Gets a list of VirtualNetwork resources in a resource group.
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkInner> value;
@@ -29,8 +34,9 @@ public final class VirtualNetworkListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of VirtualNetwork resources in a resource group.
-     *
+     * Get the value property: Gets a list of VirtualNetwork resources in a
+     * resource group.
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkInner> value() {
@@ -38,8 +44,9 @@ public final class VirtualNetworkListResult {
     }
 
     /**
-     * Set the value property: A list of VirtualNetwork resources in a resource group.
-     *
+     * Set the value property: Gets a list of VirtualNetwork resources in a
+     * resource group.
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworkListResult object itself.
      */
@@ -70,7 +77,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

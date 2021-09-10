@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains bgp community information offered in Service Community resources. */
+/**
+ * Contains bgp community information offered in Service Community resources.
+ */
 @Fluent
 public final class BgpCommunity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpCommunity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BgpCommunity.class);
 
     /*
      * The region which the service support. e.g. For O365, region is Global.
@@ -53,8 +58,9 @@ public final class BgpCommunity {
     private String serviceGroup;
 
     /**
-     * Get the serviceSupportedRegion property: The region which the service support. e.g. For O365, region is Global.
-     *
+     * Get the serviceSupportedRegion property: The region which the service
+     * support. e.g. For O365, region is Global.
+     * 
      * @return the serviceSupportedRegion value.
      */
     public String serviceSupportedRegion() {
@@ -62,8 +68,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Set the serviceSupportedRegion property: The region which the service support. e.g. For O365, region is Global.
-     *
+     * Set the serviceSupportedRegion property: The region which the service
+     * support. e.g. For O365, region is Global.
+     * 
      * @param serviceSupportedRegion the serviceSupportedRegion value to set.
      * @return the BgpCommunity object itself.
      */
@@ -73,8 +80,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Get the communityName property: The name of the bgp community. e.g. Skype.
-     *
+     * Get the communityName property: The name of the bgp community. e.g.
+     * Skype.
+     * 
      * @return the communityName value.
      */
     public String communityName() {
@@ -82,8 +90,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Set the communityName property: The name of the bgp community. e.g. Skype.
-     *
+     * Set the communityName property: The name of the bgp community. e.g.
+     * Skype.
+     * 
      * @param communityName the communityName value to set.
      * @return the BgpCommunity object itself.
      */
@@ -93,9 +102,10 @@ public final class BgpCommunity {
     }
 
     /**
-     * Get the communityValue property: The value of the bgp community. For more information:
+     * Get the communityValue property: The value of the bgp community. For
+     * more information:
      * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
-     *
+     * 
      * @return the communityValue value.
      */
     public String communityValue() {
@@ -103,9 +113,10 @@ public final class BgpCommunity {
     }
 
     /**
-     * Set the communityValue property: The value of the bgp community. For more information:
+     * Set the communityValue property: The value of the bgp community. For
+     * more information:
      * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
-     *
+     * 
      * @param communityValue the communityValue value to set.
      * @return the BgpCommunity object itself.
      */
@@ -115,8 +126,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Get the communityPrefixes property: The prefixes that the bgp community contains.
-     *
+     * Get the communityPrefixes property: The prefixes that the bgp community
+     * contains.
+     * 
      * @return the communityPrefixes value.
      */
     public List<String> communityPrefixes() {
@@ -124,8 +136,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Set the communityPrefixes property: The prefixes that the bgp community contains.
-     *
+     * Set the communityPrefixes property: The prefixes that the bgp community
+     * contains.
+     * 
      * @param communityPrefixes the communityPrefixes value to set.
      * @return the BgpCommunity object itself.
      */
@@ -135,8 +148,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Get the isAuthorizedToUse property: Customer is authorized to use bgp community or not.
-     *
+     * Get the isAuthorizedToUse property: Customer is authorized to use bgp
+     * community or not.
+     * 
      * @return the isAuthorizedToUse value.
      */
     public Boolean isAuthorizedToUse() {
@@ -144,8 +158,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Set the isAuthorizedToUse property: Customer is authorized to use bgp community or not.
-     *
+     * Set the isAuthorizedToUse property: Customer is authorized to use bgp
+     * community or not.
+     * 
      * @param isAuthorizedToUse the isAuthorizedToUse value to set.
      * @return the BgpCommunity object itself.
      */
@@ -155,8 +170,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Get the serviceGroup property: The service group of the bgp community contains.
-     *
+     * Get the serviceGroup property: The service group of the bgp community
+     * contains.
+     * 
      * @return the serviceGroup value.
      */
     public String serviceGroup() {
@@ -164,8 +180,9 @@ public final class BgpCommunity {
     }
 
     /**
-     * Set the serviceGroup property: The service group of the bgp community contains.
-     *
+     * Set the serviceGroup property: The service group of the bgp community
+     * contains.
+     * 
      * @param serviceGroup the serviceGroup value to set.
      * @return the BgpCommunity object itself.
      */
@@ -176,7 +193,7 @@ public final class BgpCommunity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

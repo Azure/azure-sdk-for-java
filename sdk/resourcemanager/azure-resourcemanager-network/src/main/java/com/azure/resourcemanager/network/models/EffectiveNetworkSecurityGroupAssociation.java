@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The effective network security group association. */
+/**
+ * The effective network security group association.
+ */
 @Fluent
 public final class EffectiveNetworkSecurityGroupAssociation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroupAssociation.class);
-
-    /*
-     * The ID of the Azure network manager if assigned.
-     */
-    @JsonProperty(value = "networkManager")
-    private SubResource networkManager;
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroupAssociation.class);
 
     /*
      * The ID of the subnet if assigned.
@@ -34,28 +33,8 @@ public final class EffectiveNetworkSecurityGroupAssociation {
     private SubResource networkInterface;
 
     /**
-     * Get the networkManager property: The ID of the Azure network manager if assigned.
-     *
-     * @return the networkManager value.
-     */
-    public SubResource networkManager() {
-        return this.networkManager;
-    }
-
-    /**
-     * Set the networkManager property: The ID of the Azure network manager if assigned.
-     *
-     * @param networkManager the networkManager value to set.
-     * @return the EffectiveNetworkSecurityGroupAssociation object itself.
-     */
-    public EffectiveNetworkSecurityGroupAssociation withNetworkManager(SubResource networkManager) {
-        this.networkManager = networkManager;
-        return this;
-    }
-
-    /**
      * Get the subnet property: The ID of the subnet if assigned.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -64,7 +43,7 @@ public final class EffectiveNetworkSecurityGroupAssociation {
 
     /**
      * Set the subnet property: The ID of the subnet if assigned.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the EffectiveNetworkSecurityGroupAssociation object itself.
      */
@@ -74,8 +53,9 @@ public final class EffectiveNetworkSecurityGroupAssociation {
     }
 
     /**
-     * Get the networkInterface property: The ID of the network interface if assigned.
-     *
+     * Get the networkInterface property: The ID of the network interface if
+     * assigned.
+     * 
      * @return the networkInterface value.
      */
     public SubResource networkInterface() {
@@ -83,8 +63,9 @@ public final class EffectiveNetworkSecurityGroupAssociation {
     }
 
     /**
-     * Set the networkInterface property: The ID of the network interface if assigned.
-     *
+     * Set the networkInterface property: The ID of the network interface if
+     * assigned.
+     * 
      * @param networkInterface the networkInterface value to set.
      * @return the EffectiveNetworkSecurityGroupAssociation object itself.
      */
@@ -95,7 +76,7 @@ public final class EffectiveNetworkSecurityGroupAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

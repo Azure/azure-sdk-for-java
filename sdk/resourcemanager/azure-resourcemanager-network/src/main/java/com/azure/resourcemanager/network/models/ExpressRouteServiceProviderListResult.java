@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteServiceProviderInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListExpressRouteServiceProvider API service call. */
+/**
+ * Response for the ListExpressRouteServiceProvider API service call.
+ */
 @Fluent
 public final class ExpressRouteServiceProviderListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderListResult.class);
 
     /*
      * A list of ExpressRouteResourceProvider resources.
@@ -29,8 +34,9 @@ public final class ExpressRouteServiceProviderListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of ExpressRouteResourceProvider resources.
-     *
+     * Get the value property: A list of ExpressRouteResourceProvider
+     * resources.
+     * 
      * @return the value value.
      */
     public List<ExpressRouteServiceProviderInner> value() {
@@ -38,8 +44,9 @@ public final class ExpressRouteServiceProviderListResult {
     }
 
     /**
-     * Set the value property: A list of ExpressRouteResourceProvider resources.
-     *
+     * Set the value property: A list of ExpressRouteResourceProvider
+     * resources.
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteServiceProviderListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteServiceProviderListResult object itself.
      */
@@ -70,7 +77,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

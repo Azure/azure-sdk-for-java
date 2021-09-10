@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.SecurityGroupNetworkInterface;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The information about security rules applied to the specified VM. */
+/**
+ * The information about security rules applied to the specified VM.
+ */
 @Fluent
 public final class SecurityGroupViewResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupViewResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SecurityGroupViewResultInner.class);
 
     /*
      * List of network interfaces on the specified VM.
@@ -23,8 +28,9 @@ public final class SecurityGroupViewResultInner {
     private List<SecurityGroupNetworkInterface> networkInterfaces;
 
     /**
-     * Get the networkInterfaces property: List of network interfaces on the specified VM.
-     *
+     * Get the networkInterfaces property: List of network interfaces on the
+     * specified VM.
+     * 
      * @return the networkInterfaces value.
      */
     public List<SecurityGroupNetworkInterface> networkInterfaces() {
@@ -32,8 +38,9 @@ public final class SecurityGroupViewResultInner {
     }
 
     /**
-     * Set the networkInterfaces property: List of network interfaces on the specified VM.
-     *
+     * Set the networkInterfaces property: List of network interfaces on the
+     * specified VM.
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the SecurityGroupViewResultInner object itself.
      */
@@ -44,7 +51,7 @@ public final class SecurityGroupViewResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

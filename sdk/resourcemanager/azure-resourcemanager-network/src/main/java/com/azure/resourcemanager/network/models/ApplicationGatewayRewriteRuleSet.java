@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRewriteRuleSetPropertiesFormat;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Rewrite rule set of an application gateway. */
+/**
+ * Rewrite rule set of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRewriteRuleSet extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleSet.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleSet.class);
 
     /*
-     * Properties of the application gateway rewrite rule set.
+     * Properties of rewrite rule set of the application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties;
@@ -37,8 +42,9 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway rewrite rule set.
-     *
+     * Get the innerProperties property: Properties of rewrite rule set of the
+     * application gateway.
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties() {
@@ -46,8 +52,9 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     }
 
     /**
-     * Get the name property: Name of the rewrite rule set that is unique within an Application Gateway.
-     *
+     * Get the name property: Name of the rewrite rule set that is unique
+     * within an Application Gateway.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,8 +62,9 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     }
 
     /**
-     * Set the name property: Name of the rewrite rule set that is unique within an Application Gateway.
-     *
+     * Set the name property: Name of the rewrite rule set that is unique
+     * within an Application Gateway.
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayRewriteRuleSet object itself.
      */
@@ -66,15 +74,18 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayRewriteRuleSet withId(String id) {
         super.withId(id);
@@ -83,7 +94,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Get the rewriteRules property: Rewrite rules in the rewrite rule set.
-     *
+     * 
      * @return the rewriteRules value.
      */
     public List<ApplicationGatewayRewriteRule> rewriteRules() {
@@ -92,7 +103,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Set the rewriteRules property: Rewrite rules in the rewrite rule set.
-     *
+     * 
      * @param rewriteRules the rewriteRules value to set.
      * @return the ApplicationGatewayRewriteRuleSet object itself.
      */
@@ -105,17 +116,19 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the rewrite rule set resource.
-     *
+     * Get the provisioningState property: Provisioning state of the rewrite
+     * rule set resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

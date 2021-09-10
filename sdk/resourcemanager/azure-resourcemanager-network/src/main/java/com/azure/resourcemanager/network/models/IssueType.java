@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IssueType. */
+/**
+ * Defines values for IssueType.
+ */
 public final class IssueType extends ExpandableStringEnum<IssueType> {
-    /** Static value Unknown for IssueType. */
+    /**
+     * Static value Unknown for IssueType.
+     */
     public static final IssueType UNKNOWN = fromString("Unknown");
 
-    /** Static value AgentStopped for IssueType. */
+    /**
+     * Static value AgentStopped for IssueType.
+     */
     public static final IssueType AGENT_STOPPED = fromString("AgentStopped");
 
-    /** Static value GuestFirewall for IssueType. */
+    /**
+     * Static value GuestFirewall for IssueType.
+     */
     public static final IssueType GUEST_FIREWALL = fromString("GuestFirewall");
 
-    /** Static value DnsResolution for IssueType. */
+    /**
+     * Static value DnsResolution for IssueType.
+     */
     public static final IssueType DNS_RESOLUTION = fromString("DnsResolution");
 
-    /** Static value SocketBind for IssueType. */
+    /**
+     * Static value SocketBind for IssueType.
+     */
     public static final IssueType SOCKET_BIND = fromString("SocketBind");
 
-    /** Static value NetworkSecurityRule for IssueType. */
+    /**
+     * Static value NetworkSecurityRule for IssueType.
+     */
     public static final IssueType NETWORK_SECURITY_RULE = fromString("NetworkSecurityRule");
 
-    /** Static value UserDefinedRoute for IssueType. */
+    /**
+     * Static value UserDefinedRoute for IssueType.
+     */
     public static final IssueType USER_DEFINED_ROUTE = fromString("UserDefinedRoute");
 
-    /** Static value PortThrottled for IssueType. */
+    /**
+     * Static value PortThrottled for IssueType.
+     */
     public static final IssueType PORT_THROTTLED = fromString("PortThrottled");
 
-    /** Static value Platform for IssueType. */
+    /**
+     * Static value Platform for IssueType.
+     */
     public static final IssueType PLATFORM = fromString("Platform");
 
     /**
      * Creates or finds a IssueType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IssueType.
      */
@@ -48,7 +68,9 @@ public final class IssueType extends ExpandableStringEnum<IssueType> {
         return fromString(name, IssueType.class);
     }
 
-    /** @return known IssueType values. */
+    /**
+     * @return known IssueType values.
+     */
     public static Collection<IssueType> values() {
         return values(IssueType.class);
     }

@@ -8,21 +8,27 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteCircuitPeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteCircuitPeeringsClient.
+ */
 public interface ExpressRouteCircuitPeeringsClient {
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -32,12 +38,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -47,12 +52,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String circuitName, String peeringName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -66,7 +70,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -77,12 +81,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String circuitName, String peeringName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName, String peeringName, Context context);
 
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -96,7 +99,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -109,7 +112,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Deletes the specified peering from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -123,7 +126,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Gets the specified peering for the express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -133,12 +136,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return the specified peering for the express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName);
+    Mono<Response<ExpressRouteCircuitPeeringInner>> getWithResponseAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Gets the specified peering for the express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -152,7 +154,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Gets the specified peering for the express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -166,7 +168,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Gets the specified peering for the express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -177,12 +179,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return the specified peering for the express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitPeeringInner> getWithResponse(
-        String resourceGroupName, String circuitName, String peeringName, Context context);
+    Response<ExpressRouteCircuitPeeringInner> getWithResponse(String resourceGroupName, String circuitName, String peeringName, Context context);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -193,15 +194,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -212,15 +209,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters);
+    PollerFlux<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -231,15 +224,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters);
+    SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -251,16 +240,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters,
-        Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters, Context context);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -271,15 +255,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters);
+    Mono<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -290,15 +270,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters);
+    ExpressRouteCircuitPeeringInner createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters);
 
     /**
      * Creates or updates a peering in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -310,16 +286,11 @@ public interface ExpressRouteCircuitPeeringsClient {
      * @return peering in an ExpressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        ExpressRouteCircuitPeeringInner peeringParameters,
-        Context context);
+    ExpressRouteCircuitPeeringInner createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters, Context context);
 
     /**
      * Gets all peerings in a specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +303,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Gets all peerings in a specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +316,7 @@ public interface ExpressRouteCircuitPeeringsClient {
 
     /**
      * Gets all peerings in a specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.

@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Redirect configuration of an application gateway. */
+/**
+ * Redirect configuration of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRedirectConfigurationInner extends SubResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayRedirectConfigurationInner.class);
 
     /*
-     * Properties of the application gateway redirect configuration.
+     * Properties of redirect configuration of the application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties;
@@ -34,18 +38,19 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway redirect configuration.
-     *
+     * Get the innerProperties property: Properties of redirect configuration
+     * of the application gateway.
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties() {
@@ -53,8 +58,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the name property: Name of the redirect configuration that is unique within an Application Gateway.
-     *
+     * Get the name property: Name of the redirect configuration that is unique
+     * within an Application Gateway.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,8 +68,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the name property: Name of the redirect configuration that is unique within an Application Gateway.
-     *
+     * Set the name property: Name of the redirect configuration that is unique
+     * within an Application Gateway.
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -73,8 +80,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,15 +90,40 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayRedirectConfigurationInner object itself.
+     */
+    public ApplicationGatewayRedirectConfigurationInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the type property: Type of the resource.
+     * 
+     * @param type the type value to set.
+     * @return the ApplicationGatewayRedirectConfigurationInner object itself.
+     */
+    public ApplicationGatewayRedirectConfigurationInner withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayRedirectConfigurationInner withId(String id) {
         super.withId(id);
@@ -98,8 +131,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the redirectType property: HTTP redirection type.
-     *
+     * Get the redirectType property: Supported http redirection types -
+     * Permanent, Temporary, Found, SeeOther.
+     * 
      * @return the redirectType value.
      */
     public ApplicationGatewayRedirectType redirectType() {
@@ -107,8 +141,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the redirectType property: HTTP redirection type.
-     *
+     * Set the redirectType property: Supported http redirection types -
+     * Permanent, Temporary, Found, SeeOther.
+     * 
      * @param redirectType the redirectType value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -121,8 +156,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the targetListener property: Reference to a listener to redirect the request to.
-     *
+     * Get the targetListener property: Reference to a listener to redirect the
+     * request to.
+     * 
      * @return the targetListener value.
      */
     public SubResource targetListener() {
@@ -130,8 +166,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the targetListener property: Reference to a listener to redirect the request to.
-     *
+     * Set the targetListener property: Reference to a listener to redirect the
+     * request to.
+     * 
      * @param targetListener the targetListener value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -145,7 +182,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
 
     /**
      * Get the targetUrl property: Url to redirect the request to.
-     *
+     * 
      * @return the targetUrl value.
      */
     public String targetUrl() {
@@ -154,7 +191,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
 
     /**
      * Set the targetUrl property: Url to redirect the request to.
-     *
+     * 
      * @param targetUrl the targetUrl value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -168,7 +205,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
 
     /**
      * Get the includePath property: Include path in the redirected url.
-     *
+     * 
      * @return the includePath value.
      */
     public Boolean includePath() {
@@ -177,7 +214,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
 
     /**
      * Set the includePath property: Include path in the redirected url.
-     *
+     * 
      * @param includePath the includePath value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -190,8 +227,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the includeQueryString property: Include query string in the redirected url.
-     *
+     * Get the includeQueryString property: Include query string in the
+     * redirected url.
+     * 
      * @return the includeQueryString value.
      */
     public Boolean includeQueryString() {
@@ -199,8 +237,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the includeQueryString property: Include query string in the redirected url.
-     *
+     * Set the includeQueryString property: Include query string in the
+     * redirected url.
+     * 
      * @param includeQueryString the includeQueryString value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -213,8 +252,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the requestRoutingRules property: Request routing specifying redirect configuration.
-     *
+     * Get the requestRoutingRules property: Request routing specifying
+     * redirect configuration.
+     * 
      * @return the requestRoutingRules value.
      */
     public List<SubResource> requestRoutingRules() {
@@ -222,8 +262,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the requestRoutingRules property: Request routing specifying redirect configuration.
-     *
+     * Set the requestRoutingRules property: Request routing specifying
+     * redirect configuration.
+     * 
      * @param requestRoutingRules the requestRoutingRules value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -236,8 +277,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the urlPathMaps property: Url path maps specifying default redirect configuration.
-     *
+     * Get the urlPathMaps property: Url path maps specifying default redirect
+     * configuration.
+     * 
      * @return the urlPathMaps value.
      */
     public List<SubResource> urlPathMaps() {
@@ -245,8 +287,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the urlPathMaps property: Url path maps specifying default redirect configuration.
-     *
+     * Set the urlPathMaps property: Url path maps specifying default redirect
+     * configuration.
+     * 
      * @param urlPathMaps the urlPathMaps value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -259,8 +302,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the pathRules property: Path rules specifying redirect configuration.
-     *
+     * Get the pathRules property: Path rules specifying redirect
+     * configuration.
+     * 
      * @return the pathRules value.
      */
     public List<SubResource> pathRules() {
@@ -268,8 +312,9 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the pathRules property: Path rules specifying redirect configuration.
-     *
+     * Set the pathRules property: Path rules specifying redirect
+     * configuration.
+     * 
      * @param pathRules the pathRules value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
@@ -283,7 +328,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

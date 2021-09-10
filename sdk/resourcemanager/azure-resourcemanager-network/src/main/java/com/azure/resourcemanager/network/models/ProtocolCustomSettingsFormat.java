@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DDoS custom policy properties. */
+/**
+ * DDoS custom policy properties.
+ */
 @Fluent
 public final class ProtocolCustomSettingsFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtocolCustomSettingsFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ProtocolCustomSettingsFormat.class);
 
     /*
      * The protocol for which the DDoS protection policy is being customized.
@@ -43,8 +48,9 @@ public final class ProtocolCustomSettingsFormat {
     private DdosCustomPolicyTriggerSensitivityOverride triggerSensitivityOverride;
 
     /**
-     * Get the protocol property: The protocol for which the DDoS protection policy is being customized.
-     *
+     * Get the protocol property: The protocol for which the DDoS protection
+     * policy is being customized.
+     * 
      * @return the protocol value.
      */
     public DdosCustomPolicyProtocol protocol() {
@@ -52,8 +58,9 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Set the protocol property: The protocol for which the DDoS protection policy is being customized.
-     *
+     * Set the protocol property: The protocol for which the DDoS protection
+     * policy is being customized.
+     * 
      * @param protocol the protocol value to set.
      * @return the ProtocolCustomSettingsFormat object itself.
      */
@@ -63,8 +70,9 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Get the triggerRateOverride property: The customized DDoS protection trigger rate.
-     *
+     * Get the triggerRateOverride property: The customized DDoS protection
+     * trigger rate.
+     * 
      * @return the triggerRateOverride value.
      */
     public String triggerRateOverride() {
@@ -72,8 +80,9 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Set the triggerRateOverride property: The customized DDoS protection trigger rate.
-     *
+     * Set the triggerRateOverride property: The customized DDoS protection
+     * trigger rate.
+     * 
      * @param triggerRateOverride the triggerRateOverride value to set.
      * @return the ProtocolCustomSettingsFormat object itself.
      */
@@ -83,8 +92,9 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Get the sourceRateOverride property: The customized DDoS protection source rate.
-     *
+     * Get the sourceRateOverride property: The customized DDoS protection
+     * source rate.
+     * 
      * @return the sourceRateOverride value.
      */
     public String sourceRateOverride() {
@@ -92,8 +102,9 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Set the sourceRateOverride property: The customized DDoS protection source rate.
-     *
+     * Set the sourceRateOverride property: The customized DDoS protection
+     * source rate.
+     * 
      * @param sourceRateOverride the sourceRateOverride value to set.
      * @return the ProtocolCustomSettingsFormat object itself.
      */
@@ -103,11 +114,13 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Get the triggerSensitivityOverride property: The customized DDoS protection trigger rate sensitivity degrees.
-     * High: Trigger rate set with most sensitivity w.r.t. normal traffic. Default: Trigger rate set with moderate
-     * sensitivity w.r.t. normal traffic. Low: Trigger rate set with less sensitivity w.r.t. normal traffic. Relaxed:
-     * Trigger rate set with least sensitivity w.r.t. normal traffic.
-     *
+     * Get the triggerSensitivityOverride property: The customized DDoS
+     * protection trigger rate sensitivity degrees. High: Trigger rate set with
+     * most sensitivity w.r.t. normal traffic. Default: Trigger rate set with
+     * moderate sensitivity w.r.t. normal traffic. Low: Trigger rate set with
+     * less sensitivity w.r.t. normal traffic. Relaxed: Trigger rate set with
+     * least sensitivity w.r.t. normal traffic.
+     * 
      * @return the triggerSensitivityOverride value.
      */
     public DdosCustomPolicyTriggerSensitivityOverride triggerSensitivityOverride() {
@@ -115,23 +128,25 @@ public final class ProtocolCustomSettingsFormat {
     }
 
     /**
-     * Set the triggerSensitivityOverride property: The customized DDoS protection trigger rate sensitivity degrees.
-     * High: Trigger rate set with most sensitivity w.r.t. normal traffic. Default: Trigger rate set with moderate
-     * sensitivity w.r.t. normal traffic. Low: Trigger rate set with less sensitivity w.r.t. normal traffic. Relaxed:
-     * Trigger rate set with least sensitivity w.r.t. normal traffic.
-     *
-     * @param triggerSensitivityOverride the triggerSensitivityOverride value to set.
+     * Set the triggerSensitivityOverride property: The customized DDoS
+     * protection trigger rate sensitivity degrees. High: Trigger rate set with
+     * most sensitivity w.r.t. normal traffic. Default: Trigger rate set with
+     * moderate sensitivity w.r.t. normal traffic. Low: Trigger rate set with
+     * less sensitivity w.r.t. normal traffic. Relaxed: Trigger rate set with
+     * least sensitivity w.r.t. normal traffic.
+     * 
+     * @param triggerSensitivityOverride the triggerSensitivityOverride value
+     * to set.
      * @return the ProtocolCustomSettingsFormat object itself.
      */
-    public ProtocolCustomSettingsFormat withTriggerSensitivityOverride(
-        DdosCustomPolicyTriggerSensitivityOverride triggerSensitivityOverride) {
+    public ProtocolCustomSettingsFormat withTriggerSensitivityOverride(DdosCustomPolicyTriggerSensitivityOverride triggerSensitivityOverride) {
         this.triggerSensitivityOverride = triggerSensitivityOverride;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

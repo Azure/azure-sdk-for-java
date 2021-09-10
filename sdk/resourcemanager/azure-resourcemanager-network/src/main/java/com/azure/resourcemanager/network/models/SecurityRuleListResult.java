@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response for ListSecurityRule API service call. Retrieves all security rules that belongs to a network security
- * group.
+ * Response for ListSecurityRule API service call. Retrieves all security rules
+ * that belongs to a network security group.
  */
 @Fluent
 public final class SecurityRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SecurityRuleListResult.class);
 
     /*
      * The security rules in a network security group.
@@ -33,7 +36,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Get the value property: The security rules in a network security group.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityRuleInner> value() {
@@ -42,7 +45,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Set the value property: The security rules in a network security group.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecurityRuleListResult object itself.
      */
@@ -53,7 +56,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +65,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SecurityRuleListResult object itself.
      */
@@ -73,7 +76,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

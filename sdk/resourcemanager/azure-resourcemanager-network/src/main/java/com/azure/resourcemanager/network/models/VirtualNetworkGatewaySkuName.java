@@ -8,62 +8,78 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkGatewaySkuName. */
+/**
+ * Defines values for VirtualNetworkGatewaySkuName.
+ */
 public final class VirtualNetworkGatewaySkuName extends ExpandableStringEnum<VirtualNetworkGatewaySkuName> {
-    /** Static value Basic for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value Basic for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName BASIC = fromString("Basic");
 
-    /** Static value HighPerformance for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value HighPerformance for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName HIGH_PERFORMANCE = fromString("HighPerformance");
 
-    /** Static value Standard for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value Standard for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName STANDARD = fromString("Standard");
 
-    /** Static value UltraPerformance for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value UltraPerformance for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName ULTRA_PERFORMANCE = fromString("UltraPerformance");
 
-    /** Static value VpnGw1 for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value VpnGw1 for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName VPN_GW1 = fromString("VpnGw1");
 
-    /** Static value VpnGw2 for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value VpnGw2 for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName VPN_GW2 = fromString("VpnGw2");
 
-    /** Static value VpnGw3 for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value VpnGw3 for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName VPN_GW3 = fromString("VpnGw3");
 
-    /** Static value VpnGw4 for VirtualNetworkGatewaySkuName. */
-    public static final VirtualNetworkGatewaySkuName VPN_GW4 = fromString("VpnGw4");
-
-    /** Static value VpnGw5 for VirtualNetworkGatewaySkuName. */
-    public static final VirtualNetworkGatewaySkuName VPN_GW5 = fromString("VpnGw5");
-
-    /** Static value VpnGw1AZ for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value VpnGw1AZ for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName VPN_GW1AZ = fromString("VpnGw1AZ");
 
-    /** Static value VpnGw2AZ for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value VpnGw2AZ for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName VPN_GW2AZ = fromString("VpnGw2AZ");
 
-    /** Static value VpnGw3AZ for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value VpnGw3AZ for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName VPN_GW3AZ = fromString("VpnGw3AZ");
 
-    /** Static value VpnGw4AZ for VirtualNetworkGatewaySkuName. */
-    public static final VirtualNetworkGatewaySkuName VPN_GW4AZ = fromString("VpnGw4AZ");
-
-    /** Static value VpnGw5AZ for VirtualNetworkGatewaySkuName. */
-    public static final VirtualNetworkGatewaySkuName VPN_GW5AZ = fromString("VpnGw5AZ");
-
-    /** Static value ErGw1AZ for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value ErGw1AZ for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName ER_GW1AZ = fromString("ErGw1AZ");
 
-    /** Static value ErGw2AZ for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value ErGw2AZ for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName ER_GW2AZ = fromString("ErGw2AZ");
 
-    /** Static value ErGw3AZ for VirtualNetworkGatewaySkuName. */
+    /**
+     * Static value ErGw3AZ for VirtualNetworkGatewaySkuName.
+     */
     public static final VirtualNetworkGatewaySkuName ER_GW3AZ = fromString("ErGw3AZ");
 
     /**
      * Creates or finds a VirtualNetworkGatewaySkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkGatewaySkuName.
      */
@@ -72,7 +88,9 @@ public final class VirtualNetworkGatewaySkuName extends ExpandableStringEnum<Vir
         return fromString(name, VirtualNetworkGatewaySkuName.class);
     }
 
-    /** @return known VirtualNetworkGatewaySkuName values. */
+    /**
+     * @return known VirtualNetworkGatewaySkuName values.
+     */
     public static Collection<VirtualNetworkGatewaySkuName> values() {
         return values(VirtualNetworkGatewaySkuName.class);
     }

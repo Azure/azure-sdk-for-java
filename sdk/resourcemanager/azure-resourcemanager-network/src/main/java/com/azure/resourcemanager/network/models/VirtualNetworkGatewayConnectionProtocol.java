@@ -8,18 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkGatewayConnectionProtocol. */
-public final class VirtualNetworkGatewayConnectionProtocol
-    extends ExpandableStringEnum<VirtualNetworkGatewayConnectionProtocol> {
-    /** Static value IKEv2 for VirtualNetworkGatewayConnectionProtocol. */
+/**
+ * Defines values for VirtualNetworkGatewayConnectionProtocol.
+ */
+public final class VirtualNetworkGatewayConnectionProtocol extends ExpandableStringEnum<VirtualNetworkGatewayConnectionProtocol> {
+    /**
+     * Static value IKEv2 for VirtualNetworkGatewayConnectionProtocol.
+     */
     public static final VirtualNetworkGatewayConnectionProtocol IKEV2 = fromString("IKEv2");
 
-    /** Static value IKEv1 for VirtualNetworkGatewayConnectionProtocol. */
+    /**
+     * Static value IKEv1 for VirtualNetworkGatewayConnectionProtocol.
+     */
     public static final VirtualNetworkGatewayConnectionProtocol IKEV1 = fromString("IKEv1");
 
     /**
      * Creates or finds a VirtualNetworkGatewayConnectionProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkGatewayConnectionProtocol.
      */
@@ -28,7 +33,9 @@ public final class VirtualNetworkGatewayConnectionProtocol
         return fromString(name, VirtualNetworkGatewayConnectionProtocol.class);
     }
 
-    /** @return known VirtualNetworkGatewayConnectionProtocol values. */
+    /**
+     * @return known VirtualNetworkGatewayConnectionProtocol values.
+     */
     public static Collection<VirtualNetworkGatewayConnectionProtocol> values() {
         return values(VirtualNetworkGatewayConnectionProtocol.class);
     }

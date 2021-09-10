@@ -8,14 +8,20 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkInterfaceLoadBalancersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * NetworkInterfaceLoadBalancersClient.
+ */
 public interface NetworkInterfaceLoadBalancersClient {
     /**
      * List all load balancers in a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +34,7 @@ public interface NetworkInterfaceLoadBalancersClient {
 
     /**
      * List all load balancers in a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +47,7 @@ public interface NetworkInterfaceLoadBalancersClient {
 
     /**
      * List all load balancers in a network interface.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.

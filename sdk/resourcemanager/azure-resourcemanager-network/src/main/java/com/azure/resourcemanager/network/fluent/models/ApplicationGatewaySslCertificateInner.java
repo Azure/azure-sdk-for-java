@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSL certificates of an application gateway. */
+/**
+ * SSL certificates of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewaySslCertificateInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslCertificateInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslCertificateInner.class);
 
     /*
-     * Properties of the application gateway SSL certificate.
+     * Properties of SSL certificates of an application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewaySslCertificatePropertiesFormat innerProperties;
@@ -32,18 +36,19 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway SSL certificate.
-     *
+     * Get the innerProperties property: Properties of SSL certificates of an
+     * application gateway.
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewaySslCertificatePropertiesFormat innerProperties() {
@@ -51,8 +56,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the name property: Name of the SSL certificate that is unique within an Application Gateway.
-     *
+     * Get the name property: Name of the SSL certificate that is unique within
+     * an Application Gateway.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,8 +66,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Set the name property: Name of the SSL certificate that is unique within an Application Gateway.
-     *
+     * Set the name property: Name of the SSL certificate that is unique within
+     * an Application Gateway.
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
@@ -71,8 +78,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,15 +88,40 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewaySslCertificateInner object itself.
+     */
+    public ApplicationGatewaySslCertificateInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the type property: Type of the resource.
+     * 
+     * @param type the type value to set.
+     * @return the ApplicationGatewaySslCertificateInner object itself.
+     */
+    public ApplicationGatewaySslCertificateInner withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewaySslCertificateInner withId(String id) {
         super.withId(id);
@@ -96,8 +129,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
-     *
+     * Get the data property: Base-64 encoded pfx certificate. Only applicable
+     * in PUT Request.
+     * 
      * @return the data value.
      */
     public String data() {
@@ -105,8 +139,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Set the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
-     *
+     * Set the data property: Base-64 encoded pfx certificate. Only applicable
+     * in PUT Request.
+     * 
      * @param data the data value to set.
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
@@ -119,8 +154,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the password property: Password for the pfx file specified in data. Only applicable in PUT request.
-     *
+     * Get the password property: Password for the pfx file specified in data.
+     * Only applicable in PUT request.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -128,8 +164,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Set the password property: Password for the pfx file specified in data. Only applicable in PUT request.
-     *
+     * Set the password property: Password for the pfx file specified in data.
+     * Only applicable in PUT request.
+     * 
      * @param password the password value to set.
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
@@ -142,9 +179,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the publicCertData property: Base-64 encoded Public cert data corresponding to pfx specified in data. Only
-     * applicable in GET request.
-     *
+     * Get the publicCertData property: Base-64 encoded Public cert data
+     * corresponding to pfx specified in data. Only applicable in GET request.
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -152,9 +189,24 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
-     *
+     * Set the publicCertData property: Base-64 encoded Public cert data
+     * corresponding to pfx specified in data. Only applicable in GET request.
+     * 
+     * @param publicCertData the publicCertData value to set.
+     * @return the ApplicationGatewaySslCertificateInner object itself.
+     */
+    public ApplicationGatewaySslCertificateInner withPublicCertData(String publicCertData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
+        }
+        this.innerProperties().withPublicCertData(publicCertData);
+        return this;
+    }
+
+    /**
+     * Get the keyVaultSecretId property: Secret Id of (base-64 encoded
+     * unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
+     * 
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -162,9 +214,9 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Set the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
-     *
+     * Set the keyVaultSecretId property: Secret Id of (base-64 encoded
+     * unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
+     * 
      * @param keyVaultSecretId the keyVaultSecretId value to set.
      * @return the ApplicationGatewaySslCertificateInner object itself.
      */
@@ -177,17 +229,35 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the SSL certificate resource.
-     *
+     * Get the provisioningState property: Provisioning state of the SSL
+     * certificate resource Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the SSL
+     * certificate resource Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewaySslCertificateInner object itself.
+     */
+    public ApplicationGatewaySslCertificateInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslCertificatePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

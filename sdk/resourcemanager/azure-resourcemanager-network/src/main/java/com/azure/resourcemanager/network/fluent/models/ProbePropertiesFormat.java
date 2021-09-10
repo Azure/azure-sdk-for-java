@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Load balancer probe resource. */
+/**
+ * Load balancer probe resource.
+ */
 @Fluent
 public final class ProbePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProbePropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ProbePropertiesFormat.class);
 
     /*
      * The load balancer rules that use this probe.
@@ -25,10 +29,10 @@ public final class ProbePropertiesFormat {
     private List<SubResource> loadBalancingRules;
 
     /*
-     * The protocol of the end point. If 'Tcp' is specified, a received ACK is
-     * required for the probe to be successful. If 'Http' or 'Https' is
-     * specified, a 200 OK response from the specifies URI is required for the
-     * probe to be successful.
+     * The protocol of the end point. Possible values are: 'Http', 'Tcp', or
+     * 'Https'. If 'Tcp' is specified, a received ACK is required for the probe
+     * to be successful. If 'Http' or 'Https' is specified, a 200 OK response
+     * from the specifies URI is required for the probe to be successful.
      */
     @JsonProperty(value = "protocol", required = true)
     private ProbeProtocol protocol;
@@ -68,14 +72,16 @@ public final class ProbePropertiesFormat {
     private String requestPath;
 
     /*
-     * The provisioning state of the probe resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the loadBalancingRules property: The load balancer rules that use this probe.
-     *
+     * Get the loadBalancingRules property: The load balancer rules that use
+     * this probe.
+     * 
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -83,10 +89,12 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
-     * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
-     * required for the probe to be successful.
-     *
+     * Get the protocol property: The protocol of the end point. Possible
+     * values are: 'Http', 'Tcp', or 'Https'. If 'Tcp' is specified, a received
+     * ACK is required for the probe to be successful. If 'Http' or 'Https' is
+     * specified, a 200 OK response from the specifies URI is required for the
+     * probe to be successful.
+     * 
      * @return the protocol value.
      */
     public ProbeProtocol protocol() {
@@ -94,10 +102,12 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Set the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
-     * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
-     * required for the probe to be successful.
-     *
+     * Set the protocol property: The protocol of the end point. Possible
+     * values are: 'Http', 'Tcp', or 'Https'. If 'Tcp' is specified, a received
+     * ACK is required for the probe to be successful. If 'Http' or 'Https' is
+     * specified, a 200 OK response from the specifies URI is required for the
+     * probe to be successful.
+     * 
      * @param protocol the protocol value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -107,8 +117,9 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
-     *
+     * Get the port property: The port for communicating the probe. Possible
+     * values range from 1 to 65535, inclusive.
+     * 
      * @return the port value.
      */
     public int port() {
@@ -116,8 +127,9 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Set the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
-     *
+     * Set the port property: The port for communicating the probe. Possible
+     * values range from 1 to 65535, inclusive.
+     * 
      * @param port the port value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -127,10 +139,12 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
-     * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
-     * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
-     *
+     * Get the intervalInSeconds property: The interval, in seconds, for how
+     * frequently to probe the endpoint for health status. Typically, the
+     * interval is slightly less than half the allocated timeout period (in
+     * seconds) which allows two full probes before taking the instance out of
+     * rotation. The default value is 15, the minimum value is 5.
+     * 
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -138,10 +152,12 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Set the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
-     * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
-     * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
-     *
+     * Set the intervalInSeconds property: The interval, in seconds, for how
+     * frequently to probe the endpoint for health status. Typically, the
+     * interval is slightly less than half the allocated timeout period (in
+     * seconds) which allows two full probes before taking the instance out of
+     * rotation. The default value is 15, the minimum value is 5.
+     * 
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -151,10 +167,11 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the numberOfProbes property: The number of probes where if no response, will result in stopping further
-     * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
-     * slower than the typical times used in Azure.
-     *
+     * Get the numberOfProbes property: The number of probes where if no
+     * response, will result in stopping further traffic from being delivered
+     * to the endpoint. This values allows endpoints to be taken out of
+     * rotation faster or slower than the typical times used in Azure.
+     * 
      * @return the numberOfProbes value.
      */
     public Integer numberOfProbes() {
@@ -162,10 +179,11 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Set the numberOfProbes property: The number of probes where if no response, will result in stopping further
-     * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
-     * slower than the typical times used in Azure.
-     *
+     * Set the numberOfProbes property: The number of probes where if no
+     * response, will result in stopping further traffic from being delivered
+     * to the endpoint. This values allows endpoints to be taken out of
+     * rotation faster or slower than the typical times used in Azure.
+     * 
      * @param numberOfProbes the numberOfProbes value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -175,9 +193,10 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the requestPath property: The URI used for requesting health status from the VM. Path is required if a
-     * protocol is set to http. Otherwise, it is not allowed. There is no default value.
-     *
+     * Get the requestPath property: The URI used for requesting health status
+     * from the VM. Path is required if a protocol is set to http. Otherwise,
+     * it is not allowed. There is no default value.
+     * 
      * @return the requestPath value.
      */
     public String requestPath() {
@@ -185,9 +204,10 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Set the requestPath property: The URI used for requesting health status from the VM. Path is required if a
-     * protocol is set to http. Otherwise, it is not allowed. There is no default value.
-     *
+     * Set the requestPath property: The URI used for requesting health status
+     * from the VM. Path is required if a protocol is set to http. Otherwise,
+     * it is not allowed. There is no default value.
+     * 
      * @param requestPath the requestPath value to set.
      * @return the ProbePropertiesFormat object itself.
      */
@@ -197,24 +217,37 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the probe resource.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the
+     * public IP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state of the
+     * public IP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ProbePropertiesFormat object itself.
+     */
+    public ProbePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property protocol in model ProbePropertiesFormat"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property protocol in model ProbePropertiesFormat"));
         }
     }
 }

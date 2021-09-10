@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkConfigurationDiagnosticResult;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Results of network configuration diagnostic on the target resource. */
+/**
+ * Results of network configuration diagnostic on the target resource.
+ */
 @Immutable
 public final class NetworkConfigurationDiagnosticResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResponseInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResponseInner.class);
 
     /*
      * List of network configuration diagnostic results.
@@ -23,8 +28,9 @@ public final class NetworkConfigurationDiagnosticResponseInner {
     private List<NetworkConfigurationDiagnosticResult> results;
 
     /**
-     * Get the results property: List of network configuration diagnostic results.
-     *
+     * Get the results property: List of network configuration diagnostic
+     * results.
+     * 
      * @return the results value.
      */
     public List<NetworkConfigurationDiagnosticResult> results() {
@@ -33,7 +39,7 @@ public final class NetworkConfigurationDiagnosticResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

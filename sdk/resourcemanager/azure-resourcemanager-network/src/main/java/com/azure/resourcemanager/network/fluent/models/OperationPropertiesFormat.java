@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.OperationPropertiesFormatServiceSpecification;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of operation properties format. */
+/**
+ * Description of operation properties format.
+ */
 @Fluent
 public final class OperationPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationPropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationPropertiesFormat.class);
 
     /*
      * Specification of the service.
@@ -23,7 +28,7 @@ public final class OperationPropertiesFormat {
 
     /**
      * Get the serviceSpecification property: Specification of the service.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationPropertiesFormatServiceSpecification serviceSpecification() {
@@ -32,19 +37,18 @@ public final class OperationPropertiesFormat {
 
     /**
      * Set the serviceSpecification property: Specification of the service.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationPropertiesFormat object itself.
      */
-    public OperationPropertiesFormat withServiceSpecification(
-        OperationPropertiesFormatServiceSpecification serviceSpecification) {
+    public OperationPropertiesFormat withServiceSpecification(OperationPropertiesFormatServiceSpecification serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

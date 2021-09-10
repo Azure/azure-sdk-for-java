@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the representation of topology. */
+/**
+ * Parameters that define the representation of topology.
+ */
 @Fluent
 public final class TopologyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TopologyParameters.class);
 
     /*
      * The name of the target resource group to perform topology on.
@@ -22,20 +27,21 @@ public final class TopologyParameters {
     private String targetResourceGroupName;
 
     /*
-     * The reference to the Virtual Network resource.
+     * The reference of the Virtual Network resource.
      */
     @JsonProperty(value = "targetVirtualNetwork")
     private SubResource targetVirtualNetwork;
 
     /*
-     * The reference to the Subnet resource.
+     * The reference of the Subnet resource.
      */
     @JsonProperty(value = "targetSubnet")
     private SubResource targetSubnet;
 
     /**
-     * Get the targetResourceGroupName property: The name of the target resource group to perform topology on.
-     *
+     * Get the targetResourceGroupName property: The name of the target
+     * resource group to perform topology on.
+     * 
      * @return the targetResourceGroupName value.
      */
     public String targetResourceGroupName() {
@@ -43,8 +49,9 @@ public final class TopologyParameters {
     }
 
     /**
-     * Set the targetResourceGroupName property: The name of the target resource group to perform topology on.
-     *
+     * Set the targetResourceGroupName property: The name of the target
+     * resource group to perform topology on.
+     * 
      * @param targetResourceGroupName the targetResourceGroupName value to set.
      * @return the TopologyParameters object itself.
      */
@@ -54,8 +61,9 @@ public final class TopologyParameters {
     }
 
     /**
-     * Get the targetVirtualNetwork property: The reference to the Virtual Network resource.
-     *
+     * Get the targetVirtualNetwork property: The reference of the Virtual
+     * Network resource.
+     * 
      * @return the targetVirtualNetwork value.
      */
     public SubResource targetVirtualNetwork() {
@@ -63,8 +71,9 @@ public final class TopologyParameters {
     }
 
     /**
-     * Set the targetVirtualNetwork property: The reference to the Virtual Network resource.
-     *
+     * Set the targetVirtualNetwork property: The reference of the Virtual
+     * Network resource.
+     * 
      * @param targetVirtualNetwork the targetVirtualNetwork value to set.
      * @return the TopologyParameters object itself.
      */
@@ -74,8 +83,8 @@ public final class TopologyParameters {
     }
 
     /**
-     * Get the targetSubnet property: The reference to the Subnet resource.
-     *
+     * Get the targetSubnet property: The reference of the Subnet resource.
+     * 
      * @return the targetSubnet value.
      */
     public SubResource targetSubnet() {
@@ -83,8 +92,8 @@ public final class TopologyParameters {
     }
 
     /**
-     * Set the targetSubnet property: The reference to the Subnet resource.
-     *
+     * Set the targetSubnet property: The reference of the Subnet resource.
+     * 
      * @param targetSubnet the targetSubnet value to set.
      * @return the TopologyParameters object itself.
      */
@@ -95,7 +104,7 @@ public final class TopologyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

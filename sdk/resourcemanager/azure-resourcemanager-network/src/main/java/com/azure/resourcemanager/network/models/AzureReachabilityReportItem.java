@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure reachability report details for a given provider location. */
+/**
+ * Azure reachability report details for a given provider location.
+ */
 @Fluent
 public final class AzureReachabilityReportItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportItem.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureReachabilityReportItem.class);
 
     /*
      * The Internet service provider.
@@ -35,7 +40,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Get the provider property: The Internet service provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -44,7 +49,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the provider property: The Internet service provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -55,7 +60,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Get the azureLocation property: The Azure region.
-     *
+     * 
      * @return the azureLocation value.
      */
     public String azureLocation() {
@@ -64,7 +69,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the azureLocation property: The Azure region.
-     *
+     * 
      * @param azureLocation the azureLocation value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -74,8 +79,9 @@ public final class AzureReachabilityReportItem {
     }
 
     /**
-     * Get the latencies property: List of latency details for each of the time series.
-     *
+     * Get the latencies property: List of latency details for each of the time
+     * series.
+     * 
      * @return the latencies value.
      */
     public List<AzureReachabilityReportLatencyInfo> latencies() {
@@ -83,8 +89,9 @@ public final class AzureReachabilityReportItem {
     }
 
     /**
-     * Set the latencies property: List of latency details for each of the time series.
-     *
+     * Set the latencies property: List of latency details for each of the time
+     * series.
+     * 
      * @param latencies the latencies value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -95,7 +102,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

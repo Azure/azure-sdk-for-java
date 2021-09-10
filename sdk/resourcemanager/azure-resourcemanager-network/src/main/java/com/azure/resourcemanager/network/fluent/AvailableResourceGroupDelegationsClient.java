@@ -8,16 +8,20 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.AvailableDelegationInner;
+import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in AvailableResourceGroupDelegationsClient.
+ * An instance of this class provides access to all the operations defined in
+ * AvailableResourceGroupDelegationsClient.
  */
 public interface AvailableResourceGroupDelegationsClient {
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +34,7 @@ public interface AvailableResourceGroupDelegationsClient {
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +47,7 @@ public interface AvailableResourceGroupDelegationsClient {
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.

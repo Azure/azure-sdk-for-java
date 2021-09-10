@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters to compare with network configuration. */
+/**
+ * Parameters to compare with network configuration.
+ */
 @Fluent
 public final class NetworkConfigurationDiagnosticProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticProfile.class);
 
     /*
-     * The direction of the traffic.
+     * The direction of the traffic. Accepted values are 'Inbound' and
+     * 'Outbound'.
      */
     @JsonProperty(value = "direction", required = true)
     private Direction direction;
@@ -40,15 +46,16 @@ public final class NetworkConfigurationDiagnosticProfile {
     private String destination;
 
     /*
-     * Traffic destination port. Accepted values are '*' and a single port in
-     * the range (0 - 65535).
+     * Traffic destination port. Accepted values are '*', port (for example,
+     * 3389) and port range (for example, 80-100).
      */
     @JsonProperty(value = "destinationPort", required = true)
     private String destinationPort;
 
     /**
-     * Get the direction property: The direction of the traffic.
-     *
+     * Get the direction property: The direction of the traffic. Accepted
+     * values are 'Inbound' and 'Outbound'.
+     * 
      * @return the direction value.
      */
     public Direction direction() {
@@ -56,8 +63,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the direction property: The direction of the traffic.
-     *
+     * Set the direction property: The direction of the traffic. Accepted
+     * values are 'Inbound' and 'Outbound'.
+     * 
      * @param direction the direction value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.
      */
@@ -67,8 +75,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Get the protocol property: Protocol to be verified on. Accepted values are '*', TCP, UDP.
-     *
+     * Get the protocol property: Protocol to be verified on. Accepted values
+     * are '*', TCP, UDP.
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -76,8 +85,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the protocol property: Protocol to be verified on. Accepted values are '*', TCP, UDP.
-     *
+     * Set the protocol property: Protocol to be verified on. Accepted values
+     * are '*', TCP, UDP.
+     * 
      * @param protocol the protocol value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.
      */
@@ -87,8 +97,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Get the source property: Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
-     *
+     * Get the source property: Traffic source. Accepted values are '*', IP
+     * Address/CIDR, Service Tag.
+     * 
      * @return the source value.
      */
     public String source() {
@@ -96,8 +107,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the source property: Traffic source. Accepted values are '*', IP Address/CIDR, Service Tag.
-     *
+     * Set the source property: Traffic source. Accepted values are '*', IP
+     * Address/CIDR, Service Tag.
+     * 
      * @param source the source value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.
      */
@@ -107,8 +119,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Get the destination property: Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
-     *
+     * Get the destination property: Traffic destination. Accepted values are:
+     * '*', IP Address/CIDR, Service Tag.
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -116,8 +129,9 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the destination property: Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
-     *
+     * Set the destination property: Traffic destination. Accepted values are:
+     * '*', IP Address/CIDR, Service Tag.
+     * 
      * @param destination the destination value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.
      */
@@ -127,9 +141,10 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Get the destinationPort property: Traffic destination port. Accepted values are '*' and a single port in the
-     * range (0 - 65535).
-     *
+     * Get the destinationPort property: Traffic destination port. Accepted
+     * values are '*', port (for example, 3389) and port range (for example,
+     * 80-100).
+     * 
      * @return the destinationPort value.
      */
     public String destinationPort() {
@@ -137,9 +152,10 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the destinationPort property: Traffic destination port. Accepted values are '*' and a single port in the
-     * range (0 - 65535).
-     *
+     * Set the destinationPort property: Traffic destination port. Accepted
+     * values are '*', port (for example, 3389) and port range (for example,
+     * 80-100).
+     * 
      * @param destinationPort the destinationPort value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.
      */
@@ -150,39 +166,24 @@ public final class NetworkConfigurationDiagnosticProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (direction() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property direction in model NetworkConfigurationDiagnosticProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property direction in model NetworkConfigurationDiagnosticProfile"));
         }
         if (protocol() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model NetworkConfigurationDiagnosticProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property protocol in model NetworkConfigurationDiagnosticProfile"));
         }
         if (source() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property source in model NetworkConfigurationDiagnosticProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property source in model NetworkConfigurationDiagnosticProfile"));
         }
         if (destination() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model NetworkConfigurationDiagnosticProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destination in model NetworkConfigurationDiagnosticProfile"));
         }
         if (destinationPort() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationPort in model NetworkConfigurationDiagnosticProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destinationPort in model NetworkConfigurationDiagnosticProfile"));
         }
     }
 }

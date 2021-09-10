@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP configuration for virtual network gateway. */
+/**
+ * IP configuration for virtual network gateway.
+ */
 @Fluent
 public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayIpConfigurationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayIpConfigurationInner.class);
 
     /*
      * Properties of the virtual network gateway ip configuration.
@@ -33,12 +37,13 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the virtual network gateway ip configuration.
-     *
+     * Get the innerProperties property: Properties of the virtual network
+     * gateway ip configuration.
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkGatewayIpConfigurationPropertiesFormat innerProperties() {
@@ -46,9 +51,9 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     *
+     * Get the name property: The name of the resource that is unique within a
+     * resource group. This name can be used to access the resource.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,9 +61,9 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     *
+     * Set the name property: The name of the resource that is unique within a
+     * resource group. This name can be used to access the resource.
+     * 
      * @param name the name value to set.
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
      */
@@ -68,15 +73,30 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
+     */
+    public VirtualNetworkGatewayIpConfigurationInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkGatewayIpConfigurationInner withId(String id) {
         super.withId(id);
@@ -84,8 +104,9 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * Get the privateIpAllocationMethod property: The private IP allocation
+     * method. Possible values are: 'Static' and 'Dynamic'.
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -93,13 +114,14 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
-     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
+     * Set the privateIpAllocationMethod property: The private IP allocation
+     * method. Possible values are: 'Static' and 'Dynamic'.
+     * 
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to
+     * set.
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
      */
-    public VirtualNetworkGatewayIpConfigurationInner withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public VirtualNetworkGatewayIpConfigurationInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayIpConfigurationPropertiesFormat();
         }
@@ -108,8 +130,8 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Get the subnet property: The reference to the subnet resource.
-     *
+     * Get the subnet property: The reference of the subnet resource.
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -117,8 +139,8 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Set the subnet property: The reference to the subnet resource.
-     *
+     * Set the subnet property: The reference of the subnet resource.
+     * 
      * @param subnet the subnet value to set.
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
      */
@@ -131,8 +153,9 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Get the publicIpAddress property: The reference to the public IP resource.
-     *
+     * Get the publicIpAddress property: The reference of the public IP
+     * resource.
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -140,8 +163,9 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Set the publicIpAddress property: The reference to the public IP resource.
-     *
+     * Set the publicIpAddress property: The reference of the public IP
+     * resource.
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the VirtualNetworkGatewayIpConfigurationInner object itself.
      */
@@ -154,27 +178,18 @@ public final class VirtualNetworkGatewayIpConfigurationInner extends SubResource
     }
 
     /**
-     * Get the privateIpAddress property: Private IP Address for this gateway.
-     *
-     * @return the privateIpAddress value.
-     */
-    public String privateIpAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the virtual network gateway IP configuration
-     * resource.
-     *
+     * Get the provisioningState property: The provisioning state of the public
+     * IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,39 +5,43 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ExpressRouteServiceProvider. */
+/**
+ * Properties of ExpressRouteServiceProvider.
+ */
 @Fluent
 public final class ExpressRouteServiceProviderPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderPropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderPropertiesFormat.class);
 
     /*
-     * A list of peering locations.
+     * Get a list of peering locations.
      */
     @JsonProperty(value = "peeringLocations")
     private List<String> peeringLocations;
 
     /*
-     * A list of bandwidths offered.
+     * Gets bandwidths offered.
      */
     @JsonProperty(value = "bandwidthsOffered")
     private List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered;
 
     /*
-     * The provisioning state of the express route service provider resource.
+     * Gets the provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the peeringLocations property: A list of peering locations.
-     *
+     * Get the peeringLocations property: Get a list of peering locations.
+     * 
      * @return the peeringLocations value.
      */
     public List<String> peeringLocations() {
@@ -45,8 +49,8 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
     }
 
     /**
-     * Set the peeringLocations property: A list of peering locations.
-     *
+     * Set the peeringLocations property: Get a list of peering locations.
+     * 
      * @param peeringLocations the peeringLocations value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
@@ -56,8 +60,8 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
     }
 
     /**
-     * Get the bandwidthsOffered property: A list of bandwidths offered.
-     *
+     * Get the bandwidthsOffered property: Gets bandwidths offered.
+     * 
      * @return the bandwidthsOffered value.
      */
     public List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered() {
@@ -65,29 +69,41 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
     }
 
     /**
-     * Set the bandwidthsOffered property: A list of bandwidths offered.
-     *
+     * Set the bandwidthsOffered property: Gets bandwidths offered.
+     * 
      * @param bandwidthsOffered the bandwidthsOffered value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
-    public ExpressRouteServiceProviderPropertiesFormat withBandwidthsOffered(
-        List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
+    public ExpressRouteServiceProviderPropertiesFormat withBandwidthsOffered(List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
         this.bandwidthsOffered = bandwidthsOffered;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route service provider resource.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the
+     * resource.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state of the
+     * resource.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
+     */
+    public ExpressRouteServiceProviderPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHub route. */
+/**
+ * VirtualHub route.
+ */
 @Fluent
 public final class VirtualHubRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRoute.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualHubRoute.class);
 
     /*
-     * List of all addressPrefixes.
+     * list of all addressPrefixes.
      */
     @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
@@ -28,8 +33,8 @@ public final class VirtualHubRoute {
     private String nextHopIpAddress;
 
     /**
-     * Get the addressPrefixes property: List of all addressPrefixes.
-     *
+     * Get the addressPrefixes property: list of all addressPrefixes.
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -37,8 +42,8 @@ public final class VirtualHubRoute {
     }
 
     /**
-     * Set the addressPrefixes property: List of all addressPrefixes.
-     *
+     * Set the addressPrefixes property: list of all addressPrefixes.
+     * 
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the VirtualHubRoute object itself.
      */
@@ -49,7 +54,7 @@ public final class VirtualHubRoute {
 
     /**
      * Get the nextHopIpAddress property: NextHop ip address.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -58,7 +63,7 @@ public final class VirtualHubRoute {
 
     /**
      * Set the nextHopIpAddress property: NextHop ip address.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the VirtualHubRoute object itself.
      */
@@ -69,7 +74,7 @@ public final class VirtualHubRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

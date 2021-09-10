@@ -5,26 +5,31 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthPool;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ApplicationGatewayBackendHealth API service call. */
+/**
+ * List of ApplicationGatewayBackendHealthPool resources.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHealthInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthInner.class);
 
     /*
-     * A list of ApplicationGatewayBackendHealthPool resources.
+     * The backendAddressPools property.
      */
     @JsonProperty(value = "backendAddressPools")
     private List<ApplicationGatewayBackendHealthPool> backendAddressPools;
 
     /**
-     * Get the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
-     *
+     * Get the backendAddressPools property: The backendAddressPools property.
+     * 
      * @return the backendAddressPools value.
      */
     public List<ApplicationGatewayBackendHealthPool> backendAddressPools() {
@@ -32,20 +37,19 @@ public final class ApplicationGatewayBackendHealthInner {
     }
 
     /**
-     * Set the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
-     *
+     * Set the backendAddressPools property: The backendAddressPools property.
+     * 
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the ApplicationGatewayBackendHealthInner object itself.
      */
-    public ApplicationGatewayBackendHealthInner withBackendAddressPools(
-        List<ApplicationGatewayBackendHealthPool> backendAddressPools) {
+    public ApplicationGatewayBackendHealthInner withBackendAddressPools(List<ApplicationGatewayBackendHealthPool> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

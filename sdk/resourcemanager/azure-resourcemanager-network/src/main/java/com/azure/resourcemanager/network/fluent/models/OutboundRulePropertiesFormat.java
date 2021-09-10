@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.OutboundRulePropertiesFormatProtocol;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Outbound rule of the load balancer. */
+/**
+ * Outbound rule of the load balancer.
+ */
 @Fluent
 public final class OutboundRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundRulePropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OutboundRulePropertiesFormat.class);
 
     /*
      * The number of outbound ports to be used for NAT.
@@ -38,16 +42,17 @@ public final class OutboundRulePropertiesFormat {
     private SubResource backendAddressPool;
 
     /*
-     * The provisioning state of the outbound rule resource.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
-     * The protocol for the outbound rule in load balancer.
+     * Protocol - TCP, UDP or All
      */
     @JsonProperty(value = "protocol", required = true)
-    private LoadBalancerOutboundRuleProtocol protocol;
+    private OutboundRulePropertiesFormatProtocol protocol;
 
     /*
      * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
@@ -58,14 +63,15 @@ public final class OutboundRulePropertiesFormat {
     private Boolean enableTcpReset;
 
     /*
-     * The timeout for the TCP idle connection.
+     * The timeout for the TCP idle connection
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /**
-     * Get the allocatedOutboundPorts property: The number of outbound ports to be used for NAT.
-     *
+     * Get the allocatedOutboundPorts property: The number of outbound ports to
+     * be used for NAT.
+     * 
      * @return the allocatedOutboundPorts value.
      */
     public Integer allocatedOutboundPorts() {
@@ -73,8 +79,9 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Set the allocatedOutboundPorts property: The number of outbound ports to be used for NAT.
-     *
+     * Set the allocatedOutboundPorts property: The number of outbound ports to
+     * be used for NAT.
+     * 
      * @param allocatedOutboundPorts the allocatedOutboundPorts value to set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
@@ -84,8 +91,9 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Get the frontendIpConfigurations property: The Frontend IP addresses of the load balancer.
-     *
+     * Get the frontendIpConfigurations property: The Frontend IP addresses of
+     * the load balancer.
+     * 
      * @return the frontendIpConfigurations value.
      */
     public List<SubResource> frontendIpConfigurations() {
@@ -93,9 +101,11 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Set the frontendIpConfigurations property: The Frontend IP addresses of the load balancer.
-     *
-     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
+     * Set the frontendIpConfigurations property: The Frontend IP addresses of
+     * the load balancer.
+     * 
+     * @param frontendIpConfigurations the frontendIpConfigurations value to
+     * set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
     public OutboundRulePropertiesFormat withFrontendIpConfigurations(List<SubResource> frontendIpConfigurations) {
@@ -104,9 +114,10 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Get the backendAddressPool property: A reference to a pool of DIPs. Outbound traffic is randomly load balanced
-     * across IPs in the backend IPs.
-     *
+     * Get the backendAddressPool property: A reference to a pool of DIPs.
+     * Outbound traffic is randomly load balanced across IPs in the backend
+     * IPs.
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -114,9 +125,10 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Set the backendAddressPool property: A reference to a pool of DIPs. Outbound traffic is randomly load balanced
-     * across IPs in the backend IPs.
-     *
+     * Set the backendAddressPool property: A reference to a pool of DIPs.
+     * Outbound traffic is randomly load balanced across IPs in the backend
+     * IPs.
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
@@ -126,38 +138,54 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the outbound rule resource.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the
+     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the protocol property: The protocol for the outbound rule in load balancer.
-     *
+     * Set the provisioningState property: Gets the provisioning state of the
+     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the OutboundRulePropertiesFormat object itself.
+     */
+    public OutboundRulePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the protocol property: Protocol - TCP, UDP or All.
+     * 
      * @return the protocol value.
      */
-    public LoadBalancerOutboundRuleProtocol protocol() {
+    public OutboundRulePropertiesFormatProtocol protocol() {
         return this.protocol;
     }
 
     /**
-     * Set the protocol property: The protocol for the outbound rule in load balancer.
-     *
+     * Set the protocol property: Protocol - TCP, UDP or All.
+     * 
      * @param protocol the protocol value to set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
-    public OutboundRulePropertiesFormat withProtocol(LoadBalancerOutboundRuleProtocol protocol) {
+    public OutboundRulePropertiesFormat withProtocol(OutboundRulePropertiesFormatProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
 
     /**
-     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP
+     * flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
+     * 
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -165,9 +193,10 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP
+     * flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
+     * 
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
@@ -177,8 +206,9 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection.
-     *
+     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle
+     * connection.
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -186,8 +216,9 @@ public final class OutboundRulePropertiesFormat {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection.
-     *
+     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle
+     * connection.
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
@@ -198,27 +229,18 @@ public final class OutboundRulePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (frontendIpConfigurations() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property frontendIpConfigurations in model OutboundRulePropertiesFormat"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property frontendIpConfigurations in model OutboundRulePropertiesFormat"));
         }
         if (backendAddressPool() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backendAddressPool in model OutboundRulePropertiesFormat"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property backendAddressPool in model OutboundRulePropertiesFormat"));
         }
         if (protocol() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model OutboundRulePropertiesFormat"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property protocol in model OutboundRulePropertiesFormat"));
         }
     }
 }

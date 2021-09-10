@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for the CheckDnsNameAvailability API service call. */
+/**
+ * Response for the CheckDnsNameAvailability API service call.
+ */
 @Fluent
 public final class DnsNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsNameAvailabilityResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DnsNameAvailabilityResultInner.class);
 
     /*
      * Domain availability (True/False).
@@ -22,7 +27,7 @@ public final class DnsNameAvailabilityResultInner {
 
     /**
      * Get the available property: Domain availability (True/False).
-     *
+     * 
      * @return the available value.
      */
     public Boolean available() {
@@ -31,7 +36,7 @@ public final class DnsNameAvailabilityResultInner {
 
     /**
      * Set the available property: Domain availability (True/False).
-     *
+     * 
      * @param available the available value to set.
      * @return the DnsNameAvailabilityResultInner object itself.
      */
@@ -42,7 +47,7 @@ public final class DnsNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

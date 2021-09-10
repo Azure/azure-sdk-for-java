@@ -5,23 +5,28 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ARP table associated with the ExpressRouteCircuit. */
+/**
+ * The ARP table associated with the ExpressRouteCircuit.
+ */
 @Fluent
 public final class ExpressRouteCircuitArpTable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitArpTable.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitArpTable.class);
 
     /*
-     * Entry age in minutes.
+     * Entry age in minutes
      */
     @JsonProperty(value = "age")
     private Integer age;
 
     /*
-     * Interface address.
+     * Interface address
      */
     @JsonProperty(value = "interface")
     private String interfaceProperty;
@@ -40,7 +45,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Get the age property: Entry age in minutes.
-     *
+     * 
      * @return the age value.
      */
     public Integer age() {
@@ -49,7 +54,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Set the age property: Entry age in minutes.
-     *
+     * 
      * @param age the age value to set.
      * @return the ExpressRouteCircuitArpTable object itself.
      */
@@ -60,7 +65,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Get the interfaceProperty property: Interface address.
-     *
+     * 
      * @return the interfaceProperty value.
      */
     public String interfaceProperty() {
@@ -69,7 +74,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Set the interfaceProperty property: Interface address.
-     *
+     * 
      * @param interfaceProperty the interfaceProperty value to set.
      * @return the ExpressRouteCircuitArpTable object itself.
      */
@@ -80,7 +85,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Get the ipAddress property: The IP address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -89,7 +94,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Set the ipAddress property: The IP address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the ExpressRouteCircuitArpTable object itself.
      */
@@ -100,7 +105,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Get the macAddress property: The MAC address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -109,7 +114,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Set the macAddress property: The MAC address.
-     *
+     * 
      * @param macAddress the macAddress value to set.
      * @return the ExpressRouteCircuitArpTable object itself.
      */
@@ -120,7 +125,7 @@ public final class ExpressRouteCircuitArpTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

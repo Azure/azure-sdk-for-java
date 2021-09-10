@@ -35,159 +35,103 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.RouteFiltersClient;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
+import com.azure.resourcemanager.network.models.PatchRouteFilter;
 import com.azure.resourcemanager.network.models.RouteFilterListResult;
-import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RouteFiltersClient. */
-public final class RouteFiltersClientImpl
-    implements InnerSupportsGet<RouteFilterInner>,
-        InnerSupportsListing<RouteFilterInner>,
-        InnerSupportsDelete<Void>,
-        RouteFiltersClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * RouteFiltersClient.
+ */
+public final class RouteFiltersClientImpl implements InnerSupportsGet<RouteFilterInner>, InnerSupportsListing<RouteFilterInner>, InnerSupportsDelete<Void>, RouteFiltersClient {
     private final ClientLogger logger = new ClientLogger(RouteFiltersClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RouteFiltersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of RouteFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RouteFiltersClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RouteFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RouteFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientRouteFilters to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for
+     * NetworkManagementClientRouteFilters to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface RouteFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/routeFilters/{routeFilterName}")
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("routeFilterName") String routeFilterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("routeFilterName") String routeFilterName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/routeFilters/{routeFilterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteFilterInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("routeFilterName") String routeFilterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteFilterInner>> getByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("routeFilterName") String routeFilterName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/routeFilters/{routeFilterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("routeFilterName") String routeFilterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RouteFilterInner routeFilterParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("routeFilterName") String routeFilterName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") RouteFilterInner routeFilterParameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/routeFilters/{routeFilterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteFilterInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("routeFilterName") String routeFilterName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("routeFilterName") String routeFilterName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") PatchRouteFilter routeFilterParameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/routeFilters")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteFilterListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteFilterListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeFilters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteFilterListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteFilterListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteFilterListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteFilterListResult>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RouteFilterListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RouteFilterListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,45 +142,25 @@ public final class RouteFiltersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String routeFilterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            routeFilterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        final String apiVersion = "2018-11-01";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -246,45 +170,27 @@ public final class RouteFiltersClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String routeFilterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String routeFilterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                routeFilterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,14 +201,12 @@ public final class RouteFiltersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeFilterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeFilterName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -312,18 +216,15 @@ public final class RouteFiltersClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String routeFilterName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeFilterName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeFilterName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,12 +234,12 @@ public final class RouteFiltersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeFilterName) {
-        return beginDeleteAsync(resourceGroupName, routeFilterName).getSyncPoller();
-    }
+        return beginDeleteAsync(resourceGroupName, routeFilterName)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -348,14 +249,13 @@ public final class RouteFiltersClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String routeFilterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, routeFilterName, context).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeFilterName, Context context) {
+        return beginDeleteAsync(resourceGroupName, routeFilterName, context)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -372,7 +272,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -390,7 +290,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -404,7 +304,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Deletes the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -419,7 +319,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -429,49 +329,28 @@ public final class RouteFiltersClientImpl
      * @return the specified route filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteFilterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String routeFilterName, String expand) {
+    public Mono<Response<RouteFilterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String routeFilterName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            routeFilterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            expand,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -482,46 +361,28 @@ public final class RouteFiltersClientImpl
      * @return the specified route filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RouteFilterInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String routeFilterName, String expand, Context context) {
+    private Mono<Response<RouteFilterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String routeFilterName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                routeFilterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                expand,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), expand, accept, context);
     }
 
     /**
      * Gets the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -531,22 +392,20 @@ public final class RouteFiltersClientImpl
      * @return the specified route filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteFilterInner> getByResourceGroupAsync(
-        String resourceGroupName, String routeFilterName, String expand) {
+    public Mono<RouteFilterInner> getByResourceGroupAsync(String resourceGroupName, String routeFilterName, String expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, routeFilterName, expand)
-            .flatMap(
-                (Response<RouteFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<RouteFilterInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,19 +417,18 @@ public final class RouteFiltersClientImpl
     public Mono<RouteFilterInner> getByResourceGroupAsync(String resourceGroupName, String routeFilterName) {
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, routeFilterName, expand)
-            .flatMap(
-                (Response<RouteFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<RouteFilterInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -586,7 +444,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets the specified route filter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -597,14 +455,13 @@ public final class RouteFiltersClientImpl
      * @return the specified route filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteFilterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String routeFilterName, String expand, Context context) {
+    public Response<RouteFilterInner> getByResourceGroupWithResponse(String resourceGroupName, String routeFilterName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, routeFilterName, expand, context).block();
     }
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -614,55 +471,33 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (routeFilterParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterParameters is required and cannot be null."));
         } else {
             routeFilterParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            routeFilterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            routeFilterParameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), routeFilterParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -673,52 +508,33 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (routeFilterParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterParameters is required and cannot be null."));
         } else {
             routeFilterParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                routeFilterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                routeFilterParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), routeFilterParameters, accept, context);
     }
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -728,19 +544,14 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, routeFilterName, routeFilterParameters);
-        return this
-            .client
-            .<RouteFilterInner, RouteFilterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteFilterInner.class, RouteFilterInner.class, Context.NONE);
+    public PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, routeFilterName, routeFilterParameters);
+        return this.client.<RouteFilterInner, RouteFilterInner>getLroResult(mono, this.client.getHttpPipeline(), RouteFilterInner.class, RouteFilterInner.class, Context.NONE);
     }
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -751,20 +562,15 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
+    private PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, routeFilterName, routeFilterParameters, context);
-        return this
-            .client
-            .<RouteFilterInner, RouteFilterInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RouteFilterInner.class, RouteFilterInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, routeFilterName, routeFilterParameters, context);
+        return this.client.<RouteFilterInner, RouteFilterInner>getLroResult(mono, this.client.getHttpPipeline(), RouteFilterInner.class, RouteFilterInner.class, context);
     }
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -774,14 +580,13 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters).getSyncPoller();
-    }
+    public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters)
+            .getSyncPoller();}
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -792,15 +597,13 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
+    public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -810,8 +613,7 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteFilterInner> createOrUpdateAsync(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
+    public Mono<RouteFilterInner> createOrUpdateAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -819,7 +621,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -830,8 +632,7 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RouteFilterInner> createOrUpdateAsync(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
+    private Mono<RouteFilterInner> createOrUpdateAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -839,7 +640,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -849,14 +650,13 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteFilterInner createOrUpdate(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
+    public RouteFilterInner createOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
         return createOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters).block();
     }
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -867,74 +667,52 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteFilterInner createOrUpdate(
-        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
+    public RouteFilterInner createOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context).block();
     }
 
     /**
-     * Updates tags of a route filter.
-     *
+     * Updates a route filter in a specified resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @param parameters Parameters supplied to update route filter tags.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouteFilterInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String routeFilterName, TagsObject parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        if (routeFilterParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterParameters is required and cannot be null."));
         } else {
-            parameters.validate();
+            routeFilterParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            routeFilterName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), routeFilterParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates tags of a route filter.
-     *
+     * Updates a route filter in a specified resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @param parameters Parameters supplied to update route filter tags.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,95 +720,53 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RouteFilterInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String routeFilterName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (routeFilterName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        if (routeFilterParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter routeFilterParameters is required and cannot be null."));
         } else {
-            parameters.validate();
+            routeFilterParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                routeFilterName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, routeFilterName, apiVersion, this.client.getSubscriptionId(), routeFilterParameters, accept, context);
     }
 
     /**
-     * Updates tags of a route filter.
-     *
+     * Updates a route filter in a specified resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @param parameters Parameters supplied to update route filter tags.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouteFilterInner> updateTagsAsync(
-        String resourceGroupName, String routeFilterName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, routeFilterName, parameters)
-            .flatMap(
-                (Response<RouteFilterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdateAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, routeFilterName, routeFilterParameters);
+        return this.client.<RouteFilterInner, RouteFilterInner>getLroResult(mono, this.client.getHttpPipeline(), RouteFilterInner.class, RouteFilterInner.class, Context.NONE);
     }
 
     /**
-     * Updates tags of a route filter.
-     *
+     * Updates a route filter in a specified resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @param parameters Parameters supplied to update route filter tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route Filter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteFilterInner updateTags(String resourceGroupName, String routeFilterName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, routeFilterName, parameters).block();
-    }
-
-    /**
-     * Updates tags of a route filter.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param parameters Parameters supplied to update route filter tags.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1038,14 +774,118 @@ public final class RouteFiltersClientImpl
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteFilterInner> updateTagsWithResponse(
-        String resourceGroupName, String routeFilterName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, routeFilterName, parameters, context).block();
+    private PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdateAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, routeFilterName, routeFilterParameters, context);
+        return this.client.<RouteFilterInner, RouteFilterInner>getLroResult(mono, this.client.getHttpPipeline(), RouteFilterInner.class, RouteFilterInner.class, context);
+    }
+
+    /**
+     * Updates a route filter in a specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdate(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters) {
+        return beginUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters)
+            .getSyncPoller();}
+
+    /**
+     * Updates a route filter in a specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdate(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context)
+            .getSyncPoller();}
+
+    /**
+     * Updates a route filter in a specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RouteFilterInner> updateAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters) {
+        return beginUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a route filter in a specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RouteFilterInner> updateAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a route filter in a specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouteFilterInner update(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters) {
+        return updateAsync(resourceGroupName, routeFilterName, routeFilterParameters).block();
+    }
+
+    /**
+     * Updates a route filter in a specified resource group.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the update route filter operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouteFilterInner update(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context) {
+        return updateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context).block();
     }
 
     /**
      * Gets all route filters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,49 +895,30 @@ public final class RouteFiltersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteFilterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RouteFilterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RouteFilterInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all route filters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1106,49 +927,32 @@ public final class RouteFiltersClientImpl
      * @return all route filters in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RouteFilterInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<RouteFilterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all route filters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,7 +968,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets all route filters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1181,7 +985,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets all route filters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1195,7 +999,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets all route filters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1210,7 +1014,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets all route filters in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route filters in a subscription.
@@ -1218,39 +1022,27 @@ public final class RouteFiltersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteFilterInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<RouteFilterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RouteFilterInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all route filters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1260,48 +1052,41 @@ public final class RouteFiltersClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RouteFilterInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all route filters in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route filters in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouteFilterInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all route filters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1311,12 +1096,13 @@ public final class RouteFiltersClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RouteFilterInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all route filters in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route filters in a subscription.
@@ -1328,7 +1114,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Gets all route filters in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1342,7 +1128,7 @@ public final class RouteFiltersClientImpl
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1355,30 +1141,23 @@ public final class RouteFiltersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RouteFilterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RouteFilterInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1387,35 +1166,28 @@ public final class RouteFiltersClientImpl
      * @return response for the ListRouteFilters API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RouteFilterInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RouteFilterInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1428,29 +1200,23 @@ public final class RouteFiltersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RouteFilterInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RouteFilterInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1464,23 +1230,17 @@ public final class RouteFiltersClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

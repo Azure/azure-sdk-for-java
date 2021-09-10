@@ -5,16 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCircuit. */
+/**
+ * Response for ListPeering API service call retrieves all peerings that belong
+ * to an ExpressRouteCircuit.
+ */
 @Fluent
 public final class ExpressRouteCircuitPeeringListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringListResult.class);
 
     /*
      * The peerings in an express route circuit.
@@ -30,7 +36,7 @@ public final class ExpressRouteCircuitPeeringListResult {
 
     /**
      * Get the value property: The peerings in an express route circuit.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCircuitPeeringInner> value() {
@@ -39,7 +45,7 @@ public final class ExpressRouteCircuitPeeringListResult {
 
     /**
      * Set the value property: The peerings in an express route circuit.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCircuitPeeringListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ExpressRouteCircuitPeeringListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ExpressRouteCircuitPeeringListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteCircuitPeeringListResult object itself.
      */
@@ -70,7 +76,7 @@ public final class ExpressRouteCircuitPeeringListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
