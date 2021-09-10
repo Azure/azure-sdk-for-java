@@ -6,36 +6,40 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.LegacyMicrosoftAccountProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the legacy Microsoft Account provider. */
 @Fluent
-public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
+public final class LegacyMicrosoftAccount {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyMicrosoftAccount.class);
 
     /*
-     * LegacyMicrosoftAccount resource specific properties
+     * <code>false</code> if the legacy Microsoft Account provider should not
+     * be enabled despite the set registration; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties")
-    private LegacyMicrosoftAccountProperties innerProperties;
+    @JsonProperty(value = "enabled")
+    private Boolean enabled;
 
-    /**
-     * Get the innerProperties property: LegacyMicrosoftAccount resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The configuration settings of the app registration for the legacy
+     * Microsoft Account provider.
      */
-    private LegacyMicrosoftAccountProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "registration")
+    private ClientRegistration registration;
 
-    /** {@inheritDoc} */
-    @Override
-    public LegacyMicrosoftAccount withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    /*
+     * The configuration settings of the login flow.
+     */
+    @JsonProperty(value = "login")
+    private LoginScopes login;
+
+    /*
+     * The configuration settings of the legacy Microsoft Account provider
+     * token validation flow.
+     */
+    @JsonProperty(value = "validation")
+    private AllowedAudiencesValidation validation;
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the legacy Microsoft Account provider should not be
@@ -44,7 +48,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -55,10 +59,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the LegacyMicrosoftAccount object itself.
      */
     public LegacyMicrosoftAccount withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LegacyMicrosoftAccountProperties();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -69,7 +70,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the registration value.
      */
     public ClientRegistration registration() {
-        return this.innerProperties() == null ? null : this.innerProperties().registration();
+        return this.registration;
     }
 
     /**
@@ -80,10 +81,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the LegacyMicrosoftAccount object itself.
      */
     public LegacyMicrosoftAccount withRegistration(ClientRegistration registration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LegacyMicrosoftAccountProperties();
-        }
-        this.innerProperties().withRegistration(registration);
+        this.registration = registration;
         return this;
     }
 
@@ -93,7 +91,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the login value.
      */
     public LoginScopes login() {
-        return this.innerProperties() == null ? null : this.innerProperties().login();
+        return this.login;
     }
 
     /**
@@ -103,10 +101,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the LegacyMicrosoftAccount object itself.
      */
     public LegacyMicrosoftAccount withLogin(LoginScopes login) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LegacyMicrosoftAccountProperties();
-        }
-        this.innerProperties().withLogin(login);
+        this.login = login;
         return this;
     }
 
@@ -117,7 +112,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the validation value.
      */
     public AllowedAudiencesValidation validation() {
-        return this.innerProperties() == null ? null : this.innerProperties().validation();
+        return this.validation;
     }
 
     /**
@@ -128,10 +123,7 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      * @return the LegacyMicrosoftAccount object itself.
      */
     public LegacyMicrosoftAccount withValidation(AllowedAudiencesValidation validation) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LegacyMicrosoftAccountProperties();
-        }
-        this.innerProperties().withValidation(validation);
+        this.validation = validation;
         return this;
     }
 
@@ -140,11 +132,15 @@ public final class LegacyMicrosoftAccount extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (registration() != null) {
+            registration().validate();
+        }
+        if (login() != null) {
+            login().validate();
+        }
+        if (validation() != null) {
+            validation().validate();
         }
     }
 }
