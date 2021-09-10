@@ -389,7 +389,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionPlanningInfo
   }
 
-  private[this] def calculateEndLsn
+  private[spark] def calculateEndLsn
   (
     metadata: Array[PartitionMetadata],
     readLimit: ReadLimit
