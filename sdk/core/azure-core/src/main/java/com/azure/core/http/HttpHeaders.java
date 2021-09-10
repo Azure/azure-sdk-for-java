@@ -3,6 +3,8 @@
 
 package com.azure.core.http;
 
+import com.azure.core.util.CoreUtils;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -75,22 +77,20 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return The updated HttpHeaders object.
      */
     public HttpHeaders add(String name, String value) {
-        if (name == null) {
-            return this;
-        }
         String caseInsensitiveName = formatKey(name);
-        if (value == null) {
+        if (caseInsensitiveName == null || value == null) {
             return this;
-        } else {
-            headers.compute(caseInsensitiveName, (key, header) -> {
-                if (header == null) {
-                    return new HttpHeader(name, value);
-                } else {
-                    header.addValue(value);
-                    return header;
-                }
-            });
         }
+
+        headers.compute(caseInsensitiveName, (key, header) -> {
+            if (header == null) {
+                return new HttpHeader(name, value);
+            } else {
+                header.addValue(value);
+                return header;
+            }
+        });
+
         return this;
     }
 
@@ -145,7 +145,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             return this;
         }
         String caseInsensitiveName = formatKey(name);
-        if (values == null) {
+        if (CoreUtils.isNullOrEmpty(values)) {
             remove(caseInsensitiveName);
         } else {
             headers.put(caseInsensitiveName, new HttpHeader(name, values));
@@ -215,7 +215,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     private String formatKey(final String key) {
-        return key.toLowerCase(Locale.ROOT);
+        return (key == null) ? null : key.toLowerCase(Locale.ROOT);
     }
 
     /**
