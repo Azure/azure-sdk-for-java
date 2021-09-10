@@ -48,10 +48,6 @@ public final class HttpUtil {
                                                  .map(Package::getImplementationVersion)
                                                  .orElse(DEFAULT_VERSION);
     public static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
-
-    /**
-     * Stores the logger.
-     */
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
 
     public static String get(String url, Map<String, String> headers) {
