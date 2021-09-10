@@ -9,7 +9,7 @@ class SparkBridgeImplementationInternalSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
 
   it should "parse multiple LSN formats" in {
-    val rawLsn = rnd.nextLong()
+    val rawLsn = rnd.nextLong() + 1
     val asText = rawLsn.toString
     val withEscapeCharacters = "\"" + rawLsn + "\""
 

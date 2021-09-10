@@ -544,8 +544,6 @@ class SparkE2EQueryITest
       container.createItem(objectNode).block()
     }
 
-    Thread.sleep(1000)
-
     for( _ <- 1 to samplingSize) {
       val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
       objectNode2.put("wheels", 4)
