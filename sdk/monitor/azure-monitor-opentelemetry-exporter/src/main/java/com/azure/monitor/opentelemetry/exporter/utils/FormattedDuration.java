@@ -23,6 +23,8 @@ public class FormattedDuration {
 
     /**
      * This method generates a formatted string based on input duration in nano seconds.
+     * @param durationNanos input duration in nano seconds.
+     * @return the formatted duration string.
      */
     public static String getFormattedDuration(long durationNanos) {
         long remainingNanos = durationNanos;
