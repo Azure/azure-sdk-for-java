@@ -13,15 +13,15 @@ import java.util.List;
  * The collection wrapper to hold all results of a batch of logs queries.
  */
 @Immutable
-public final class LogsBatchQueryResults {
-    private final ClientLogger logger = new ClientLogger(LogsBatchQueryResults.class);
+public final class LogsBatchQueryResultCollection {
+    private final ClientLogger logger = new ClientLogger(LogsBatchQueryResultCollection.class);
     private final List<LogsBatchQueryResult> batchResults;
 
     /**
-     * Creates an instance of {@link LogsBatchQueryResults} to hold all results of a batch of logs queries.
+     * Creates an instance of {@link LogsBatchQueryResultCollection} to hold all results of a batch of logs queries.
      * @param batchResults The results of a batch of logs queries.
      */
-    public LogsBatchQueryResults(List<LogsBatchQueryResult> batchResults) {
+    public LogsBatchQueryResultCollection(List<LogsBatchQueryResult> batchResults) {
         this.batchResults = batchResults;
     }
 
