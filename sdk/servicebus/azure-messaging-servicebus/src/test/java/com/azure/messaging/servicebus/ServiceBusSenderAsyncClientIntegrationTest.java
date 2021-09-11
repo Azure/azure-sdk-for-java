@@ -460,9 +460,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         StepVerifier.create(sender.scheduleMessages(messages, OffsetDateTime.now().plus(scheduleDuration), transaction.get()).collectList())
-            .assertNext(longs -> {
-                assertEquals(total, longs.size());
-            })
+            .assertNext(longs ->
+                assertEquals(total, longs.size())
+            )
             .verifyComplete();
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
