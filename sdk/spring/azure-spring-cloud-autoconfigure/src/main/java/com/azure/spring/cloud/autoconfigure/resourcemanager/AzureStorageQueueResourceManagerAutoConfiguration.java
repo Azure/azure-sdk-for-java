@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.core.annotation.Order;
  * @author Warren Zhu
  */
 @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, value = "enabled", matchIfMissing = true)
+@ConditionalOnBean(AzureResourceManager.class)
 public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
 
     private final AzureStorageQueueProperties storageQueueProperties;

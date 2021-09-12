@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.autoconfigure.cosmos.domain;
+package com.azure.spring.cloud.autoconfigure.data.cosmos.domain;
 
 
 public class Person {
@@ -14,9 +14,9 @@ public class Person {
         this(null, null, null);
     }
 
-    public Person(String id, String fname, String lname) {
-        this.firstName = fname;
-        this.lastName = lname;
+    public Person(String id, String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.id = id;
     }
 

@@ -5,8 +5,10 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -18,10 +20,17 @@ import org.springframework.util.StringUtils;
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnBean(ServiceBusMessageProcessor.class)
 class AzureServiceBusProcessorConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProcessorConfiguration.class);
+
     private final PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+    private final AzureServiceBusProperties serviceBusProperties;
+
+    AzureServiceBusProcessorConfiguration(AzureServiceBusProperties serviceBusProperties) {
+        this.serviceBusProperties = serviceBusProperties;
+    }
 
     // TODO (xiada): how to apply the processError and processMessage functions
     @Bean
@@ -29,6 +38,7 @@ class AzureServiceBusProcessorConfiguration {
     @ConditionalOnProperty(
         prefix = AzureServiceBusProperties.PREFIX, name = "processor.session-aware", havingValue = "false", matchIfMissing = true
     )
+    @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class)
     public ServiceBusProcessorClient serviceBusProcessorClient(
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
         return processorClientBuilder.buildProcessorClient();
@@ -40,8 +50,7 @@ class AzureServiceBusProcessorConfiguration {
         prefix = AzureServiceBusProperties.PREFIX, name = "processor.session-aware", havingValue = "false", matchIfMissing = true
     )
     public ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
-        ServiceBusClientBuilder serviceBusClientBuilder,
-        AzureServiceBusProperties serviceBusProperties) {
+        ServiceBusClientBuilder serviceBusClientBuilder) {
         final AzureServiceBusProperties.ServiceBusProcessor processorProperties = serviceBusProperties.getProcessor();
         final ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder = serviceBusClientBuilder.processor();
 
@@ -67,6 +76,7 @@ class AzureServiceBusProcessorConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "processor.session-aware")
+    @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class)
     public ServiceBusProcessorClient serviceBusSessionProcessorClient(
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder sessionProcessorClientBuilder) {
         return sessionProcessorClientBuilder.buildProcessorClient();
@@ -77,8 +87,7 @@ class AzureServiceBusProcessorConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "processor.session-aware")
     public ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
-        ServiceBusClientBuilder serviceBusClientBuilder,
-        AzureServiceBusProperties serviceBusProperties) {
+        ServiceBusClientBuilder serviceBusClientBuilder) {
 
         final AzureServiceBusProperties.ServiceBusProcessor processorProperties = serviceBusProperties.getProcessor();
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder sessionProcessorClientBuilder = serviceBusClientBuilder.sessionProcessor();
@@ -101,8 +110,6 @@ class AzureServiceBusProcessorConfiguration {
         }
 
         return sessionProcessorClientBuilder;
-
     }
-
 
 }

@@ -16,6 +16,8 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 public class AzureConfigurationProperties implements AzureProperties {
 
+    public static final String PREFIX = "spring.cloud.azure";
+
     @NestedConfigurationProperty
     protected final ClientProperties client = new ClientProperties();
 

@@ -8,12 +8,11 @@ com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironment
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
-com.azure.spring.autoconfigure.cosmos.CosmosDataAutoConfiguration,\
-com.azure.spring.autoconfigure.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
-com.azure.spring.autoconfigure.cosmos.CosmosRepositoriesAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosRepositoriesAutoConfiguration,\
 com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
-com.azure.spring.autoconfigure.storage.StorageResourceAutoConfiguration,\
 com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\

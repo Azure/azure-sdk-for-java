@@ -3,7 +3,6 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -108,10 +107,6 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
 
     private ServiceBusSenderAsyncClient createQueueSender(String name) {
         return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
-    }
-
-    public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
-        serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }
 
 }

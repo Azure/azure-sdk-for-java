@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.autoconfigure.storage;
+package com.azure.spring.autoconfigure.storage.resource;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageBlobProtocolResolver;

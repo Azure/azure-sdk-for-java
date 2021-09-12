@@ -19,13 +19,18 @@ import org.springframework.core.annotation.Order;
 @ConditionalOnClass(ServiceBusClientBuilder.class)
 class AzureServiceBusClientBuilderConfiguration {
 
+    private final AzureServiceBusProperties serviceBusProperties;
+
+    AzureServiceBusClientBuilderConfiguration(AzureServiceBusProperties serviceBusProperties) {
+        this.serviceBusProperties = serviceBusProperties;
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusClientBuilderFactory factory(
-        AzureServiceBusProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
 
-        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(properties);
+        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
         builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
         return builderFactory;
     }
@@ -39,12 +44,10 @@ class AzureServiceBusClientBuilderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @Order(Ordered.HIGHEST_PRECEDENCE + 100)
-    public StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider(
-        AzureServiceBusProperties serviceBusProperties) {
+    public StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider() {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
-                                                    serviceBusProperties.getConnectionString());
+                                                    this.serviceBusProperties.getConnectionString());
     }
-
 
 }

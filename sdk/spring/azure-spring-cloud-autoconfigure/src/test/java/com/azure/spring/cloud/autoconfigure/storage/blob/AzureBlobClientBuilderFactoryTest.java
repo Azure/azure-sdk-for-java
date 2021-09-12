@@ -24,13 +24,13 @@ import static org.mockito.Mockito.verify;
 /**
  * @author Xiaolu Dai, 2021/8/25.
  */
-public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<BlobServiceClientBuilder,
+class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<BlobServiceClientBuilder,
                                                                                                 AzureStorageBlobProperties, BlobServiceClientBuilderFactory> {
 
     private static final String ENDPOINT = "https://abc.blob.core.windows.net/";
 
     @Test
-    public void testMinimalSettings() {
+    void testMinimalSettings() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         final BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilderFactory(properties).build();
@@ -38,7 +38,7 @@ public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilder
     }
 
     @Test
-    public void testClientSecretTokenCredentialConfigured() {
+    void testClientSecretTokenCredentialConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         TokenCredentialProperties tokenCredentialProperties = buildClientSecretTokenCredentialProperties();
@@ -51,7 +51,7 @@ public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilder
     }
 
     @Test
-    public void testClientCertificateTokenCredentialConfigured() {
+    void testClientCertificateTokenCredentialConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         TokenCredentialProperties tokenCredentialProperties = buildClientCertificateTokenCredentialProperties();
@@ -62,7 +62,7 @@ public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilder
     }
 
     @Test
-    public void testHttpClientConfigured() {
+    void testHttpClientConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
@@ -76,7 +76,7 @@ public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilder
     }
 
     @Test
-    public void testDefaultHttpPipelinePoliciesConfigured() {
+    void testDefaultHttpPipelinePoliciesConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties);

@@ -17,6 +17,10 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyProp
 
     @Override
     public ProxyOptions convert(ProxyProperties proxyProperties) {
+        if (!StringUtils.hasText(proxyProperties.getHostname())) {
+            return null;
+        }
+
         final String type = proxyProperties.getType();
         ProxyOptions.Type sdkProxyType;
         if ("http".equalsIgnoreCase(type)) {

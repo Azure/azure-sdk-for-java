@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
-public class AzureEventAutoConfigurationTest {
+class AzureEventAutoConfigurationTest {
 
 
 

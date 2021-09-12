@@ -3,55 +3,44 @@
 
 package com.azure.spring.cloud.autoconfigure.storage;
 
-import com.azure.spring.integration.storage.queue.StorageQueueOperation;
-import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
-import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
-import com.azure.storage.queue.QueueServiceClient;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
-
-public class AzureStorageQueueAutoConfigurationTest {
+class AzureStorageQueueAutoConfigurationTest {
 
     private ApplicationContextRunner contextRunner =
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureStorageQueueOperationAutoConfiguration.class))
             .withUserConfiguration(TestConfiguration.class);
 
-   /* TODO (xiada): test
+   /* TODO (xiada): tests
    @Test
-    public void testAzureStoragePropertiesWhenMissingQueueServiceClient() {
+    void testAzureStoragePropertiesWhenMissingQueueServiceClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
                           .run(context -> assertThat(context).doesNotHaveBean(LegacyAzureStorageProperties.class));
     }
 
     @Test
-    public void testAzureStoragePropertiesWhenMissingStorageQueueClientFactoryClass() {
+    void testAzureStoragePropertiesWhenMissingStorageQueueClientFactoryClass() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(StorageQueueClientFactory.class))
                           .run(context -> assertThat(context).doesNotHaveBean(LegacyAzureStorageProperties.class));
     }
 
     @Test
-    public void testAzureStoragePropertiesNotConfigured() {
+    void testAzureStoragePropertiesNotConfigured() {
         this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(LegacyAzureStorageProperties.class));
     }
 
     @Test
-    public void testAzureStoragePropertiesIllegal() {
+    void testAzureStoragePropertiesIllegal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=a")
                           .run(context -> assertThrows(IllegalStateException.class,
                               () -> context.getBean(LegacyAzureStorageProperties.class)));
     }
 
     @Test
-    public void testAzureStoragePropertiesConfigured() {
+    void testAzureStoragePropertiesConfigured() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=squeue").run(context -> {
             assertThat(context).hasSingleBean(LegacyAzureStorageProperties.class);
             assertThat(context.getBean(LegacyAzureStorageProperties.class).getAccount()).isEqualTo("squeue");
@@ -59,7 +48,7 @@ public class AzureStorageQueueAutoConfigurationTest {
     }
 
     @Test
-    public void testAzureStoragePropertiesOtherItemsConfigured() {
+    void testAzureStoragePropertiesOtherItemsConfigured() {
         this.contextRunner.withPropertyValues(
             "spring.cloud.azure.storage.account=squeue",
             "spring.cloud.azure.storage.access-key=fake-access-key",
@@ -69,10 +58,10 @@ public class AzureStorageQueueAutoConfigurationTest {
             assertThat(context.getBean(LegacyAzureStorageProperties.class).getAccessKey()).isEqualTo("fake-access-key");
             assertThat(context.getBean(LegacyAzureStorageProperties.class).getResourceGroup()).isEqualTo("fake-resource-group");
         });
-    }*/
+    }
 
     @Test
-    public void testStorageQueueClientFactoryBean() {
+    void testStorageQueueClientFactoryBean() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=squeue").run(c -> {
             final StorageQueueClientFactory storageQueueClientFactory = c.getBean(StorageQueueClientFactory.class);
             assertThat(storageQueueClientFactory).isNotNull();
@@ -80,7 +69,7 @@ public class AzureStorageQueueAutoConfigurationTest {
     }
 
     @Test
-    public void testStorageQueueOperationBean() {
+    void testStorageQueueOperationBean() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.storage.account=squeue").run(c -> {
             final StorageQueueOperation storageQueueOperation = c.getBean(StorageQueueOperation.class);
             assertThat(storageQueueOperation).isNotNull();
@@ -93,5 +82,5 @@ public class AzureStorageQueueAutoConfigurationTest {
         DefaultStorageQueueClientFactory defaultStorageQueueClientFactory() {
             return mock(DefaultStorageQueueClientFactory.class);
         }
-    }
+    }*/
 }

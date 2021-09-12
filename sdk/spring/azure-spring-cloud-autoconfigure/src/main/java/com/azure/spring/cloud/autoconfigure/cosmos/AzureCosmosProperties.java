@@ -12,25 +12,23 @@ import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationPropert
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.regex.Pattern;
+import javax.validation.constraints.Pattern;
 
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class AzureCosmosProperties extends AzureConfigurationProperties implements InitializingBean {
+public class AzureCosmosProperties extends AzureConfigurationProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureCosmosProperties.class);
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
-    public static final String URI_REGEX = "http[s]{0,1}://.*.documents.azure.com.*";
-
     @NotEmpty
+    @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String uri;
 
     @NotEmpty
@@ -55,7 +53,7 @@ public class AzureCosmosProperties extends AzureConfigurationProperties implemen
     /**
      * Document DB database name.
      */
-    @NotEmpty
+//    @NotEmpty
     private String database;
 
     /**
@@ -67,11 +65,6 @@ public class AzureCosmosProperties extends AzureConfigurationProperties implemen
      * Represents the connection mode to be used by the client in the Azure Cosmos DB database service.
      */
     private ConnectionMode connectionMode;
-
-    @Override
-    public void afterPropertiesSet() {
-        validateUri();
-    }
 
     /**
      * Response Diagnostics processor
@@ -131,14 +124,6 @@ public class AzureCosmosProperties extends AzureConfigurationProperties implemen
 
     public void setUri(String uri) {
         this.uri = uri;
-    }
-
-    private void validateUri() {
-        if (!Pattern.matches(URI_REGEX, uri)) {
-            throw new IllegalArgumentException("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
-                                                   + "only sql/core api is supported, please check https://docs.microsoft.com/en-us/azure/cosmos-db/ "
-                                                   + "for more info.");
-        }
     }
 
     public String getKey() {

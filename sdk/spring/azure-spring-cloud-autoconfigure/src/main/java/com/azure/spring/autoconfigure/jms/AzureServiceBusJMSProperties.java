@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
  */
 @Validated
 @ConfigurationProperties(AzureServiceBusJMSProperties.PREFIX)
-// TODO (xiada): does this need to implement AzureProperties?
+// TODO(xiada): does this need to implement AzureProperties?
 public class AzureServiceBusJMSProperties {
 
     public static final String PREFIX = "spring.jms.servicebus";

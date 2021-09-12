@@ -4,13 +4,10 @@
 package com.azure.spring.cloud.actuate.storage;
 
 import com.azure.spring.cloud.actuate.autoconfigure.storage.StorageBlobHealthConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccountKind;
 import com.azure.storage.blob.models.SkuName;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
@@ -20,86 +17,78 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Mono;
 
+import static com.azure.spring.cloud.actuate.storage.Constants.URL_FIELD;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class StorageBlobHealthIndicatorTest {
+class StorageBlobHealthIndicatorTest {
 
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 
-    @Test
-    public void testWithNoStorageConfiguration() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withBean(BlobServiceAsyncClient.class)
-            .withConfiguration(AutoConfigurations.of(StorageBlobHealthConfiguration.class));
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withConfiguration(AutoConfigurations.of(StorageBlobHealthConfiguration.class));
 
-        contextRunner.run(context ->
-                              Assertions.assertThrows(IllegalStateException.class,
-                                                      () -> context.getBean(StorageBlobHealthIndicator.class)
-                                                                   .getHealth(true)));
+    @Test
+    void configureWithNoStorageBlobClient() {
+        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(StorageBlobHealthIndicator.class));
     }
 
     @Test
-    public void testWithStorageConfigurationWithConnectionUp() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class, StorageBlobHealthConfiguration.class))
-            .withUserConfiguration(TestConfigurationConnectionUp.class);
+    void configureWithStorageBlobClientUp() {
+        this.contextRunner
+            .withUserConfiguration(TestConfigurationConnectionUp.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(StorageBlobHealthIndicator.class);
 
-        contextRunner.run(context -> {
-            Health health = context.getBean("blobStorageHealthIndicator", StorageBlobHealthIndicator.class)
-                                   .getHealth(true);
-            Assertions.assertEquals(Status.UP, health.getStatus());
-            Assertions.assertEquals(MOCK_URL, health.getDetails().get(Constants.URL_FIELD));
-        });
+                final StorageBlobHealthIndicator healthIndicator = context.getBean(StorageBlobHealthIndicator.class);
+                Health health = healthIndicator.getHealth(true);
+
+                assertEquals(Status.UP, health.getStatus());
+                assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
+            });
     }
 
     @Test
-    public void testWithStorageConfigurationWithConnectionDown() {
-        ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class, StorageBlobHealthConfiguration.class))
-            .withUserConfiguration(TestConfigurationConnectionDown.class);
+    void configureWithStorageFileClientDown() {
+        this.contextRunner
+            .withUserConfiguration(TestConfigurationConnectionDown.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(StorageBlobHealthIndicator.class);
 
-        contextRunner.run(context -> {
-            Health health = context.getBean("blobStorageHealthIndicator", StorageBlobHealthIndicator.class)
-                                   .getHealth(true);
-            Assertions.assertEquals(Status.DOWN, health.getStatus());
-            Assertions.assertEquals(MOCK_URL, health.getDetails().get(Constants.URL_FIELD));
-        });
+                final StorageBlobHealthIndicator healthIndicator = context.getBean(StorageBlobHealthIndicator.class);
+                Health health = healthIndicator.getHealth(true);
+
+                assertEquals(Status.DOWN, health.getStatus());
+                assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
+            });
     }
 
-    @Configuration
+    @Configuration(proxyBeanMethods = false)
     static class TestConfigurationConnectionUp {
 
         @Bean
-        BlobServiceClientBuilder blobServiceClientBuilder() {
-            BlobServiceClientBuilder mockClientBuilder = mock(BlobServiceClientBuilder.class);
+        BlobServiceAsyncClient blobAsyncClient() {
             BlobServiceAsyncClient mockAsyncClient = mock(BlobServiceAsyncClient.class);
             when(mockAsyncClient.getAccountUrl()).thenReturn(MOCK_URL);
             when(mockAsyncClient.getAccountInfo()).thenReturn(Mono.just(new StorageAccountInfo(SkuName.STANDARD_LRS,
                 AccountKind.BLOB_STORAGE)));
-            when(mockClientBuilder.buildAsyncClient()).thenReturn(mockAsyncClient);
-
-            return mockClientBuilder;
+            return mockAsyncClient;
         }
 
     }
 
-    @Configuration
+    @Configuration(proxyBeanMethods = false)
     static class TestConfigurationConnectionDown {
 
         @Bean
-        BlobServiceClientBuilder blobServiceClientBuilder() {
-            BlobServiceClientBuilder mockClientBuilder = mock(BlobServiceClientBuilder.class);
+        BlobServiceAsyncClient blobAsyncClient() {
             BlobServiceAsyncClient mockAsyncClient = mock(BlobServiceAsyncClient.class);
             when(mockAsyncClient.getAccountUrl()).thenReturn(MOCK_URL);
             when(mockAsyncClient.getAccountInfo())
                 .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
-            when(mockClientBuilder.buildAsyncClient()).thenReturn(mockAsyncClient);
-
-            return mockClientBuilder;
+            return mockAsyncClient;
         }
 
     }

@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.unity;
+package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.spring.cloud.autoconfigure.context.PreLegacyPropertyEnvironmentPostProcessor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
@@ -28,17 +27,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 @ExtendWith(OutputCaptureExtension.class)
-public class PreLegacyPropertyProcessorTest {
+class PreLegacyPropertyProcessorTest {
 
     private PreLegacyPropertyEnvironmentPostProcessor processor = new PreLegacyPropertyEnvironmentPostProcessor();
 
     @Test
-    public void postProcessorHasConfiguredOrder() {
+    void postProcessorHasConfiguredOrder() {
         assertEquals(processor.getOrder(), PreLegacyPropertyEnvironmentPostProcessor.DEFAULT_ORDER);
     }
 
     @Test
-    public void testMapLegacyToCurrent(CapturedOutput output) {
+    void testMapLegacyToCurrent(CapturedOutput output) {
         Properties properties = new Properties();
         properties.setProperty("azure.storage.account-key", "fakekey");
         properties.setProperty("azure.keyvault.uri", "fakeuri");
@@ -56,7 +55,7 @@ public class PreLegacyPropertyProcessorTest {
     }
 
     @Test
-    public void testRelaxBinding(CapturedOutput output) {
+    void testRelaxBinding(CapturedOutput output) {
         Properties properties = new Properties();
         properties.setProperty("azure.storage.accountKey", "fakekey");
         properties.put("azure.cosmos.connection-mode", ConnectionMode.DIRECT);
@@ -75,22 +74,24 @@ public class PreLegacyPropertyProcessorTest {
             toLogString("azure.storage.account-key", "spring.cloud.azure.storage.account-key")));
     }
 
+    // TODO(xiada): this test
 
-    @Test
-    public void testMultipleKeyVaults(CapturedOutput output) {
+    /*@Test
+    void testMultipleKeyVaults(CapturedOutput output) {
         Properties properties = new Properties();
         properties.setProperty("azure.keyvault.order", "one, two");
-        properties.setProperty("spring.cloud.azure.keyvault.order", "three, four");
         properties.setProperty("azure.keyvault.one.uri", "uri");
         properties.setProperty("azure.keyvault.two.client-id", "id");
         properties.setProperty("azure.keyvault.three.client-key", "key");
         properties.setProperty("azure.keyvault.four.authority-host", "host");
         properties.setProperty("azure.keyvault.five.enabled", "true");
+        properties.setProperty("spring.cloud.azure.keyvault.order", "three, four");
 
         PropertiesPropertySource propertySource = new PropertiesPropertySource("test", properties);
         ConfigurableEnvironment environment = getEnvironment(propertySource, processor);
 
         assertTrue(environment.getPropertySources().contains(processor.getClass().getName()));
+
         assertNull(environment.getProperty("spring.cloud.azure.keyvault.one.uri"));
         assertNull(environment.getProperty("spring.cloud.azure.keyvault.two.credential.client-id"));
         assertEquals("key", environment.getProperty("spring.cloud.azure.keyvault.three.credential.client-secret"));
@@ -100,7 +101,7 @@ public class PreLegacyPropertyProcessorTest {
             toLogString("azure.keyvault.one.uri", "spring.cloud.azure.keyvault.one.uri")));
         assertTrue(output.getOut().contains(
             toLogString("azure.keyvault.three.client-key", "spring.cloud.azure.keyvault.three.credential.client-secret")));
-    }
+    }*/
 
     private ConfigurableEnvironment getEnvironment(PropertiesPropertySource propertiesPropertySource,
                                                    EnvironmentPostProcessor environmentPostProcessor) {
@@ -119,7 +120,4 @@ public class PreLegacyPropertyProcessorTest {
         return new SpringApplicationBuilder().sources(sources).web(WebApplicationType.NONE).build();
     }
 
-//    public static String toLogString(String legacyPropertyName, String currentPropertyName) {
-//        return String.format("Deprecated property %s detected! Use %s instead!", legacyPropertyName, currentPropertyName);
-//    }
 }

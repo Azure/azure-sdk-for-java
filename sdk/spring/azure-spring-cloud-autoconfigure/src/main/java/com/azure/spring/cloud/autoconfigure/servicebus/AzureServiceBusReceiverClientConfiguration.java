@@ -10,6 +10,8 @@ import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -17,20 +19,34 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Configuration for a {@link ServiceBusReceiverClient} or a {@link ServiceBusReceiverAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
+@AzureServiceBusReceiverClientConfiguration.ConditionalOnServiceBusReceiver
 class AzureServiceBusReceiverClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusReceiverClientConfiguration.class);
+
     private final PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+    private final AzureServiceBusProperties serviceBusProperties;
+
+    AzureServiceBusReceiverClientConfiguration(AzureServiceBusProperties serviceBusProperties) {
+        this.serviceBusProperties = serviceBusProperties;
+    }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(
         prefix = AzureServiceBusProperties.PREFIX, name = "receiver.session-aware", havingValue = "false", matchIfMissing = true
     )
+    @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
     public ServiceBusReceiverAsyncClient serviceBusReceiverAsyncClient(
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
         return receiverClientBuilder.buildAsyncClient();
@@ -41,6 +57,7 @@ class AzureServiceBusReceiverClientConfiguration {
     @ConditionalOnProperty(
         prefix = AzureServiceBusProperties.PREFIX, name = "receiver.session-aware", havingValue = "false", matchIfMissing = true
     )
+    @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
     public ServiceBusReceiverClient serviceBusReceiverClient(
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
         return receiverClientBuilder.buildClient();
@@ -52,10 +69,9 @@ class AzureServiceBusReceiverClientConfiguration {
         prefix = AzureServiceBusProperties.PREFIX, name = "receiver.session-aware", havingValue = "false", matchIfMissing = true
     )
     public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
-        ServiceBusClientBuilder serviceBusClientBuilder,
-        AzureServiceBusProperties serviceBusProperties) {
+        ServiceBusClientBuilder serviceBusClientBuilder) {
 
-        final AzureServiceBusProperties.ServiceBusReceiver receiverProperties = serviceBusProperties.getReceiver();
+        final AzureServiceBusProperties.ServiceBusReceiver receiverProperties = this.serviceBusProperties.getReceiver();
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder = serviceBusClientBuilder.receiver();
 
         propertyMapper.from(receiverProperties.getQueueName()).to(receiverClientBuilder::queueName);
@@ -78,7 +94,7 @@ class AzureServiceBusReceiverClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "receiver.session-aware")
+    @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class)
     public ServiceBusSessionReceiverAsyncClient serviceBusSessionReceiverAsyncClient(
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverClientBuilder) {
         return receiverClientBuilder.buildAsyncClient();
@@ -86,7 +102,7 @@ class AzureServiceBusReceiverClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "receiver.session-aware")
+    @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class)
     public ServiceBusSessionReceiverClient serviceBusSessionReceiverClient(
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverClientBuilder) {
         return receiverClientBuilder.buildClient();
@@ -96,10 +112,9 @@ class AzureServiceBusReceiverClientConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "receiver.session-aware")
     public ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
-        ServiceBusClientBuilder serviceBusClientBuilder,
-        AzureServiceBusProperties serviceBusProperties) {
+        ServiceBusClientBuilder serviceBusClientBuilder) {
 
-        final AzureServiceBusProperties.ServiceBusReceiver receiverProperties = serviceBusProperties.getReceiver();
+        final AzureServiceBusProperties.ServiceBusReceiver receiverProperties = this.serviceBusProperties.getReceiver();
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder = serviceBusClientBuilder.sessionReceiver();
 
         propertyMapper.from(receiverProperties.getQueueName()).to(sessionReceiverClientBuilder::queueName);
@@ -118,6 +133,14 @@ class AzureServiceBusReceiverClientConfiguration {
             LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name will take effective");
         }
         return sessionReceiverClientBuilder;
+    }
+
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.receiver.queue-name:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.receiver.topic-name:}')")
+    public @interface ConditionalOnServiceBusReceiver {
     }
 
 }

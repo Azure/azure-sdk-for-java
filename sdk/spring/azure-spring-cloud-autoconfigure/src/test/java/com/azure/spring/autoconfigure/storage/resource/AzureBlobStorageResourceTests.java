@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.storage.resource;
 
-import com.azure.spring.autoconfigure.storage.StorageResourceAutoConfiguration;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -35,7 +34,7 @@ import static org.mockito.Mockito.when;
  * @author Warren Zhu
  */
 @SpringBootTest(properties = "spring.main.banner-mode=off")
-public class AzureBlobStorageTests {
+public class AzureBlobStorageResourceTests {
 
     private static final String CONTAINER_NAME = "container";
     private static final String NON_EXISTING = "non-existing";
@@ -49,25 +48,25 @@ public class AzureBlobStorageTests {
     private BlobServiceClient blobServiceClient;
 
     @Test
-    public void testEmptyPath() {
+    void testEmptyPath() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobStorageResource(this.blobServiceClient,
             "azure-blob://"));
     }
 
     @Test
-    public void testSlashPath() {
+    void testSlashPath() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobStorageResource(this.blobServiceClient,
             "azure-blob:///"));
     }
 
     @Test
-    public void testValidObject() throws Exception {
+    void testValidObject() throws Exception {
         Assertions.assertTrue(this.remoteResource.exists());
         Assertions.assertEquals(CONTENT_LENGTH, this.remoteResource.contentLength());
     }
 
     @Test
-    public void testWritable() throws Exception {
+    void testWritable() throws Exception {
         Assertions.assertTrue(this.remoteResource instanceof WritableResource);
         WritableResource writableResource = (WritableResource) this.remoteResource;
         Assertions.assertTrue(writableResource.isWritable());
@@ -75,7 +74,7 @@ public class AzureBlobStorageTests {
     }
 
     @Test
-    public void testWritableOutputStream() throws Exception {
+    void testWritableOutputStream() throws Exception {
         String location = "azure-blob://container/blob";
 
         BlobStorageResource resource = new BlobStorageResource(blobServiceClient, location);
@@ -84,7 +83,7 @@ public class AzureBlobStorageTests {
     }
 
     @Test
-    public void testWritableOutputStreamNoAutoCreateOnNullBlob() {
+    void testWritableOutputStreamNoAutoCreateOnNullBlob() {
         String location = "azure-blob://container/non-existing";
 
         BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient, location);
@@ -92,7 +91,7 @@ public class AzureBlobStorageTests {
     }
 
     @Test
-    public void testGetInputStreamOnNullBlob() {
+    void testGetInputStreamOnNullBlob() {
         String location = "azure-blob://container/non-existing";
 
         BlobStorageResource resource = new BlobStorageResource(blobServiceClient, location);
@@ -100,37 +99,41 @@ public class AzureBlobStorageTests {
     }
 
     @Test
-    public void testGetFilenameOnNonExistingBlob() {
+    void testGetFilenameOnNonExistingBlob() {
         String location = "azure-blob://container/non-existing";
         BlobStorageResource resource = new BlobStorageResource(blobServiceClient, location);
         Assertions.assertEquals(NON_EXISTING, resource.getFilename());
     }
 
     @Test
-    public void testContainerDoesNotExist() {
+    void testContainerDoesNotExist() {
         BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient,
             "azure-blob://non-existing/blob");
         Assertions.assertFalse(resource.exists());
     }
 
     @Test
-    public void testContainerExistsButResourceDoesNot() {
+    void testContainerExistsButResourceDoesNot() {
         BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient,
             "azure-blob://container/non-existing");
         Assertions.assertFalse(resource.exists());
     }
 
     @Configuration
-    @Import({StorageBlobClientConfiguration.class, StorageResourceAutoConfiguration.class})
+    @Import({ StorageBlobClientConfiguration.class })
     static class StorageApplication {
-
 
     }
 
     static class StorageBlobClientConfiguration {
 
         @Bean
-        public BlobServiceClient mockBlobServiceClient() {
+        public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver(BlobServiceClient blobServiceClient) {
+            return new AzureStorageBlobProtocolResolver(blobServiceClient);
+        }
+
+        @Bean
+        public BlobServiceClient blobServiceClient() {
             return mockBlobServiceClientBuilder().buildClient();
         }
 

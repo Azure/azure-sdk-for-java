@@ -23,6 +23,22 @@ public class KeyVaultProperties {
     public static final String PREFIX = "spring.cloud.azure.keyvault.propertysource";
     public static final String DELIMITER = ".";
 
+    private Boolean enabled;
+    private List<String> secretKeys;
+    private Long refreshInterval = KeyVaultEnvironmentPostProcessorHelper.DEFAULT_REFRESH_INTERVAL_MS;
+    /**
+     * Defines the constant for the property that enables/disables case sensitive keys.
+     */
+    private String caseSensitiveKeys;
+
+    /**
+     * The constant used to define the order of the key vaults you are
+     * delivering (comma delimited, e.g 'my-vault, my-vault-2').
+     */
+    private String order;
+
+    private String uri;
+
     public Boolean getEnabled() {
         return enabled;
     }
@@ -71,22 +87,6 @@ public class KeyVaultProperties {
         this.caseSensitiveKeys = caseSensitiveKeys;
     }
 
-
-    private Boolean enabled;
-    private List<String> secretKeys;
-    private Long refreshInterval = KeyVaultEnvironmentPostProcessorHelper.DEFAULT_REFRESH_INTERVAL_MS;
-    /**
-     * Defines the constant for the property that enables/disables case sensitive keys.
-     */
-    private String caseSensitiveKeys;
-
-    /**
-     * The constant used to define the order of the key vaults you are
-     * delivering (comma delimited, e.g 'my-vault, my-vault-2').
-     */
-    private String order;
-
-    private String uri;
 
     /**
      * enum Property

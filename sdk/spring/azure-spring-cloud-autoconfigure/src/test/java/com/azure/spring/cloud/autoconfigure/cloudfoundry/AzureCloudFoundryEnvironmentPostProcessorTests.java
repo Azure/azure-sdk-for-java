@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Warren Zhu
  */
-public class AzureCloudFoundryEnvironmentPostProcessorTests {
+class AzureCloudFoundryEnvironmentPostProcessorTests {
 
     /*private ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer(
         context -> new AzureCloudFoundryEnvironmentPostProcessor()

@@ -22,13 +22,6 @@ public class AzurePropertyAutoConfiguration {
 
     public static final String AZURE_PROPERTY_BEAN_NAME = "azureProperties";
 
-    public static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure";
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-
     static class Registrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
         private Environment environment;
 
@@ -45,7 +38,7 @@ public class AzurePropertyAutoConfiguration {
                     BeanDefinitionBuilder
                         .genericBeanDefinition(AzureConfigurationProperties.class,
                                                () -> Binder.get(this.environment)
-                                                           .bindOrCreate(AZURE_PROPERTY_PREFIX,
+                                                           .bindOrCreate(AzureConfigurationProperties.PREFIX,
                                                                          AzureConfigurationProperties.class))
                         .getBeanDefinition());
             }

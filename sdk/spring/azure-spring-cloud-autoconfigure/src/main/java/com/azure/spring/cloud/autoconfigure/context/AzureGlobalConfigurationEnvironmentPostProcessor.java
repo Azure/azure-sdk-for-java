@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.util.Configuration;
+import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -16,11 +17,10 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_PASSWORD;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TENANT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_USERNAME;
-import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration.AZURE_PROPERTY_PREFIX;
 
 public class AzureGlobalConfigurationEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    public static final String CREDENTIAL_PREFIX = AZURE_PROPERTY_PREFIX + ".credential.";
+    public static final String CREDENTIAL_PREFIX = AzureConfigurationProperties.PREFIX + ".credential.";
 
     @Override
     public int getOrder() {

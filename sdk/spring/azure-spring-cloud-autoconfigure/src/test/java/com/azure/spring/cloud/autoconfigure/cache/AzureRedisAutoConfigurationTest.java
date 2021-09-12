@@ -21,32 +21,33 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class AzureRedisAutoConfigurationTest {
+class AzureRedisAutoConfigurationTest {
+
     private static final String KEY = "KEY";
     private static final String HOST = "localhost";
     private static final int PORT = 6379;
     private static final boolean IS_SSL = true;
 
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class));
+
     @Test
-    public void testAzureRedisDisabled() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+    void testAzureRedisDisabled() {
+        this.contextRunner
             .withPropertyValues("spring.cloud.azure.redis.enabled=false")
             .run(context -> assertThat(context).doesNotHaveBean(AzureRedisProperties.class));
     }
 
     @Test
-    public void testWithoutRedisOperationsClass() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+    void testWithoutRedisOperationsClass() {
+        this.contextRunner
             .withClassLoader(new FilteredClassLoader(RedisOperations.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureRedisProperties.class));
     }
 
     @Test
-    public void testAzureRedisPropertiesIllegal() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+    void testAzureRedisPropertiesIllegal() {
+        this.contextRunner
             .withUserConfiguration(TestConfiguration.class)
             .withPropertyValues("spring.cloud.azure.redis.name=")
             .run(context -> assertThrows(IllegalStateException.class,
@@ -54,9 +55,8 @@ public class AzureRedisAutoConfigurationTest {
     }
 
     @Test
-    public void testAzureRedisPropertiesConfigured() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class))
+    void testAzureRedisPropertiesConfigured() {
+        this.contextRunner
             .withUserConfiguration(TestConfiguration.class)
             .withPropertyValues("spring.cloud.azure.redis.name=redis")
             .run(

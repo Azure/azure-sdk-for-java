@@ -34,6 +34,7 @@ import java.util.Arrays;
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
 
+    // TODO (xiada): refactor this, do not expose RedisCacheCrud
 
     @Bean
     @ConditionalOnMissingBean

@@ -3,11 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
+import com.azure.spring.autoconfigure.storage.resource.AzureStorageFileProtocolResolver;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -53,6 +55,12 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     @ConditionalOnMissingBean
     public ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
         return factory.build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
+        return new AzureStorageFileProtocolResolver(shareServiceClient);
     }
 
 }

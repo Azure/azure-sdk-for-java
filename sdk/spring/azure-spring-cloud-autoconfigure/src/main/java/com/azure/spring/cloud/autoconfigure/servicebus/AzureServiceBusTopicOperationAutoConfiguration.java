@@ -26,13 +26,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(ServiceBusTopicClientFactory.class)
-@ConditionalOnBean(ServiceBusClientBuilder.class)
 @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "enabled", matchIfMissing = true)
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 public class AzureServiceBusTopicOperationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(ServiceBusClientBuilder.class)
     public ServiceBusTopicClientFactory topicClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                            ObjectProvider<DefaultServiceBusTopicProvisioner> serviceBusTopicProvisioners) {
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(serviceBusClientBuilder);

@@ -14,8 +14,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration.AZURE_PROPERTY_PREFIX;
-
 
 /**
  *
@@ -23,8 +21,8 @@ import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConf
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureResourceManager.class)
 @ConditionalOnProperty({
-    AZURE_PROPERTY_PREFIX + ".resource-manager.enabled",
-    AZURE_PROPERTY_PREFIX + ".profile.tenant-id"
+    AzureConfigurationProperties.PREFIX + ".resource-manager.enabled",
+    AzureConfigurationProperties.PREFIX + ".profile.tenant-id"
 })
 public class AzureResourceManagerAutoConfiguration {
 

@@ -7,6 +7,7 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.util.StringUtils;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -18,6 +19,9 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyProp
 
     @Override
     public ProxyOptions convert(ProxyProperties properties) {
+        if (!StringUtils.hasText(properties.getHostname())) {
+            return null;
+        }
         ProxyAuthenticationType authenticationType;
         switch (properties.getAuthenticationType()) {
             case "basic":

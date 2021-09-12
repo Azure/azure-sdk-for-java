@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
  * Auto-configuration for a {@link CosmosClientBuilder} and cosmos clients.
  */
 @ConditionalOnClass(CosmosClientBuilder.class)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = AzureCosmosProperties.PREFIX, name = "enabled", matchIfMissing = true)
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureCosmosAutoConfiguration(AzureConfigurationProperties azureProperties) {

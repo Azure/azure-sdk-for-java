@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhub.resourcemanager.DefaultEventHubProvisioner;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubArmConnectionStringProvider;
 import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.core.annotation.Order;
 /**
  *
  */
+@ConditionalOnBean(AzureResourceManager.class)
 public class AzureEventHubResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
 
     private final AzureEventHubProperties eventHubProperties;

@@ -1,18 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.context;
+package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration.AZURE_PROPERTY_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AzureResourceManagerAutoConfigurationTest {
@@ -28,7 +27,7 @@ public class AzureResourceManagerAutoConfigurationTest {
     @Test
     public void testTenantIdRequired() {
         this.contextRunner
-            .withPropertyValues(AZURE_PROPERTY_PREFIX + ".resource-manager.enabled=true")
+            .withPropertyValues(AzureConfigurationProperties.PREFIX + ".resource-manager.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(AzureProfile.class));
     }
 
