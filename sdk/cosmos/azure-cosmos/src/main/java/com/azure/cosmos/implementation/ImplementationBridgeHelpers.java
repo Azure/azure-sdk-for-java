@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -231,6 +232,23 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
             <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
+
+            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+
+            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
+                CosmosBulkExecutionOptions options,
+                double minRetryRate,
+                double maxRetryRate);
+
+            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+
+            int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
+
+            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
         }
     }
 

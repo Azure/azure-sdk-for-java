@@ -5,7 +5,6 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.implementation.constants.AADTokenClaim;
 import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -17,8 +16,6 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.AbstractOAuth2Token;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -29,8 +26,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -48,32 +43,11 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2UserService.class);
 
     private final OidcUserService oidcUserService;
-    private final List<String> allowedGroupNames;
-    private final Set<String> allowedGroupIds;
-    private final boolean enableFullList;
-    private final GraphClient graphClient;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
     private static final String ROLES = "roles";
 
-    public AADOAuth2UserService(AADAuthenticationProperties properties) {
-        this(properties, new GraphClient(properties));
-    }
-
-    public AADOAuth2UserService(AADAuthenticationProperties properties, GraphClient graphClient) {
-        allowedGroupNames = Optional.ofNullable(properties)
-                                    .map(AADAuthenticationProperties::getUserGroup)
-                                    .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
-                                    .orElseGet(Collections::emptyList);
-        allowedGroupIds = Optional.ofNullable(properties)
-                                  .map(AADAuthenticationProperties::getUserGroup)
-                                  .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroupIds)
-                                  .orElseGet(Collections::emptySet);
-        enableFullList = Optional.ofNullable(properties)
-                                 .map(AADAuthenticationProperties::getUserGroup)
-                                 .map(AADAuthenticationProperties.UserGroupProperties::getEnableFullList)
-                                 .orElse(false);
+    public AADOAuth2UserService() {
         this.oidcUserService = new OidcUserService();
-        this.graphClient = graphClient;
     }
 
     @Override
@@ -81,7 +55,6 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
         OidcIdToken idToken = oidcUser.getIdToken();
-        Set<String> authorityStrings = new HashSet<>();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
@@ -91,11 +64,9 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
-        authorityStrings.addAll(extractRolesFromIdToken(idToken));
-        authorityStrings.addAll(extractGroupRolesFromAccessToken(userRequest.getAccessToken()));
-        Set<SimpleGrantedAuthority> authorities = authorityStrings.stream()
-                                                                  .map(SimpleGrantedAuthority::new)
-                                                                  .collect(Collectors.toSet());
+        Set<SimpleGrantedAuthority> authorities = extractRolesFromIdToken(idToken).stream()
+                                                                                  .map(SimpleGrantedAuthority::new)
+                                                                                  .collect(Collectors.toSet());
 
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
@@ -127,47 +98,4 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                        .collect(Collectors.toSet());
     }
 
-    Set<String> extractGroupRolesFromAccessToken(OAuth2AccessToken accessToken) {
-        if (allowedGroupNames.isEmpty() && allowedGroupIds.isEmpty()) {
-            return Collections.emptySet();
-        }
-        Set<String> roles = new HashSet<>();
-        GroupInformation groupInformation = getGroupInformation(accessToken);
-        if (!allowedGroupNames.isEmpty()) {
-            Optional.of(groupInformation)
-                    .map(GroupInformation::getGroupsNames)
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .filter(allowedGroupNames::contains)
-                    .forEach(roles::add);
-        }
-        if (!allowedGroupIds.isEmpty()) {
-            Optional.of(groupInformation)
-                    .map(GroupInformation::getGroupsIds)
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .filter(this::isAllowedGroupId)
-                    .forEach(roles::add);
-        }
-        return roles.stream()
-                    .map(roleStr -> AuthorityPrefix.ROLE + roleStr)
-                    .collect(Collectors.toSet());
-    }
-
-    private boolean isAllowedGroupId(String groupId) {
-        if (enableFullList) {
-            return true;
-        }
-        if (allowedGroupIds.size() == 1 && allowedGroupIds.contains("all")) {
-            return true;
-        }
-        return allowedGroupIds.contains(groupId);
-    }
-
-    private GroupInformation getGroupInformation(OAuth2AccessToken accessToken) {
-        return Optional.of(accessToken)
-                       .map(AbstractOAuth2Token::getTokenValue)
-                       .map(graphClient::getGroupInformation)
-                       .orElseGet(GroupInformation::new);
-    }
 }

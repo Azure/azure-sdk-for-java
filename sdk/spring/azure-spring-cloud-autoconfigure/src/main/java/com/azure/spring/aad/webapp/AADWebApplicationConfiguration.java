@@ -5,7 +5,6 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.condition.aad.WebApplicationCondition;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -26,13 +25,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 @Conditional(WebApplicationCondition.class)
 public class AADWebApplicationConfiguration {
 
-    @Autowired
-    private AADAuthenticationProperties properties;
-
     @Bean
     @ConditionalOnMissingBean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
-        return new AADOAuth2UserService(properties);
+        return new AADOAuth2UserService();
     }
 
     /**

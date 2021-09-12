@@ -18,6 +18,7 @@ public final class CosmosBulkItemRequestOptions {
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
 
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkItemRequestOptions() {
     }
 

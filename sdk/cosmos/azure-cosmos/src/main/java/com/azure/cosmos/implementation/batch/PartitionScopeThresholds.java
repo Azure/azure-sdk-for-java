@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.slf4j.Logger;
@@ -34,11 +35,19 @@ public class PartitionScopeThresholds {
 
         this.pkRangeId = pkRangeId;
         this.options = options;
-        this.targetMicroBatchSize = new AtomicInteger(options.getMaxMicroBatchSize());
+        this.targetMicroBatchSize = new AtomicInteger(
+            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .getMaxMicroBatchSize(options));
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
-        this.minRetryRate = options.getMinTargetedMicroBatchRetryRate();
-        this.maxRetryRate = options.getMaxTargetedMicroBatchRetryRate();
+
+        this.minRetryRate = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMinTargetedMicroBatchRetryRate(options);
+        this.maxRetryRate = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMaxTargetedMicroBatchRetryRate(options);
         this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
     }
 
@@ -97,12 +106,16 @@ public class PartitionScopeThresholds {
         int microBatchSizeBefore = this.targetMicroBatchSize.get();
         int microBatchSizeAfter = microBatchSizeBefore;
 
-        if (retryRate < this.minRetryRate && microBatchSizeBefore < this.options.getMaxMicroBatchSize()) {
+        int maxMicroBatchSize = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMaxMicroBatchSize(options);
+
+        if (retryRate < this.minRetryRate && microBatchSizeBefore < maxMicroBatchSize) {
             int targetedNewBatchSize = Math.min(
                 Math.min(
                     microBatchSizeBefore * 2,
-                    microBatchSizeBefore + (int)(this.options.getMaxMicroBatchSize() * this.avgRetryRate)),
-                this.options.getMaxMicroBatchSize());
+                    microBatchSizeBefore + (int)(maxMicroBatchSize * this.avgRetryRate)),
+                maxMicroBatchSize);
             if (this.targetMicroBatchSize.compareAndSet(microBatchSizeBefore, targetedNewBatchSize)) {
                 microBatchSizeAfter = targetedNewBatchSize;
             }
