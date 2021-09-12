@@ -4,7 +4,7 @@
 package com.azure.spring.core.converter;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.spring.core.properties.ProxyProperties;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 

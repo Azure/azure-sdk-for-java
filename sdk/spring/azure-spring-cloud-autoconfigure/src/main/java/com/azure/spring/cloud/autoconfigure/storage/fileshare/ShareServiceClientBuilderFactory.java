@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -12,6 +13,8 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
@@ -26,6 +29,8 @@ import static com.azure.spring.core.ApplicationId.VERSION;
  * context and blob properties.
  */
 public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<ShareServiceClientBuilder> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShareServiceClientBuilderFactory.class);
 
     private final AzureStorageFileShareProperties fileShareProperties;
 
@@ -70,7 +75,18 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBui
 
     @Override
     protected BiConsumer<ShareServiceClientBuilder, Configuration> consumeConfiguration() {
-        return null;
+        return ShareServiceClientBuilder::configuration;
+    }
+
+    @Override
+    protected BiConsumer<ShareServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
+        LOGGER.warn("TokenCredential is not supported to configure in ShareServiceClientBuilder.");
+        return (a, b) -> { };
+    }
+
+    @Override
+    protected BiConsumer<ShareServiceClientBuilder, String> consumeConnectionString() {
+        return ShareServiceClientBuilder::connectionString;
     }
 
     @Override

@@ -25,8 +25,8 @@ public abstract class AzureServiceClientBuilderFactoryTestBase<B, P extends Azur
         TokenCredentialProperties properties = new TokenCredentialProperties();
         properties.setTenantId("test-tenant");
         properties.setClientId("test-client");
-        properties.setCertificatePath("test-cert-path");
-        properties.setCertificatePassword("test-cert-password");
+        properties.setClientCertificatePath("test-cert-path");
+        properties.setClientCertificatePassword("test-cert-password");
 
         return properties;
     }

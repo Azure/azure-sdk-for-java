@@ -5,9 +5,9 @@ package com.azure.spring.cloud.autoconfigure.cache;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
-import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
-import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.cloud.resourcemanager.implementation.crud.RedisCacheCrud;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 @Configuration
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.redis.enabled", matchIfMissing = true)
-@ConditionalOnClass({RedisOperations.class, RedisCacheManager.class})
+@ConditionalOnClass({RedisOperations.class, RedisCacheCrud.class})
 @EnableConfigurationProperties(AzureRedisProperties.class)
 public class AzureRedisAutoConfiguration {
 
@@ -38,16 +38,16 @@ public class AzureRedisAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
-    public RedisCacheManager redisCacheManager(AzureResourceManager azureResourceManager,
-                                               AzureResourceMetadata azureResourceMetadata) {
-        return new RedisCacheManager(azureResourceManager, azureResourceMetadata);
+    public RedisCacheCrud redisCacheManager(AzureResourceManager azureResourceManager,
+                                            AzureResourceMetadata azureResourceMetadata) {
+        return new RedisCacheCrud(azureResourceManager, azureResourceMetadata);
     }
 
     @ConditionalOnMissingBean
     @Primary
     @Bean
     public RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
-                                           RedisCacheManager redisCacheManager) {
+                                           RedisCacheCrud redisCacheManager) {
         String cacheName = azureRedisProperties.getName();
 
         RedisCache redisCache = redisCacheManager.getOrCreate(cacheName);

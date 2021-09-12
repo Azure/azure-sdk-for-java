@@ -3,11 +3,9 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,11 +15,12 @@ import java.util.stream.Stream;
  * KeyVaultProperties
  */
 @ConfigurationProperties(value = KeyVaultProperties.PREFIX)
-public class KeyVaultProperties extends AzureProperties {
+public class KeyVaultProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultProperties.class);
 
-    public static final String PREFIX = "spring.cloud.azure.keyvault";
+    // TODO the prefix?
+    public static final String PREFIX = "spring.cloud.azure.keyvault.propertysource";
     public static final String DELIMITER = ".";
 
     public Boolean getEnabled() {
@@ -72,21 +71,10 @@ public class KeyVaultProperties extends AzureProperties {
         this.caseSensitiveKeys = caseSensitiveKeys;
     }
 
-    @Deprecated
-    @DeprecatedConfigurationProperty(
-        reason = "Deprecate the telemetry endpoint and use HTTP header User Agent instead.")
-    public String getAllowTelemetry() {
-        return allowTelemetry;
-    }
-
-    public void setAllowTelemetry(String allowTelemetry) {
-        this.allowTelemetry = allowTelemetry;
-    }
 
     private Boolean enabled;
     private List<String> secretKeys;
     private Long refreshInterval = KeyVaultEnvironmentPostProcessorHelper.DEFAULT_REFRESH_INTERVAL_MS;
-    private String allowTelemetry;
     /**
      * Defines the constant for the property that enables/disables case sensitive keys.
      */

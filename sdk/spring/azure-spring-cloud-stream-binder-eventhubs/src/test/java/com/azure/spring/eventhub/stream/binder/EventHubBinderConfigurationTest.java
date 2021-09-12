@@ -3,11 +3,9 @@
 
 package com.azure.spring.eventhub.stream.binder;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.EventHubConnectionStringProvider;
-import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
+import com.azure.spring.cloud.resourcemanager.core.impl.EventHubNamespaceManager;
 import com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
@@ -40,7 +38,7 @@ public class EventHubBinderConfigurationTest {
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubClientFactory.class);
                 assertThat(context).hasSingleBean(EventHubOperation.class);
-                assertThat(context).doesNotHaveBean(StorageAccountManager.class);
+                assertThat(context).doesNotHaveBean(com.azure.spring.cloud.resourcemanager.core.impl.StorageAccountCrud.class);
             });
     }
 
@@ -58,7 +56,7 @@ public class EventHubBinderConfigurationTest {
                 assertThat(context).hasSingleBean(EventHubClientFactory.class);
                 assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                 assertThat(context).hasSingleBean(EventHubOperation.class);
-                assertThat(context).doesNotHaveBean(StorageAccountManager.class);
+                assertThat(context).doesNotHaveBean(com.azure.spring.cloud.resourcemanager.core.impl.StorageAccountCrud.class);
             });
     }
 

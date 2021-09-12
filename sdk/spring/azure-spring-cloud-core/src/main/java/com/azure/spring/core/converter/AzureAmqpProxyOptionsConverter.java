@@ -5,7 +5,7 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.spring.core.properties.ProxyProperties;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
 import org.springframework.core.convert.converter.Converter;
 
 import java.net.InetSocketAddress;

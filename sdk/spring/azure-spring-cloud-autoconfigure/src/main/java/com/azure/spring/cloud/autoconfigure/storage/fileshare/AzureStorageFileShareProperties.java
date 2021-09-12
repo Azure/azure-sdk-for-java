@@ -5,14 +5,13 @@ package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.storage.file.share.ShareServiceVersion;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Properties for Azure Storage File Share service.
  */
-@ConfigurationProperties(prefix = "spring.cloud.azure.storage.fileshare")
 public class AzureStorageFileShareProperties extends AzureStorageProperties {
 
+    public static final String PREFIX = "spring.cloud.azure.storage.fileshare";
 
     private String endpoint;
     private ShareServiceVersion serviceVersion;

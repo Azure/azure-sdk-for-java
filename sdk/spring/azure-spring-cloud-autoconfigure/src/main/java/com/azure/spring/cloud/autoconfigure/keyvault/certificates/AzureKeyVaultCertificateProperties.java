@@ -5,14 +5,15 @@ package com.azure.spring.cloud.autoconfigure.keyvault.certificates;
 
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.spring.cloud.autoconfigure.keyvault.AzureKeyVaultProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Properties for Azure Key Vault Certificate.
  */
-@ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.certificate")
 public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties {
 
+    public static final String PREFIX = "spring.cloud.azure.keyvault.certificate";
+
+    // TODO (xiada): use enum here?
     private CertificateServiceVersion serviceVersion;
 
     public CertificateServiceVersion getServiceVersion() {

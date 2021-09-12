@@ -3,13 +3,12 @@
 
 package com.azure.spring.servicebus.stream.binder.config;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
+import com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusNamespaceCrud;
+import com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusTopicSubscriptionManager;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusTopicMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusTopicExtendedBindingProperties;
@@ -30,7 +29,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureResourceManagerAutoConfiguration.class,
-    AzureServiceBusOperationAutoConfiguration.class,
+    AzureServiceBusResourceManagerAutoConfiguration.class,
     AzureServiceBusTopicOperationAutoConfiguration.class,
     ServiceBusTopicBinderHealthIndicatorConfiguration.class
 })
@@ -42,7 +41,7 @@ public class ServiceBusTopicBinderConfiguration {
     public ServiceBusChannelProvisioner serviceBusChannelProvisioner(
         AzureServiceBusProperties serviceBusProperties,
         @Autowired(required = false) ServiceBusNamespaceManager serviceBusNamespaceManager,
-        @Autowired(required = false) ServiceBusTopicManager serviceBusTopicManager,
+        @Autowired(required = false) com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusTopicCrud serviceBusTopicManager,
         @Autowired(required = false) ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager) {
 
         if (serviceBusNamespaceManager != null

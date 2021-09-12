@@ -10,9 +10,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Properties for Azure Storage Queue service.
  */
-@ConfigurationProperties(prefix = "spring.cloud.azure.storage.queue")
 public class AzureStorageQueueProperties extends AzureStorageProperties {
 
+    public static final String PREFIX = "spring.cloud.azure.storage.queue";
 
     private String endpoint;
     private QueueServiceVersion serviceVersion;

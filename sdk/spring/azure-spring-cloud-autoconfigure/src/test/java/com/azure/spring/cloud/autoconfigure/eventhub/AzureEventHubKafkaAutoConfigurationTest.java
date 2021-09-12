@@ -14,6 +14,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.eventhub.kafka.AzureEventHubKafkaAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

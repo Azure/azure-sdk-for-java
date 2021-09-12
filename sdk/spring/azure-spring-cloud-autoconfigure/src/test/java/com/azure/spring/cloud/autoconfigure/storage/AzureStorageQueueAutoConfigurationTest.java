@@ -25,7 +25,8 @@ public class AzureStorageQueueAutoConfigurationTest {
             .withConfiguration(AutoConfigurations.of(AzureStorageQueueOperationAutoConfiguration.class))
             .withUserConfiguration(TestConfiguration.class);
 
-    @Test
+   /* TODO (xiada): test
+   @Test
     public void testAzureStoragePropertiesWhenMissingQueueServiceClient() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
                           .run(context -> assertThat(context).doesNotHaveBean(LegacyAzureStorageProperties.class));
@@ -68,7 +69,7 @@ public class AzureStorageQueueAutoConfigurationTest {
             assertThat(context.getBean(LegacyAzureStorageProperties.class).getAccessKey()).isEqualTo("fake-access-key");
             assertThat(context.getBean(LegacyAzureStorageProperties.class).getResourceGroup()).isEqualTo("fake-resource-group");
         });
-    }
+    }*/
 
     @Test
     public void testStorageQueueClientFactoryBean() {

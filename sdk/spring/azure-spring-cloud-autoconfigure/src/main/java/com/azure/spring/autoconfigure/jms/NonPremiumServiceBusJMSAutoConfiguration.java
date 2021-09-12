@@ -3,9 +3,7 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.apache.qpid.jms.JmsConnectionFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -18,8 +16,6 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
 import javax.jms.ConnectionFactory;
-
-import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Standard and Basic Service Bus
@@ -36,8 +32,7 @@ public class NonPremiumServiceBusJMSAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties,
-                                                      @Qualifier(AZURE_PROPERTY_BEAN_NAME)AzureProperties azureProperties) {
+    public ConnectionFactory jmsConnectionFactory(AzureServiceBusJMSProperties serviceBusJMSProperties) {
         final String connectionString = serviceBusJMSProperties.getConnectionString();
         final String clientId = serviceBusJMSProperties.getTopicClientId();
         final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();

@@ -14,6 +14,7 @@ import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -41,7 +42,7 @@ public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilder
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         TokenCredentialProperties tokenCredentialProperties = buildClientSecretTokenCredentialProperties();
-        properties.setCredential(tokenCredentialProperties);
+        BeanUtils.copyProperties(tokenCredentialProperties, properties.getCredential());
 
         final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
         final BlobServiceClient client = builder.buildClient();
@@ -54,7 +55,7 @@ public class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilder
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
         TokenCredentialProperties tokenCredentialProperties = buildClientCertificateTokenCredentialProperties();
-        properties.setCredential(tokenCredentialProperties);
+        BeanUtils.copyProperties(tokenCredentialProperties, properties.getCredential());
 
         final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
         verify(builder, times(1)).credential(any(ClientCertificateCredential.class));

@@ -4,9 +4,9 @@ package com.azure.spring.autoconfigure.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.autoconfigure.unity.AzureProperties;
-import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.KEY;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.URI;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.getCosmosPropertyValues;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.getUnifiedPropertyValues;
-import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -58,9 +58,9 @@ public class CosmosDataAutoConfigurationTest {
                 assertThat(cosmosProperties.getKey()).isEqualTo(KEY);
                 assertThat(cosmosProperties.getDatabase()).isEqualTo(DATABASE_NAME);
 
-                AzureProperties azureProperties = (AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME);
+                AzureConfigurationProperties azureProperties = (AzureConfigurationProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME);
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo(CLIENT_ID);
-                assertThat(azureProperties.getEnvironment().getCloud()).isEqualTo(CLOUD);
+                assertThat(azureProperties.getProfile().getCloud()).isEqualTo(CLOUD);
             });
     }
 

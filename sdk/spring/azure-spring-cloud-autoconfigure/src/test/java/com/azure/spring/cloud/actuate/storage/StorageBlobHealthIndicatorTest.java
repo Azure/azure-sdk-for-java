@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuate.storage;
 
 import com.azure.spring.cloud.actuate.autoconfigure.storage.StorageBlobHealthConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobClientAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.AccountKind;
@@ -44,7 +44,7 @@ public class StorageBlobHealthIndicatorTest {
     public void testWithStorageConfigurationWithConnectionUp() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageBlobClientAutoConfiguration.class, StorageBlobHealthConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class, StorageBlobHealthConfiguration.class))
             .withUserConfiguration(TestConfigurationConnectionUp.class);
 
         contextRunner.run(context -> {
@@ -59,7 +59,7 @@ public class StorageBlobHealthIndicatorTest {
     public void testWithStorageConfigurationWithConnectionDown() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageBlobClientAutoConfiguration.class, StorageBlobHealthConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class, StorageBlobHealthConfiguration.class))
             .withUserConfiguration(TestConfigurationConnectionDown.class);
 
         contextRunner.run(context -> {

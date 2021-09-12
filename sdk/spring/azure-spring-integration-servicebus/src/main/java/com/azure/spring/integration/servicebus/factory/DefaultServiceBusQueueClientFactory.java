@@ -4,8 +4,6 @@
 package com.azure.spring.integration.servicebus.factory;
 
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
@@ -21,9 +19,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.core.ApplicationId.VERSION;
-
 
 /**
  * Default implementation of {@link ServiceBusQueueClientFactory}. Client will be cached to improve performance
@@ -37,20 +32,9 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
 
-    // TODO (xiada) whether will this reuse the underlying connection?
-    private final ServiceBusClientBuilder serviceBusClientBuilder;
-
-    public DefaultServiceBusQueueClientFactory(String connectionString) {
-        this(connectionString, AmqpTransportType.AMQP);
-    }
-
-    public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
-        super(connectionString);
-        this.serviceBusClientBuilder = new ServiceBusClientBuilder()
-                                           .connectionString(connectionString)
-                                           .transportType(amqpTransportType)
-                                           .clientOptions(new ClientOptions()
-                                                              .setApplicationId(AZURE_SPRING_SERVICE_BUS + VERSION));
+    public DefaultServiceBusQueueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
+        super(serviceBusClientBuilder);
+        // TODO (xiada) the application id should be different for spring integration
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {

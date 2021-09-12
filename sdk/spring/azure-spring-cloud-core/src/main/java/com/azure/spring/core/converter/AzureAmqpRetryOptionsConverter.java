@@ -5,11 +5,8 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.spring.core.properties.retry.BackoffProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.core.convert.converter.Converter;
-
-import java.time.Duration;
 
 /**
  * Converts a {@link RetryProperties} to a {@link AmqpRetryOptions}.
@@ -25,11 +22,11 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryProp
         }
 
         if (retryProperties.getTimeout() != null) {
-            retryOptions.setTryTimeout(Duration.ofMillis(retryProperties.getTimeout()));
+            retryOptions.setTryTimeout(retryProperties.getTimeout());
         }
 
         AmqpRetryMode mode;
-        final BackoffProperties backoffProperties = retryProperties.getBackoff();
+        final RetryProperties.BackoffProperties backoffProperties = retryProperties.getBackoff();
         if (backoffProperties != null) {
             if (backoffProperties.getMultiplier() != null && backoffProperties.getMultiplier() > 0) {
                 mode = AmqpRetryMode.EXPONENTIAL;
@@ -38,10 +35,10 @@ public final class AzureAmqpRetryOptionsConverter implements Converter<RetryProp
             }
             retryOptions.setMode(mode);
             if (backoffProperties.getDelay() != null) {
-                retryOptions.setDelay(Duration.ofMillis(backoffProperties.getDelay()));
+                retryOptions.setDelay(backoffProperties.getDelay());
             }
             if (backoffProperties.getMaxDelay() != null) {
-                retryOptions.setMaxDelay(Duration.ofMillis(backoffProperties.getMaxDelay()));
+                retryOptions.setMaxDelay(backoffProperties.getMaxDelay());
             }
         }
         return retryOptions;

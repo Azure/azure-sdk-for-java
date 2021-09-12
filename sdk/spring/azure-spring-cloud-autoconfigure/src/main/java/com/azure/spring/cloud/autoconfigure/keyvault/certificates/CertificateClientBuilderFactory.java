@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.certificates;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -11,6 +12,8 @@ import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
@@ -21,6 +24,8 @@ import java.util.function.BiConsumer;
  * Azure Key Vault certificate client builder factory, it builds the {@link CertificateClientBuilder}.
  */
 public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<CertificateClientBuilder> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CertificateClientBuilderFactory.class);
 
     private final AzureKeyVaultCertificateProperties certificateProperties;
 
@@ -66,5 +71,16 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected BiConsumer<CertificateClientBuilder, Configuration> consumeConfiguration() {
         return CertificateClientBuilder::configuration;
+    }
+
+    @Override
+    protected BiConsumer<CertificateClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
+        return CertificateClientBuilder::credential;
+    }
+
+    @Override
+    protected BiConsumer<CertificateClientBuilder, String> consumeConnectionString() {
+        LOGGER.debug("Connection string is not supported to configure in CertificateClientBuilder");
+        return (a, b) -> { };
     }
 }

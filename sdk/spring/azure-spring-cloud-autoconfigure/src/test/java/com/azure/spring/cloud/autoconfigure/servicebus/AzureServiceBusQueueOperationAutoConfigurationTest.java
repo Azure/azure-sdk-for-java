@@ -6,20 +6,17 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.commonconfig.TestConfigWithAzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextProperties;
-import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
+import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
+import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -67,27 +64,13 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
 
     @Test
     public void testWithoutAzureServiceBusQueueClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusProcessorClient.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusQueueClientFactory.class))
                           .run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueOperation.class));
     }
 
     @Test
-    public void testWithoutServiceBusNamespaceManager() {
-        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class)
-                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueManager.class));
-    }
-
-    @Test
-    public void testWithServiceBusNamespaceManager() {
-        this.contextRunner.withUserConfiguration(TestConfigWithServiceBusNamespaceManager.class,
-            TestConfigWithConnectionStringProvider.class)
-                          .run(context -> assertThat(context).hasSingleBean(ServiceBusQueueManager.class));
-    }
-
-    @Test
     public void testQueueClientFactoryCreated() {
-        this.contextRunner.withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class,
-                                                 TestConfigWithServiceBusNamespaceManager.class)
+        this.contextRunner.withUserConfiguration()
                           .withPropertyValues(AzureServiceBusProperties.PREFIX + ".connection-string=" + NAMESPACE_CONNECTION_STRING)
                           .run(context -> assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class)
                                                              .hasSingleBean(ServiceBusQueueOperation.class));
@@ -96,12 +79,8 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
     @Test
     public void testConnectionStringProvided() {
         this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".connection-string=" + NAMESPACE_CONNECTION_STRING)
-                          .withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class)
+                          .withUserConfiguration(AzureServiceBusResourceManagerAutoConfiguration.class)
                           .run(context -> {
-                              assertThat(context.getBean(ServiceBusConnectionStringProvider.class)
-                                                .getConnectionString()).isEqualTo(NAMESPACE_CONNECTION_STRING);
-                              assertThat(context).doesNotHaveBean(ServiceBusNamespaceManager.class);
-                              assertThat(context).doesNotHaveBean(ServiceBusQueueManager.class);
                               assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class);
                               assertThat(context).hasSingleBean(ServiceBusQueueOperation.class);
                               assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
@@ -111,7 +90,7 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
     @Test
     public void testTransportTypeWithAmqpWebSockets() {
         this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".client.transport-type=AmqpWebSockets")
-                          .withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class)
+                          .withUserConfiguration(AzureServiceBusResourceManagerAutoConfiguration.class)
                           .run(context -> assertThat(context.getBean(AzureServiceBusProperties.class)
                                                             .getClient()
                                                             .getTransportType())
@@ -124,7 +103,7 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
                                               AzureServiceBusProperties.PREFIX + ".retry.timeout=3000",
                                               AzureServiceBusProperties.PREFIX + ".retry.backoff.delay=1000",
                                               AzureServiceBusProperties.PREFIX + ".retry.backoff.maxDelay=2000")
-                          .withUserConfiguration(AzureServiceBusOperationAutoConfiguration.class)
+                          .withUserConfiguration(AzureServiceBusResourceManagerAutoConfiguration.class)
                           .run(context -> {
                               final AzureServiceBusProperties properties = context.getBean(
                                   AzureServiceBusProperties.class);
@@ -142,8 +121,8 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
     public void testResourceManagerProvided() {
         this.contextRunner.withUserConfiguration(
             TestConfigWithAzureResourceManager.class,
-            TestConfigWithConnectionStringProvider.class,
-            AzureServiceBusOperationAutoConfiguration.class)
+            StaticConnectionStringProviderConfiguration.class,
+            AzureServiceBusResourceManagerAutoConfiguration.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                               AzureServiceBusProperties.PREFIX + "namespace=ns1"
@@ -151,16 +130,14 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
                           .run(context -> {
                               assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class);
                               assertThat(context).hasSingleBean(ServiceBusQueueOperation.class);
-                              assertThat(context).hasSingleBean(ServiceBusNamespaceManager.class);
-                              assertThat(context).hasSingleBean(ServiceBusQueueManager.class);
                           });
     }
 
     @Test
     public void testMessageConverterProvided() {
         this.contextRunner.withUserConfiguration(
-            TestConfigWithMessageConverter.class,
-            AzureServiceBusOperationAutoConfiguration.class)
+            MessageConverterConfiguration.class,
+            AzureServiceBusResourceManagerAutoConfiguration.class)
                           .withPropertyValues(
                               AzureServiceBusProperties.PREFIX + "connection-string" + NAMESPACE_CONNECTION_STRING
                           )
@@ -175,36 +152,19 @@ public class AzureServiceBusQueueOperationAutoConfigurationTest {
                           });
     }
 
-    @Configuration
-    @EnableConfigurationProperties(AzureContextProperties.class)
-    public static class TestConfigWithServiceBusNamespaceManager {
+
+    @Configuration(proxyBeanMethods = false)
+    static class StaticConnectionStringProviderConfiguration {
 
         @Bean
-        public ServiceBusNamespaceManager servicebusNamespaceManager() {
-            return mock(ServiceBusNamespaceManager.class);
-        }
-
-        @Bean
-        public AzureResourceMetadata azureResourceMetadata() {
-            return mock(AzureResourceMetadata.class);
+        public StaticConnectionStringProvider<AzureServiceType.ServiceBus> serviceBusConnectionStringProvider() {
+            return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS, NAMESPACE_CONNECTION_STRING);
         }
 
     }
 
     @Configuration
-    @EnableConfigurationProperties(AzureServiceBusProperties.class)
-    public static class TestConfigWithConnectionStringProvider {
-
-        @Bean
-        public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider() {
-            return new ServiceBusConnectionStringProvider(NAMESPACE_CONNECTION_STRING);
-        }
-
-    }
-
-    @Configuration
-    @EnableConfigurationProperties(AzureContextProperties.class)
-    public static class TestConfigWithMessageConverter {
+    static class MessageConverterConfiguration {
 
         @Bean
         public ServiceBusMessageConverter messageConverter() {

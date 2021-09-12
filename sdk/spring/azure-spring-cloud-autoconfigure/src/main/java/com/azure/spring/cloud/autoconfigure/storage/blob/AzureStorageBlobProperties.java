@@ -5,26 +5,27 @@ package com.azure.spring.cloud.autoconfigure.storage.blob;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Properties for Azure Storage Blob.
  */
-@ConfigurationProperties(prefix = "spring.cloud.azure.storage.blob")
 public class AzureStorageBlobProperties extends AzureStorageProperties {
 
+    public static final String PREFIX = "spring.cloud.azure.storage.blob";
 
-    private CustomerProvidedKey customerProvidedKey;
+    private String customerProvidedKey;
     private String encryptionScope;
     private String endpoint;
     private BlobServiceVersion serviceVersion;
 
-    public CustomerProvidedKey getCustomerProvidedKey() {
+    private String containerName;
+    private String blobName;
+
+    public String getCustomerProvidedKey() {
         return customerProvidedKey;
     }
 
-    public void setCustomerProvidedKey(CustomerProvidedKey customerProvidedKey) {
+    public void setCustomerProvidedKey(String customerProvidedKey) {
         this.customerProvidedKey = customerProvidedKey;
     }
 
@@ -50,6 +51,22 @@ public class AzureStorageBlobProperties extends AzureStorageProperties {
 
     public void setServiceVersion(BlobServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+    }
+
+    public String getContainerName() {
+        return containerName;
+    }
+
+    public void setContainerName(String containerName) {
+        this.containerName = containerName;
+    }
+
+    public String getBlobName() {
+        return blobName;
+    }
+
+    public void setBlobName(String blobName) {
+        this.blobName = blobName;
     }
 
 }

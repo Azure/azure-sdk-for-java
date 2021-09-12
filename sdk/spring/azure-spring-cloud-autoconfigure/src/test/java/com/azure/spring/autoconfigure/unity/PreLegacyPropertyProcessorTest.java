@@ -3,6 +3,7 @@
 package com.azure.spring.autoconfigure.unity;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.spring.cloud.autoconfigure.context.PreLegacyPropertyEnvironmentPostProcessor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.Execution;
@@ -19,7 +20,7 @@ import org.springframework.core.env.PropertiesPropertySource;
 
 import java.util.Properties;
 
-import static com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProcessor.toLogString;
+import static com.azure.spring.cloud.autoconfigure.context.PreLegacyPropertyEnvironmentPostProcessor.toLogString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;

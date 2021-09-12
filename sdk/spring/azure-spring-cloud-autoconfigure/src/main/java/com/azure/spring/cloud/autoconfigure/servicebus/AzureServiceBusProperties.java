@@ -3,15 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.spring.cloud.autoconfigure.properties.AzureAmqpConfigurationProperties;
 import com.azure.spring.core.properties.client.AmqpClientProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
- * @author Warren Zhu
+ *
  */
-@ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX)
-public class AzureServiceBusProperties extends AzureProperties {
+public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
@@ -26,6 +28,10 @@ public class AzureServiceBusProperties extends AzureProperties {
     private boolean crossEntityTransactions;
 
     private AmqpClientProperties client = new AmqpClientProperties();
+
+    private final ServiceBusSender sender = new ServiceBusSender();
+    private final ServiceBusReceiver receiver = new ServiceBusReceiver();
+    private final ServiceBusProcessor processor = new ServiceBusProcessor();
 
     public String getFQDN() {
         return this.namespace + "." + this.domainName;
@@ -70,6 +76,145 @@ public class AzureServiceBusProperties extends AzureProperties {
 
     public void setClient(AmqpClientProperties client) {
         this.client = client;
+    }
+
+    public ServiceBusSender getSender() {
+        return sender;
+    }
+
+    public ServiceBusReceiver getReceiver() {
+        return receiver;
+    }
+
+    static class ServiceBusSender {
+        private String queueName;
+        private String topicName;
+
+        public String getQueueName() {
+            return queueName;
+        }
+
+        public void setQueueName(String queueName) {
+            this.queueName = queueName;
+        }
+
+        public String getTopicName() {
+            return topicName;
+        }
+
+        public void setTopicName(String topicName) {
+            this.topicName = topicName;
+        }
+    }
+
+    static class ServiceBusReceiver {
+        // TODO (xiada): name for session
+        private boolean sessionAware = false;
+        private boolean autoComplete = true;
+        private Integer prefetchCount;
+        private String queueName;
+        private SubQueue subQueue;
+        private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
+        private String subscriptionName;
+        private String topicName;
+        private Duration maxAutoLockRenewDuration;
+
+        public boolean isSessionAware() {
+            return sessionAware;
+        }
+
+        public void setSessionAware(boolean sessionAware) {
+            this.sessionAware = sessionAware;
+        }
+
+        public boolean isAutoComplete() {
+            return autoComplete;
+        }
+
+        public void setAutoComplete(boolean autoComplete) {
+            this.autoComplete = autoComplete;
+        }
+
+        public Integer getPrefetchCount() {
+            return prefetchCount;
+        }
+
+        public void setPrefetchCount(Integer prefetchCount) {
+            this.prefetchCount = prefetchCount;
+        }
+
+        public String getQueueName() {
+            return queueName;
+        }
+
+        public void setQueueName(String queueName) {
+            this.queueName = queueName;
+        }
+
+        public SubQueue getSubQueue() {
+            return subQueue;
+        }
+
+        public void setSubQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
+        }
+
+        public ServiceBusReceiveMode getReceiveMode() {
+            return receiveMode;
+        }
+
+        public void setReceiveMode(ServiceBusReceiveMode receiveMode) {
+            this.receiveMode = receiveMode;
+        }
+
+        public String getSubscriptionName() {
+            return subscriptionName;
+        }
+
+        public void setSubscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+        }
+
+        public String getTopicName() {
+            return topicName;
+        }
+
+        public void setTopicName(String topicName) {
+            this.topicName = topicName;
+        }
+
+        public Duration getMaxAutoLockRenewDuration() {
+            return maxAutoLockRenewDuration;
+        }
+
+        public void setMaxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
+        }
+    }
+
+    static class ServiceBusProcessor extends ServiceBusReceiver {
+        private Integer maxConcurrentCalls;
+        private Integer maxConcurrentSessions;
+
+        public Integer getMaxConcurrentCalls() {
+            return maxConcurrentCalls;
+        }
+
+        public void setMaxConcurrentCalls(Integer maxConcurrentCalls) {
+            this.maxConcurrentCalls = maxConcurrentCalls;
+        }
+
+        public Integer getMaxConcurrentSessions() {
+            return maxConcurrentSessions;
+        }
+
+        public void setMaxConcurrentSessions(Integer maxConcurrentSessions) {
+            this.maxConcurrentSessions = maxConcurrentSessions;
+        }
+    }
+
+    public ServiceBusProcessor getProcessor() {
+        return processor;
     }
 
     // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?

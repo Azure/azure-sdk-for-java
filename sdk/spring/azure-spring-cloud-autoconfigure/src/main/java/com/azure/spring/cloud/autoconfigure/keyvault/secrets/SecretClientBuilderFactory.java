@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -11,6 +12,8 @@ import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Collections;
@@ -21,6 +24,8 @@ import java.util.function.BiConsumer;
  * Azure Key Vault certificate client builder factory, it builds the {@link SecretClientBuilder}.
  */
 public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<SecretClientBuilder> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecretClientBuilderFactory.class);
 
     private final AzureKeyVaultSecretProperties secretProperties;
 
@@ -64,6 +69,17 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     @Override
     protected BiConsumer<SecretClientBuilder, Configuration> consumeConfiguration() {
         return SecretClientBuilder::configuration;
+    }
+
+    @Override
+    protected BiConsumer<SecretClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
+        return SecretClientBuilder::credential;
+    }
+
+    @Override
+    protected BiConsumer<SecretClientBuilder, String> consumeConnectionString() {
+        LOGGER.debug("Connection string is not supported to configure in SecretClientBuilder");
+        return (a, b) -> { };
     }
 
 }

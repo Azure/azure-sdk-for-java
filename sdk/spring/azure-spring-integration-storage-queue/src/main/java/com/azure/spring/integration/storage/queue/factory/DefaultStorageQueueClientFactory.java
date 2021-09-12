@@ -3,36 +3,25 @@
 
 package com.azure.spring.integration.storage.queue.factory;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.core.util.Memoizer;
 import com.azure.storage.queue.QueueAsyncClient;
-import com.azure.storage.queue.QueueClientBuilder;
+import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 import java.util.function.Function;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE;
-import static com.azure.spring.core.ApplicationId.VERSION;
-
 /**
  * Default client factory for Storage Queue.
  */
 public class DefaultStorageQueueClientFactory implements StorageQueueClientFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultStorageQueueClientFactory.class);
-    private final String connectionString;
     private final Function<String, QueueAsyncClient> queueClientCreator = Memoizer.memoize(this::createQueueClient);
-    private final HttpLogDetailLevel httpLogDetailLevel;
+    private final QueueServiceAsyncClient queueServiceAsyncClient;
 
-    public DefaultStorageQueueClientFactory(@NonNull String connectionString) {
-        this(connectionString, HttpLogDetailLevel.NONE);
-    }
-
-    public DefaultStorageQueueClientFactory(@NonNull String connectionString, HttpLogDetailLevel httpLogDetailLevel) {
-        this.connectionString = connectionString;
-        this.httpLogDetailLevel = httpLogDetailLevel;
+    public DefaultStorageQueueClientFactory(@NonNull QueueServiceAsyncClient queueServiceAsyncClient) {
+        this.queueServiceAsyncClient = queueServiceAsyncClient;
     }
 
     @Override
@@ -41,13 +30,9 @@ public class DefaultStorageQueueClientFactory implements StorageQueueClientFacto
     }
 
     private QueueAsyncClient createQueueClient(String queueName) {
-        final QueueAsyncClient queueClient = new QueueClientBuilder()
-            .connectionString(this.connectionString)
-            .queueName(queueName)
-            .httpLogOptions(new HttpLogOptions()
-                .setApplicationId(AZURE_SPRING_INTEGRATION_STORAGE_QUEUE + VERSION)
-                .setLogLevel(httpLogDetailLevel))
-            .buildAsyncClient();
+        // TODO (xiada): the application id
+        final QueueAsyncClient queueClient = queueServiceAsyncClient.getQueueAsyncClient(queueName);
+
 
         // TODO (xiada): when used with connection string, this call will throw exception
         // TODO (xiada): https://github.com/Azure/azure-sdk-for-java/issues/15008

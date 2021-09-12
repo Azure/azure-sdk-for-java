@@ -8,12 +8,11 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
@@ -23,11 +22,12 @@ import java.util.regex.Pattern;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-@ConfigurationProperties(AzureCosmosProperties.PREFIX)
-public class AzureCosmosProperties extends AzureProperties implements InitializingBean {
+public class AzureCosmosProperties extends AzureConfigurationProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureCosmosProperties.class);
+
     public static final String PREFIX = "spring.cloud.azure.cosmos";
+
     public static final String URI_REGEX = "http[s]{0,1}://.*.documents.azure.com.*";
 
     @NotEmpty
@@ -51,6 +51,7 @@ public class AzureCosmosProperties extends AzureProperties implements Initializi
      */
     private ConsistencyLevel consistencyLevel;
 
+    // TODO (xiada): only for Spring Data Cosmos
     /**
      * Document DB database name.
      */
@@ -171,4 +172,5 @@ public class AzureCosmosProperties extends AzureProperties implements Initializi
     public DirectConnectionConfig getDirectConnectionConfig() {
         return directConnectionConfig;
     }
+
 }

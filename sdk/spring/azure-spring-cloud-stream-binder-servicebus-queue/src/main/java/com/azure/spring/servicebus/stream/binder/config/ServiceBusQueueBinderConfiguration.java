@@ -3,12 +3,12 @@
 
 package com.azure.spring.servicebus.stream.binder.config;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfiguration;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusNamespaceCrud;
+import com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusQueueManager;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusQueueMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnMissingBean(Binder.class)
 @Import({
     AzureResourceManagerAutoConfiguration.class,
-    AzureServiceBusOperationAutoConfiguration.class,
+    AzureServiceBusResourceManagerAutoConfiguration.class,
     AzureServiceBusQueueOperationAutoConfiguration.class,
     ServiceBusQueueBinderHealthIndicatorConfiguration.class
 })

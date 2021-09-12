@@ -4,7 +4,7 @@
 package com.azure.spring.autoconfigure.storage;
 
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageBlobProtocolResolver;
-import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

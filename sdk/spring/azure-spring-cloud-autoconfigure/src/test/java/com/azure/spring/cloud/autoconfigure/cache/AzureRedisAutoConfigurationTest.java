@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.cache;
 
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
-import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
+import com.azure.spring.cloud.resourcemanager.implementation.crud.RedisCacheCrud;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
@@ -75,9 +75,9 @@ public class AzureRedisAutoConfigurationTest {
     static class TestConfiguration {
 
         @Bean
-        RedisCacheManager redisCacheManager() {
+        RedisCacheCrud redisCacheManager() {
 
-            RedisCacheManager redisCacheManager = mock(RedisCacheManager.class);
+            RedisCacheCrud redisCacheManager = mock(RedisCacheCrud.class);
             RedisCache redisCache = mock(RedisCache.class);
             RedisAccessKeys accessKeys = mock(RedisAccessKeys.class);
             when(accessKeys.primaryKey()).thenReturn(KEY);

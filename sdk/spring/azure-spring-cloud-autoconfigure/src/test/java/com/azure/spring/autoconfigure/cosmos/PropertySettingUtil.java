@@ -4,6 +4,7 @@ package com.azure.spring.autoconfigure.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
@@ -17,14 +18,14 @@ public class PropertySettingUtil {
     public static final ConnectionMode CONNECTION_MODE = ConnectionMode.DIRECT;
     public static final String CLIENT_ID = "for-test-purpose";
     public static final String CLOUD = "AzureChina";
-    public static final String PROPERTY_URI = CosmosProperties.PREFIX + ".uri";
-    public static final String PROPERTY_KEY = CosmosProperties.PREFIX + ".key";
-    public static final String PROPERTY_DBNAME = CosmosProperties.PREFIX + ".database";
-    public static final String PROPERTY_CONSISTENCY_LEVEL = CosmosProperties.PREFIX + ".consistency-level";
-    public static final String PROPERTY_POPULATE_QUERY_METRICS = CosmosProperties.PREFIX + ".populateQueryMetrics";
-    public static final String PROPERTY_CONNECTION_MODE = CosmosProperties.PREFIX + ".connection-mode";
-    public static final String PROPERTY_CLIENT_ID = CosmosProperties.PREFIX + ".credential.client-id";
-    public static final String PROPERTY_CLOUD = CosmosProperties.PREFIX + ".environment.cloud";
+    public static final String PROPERTY_URI = AzureCosmosProperties.PREFIX + ".uri";
+    public static final String PROPERTY_KEY = AzureCosmosProperties.PREFIX + ".key";
+    public static final String PROPERTY_DBNAME = AzureCosmosProperties.PREFIX + ".database";
+    public static final String PROPERTY_CONSISTENCY_LEVEL = AzureCosmosProperties.PREFIX + ".consistency-level";
+    public static final String PROPERTY_POPULATE_QUERY_METRICS = AzureCosmosProperties.PREFIX + ".populateQueryMetrics";
+    public static final String PROPERTY_CONNECTION_MODE = AzureCosmosProperties.PREFIX + ".connection-mode";
+    public static final String PROPERTY_CLIENT_ID = AzureCosmosProperties.PREFIX + ".credential.client-id";
+    public static final String PROPERTY_CLOUD = AzureCosmosProperties.PREFIX + ".environment.cloud";
     public static final String PROPERTY_UNIFIED_CLIENT_ID = "spring.cloud.azure.credential.client-id";
     public static final String PROPERTY_UNIFIED_CLOUD = "spring.cloud.azure.environment.cloud";
     public static final String TEST_URI_HTTPS = "https://test.https.documents.azure.com:443/";

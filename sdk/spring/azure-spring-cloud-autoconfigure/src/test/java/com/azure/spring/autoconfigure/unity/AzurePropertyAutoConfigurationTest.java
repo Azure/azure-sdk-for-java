@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.unity;
 
+import com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration;
+import com.azure.spring.core.properties.AzureProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -32,8 +34,8 @@ public class AzurePropertyAutoConfigurationTest {
                 final AzureProperties azureProperties = context.getBean(AzureProperties.class);
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("fake-client-id");
                 assertThat(azureProperties.getCredential().getClientSecret()).isEqualTo("fake-client-secret");
-                assertThat(azureProperties.getEnvironment().getAuthorityHost()).isEqualTo("fake-authority-host");
-                assertThat(azureProperties.getEnvironment().getGraphBaseUri()).isEqualTo("fake-graph-base-uri");
+                assertThat(azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint()).isEqualTo("fake-authority-host");
+                assertThat(azureProperties.getProfile().getEnvironment().getMicrosoftGraphEndpoint()).isEqualTo("fake-graph-base-uri");
             });
     }
 }

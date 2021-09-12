@@ -3,7 +3,7 @@
 package com.azure.spring.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.spring.autoconfigure.cosmos.CosmosProperties;
+import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class CosmosSampleApplication implements CommandLineRunner {
     private AzureKeyCredential azureKeyCredential;
 
     @Autowired
-    private CosmosProperties properties;
+    private AzureCosmosProperties properties;
 
     /**
      * The secondaryKey is used to rotate key for authorizing request.

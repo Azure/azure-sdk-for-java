@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.cosmos;
 
-import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosClientAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
  * Auto Configure Cosmos properties and connection policy.
  */
 @Configuration(proxyBeanMethods = false)
-@AutoConfigureAfter(AzureCosmosClientAutoConfiguration.class)
-@ConditionalOnClass({ CosmosTemplate.class })
+@AutoConfigureAfter(AzureCosmosAutoConfiguration.class)
+@ConditionalOnClass({ CosmosTemplate.class }) // Spring data
 @EnableConfigurationProperties(AzureCosmosProperties.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
@@ -28,6 +28,7 @@ public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
         this.cosmosProperties = cosmosProperties;
     }
 
+    // TODO (xiada) require database name
     @Override
     protected String getDatabaseName() {
         return cosmosProperties.getDatabase();

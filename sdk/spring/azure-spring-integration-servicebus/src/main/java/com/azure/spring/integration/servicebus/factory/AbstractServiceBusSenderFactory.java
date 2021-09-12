@@ -3,6 +3,8 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+
 import javax.annotation.Nullable;
 
 /**
@@ -12,27 +14,17 @@ import javax.annotation.Nullable;
  */
 abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory {
 
-    protected final String connectionString;
-
     @Nullable
     protected ServiceBusProvisioner serviceBusProvisioner;
 
-    @Nullable
-    protected String namespace;
+    protected final ServiceBusClientBuilder serviceBusClientBuilder;
 
-    AbstractServiceBusSenderFactory(String connectionString) {
-        this.connectionString = connectionString;
+    public AbstractServiceBusSenderFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
+        this.serviceBusClientBuilder = serviceBusClientBuilder;
     }
 
     public void setServiceBusProvisioner(@Nullable ServiceBusProvisioner serviceBusProvisioner) {
         this.serviceBusProvisioner = serviceBusProvisioner;
     }
 
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    public String getConnectionString() {
-        return connectionString;
-    }
 }

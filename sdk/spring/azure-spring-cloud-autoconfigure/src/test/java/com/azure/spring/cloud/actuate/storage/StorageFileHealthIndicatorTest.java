@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuate.storage;
 
 import com.azure.core.http.rest.Response;
 import com.azure.spring.cloud.actuate.autoconfigure.storage.StorageFileHealthConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareClientAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.file.share.models.ShareServiceProperties;
@@ -31,7 +31,7 @@ public class StorageFileHealthIndicatorTest {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
             .withBean(ShareServiceClientBuilder.class)
-            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareClientAutoConfiguration.class));
+            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
 
         contextRunner.withBean(StorageFileHealthIndicator.class)
                      .run(context ->
@@ -44,7 +44,7 @@ public class StorageFileHealthIndicatorTest {
     public void testWithStorageConfigurationWithConnectionUp() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareClientAutoConfiguration.class, StorageFileHealthConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class, StorageFileHealthConfiguration.class))
             .withUserConfiguration(TestConfigurationConnectionUp.class);
         contextRunner.run(context -> {
             Health health = context.getBean(StorageFileHealthIndicator.class).getHealth(true);
@@ -57,7 +57,7 @@ public class StorageFileHealthIndicatorTest {
     public void testWithStorageConfigurationWithConnectionDown() {
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withAllowBeanDefinitionOverriding(true)
-            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareClientAutoConfiguration.class, StorageFileHealthConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class, StorageFileHealthConfiguration.class))
             .withUserConfiguration(TestConfigurationConnectionDown.class);
 
         contextRunner.run(context -> {

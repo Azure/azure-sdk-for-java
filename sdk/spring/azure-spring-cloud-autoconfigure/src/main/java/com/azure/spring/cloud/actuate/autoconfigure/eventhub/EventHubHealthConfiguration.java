@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.cloud.actuate.eventhub.EventHubHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass({ EventHubClientBuilder.class, HealthIndicator.class })
-@AutoConfigureAfter(AzureEventHubOperationAutoConfiguration.class)
+@AutoConfigureAfter(AzureEventHubAutoConfiguration.class)
 public class EventHubHealthConfiguration {
 
     @Bean
@@ -35,5 +35,7 @@ public class EventHubHealthConfiguration {
         return new EventHubHealthIndicator(producerAsyncClients.getIfAvailable(),
                                            consumerAsyncClients.getIfAvailable());
     }
+
+
 
 }

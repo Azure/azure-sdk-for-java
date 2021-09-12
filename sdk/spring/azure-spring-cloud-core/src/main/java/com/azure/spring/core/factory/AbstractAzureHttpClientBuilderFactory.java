@@ -10,9 +10,9 @@ import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.ProxyProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
 
 import java.util.ArrayList;
 import java.util.Collections;

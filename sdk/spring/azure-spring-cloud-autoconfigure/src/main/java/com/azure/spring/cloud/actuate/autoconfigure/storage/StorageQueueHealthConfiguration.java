@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuate.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuate.storage.StorageQueueHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueClientAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass({ QueueServiceAsyncClient.class, HealthIndicator.class })
-@AutoConfigureAfter(AzureStorageQueueClientAutoConfiguration.class)
+@AutoConfigureAfter(AzureStorageQueueAutoConfiguration.class)
 public class StorageQueueHealthConfiguration {
 
     @Bean

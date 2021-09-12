@@ -5,13 +5,13 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.autoconfigure.keyvault.AzureKeyVaultProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Properties for Azure Key Vault Secrets.
  */
-@ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.secret")
 public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
+
+    public static final String PREFIX = "spring.cloud.azure.keyvault.secret";
 
     // TODO (xiada): should we use enum here?
     private SecretServiceVersion serviceVersion;

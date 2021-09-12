@@ -3,7 +3,7 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.autoconfigure.unity.AbstractLegacyPropertyEnvironmentPostProcessor;
+import com.azure.spring.cloud.autoconfigure.context.AbstractLegacyPropertyEnvironmentPostProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.ConfigurableEnvironment;

@@ -3,8 +3,7 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.unity.AzureProperties;
-import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration.AZURE_PROPERTY_BEAN_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -82,24 +81,6 @@ public class PremiumServiceBusJMSAutoConfigurationTest {
                     CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
-                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getCredential().getClientSecret()).isEqualTo("for-test-purpose");
-                assertThat(context.getBean(AzureServiceBusJMSProperties.class).getEnvironment().getCloud()).isEqualTo("AzureGermany");
-            }
-        );
-    }
-
-    @Test
-    public void testAzurePropertiesConfigured() {
-        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
-
-        contextRunner.run(
-            context -> {
-                assertThat(context).hasBean(AZURE_PROPERTY_BEAN_NAME);
-
-                assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getCredential().getClientCertificatePassword())
-                    .isEqualTo("for-test-purpose");
-                assertThat(((AzureProperties) context.getBean(AZURE_PROPERTY_BEAN_NAME)).getEnvironment().getAuthorityHost())
-                    .isEqualTo("for-test-purpose");
             }
         );
     }

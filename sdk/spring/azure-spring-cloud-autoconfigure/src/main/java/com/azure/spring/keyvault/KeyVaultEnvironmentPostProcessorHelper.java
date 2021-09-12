@@ -12,7 +12,7 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration;
 import com.azure.spring.keyvault.KeyVaultProperties.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,7 +180,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     String getPropertyValue(final String normalizedName, final Property property) {
         List<String> propertyNames = Arrays.asList(KeyVaultProperties.getPropertyName(normalizedName, property),
-                                                   AzurePropertyAutoConfiguration.PREFIX + DELIMITER + property.getName());
+                                                   AzurePropertyAutoConfiguration.AZURE_PROPERTY_PREFIX + DELIMITER + property.getName());
 
         String propertyValue = null;
         for (String key : propertyNames) {

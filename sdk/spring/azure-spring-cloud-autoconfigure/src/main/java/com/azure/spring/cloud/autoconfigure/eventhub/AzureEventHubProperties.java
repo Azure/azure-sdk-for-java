@@ -3,18 +3,23 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
-import com.azure.spring.core.properties.AzureProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.azure.messaging.eventhubs.LoadBalancingStrategy;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.spring.cloud.autoconfigure.properties.AzureAmqpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobProperties;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Pattern;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Warren Zhu
  */
 @Validated
-@ConfigurationProperties("spring.cloud.azure.eventhub")
-public class AzureEventHubProperties extends AzureProperties {
+public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
+
+    public static final String PREFIX = "spring.cloud.azure.eventhub";
 
     private String domainName = "servicebus.windows.net";
     private String namespace;
@@ -25,16 +30,7 @@ public class AzureEventHubProperties extends AzureProperties {
     private String consumerGroup;
     private Integer prefetchCount;
 
-    /**
-     * TODO(xiada): Do we still need to define this in event properties
-     */
-    @Pattern(regexp = "^[a-z0-9]{3,24}$",
-        message = "must be between 3 and 24 characters in length and use numbers and lower-case letters only")
-    private String checkpointStorageAccount;
-
-    private String checkpointAccessKey;
-
-    private String checkpointContainer;
+    private final Processor processor = new Processor();
 
     // FQDN = the FQDN of the EventHubs namespace you created (it includes the EventHubs namespace name followed by
     // servicebus.windows.net)
@@ -108,27 +104,101 @@ public class AzureEventHubProperties extends AzureProperties {
         this.prefetchCount = prefetchCount;
     }
 
-    public String getCheckpointStorageAccount() {
-        return checkpointStorageAccount;
+    public Processor getProcessor() {
+        return processor;
     }
 
-    public void setCheckpointStorageAccount(String checkpointStorageAccount) {
-        this.checkpointStorageAccount = checkpointStorageAccount;
+    public static class Processor {
+        private boolean trackLastEnqueuedEventProperties;
+        private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+        private Duration partitionOwnershipExpirationInterval;
+        private final Batch batch = new Batch();
+        private final LoadBalancing loadBalancing = new LoadBalancing();
+        private final CheckpointStore checkpointStore = new CheckpointStore();
+
+        public boolean isTrackLastEnqueuedEventProperties() {
+            return trackLastEnqueuedEventProperties;
+        }
+
+        public void setTrackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
+            this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
+        }
+
+        public Map<String, EventPosition> getInitialPartitionEventPosition() {
+            return initialPartitionEventPosition;
+        }
+
+        public void setInitialPartitionEventPosition(Map<String, EventPosition> initialPartitionEventPosition) {
+            this.initialPartitionEventPosition = initialPartitionEventPosition;
+        }
+
+        public Duration getPartitionOwnershipExpirationInterval() {
+            return partitionOwnershipExpirationInterval;
+        }
+
+        public void setPartitionOwnershipExpirationInterval(Duration partitionOwnershipExpirationInterval) {
+            this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
+        }
+
+        public LoadBalancing getLoadBalancing() {
+            return loadBalancing;
+        }
+
+        public Batch getBatch() {
+            return batch;
+        }
+
+        public CheckpointStore getCheckpointStore() {
+            return checkpointStore;
+        }
+
+        public static class LoadBalancing {
+            private Duration updateInterval;
+            private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+
+            public Duration getUpdateInterval() {
+                return updateInterval;
+            }
+
+            public void setUpdateInterval(Duration updateInterval) {
+                this.updateInterval = updateInterval;
+            }
+
+            public LoadBalancingStrategy getStrategy() {
+                return strategy;
+            }
+
+            public void setStrategy(LoadBalancingStrategy strategy) {
+                this.strategy = strategy;
+            }
+        }
+
+        public static class Batch {
+            private Duration maxWaitTime;
+            private int maxSize = 1;
+
+            public Duration getMaxWaitTime() {
+                return maxWaitTime;
+            }
+
+            public void setMaxWaitTime(Duration maxWaitTime) {
+                this.maxWaitTime = maxWaitTime;
+            }
+
+            public int getMaxSize() {
+                return maxSize;
+            }
+
+            public void setMaxSize(int maxSize) {
+                this.maxSize = maxSize;
+            }
+        }
+
+        static class CheckpointStore extends AzureStorageBlobProperties  {
+
+
+        }
     }
 
-    public String getCheckpointAccessKey() {
-        return checkpointAccessKey;
-    }
 
-    public void setCheckpointAccessKey(String checkpointAccessKey) {
-        this.checkpointAccessKey = checkpointAccessKey;
-    }
-
-    public String getCheckpointContainer() {
-        return checkpointContainer;
-    }
-
-    public void setCheckpointContainer(String checkpointContainer) {
-        this.checkpointContainer = checkpointContainer;
-    }
 }

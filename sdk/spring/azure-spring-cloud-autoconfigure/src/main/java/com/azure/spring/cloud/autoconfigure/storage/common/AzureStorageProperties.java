@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
+import com.azure.spring.cloud.autoconfigure.properties.AzureHttpConfigurationProperties;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.aware.credential.ConnectionStringAware;
 import com.azure.spring.core.properties.aware.credential.SasTokenAware;
@@ -10,10 +11,9 @@ import com.azure.spring.core.properties.aware.credential.SasTokenAware;
 /**
  * Common properties for all Azure Storage services.
  */
-public class AzureStorageProperties extends AzureProperties implements ConnectionStringAware,
-                                                                       SasTokenAware {
+public class AzureStorageProperties extends AzureHttpConfigurationProperties implements ConnectionStringAware,
+                                                                                        SasTokenAware {
 
-    // TODO
     protected String accountName;
 
     protected String accountKey;

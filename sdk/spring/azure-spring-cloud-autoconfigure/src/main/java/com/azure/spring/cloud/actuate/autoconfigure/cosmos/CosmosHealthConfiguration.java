@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.actuate.autoconfigure.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.spring.autoconfigure.cosmos.CosmosDataAutoConfiguration;
 import com.azure.spring.cloud.actuate.cosmos.CosmosHealthIndicator;
+import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -18,7 +18,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass({ CosmosAsyncClient.class, HealthIndicator.class})
-@AutoConfigureAfter(CosmosDataAutoConfiguration.class)
+@AutoConfigureAfter(AzureCosmosAutoConfiguration.class)
+//TODO (xiada) ConditionalOnProperty
 public class CosmosHealthConfiguration {
 
     @Bean

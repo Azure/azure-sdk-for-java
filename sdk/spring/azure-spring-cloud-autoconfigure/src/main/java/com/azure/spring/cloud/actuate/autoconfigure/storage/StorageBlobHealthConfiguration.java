@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuate.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuate.storage.StorageBlobHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobClientAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass({ BlobServiceClientBuilder.class, HealthIndicator.class })
-@AutoConfigureAfter(AzureStorageBlobClientAutoConfiguration.class)
+@AutoConfigureAfter(AzureStorageBlobAutoConfiguration.class)
 public class StorageBlobHealthConfiguration {
 
     @Bean

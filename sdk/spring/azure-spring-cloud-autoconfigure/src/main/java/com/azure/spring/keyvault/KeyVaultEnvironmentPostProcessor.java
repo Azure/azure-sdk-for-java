@@ -3,7 +3,7 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.autoconfigure.unity.PreLegacyPropertyEnvironmentPostProcessor;
+import com.azure.spring.cloud.autoconfigure.context.PreLegacyPropertyEnvironmentPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;

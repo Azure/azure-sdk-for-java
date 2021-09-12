@@ -22,12 +22,12 @@ public class TokenCredentialProperties {
     /**
      * Path of a PEM certificate file to use when performing service principal authentication with Azure.
      */
-    private String certificatePath;
+    private String clientCertificatePath;
 
     /**
      * Password of the certificate file.
      */
-    private String certificatePassword;
+    private String clientCertificatePassword;
 
     private String username;
 
@@ -54,20 +54,20 @@ public class TokenCredentialProperties {
         this.clientSecret = clientSecret;
     }
 
-    public String getCertificatePath() {
-        return certificatePath;
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
     }
 
-    public void setCertificatePath(String certificatePath) {
-        this.certificatePath = certificatePath;
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
     }
 
-    public String getCertificatePassword() {
-        return certificatePassword;
+    public String getClientCertificatePassword() {
+        return clientCertificatePassword;
     }
 
-    public void setCertificatePassword(String certificatePassword) {
-        this.certificatePassword = certificatePassword;
+    public void setClientCertificatePassword(String clientCertificatePassword) {
+        this.clientCertificatePassword = clientCertificatePassword;
     }
 
     public String getTenantId() {

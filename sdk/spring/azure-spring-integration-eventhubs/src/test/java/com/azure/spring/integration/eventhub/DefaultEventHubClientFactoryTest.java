@@ -3,16 +3,14 @@
 
 package com.azure.spring.integration.eventhub;
 
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
+import com.azure.spring.integration.eventhub.factory.EventHubServiceClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventProcessorServiceClientBuilder;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +19,6 @@ import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -36,7 +33,6 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.spy;
 import static org.powermock.api.mockito.PowerMockito.verifyPrivate;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*" })
@@ -51,11 +47,7 @@ public class DefaultEventHubClientFactoryTest {
     EventHubProducerAsyncClient eventHubProducerClient;
 
     @Mock
-    BlobContainerAsyncClient blobContainerClient;
-
-    @Mock
     EventProcessorClient eventProcessorClient;
-
 
     @Mock
     EventHubProcessor eventHubProcessor;
@@ -63,32 +55,17 @@ public class DefaultEventHubClientFactoryTest {
     private EventHubClientFactory clientFactory;
     private String eventHubName = "eventHub";
     private String consumerGroup = "group";
-    private String connectionString = "conStr";
-    private String container = "container";
 
     @Before
     public void setUp() {
-        EventHubClientBuilder eventHubClientBuilder = mock(EventHubClientBuilder.class, BuilderReturn.self);
-        BlobContainerClientBuilder blobContainerClientBuilder = mock(BlobContainerClientBuilder.class,
-            BuilderReturn.self);
-        EventProcessorClientBuilder eventProcessorClientBuilder = mock(EventProcessorClientBuilder.class,
-            BuilderReturn.self);
-        try {
-            whenNew(EventHubClientBuilder.class).withNoArguments().thenReturn(eventHubClientBuilder);
-            whenNew(BlobContainerClientBuilder.class).withNoArguments().thenReturn(blobContainerClientBuilder);
-            whenNew(EventProcessorClientBuilder.class).withNoArguments().thenReturn(eventProcessorClientBuilder);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        EventHubServiceClientBuilder eventHubServiceClientBuilder = mock(EventHubServiceClientBuilder.class, BuilderReturn.self);
+        EventProcessorServiceClientBuilder eventProcessorServiceClientBuilder = mock(EventProcessorServiceClientBuilder.class, BuilderReturn.self);
 
-        when(eventHubClientBuilder.buildAsyncConsumerClient()).thenReturn(this.eventHubConsumerClient);
-        when(eventHubClientBuilder.buildAsyncProducerClient()).thenReturn(this.eventHubProducerClient);
-        when(blobContainerClientBuilder.buildAsyncClient()).thenReturn(this.blobContainerClient);
-        when(this.blobContainerClient.exists()).thenReturn(Mono.just(true));
-        when(eventProcessorClientBuilder.buildEventProcessorClient()).thenReturn(this.eventProcessorClient);
+        when(eventHubServiceClientBuilder.buildAsyncConsumerClient()).thenReturn(this.eventHubConsumerClient);
+        when(eventHubServiceClientBuilder.buildAsyncProducerClient()).thenReturn(this.eventHubProducerClient);
+        when(eventProcessorServiceClientBuilder.buildEventProcessorClient()).thenReturn(this.eventProcessorClient);
 
-        this.clientFactory = spy(new DefaultEventHubClientFactory(connectionString, connectionString,
-            container));
+        this.clientFactory = spy(new DefaultEventHubClientFactory(eventHubServiceClientBuilder, eventProcessorServiceClientBuilder));
     }
 
     @Test
@@ -168,5 +145,4 @@ public class DefaultEventHubClientFactoryTest {
             return null;
         };
     }
-
 }

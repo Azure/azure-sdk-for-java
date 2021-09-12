@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -13,6 +14,7 @@ import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
@@ -43,7 +45,7 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     public void configureService(BlobServiceClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        map.from(blobProperties.getCustomerProvidedKey()).to(builder::customerProvidedKey);
+        map.from(blobProperties.getCustomerProvidedKey()).to(CustomerProvidedKey::new);
         map.from(blobProperties.getEncryptionScope()).to(builder::encryptionScope);
         map.from(blobProperties.getEndpoint()).to(builder::endpoint);
         map.from(blobProperties.getServiceVersion()).to(builder::serviceVersion);
@@ -62,6 +64,16 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected BiConsumer<BlobServiceClientBuilder, Configuration> consumeConfiguration() {
         return BlobServiceClientBuilder::configuration;
+    }
+
+    @Override
+    protected BiConsumer<BlobServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
+        return BlobServiceClientBuilder::credential;
+    }
+
+    @Override
+    protected BiConsumer<BlobServiceClientBuilder, String> consumeConnectionString() {
+        return BlobServiceClientBuilder::connectionString;
     }
 
     @Override

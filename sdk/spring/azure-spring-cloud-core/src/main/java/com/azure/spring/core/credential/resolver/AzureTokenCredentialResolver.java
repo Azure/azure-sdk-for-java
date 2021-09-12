@@ -33,10 +33,10 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Azu
             return new AzureTokenCredentialProvider(clientSecretCredential);
         }
 
-        if (StringUtils.hasText(credential.getTenantId()) && StringUtils.hasText(credential.getCertificatePath())) {
+        if (StringUtils.hasText(credential.getTenantId()) && StringUtils.hasText(credential.getClientCertificatePath())) {
             final ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
                 .clientId(credential.getClientId())
-                .pemCertificate(credential.getCertificatePath())
+                .pemCertificate(credential.getClientCertificatePath())
                 .tenantId(credential.getTenantId())
                 .build();
             return new AzureTokenCredentialProvider(clientCertificateCredential);

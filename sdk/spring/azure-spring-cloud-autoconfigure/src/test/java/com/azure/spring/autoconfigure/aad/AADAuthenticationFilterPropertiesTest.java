@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.autoconfigure.unity.AzurePropertyAutoConfiguration.PREFIX;
+import static com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration.AZURE_PROPERTY_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
@@ -51,10 +51,10 @@ public class AADAuthenticationFilterPropertiesTest {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         addInlinedPropertiesToEnvironment(
             context,
-            PREFIX + ".tenant-id=azure-tenant-id",
-            PREFIX + ".client-id=azure-client-id",
-            PREFIX + ".authority-host=azure-authority-host",
-            PREFIX + ".environment=AzureGermany",
+            AZURE_PROPERTY_PREFIX + ".tenant-id=azure-tenant-id",
+            AZURE_PROPERTY_PREFIX + ".client-id=azure-client-id",
+            AZURE_PROPERTY_PREFIX + ".authority-host=azure-authority-host",
+            AZURE_PROPERTY_PREFIX + ".environment=AzureGermany",
             AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET
         );
@@ -76,7 +76,7 @@ public class AADAuthenticationFilterPropertiesTest {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         addInlinedPropertiesToEnvironment(
             context,
-            PREFIX + ".environment=AzureGermany",
+            AZURE_PROPERTY_PREFIX + ".environment=AzureGermany",
             AAD_PROPERTY_PREFIX + "tenant-id=azure-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id=" + TestConstants.CLIENT_ID,
             AAD_PROPERTY_PREFIX + "client-secret=" + TestConstants.CLIENT_SECRET

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.autoconfigure.unity.CredentialProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -122,10 +121,10 @@ public class AADB2CAutoConfigurationTest extends AbstractAADB2COAuth2ClientTestC
                 String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI)
             ).run(c -> {
                 final AADB2CProperties properties = c.getBean(AADB2CProperties.class);
-                final CredentialProperties credentialProperties = c.getBean(CredentialProperties.class);
+//                final CredentialProperties credentialProperties = c.getBean(CredentialProperties.class);
 
                 Assertions.assertNotNull(properties);
-                Assertions.assertNotNull(credentialProperties);
+//                Assertions.assertNotNull(credentialProperties);
                 Assertions.assertEquals(properties.getClientId(), AADB2CConstants.TEST_CLIENT_ID);
                 Assertions.assertEquals(properties.getClientSecret(), AADB2CConstants.TEST_CLIENT_SECRET);
                 Assertions.assertEquals(properties.getTenantId(), "fake-tenant-id");

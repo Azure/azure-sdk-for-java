@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuate.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuate.storage.StorageFileHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareClientAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass({ ShareServiceClientBuilder.class, HealthIndicator.class })
-@AutoConfigureAfter(AzureStorageFileShareClientAutoConfiguration.class)
+@AutoConfigureAfter(AzureStorageFileShareAutoConfiguration.class)
 public class StorageFileHealthConfiguration {
 
     @Bean
