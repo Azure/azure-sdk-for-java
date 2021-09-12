@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.ServiceBusTopicProvisioner;
+import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusTopicProvisioner;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
@@ -34,7 +34,7 @@ public class AzureServiceBusTopicOperationAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusTopicClientFactory topicClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                           ObjectProvider<ServiceBusTopicProvisioner> serviceBusTopicProvisioners) {
+                                                           ObjectProvider<DefaultServiceBusTopicProvisioner> serviceBusTopicProvisioners) {
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(serviceBusClientBuilder);
         // TODO (xiada) the application id should be different for spring integration
 

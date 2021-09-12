@@ -6,12 +6,12 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueu
 import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
 
-public class ServiceBusQueueProvisioner implements ServiceBusProvisioner {
+public class DefaultServiceBusQueueProvisioner implements ServiceBusProvisioner {
 
     private final ServiceBusQueueCrud serviceBusQueueCrud;
 
-    public ServiceBusQueueProvisioner(AzureResourceManager azureResourceManager,
-                                      AzureResourceMetadata azureResourceMetadata) {
+    public DefaultServiceBusQueueProvisioner(AzureResourceManager azureResourceManager,
+                                             AzureResourceMetadata azureResourceMetadata) {
         this.serviceBusQueueCrud = new ServiceBusQueueCrud(azureResourceManager, azureResourceMetadata);
     }
 

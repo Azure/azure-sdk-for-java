@@ -6,18 +6,15 @@ package com.azure.spring.eventhub.stream.binder.config;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.azure.spring.cloud.autoconfigure.eventhub.EventHubUtils;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.core.ConnectionStringProvider;
-import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.Binder;
@@ -43,36 +40,19 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    // TODO (xiada): conditinalonbean
-//    @ConditionalOnBean(ConnectionStringProvider<AzureServiceType.EventHub>.class)
-    public EventHubChannelProvisioner eventHubChannelProvisioner(
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders,
-        AzureEventHubProperties eventHubProperties) {
+    public EventHubChannelProvisioner eventHubChannelProvisioner(AzureEventHubProperties eventHubProperties,
+                                                                 ObjectProvider<EventHubProvisioner> eventHubProvisioners) {
 
-        String namespace = eventHubProperties.getNamespace();
-
-        if (namespace == null) {
-            namespace = EventHubUtils.getNamespace(connectionString);
+        if (eventHubProvisioners.getIfAvailable() != null) {
+            return new EventHubChannelResourceManagerProvisioner(eventHubProperties.getNamespace(),
+                                                                 eventHubProvisioners.getIfAvailable());
         }
-
-        if (consumerGroupManager != null) {
-            return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager,
-                eventHubManager,
-                consumerGroupManager,
-                namespace);
-        }
-
-
-        // TODO: With the previous ResourceManagerProvider architecture, eventHubManager
-        // and eventHubConsumerGroup manager were created unconditionally.
-        // Now, they are not created at all. Should they be?
 
         return new EventHubChannelProvisioner();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(EventHubConnectionStringProvider.class)
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
                                                        EventHubOperation eventHubOperation,
                                                        EventHubExtendedBindingProperties bindingProperties) {

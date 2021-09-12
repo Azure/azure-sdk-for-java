@@ -5,16 +5,16 @@ package com.azure.spring.servicebus.stream.binder.config;
 
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration;
-import com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusNamespaceCrud;
-import com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusTopicSubscriptionManager;
+import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusTopicProvisioner;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusTopicMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusTopicExtendedBindingProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusTopicChannelResourceManagerProvisioner;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.Binder;
@@ -30,27 +30,21 @@ import org.springframework.context.annotation.Import;
 @Import({
     AzureResourceManagerAutoConfiguration.class,
     AzureServiceBusResourceManagerAutoConfiguration.class,
+    AzureServiceBusAutoConfiguration.class,
     AzureServiceBusTopicOperationAutoConfiguration.class,
     ServiceBusTopicBinderHealthIndicatorConfiguration.class
 })
-@EnableConfigurationProperties({ AzureServiceBusProperties.class, ServiceBusTopicExtendedBindingProperties.class })
+@EnableConfigurationProperties({ServiceBusTopicExtendedBindingProperties.class })
 public class ServiceBusTopicBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusChannelProvisioner serviceBusChannelProvisioner(
-        AzureServiceBusProperties serviceBusProperties,
-        @Autowired(required = false) ServiceBusNamespaceManager serviceBusNamespaceManager,
-        @Autowired(required = false) com.azure.spring.cloud.resourcemanager.core.impl.ServiceBusTopicCrud serviceBusTopicManager,
-        @Autowired(required = false) ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager) {
+    public ServiceBusChannelProvisioner serviceBusChannelProvisioner(AzureServiceBusProperties serviceBusProperties,
+                                                                     ObjectProvider<DefaultServiceBusTopicProvisioner> topicProvisioners) {
 
-        if (serviceBusNamespaceManager != null
-                && serviceBusTopicManager != null
-                && serviceBusTopicSubscriptionManager != null) {
-            return new ServiceBusTopicChannelResourceManagerProvisioner(serviceBusNamespaceManager,
-                                                                        serviceBusTopicManager,
-                                                                        serviceBusTopicSubscriptionManager,
-                                                                        serviceBusProperties.getNamespace());
+        if (topicProvisioners.getIfAvailable() != null) {
+            return new ServiceBusTopicChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),
+                                                                        topicProvisioners.getIfAvailable());
         }
         return new ServiceBusChannelProvisioner();
     }

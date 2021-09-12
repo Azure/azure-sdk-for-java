@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.ServiceBusQueueProvisioner;
+import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusQueueProvisioner;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
@@ -34,7 +34,7 @@ public class AzureServiceBusQueueOperationAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusQueueClientFactory queueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                           ObjectProvider<ServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
+                                                           ObjectProvider<DefaultServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(serviceBusClientBuilder);
         clientFactory.setServiceBusProvisioner(serviceBusQueueProvisioners.getIfAvailable());
         return clientFactory;

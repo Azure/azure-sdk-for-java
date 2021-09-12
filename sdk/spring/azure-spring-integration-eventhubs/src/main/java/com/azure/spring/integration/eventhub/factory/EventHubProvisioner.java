@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhub.stream.binder.provisioning;
+package com.azure.spring.integration.eventhub.factory;
 
 /**
- *
+ * An interface to provision Event Hubs resources.
  */
 public interface EventHubProvisioner {
 
-    void provisionEventHubNamespace(String namespace);
+    void provisionNamespace(String namespace);
 
     void provisionEventHub(String namespace, String eventHub);
 

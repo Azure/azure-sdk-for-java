@@ -8,13 +8,13 @@ import com.azure.spring.core.util.Triple;
 import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
 
-public class ServiceBusTopicProvisioner implements ServiceBusProvisioner {
+public class DefaultServiceBusTopicProvisioner implements ServiceBusProvisioner {
 
     private final ServiceBusTopicCrud topicCrud;
     private final ServiceBusTopicSubscriptionCrud subscriptionCrud;
 
-    public ServiceBusTopicProvisioner(AzureResourceManager azureResourceManager,
-                                      AzureResourceMetadata azureResourceMetadata) {
+    public DefaultServiceBusTopicProvisioner(AzureResourceManager azureResourceManager,
+                                             AzureResourceMetadata azureResourceMetadata) {
         this.topicCrud = new ServiceBusTopicCrud(azureResourceManager, azureResourceMetadata);
         this.subscriptionCrud = new ServiceBusTopicSubscriptionCrud(azureResourceManager, azureResourceMetadata);
     }

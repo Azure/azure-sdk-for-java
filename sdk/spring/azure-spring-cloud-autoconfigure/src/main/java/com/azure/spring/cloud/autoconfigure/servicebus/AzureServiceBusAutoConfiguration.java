@@ -15,10 +15,8 @@ import org.springframework.context.annotation.Import;
 /**
  * Auto-configuration for a {@link ServiceBusClientBuilder}.
  */
-//@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusClientBuilder.class)
 @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "enabled", matchIfMissing = true)
-//@EnableConfigurationProperties
 @Import({
     AzureServiceBusClientBuilderConfiguration.class,
     AzureServiceBusReceiverClientConfiguration.class,
