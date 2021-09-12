@@ -18,6 +18,14 @@
 - Upgraded `azure-core` dependency to `1.20.0`
 - Upgraded `azure-core-http-netty` dependency to `1.11.0`
 
+## 4.3.3 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
 ## 4.4.0-beta.2 (2021-08-13)
 
 ### Features Added
@@ -26,6 +34,14 @@
   - `ImportKeyOptions`
   - `KeyProperties`
 - Added `releaseKey()` and `releaseKeyWithResponse()` operations to `KeyClient` and `KeyAsyncClient` to securely release a key for Key Vault and Managed HSM.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
+
+## 4.3.2 (2021-08-12)
 
 ### Other Changes
 
