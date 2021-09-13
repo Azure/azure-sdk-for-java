@@ -163,23 +163,7 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-      - pwsh: |
-          New-Item $(Build.ArtifactStagingDirectory)/oom-hprofs -ItemType directory
-          foreach($hprofFile in (Get-ChildItem -Path . -Recurse -Filter *.hprof -File))
-          {
-            $fileFullName = $hprofFile.FullName
-            $fileName = $hprofFile.Name
-            Write-Host "Copying $fileFullName to $(Build.ArtifactStagingDirectory)/oom-hprofs/$fileName"
-            Copy-Item $fileFullName $(Build.ArtifactStagingDirectory)/oom-hprofs/$fileName -ErrorAction SilentlyContinue
-          }
-          [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/oom-hprofs","$(Build.ArtifactStagingDirectory)/oom-hprofs.zip")
-        displayName: 'Copy OOM hprofs'
-        condition: always()
-
-      - publish: $(Build.ArtifactStagingDirectory)/oom-hprofs.zip
-        displayName: 'Publish OOM hprofs'
-        artifact: oom-hprofs-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-        condition: always()
+      - template: ../steps/retain-heap-dump-hprofs.yml
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
