@@ -725,6 +725,7 @@
         <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
+        <module>sdk/baremetalinfrastructure</module>
         <module>sdk/batch</module>
         <module>sdk/batchai</module>
         <module>sdk/billing</module>

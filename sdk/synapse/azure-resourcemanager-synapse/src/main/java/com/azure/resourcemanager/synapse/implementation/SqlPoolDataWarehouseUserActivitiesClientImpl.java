@@ -125,6 +125,7 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
                     new IllegalArgumentException(
                         "Parameter dataWarehouseUserActivityName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -132,7 +133,7 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -191,12 +192,13 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
                     new IllegalArgumentException(
                         "Parameter dataWarehouseUserActivityName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

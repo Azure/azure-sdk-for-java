@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration for metadata sync. */
-@JsonFlatten
+/** Metadata sync configuration Configuration for metadata sync. */
 @Fluent
-public class MetadataSyncConfigInner extends ProxyResource {
+public final class MetadataSyncConfigInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataSyncConfigInner.class);
 
     /*
-     * Indicates whether the metadata sync is enabled or disabled
+     * Metadata Sync Config properties
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private MetadataSyncConfigProperties innerProperties;
 
-    /*
-     * The Sync Interval in minutes.
+    /**
+     * Get the innerProperties property: Metadata Sync Config properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.syncIntervalInMinutes")
-    private Integer syncIntervalInMinutes;
+    private MetadataSyncConfigProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the enabled property: Indicates whether the metadata sync is enabled or disabled.
@@ -35,7 +36,7 @@ public class MetadataSyncConfigInner extends ProxyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -45,7 +46,10 @@ public class MetadataSyncConfigInner extends ProxyResource {
      * @return the MetadataSyncConfigInner object itself.
      */
     public MetadataSyncConfigInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataSyncConfigProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class MetadataSyncConfigInner extends ProxyResource {
      * @return the syncIntervalInMinutes value.
      */
     public Integer syncIntervalInMinutes() {
-        return this.syncIntervalInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().syncIntervalInMinutes();
     }
 
     /**
@@ -65,7 +69,10 @@ public class MetadataSyncConfigInner extends ProxyResource {
      * @return the MetadataSyncConfigInner object itself.
      */
     public MetadataSyncConfigInner withSyncIntervalInMinutes(Integer syncIntervalInMinutes) {
-        this.syncIntervalInMinutes = syncIntervalInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataSyncConfigProperties();
+        }
+        this.innerProperties().withSyncIntervalInMinutes(syncIntervalInMinutes);
         return this;
     }
 
@@ -75,5 +82,8 @@ public class MetadataSyncConfigInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
