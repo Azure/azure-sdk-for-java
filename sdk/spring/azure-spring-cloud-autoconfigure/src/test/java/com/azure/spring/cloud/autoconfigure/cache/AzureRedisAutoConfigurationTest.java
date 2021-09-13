@@ -3,23 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.cache;
 
-import com.azure.resourcemanager.redis.models.RedisAccessKeys;
-import com.azure.resourcemanager.redis.models.RedisCache;
-import com.azure.spring.cloud.resourcemanager.implementation.crud.RedisCacheCrud;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisOperations;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class AzureRedisAutoConfigurationTest {
 
@@ -31,7 +16,8 @@ class AzureRedisAutoConfigurationTest {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class));
 
-    @Test
+    // TODO (xiada): add tests
+    /*@Test
     void testAzureRedisDisabled() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.redis.enabled=false")
@@ -90,5 +76,5 @@ class AzureRedisAutoConfigurationTest {
             return redisCacheManager;
         }
 
-    }
+    }*/
 }
