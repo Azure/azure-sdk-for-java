@@ -44,9 +44,6 @@ class FileModelFetcher implements ModelFetcher {
             Queue<String> work = new LinkedList<>();
 
             try {
-                if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
-                    work.add(getPath(dtmi, repositoryUri, true));
-                }
                 work.add(getPath(dtmi, repositoryUri, false));
             } catch (MalformedURLException | URISyntaxException e) {
                 return Mono.error(new AzureException(e));

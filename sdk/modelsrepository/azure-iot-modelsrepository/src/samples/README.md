@@ -18,7 +18,7 @@ The samples project demonstrates the following:
 ```java
 // When no URI is provided for instantiation, the Azure IoT Models Repository global endpoint
 // https://devicemodels.azure.com/ is used and the model dependency resolution
-// configuration is set to TRY_FROM_EXPANDED.
+// configuration is set to DISABLED.
 ModelsRepositoryAsyncClient asyncClient = new ModelsRepositoryClientBuilder()
     .buildAsyncClient();
 

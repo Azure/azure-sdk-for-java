@@ -35,9 +35,6 @@ class HttpModelFetcher implements ModelFetcher {
         return Mono.defer(() -> {
             Queue<String> work = new LinkedList<>();
             try {
-                if (resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
-                    work.add(getPath(dtmi, repositoryUri, true));
-                }
                 work.add(getPath(dtmi, repositoryUri, false));
             } catch (Exception e) {
                 return Mono.error(new AzureException(e));

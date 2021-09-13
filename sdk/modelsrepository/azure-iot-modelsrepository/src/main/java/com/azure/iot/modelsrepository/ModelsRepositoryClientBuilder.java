@@ -58,7 +58,7 @@ public final class ModelsRepositoryClientBuilder {
     // Fields with default values.
     private URI repositoryEndpoint;
 
-    private ModelDependencyResolution modelDependencyResolution = ModelDependencyResolution.TRY_FROM_EXPANDED;
+    private ModelDependencyResolution modelDependencyResolution = ModelDependencyResolution.DISABLED;
 
     // optional/have default values
     private ModelsRepositoryServiceVersion serviceVersion;
@@ -152,7 +152,7 @@ public final class ModelsRepositoryClientBuilder {
     /**
      * Create a {@link ModelsRepositoryClient} based on the builder settings.
      *
-     * @return the created synchronous ModelsRepotioryClient
+     * @return the created synchronous ModelsRepositoryClient
      */
     public ModelsRepositoryClient buildClient() {
         return new ModelsRepositoryClient(buildAsyncClient());

@@ -96,7 +96,7 @@ public final class RepositoryHandler {
                 try {
                     ModelMetadata metadata = new ModelsQuery(response.getDefinition()).parseModel();
 
-                    if (resolutionOption == ModelDependencyResolution.ENABLED || resolutionOption == ModelDependencyResolution.TRY_FROM_EXPANDED) {
+                    if (resolutionOption == ModelDependencyResolution.ENABLED) {
                         List<String> dependencies = metadata.getDependencies();
 
                         if (dependencies.size() > 0) {
