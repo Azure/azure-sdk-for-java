@@ -40,13 +40,7 @@ final class ObjectMapperFactory {
 
     private static ObjectMapperFactory instance;
 
-    public static synchronized ObjectMapperFactory getInstance() {
-        if (instance == null) {
-            instance = new ObjectMapperFactory();
-        }
-
-        return instance;
-    }
+    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     private ObjectMapperFactory() {
         MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();

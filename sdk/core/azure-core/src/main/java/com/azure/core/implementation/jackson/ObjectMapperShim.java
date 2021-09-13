@@ -49,7 +49,7 @@ public final class ObjectMapperShim {
      */
     public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim) {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.getInstance().createJsonMapper(innerMapperShim);
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim);
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
@@ -63,7 +63,7 @@ public final class ObjectMapperShim {
      */
     public static ObjectMapperShim createXmlMapper() {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.getInstance().createXmlMapper();
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createXmlMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
@@ -77,7 +77,7 @@ public final class ObjectMapperShim {
      */
     public static ObjectMapperShim createSimpleMapper() {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.getInstance().createSimpleMapper();
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createSimpleMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
@@ -91,7 +91,7 @@ public final class ObjectMapperShim {
      */
     public static ObjectMapperShim createDefaultMapper() {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.getInstance().createDefaultMapper();
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createDefaultMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw  LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
@@ -105,7 +105,7 @@ public final class ObjectMapperShim {
      */
     public static ObjectMapperShim createPrettyPrintMapper() {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.getInstance().createPrettyPrintMapper();
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createPrettyPrintMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
@@ -119,7 +119,7 @@ public final class ObjectMapperShim {
      */
     public static ObjectMapperShim createHeaderMapper() {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.getInstance().createHeaderMapper();
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createHeaderMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));

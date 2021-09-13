@@ -4,7 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 final class JacksonVersionMismatchError extends Error {
-    JacksonVersionMismatchError(String versionInfo, Throwable cause) {
+    JacksonVersionMismatchError(String versionInfo, Error cause) {
         super(cause.getMessage() + System.lineSeparator() + versionInfo, cause);
     }
 }
