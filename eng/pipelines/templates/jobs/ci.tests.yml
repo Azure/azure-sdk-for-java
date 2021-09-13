@@ -175,6 +175,11 @@ jobs:
         displayName: 'Copy OOM hprofs'
         condition: always()
 
+      - publish: $(Build.ArtifactStagingDirectory)/oom-hprofs
+        displayName: 'Publish OOM hprofs'
+        artifact: oom-hprofs-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+        condition: always()
+
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
