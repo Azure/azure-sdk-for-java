@@ -170,7 +170,7 @@ jobs:
             $fileFullName = $hprofFile.FullName
             $fileName = $hprofFile.Name
             Write-Host "Copying $fileFullName to $(Build.ArtifactStagingDirectory)/oom-hprofs/$fileName"
-            Copy-Item $hprofFile.FullName $(Build.ArtifactStagingDirectory)/oom-hprofs -ErrorAction SilentlyContinue
+            Copy-Item $fileFullName $(Build.ArtifactStagingDirectory)/oom-hprofs/$fileName -ErrorAction SilentlyContinue
           }
         displayName: 'Copy OOM hprofs'
         condition: always()
