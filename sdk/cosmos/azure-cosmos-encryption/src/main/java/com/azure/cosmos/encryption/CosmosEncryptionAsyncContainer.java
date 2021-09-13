@@ -364,9 +364,9 @@ public class CosmosEncryptionAsyncContainer {
                         boolean isNoChangesResponse = isChangeFeed ?
                             ModelBridgeInternal.getNoCHangesFromFeedResponse(page)
                             : false;
-                        List<Mono<JsonNode>> byteArrayMonoList =
+                        List<Mono<JsonNode>> jsonNodeArrayMonoList =
                             page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
-                        return Flux.concat(byteArrayMonoList).map(
+                        return Flux.concat(jsonNodeArrayMonoList).map(
                             item -> {
                                 if (item.isValueNode()) {
                                     return (T)item;

@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.encryption;
 
-import brave.sampler.Matchers;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
