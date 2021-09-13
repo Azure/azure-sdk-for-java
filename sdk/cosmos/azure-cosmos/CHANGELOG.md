@@ -1,4 +1,4 @@
-# Release History
+## Release History
 
 ### 4.20.0-beta.1 (Unreleased)
 
