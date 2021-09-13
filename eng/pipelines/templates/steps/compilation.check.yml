@@ -1,0 +1,38 @@
+parameters:
+  - name: Artifact
+    type: object
+    default: {}
+  - name: ArtifactName
+    type: string
+    default: "not-specified"
+  - name: ArtifactDirectory
+    type: string
+    default: "not-specified"
+  - name: RetryLimit
+    type: number
+    default: 30
+
+steps:
+  - download: current
+    artifact: ${{parameters.ArtifactName}}-signed
+  - pwsh: |
+      $pomf = Get-ChildItem "${{parameters.ArtifactDirectory}}/*.pom"
+      if($pomf.name -notmatch "${{parameters.Artifact.name}}") {
+        Write-Error "Package name mismatch: expecting ${{parameters.Artifact.name}}, found $pomf.name"
+        exit 1
+      }
+      if($pomf.Count -ne 1) {
+        Write-Error "Got $pomf.Count packages, expecting 1."
+        exit 1
+      }
+      foreach ($retry in 0..${{ parameters.RetryLimit }}) {
+        Write-Host "mvn --no-transfer-progress -f $pomf compile"
+        mvn --no-transfer-progress -f $pomf compile
+        if (!$LASTEXITCODE) { break }
+        Write-Host "Install failed, retrying in 1 minute..."
+        sleep 60
+      }
+      exit $LASTEXITCODE
+
+    workingDirectory: ${{parameters.ArtifactDirectory}}
+    displayName: "Verify Package Compilation"
