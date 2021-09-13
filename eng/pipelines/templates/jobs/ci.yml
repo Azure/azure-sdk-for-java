@@ -164,10 +164,10 @@ jobs:
             {
               $pkgName = "$artifact.name"
               $groupId= "$artifact.groupId"
-              $ArtifactPath = "/$groupId/$pkgName"
-              $fileName = (Get-ChildItem -Path $(ArtifactName)/$ArtifactPath $pkgName*sources.jar).Name            
-              $FilePath = "$ArtifactPath/$packageName"
-              $URL = "$ApiViewRequestUrl&buildId=$(Build.BuildId)&commitSha=$(Build.SourceVersion)&pullRequestNumber=$(System.PullRequest.PullRequestNumber)&filePath=$FilePath&language=java"
+              $artifactPath = "/$groupId/$pkgName"
+              $fileName = (Get-ChildItem -Path packages/$($artifactPath) $($pkgName)*sources.jar).Name
+              $filePath = "/packages/$($artifactPath)/$($fileName)"
+              $URL = "$ApiViewRequestUrl&buildId=$(Build.BuildId)&commitSha=$(Build.SourceVersion)&pullRequestNumber=$(System.PullRequest.PullRequestNumber)&filePath=$filePath&language=java"
               Invoke-WebRequest $URL
             }
           continueOnError: true
