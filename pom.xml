@@ -803,6 +803,7 @@
         <module>sdk/powerbidedicated</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
+        <module>sdk/quota</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>
