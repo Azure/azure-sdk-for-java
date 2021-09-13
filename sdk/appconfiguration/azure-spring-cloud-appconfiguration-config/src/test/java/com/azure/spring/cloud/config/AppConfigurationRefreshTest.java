@@ -117,7 +117,7 @@ public class AppConfigurationRefreshTest {
         ConfigurationSetting item = new ConfigurationSetting();
         item.setKey("fake-etag/application/test.key");
         item.setETag("fake-etag");
-        configRefresh = new AppConfigurationRefresh(properties, clientStoreMock, testInfo.getDisplayName());
+        configRefresh = new AppConfigurationRefresh(properties, clientStoreMock);
         StateHolder.setLoadState(TEST_STORE_NAME + testInfo.getDisplayName(), true);
         StateHolder.setLoadStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), true);
 
@@ -302,7 +302,7 @@ public class AppConfigurationRefreshTest {
         propertiesLost.setStores(Arrays.asList(store));
 
         AppConfigurationRefresh configRefreshLost = new AppConfigurationRefresh(propertiesLost,
-            clientStoreMock, "noInitialStateNoEtag");
+            clientStoreMock);
         when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
             .thenReturn(null);
         configRefreshLost.setApplicationEventPublisher(eventPublisher);
@@ -329,7 +329,7 @@ public class AppConfigurationRefreshTest {
         AppConfigurationProperties properties = new AppConfigurationProperties();
         properties.setStores(Arrays.asList(store));
 
-        AppConfigurationRefresh watchLargeDelay = new AppConfigurationRefresh(properties, clientStoreMock, "notRefreshTime");
+        AppConfigurationRefresh watchLargeDelay = new AppConfigurationRefresh(properties, clientStoreMock);
 
         watchLargeDelay.setApplicationEventPublisher(eventPublisher);
         watchLargeDelay.refreshConfigurations().get();
@@ -352,7 +352,7 @@ public class AppConfigurationRefreshTest {
         AppConfigurationProperties properties = new AppConfigurationProperties();
         properties.setStores(Arrays.asList(store));
 
-        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, clientStoreMock, "storeDisabled");
+        AppConfigurationRefresh refresh = new AppConfigurationRefresh(properties, clientStoreMock);
 
         refresh.setApplicationEventPublisher(eventPublisher);
         refresh.refreshConfigurations().get();

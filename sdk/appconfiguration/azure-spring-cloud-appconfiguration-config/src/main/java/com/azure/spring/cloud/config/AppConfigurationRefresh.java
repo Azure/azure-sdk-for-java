@@ -49,8 +49,6 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
-    
-    private final String testName;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -63,22 +61,6 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         this.clientStore = clientStore;
         this.eventDataInfo = "";
         this.clientHealth = new HashMap<>();
-        configStores.stream().forEach(store -> {
-            if (getStoreHealthState(store)) {
-                this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
-            } else {
-                this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.NOT_LOADED);
-            }
-        });
-        testName = "";
-    }
-    
-    public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore, String testName) {
-        this.configStores = properties.getStores();
-        this.clientStore = clientStore;
-        this.eventDataInfo = "";
-        this.clientHealth = new HashMap<>();
-        this.testName = testName;
         configStores.stream().forEach(store -> {
             if (getStoreHealthState(store)) {
                 this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
@@ -142,9 +124,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     if (configStore.isEnabled()) {
                         String endpoint = configStore.getEndpoint();
                         AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
-                        LOGGER.error("Before If: " + endpoint + " - " + StateHolder.getLoadState(endpoint) + " - " + testName);
                         if (StateHolder.getLoadState(endpoint)) {
-                            LOGGER.error("Monitor Enabled: " + monitor.isEnabled() + " - " + testName);
                             if (monitor.isEnabled()
                                 && refresh(StateHolder.getState(endpoint), endpoint, monitor.getRefreshInterval())) {
                                 didRefresh = true;
@@ -189,13 +169,10 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      */
     private boolean refresh(State state, String endpoint, Duration refreshInterval) {
         Date date = new Date();
-        LOGGER.error(date + " - " + state.getNextRefreshCheck() + " - " + date.after(state.getNextRefreshCheck()) + " - " + testName);
         if (date.after(state.getNextRefreshCheck())) {
-            LOGGER.error(state.getWatchKeys().size() + " - " + testName);
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
                 ConfigurationSetting watchedKey = clientStore.getWatchKey(watchKey.getKey(), watchKey.getLabel(),
                     endpoint);
-                LOGGER.error("WatchedKey Value: " + watchedKey + " - " + testName);
                 String etag = null;
                 // If there is no result, etag will be considered empty.
                 // A refresh will trigger once the selector returns a value.
