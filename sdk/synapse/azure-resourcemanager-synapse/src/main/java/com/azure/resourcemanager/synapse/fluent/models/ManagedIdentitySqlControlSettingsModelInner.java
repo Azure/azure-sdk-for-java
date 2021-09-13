@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sql Control Settings for workspace managed identity. */
-@JsonFlatten
+/** Managed Identity Sql Control Settings Sql Control Settings for workspace managed identity. */
 @Fluent
-public class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
+public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentitySqlControlSettingsModelInner.class);
 
     /*
-     * Grant sql control to managed identity
+     * Managed Identity Sql Control Settings Sql Control Settings for workspace
+     * managed identity
      */
-    @JsonProperty(value = "properties.grantSqlControlToManagedIdentity")
-    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-        grantSqlControlToManagedIdentity;
+    @JsonProperty(value = "properties")
+    private ManagedIdentitySqlControlSettingsModelProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Managed Identity Sql Control Settings Sql Control Settings for workspace
+     * managed identity.
+     *
+     * @return the innerProperties value.
+     */
+    private ManagedIdentitySqlControlSettingsModelProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the grantSqlControlToManagedIdentity property: Grant sql control to managed identity.
@@ -32,7 +40,7 @@ public class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
      */
     public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
         grantSqlControlToManagedIdentity() {
-        return this.grantSqlControlToManagedIdentity;
+        return this.innerProperties() == null ? null : this.innerProperties().grantSqlControlToManagedIdentity();
     }
 
     /**
@@ -44,7 +52,10 @@ public class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
     public ManagedIdentitySqlControlSettingsModelInner withGrantSqlControlToManagedIdentity(
         ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
             grantSqlControlToManagedIdentity) {
-        this.grantSqlControlToManagedIdentity = grantSqlControlToManagedIdentity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedIdentitySqlControlSettingsModelProperties();
+        }
+        this.innerProperties().withGrantSqlControlToManagedIdentity(grantSqlControlToManagedIdentity);
         return this;
     }
 
@@ -54,8 +65,8 @@ public class ManagedIdentitySqlControlSettingsModelInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (grantSqlControlToManagedIdentity() != null) {
-            grantSqlControlToManagedIdentity().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

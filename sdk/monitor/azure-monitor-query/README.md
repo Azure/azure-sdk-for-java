@@ -32,7 +32,7 @@ Install the Azure Monitor Query client library for Java by adding the following 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
@@ -75,6 +75,17 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
 ```
 
 ## Key concepts
+
+### Logs query rate limits and throttling
+
+Each Azure Active Directory user is able to make up to 200 requests per 30 seconds, with no cap on the total calls per day. If requests are made at a rate higher than this, these requests will receive HTTP status code 429 
+(Too Many Requests) along with the `Retry-After: <delta-seconds>` header. The header indicates the number of seconds until requests to this app are likely to be accepted.
+
+In addition to call rate limits and daily quota caps, there are limits on queries themselves. Queries cannot:
+
+- Return more than 500,000 rows.
+- Return more than 64,000,000 bytes (~61 MiB total data).
+- Run longer than 10 minutes by default. See this for details.
 
 ### Metrics data structure
 
@@ -182,7 +193,7 @@ String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeI
 String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
 String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
 
-LogsBatchQueryResults batchResults = logsQueryClient
+LogsBatchQueryResultCollection batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
 LogsBatchQueryResult query1Result = batchResults.getResult(query1);
@@ -222,6 +233,11 @@ Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspa
 #### Query multiple workspaces
 
 To run the same query against multiple Log Analytics workspaces, use the `LogsQueryOptions.setAdditionalWorkspaces` method:
+
+When multiple workspaces are included in the query, the logs in the result table are not grouped according to the 
+workspace from which it was retrieved. To identify the workspace of a row in the result table, you can inspect the 
+"TenantId" column in the result table. If this column is not in the table, then you may have to update your query string
+to include this column.
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
 ```java

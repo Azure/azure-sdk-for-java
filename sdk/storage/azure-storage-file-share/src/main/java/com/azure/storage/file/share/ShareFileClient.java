@@ -564,7 +564,7 @@ public class ShareFileClient {
     public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileRange range,
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Duration timeout, Context context) {
         return downloadWithResponse(stream, new ShareFileDownloadOptions().setRange(range)
-            .setRangeContentMd5(rangeGetContentMD5).setRequestConditions(requestConditions), timeout, context);
+            .setRangeContentMd5Requested(rangeGetContentMD5).setRequestConditions(requestConditions), timeout, context);
     }
 
     /**

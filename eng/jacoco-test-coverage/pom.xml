@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>3.1.4</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -64,27 +64,27 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-identity</artifactId>
-      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-networktraversal</artifactId>
-      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
       <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -174,17 +174,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.19.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -229,7 +229,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
+      <version>7.4.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -244,7 +244,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-query</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -470,7 +470,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.11.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -575,12 +575,12 @@
 	  <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-digitaltwins-core</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
+      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-digitaltwins-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+      <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
