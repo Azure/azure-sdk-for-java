@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-synapse</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-synapse;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-synapse;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Synapse Management</name>

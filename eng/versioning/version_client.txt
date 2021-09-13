@@ -247,7 +247,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.1;1.0.0-beta.2
