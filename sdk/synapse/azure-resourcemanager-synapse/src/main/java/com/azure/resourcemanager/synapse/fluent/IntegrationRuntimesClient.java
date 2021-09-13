@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeRequest;
@@ -438,6 +439,38 @@ public interface IntegrationRuntimesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
      * Enable interactive query in integration runtime.

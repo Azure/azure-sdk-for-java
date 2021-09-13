@@ -229,7 +229,7 @@ com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.1;1
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.2
@@ -247,7 +247,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.1;1.0.0-beta.2
@@ -314,7 +314,9 @@ com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.1;1.0.0-beta
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.1;1.0.0-beta.2
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

@@ -187,6 +187,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -194,7 +195,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -247,12 +248,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -376,6 +378,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -383,7 +386,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -448,12 +451,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -721,13 +725,14 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -779,11 +784,12 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -987,6 +993,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -994,7 +1001,7 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1050,12 +1057,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
