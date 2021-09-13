@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionForPrivateLinkHubInner;
+import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionProperties;
 
 /** An immutable client-side representation of PrivateEndpointConnectionForPrivateLinkHub. */
 public interface PrivateEndpointConnectionForPrivateLinkHub {
