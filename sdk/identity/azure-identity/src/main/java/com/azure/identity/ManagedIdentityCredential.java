@@ -55,7 +55,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             } else {
                 managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
             }
-        } else if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
+        } else if ((configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID) || clientId != null)
             && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
             && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
             clientBuilder.clientId(clientId == null
