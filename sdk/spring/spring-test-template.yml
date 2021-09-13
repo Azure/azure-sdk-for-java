@@ -30,9 +30,6 @@ parameters:
     - name: azure-spring-boot-test-aad-resource-server
       groupId: com.azure.spring
       safeName: azurespringboottestaadresourceserver
-    - name: azure-spring-boot-test-aad-resource-server-by-filter
-      groupId: com.azure.spring
-      safeName: azurespringboottestaadresourceserverbyfilter
     - name: azure-spring-boot-test-keyvault
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvault

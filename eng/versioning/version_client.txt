@@ -177,7 +177,6 @@ com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-selenium-common;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-webapp-and-resource-server-with-obo;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-resource-server;1.0.0;1.0.0
-com.azure.spring:azure-spring-boot-test-aad-resource-server-by-filter;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-core;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-keyvault;1.0.0;1.0.0
