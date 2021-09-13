@@ -36,10 +36,6 @@ class DnsRecordSetsImpl
         setDefaults(prepareInlineDefine(recordSet.withTimeToLive(DEFAULT_TTL_IN_SECONDS)));
     }
 
-    DnsRecordSetImpl defineCaaRecordSet(String name) {
-        return setDefaults(prepareInlineDefine(CaaRecordSetImpl.newRecordSet(name, this.getParent())));
-    }
-
     DnsRecordSetImpl defineCNameRecordSet(String name) {
         return setDefaults(prepareInlineDefine(CnameRecordSetImpl.newRecordSet(name, this.getParent())));
     }
@@ -76,10 +72,6 @@ class DnsRecordSetsImpl
         return prepareInlineUpdate(MxRecordSetImpl.newRecordSet(name, this.getParent()));
     }
 
-    DnsRecordSetImpl updateCaaRecordSet(String name) {
-        return prepareInlineUpdate(CaaRecordSetImpl.newRecordSet(name, this.getParent()));
-    }
-
     DnsRecordSetImpl updateCNameRecordSet(String name) {
         return prepareInlineUpdate(CnameRecordSetImpl.newRecordSet(name, this.getParent()));
     }
@@ -110,10 +102,6 @@ class DnsRecordSetsImpl
 
     void withoutAaaaRecordSet(String name, String eTagValue) {
         prepareInlineRemove(AaaaRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
-    }
-
-    void withoutCaaRecordSet(String name, String eTagValue) {
-        prepareInlineRemove(CaaRecordSetImpl.newRecordSet(name, this.getParent()).withETagOnDelete(eTagValue));
     }
 
     void withoutCNameRecordSet(String name, String eTagValue) {

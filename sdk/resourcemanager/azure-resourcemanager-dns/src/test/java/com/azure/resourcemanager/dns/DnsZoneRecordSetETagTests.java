@@ -15,7 +15,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
 import com.azure.resourcemanager.dns.models.CnameRecordSet;
-import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.ZoneType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
@@ -138,9 +137,6 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
                 .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
                 .withETagCheck()
                 .attach()
-                .defineCaaRecordSet("caaName")
-                .withRecord(4, "sometag", "someValue")
-                .attach()
                 .defineCNameRecordSet("documents")
                 .withAlias("doc.contoso.com")
                 .withETagCheck()
@@ -167,15 +163,6 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
         // Check CNAME records
         PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assertions.assertTrue(TestUtilities.getSize(cnameRecordSets) == 2);
-
-        // Check Caa records
-        PagedIterable<CaaRecordSet> caaRecordSets = dnsZone.caaRecordSets().list();
-        Assertions.assertTrue(TestUtilities.getSize(caaRecordSets) == 1);
-        CaaRecordSet caaRecordSet1 = caaRecordSets.iterator().next();
-        Assertions.assertTrue(caaRecordSet1.name().startsWith("caaname"));
-        Assertions.assertTrue(caaRecordSet1.records().get(0).value().equalsIgnoreCase("someValue"));
-        Assertions.assertEquals(4, (long) caaRecordSet1.records().get(0).flags());
-        Assertions.assertTrue(caaRecordSet1.fqdn().startsWith("caaname.www.contoso"));
 
         Assertions.assertEquals(ZoneType.PUBLIC, dnsZone.accessType());
 

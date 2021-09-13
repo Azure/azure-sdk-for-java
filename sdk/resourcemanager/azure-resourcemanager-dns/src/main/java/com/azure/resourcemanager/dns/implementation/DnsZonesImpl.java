@@ -46,12 +46,12 @@ public class DnsZonesImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName) {
-        return this.manager().serviceClient().getZones().deleteAsync(resourceGroupName, zoneName);
+        return this.manager().serviceClient().getZones().deleteAsync(resourceGroupName, zoneName).then();
     }
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue) {
-        return this.manager().serviceClient().getZones().deleteAsync(resourceGroupName, zoneName, eTagValue);
+        return this.manager().serviceClient().getZones().deleteAsync(resourceGroupName, zoneName, eTagValue).then();
     }
 
     @Override
