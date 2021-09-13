@@ -156,22 +156,9 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-      - ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-        - pwsh: |
-            $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
-            $ApiViewRequestUrl = "https://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
-            foreach ($artifact in $artifacts)
-            {
-              $pkgName = "$artifact.name"
-              $groupId= "$artifact.groupId"
-              $artifactPath = "/$groupId/$pkgName"
-              $fileName = (Get-ChildItem -Path packages/$($artifactPath) $($pkgName)*sources.jar).Name
-              $filePath = "/packages/$($artifactPath)/$($fileName)"
-              $URL = "$ApiViewRequestUrl&buildId=$(Build.BuildId)&commitSha=$(Build.SourceVersion)&pullRequestNumber=$(System.PullRequest.PullRequestNumber)&filePath=$filePath&language=java"
-              Invoke-WebRequest $URL
-            }
-          continueOnError: true
-          displayName: 'Detect API changes'
+      - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))

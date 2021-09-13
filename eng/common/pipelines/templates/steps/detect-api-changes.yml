@@ -1,0 +1,19 @@
+parameters:
+  ArtifactPath: $(Build.ArtifactStagingDirectory)
+  Artifacts: []
+
+steps:
+  - ${{ each artifact in parameters.Artifacts }}:
+    - task: Powershell@2
+      inputs:
+        filePath: $(Build.SourcesDirectory)/eng/common/scripts/Detect-Api-Changes.ps1
+        arguments: >
+          -Artifacts '${{ convertToJson(parameters.Artifacts) }}'
+          -ArtifactPath ${{parameters.ArtifactPath}}
+          -CommitSha $(Build.SourceVersion)
+          -BuildId $(Build.BuildId)
+          -PullRequestNumber $(System.PullRequest.PullRequestNumber)'
+        pwsh: true
+        workingDirectory: $(Pipeline.Workspace)
+      displayName: Detect API changes
+      condition: and(succeededOrFailed(), eq(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'public'))
