@@ -153,7 +153,7 @@
     "dir": "azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.dns",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-04"
   },
   "eventhubs": {
     "dir": "azure-resourcemanager-eventhubs",
