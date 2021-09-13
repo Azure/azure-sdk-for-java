@@ -147,6 +147,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
         if (schemaName == null) {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -154,7 +155,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
                     service
                         .listBySchema(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -222,12 +223,13 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
         if (schemaName == null) {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBySchema(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -407,6 +409,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -414,7 +417,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -476,12 +479,13 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
         if (tableName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

@@ -12,7 +12,7 @@
 
   <groupId>com.azure.cosmos.spark</groupId>
   <artifactId>azure-cosmos-spark_3-1_2-12</artifactId>
-  <version>4.4.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
+  <version>4.3.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;current} -->
   <packaging>jar</packaging>
   <name>OLTP Spark Connector for Azure Cosmos DB SQL API</name>
   <description>OLTP Spark Connector for Azure Cosmos DB SQL API</description>
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -90,7 +90,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -201,7 +201,7 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>4.4.0</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
+        <version>4.5.4</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
         <configuration>
           <source>11</source>
           <target>11</target>
@@ -234,7 +234,7 @@
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
-                <include>net.alchim31.maven:scala-maven-plugin:[4.4.0]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
+                <include>net.alchim31.maven:scala-maven-plugin:[4.5.4]</include> <!-- {x-include-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
                 <include>org.scalastyle:scalastyle-maven-plugin:[1.0.0]</include> <!-- {x-include-update;cosmos_org.scalastyle:scalastyle-maven-plugin;external_dependency} -->
               </includes>
             </bannedDependencies>

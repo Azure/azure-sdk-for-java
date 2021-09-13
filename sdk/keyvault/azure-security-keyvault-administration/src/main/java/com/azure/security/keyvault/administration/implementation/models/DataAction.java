@@ -46,6 +46,14 @@ public final class DataAction extends ExpandableStringEnum<DataAction> {
     public static final DataAction READ_ROLE_DEFINITION =
             fromString("Microsoft.KeyVault/managedHsm/roleDefinitions/read/action");
 
+    /** Static value Microsoft.KeyVault/managedHsm/roleDefinitions/write/action for DataAction. */
+    public static final DataAction WRITE_ROLE_DEFINITION =
+            fromString("Microsoft.KeyVault/managedHsm/roleDefinitions/write/action");
+
+    /** Static value Microsoft.KeyVault/managedHsm/roleDefinitions/delete/action for DataAction. */
+    public static final DataAction DELETE_ROLE_DEFINITION =
+            fromString("Microsoft.KeyVault/managedHsm/roleDefinitions/delete/action");
+
     /** Static value Microsoft.KeyVault/managedHsm/keys/encrypt/action for DataAction. */
     public static final DataAction ENCRYPT_HSM_KEY = fromString("Microsoft.KeyVault/managedHsm/keys/encrypt/action");
 
@@ -73,6 +81,9 @@ public final class DataAction extends ExpandableStringEnum<DataAction> {
     /** Static value Microsoft.KeyVault/managedHsm/keys/export/action for DataAction. */
     public static final DataAction EXPORT_HSM_KEY = fromString("Microsoft.KeyVault/managedHsm/keys/export/action");
 
+    /** Static value Microsoft.KeyVault/managedHsm/keys/release/action for DataAction. */
+    public static final DataAction RELEASE_KEY = fromString("Microsoft.KeyVault/managedHsm/keys/release/action");
+
     /** Static value Microsoft.KeyVault/managedHsm/keys/import/action for DataAction. */
     public static final DataAction IMPORT_HSM_KEY = fromString("Microsoft.KeyVault/managedHsm/keys/import/action");
 
@@ -83,6 +94,10 @@ public final class DataAction extends ExpandableStringEnum<DataAction> {
     /** Static value Microsoft.KeyVault/managedHsm/securitydomain/download/action for DataAction. */
     public static final DataAction DOWNLOAD_HSM_SECURITY_DOMAIN =
             fromString("Microsoft.KeyVault/managedHsm/securitydomain/download/action");
+
+    /** Static value Microsoft.KeyVault/managedHsm/securitydomain/download/read for DataAction. */
+    public static final DataAction DOWNLOAD_HSM_SECURITY_DOMAIN_STATUS =
+            fromString("Microsoft.KeyVault/managedHsm/securitydomain/download/read");
 
     /** Static value Microsoft.KeyVault/managedHsm/securitydomain/upload/action for DataAction. */
     public static final DataAction UPLOAD_HSM_SECURITY_DOMAIN =
@@ -109,6 +124,9 @@ public final class DataAction extends ExpandableStringEnum<DataAction> {
     /** Static value Microsoft.KeyVault/managedHsm/restore/status/action for DataAction. */
     public static final DataAction READ_HSM_RESTORE_STATUS =
             fromString("Microsoft.KeyVault/managedHsm/restore/status/action");
+
+    /** Static value Microsoft.KeyVault/managedHsm/rng/action for DataAction. */
+    public static final DataAction RANDOM_NUMBERS_GENERATE = fromString("Microsoft.KeyVault/managedHsm/rng/action");
 
     /**
      * Creates or finds a DataAction from its string representation.

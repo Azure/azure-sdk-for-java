@@ -9,6 +9,8 @@ import okhttp3.Response;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
@@ -30,6 +32,11 @@ public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
         return Mono.defer(() -> Mono.just(body));
+    }
+
+    @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        return Mono.defer(() -> Mono.just(new ByteArrayInputStream(body)));
     }
 
     @Override

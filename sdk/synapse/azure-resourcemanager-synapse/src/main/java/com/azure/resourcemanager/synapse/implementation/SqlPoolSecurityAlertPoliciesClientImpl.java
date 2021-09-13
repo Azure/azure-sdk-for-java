@@ -162,6 +162,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -169,7 +170,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -225,12 +226,13 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -367,6 +369,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                 .error(
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -374,7 +377,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -432,12 +435,13 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                 .error(
                     new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -573,6 +577,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -580,7 +585,7 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -646,12 +651,13 @@ public final class SqlPoolSecurityAlertPoliciesClientImpl implements SqlPoolSecu
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

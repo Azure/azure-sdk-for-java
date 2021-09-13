@@ -6,36 +6,27 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.TwitterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the Twitter provider. */
 @Fluent
-public final class Twitter extends ProxyOnlyResource {
+public final class Twitter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Twitter.class);
 
     /*
-     * Twitter resource specific properties
+     * <code>false</code> if the Twitter provider should not be enabled despite
+     * the set registration; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties")
-    private TwitterProperties innerProperties;
+    @JsonProperty(value = "enabled")
+    private Boolean enabled;
 
-    /**
-     * Get the innerProperties property: Twitter resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The configuration settings of the app registration for the Twitter
+     * provider.
      */
-    private TwitterProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Twitter withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    @JsonProperty(value = "registration")
+    private TwitterRegistration registration;
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Twitter provider should not be enabled despite
@@ -44,7 +35,7 @@ public final class Twitter extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -55,10 +46,7 @@ public final class Twitter extends ProxyOnlyResource {
      * @return the Twitter object itself.
      */
     public Twitter withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new TwitterProperties();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -68,7 +56,7 @@ public final class Twitter extends ProxyOnlyResource {
      * @return the registration value.
      */
     public TwitterRegistration registration() {
-        return this.innerProperties() == null ? null : this.innerProperties().registration();
+        return this.registration;
     }
 
     /**
@@ -78,10 +66,7 @@ public final class Twitter extends ProxyOnlyResource {
      * @return the Twitter object itself.
      */
     public Twitter withRegistration(TwitterRegistration registration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new TwitterProperties();
-        }
-        this.innerProperties().withRegistration(registration);
+        this.registration = registration;
         return this;
     }
 
@@ -90,11 +75,9 @@ public final class Twitter extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (registration() != null) {
+            registration().validate();
         }
     }
 }

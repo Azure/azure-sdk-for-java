@@ -56,7 +56,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BigDataPoolResourceInfoInner update(
@@ -76,7 +76,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BigDataPoolResourceInfoInner> updateWithResponse(
@@ -97,7 +97,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<BigDataPoolResourceInfoInner>, BigDataPoolResourceInfoInner> beginCreateOrUpdate(
@@ -119,7 +119,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<BigDataPoolResourceInfoInner>, BigDataPoolResourceInfoInner> beginCreateOrUpdate(
@@ -141,7 +141,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BigDataPoolResourceInfoInner createOrUpdate(
@@ -161,7 +161,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BigDataPoolResourceInfoInner createOrUpdate(
@@ -182,7 +182,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Big Data pool.
+     * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BigDataPoolResourceInfoInner createOrUpdate(
@@ -261,7 +261,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pool information.
+     * @return collection of Big Data pools.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BigDataPoolResourceInfoInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -275,7 +275,7 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Big Data pool information.
+     * @return collection of Big Data pools.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BigDataPoolResourceInfoInner> listByWorkspace(

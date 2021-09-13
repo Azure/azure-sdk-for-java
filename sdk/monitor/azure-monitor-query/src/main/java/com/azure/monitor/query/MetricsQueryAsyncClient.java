@@ -6,11 +6,11 @@ package com.azure.monitor.query;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.models.HttpResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.metrics.models.Metric;
@@ -92,7 +92,7 @@ public final class MetricsQueryAsyncClient {
      * Lists all the metrics namespaces created for the resource URI.
      * @param resourceUri The resource URI for which the metrics namespaces are listed.
      * @param startTime The returned list of metrics namespaces are created after the specified start time.
-     * @return List of metrics namespaces.
+     * @return A {@link PagedFlux paged collection} of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
@@ -106,7 +106,7 @@ public final class MetricsQueryAsyncClient {
     /**
      * Lists all the metrics definitions created for the resource URI.
      * @param resourceUri The resource URI for which the metrics definitions are listed.
-     * @return List of metrics definitions.
+     * @return A {@link PagedFlux paged collection} of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri) {
@@ -117,7 +117,7 @@ public final class MetricsQueryAsyncClient {
      * Lists all the metrics definitions created for the resource URI.
      * @param resourceUri The resource URI for which the metrics definitions are listed.
      * @param metricsNamespace The metrics namespace to which the listed metrics definitions belong.
-     * @return List of metrics definitions.
+     * @return A {@link PagedFlux paged collection} of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
