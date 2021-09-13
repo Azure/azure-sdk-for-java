@@ -119,8 +119,16 @@
     <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
     <heapDumpOnOom>
       -XX:+HeapDumpOnOutOfMemoryError
-      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}oom.hprof
+      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
     </heapDumpOnOom>
+
+    <defaultSurefireArgLine>
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultSurefireArgLine>
+
+    <java11ModulesSurefireArgLine>
+    </java11ModulesSurefireArgLine>
   </properties>
 
   <build>
@@ -640,6 +648,10 @@
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultSurefireArgLine}
+              ${java11ModulesSurefireArgLine}
+            </argLine>
           </configuration>
         </plugin>
 
