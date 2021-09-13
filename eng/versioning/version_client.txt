@@ -174,7 +174,6 @@ com.azure.spring:azure-spring-integration-servicebus;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-storage-queue;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-test;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
-com.azure.spring:azure-spring-boot-test-aad-b2c;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-selenium-common;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-webapp-and-resource-server-with-obo;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-resource-server;1.0.0;1.0.0

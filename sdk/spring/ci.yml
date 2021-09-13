@@ -22,7 +22,6 @@ trigger:
       - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-starter-storage/pom.xml
       - sdk/spring/azure-spring-boot-test-aad/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-resource-server-by-filter/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
@@ -79,7 +78,6 @@ pr:
       - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-starter-storage/pom.xml
       - sdk/spring/azure-spring-boot-test-aad/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-resource-server-by-filter/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml

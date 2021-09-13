@@ -24,9 +24,6 @@ parameters:
     - name: azure-spring-boot-test-aad
       groupId: com.azure.spring
       safeName: azurespringboottestaad
-    - name: azure-spring-boot-test-aad-b2c
-      groupId: com.azure.spring
-      safeName: azurespringboottestaadb2c
     - name: azure-spring-boot-test-aad-webapp-and-resource-server-with-obo
       groupId: com.azure.spring
       safeName: azurespringboottestaadobo
