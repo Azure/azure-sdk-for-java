@@ -58,6 +58,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Async Client that supports chat thread operations.
+ *
+ * <p><strong>Instantiating an asynchronous Chat Thread Client</strong></p>
+ *
+ * {@codesnippet com.azure.communication.chat.chatthreadasyncclient.instantiation}
+ *
+ * <p>View {@link ChatClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see ChatClientBuilder
  */
 @ServiceClient(builder = ChatThreadClientBuilder.class, isAsync = true)
 public final class ChatThreadAsyncClient {
@@ -408,6 +416,12 @@ public final class ChatThreadAsyncClient {
     /**
      * Sends a message to a thread.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Send a chat message based on "options".</p>
+     *
+     * {@codesnippet com.azure.communication.chat.chatthreadasyncclient.sendmessage#sendchatmessageoptions}
+     *
      * @param options Options for sending the message.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -757,27 +771,6 @@ public final class ChatThreadAsyncClient {
         try {
             TypingNotificationOptions options = new TypingNotificationOptions();
             return withContext(context -> sendTypingNotification(options, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Posts a typing event to a thread, on behalf of a user.
-     *
-     * @param options Options for sending the typing notification.
-     * @throws ChatErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendTypingNotification(TypingNotificationOptions options) {
-        try {
-            Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> sendTypingNotification(options, context)
-                .flatMap((Response<Void> res) -> {
-                    return Mono.empty();
-                }));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
