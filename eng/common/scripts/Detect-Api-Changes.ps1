@@ -9,7 +9,7 @@ Param (
   [Parameter(Mandatory=$True)]
   [string] $CommitSha,
   [Parameter(Mandatory=$True)]
-  [Json] $ArtifactsJson,
+  [string] $ArtifactList,
   [string] $ArtifactName = "packages",
   [string] $APIViewUri = "http://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
 )
@@ -34,11 +34,11 @@ function Submit-Request($filePath)
     return $StatusCode
 }
 
-function Shoud-Process-Package($pkgPath)
+function Shoud-Process-Package($pkgPath, $packageName)
 {
     $pkg = Split-Path -Leaf $pkgPath
     $configFileDir = Join-Path -Path $ArtifactPath "PackageInfo"
-    $pkgPropPath = Join-Path -Path $configFileDir "$PackageName.json"
+    $pkgPropPath = Join-Path -Path $configFileDir "$packageName.json"
     if (-Not (Test-Path $pkgPropPath))
     {
         Write-Host " Package property file path $($pkgPropPath) is invalid."
@@ -54,7 +54,6 @@ function Log-Input-Params()
 {
     Write-Host "Artifact Path: $($ArtifactPath)"
     Write-Host "Artifact Name: $($ArtifactName)"
-    Write-Host "Package Name: $($PackageName)"
     Write-Host "PullRequest Number: $($PullRequestNumber)"
     Write-Host "BuildId: $($BuildId)"
     Write-Host "Language: $($Language)"
@@ -65,14 +64,14 @@ function Log-Input-Params()
 . (Join-Path $PSScriptRoot common.ps1)
 Log-Input-Params
 $ArtifactPath = Join-Path $ArtifactPath $ArtifactName
-$artifacts = $ArtifactsJson | ConvertFrom-Json
-foreach ($artifact in $artifacts)
+$artifacts = $ArtifactList.Split(",")
+foreach ($artifactName in $artifacts)
 {
-    Write-Host "Processing $($artifact.Name)"
+    Write-Host "Processing $($artifactName)"
     $packages = @{}
     if ($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn"))
     {
-        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $PackageName
+        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $artifactName
     }
     else
     {
@@ -86,7 +85,7 @@ foreach ($artifact in $artifacts)
     if ($packages)
     {
         $pkgPath = $packages.Values[0]
-        if (Shoud-Process-Package -pkgPath $pkgPath)
+        if (Shoud-Process-Package -pkgPath $pkgPath -packageName $artifactName)
         {
             Write-Host "Submitting API Review for package $($pkg)"
             $filePath = $pkgPath.Replace($ArtifactPath , "").Replace("\", "/")
