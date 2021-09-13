@@ -72,7 +72,7 @@ public final class ChatAsyncClient {
      *
      * <p>Create a chat thread based on "options".</p>
      *
-     * {@codesnippet com.azure.communication.chat.chatclient.createthreadasync}
+     * {@codesnippet com.azure.communication.chat.chatasyncclient.createchatthread#createchatthreadoptions}
      *
      * @param options Options for creating a chat thread.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.

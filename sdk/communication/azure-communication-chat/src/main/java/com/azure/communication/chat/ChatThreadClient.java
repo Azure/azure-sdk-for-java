@@ -226,7 +226,7 @@ public final class ChatThreadClient {
      *
      * <p>Send a chat message based on "options".</p>
      *
-     * {@codesnippet com.azure.communication.chat.chatclient.sendmessage}
+     * {@codesnippet com.azure.communication.chat.chatthreadclient.sendmessage#sendchatmessageoptions}
      *
      * @param options Options for sending the message.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.

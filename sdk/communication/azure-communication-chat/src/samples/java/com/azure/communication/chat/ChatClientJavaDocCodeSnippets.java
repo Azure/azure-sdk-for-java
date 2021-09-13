@@ -3,7 +3,6 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.ChatThreadItem;
 import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatThreadProperties;
@@ -12,8 +11,6 @@ import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.CommunicationTokenCredential;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Context;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +119,7 @@ public final class ChatClientJavaDocCodeSnippets {
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
         CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
-        // BEGIN: com.azure.communication.chat.chatclient.createthread
+        // BEGIN: com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions
 
         // Initialize the list of chat thread participants
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
@@ -147,7 +144,7 @@ public final class ChatClientJavaDocCodeSnippets {
         ChatThreadProperties chatThread = result.getChatThread();
         String chatThreadId = chatThread.getId();
 
-        // END: com.azure.communication.chat.chatclient.createthread
+        // END: com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions
     }
 
     public void createChatThreadAsync() {
@@ -157,7 +154,7 @@ public final class ChatClientJavaDocCodeSnippets {
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
         CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
-        // BEGIN: com.azure.communication.chat.chatclient.createthreadasync
+        // BEGIN: com.azure.communication.chat.chatasyncclient.createchatthread#createchatthreadoptions
 
         // Initialize the list of chat thread participants
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
@@ -182,14 +179,14 @@ public final class ChatClientJavaDocCodeSnippets {
         ChatThreadProperties chatThread = result.getChatThread();
         String chatThreadId = chatThread.getId();
 
-        // END: com.azure.communication.chat.chatclient.createthreadasync
+        // END: com.azure.communication.chat.chatasyncclient.createchatthread#createchatthreadoptions
     }
 
     public void sendChatMessage() {
 
         ChatThreadClient chatThreadClient = createChatThreadClient();
 
-        // BEGIN: com.azure.communication.chat.chatclient.sendmessage
+        // BEGIN: com.azure.communication.chat.chatthreadclient.sendmessage#sendchatmessageoptions
 
         // Set the chat message options
         SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
@@ -200,14 +197,14 @@ public final class ChatClientJavaDocCodeSnippets {
         SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
         String messageId = sendResult.getId();
 
-        // END: com.azure.communication.chat.chatclient.sendmessage
+        // END: com.azure.communication.chat.chatthreadclient.sendmessage#sendchatmessageoptions
     }
 
     public void sendChatMessageAsync() {
 
         ChatThreadAsyncClient chatThreadClient = createChatThreadAsyncClient();
 
-        // BEGIN: com.azure.communication.chat.chatclient.sendmessageasync
+        // BEGIN: com.azure.communication.chat.chatthreadasyncclient.sendmessage#sendchatmessageoptions
 
         // Set the chat message options
         SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
@@ -218,6 +215,6 @@ public final class ChatClientJavaDocCodeSnippets {
         SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions).block();
         String messageId = sendResult.getId();
 
-        // END: com.azure.communication.chat.chatclient.sendmessageasync
+        // END: com.azure.communication.chat.chatthreadasyncclient.sendmessage#sendchatmessageoptions
     }
 }

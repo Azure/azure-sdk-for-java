@@ -64,7 +64,7 @@ public final class ChatClient {
      *
      * <p>Create a chat thread based on "options".</p>
      *
-     * {@codesnippet com.azure.communication.chat.chatclient.createthread}
+     * {@codesnippet com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions}
      *
      * @param options Options for creating a chat thread.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
