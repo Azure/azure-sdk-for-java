@@ -39,11 +39,11 @@ final class JacksonVersion {
     private final ClientLogger logger = new ClientLogger(JacksonVersion.class);
 
     private JacksonVersion() {
-        annotationsVersion = getVersion("com.fasterxml.jackson.annotation.JsonProperty");
-        coreVersion = getVersion("com.fasterxml.jackson.core.JsonGenerator");
-        databindVersion = getVersion("com.fasterxml.jackson.databind.ObjectMapper");
-        xmlVersion = getVersion("com.fasterxml.jackson.dataformat.xml.XmlMapper");
-        jsr310Version = getVersion("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
+        annotationsVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.annotation.JsonProperty");
+        coreVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.core.JsonGenerator");
+        databindVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
+        xmlVersion = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.dataformat.xml.XmlMapper");
+        jsr310Version = SemanticVersion.getPackageVersionForClass("com.fasterxml.jackson.datatype.jsr310.JavaTimeModule");
         checkVersion(annotationsVersion, ANNOTATIONS_PACKAGE_NAME);
         checkVersion(coreVersion, CORE_PACKAGE_NAME);
         checkVersion(databindVersion, DATABIND_PACKAGE_NAME);
@@ -60,18 +60,6 @@ final class JacksonVersion {
      */
     public String getHelpInfo() {
         return helpString;
-    }
-
-    /**
-     * Gets {@code SemanticVersion} for given class name
-     */
-    private SemanticVersion getVersion(String className) {
-        try {
-            return SemanticVersion.getPackageVersionForClass(className);
-        } catch (Throwable e) {
-            logger.warning("Failed to retrieve package version for class {}", className, e);
-            return SemanticVersion.createInvalid();
-        }
     }
 
     /**

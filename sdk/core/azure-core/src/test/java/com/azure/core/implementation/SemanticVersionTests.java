@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SemanticVersionTests {
@@ -106,7 +105,7 @@ public class SemanticVersionTests {
     }
 
     @Test
-    public void classVersion() throws ClassNotFoundException {
+    public void classVersion() {
         SemanticVersion version = SemanticVersion
                 .getPackageVersionForClass("com.fasterxml.jackson.databind.ObjectMapper");
         assertTrue(version.isValid());
@@ -118,6 +117,7 @@ public class SemanticVersionTests {
     @ParameterizedTest
     @ValueSource(strings = {"nonsense", ""})
     public void malformedClassVersion(String className) {
-        assertThrows(ClassNotFoundException.class, () -> SemanticVersion.getPackageVersionForClass(className));
+        SemanticVersion version = SemanticVersion.getPackageVersionForClass(className);
+        assertFalse(version.isValid());
     }
 }

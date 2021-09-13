@@ -26,18 +26,21 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
     private final String versionString;
 
     /**
-     * Returns implementation version of the package for given class.
+     * Returns implementation version of the package for given class. If version can't be retrieved or parsed, returns invalid version.
      *
      * @param className - class name to get package version of.
      * @return parsed {@link SemanticVersion} or invalid one.
      */
-    public static SemanticVersion getPackageVersionForClass(String className) throws ClassNotFoundException {
-        Objects.requireNonNull(className, "'className' cannot be null.");
-        return SemanticVersion.getPackageVersion(Class.forName(className));
+    public static SemanticVersion getPackageVersionForClass(String className) {
+        try {
+            return getPackageVersion(Class.forName(className));
+        } catch (Throwable e) {
+            return SemanticVersion.createInvalid();
+        }
     }
 
     /**
-     * Parses semver 2.0.0 string.
+     * Parses semver 2.0.0 string. If version can't be retrieved or parsed, returns invalid version.
      *
      * @param version to parse.
      * @return parsed {@link SemanticVersion} or invalid one.

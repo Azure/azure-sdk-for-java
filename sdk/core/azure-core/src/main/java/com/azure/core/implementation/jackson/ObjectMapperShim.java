@@ -52,7 +52,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim);
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -66,7 +66,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createXmlMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -80,7 +80,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createSimpleMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -94,7 +94,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createDefaultMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw  LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw  LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -108,7 +108,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createPrettyPrintMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -122,7 +122,7 @@ public final class ObjectMapperShim {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createHeaderMapper();
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -151,7 +151,7 @@ public final class ObjectMapperShim {
         try {
             return mapper.writeValueAsString(value);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -166,7 +166,7 @@ public final class ObjectMapperShim {
         try {
             return mapper.writeValueAsBytes(value);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -181,7 +181,7 @@ public final class ObjectMapperShim {
         try {
             mapper.writeValue(out, value);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -198,7 +198,7 @@ public final class ObjectMapperShim {
             final JavaType javaType = createJavaType(valueType);
             return mapper.readValue(content, javaType);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -215,7 +215,7 @@ public final class ObjectMapperShim {
             final JavaType javaType = createJavaType(valueType);
             return mapper.readValue(src, javaType);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -232,7 +232,7 @@ public final class ObjectMapperShim {
             final JavaType javaType = createJavaType(valueType);
             return mapper.readValue(src, javaType);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -246,7 +246,7 @@ public final class ObjectMapperShim {
         try {
             return mapper.readTree(content);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
@@ -260,7 +260,7 @@ public final class ObjectMapperShim {
         try {
             return mapper.readTree(content);
         } catch (LinkageError ex) {
-            throw LOGGER.logThrowableAsError(new JacksonVersionMismatchError(JACKSON_VERSION.getHelpInfo(), ex));
+            throw LOGGER.logThrowableAsError(new LinkageError(JACKSON_VERSION.getHelpInfo(), ex));
         }
     }
 
