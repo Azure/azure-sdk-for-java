@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
@@ -48,6 +49,8 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private Map<String, AppConfigurationStoreHealth> clientHealth;
 
     private String eventDataInfo;
+    
+    private final String testName;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -60,6 +63,22 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
         this.clientStore = clientStore;
         this.eventDataInfo = "";
         this.clientHealth = new HashMap<>();
+        configStores.stream().forEach(store -> {
+            if (getStoreHealthState(store)) {
+                this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
+            } else {
+                this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.NOT_LOADED);
+            }
+        });
+        testName = "";
+    }
+    
+    public AppConfigurationRefresh(AppConfigurationProperties properties, ClientStore clientStore, String testName) {
+        this.configStores = properties.getStores();
+        this.clientStore = clientStore;
+        this.eventDataInfo = "";
+        this.clientHealth = new HashMap<>();
+        this.testName = testName;
         configStores.stream().forEach(store -> {
             if (getStoreHealthState(store)) {
                 this.clientHealth.put(store.getEndpoint(), AppConfigurationStoreHealth.UP);
@@ -123,8 +142,9 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     if (configStore.isEnabled()) {
                         String endpoint = configStore.getEndpoint();
                         AppConfigurationStoreMonitoring monitor = configStore.getMonitoring();
-
+                        LOGGER.error("Before If: " + endpoint + " - " + StateHolder.getLoadState(endpoint) + " - " + testName);
                         if (StateHolder.getLoadState(endpoint)) {
+                            LOGGER.error("Monitor Enabled: " + monitor.isEnabled() + " - " + testName);
                             if (monitor.isEnabled()
                                 && refresh(StateHolder.getState(endpoint), endpoint, monitor.getRefreshInterval())) {
                                 didRefresh = true;
@@ -138,8 +158,9 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                         FeatureFlagStore featureStore = configStore.getFeatureFlags();
 
                         if (StateHolder.getLoadStateFeatureFlag(endpoint)) {
-                            if (featureStore.getEnabled() && refresh(StateHolder.getStateFeatureFlag(endpoint),
-                                endpoint, monitor.getFeatureFlagRefreshInterval())) {
+                            if (featureStore.getEnabled()
+                                && refreshFeatureFlags(configStore, StateHolder.getStateFeatureFlag(endpoint),
+                                    endpoint, monitor.getFeatureFlagRefreshInterval())) {
                                 didRefresh = true;
                                 break;
                             } else {
@@ -168,13 +189,13 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
      */
     private boolean refresh(State state, String endpoint, Duration refreshInterval) {
         Date date = new Date();
+        LOGGER.error(date + " - " + state.getNextRefreshCheck() + " - " + date.after(state.getNextRefreshCheck()) + " - " + testName);
         if (date.after(state.getNextRefreshCheck())) {
+            LOGGER.error(state.getWatchKeys().size() + " - " + testName);
             for (ConfigurationSetting watchKey : state.getWatchKeys()) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(watchKey.getKey())
-                    .setLabelFilter(watchKey.getLabel());
-
-                ConfigurationSetting watchedKey = clientStore.getWatchKey(settingSelector, endpoint);
-
+                ConfigurationSetting watchedKey = clientStore.getWatchKey(watchKey.getKey(), watchKey.getLabel(),
+                    endpoint);
+                LOGGER.error("WatchedKey Value: " + watchedKey + " - " + testName);
                 String etag = null;
                 // If there is no result, etag will be considered empty.
                 // A refresh will trigger once the selector returns a value.
@@ -199,6 +220,73 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;
                 }
+            }
+
+            // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new
+            // configurations.
+            StateHolder.setState(state, refreshInterval);
+        }
+
+        return false;
+    }
+
+    private boolean refreshFeatureFlags(ConfigStore configStore, State state, String endpoint,
+        Duration refreshInterval) {
+        Date date = new Date();
+        if (date.after(state.getNextRefreshCheck())) {
+            SettingSelector selector = new SettingSelector().setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
+                .setLabelFilter(configStore.getFeatureFlags().getLabelFilter());
+            PagedIterable<ConfigurationSetting> currentKeys = clientStore.getFeatureFlagWatchKey(selector, endpoint);
+
+            int watchedKeySize = 0;
+
+            for (ConfigurationSetting currentKey : currentKeys) {
+                watchedKeySize += 1;
+                for (ConfigurationSetting watchFlag : state.getWatchKeys()) {
+                    
+                    String etag = null;
+                    // If there is no result, etag will be considered empty.
+                    // A refresh will trigger once the selector returns a value.
+                    if (watchFlag != null) {
+                        etag = watchFlag.getETag();
+                    } else {
+                        break;
+                    }
+                    
+                    if (watchFlag.getKey().equals(currentKey.getKey())) {
+                        LOGGER.debug(etag + " - " + currentKey.getETag());
+                        if (etag != null && !etag.equals(currentKey.getETag())) {
+                            LOGGER.trace(
+                                "Some keys in store [{}] matching the key [{}] and label [{}] is updated, "
+                                    + "will send refresh event.",
+                                endpoint, watchFlag.getKey(), watchFlag.getLabel());
+
+                            this.eventDataInfo = watchFlag.getKey();
+
+                            // Only one refresh Event needs to be call to update all of the
+                            // stores, not one for each.
+                            LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+
+                            RefreshEventData eventData = new RefreshEventData(eventDataInfo);
+                            publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
+                            return true;
+                        }
+                        break;
+
+                    }
+                }
+            }
+
+            if (watchedKeySize != state.getWatchKeys().size()) {
+                this.eventDataInfo = ".appconfig.featureflag/*";
+
+                // Only one refresh Event needs to be call to update all of the
+                // stores, not one for each.
+                LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+
+                RefreshEventData eventData = new RefreshEventData(eventDataInfo);
+                publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
+                return true;
             }
 
             // Just need to reset refreshInterval, if a refresh was triggered it will updated after loading the new

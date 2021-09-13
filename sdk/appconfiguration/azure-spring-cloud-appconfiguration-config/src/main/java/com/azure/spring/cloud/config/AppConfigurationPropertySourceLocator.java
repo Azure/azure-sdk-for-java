@@ -24,6 +24,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
@@ -62,7 +63,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
-    
+
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private static AtomicBoolean configloaded = new AtomicBoolean(false);
@@ -71,7 +72,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
+        KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
@@ -211,7 +213,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             for (AppConfigurationStoreSelects selectedKeys : selects) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
+                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider,
+                    keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
                 if (initFeatures) {
@@ -225,15 +228,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             List<ConfigurationSetting> watchKeysFeatures = new ArrayList<ConfigurationSetting>();
 
             for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
-                    .setLabelFilter(trigger.getLabel());
-
-                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
+                ConfigurationSetting watchKey = clients.getWatchKey(trigger.getKey(), trigger.getLabel(),
                     store.getEndpoint());
                 if (watchKey != null) {
                     watchKeysSettings.add(watchKey);
                 } else {
-                    watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
+                    watchKeysSettings
+                        .add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
                 }
             }
             if (store.getFeatureFlags().getEnabled()) {
@@ -241,10 +242,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     .setKeyFilter(store.getFeatureFlags().getKeyFilter())
                     .setLabelFilter(store.getFeatureFlags().getLabelFilter());
 
-                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
+                PagedIterable<ConfigurationSetting> watchKeys = clients.getFeatureFlagWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKey.setKey(store.getFeatureFlags().getKeyFilter());
-                watchKeysFeatures.add(watchKey);
+
+                watchKeys.forEach(watchKey -> {
+                    watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey));
+                });
+
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
                     store.getMonitoring().getFeatureFlagRefreshInterval());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
