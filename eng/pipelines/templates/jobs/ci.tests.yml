@@ -167,6 +167,9 @@ jobs:
           New-Item $(Build.ArtifactStagingDirectory)/oom-hprofs -ItemType directory
           foreach($hprofFile in (Get-ChildItem -Path . -Recurse -Filter *.hprof -File))
           {
+            $fileFullName = $hprofFile.FullName
+            $fileName = $hprofFile.Name
+            Write-Host "Copying $fileFullName to $(Build.ArtifactStagingDirectory)/oom-hprofs/$fileName"
             Copy-Item $hprofFile.FullName $(Build.ArtifactStagingDirectory)/oom-hprofs -ErrorAction SilentlyContinue
           }
         displayName: 'Copy OOM hprofs'
