@@ -1,7 +1,18 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+### 1.0.0-beta.9 (Unreleased)
 
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 1.0.0-beta.8 (2021-09-09)
+#### New Features
+* Added change feed support for pull and push model.
 
 ### 1.0.0-beta.7 (2021-08-16)
 #### New Features

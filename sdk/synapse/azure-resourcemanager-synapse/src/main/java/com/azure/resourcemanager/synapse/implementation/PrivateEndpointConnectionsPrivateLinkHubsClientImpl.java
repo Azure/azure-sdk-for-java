@@ -83,6 +83,22 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
+                + "/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> get(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("privateLinkHubName") String privateLinkHubName,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -126,6 +142,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -133,7 +150,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             privateLinkHubName,
@@ -185,12 +202,13 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 privateLinkHubName,
@@ -275,6 +293,181 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
     public PagedIterable<PrivateEndpointConnectionForPrivateLinkHubInner> list(
         String resourceGroupName, String privateLinkHubName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, privateLinkHubName, context));
+    }
+
+    /**
+     * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param privateEndpointConnectionName Name of the privateEndpointConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> getWithResponseAsync(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateLinkHubName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            privateLinkHubName,
+                            privateEndpointConnectionName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param privateEndpointConnectionName Name of the privateEndpointConnection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> getWithResponseAsync(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (privateLinkHubName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2021-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                privateLinkHubName,
+                privateEndpointConnectionName,
+                accept,
+                context);
+    }
+
+    /**
+     * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param privateEndpointConnectionName Name of the privateEndpointConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateEndpointConnectionForPrivateLinkHubInner> getAsync(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
+        return getWithResponseAsync(resourceGroupName, privateLinkHubName, privateEndpointConnectionName)
+            .flatMap(
+                (Response<PrivateEndpointConnectionForPrivateLinkHubInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param privateEndpointConnectionName Name of the privateEndpointConnection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionForPrivateLinkHubInner get(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
+        return getAsync(resourceGroupName, privateLinkHubName, privateEndpointConnectionName).block();
+    }
+
+    /**
+     * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateLinkHubName Name of the privateLinkHub.
+     * @param privateEndpointConnectionName Name of the privateEndpointConnection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PrivateEndpointConnectionForPrivateLinkHubInner> getWithResponse(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, privateLinkHubName, privateEndpointConnectionName, context)
+            .block();
     }
 
     /**

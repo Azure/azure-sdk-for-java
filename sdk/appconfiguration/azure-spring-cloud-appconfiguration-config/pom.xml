@@ -62,7 +62,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-data-appconfiguration</artifactId>
-            <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+            <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>

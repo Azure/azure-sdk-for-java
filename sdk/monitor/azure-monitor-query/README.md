@@ -29,7 +29,7 @@ This client library provides access to query metrics and logs collected by Azure
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
@@ -99,6 +99,19 @@ in [Kusto Query Language (KQL)](https://docs.microsoft.com/azure/data-explorer/k
 language used by Azure Data Explorer. You can write log queries in Log Analytics to interactively analyze their results,
 use them in alert rules to be proactively notified of issues, or include their results in workbooks or dashboards.
 Insights include prebuilt queries to support their views and workbooks.
+
+#### Logs query rate limits and throttling
+
+Each AAD user is able to make up to 200 requests per 30 seconds, with no cap on the total calls per day.If requests are 
+being made at a rate higher than this, then these requests will receive HTTP status code 429 
+(Too Many Requests) along with the Retry-After: <delta-seconds> header which indicates the number of seconds until 
+requests to this application are likely to be accepted.
+
+As well as call rate limits and daily quota caps, there are also limits on queries themselves:
+
+- Queries cannot return more than 500,000 rows
+- Queries cannot return more than 64,000,000 bytes (~61 MiB total data)
+- Queries cannot run longer than 10 minutes by default. See this for details.
 
 ### Metrics
 
@@ -192,7 +205,7 @@ String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeI
 String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
 String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
 
-LogsBatchQueryResults batchResults = logsQueryClient
+LogsBatchQueryResultCollection batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
 LogsBatchQueryResult query1Result = batchResults.getResult(query1);
@@ -228,6 +241,11 @@ Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspa
 ```
 
 ### Get logs from multiple workspaces
+
+When multiple workspaces are included in the query, the logs in the result table are not grouped according to the 
+workspace from which it was retrieved. To identify the workspace of a row in the result table, you can inspect the 
+"TenantId" column in the result table. If this column is not in the table, then you may have to update your query string
+to include this column.
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
 ```java
@@ -325,7 +343,8 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
 The metrics query API returns a `MetricsQueryResult` object. The `MetricsQueryResult` object contains properties such as a 
 list of `MetricResult`-typed objects, `granularity`, `namespace`, and `timeInterval`. The `MetricResult` objects list 
 can be accessed using the `metrics` param. Each `MetricResult` object in this list contains a list of `TimeSeriesElement` objects. 
-Each `TimeSeriesElement` contains `data` and `metadata_values` properties. In visual form, the object hierarchy of the 
+Each `TimeSeriesElement` contains `data` and `metadata_values` properties. The `MetricResult` list is ordered 
+according to the list of metrics names provided in the request. In visual form, the object hierarchy of the 
 response resembles the following structure:
 
 ```

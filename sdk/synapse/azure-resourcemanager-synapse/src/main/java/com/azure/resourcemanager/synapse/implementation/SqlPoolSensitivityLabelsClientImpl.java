@@ -280,6 +280,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -287,7 +288,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .listCurrent(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -345,12 +346,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listCurrent(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -509,13 +511,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .update(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -572,11 +575,12 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -688,6 +692,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -695,7 +700,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .listRecommended(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -763,12 +768,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listRecommended(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -996,6 +1002,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         final String accept = "application/json";
         return FluxUtil
@@ -1004,7 +1011,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1081,13 +1088,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1250,6 +1258,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         return FluxUtil
             .withContext(
@@ -1257,7 +1266,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1325,12 +1334,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1481,6 +1491,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                 .error(
                     new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1488,7 +1499,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1564,12 +1575,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                 .error(
                     new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1750,6 +1762,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         return FluxUtil
             .withContext(
@@ -1757,7 +1770,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .enableRecommendation(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1825,12 +1838,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         context = this.client.mergeContext(context);
         return service
             .enableRecommendation(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1976,6 +1990,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         return FluxUtil
             .withContext(
@@ -1983,7 +1998,7 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
                     service
                         .disableRecommendation(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -2051,12 +2066,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         if (columnName == null) {
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         context = this.client.mergeContext(context);
         return service
             .disableRecommendation(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
