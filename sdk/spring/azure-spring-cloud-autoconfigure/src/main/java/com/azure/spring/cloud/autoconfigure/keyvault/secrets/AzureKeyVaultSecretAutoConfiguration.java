@@ -8,6 +8,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnClass(SecretClientBuilder.class)
 @ConditionalOnProperty(prefix = AzureKeyVaultSecretProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
 

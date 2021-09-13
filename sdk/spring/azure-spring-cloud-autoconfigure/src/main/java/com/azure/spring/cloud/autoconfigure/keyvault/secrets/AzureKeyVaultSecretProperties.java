@@ -13,7 +13,6 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.secret";
 
-    // TODO (xiada): should we use enum here?
     private SecretServiceVersion serviceVersion;
 
     public SecretServiceVersion getServiceVersion() {

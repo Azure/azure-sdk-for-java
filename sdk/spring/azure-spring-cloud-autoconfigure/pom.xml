@@ -343,7 +343,7 @@
                 <include>com.microsoft.azure:azure-servicebus-jms:[0.0.7]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.microsoft.azure:msal4j:[1.11.0]</include> <!-- {x-include-update;com.microsoft.azure:msal4j;external_dependency} -->
                 <include>com.nimbusds:nimbus-jose-jwt:[9.10.1]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
-                <include>jakarta.validation:jakarta.validation-api</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
+                <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.0.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->

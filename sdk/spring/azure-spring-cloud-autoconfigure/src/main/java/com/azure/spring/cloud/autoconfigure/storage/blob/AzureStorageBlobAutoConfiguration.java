@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnClass(BlobClientBuilder.class)
 @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
 
 

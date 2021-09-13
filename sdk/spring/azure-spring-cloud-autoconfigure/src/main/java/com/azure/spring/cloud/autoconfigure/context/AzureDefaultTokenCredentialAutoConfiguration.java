@@ -21,7 +21,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     @SuppressWarnings("rawtypes")
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
-    @Order()
+    @Order
     public TokenCredential azureTokenCredential() {
         return new DefaultAzureCredentialBuilder().build();
     }

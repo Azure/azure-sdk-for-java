@@ -12,6 +12,7 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,6 +26,7 @@ import org.springframework.core.annotation.Order;
  */
 @ConditionalOnClass(QueueServiceClientBuilder.class)
 @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureStorageQueueAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageQueueAutoConfiguration(AzureConfigurationProperties azureProperties) {

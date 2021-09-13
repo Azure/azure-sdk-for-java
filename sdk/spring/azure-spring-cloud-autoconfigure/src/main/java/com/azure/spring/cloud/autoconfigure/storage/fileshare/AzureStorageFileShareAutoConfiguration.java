@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnClass(ShareServiceClientBuilder.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.storage.fileshare", name = "enabled", matchIfMissing = true)
+@ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageFileShareAutoConfiguration(AzureConfigurationProperties azureProperties) {

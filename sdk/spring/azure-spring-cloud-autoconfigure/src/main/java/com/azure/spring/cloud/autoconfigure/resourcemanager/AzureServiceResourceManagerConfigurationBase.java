@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
-public class AzureServiceResourceManagerConfigurationBase {
+public abstract class AzureServiceResourceManagerConfigurationBase {
 
     protected AzureResourceManager azureResourceManager;
 

@@ -7,6 +7,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -26,6 +27,7 @@ import org.springframework.context.annotation.Import;
     AzureBlobCheckpointStoreConfiguration.class,
     AzureEventProcessorClientConfiguration.class
 })
+@ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureEventHubAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureEventHubAutoConfiguration(AzureConfigurationProperties azureProperties) {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class AzureKeyVaultProperties extends AzureHttpConfigurationProperties {
 
+    // TODO (xiada): the default vault url
     @Value("${:}")
     private String vaultUrl;
 

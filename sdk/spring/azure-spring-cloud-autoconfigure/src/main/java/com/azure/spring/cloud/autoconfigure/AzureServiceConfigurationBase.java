@@ -15,8 +15,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
-@ConditionalOnBean(AzureConfigurationProperties.class)
-public class AzureServiceConfigurationBase {
+//@ConditionalOnBean(AzureConfigurationProperties.class)
+// @Conditional annotations are not inherited; any conditions from superclasses or from overridden methods are not being considered.
+public abstract class AzureServiceConfigurationBase {
 
     protected AzureConfigurationProperties azureProperties;
 

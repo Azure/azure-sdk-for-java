@@ -13,7 +13,6 @@ public class AzureKeyVaultCertificateProperties extends AzureKeyVaultProperties 
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.certificate";
 
-    // TODO (xiada): use enum here?
     private CertificateServiceVersion serviceVersion;
 
     public CertificateServiceVersion getServiceVersion() {

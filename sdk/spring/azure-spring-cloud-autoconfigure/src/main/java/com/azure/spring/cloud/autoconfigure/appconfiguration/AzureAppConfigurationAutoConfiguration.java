@@ -8,6 +8,7 @@ import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnClass(ConfigurationClientBuilder.class)
 // TODO (xiada): what's the right way to call this prefix, appconfiguration or app-configuration?
 @ConditionalOnProperty(prefix = AzureAppConfigurationProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureAppConfigurationAutoConfiguration(AzureConfigurationProperties azureConfigurationProperties) {
