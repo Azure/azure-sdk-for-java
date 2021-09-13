@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Warren Zhu
+ * Azure Event Hub related properties.
  */
 @Validated
 public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
@@ -108,13 +108,16 @@ public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
         return processor;
     }
 
+    /**
+     * Azure Event Processor related properties.
+     */
     public static class Processor {
         private boolean trackLastEnqueuedEventProperties;
         private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
         private Duration partitionOwnershipExpirationInterval;
         private final Batch batch = new Batch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
-        private final CheckpointStore checkpointStore = new CheckpointStore();
+        private final BlobCheckpointStore checkpointStore = new BlobCheckpointStore();
 
         public boolean isTrackLastEnqueuedEventProperties() {
             return trackLastEnqueuedEventProperties;
@@ -148,10 +151,13 @@ public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
             return batch;
         }
 
-        public CheckpointStore getCheckpointStore() {
+        public BlobCheckpointStore getCheckpointStore() {
             return checkpointStore;
         }
 
+        /**
+         * Event processor load balancing properties.
+         */
         public static class LoadBalancing {
             private Duration updateInterval;
             private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
@@ -173,6 +179,9 @@ public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
             }
         }
 
+        /**
+         * Event processor batch properties.
+         */
         public static class Batch {
             private Duration maxWaitTime;
             private int maxSize = 1;
@@ -194,7 +203,10 @@ public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
             }
         }
 
-        static class CheckpointStore extends AzureStorageBlobProperties  {
+        /**
+         * Blob checkpoint store.
+         */
+        static class BlobCheckpointStore extends AzureStorageBlobProperties  {
 
 
         }

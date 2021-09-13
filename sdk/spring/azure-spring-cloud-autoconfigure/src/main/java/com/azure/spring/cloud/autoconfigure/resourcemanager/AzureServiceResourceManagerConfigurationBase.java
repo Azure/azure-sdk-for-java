@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 
 /**

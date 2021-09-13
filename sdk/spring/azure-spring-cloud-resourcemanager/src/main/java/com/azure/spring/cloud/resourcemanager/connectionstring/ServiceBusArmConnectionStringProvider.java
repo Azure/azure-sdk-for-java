@@ -10,6 +10,9 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusNamespaceCrud;
 import com.azure.spring.core.service.AzureServiceType;
 
+/**
+ * A connection string provider reads Service Bus connection string from Azure Resource Manager.
+ */
 public class ServiceBusArmConnectionStringProvider extends AbstractArmConnectionStringProvider<AzureServiceType.ServiceBus> {
 
     private final String namespace;

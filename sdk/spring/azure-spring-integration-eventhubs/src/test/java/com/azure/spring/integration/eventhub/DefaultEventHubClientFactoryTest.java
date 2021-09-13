@@ -8,8 +8,8 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
-import com.azure.spring.integration.eventhub.factory.EventHubServiceClientBuilder;
-import com.azure.spring.integration.eventhub.factory.EventProcessorServiceClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventProcessorSharedAuthenticationClientBuilder;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,8 +58,10 @@ public class DefaultEventHubClientFactoryTest {
 
     @Before
     public void setUp() {
-        EventHubServiceClientBuilder eventHubServiceClientBuilder = mock(EventHubServiceClientBuilder.class, BuilderReturn.self);
-        EventProcessorServiceClientBuilder eventProcessorServiceClientBuilder = mock(EventProcessorServiceClientBuilder.class, BuilderReturn.self);
+        EventHubSharedAuthenticationClientBuilder eventHubServiceClientBuilder = mock(
+            EventHubSharedAuthenticationClientBuilder.class, BuilderReturn.self);
+        EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder = mock(
+            EventProcessorSharedAuthenticationClientBuilder.class, BuilderReturn.self);
 
         when(eventHubServiceClientBuilder.buildAsyncConsumerClient()).thenReturn(this.eventHubConsumerClient);
         when(eventHubServiceClientBuilder.buildAsyncProducerClient()).thenReturn(this.eventHubProducerClient);

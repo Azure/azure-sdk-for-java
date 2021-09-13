@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.core.properties.AzureProperties;
 import org.springframework.beans.BeanUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 

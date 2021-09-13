@@ -1,14 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.util.Triple;
 import com.azure.spring.core.util.Tuple;
-import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
+import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
 
-public class DefaultServiceBusTopicProvisioner implements ServiceBusProvisioner {
+/**
+ * A default implementation to provision Service Bus Topic.
+ */
+public class DefaultServiceBusTopicProvisioner implements ServiceBusTopicProvisioner {
 
     private final ServiceBusTopicCrud topicCrud;
     private final ServiceBusTopicSubscriptionCrud subscriptionCrud;
@@ -17,11 +23,6 @@ public class DefaultServiceBusTopicProvisioner implements ServiceBusProvisioner 
                                              AzureResourceMetadata azureResourceMetadata) {
         this.topicCrud = new ServiceBusTopicCrud(azureResourceManager, azureResourceMetadata);
         this.subscriptionCrud = new ServiceBusTopicSubscriptionCrud(azureResourceManager, azureResourceMetadata);
-    }
-
-    @Override
-    public void provisionQueue(String namespace, String queue) {
-        throw new UnsupportedOperationException("Can't provision queue in a topic client");
     }
 
     @Override

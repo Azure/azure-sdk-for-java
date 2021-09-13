@@ -9,8 +9,8 @@ import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventProcessorServi
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.EventHubServiceClientBuilder;
-import com.azure.spring.integration.eventhub.factory.EventProcessorServiceClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventProcessorSharedAuthenticationClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
  * @author Warren Zhu
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ EventHubServiceClientBuilder.class, EventProcessorServiceClientBuilder.class })
+@ConditionalOnClass({ EventHubSharedAuthenticationClientBuilder.class, EventProcessorSharedAuthenticationClientBuilder.class })
 @Import({
     AzureEventHubSharedCredentialClientConfiguration.EventHubServiceClientConfiguration.class,
     AzureEventHubSharedCredentialClientConfiguration.EventProcessorServiceClientConfiguration.class
@@ -34,12 +34,12 @@ class AzureEventHubSharedCredentialClientConfiguration {
 
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass(EventHubServiceClientBuilder.class)
+    @ConditionalOnClass(EventHubSharedAuthenticationClientBuilder.class)
     static class EventHubServiceClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubServiceClientBuilder eventHubClientBuilder(EventHubServiceClientBuilderFactory factory) {
+        public EventHubSharedAuthenticationClientBuilder eventHubClientBuilder(EventHubServiceClientBuilderFactory factory) {
             return factory.build();
         }
 
@@ -56,12 +56,12 @@ class AzureEventHubSharedCredentialClientConfiguration {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass(EventProcessorServiceClientBuilder.class)
+    @ConditionalOnClass(EventProcessorSharedAuthenticationClientBuilder.class)
     @ConditionalOnBean(CheckpointStore.class)
     static class EventProcessorServiceClientConfiguration {
         @Bean
         @ConditionalOnMissingBean
-        public EventProcessorServiceClientBuilder evenProcessorClientBuilder(EventProcessorServiceClientBuilderFactory factory) {
+        public EventProcessorSharedAuthenticationClientBuilder evenProcessorClientBuilder(EventProcessorServiceClientBuilderFactory factory) {
             return factory.build();
         }
 

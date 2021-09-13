@@ -15,16 +15,23 @@ import javax.annotation.Nullable;
 abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory {
 
     @Nullable
-    protected ServiceBusProvisioner serviceBusProvisioner;
+    protected ServiceBusQueueProvisioner queueProvisioner;
+
+    @Nullable
+    protected ServiceBusTopicProvisioner topicProvisioner;
 
     protected final ServiceBusClientBuilder serviceBusClientBuilder;
 
-    public AbstractServiceBusSenderFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
+    AbstractServiceBusSenderFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
         this.serviceBusClientBuilder = serviceBusClientBuilder;
     }
 
-    public void setServiceBusProvisioner(@Nullable ServiceBusProvisioner serviceBusProvisioner) {
-        this.serviceBusProvisioner = serviceBusProvisioner;
+    public void setQueueProvisioner(@Nullable ServiceBusQueueProvisioner queueProvisioner) {
+        this.queueProvisioner = queueProvisioner;
+    }
+
+    public void setTopicProvisioner(@Nullable ServiceBusTopicProvisioner topicProvisioner) {
+        this.topicProvisioner = topicProvisioner;
     }
 
 }

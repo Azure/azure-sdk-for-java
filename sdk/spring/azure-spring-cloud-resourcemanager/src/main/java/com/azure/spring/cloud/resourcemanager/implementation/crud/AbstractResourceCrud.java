@@ -5,7 +5,6 @@ package com.azure.spring.cloud.resourcemanager.implementation.crud;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.context.core.api.ResourceCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

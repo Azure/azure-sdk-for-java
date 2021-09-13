@@ -50,11 +50,11 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         Memoizer.memoize(producerClientMap, this::createProducerClient);
 
     // TODO (xiada) this will share credential across different event hubs, but they could have different credentials
-    private final EventHubServiceClientBuilder eventHubServiceClientBuilder;
-    private final EventProcessorServiceClientBuilder eventProcessorServiceClientBuilder;
+    private final EventHubSharedAuthenticationClientBuilder eventHubServiceClientBuilder;
+    private final EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder;
 
-    public DefaultEventHubClientFactory(EventHubServiceClientBuilder eventHubClientBuilder,
-                                        EventProcessorServiceClientBuilder eventProcessorServiceClientBuilder) {
+    public DefaultEventHubClientFactory(EventHubSharedAuthenticationClientBuilder eventHubClientBuilder,
+                                        EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder) {
         this.eventHubServiceClientBuilder = eventHubClientBuilder;
         this.eventProcessorServiceClientBuilder = eventProcessorServiceClientBuilder;
     }

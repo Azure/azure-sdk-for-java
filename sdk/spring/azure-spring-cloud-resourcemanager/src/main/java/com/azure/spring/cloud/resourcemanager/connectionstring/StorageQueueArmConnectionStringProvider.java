@@ -10,7 +10,7 @@ import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.service.AzureServiceType;
 
 /**
- * A provider that holds the storage account connection string.
+ * A connection string provider reads Storage Queue connection string from Azure Resource Manager.
  * // TODO (xiada): Do blob, queue share the same connection string?
  */
 public class StorageQueueArmConnectionStringProvider extends AbstractArmConnectionStringProvider<AzureServiceType.StorageQueue> {

@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.storage.queue;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.storage.queue.QueueServiceVersion;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Properties for Azure Storage Queue service.

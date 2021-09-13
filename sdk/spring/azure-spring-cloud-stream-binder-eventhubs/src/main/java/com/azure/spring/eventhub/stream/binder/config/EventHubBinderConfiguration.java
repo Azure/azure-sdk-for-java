@@ -14,7 +14,7 @@ import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvi
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.Binder;
@@ -40,14 +40,17 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubChannelProvisioner eventHubChannelProvisioner(AzureEventHubProperties eventHubProperties,
-                                                                 ObjectProvider<EventHubProvisioner> eventHubProvisioners) {
+    @ConditionalOnBean(EventHubProvisioner.class)
+    public EventHubChannelProvisioner eventHubChannelArmProvisioner(AzureEventHubProperties eventHubProperties,
+                                                                    EventHubProvisioner eventHubProvisioner) {
 
-        if (eventHubProvisioners.getIfAvailable() != null) {
-            return new EventHubChannelResourceManagerProvisioner(eventHubProperties.getNamespace(),
-                                                                 eventHubProvisioners.getIfAvailable());
-        }
+        return new EventHubChannelResourceManagerProvisioner(eventHubProperties.getNamespace(),
+                                                             eventHubProvisioner);
+    }
 
+    @Bean
+    @ConditionalOnMissingBean({ EventHubProvisioner.class, EventHubChannelProvisioner.class })
+    public EventHubChannelProvisioner eventHubChannelProvisioner() {
         return new EventHubChannelProvisioner();
     }
 

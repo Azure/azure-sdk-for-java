@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.provisioning;
 
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusTopicProvisioner;
+import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -12,11 +12,11 @@ import org.springframework.util.Assert;
  */
 public class ServiceBusTopicChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 
-    private final DefaultServiceBusTopicProvisioner serviceBusTopicProvisioner;
+    private final ServiceBusTopicProvisioner serviceBusTopicProvisioner;
     private final String namespace;
 
     public ServiceBusTopicChannelResourceManagerProvisioner(@NonNull String namespace,
-                                                            @NonNull DefaultServiceBusTopicProvisioner topicProvisioner) {
+                                                            @NonNull ServiceBusTopicProvisioner topicProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.serviceBusTopicProvisioner = topicProvisioner;
         this.namespace = namespace;

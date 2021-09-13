@@ -8,13 +8,13 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResou
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusQueueProvisioner;
+import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusQueueMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusQueueChannelResourceManagerProvisioner;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.Binder;
@@ -38,16 +38,21 @@ import org.springframework.context.annotation.Import;
 public class ServiceBusQueueBinderConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean
-    public ServiceBusChannelProvisioner serviceBusChannelProvisioner(AzureServiceBusProperties serviceBusProperties,
-                                                                     ObjectProvider<DefaultServiceBusQueueProvisioner> queueProvisioners) {
+    @ConditionalOnBean(ServiceBusQueueProvisioner.class)
+    public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
+                                                                        ServiceBusQueueProvisioner queueProvisioner) {
 
-        if (queueProvisioners.getIfAvailable() != null) {
-            return new ServiceBusQueueChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),
-                                                                        queueProvisioners.getIfAvailable());
-        }
+
+        return new ServiceBusQueueChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),
+                                                                    queueProvisioner);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(ServiceBusQueueProvisioner.class)
+    public ServiceBusChannelProvisioner serviceBusChannelProvisioner() {
         return new ServiceBusChannelProvisioner();
     }
+
 
     @Bean
     public ServiceBusQueueMessageChannelBinder serviceBusQueueBinder(ServiceBusChannelProvisioner channelProvisioner,

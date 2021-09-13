@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.provisioning;
 
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusQueueProvisioner;
+import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -13,10 +13,10 @@ import org.springframework.util.Assert;
 public class ServiceBusQueueChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 
     private final String namespace;
-    private final DefaultServiceBusQueueProvisioner serviceBusQueueProvisioner;
+    private final ServiceBusQueueProvisioner serviceBusQueueProvisioner;
 
     public ServiceBusQueueChannelResourceManagerProvisioner(@NonNull String namespace,
-                                                            @NonNull DefaultServiceBusQueueProvisioner queueProvisioner) {
+                                                            @NonNull ServiceBusQueueProvisioner queueProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
         this.serviceBusQueueProvisioner = queueProvisioner;

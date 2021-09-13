@@ -18,7 +18,7 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.integration.eventhub.factory.EventProcessorServiceClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventProcessorSharedAuthenticationClientBuilder;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
@@ -29,7 +29,7 @@ import java.util.function.BiConsumer;
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
  * blob properties.
  */
-public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorServiceClientBuilder> {
+public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorSharedAuthenticationClientBuilder> {
 
     private final AzureEventHubProperties eventHubProperties;
     private final CheckpointStore checkpointStore;
@@ -41,28 +41,28 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, ProxyOptions> consumeProxyOptions() {
-        return EventProcessorServiceClientBuilder::proxyOptions;
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, ProxyOptions> consumeProxyOptions() {
+        return EventProcessorSharedAuthenticationClientBuilder::proxyOptions;
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
-        return EventProcessorServiceClientBuilder::transportType;
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
+        return EventProcessorSharedAuthenticationClientBuilder::transportType;
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return EventProcessorServiceClientBuilder::retry;
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
+        return EventProcessorSharedAuthenticationClientBuilder::retry;
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, ClientOptions> consumeClientOptions() {
-        return EventProcessorServiceClientBuilder::clientOptions;
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, ClientOptions> consumeClientOptions() {
+        return EventProcessorSharedAuthenticationClientBuilder::clientOptions;
     }
 
     @Override
-    protected EventProcessorServiceClientBuilder createBuilderInstance() {
-        return new EventProcessorServiceClientBuilder();
+    protected EventProcessorSharedAuthenticationClientBuilder createBuilderInstance() {
+        return new EventProcessorSharedAuthenticationClientBuilder();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
 
     @Override
-    protected void configureService(EventProcessorServiceClientBuilder builder) {
+    protected void configureService(EventProcessorSharedAuthenticationClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         map.from(eventHubProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
@@ -94,7 +94,8 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
     // credentials(String, String, TokenCredential),
     // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
     @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorServiceClientBuilder builder) {
+    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(
+        EventProcessorSharedAuthenticationClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
                                                                                 eventHubProperties.getEventHubName(),
@@ -109,23 +110,23 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, Configuration> consumeConfiguration() {
-        return EventProcessorServiceClientBuilder::configuration;
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, Configuration> consumeConfiguration() {
+        return EventProcessorSharedAuthenticationClientBuilder::configuration;
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, tokenCredential) -> builder.credential(eventHubProperties.getFQDN(),
                                                                 eventHubProperties.getEventHubName(),
                                                                 tokenCredential);
     }
 
     @Override
-    protected BiConsumer<EventProcessorServiceClientBuilder, String> consumeConnectionString() {
-        return EventProcessorServiceClientBuilder::connectionString;
+    protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, String> consumeConnectionString() {
+        return EventProcessorSharedAuthenticationClientBuilder::connectionString;
     }
 
-    private void configureCheckpointStore(EventProcessorServiceClientBuilder builder) {
+    private void configureCheckpointStore(EventProcessorSharedAuthenticationClientBuilder builder) {
         builder.checkpointStore(this.checkpointStore);
     }
 

@@ -17,9 +17,8 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.integration.eventhub.factory.EventHubServiceClientBuilder;
+import com.azure.spring.integration.eventhub.factory.EventHubSharedAuthenticationClientBuilder;
 import org.springframework.boot.context.properties.PropertyMapper;
-import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.function.BiConsumer;
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
  * blob properties.
  */
-public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubServiceClientBuilder> {
+public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubSharedAuthenticationClientBuilder> {
 
     private final AzureEventHubProperties eventHubProperties;
 
@@ -38,44 +37,44 @@ public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClient
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, ProxyOptions> consumeProxyOptions() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, ProxyOptions> consumeProxyOptions() {
         return EventHubClientBuilder::proxyOptions;
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, AmqpTransportType> consumeAmqpTransportType() {
         return EventHubClientBuilder::transportType;
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, AmqpRetryOptions> consumeAmqpRetryOptions() {
         return EventHubClientBuilder::retry;
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, ClientOptions> consumeClientOptions() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, ClientOptions> consumeClientOptions() {
         return EventHubClientBuilder::clientOptions;
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, Configuration> consumeConfiguration() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, Configuration> consumeConfiguration() {
         return EventHubClientBuilder::configuration;
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, tokenCredential) -> builder.credential(eventHubProperties.getFQDN(),
                                                                 tokenCredential);
     }
 
     @Override
-    protected BiConsumer<EventHubServiceClientBuilder, String> consumeConnectionString() {
+    protected BiConsumer<EventHubSharedAuthenticationClientBuilder, String> consumeConnectionString() {
         return EventHubClientBuilder::connectionString;
     }
 
     @Override
-    protected EventHubServiceClientBuilder createBuilderInstance() {
-        return new EventHubServiceClientBuilder();
+    protected EventHubSharedAuthenticationClientBuilder createBuilderInstance() {
+        return new EventHubSharedAuthenticationClientBuilder();
     }
 
     @Override
@@ -86,7 +85,7 @@ public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClient
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
 
     @Override
-    protected void configureService(EventHubServiceClientBuilder builder) {
+    protected void configureService(EventHubSharedAuthenticationClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
         map.from(eventHubProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
@@ -103,7 +102,7 @@ public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClient
     // credentials(String, String, TokenCredential),
     // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
     @Override
-    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubServiceClientBuilder builder) {
+    protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubSharedAuthenticationClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
                                                                                 eventHubProperties.getEventHubName(),

@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.identity;
+ * Package com.azure.spring.core.properties.proxy
  */
-package com.azure.spring.identity;
+package com.azure.spring.core.properties.proxy;

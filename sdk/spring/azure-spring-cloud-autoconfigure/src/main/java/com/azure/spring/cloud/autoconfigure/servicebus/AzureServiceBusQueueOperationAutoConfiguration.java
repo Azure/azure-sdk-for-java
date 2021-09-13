@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusQueueProvisioner;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
+import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import org.springframework.beans.factory.ObjectProvider;
@@ -26,17 +26,17 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(ServiceBusQueueClientFactory.class)
-@ConditionalOnBean(ServiceBusClientBuilder.class)
 @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "enabled", matchIfMissing = true)
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 public class AzureServiceBusQueueOperationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(ServiceBusClientBuilder.class)
     public ServiceBusQueueClientFactory queueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                           ObjectProvider<DefaultServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
+                                                           ObjectProvider<ServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(serviceBusClientBuilder);
-        clientFactory.setServiceBusProvisioner(serviceBusQueueProvisioners.getIfAvailable());
+        clientFactory.setQueueProvisioner(serviceBusQueueProvisioners.getIfAvailable());
         return clientFactory;
     }
 

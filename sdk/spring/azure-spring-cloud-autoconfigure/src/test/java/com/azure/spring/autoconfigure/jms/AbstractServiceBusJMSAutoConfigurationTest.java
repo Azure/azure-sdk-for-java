@@ -55,8 +55,7 @@ public abstract class AbstractServiceBusJMSAutoConfigurationTest {
                 assertThat(context).hasSingleBean(JmsTemplate.class);
                 ConnectionFactory connectionFactory = context.getBean(ConnectionFactory.class);
                 assertSame(connectionFactory, context.getBean(JmsTemplate.class).getConnectionFactory());
-            }
-        );
+            });
     }
 
     @Test
@@ -78,8 +77,7 @@ public abstract class AbstractServiceBusJMSAutoConfigurationTest {
                 assertThat(jmsProperties.getListener().formatConcurrency()).isEqualTo("2-10");
                 assertThat(jmsProperties.getListener().getReceiveTimeout()).isEqualTo(Duration.ofSeconds(2));
                 assertThat(jmsProperties.getListener().getMaxConcurrency()).isEqualTo(10);
-            }
-        );
+            });
     }
 
     @Test
@@ -94,8 +92,7 @@ public abstract class AbstractServiceBusJMSAutoConfigurationTest {
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getConnectionString()).isEqualTo(CONNECTION_STRING);
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getTopicClientId()).isEqualTo("cid");
                 assertThat(context.getBean(AzureServiceBusJMSProperties.class).getIdleTimeout()).isEqualTo(123);
-            }
-        );
+            });
     }
 
     @Test
@@ -119,8 +116,7 @@ public abstract class AbstractServiceBusJMSAutoConfigurationTest {
 
                 testQueueJmsListenerContainerFactoryWithCustomSettings(context);
                 testTopicJmsListenerContainerFactoryWithCustomSettings(context);
-            }
-        );
+            });
     }
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {

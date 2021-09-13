@@ -4,11 +4,9 @@
 package com.azure.spring.integration.servicebus.factory;
 
 /**
- * An interface to provision Service Bus resources.
+ * An interface to provision Service Bus topic resources.
  */
-public interface ServiceBusProvisioner {
-
-    void provisionQueue(String namespace, String queue);
+public interface ServiceBusTopicProvisioner {
 
     void provisionTopic(String namespace, String topic);
 

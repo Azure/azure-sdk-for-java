@@ -12,6 +12,9 @@ import com.azure.spring.core.util.Triple;
 import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
 
+/**
+ * Default implementation to provision an Event Hub.
+ */
 public class DefaultEventHubProvisioner implements EventHubProvisioner {
 
     private final EventHubNamespaceCrud namespaceCrud;

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.properties;
 
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
@@ -10,7 +13,7 @@ import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- *
+ * Configuration properties base class for all Azure Http clients.
  */
 public abstract class AzureHttpConfigurationProperties implements AzureProperties {
 

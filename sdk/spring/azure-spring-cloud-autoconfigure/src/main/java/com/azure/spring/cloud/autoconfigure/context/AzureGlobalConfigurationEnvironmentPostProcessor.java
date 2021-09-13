@@ -18,6 +18,9 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_PASSWORD;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TENANT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_USERNAME;
 
+/**
+ * An EnvironmentPostProcessor to set spring.cloud.azure.* properties to Azure SDK global configuration.
+ */
 public class AzureGlobalConfigurationEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     public static final String CREDENTIAL_PREFIX = AzureConfigurationProperties.PREFIX + ".credential.";

@@ -53,7 +53,7 @@ class AzureServiceBusQueueOperationAutoConfigurationTest {
                 ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
                 ServiceBusQueueTemplate queueTemplate = context.getBean(ServiceBusQueueTemplate.class);
                 assertSame(messageConverter, queueTemplate.getMessageConverter());
-        });
+            });
     }
 
 

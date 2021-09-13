@@ -54,14 +54,14 @@ class AzureCosmosAutoConfigurationTest {
                                 "spring.cloud.azure.cosmos.key=cosmos-key"
                                 )
             .run(context -> {
-                     assertThat(context).hasSingleBean(AzureCosmosProperties.class);
-                     final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
-                     assertThat(properties).extracting("credential.clientId").isEqualTo("cosmos-client-id");
-                     assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
-                     assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
-                     assertThat(properties).extracting("uri").isEqualTo(TEST_URI_HTTPS);
-                     assertThat(properties).extracting("key").isEqualTo("cosmos-key");
-                 });
+                assertThat(context).hasSingleBean(AzureCosmosProperties.class);
+                final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
+                assertThat(properties).extracting("credential.clientId").isEqualTo("cosmos-client-id");
+                assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
+                assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties).extracting("uri").isEqualTo(TEST_URI_HTTPS);
+                assertThat(properties).extracting("key").isEqualTo("cosmos-key");
+            });
     }
 
 

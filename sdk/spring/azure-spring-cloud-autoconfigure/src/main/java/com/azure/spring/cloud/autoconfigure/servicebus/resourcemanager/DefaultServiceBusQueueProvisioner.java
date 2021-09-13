@@ -1,12 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueueCrud;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.util.Tuple;
-import com.azure.spring.integration.servicebus.factory.ServiceBusProvisioner;
+import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
 
-public class DefaultServiceBusQueueProvisioner implements ServiceBusProvisioner {
+/**
+ * A default implementation to provision Service Bus Queue.
+ */
+public class DefaultServiceBusQueueProvisioner implements ServiceBusQueueProvisioner {
 
     private final ServiceBusQueueCrud serviceBusQueueCrud;
 
@@ -20,13 +26,4 @@ public class DefaultServiceBusQueueProvisioner implements ServiceBusProvisioner 
         this.serviceBusQueueCrud.getOrCreate(Tuple.of(namespace, queue));
     }
 
-    @Override
-    public void provisionTopic(String namespace, String topic) {
-        throw new UnsupportedOperationException("Can't provision topic in a queue client");
-    }
-
-    @Override
-    public void provisionSubscription(String namespace, String topic, String subscription) {
-        throw new UnsupportedOperationException("Can't provision subscription in a queue client");
-    }
 }

@@ -488,10 +488,8 @@ the main ServiceBusClientBuilder. -->
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.aad.UserGroups"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.autoconfigure.jms.ConnectionStringResolver"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.storage.AzureStorageAutoConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoConfiguration.java"/>
@@ -502,13 +500,14 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.servicebus.stream.binder.config.ServiceBusQueueBinderConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration.java"/>
 
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.gremlin.conversion.source.AbstractGremlinSource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
-
-  <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
 
   <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
   <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+
+  <!-- Suppress warnings for EventProcessorSharedAuthenticationClientBuilder and EventHubSharedAuthenticationClientBuilder. They are used by Azure Spring. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubSharedAuthenticationClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventProcessorSharedAuthenticationClientBuilder.java"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>

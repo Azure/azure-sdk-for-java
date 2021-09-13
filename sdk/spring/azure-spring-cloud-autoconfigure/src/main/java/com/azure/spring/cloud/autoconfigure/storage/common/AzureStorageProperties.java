@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureHttpConfigurationProperties;
-import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.aware.credential.ConnectionStringAware;
 import com.azure.spring.core.properties.aware.credential.SasTokenAware;
 

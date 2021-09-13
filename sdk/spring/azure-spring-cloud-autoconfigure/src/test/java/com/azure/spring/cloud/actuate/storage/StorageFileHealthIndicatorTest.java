@@ -46,7 +46,7 @@ class StorageFileHealthIndicatorTest {
 
                 assertEquals(Status.UP, health.getStatus());
                 assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
-        });
+            });
     }
 
     @Test
@@ -61,7 +61,7 @@ class StorageFileHealthIndicatorTest {
 
                 assertEquals(Status.DOWN, health.getStatus());
                 assertEquals(MOCK_URL, health.getDetails().get(URL_FIELD));
-        });
+            });
     }
 
     @Configuration(proxyBeanMethods = false)

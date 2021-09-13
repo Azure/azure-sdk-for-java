@@ -8,13 +8,13 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResou
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusTopicProvisioner;
+import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusTopicMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusTopicExtendedBindingProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusTopicChannelResourceManagerProvisioner;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.Binder;
@@ -39,13 +39,18 @@ public class ServiceBusTopicBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusChannelProvisioner serviceBusChannelProvisioner(AzureServiceBusProperties serviceBusProperties,
-                                                                     ObjectProvider<DefaultServiceBusTopicProvisioner> topicProvisioners) {
+    @ConditionalOnBean(ServiceBusTopicProvisioner.class)
+    public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
+                                                                        ServiceBusTopicProvisioner topicProvisioner) {
 
-        if (topicProvisioners.getIfAvailable() != null) {
-            return new ServiceBusTopicChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),
-                                                                        topicProvisioners.getIfAvailable());
-        }
+        return new ServiceBusTopicChannelResourceManagerProvisioner(serviceBusProperties.getNamespace(),
+                                                                    topicProvisioner);
+
+    }
+
+    @Bean
+    @ConditionalOnMissingBean({ ServiceBusChannelProvisioner.class, ServiceBusTopicProvisioner.class })
+    public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner() {
         return new ServiceBusChannelProvisioner();
     }
 

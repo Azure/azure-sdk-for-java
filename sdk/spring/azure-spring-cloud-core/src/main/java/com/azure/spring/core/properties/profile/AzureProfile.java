@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.core.properties.profile;
 
 import org.slf4j.Logger;
@@ -8,6 +11,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * The AzureProfile defines the properties related to an Azure subscription.
+ */
 public class AzureProfile {
 
     private String tenantId;
@@ -44,14 +50,17 @@ public class AzureProfile {
         return environment;
     }
 
+    /**
+     * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
+     */
     public static class AzureEnvironment {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(AzureEnvironment.class);
 
-        public static AzureEnvironment AZURE_CHINA = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_CHINA);
-        public static AzureEnvironment AZURE = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
-        public static AzureEnvironment AZURE_GERMANY = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_GERMANY);
-        public static AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT);
+        public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_CHINA);
+        public static final AzureEnvironment AZURE = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
+        public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_GERMANY);
+        public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT);
 
 
         private String portal;
@@ -119,27 +128,29 @@ public class AzureProfile {
         }
 
         public Map<String, String> exportEndpointsMap() {
-            return new HashMap<String, String>() {{
-                put("portalUrl", portal);
-                put("publishingProfileUrl", publishingProfile);
-                put("managementEndpointUrl", managementEndpoint);
-                put("resourceManagerEndpointUrl", resourceManagerEndpoint);
-                put("sqlManagementEndpointUrl", sqlManagementEndpoint);
-                put("sqlServerHostnameSuffix", sqlServerHostnameSuffix);
-                put("galleryEndpointUrl", galleryEndpoint);
-                put("activeDirectoryEndpointUrl", activeDirectoryEndpoint);
-                put("activeDirectoryResourceId", activeDirectoryResourceId);
-                put("activeDirectoryGraphResourceId", activeDirectoryGraphEndpoint);
-                put("microsoftGraphResourceId", microsoftGraphEndpoint);
-                put("dataLakeEndpointResourceId", dataLakeEndpointResourceId);
-                put("activeDirectoryGraphApiVersion", activeDirectoryGraphApiVersion);
-                put("storageEndpointSuffix", storageEndpointSuffix);
-                put("keyVaultDnsSuffix", keyVaultDnsSuffix);
-                put("azureDataLakeStoreFileSystemEndpointSuffix", azureDataLakeStoreFileSystemEndpointSuffix);
-                put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", azureDataLakeAnalyticsCatalogAndJobEndpointSuffix);
-                put("azureLogAnalyticsResourceId", azureLogAnalyticsEndpoint);
-                put("azureApplicationInsightsResourceId", azureApplicationInsightsEndpoint);
-            }};
+            return new HashMap<String, String>() {
+                {
+                    put("portalUrl", portal);
+                    put("publishingProfileUrl", publishingProfile);
+                    put("managementEndpointUrl", managementEndpoint);
+                    put("resourceManagerEndpointUrl", resourceManagerEndpoint);
+                    put("sqlManagementEndpointUrl", sqlManagementEndpoint);
+                    put("sqlServerHostnameSuffix", sqlServerHostnameSuffix);
+                    put("galleryEndpointUrl", galleryEndpoint);
+                    put("activeDirectoryEndpointUrl", activeDirectoryEndpoint);
+                    put("activeDirectoryResourceId", activeDirectoryResourceId);
+                    put("activeDirectoryGraphResourceId", activeDirectoryGraphEndpoint);
+                    put("microsoftGraphResourceId", microsoftGraphEndpoint);
+                    put("dataLakeEndpointResourceId", dataLakeEndpointResourceId);
+                    put("activeDirectoryGraphApiVersion", activeDirectoryGraphApiVersion);
+                    put("storageEndpointSuffix", storageEndpointSuffix);
+                    put("keyVaultDnsSuffix", keyVaultDnsSuffix);
+                    put("azureDataLakeStoreFileSystemEndpointSuffix", azureDataLakeStoreFileSystemEndpointSuffix);
+                    put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", azureDataLakeAnalyticsCatalogAndJobEndpointSuffix);
+                    put("azureLogAnalyticsResourceId", azureLogAnalyticsEndpoint);
+                    put("azureApplicationInsightsResourceId", azureApplicationInsightsEndpoint);
+                }
+            };
         }
 
         public String getPortal() {

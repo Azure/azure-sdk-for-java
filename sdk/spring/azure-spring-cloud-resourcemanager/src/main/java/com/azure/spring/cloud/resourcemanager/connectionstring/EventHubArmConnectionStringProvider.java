@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.resourcemanager.connectionstring;
 
 import com.azure.resourcemanager.AzureResourceManager;
@@ -8,7 +11,7 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubNamesp
 import com.azure.spring.core.service.AzureServiceType;
 
 /**
- * @author Xiaolu Dai, 2021/9/9.
+ * A connection string provider reads Event Hub connection string from Azure Resource Manager.
  */
 public class EventHubArmConnectionStringProvider extends AbstractArmConnectionStringProvider<AzureServiceType.EventHub> {
 
