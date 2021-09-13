@@ -37,10 +37,10 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.2;3.0.0-beta.3
-com.azure:azure-ai-formrecognizer;3.1.3;3.1.4
+com.azure:azure-ai-formrecognizer;3.1.4;3.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-metricsadvisor;1.0.1;1.1.0-beta.1
+com.azure:azure-ai-metricsadvisor;1.0.2;1.1.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-textanalytics;5.1.1;5.2.0-beta.2
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -53,11 +53,11 @@ com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.5;1.0.0-bet
 com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-chat;1.0.1;1.1.0-beta.3
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-communication-common;1.0.4;1.0.4
-com.azure:azure-communication-sms;1.0.3;1.0.4
-com.azure:azure-communication-identity;1.1.1;1.1.1
-com.azure:azure-communication-phonenumbers;1.0.3;1.0.4
-com.azure:azure-communication-networktraversal;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-communication-common;1.0.4;1.1.0-beta.1
+com.azure:azure-communication-sms;1.0.3;1.1.0-beta.1
+com.azure:azure-communication-identity;1.1.1;1.2.0-beta.1
+com.azure:azure-communication-phonenumbers;1.0.3;1.1.0-beta.1
+com.azure:azure-communication-networktraversal;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-containers-containerregistry;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.20.0;1.21.0-beta.1
@@ -79,11 +79,11 @@ com.azure:azure-cosmos-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure:azure-cosmos-dotnet-benchmark;4.0.1-beta.1;4.0.1-beta.1
 com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12;4.4.0-beta.1;4.4.0-beta.1
 com.azure:azure-cosmos-encryption;1.0.0-beta.8;1.0.0-beta.9
-com.azure:azure-data-appconfiguration;1.2.1;1.2.2
+com.azure:azure-data-appconfiguration;1.2.2;1.3.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-data-schemaregistry-avro;1.0.0-beta.5;1.0.0-beta.6
-com.azure:azure-data-tables;12.1.1;12.2.0-beta.1
+com.azure:azure-data-tables;12.1.2;12.2.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-digitaltwins-core;1.1.1;1.2.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
@@ -91,7 +91,7 @@ com.azure:azure-identity;1.3.6;1.4.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventgrid;4.6.0;4.7.0-beta.1
+com.azure:azure-messaging-eventgrid;4.6.1;4.7.0-beta.1
 com.azure:azure-messaging-eventhubs;5.10.0;5.11.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.9.0;1.10.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -103,7 +103,7 @@ com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-mixedreality-authentication;1.1.0;1.2.0-beta.1
 com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
-com.azure:azure-monitor-query;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-monitor-query;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-search-documents;11.4.3;11.5.0-beta.4
@@ -229,7 +229,7 @@ com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.1;1
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.2
@@ -247,7 +247,7 @@ com.azure.resourcemanager:azure-resourcemanager-kubernetesconfiguration;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.1;1.0.0-beta.2
@@ -255,7 +255,7 @@ com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.5;1.0.0-beta.6
+com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.1;1.0.0-beta.2
@@ -314,6 +314,9 @@ com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.1;1.0.0-beta
 com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.1;1.0.0-beta.2
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.

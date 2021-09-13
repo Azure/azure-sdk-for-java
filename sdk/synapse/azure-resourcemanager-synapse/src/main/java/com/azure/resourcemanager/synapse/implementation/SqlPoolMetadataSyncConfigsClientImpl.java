@@ -128,6 +128,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -135,7 +136,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -182,12 +183,13 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -264,7 +266,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MetadataSyncConfigInner>> createWithResponseAsync(
@@ -302,6 +304,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         } else {
             metadataSyncConfiguration.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -309,7 +312,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
                     service
                         .create(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -331,7 +334,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MetadataSyncConfigInner>> createWithResponseAsync(
@@ -370,12 +373,13 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         } else {
             metadataSyncConfiguration.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -395,7 +399,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MetadataSyncConfigInner> createAsync(
@@ -424,7 +428,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetadataSyncConfigInner create(
@@ -446,7 +450,7 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataSyncConfigInner> createWithResponse(
