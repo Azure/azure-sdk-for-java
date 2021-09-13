@@ -19,13 +19,13 @@ steps:
     inputs:
       filePath: $(Build.SourcesDirectory)/eng/common/scripts/Detect-Api-Changes.ps1
       arguments: >
-          -Artifacts $(artifactList)
-          -ArtifactPath ${{parameters.ArtifactPath}}
-          -CommitSha $(Build.SourceVersion)
-          -BuildId $(Build.BuildId)
-          -PullRequestNumber $(System.PullRequest.PullRequestNumber)
-        pwsh: true
-        workingDirectory: $(Pipeline.Workspace)
-      displayName: Detect API changes
-      condition: and(succeededOrFailed(), eq(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'public'))
+        -Artifacts $(artifactList)
+        -ArtifactPath ${{parameters.ArtifactPath}}
+        -CommitSha $(Build.SourceVersion)
+        -BuildId $(Build.BuildId)
+        -PullRequestNumber $(System.PullRequest.PullRequestNumber)
+      pwsh: true
+      workingDirectory: $(Pipeline.Workspace)
+    displayName: Detect API changes
+    condition: and(succeededOrFailed(), eq(variables['Build.Reason'],'PullRequest'), eq(variables['System.TeamProject'], 'public'))
     
