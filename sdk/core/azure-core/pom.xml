@@ -249,7 +249,7 @@
         <jdk>[11,)</jdk>
       </activation>
       <properties>
-        <java11ModulesSurefireArgLine>
+        <javaModulesSurefireArgLine>
           --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
           --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
 
@@ -270,7 +270,7 @@
           --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
 
           --add-reads com.azure.core=ALL-UNNAMED
-        </java11ModulesSurefireArgLine>
+        </javaModulesSurefireArgLine>
       </properties>
     </profile>
 

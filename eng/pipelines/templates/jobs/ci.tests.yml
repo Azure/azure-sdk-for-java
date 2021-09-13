@@ -163,12 +163,14 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - task: PublishPipelineArtifact@1
-          inputs:
-            targetPath: '$(Pipeline.Workspace)/sdk/${{ parameters.ServiceDirectory }}/${{ artifact.name }}/target/oom.hprof'
-            artifactType: 'filepath'
-            fileSharePath: '${{ artifact.name }}'
+      - pwsh: |
+          New-Item $(Build.ArtifactStagingDirectory)/oom-hprofs -ItemType directory
+          foreach($hprofFile in (Get-ChildItem -Path . -Recurse -Filter *.hprof -File))
+          {
+            CopyItem $hprofFile.FullName $(Build.ArtifactStagingDirectory)/oom-hprofs -ErrorAction SilentlyContinue
+          }
+        displayName: 'Copy OOM hprofs'
+        condition: always()
 
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))

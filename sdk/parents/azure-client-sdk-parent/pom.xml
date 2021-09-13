@@ -122,13 +122,19 @@
       -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
     </heapDumpOnOom>
 
+    <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
     <defaultSurefireArgLine>
       ${surefireJvmXmx}
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
 
-    <java11ModulesSurefireArgLine>
-    </java11ModulesSurefireArgLine>
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
+    <javaModulesSurefireArgLine>
+    </javaModulesSurefireArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <additionalSurefireArgLine>
+    </additionalSurefireArgLine>
   </properties>
 
   <build>
@@ -650,7 +656,8 @@
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultSurefireArgLine}
-              ${java11ModulesSurefireArgLine}
+              ${javaModulesSurefireArgLine}
+              ${additionalSurefireArgLine}
             </argLine>
           </configuration>
         </plugin>
