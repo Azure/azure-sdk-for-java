@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.encryption;
 
+import brave.sampler.Matchers;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.implementation.ReflectionUtils;
@@ -26,12 +27,14 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -156,6 +159,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsAggregate() {
+        long startTime = Instant.now().getEpochSecond();
         List<String> actualIds = new ArrayList<>();
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
@@ -178,7 +182,15 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         CosmosPagedFlux<EncryptionPojo> feedResponseIterator1 =
             cosmosEncryptionAsyncContainer.queryItems(querySpec1, cosmosQueryRequestOptions1, EncryptionPojo.class);
         List<EncryptionPojo> feedResponse1 = feedResponseIterator1.byPage().blockFirst().getResults();
-        assertThat(feedResponse1.size()).isGreaterThanOrEqualTo(1);
+        long endTime = Instant.now().getEpochSecond();
+
+        int timeStamp = 0;
+        for (Object pojo: feedResponse1) {
+            timeStamp = Integer.parseInt(pojo.toString());
+        }
+        Assert.assertTrue(timeStamp > startTime);
+        Assert.assertTrue(timeStamp <= endTime);
+        assertThat(feedResponse1.size()).isEqualTo(1);
 
         // COUNT query
         String query2 = String.format("Select top 1 value count(c) from c order by c._ts");
@@ -188,7 +200,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         CosmosPagedFlux<EncryptionPojo> feedResponseIterator2 =
             cosmosEncryptionAsyncContainer.queryItems(querySpec2, cosmosQueryRequestOptions2, EncryptionPojo.class);
         List<EncryptionPojo> feedResponse2 = feedResponseIterator2.byPage().blockFirst().getResults();
-        assertThat(feedResponse2.size()).isGreaterThanOrEqualTo(1);
+        assertThat(feedResponse2.size()).isEqualTo(1);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
