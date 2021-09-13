@@ -1,7 +1,15 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.3.0-beta.1 (2021-09-10)
 
+### Features Added
+- Added support for service version `7.3-preview`.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
 
 ## 4.2.1 (2021-07-08)
 

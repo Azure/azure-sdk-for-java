@@ -42,17 +42,17 @@ public class ServerTimeoutSample {
         // set request options: server timeout, rendering, statistics
         LogsQueryOptions options = new LogsQueryOptions()
             .setServerTimeout(Duration.ofSeconds(30))
-            .setIncludeRendering(true)
+            .setIncludeVisualization(true)
             .setIncludeStatistics(true);
 
         // make service call with these request options set as filter header
         Response<LogsQueryResult> response = logsQueryClient
-            .queryLogsWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
+            .queryWithResponse("d2d0e126-fa1e-4b0a-b647-250cdd471e68",
                     "AppRequests | take 5", null, options, Context.NONE);
         LogsQueryResult logsQueryResult = response.getValue();
 
         // Sample to iterate by row
-        for (LogsTable table : logsQueryResult.getLogsTables()) {
+        for (LogsTable table : logsQueryResult.getAllTables()) {
             for (LogsTableRow row : table.getRows()) {
                 System.out.println("Row index " + row.getRowIndex());
                 row.getRow()

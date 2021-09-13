@@ -101,13 +101,7 @@
       {
         "regex": true,
         "code": "java.class.nonPublicPartOfAPI",
-        "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.com\\..*",
-        "justification": "skip check for third party files."
-      },
-      {
-        "regex": true,
-        "code": "java.class.nonPublicPartOfAPI",
-        "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.org\\..*",
+        "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.(com|org)\\..*",
         "justification": "skip check for third party files."
       },
       {
@@ -120,7 +114,7 @@
         "regex": true,
         "code": "java\\.class\\.(noLongerInheritsFromClass|nonFinalClassInheritsFromNewClass)",
         "class": "com.azure.identity.SharedTokenCacheCredentialBuilder",
-        "justification": "SharedTokenCacheCredentialBuilder now inherites AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
+        "justification": "SharedTokenCacheCredentialBuilder now inherits AadCredentialBuilderBase instead of CredentialBuilderBase thus being reported. However, AadCredentialBuilderBase also extends CredentialBuilderBase so it's not a breaking change."
       },
       {
         "regex": true,
@@ -177,46 +171,6 @@
         "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
       },
       {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFlux<T>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.http.rest.PagedFlux<T>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.http.rest.PagedFluxBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.http.rest.PagedFluxBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFlux<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method reactor.core.publisher.Flux<T> reactor.core.publisher.Flux<T>::retryWhen(reactor.util.retry.Retry) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.finalMethodAddedToNonFinalClass",
-        "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
-        "justification": "Reactor added new final APIs to Flux."
-      },
-      {
         "code": "java.class.externalClassExposedInAPI",
         "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
         "justification": "This is a preview release"
@@ -232,38 +186,10 @@
         "justification": "This is a preview release"
       },
       {
-        "code": "java.method.defaultMethodAddedToInterface",
-        "new": "method com.azure.core.http.HttpPipelinePosition com.azure.core.http.policy.HttpPipelinePolicy::getPipelinePosition()",
-        "justification": "Default interface method"
-      },
-      {
-        "code": "java.method.parameterTypeParameterChanged",
-        "old": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<com.azure.core.amqp.models.BinaryData>===)",
-        "new": "parameter void com.azure.core.amqp.models.AmqpDataBody::<init>(===java.lang.Iterable<byte[]>===)",
-        "justification": "Remove BinaryData to perform GA release."
-      },
-      {
-        "code": "java.method.returnTypeTypeParametersChanged",
-        "old": "method com.azure.core.util.IterableStream<com.azure.core.amqp.models.BinaryData> com.azure.core.amqp.models.AmqpDataBody::getData()",
-        "new": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
-        "justification": "Remove BinaryData to perform GA release."
-      },
-      {
-        "code": "java.class.removed",
-        "old": "class com.azure.core.amqp.models.BinaryData",
-        "justification": "Remove BinaryData to perform GA release."
-      },
-      {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) io\\.opentelemetry.*",
         "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
-      },
-      {
-        "code": "java.annotation.attributeAdded",
-        "old": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
-        "new": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
-        "justification": "Setting protocol to AMQP in @ServiceClientBuilder annotation is not a breaking change"
       },
       {
         "code": "java.annotation.added",
@@ -288,158 +214,6 @@
         "justification": "Annotation required to resolve a swagger error. The value is now correct."
       },
       {
-        "code": "java.method.returnTypeChanged",
-        "old": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
-        "new": "method java.util.List<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
-        "justification": "Updated "
-      },
-      {
-        "code": "java.class.removed",
-        "old": "class com.azure.core.amqp.models.AmqpDataBody",
-        "justification": "Renamed as AmqpMessageBody."
-      },
-      {
-        "code": "java.class.kindChanged",
-        "old": "interface com.azure.core.amqp.models.AmqpMessageBody",
-        "new": "class com.azure.core.amqp.models.AmqpMessageBody",
-        "justification": "AmqpMessageBody is class representing all the new AMQP data types."
-      },
-      {
-        "code": "java.class.nowFinal",
-        "old": "interface com.azure.core.amqp.models.AmqpMessageBody",
-        "new": "class com.azure.core.amqp.models.AmqpMessageBody",
-        "justification": "Made it final."
-      },
-      {
-        "code": "java.class.removed",
-        "old": "enum com.azure.core.amqp.models.AmqpBodyType",
-        "justification": "Because It is renamed to AmqpMessageBodyType"
-      },
-      {
-        "code": "java.method.returnTypeChanged",
-        "old": "method com.azure.core.amqp.models.AmqpBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
-        "new": "method com.azure.core.amqp.models.AmqpMessageBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
-        "justification": "Renamed to match AmqpMessage prefix."
-      },
-      {
-        "code": "java.method.returnTypeChanged",
-        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getCorrelationId()",
-        "new": "method com.azure.core.amqp.models.AmqpMessageId com.azure.core.amqp.models.AmqpMessageProperties::getCorrelationId()",
-        "justification": "New return type AmqpMessageId."
-      },
-      {
-        "code": "java.method.returnTypeChanged",
-        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getMessageId()",
-        "new": "method com.azure.core.amqp.models.AmqpMessageId com.azure.core.amqp.models.AmqpMessageProperties::getMessageId()",
-        "justification": "New return type."
-      },
-      {
-        "code": "java.method.returnTypeChanged",
-        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getReplyTo()",
-        "new": "method com.azure.core.amqp.models.AmqpAddress com.azure.core.amqp.models.AmqpMessageProperties::getReplyTo()",
-        "justification": "New return type."
-      },
-      {
-        "code": "java.method.returnTypeChanged",
-        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getTo()",
-        "new": "method com.azure.core.amqp.models.AmqpAddress com.azure.core.amqp.models.AmqpMessageProperties::getTo()",
-        "justification": "New return type."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setCorrelationId(===java.lang.String===)",
-        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setCorrelationId(===com.azure.core.amqp.models.AmqpMessageId===)",
-        "justification": "Introduced new type AmqpMessageId."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===java.lang.String===)",
-        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===com.azure.core.amqp.models.AmqpMessageId===)",
-        "justification": "Introduced new type AmqpMessageId."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setReplyTo(===java.lang.String===)",
-        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setReplyTo(===com.azure.core.amqp.models.AmqpAddress===)",
-        "justification": "Introduced new type AmqpAddress."
-      },
-      {
-        "code": "java.method.parameterTypeChanged",
-        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setTo(===java.lang.String===)",
-        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setTo(===com.azure.core.amqp.models.AmqpAddress===)",
-        "justification": "Introduced new type AmqpAddress."
-      },
-      {
-        "code": "java.method.removed",
-        "old": "method void com.azure.core.amqp.models.AmqpAnnotatedMessage::<init>(com.azure.core.amqp.models.AmqpAnnotatedMessage)",
-        "justification": "Removed copy constructor, It is not required for Service bus message."
-      },
-      {
-        "code": "java.method.defaultMethodAddedToInterface",
-        "new": "method reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> com.azure.core.http.HttpClient::send(com.azure.core.http.HttpRequest, com.azure.core.util.Context)",
-        "justification": "Default interface method"
-      },
-      {
-        "code": "java.method.staticMethodAddedToInterface",
-        "new": "method com.azure.core.http.HttpClient com.azure.core.http.HttpClient::createDefault(com.azure.core.util.HttpClientOptions)",
-        "justification": "Default implementation"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method void com.azure.core.http.HttpHeader::<init>(java.lang.String, java.util.List<java.lang.String>)",
-        "justification": "New constructor"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.lang.String)",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::set(java.lang.String, java.util.List<java.lang.String>)",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::setAll(java.util.Map<java.lang.String, java.util.List<java.lang.String>>)",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.util.List<java.lang.String>)",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method void com.azure.core.util.Header::<init>(java.lang.String, java.lang.String[])",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method java.util.List<java.lang.String> com.azure.core.util.Header::getValuesList()",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::setPollInterval(java.time.Duration)",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setClaims(java.lang.String)",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getClaims()",
-        "justification": "New method"
-      },
-      {
-        "code": "java.method.defaultMethodAddedToInterface",
-        "new": "method com.azure.core.util.polling.SyncPoller<T, U> com.azure.core.util.polling.SyncPoller<T, U>::setPollInterval(java.time.Duration)",
-        "justification": "Default implementation"
-      },
-      {
         "regex": true,
         "code": "java\\.annotation\\.(added|attributeValueChanged|attributeAdded)",
         "new": "(class|method void|parameter void) com\\.azure\\.search\\.documents\\.indexes\\.models\\..*",
@@ -456,33 +230,6 @@
         "old": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
         "new": "field com.azure.messaging.eventgrid.SystemEventNames.COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD",
         "justification": "Correct the event type defined in swagger file"
-      },
-      {
-        "code": "java.method.added",
-        "new": "method com.azure.core.http.ProxyOptions com.azure.core.http.ProxyOptions::fromConfiguration(com.azure.core.util.Configuration, boolean)",
-        "justification": "Method exposed from Azure Core"
-      },
-      {
-        "code": "java.method.defaultMethodAddedToInterface",
-        "new": "method <T> T com.azure.core.util.serializer.SerializerAdapter::deserialize(byte[], java.lang.reflect.Type, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
-        "justification": "Method exposed from Azure Core"
-      },
-      {
-        "code": "java.method.defaultMethodAddedToInterface",
-        "new": "method byte[] com.azure.core.util.serializer.SerializerAdapter::serializeToBytes(java.lang.Object, com.azure.core.util.serializer.SerializerEncoding) throws java.io.IOException",
-        "justification": "Method exposed from Azure Core"
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "@interface com.azure.core.annotation.ServiceClient",
-        "new": "@interface com.azure.core.annotation.ServiceClient",
-        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "@interface com.azure.core.annotation.ServiceMethod",
-        "new": "@interface com.azure.core.annotation.ServiceMethod",
-        "justification": "Updated the retention policy from SOURCE to CLASS which is not considered a public API change"
       },
       {
         "code": "java.method.visibilityReduced",
@@ -553,75 +300,9 @@
         "justification": "New Setter method."
       },
       {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getD()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getD()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDp()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDp()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getDq()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getE()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getE()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getK()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getK()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getN()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getN()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getP()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getP()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQ()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQ()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQi()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getQi()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getT()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getT()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getX()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getX()",
-        "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
-      },
-      {
-        "code": "java.annotation.attributeValueChanged",
-        "old": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getY()",
-        "new": "method byte[] com.azure.security.keyvault.keys.models.JsonWebKey::getY()",
+        "regex": true,
+        "code": "java\\.annotation\\.attributeValueChanged",
+        "new": "method byte\\[\\] com\\.azure\\.security\\.keyvault\\.keys\\.models\\.JsonWebKey::(g|s)et(D|Dp|Dq|E|K|N|P|Q|Qi|T|X|Y)\\(\\)",
         "justification": "The class used by the serialization/deserialization annotations is package private and moving it is not a breaking change."
       },
       {
@@ -637,8 +318,83 @@
       },
       {
         "code": "java.method.added",
-        "new":"method void com.azure.core.http.HttpHeaders::<init>(int)",
+        "new": "method void com.azure.core.http.HttpHeaders::<init>(int)",
         "justification": "New HttpHeaders constructor exported from azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpRequestLogger com.azure.core.http.policy.HttpLogOptions::getRequestLogger()",
+        "justification": "New method included in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpResponseLogger com.azure.core.http.policy.HttpLogOptions::getResponseLogger()",
+        "justification": "New method included in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpLogOptions com.azure.core.http.policy.HttpLogOptions::setRequestLogger(com.azure.core.http.policy.HttpRequestLogger)",
+        "justification": "New method included in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.policy.HttpLogOptions com.azure.core.http.policy.HttpLogOptions::setResponseLogger(com.azure.core.http.policy.HttpResponseLogger)",
+        "justification": "New method included in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.credential.AzureSasCredential::<init>(java.lang.String, java.util.function.Function<java.lang.String, java.lang.String>)",
+        "justification": "New constructor added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.HttpClientOptions com.azure.core.util.HttpClientOptions::setConnectTimeout(java.time.Duration)",
+        "justification": "New setter added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.time.Duration com.azure.core.util.HttpClientOptions::getConnectTimeout()",
+        "justification": "New getter added in azure-core."
+      },
+      {
+          "code": "java.method.defaultMethodAddedToInterface",
+          "new": "method boolean com.azure.core.http.policy.RetryStrategy::shouldRetryException(java.lang.Throwable)",
+          "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>, java.lang.Throwable)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Long com.azure.core.util.BinaryData::getLength()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Flux<java.nio.ByteBuffer> com.azure.core.util.BinaryData::toFluxByteBuffer()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.util.BinaryData> com.azure.core.util.BinaryData::fromFlux(reactor.core.publisher.Flux<java.nio.ByteBuffer>, java.lang.Long)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path, int)",
+        "justification": "New method added to BinaryData in azure-core."
       }
     ]
   }

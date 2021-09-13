@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sign-Up settings for a developer portal. */
-@JsonFlatten
 @Fluent
-public class PortalSignupSettingsInner extends ProxyResource {
+public final class PortalSignupSettingsInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSignupSettingsInner.class);
 
     /*
-     * Allow users to sign up on a developer portal.
+     * Sign-up settings contract properties.
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private PortalSignupSettingsProperties innerProperties;
 
-    /*
-     * Terms of service contract properties.
+    /**
+     * Get the innerProperties property: Sign-up settings contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.termsOfService")
-    private TermsOfServiceProperties termsOfService;
+    private PortalSignupSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the enabled property: Allow users to sign up on a developer portal.
@@ -36,7 +37,7 @@ public class PortalSignupSettingsInner extends ProxyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -46,7 +47,10 @@ public class PortalSignupSettingsInner extends ProxyResource {
      * @return the PortalSignupSettingsInner object itself.
      */
     public PortalSignupSettingsInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSignupSettingsProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -56,7 +60,7 @@ public class PortalSignupSettingsInner extends ProxyResource {
      * @return the termsOfService value.
      */
     public TermsOfServiceProperties termsOfService() {
-        return this.termsOfService;
+        return this.innerProperties() == null ? null : this.innerProperties().termsOfService();
     }
 
     /**
@@ -66,7 +70,10 @@ public class PortalSignupSettingsInner extends ProxyResource {
      * @return the PortalSignupSettingsInner object itself.
      */
     public PortalSignupSettingsInner withTermsOfService(TermsOfServiceProperties termsOfService) {
-        this.termsOfService = termsOfService;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalSignupSettingsProperties();
+        }
+        this.innerProperties().withTermsOfService(termsOfService);
         return this;
     }
 
@@ -76,8 +83,8 @@ public class PortalSignupSettingsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (termsOfService() != null) {
-            termsOfService().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -1,7 +1,44 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.4 (2021-09-10)
+
+### Features Added
+- Added an API in `MetricsQueryResult` to get metric result of a specific metric name when there are multiple metric 
+  results in the response.
+
+### Breaking changes
+- `LogsBatchQueryResults` renamed to `LogsBatchQueryResultCollection`.
+- Removed `LocalizableString` and flatten `getName().getValue()` call to `getName()`.
+
+### Other Changes 
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
+- Upgraded `azure-core-http-netty` from `1.10.1` to `1.10.2`.
+
+
+## 1.0.0-beta.3 (2021-08-11)
+
+### Breaking changes
+- `queryLogs` APIs on `LogsQueryClient` and `LogsQueryAsyncClient` renamed to `query`.
+- `queryLogsBatch` APIs on `LogsQueryClient` and `LogsQueryAsyncClient` renamed to `queryBatch`.
+- `queryMetrics` APIs on `MetricQueryClient` and `MetricsQueryAsyncClient` renamed to `query`.
+- `listMetricsNamespace` APIs on `MetricQueryClient` and `MetricsQueryAsyncClient` renamed to `listMetricNamespaces`.
+- `listMetricsDefinition` APIs on `MetricQueryClient` and `MetricsQueryAsyncClient` renamed to `listMetricDefinitions`.
+
+### Dependency Updates
+- Upgraded `azure-core` from `1.18.0` to `1.19.0`.
+- Upgraded `azure-core-http-netty` from `1.10.1` to `1.10.2`.
 
 ## 1.0.0-beta.2 (2021-07-08)
 

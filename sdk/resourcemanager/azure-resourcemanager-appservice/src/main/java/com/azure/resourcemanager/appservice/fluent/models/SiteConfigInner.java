@@ -25,6 +25,7 @@ import com.azure.resourcemanager.appservice.models.SiteMachineKey;
 import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
 import com.azure.resourcemanager.appservice.models.VirtualApplication;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -123,6 +124,18 @@ public final class SiteConfigInner {
     private Boolean httpLoggingEnabled;
 
     /*
+     * Flag to use Managed Identity Creds for ACR pull
+     */
+    @JsonProperty(value = "acrUseManagedIdentityCreds")
+    private Boolean acrUseManagedIdentityCreds;
+
+    /*
+     * If using user managed identity, the user managed identity ClientId
+     */
+    @JsonProperty(value = "acrUserManagedIdentityID")
+    private String acrUserManagedIdentityId;
+
+    /*
      * HTTP logs directory size limit.
      */
     @JsonProperty(value = "logsDirectorySizeLimit")
@@ -146,12 +159,6 @@ public final class SiteConfigInner {
      */
     @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
-
-    /*
-     * List of Azure Storage Accounts.
-     */
-    @JsonProperty(value = "azureStorageAccounts")
-    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /*
      * Connection strings.
@@ -446,6 +453,19 @@ public final class SiteConfigInner {
     @JsonProperty(value = "minimumElasticInstanceCount")
     private Integer minimumElasticInstanceCount;
 
+    /*
+     * List of Azure Storage Accounts.
+     */
+    @JsonProperty(value = "azureStorageAccounts")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
+
+    /*
+     * Property to allow or block all public traffic.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private String publicNetworkAccess;
+
     /**
      * Get the numberOfWorkers property: Number of workers.
      *
@@ -733,6 +753,46 @@ public final class SiteConfigInner {
     }
 
     /**
+     * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
+     *
+     * @return the acrUseManagedIdentityCreds value.
+     */
+    public Boolean acrUseManagedIdentityCreds() {
+        return this.acrUseManagedIdentityCreds;
+    }
+
+    /**
+     * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
+     *
+     * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withAcrUseManagedIdentityCreds(Boolean acrUseManagedIdentityCreds) {
+        this.acrUseManagedIdentityCreds = acrUseManagedIdentityCreds;
+        return this;
+    }
+
+    /**
+     * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
+     *
+     * @return the acrUserManagedIdentityId value.
+     */
+    public String acrUserManagedIdentityId() {
+        return this.acrUserManagedIdentityId;
+    }
+
+    /**
+     * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
+     *
+     * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withAcrUserManagedIdentityId(String acrUserManagedIdentityId) {
+        this.acrUserManagedIdentityId = acrUserManagedIdentityId;
+        return this;
+    }
+
+    /**
      * Get the logsDirectorySizeLimit property: HTTP logs directory size limit.
      *
      * @return the logsDirectorySizeLimit value.
@@ -811,26 +871,6 @@ public final class SiteConfigInner {
      */
     public SiteConfigInner withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
-        return this;
-    }
-
-    /**
-     * Get the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
-     * @return the azureStorageAccounts value.
-     */
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.azureStorageAccounts;
-    }
-
-    /**
-     * Set the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
-     * @param azureStorageAccounts the azureStorageAccounts value to set.
-     * @return the SiteConfigInner object itself.
-     */
-    public SiteConfigInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
-        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -1758,6 +1798,46 @@ public final class SiteConfigInner {
     }
 
     /**
+     * Get the azureStorageAccounts property: List of Azure Storage Accounts.
+     *
+     * @return the azureStorageAccounts value.
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.azureStorageAccounts;
+    }
+
+    /**
+     * Set the azureStorageAccounts property: List of Azure Storage Accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        this.azureStorageAccounts = azureStorageAccounts;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withPublicNetworkAccess(String publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1765,16 +1845,6 @@ public final class SiteConfigInner {
     public void validate() {
         if (appSettings() != null) {
             appSettings().forEach(e -> e.validate());
-        }
-        if (azureStorageAccounts() != null) {
-            azureStorageAccounts()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
         }
         if (connectionStrings() != null) {
             connectionStrings().forEach(e -> e.validate());
@@ -1814,6 +1884,16 @@ public final class SiteConfigInner {
         }
         if (scmIpSecurityRestrictions() != null) {
             scmIpSecurityRestrictions().forEach(e -> e.validate());
+        }
+        if (azureStorageAccounts() != null) {
+            azureStorageAccounts()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

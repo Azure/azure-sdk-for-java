@@ -167,7 +167,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -477,6 +477,12 @@
   <Match>
     <Class name="com.azure.core.http.HttpRequest"/>
     <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- Storing HttpResponseError as the Object value is not required to be serializable or transient -->
+  <Match>
+    <Class name="com.azure.core.exception.HttpResponseException"/>
+    <Bug pattern="SE_BAD_FIELD_STORE"/>
   </Match>
 
   <!-- The two values can still change in the future. Change it will be a breaking code change.-->
@@ -1232,6 +1238,12 @@
   <Match>
     <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestUri"/>
+    <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="channelAcquisitionTimeline"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -2476,6 +2488,14 @@
     <Field name="data"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
+
+   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
+  <Match>
+    <Class name="com.azure.core.util.implementation.ByteArrayContent"/>
+    <Field name="content"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
 
   <!-- Buffered responses are only used when we know the response body will be deserialized into a POJO. -->
   <!-- Given that we don't want to waste resources copying the array when we return it. -->

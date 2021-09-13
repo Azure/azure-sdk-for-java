@@ -5,6 +5,7 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
@@ -16,12 +17,11 @@ import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.Metric;
-import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
+import com.azure.monitor.query.models.MetricResult;
+import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.QueryTimeSpan;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,41 +75,41 @@ public class MetricsQueryClientTest extends TestBase {
     @Test
     public void testMetricsQuery() {
         Response<MetricsQueryResult> metricsResponse = client
-            .queryMetricsWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
+            .queryWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
                 new MetricsQueryOptions()
-                    .setMetricsNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeSpan(new QueryTimeSpan(Duration.ofDays(10)))
-                    .setInterval(Duration.ofHours(1))
+                    .setMetricNamespace("Microsoft.CognitiveServices/accounts")
+                    .setTimeInterval(new TimeInterval(Duration.ofDays(10)))
+                    .setGranularity(Duration.ofHours(1))
                     .setTop(100)
-                    .setAggregation(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
+                    .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
                             AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-        List<Metric> metrics = metricsQueryResult.getMetrics();
+        List<MetricResult> metrics = metricsQueryResult.getMetrics();
 
         assertEquals(1, metrics.size());
-        Metric successfulCallsMetric = metrics.get(0);
-        assertEquals("SuccessfulCalls", successfulCallsMetric.getMetricsName());
-        assertEquals("Microsoft.Insights/metrics", successfulCallsMetric.getType());
+        MetricResult successfulCallsMetric = metrics.get(0);
+        assertEquals("SuccessfulCalls", successfulCallsMetric.getMetricName());
+        assertEquals("Microsoft.Insights/metrics", successfulCallsMetric.getResourceType());
         assertEquals(1, successfulCallsMetric.getTimeSeries().size());
 
         Assertions.assertTrue(successfulCallsMetric.getTimeSeries()
             .stream()
-            .flatMap(timeSeriesElement -> timeSeriesElement.getData().stream())
+            .flatMap(timeSeriesElement -> timeSeriesElement.getValues().stream())
             .anyMatch(metricsValue -> Double.compare(0.0, metricsValue.getCount()) == 0));
     }
 
     @Test
     public void testMetricsDefinition() {
         PagedIterable<MetricDefinition> metricsDefinitions = client
-                .listMetricsDefinition(RESOURCE_URI, "Microsoft.CognitiveServices/accounts");
+                .listMetricDefinitions(RESOURCE_URI);
         assertEquals(11, metricsDefinitions.stream().count());
     }
 
     @Test
     public void testMetricsNamespaces() {
-        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricsNamespace(RESOURCE_URI,
+        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(RESOURCE_URI,
                 OffsetDateTime.of(LocalDateTime.of(2021, 06, 01, 0, 0), ZoneOffset.UTC));
         assertEquals(2, metricsNamespaces.stream().count());
     }

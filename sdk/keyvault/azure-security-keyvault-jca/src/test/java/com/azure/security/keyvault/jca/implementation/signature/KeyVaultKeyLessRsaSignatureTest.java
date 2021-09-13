@@ -11,6 +11,7 @@ import org.mockito.ArgumentMatchers;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.MGF1ParameterSpec;
 import java.security.spec.PSSParameterSpec;
 
@@ -102,4 +103,23 @@ public class KeyVaultKeyLessRsaSignatureTest {
         assertArrayEquals("fakeValue".getBytes(), keyVaultKeyLessRsaSignature.engineSign());
     }
 
+    @Test
+    public void engineSetParameterWithNullParameterTest() {
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(null));
+    }
+
+    @Test
+    public void engineSetParameterWithNotPSSParameterSpecTest() {
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        AlgorithmParameterSpec algorithmParameterSpec = mock(AlgorithmParameterSpec.class);
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(algorithmParameterSpec));
+    }
+
+    @Test
+    public void engineSetParameterWithNullAlgorithmTest() {
+        keyVaultKeyLessRsaSignature = new KeyVaultKeyLessRsaSignature();
+        AlgorithmParameterSpec algorithmParameterSpec = new PSSParameterSpec("fake-value", "fake-value", null, 10, 10);
+        assertThrows(InvalidAlgorithmParameterException.class, () -> keyVaultKeyLessRsaSignature.engineSetParameter(algorithmParameterSpec));
+    }
 }

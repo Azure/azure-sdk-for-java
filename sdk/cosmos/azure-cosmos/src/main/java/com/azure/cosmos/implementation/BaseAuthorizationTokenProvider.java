@@ -49,6 +49,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         case Document:
             return Paths.DOCUMENTS_PATH_SEGMENT;
         case DocumentCollection:
+        case PartitionKey:
             return Paths.COLLECTIONS_PATH_SEGMENT;
         case Offer:
             return Paths.OFFERS_PATH_SEGMENT;

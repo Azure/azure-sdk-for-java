@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -23,10 +23,15 @@ import java.util.Map;
 import java.util.UUID;
 
 /** A workspace. */
-@JsonFlatten
 @Fluent
-public class WorkspaceInner extends Resource {
+public final class WorkspaceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
+
+    /*
+     * Workspace resource properties
+     */
+    @JsonProperty(value = "properties")
+    private WorkspaceProperties innerProperties;
 
     /*
      * Identity of the workspace
@@ -34,112 +39,14 @@ public class WorkspaceInner extends Resource {
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
-    /*
-     * Workspace default data lake storage account details
+    /**
+     * Get the innerProperties property: Workspace resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.defaultDataLakeStorage")
-    private DataLakeStorageAccountDetails defaultDataLakeStorage;
-
-    /*
-     * SQL administrator login password
-     */
-    @JsonProperty(value = "properties.sqlAdministratorLoginPassword")
-    private String sqlAdministratorLoginPassword;
-
-    /*
-     * Workspace managed resource group. The resource group name uniquely
-     * identifies the resource group within the user subscriptionId. The
-     * resource group name must be no longer than 90 characters long, and must
-     * be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(',
-     * ')' and'.'. Note that the name cannot end with '.'
-     */
-    @JsonProperty(value = "properties.managedResourceGroupName")
-    private String managedResourceGroupName;
-
-    /*
-     * Resource provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Login for workspace SQL active directory administrator
-     */
-    @JsonProperty(value = "properties.sqlAdministratorLogin")
-    private String sqlAdministratorLogin;
-
-    /*
-     * Virtual Network profile
-     */
-    @JsonProperty(value = "properties.virtualNetworkProfile")
-    private VirtualNetworkProfile virtualNetworkProfile;
-
-    /*
-     * Connectivity endpoints
-     */
-    @JsonProperty(value = "properties.connectivityEndpoints")
-    private Map<String, String> connectivityEndpoints;
-
-    /*
-     * Setting this to 'default' will ensure that all compute for this
-     * workspace is in a virtual network managed on behalf of the user.
-     */
-    @JsonProperty(value = "properties.managedVirtualNetwork")
-    private String managedVirtualNetwork;
-
-    /*
-     * Private endpoint connections to the workspace
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections")
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * The encryption details of the workspace
-     */
-    @JsonProperty(value = "properties.encryption")
-    private EncryptionDetails encryption;
-
-    /*
-     * The workspace unique identifier
-     */
-    @JsonProperty(value = "properties.workspaceUID", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID workspaceUid;
-
-    /*
-     * Workspace level configs and feature flags
-     */
-    @JsonProperty(value = "properties.extraProperties", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, Object> extraProperties;
-
-    /*
-     * Managed Virtual Network Settings
-     */
-    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
-    private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
-
-    /*
-     * Git integration settings
-     */
-    @JsonProperty(value = "properties.workspaceRepositoryConfiguration")
-    private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
-
-    /*
-     * Purview Configuration
-     */
-    @JsonProperty(value = "properties.purviewConfiguration")
-    private PurviewConfiguration purviewConfiguration;
-
-    /*
-     * The ADLA resource ID.
-     */
-    @JsonProperty(value = "properties.adlaResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String adlaResourceId;
-
-    /*
-     * Enable or Disable pubic network access to workspace
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private WorkspacePublicNetworkAccess publicNetworkAccess;
+    private WorkspaceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the identity property: Identity of the workspace.
@@ -161,313 +68,6 @@ public class WorkspaceInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     *
-     * @return the defaultDataLakeStorage value.
-     */
-    public DataLakeStorageAccountDetails defaultDataLakeStorage() {
-        return this.defaultDataLakeStorage;
-    }
-
-    /**
-     * Set the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     *
-     * @param defaultDataLakeStorage the defaultDataLakeStorage value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
-        this.defaultDataLakeStorage = defaultDataLakeStorage;
-        return this;
-    }
-
-    /**
-     * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
-     * @return the sqlAdministratorLoginPassword value.
-     */
-    public String sqlAdministratorLoginPassword() {
-        return this.sqlAdministratorLoginPassword;
-    }
-
-    /**
-     * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
-     * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword) {
-        this.sqlAdministratorLoginPassword = sqlAdministratorLoginPassword;
-        return this;
-    }
-
-    /**
-     * Get the managedResourceGroupName property: Workspace managed resource group. The resource group name uniquely
-     * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
-     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
-     * that the name cannot end with '.'.
-     *
-     * @return the managedResourceGroupName value.
-     */
-    public String managedResourceGroupName() {
-        return this.managedResourceGroupName;
-    }
-
-    /**
-     * Set the managedResourceGroupName property: Workspace managed resource group. The resource group name uniquely
-     * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
-     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
-     * that the name cannot end with '.'.
-     *
-     * @param managedResourceGroupName the managedResourceGroupName value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withManagedResourceGroupName(String managedResourceGroupName) {
-        this.managedResourceGroupName = managedResourceGroupName;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Resource provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     *
-     * @return the sqlAdministratorLogin value.
-     */
-    public String sqlAdministratorLogin() {
-        return this.sqlAdministratorLogin;
-    }
-
-    /**
-     * Set the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     *
-     * @param sqlAdministratorLogin the sqlAdministratorLogin value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withSqlAdministratorLogin(String sqlAdministratorLogin) {
-        this.sqlAdministratorLogin = sqlAdministratorLogin;
-        return this;
-    }
-
-    /**
-     * Get the virtualNetworkProfile property: Virtual Network profile.
-     *
-     * @return the virtualNetworkProfile value.
-     */
-    public VirtualNetworkProfile virtualNetworkProfile() {
-        return this.virtualNetworkProfile;
-    }
-
-    /**
-     * Set the virtualNetworkProfile property: Virtual Network profile.
-     *
-     * @param virtualNetworkProfile the virtualNetworkProfile value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile) {
-        this.virtualNetworkProfile = virtualNetworkProfile;
-        return this;
-    }
-
-    /**
-     * Get the connectivityEndpoints property: Connectivity endpoints.
-     *
-     * @return the connectivityEndpoints value.
-     */
-    public Map<String, String> connectivityEndpoints() {
-        return this.connectivityEndpoints;
-    }
-
-    /**
-     * Set the connectivityEndpoints property: Connectivity endpoints.
-     *
-     * @param connectivityEndpoints the connectivityEndpoints value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
-        this.connectivityEndpoints = connectivityEndpoints;
-        return this;
-    }
-
-    /**
-     * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
-     * is in a virtual network managed on behalf of the user.
-     *
-     * @return the managedVirtualNetwork value.
-     */
-    public String managedVirtualNetwork() {
-        return this.managedVirtualNetwork;
-    }
-
-    /**
-     * Set the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
-     * is in a virtual network managed on behalf of the user.
-     *
-     * @param managedVirtualNetwork the managedVirtualNetwork value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withManagedVirtualNetwork(String managedVirtualNetwork) {
-        this.managedVirtualNetwork = managedVirtualNetwork;
-        return this;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Private endpoint connections to the workspace.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Set the privateEndpointConnections property: Private endpoint connections to the workspace.
-     *
-     * @param privateEndpointConnections the privateEndpointConnections value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
-        this.privateEndpointConnections = privateEndpointConnections;
-        return this;
-    }
-
-    /**
-     * Get the encryption property: The encryption details of the workspace.
-     *
-     * @return the encryption value.
-     */
-    public EncryptionDetails encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: The encryption details of the workspace.
-     *
-     * @param encryption the encryption value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withEncryption(EncryptionDetails encryption) {
-        this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the workspaceUid property: The workspace unique identifier.
-     *
-     * @return the workspaceUid value.
-     */
-    public UUID workspaceUid() {
-        return this.workspaceUid;
-    }
-
-    /**
-     * Get the extraProperties property: Workspace level configs and feature flags.
-     *
-     * @return the extraProperties value.
-     */
-    public Map<String, Object> extraProperties() {
-        return this.extraProperties;
-    }
-
-    /**
-     * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
-     * @return the managedVirtualNetworkSettings value.
-     */
-    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
-        return this.managedVirtualNetworkSettings;
-    }
-
-    /**
-     * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
-     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
-        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
-        return this;
-    }
-
-    /**
-     * Get the workspaceRepositoryConfiguration property: Git integration settings.
-     *
-     * @return the workspaceRepositoryConfiguration value.
-     */
-    public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
-        return this.workspaceRepositoryConfiguration;
-    }
-
-    /**
-     * Set the workspaceRepositoryConfiguration property: Git integration settings.
-     *
-     * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
-        this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the purviewConfiguration property: Purview Configuration.
-     *
-     * @return the purviewConfiguration value.
-     */
-    public PurviewConfiguration purviewConfiguration() {
-        return this.purviewConfiguration;
-    }
-
-    /**
-     * Set the purviewConfiguration property: Purview Configuration.
-     *
-     * @param purviewConfiguration the purviewConfiguration value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
-        this.purviewConfiguration = purviewConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the adlaResourceId property: The ADLA resource ID.
-     *
-     * @return the adlaResourceId value.
-     */
-    public String adlaResourceId() {
-        return this.adlaResourceId;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public WorkspacePublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the WorkspaceInner object itself.
-     */
-    public WorkspaceInner withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public WorkspaceInner withLocation(String location) {
@@ -483,34 +83,419 @@ public class WorkspaceInner extends Resource {
     }
 
     /**
+     * Get the defaultDataLakeStorage property: Workspace default data lake storage account details.
+     *
+     * @return the defaultDataLakeStorage value.
+     */
+    public DataLakeStorageAccountDetails defaultDataLakeStorage() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultDataLakeStorage();
+    }
+
+    /**
+     * Set the defaultDataLakeStorage property: Workspace default data lake storage account details.
+     *
+     * @param defaultDataLakeStorage the defaultDataLakeStorage value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withDefaultDataLakeStorage(DataLakeStorageAccountDetails defaultDataLakeStorage) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withDefaultDataLakeStorage(defaultDataLakeStorage);
+        return this;
+    }
+
+    /**
+     * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
+     *
+     * @return the sqlAdministratorLoginPassword value.
+     */
+    public String sqlAdministratorLoginPassword() {
+        return this.innerProperties() == null ? null : this.innerProperties().sqlAdministratorLoginPassword();
+    }
+
+    /**
+     * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
+     *
+     * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withSqlAdministratorLoginPassword(sqlAdministratorLoginPassword);
+        return this;
+    }
+
+    /**
+     * Get the managedResourceGroupName property: Workspace managed resource group. The resource group name uniquely
+     * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
+     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
+     * that the name cannot end with '.'.
+     *
+     * @return the managedResourceGroupName value.
+     */
+    public String managedResourceGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedResourceGroupName();
+    }
+
+    /**
+     * Set the managedResourceGroupName property: Workspace managed resource group. The resource group name uniquely
+     * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
+     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
+     * that the name cannot end with '.'.
+     *
+     * @param managedResourceGroupName the managedResourceGroupName value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedResourceGroupName(String managedResourceGroupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withManagedResourceGroupName(managedResourceGroupName);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Resource provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
+     *
+     * @return the sqlAdministratorLogin value.
+     */
+    public String sqlAdministratorLogin() {
+        return this.innerProperties() == null ? null : this.innerProperties().sqlAdministratorLogin();
+    }
+
+    /**
+     * Set the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
+     *
+     * @param sqlAdministratorLogin the sqlAdministratorLogin value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withSqlAdministratorLogin(String sqlAdministratorLogin) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withSqlAdministratorLogin(sqlAdministratorLogin);
+        return this;
+    }
+
+    /**
+     * Get the virtualNetworkProfile property: Virtual Network profile.
+     *
+     * @return the virtualNetworkProfile value.
+     */
+    public VirtualNetworkProfile virtualNetworkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkProfile();
+    }
+
+    /**
+     * Set the virtualNetworkProfile property: Virtual Network profile.
+     *
+     * @param virtualNetworkProfile the virtualNetworkProfile value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withVirtualNetworkProfile(virtualNetworkProfile);
+        return this;
+    }
+
+    /**
+     * Get the connectivityEndpoints property: Connectivity endpoints.
+     *
+     * @return the connectivityEndpoints value.
+     */
+    public Map<String, String> connectivityEndpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectivityEndpoints();
+    }
+
+    /**
+     * Set the connectivityEndpoints property: Connectivity endpoints.
+     *
+     * @param connectivityEndpoints the connectivityEndpoints value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withConnectivityEndpoints(Map<String, String> connectivityEndpoints) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withConnectivityEndpoints(connectivityEndpoints);
+        return this;
+    }
+
+    /**
+     * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
+     * is in a virtual network managed on behalf of the user.
+     *
+     * @return the managedVirtualNetwork value.
+     */
+    public String managedVirtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedVirtualNetwork();
+    }
+
+    /**
+     * Set the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
+     * is in a virtual network managed on behalf of the user.
+     *
+     * @param managedVirtualNetwork the managedVirtualNetwork value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedVirtualNetwork(String managedVirtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withManagedVirtualNetwork(managedVirtualNetwork);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections to the workspace.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: Private endpoint connections to the workspace.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption details of the workspace.
+     *
+     * @return the encryption value.
+     */
+    public EncryptionDetails encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption details of the workspace.
+     *
+     * @param encryption the encryption value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withEncryption(EncryptionDetails encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the workspaceUid property: The workspace unique identifier.
+     *
+     * @return the workspaceUid value.
+     */
+    public UUID workspaceUid() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceUid();
+    }
+
+    /**
+     * Get the extraProperties property: Workspace level configs and feature flags.
+     *
+     * @return the extraProperties value.
+     */
+    public Map<String, Object> extraProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().extraProperties();
+    }
+
+    /**
+     * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
+     *
+     * @return the managedVirtualNetworkSettings value.
+     */
+    public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedVirtualNetworkSettings();
+    }
+
+    /**
+     * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
+     *
+     * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedVirtualNetworkSettings(
+        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
+        return this;
+    }
+
+    /**
+     * Get the workspaceRepositoryConfiguration property: Git integration settings.
+     *
+     * @return the workspaceRepositoryConfiguration value.
+     */
+    public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceRepositoryConfiguration();
+    }
+
+    /**
+     * Set the workspaceRepositoryConfiguration property: Git integration settings.
+     *
+     * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withWorkspaceRepositoryConfiguration(
+        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withWorkspaceRepositoryConfiguration(workspaceRepositoryConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the purviewConfiguration property: Purview Configuration.
+     *
+     * @return the purviewConfiguration value.
+     */
+    public PurviewConfiguration purviewConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().purviewConfiguration();
+    }
+
+    /**
+     * Set the purviewConfiguration property: Purview Configuration.
+     *
+     * @param purviewConfiguration the purviewConfiguration value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withPurviewConfiguration(purviewConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the adlaResourceId property: The ADLA resource ID.
+     *
+     * @return the adlaResourceId value.
+     */
+    public String adlaResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().adlaResourceId();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public WorkspacePublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
+     *
+     * @return the cspWorkspaceAdminProperties value.
+     */
+    public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().cspWorkspaceAdminProperties();
+    }
+
+    /**
+     * Set the cspWorkspaceAdminProperties property: Initial workspace AAD admin properties for a CSP subscription.
+     *
+     * @param cspWorkspaceAdminProperties the cspWorkspaceAdminProperties value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withCspWorkspaceAdminProperties(cspWorkspaceAdminProperties);
+        return this;
+    }
+
+    /**
+     * Get the settings property: Workspace settings.
+     *
+     * @return the settings value.
+     */
+    public Map<String, Object> settings() {
+        return this.innerProperties() == null ? null : this.innerProperties().settings();
+    }
+
+    /**
+     * Get the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
+     * subresource.
+     *
+     * @return the azureADOnlyAuthentication value.
+     */
+    public Boolean azureADOnlyAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureADOnlyAuthentication();
+    }
+
+    /**
+     * Set the azureADOnlyAuthentication property: Enable or Disable AzureADOnlyAuthentication on All Workspace
+     * subresource.
+     *
+     * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspaceProperties();
+        }
+        this.innerProperties().withAzureADOnlyAuthentication(azureADOnlyAuthentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (defaultDataLakeStorage() != null) {
-            defaultDataLakeStorage().validate();
-        }
-        if (virtualNetworkProfile() != null) {
-            virtualNetworkProfile().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (encryption() != null) {
-            encryption().validate();
-        }
-        if (managedVirtualNetworkSettings() != null) {
-            managedVirtualNetworkSettings().validate();
-        }
-        if (workspaceRepositoryConfiguration() != null) {
-            workspaceRepositoryConfiguration().validate();
-        }
-        if (purviewConfiguration() != null) {
-            purviewConfiguration().validate();
         }
     }
 }

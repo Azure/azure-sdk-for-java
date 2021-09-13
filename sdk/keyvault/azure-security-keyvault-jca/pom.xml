@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -54,14 +54,14 @@
         <!-- Tests -->
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+            <artifactId>mockito-inline</artifactId>
+            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-test</artifactId>
-            <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
             <scope>test</scope>
         </dependency>
         <!-- JUnit -->

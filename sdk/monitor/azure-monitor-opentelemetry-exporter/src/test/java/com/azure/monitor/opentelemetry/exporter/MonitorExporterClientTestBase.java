@@ -3,21 +3,27 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RequestData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.utils.FormattedDuration;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -40,6 +46,33 @@ public class MonitorExporterClientTestBase extends TestBase {
         return new AzureMonitorExporterBuilder().pipeline(httpPipeline);
     }
 
+    AzureMonitorExporterBuilder getClientBuilderWithAuthentication() {
+        TokenCredential credential = null;
+        HttpClient httpClient;
+        if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
+            httpClient = HttpClient.createDefault();
+            credential =
+                new ClientSecretCredentialBuilder()
+                    .tenantId(System.getenv("AZURE_TENANT_ID"))
+                    .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))
+                    .clientId(System.getenv("AZURE_CLIENT_ID"))
+                    .build();
+        } else {
+            httpClient = interceptorManager.getPlaybackClient();
+        }
+
+        if (credential != null) {
+            return new AzureMonitorExporterBuilder()
+                .credential(credential)
+                .httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy());
+        } else {
+            return new AzureMonitorExporterBuilder()
+                .httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy());
+        }
+    }
+
     List<TelemetryItem> getAllInvalidTelemetryItems() {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
         telemetryItems.add(createRequestData("200", "GET /service/resource-name", true, Duration.ofMillis(100),
@@ -55,7 +88,7 @@ public class MonitorExporterClientTestBase extends TestBase {
                                                    Duration duration, OffsetDateTime time) {
         MonitorDomain requestData = new RequestData()
             .setId(UUID.randomUUID().toString())
-            .setDuration(getFormattedDuration(duration))
+            .setDuration(FormattedDuration.getFormattedDuration(duration.toNanos()))
             .setResponseCode(responseCode)
             .setSuccess(success)
             .setUrl("http://localhost:8080/")
@@ -66,19 +99,33 @@ public class MonitorExporterClientTestBase extends TestBase {
             .setBaseType("RequestData")
             .setBaseData(requestData);
 
+        String connectionString = Configuration.getGlobalConfiguration().get(
+            "APPLICATIONINSIGHTS_CONNECTION_STRING", "");
+
+        Map<String, String> keyValues = parseConnectionString(connectionString);
+        String instrumentationKey = keyValues.getOrDefault("InstrumentationKey", "{instrumentation-key}");
+
         TelemetryItem telemetryItem = new TelemetryItem()
             .setVersion(1)
-            .setInstrumentationKey("{instrumentation-key}")
+            .setInstrumentationKey(instrumentationKey)
             .setName("test-event-name")
             .setSampleRate(100.0f)
-            .setTime(time.format(DateTimeFormatter.ISO_DATE_TIME))
+            .setTime(time)
             .setData(monitorBase);
         return telemetryItem;
     }
 
-    String getFormattedDuration(Duration duration) {
-        return duration.toDays() + "." + duration.toHours() + ":" + duration.toMinutes() + ":" + duration.getSeconds()
-            + "." + duration.toMillis();
+    private Map<String, String> parseConnectionString(String connectionString) {
+        Objects.requireNonNull(connectionString);
+        Map<String, String> keyValues = new HashMap<>();
+        String[] splits = connectionString.split(";");
+        for (String split : splits) {
+            String[] keyValPair = split.split("=");
+            if (keyValPair.length == 2) {
+                keyValues.put(keyValPair[0], keyValPair[1]);
+            }
+        }
+        return keyValues;
     }
 
     List<TelemetryItem> getPartiallyInvalidTelemetryItems() {
@@ -86,7 +133,7 @@ public class MonitorExporterClientTestBase extends TestBase {
         telemetryItems.add(createRequestData("200", "GET /service/resource-name", true, Duration.ofMillis(100),
             OffsetDateTime.now()));
         telemetryItems.add(createRequestData("400", "GET /service/resource-name", false, Duration.ofMillis(50),
-            OffsetDateTime.now().minusDays(2)));
+            OffsetDateTime.now().minusDays(20)));
         telemetryItems.add(createRequestData("202", "GET /service/resource-name", true, Duration.ofMillis(125),
             OffsetDateTime.now()));
         return telemetryItems;

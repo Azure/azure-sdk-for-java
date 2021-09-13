@@ -47,6 +47,7 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -124,7 +125,7 @@ class ApplicationGatewayImpl
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     // Helpers
@@ -959,7 +960,7 @@ class ApplicationGatewayImpl
         if (child == null) {
             ChildInnerT inner;
             try {
-                inner = innerClass.newInstance();
+                inner = innerClass.getDeclaredConstructor().newInstance();
                 innerClass.getDeclaredMethod("withName", String.class).invoke(inner, name);
                 return implClass
                     .getDeclaredConstructor(innerClass, ApplicationGatewayImpl.class)

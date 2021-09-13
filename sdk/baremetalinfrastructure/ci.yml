@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/baremetalinfrastructure/ci.yml
+      - sdk/baremetalinfrastructure/azure-resourcemanager-baremetalinfrastructure/
+    exclude:
+      - sdk/baremetalinfrastructure/pom.xml
+      - sdk/baremetalinfrastructure/azure-resourcemanager-baremetalinfrastructure/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/baremetalinfrastructure/ci.yml
+      - sdk/baremetalinfrastructure/azure-resourcemanager-baremetalinfrastructure/
+    exclude:
+      - sdk/baremetalinfrastructure/pom.xml
+      - sdk/baremetalinfrastructure/azure-resourcemanager-baremetalinfrastructure/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: baremetalinfrastructure
+    Artifacts:
+      - name: azure-resourcemanager-baremetalinfrastructure
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerbaremetalinfrastructure

@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
@@ -29,6 +29,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
@@ -36,7 +37,7 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 /**
  * Locates Azure App Configuration Property Sources.
  */
-public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
+public final class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
 
@@ -61,6 +62,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
+    
+    private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private static AtomicBoolean configloaded = new AtomicBoolean(false);
 
@@ -68,13 +71,14 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
+        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
         this.keyVaultClientProvider = keyVaultClientProvider;
+        this.keyVaultSecretProvider = keyVaultSecretProvider;
     }
 
     @Override
@@ -202,12 +206,12 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
         try {
-            String[] labels = store.getLabels(profiles);
+            List<AppConfigurationStoreSelects> selects = store.getSelects();
 
-            for (String label : labels) {
+            for (AppConfigurationStoreSelects selectedKeys : selects) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                    label, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider);
+                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
                 if (initFeatures) {
@@ -226,7 +230,11 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
                 ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKeysSettings.add(watchKey);
+                if (watchKey != null) {
+                    watchKeysSettings.add(watchKey);
+                } else {
+                    watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
+                }
             }
             if (store.getFeatureFlags().getEnabled()) {
                 SettingSelector settingSelector = new SettingSelector()
@@ -279,8 +287,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private void delayException() {
         Date currentDate = new Date();
-        Date maxRetryDate = DateUtils.addSeconds(appProperties.getStartDate(),
-            appProperties.getPrekillTime());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(appProperties.getStartDate());
+        calendar.add(Calendar.SECOND, appProperties.getPrekillTime());
+        Date maxRetryDate = calendar.getTime();
         if (currentDate.before(maxRetryDate)) {
             long diffInMillies = Math.abs(maxRetryDate.getTime() - currentDate.getTime());
             try {

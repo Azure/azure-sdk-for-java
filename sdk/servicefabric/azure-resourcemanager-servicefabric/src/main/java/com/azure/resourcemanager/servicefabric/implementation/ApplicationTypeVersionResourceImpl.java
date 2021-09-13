@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionResource;
@@ -31,23 +32,6 @@ public final class ApplicationTypeVersionResourceImpl
         return this.innerModel().type();
     }
 
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String appPackageUrl() {
-        return this.innerModel().appPackageUrl();
-    }
-
-    public Map<String, String> defaultParameterList() {
-        Map<String, String> inner = this.innerModel().defaultParameterList();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
     public String location() {
         return this.innerModel().location();
     }
@@ -63,6 +47,27 @@ public final class ApplicationTypeVersionResourceImpl
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String appPackageUrl() {
+        return this.innerModel().appPackageUrl();
+    }
+
+    public Map<String, String> defaultParameterList() {
+        Map<String, String> inner = this.innerModel().defaultParameterList();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public Region region() {

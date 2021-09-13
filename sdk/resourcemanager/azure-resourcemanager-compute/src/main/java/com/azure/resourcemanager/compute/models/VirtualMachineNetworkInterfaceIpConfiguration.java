@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineNetworkInterfaceIpConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine network profile's IP configuration. */
-@JsonFlatten
 @Fluent
-public class VirtualMachineNetworkInterfaceIpConfiguration {
+public final class VirtualMachineNetworkInterfaceIpConfiguration {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(VirtualMachineNetworkInterfaceIpConfiguration.class);
 
@@ -26,55 +25,11 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
     private String name;
 
     /*
-     * Specifies the identifier of the subnet.
+     * Describes a virtual machine network interface IP configuration
+     * properties.
      */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
-     */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * The publicIPAddressConfiguration.
-     */
-    @JsonProperty(value = "properties.publicIPAddressConfiguration")
-    private VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration;
-
-    /*
-     * Available from Api-Version 2017-03-30 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
-     */
-    @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IpVersions privateIpAddressVersion;
-
-    /*
-     * Specifies an array of references to application security group.
-     */
-    @JsonProperty(value = "properties.applicationSecurityGroups")
-    private List<SubResource> applicationSecurityGroups;
-
-    /*
-     * Specifies an array of references to backend address pools of application
-     * gateways. A virtual machine can reference backend address pools of
-     * multiple application gateways. Multiple virtual machines cannot use the
-     * same application gateway.
-     */
-    @JsonProperty(value = "properties.applicationGatewayBackendAddressPools")
-    private List<SubResource> applicationGatewayBackendAddressPools;
-
-    /*
-     * Specifies an array of references to backend address pools of load
-     * balancers. A virtual machine can reference backend address pools of one
-     * public and one internal load balancer. [Multiple virtual machines cannot
-     * use the same basic sku load balancer].
-     */
-    @JsonProperty(value = "properties.loadBalancerBackendAddressPools")
-    private List<SubResource> loadBalancerBackendAddressPools;
+    @JsonProperty(value = "properties")
+    private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties;
 
     /**
      * Get the name property: The IP configuration name.
@@ -97,12 +52,21 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
     }
 
     /**
+     * Get the innerProperties property: Describes a virtual machine network interface IP configuration properties.
+     *
+     * @return the innerProperties value.
+     */
+    private VirtualMachineNetworkInterfaceIpConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the subnet property: Specifies the identifier of the subnet.
      *
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -112,7 +76,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -123,7 +90,7 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.primary;
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -134,7 +101,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the VirtualMachineNetworkInterfaceIpConfiguration object itself.
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withPrimary(Boolean primary) {
-        this.primary = primary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -144,7 +114,7 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the publicIpAddressConfiguration value.
      */
     public VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration() {
-        return this.publicIpAddressConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressConfiguration();
     }
 
     /**
@@ -155,7 +125,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withPublicIpAddressConfiguration(
         VirtualMachinePublicIpAddressConfiguration publicIpAddressConfiguration) {
-        this.publicIpAddressConfiguration = publicIpAddressConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withPublicIpAddressConfiguration(publicIpAddressConfiguration);
         return this;
     }
 
@@ -166,7 +139,7 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the privateIpAddressVersion value.
      */
     public IpVersions privateIpAddressVersion() {
-        return this.privateIpAddressVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddressVersion();
     }
 
     /**
@@ -178,7 +151,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withPrivateIpAddressVersion(
         IpVersions privateIpAddressVersion) {
-        this.privateIpAddressVersion = privateIpAddressVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withPrivateIpAddressVersion(privateIpAddressVersion);
         return this;
     }
 
@@ -188,7 +164,7 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the applicationSecurityGroups value.
      */
     public List<SubResource> applicationSecurityGroups() {
-        return this.applicationSecurityGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationSecurityGroups();
     }
 
     /**
@@ -199,7 +175,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withApplicationSecurityGroups(
         List<SubResource> applicationSecurityGroups) {
-        this.applicationSecurityGroups = applicationSecurityGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withApplicationSecurityGroups(applicationSecurityGroups);
         return this;
     }
 
@@ -211,7 +190,7 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<SubResource> applicationGatewayBackendAddressPools() {
-        return this.applicationGatewayBackendAddressPools;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayBackendAddressPools();
     }
 
     /**
@@ -224,7 +203,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withApplicationGatewayBackendAddressPools(
         List<SubResource> applicationGatewayBackendAddressPools) {
-        this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withApplicationGatewayBackendAddressPools(applicationGatewayBackendAddressPools);
         return this;
     }
 
@@ -236,7 +218,7 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<SubResource> loadBalancerBackendAddressPools() {
-        return this.loadBalancerBackendAddressPools;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerBackendAddressPools();
     }
 
     /**
@@ -249,7 +231,10 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
      */
     public VirtualMachineNetworkInterfaceIpConfiguration withLoadBalancerBackendAddressPools(
         List<SubResource> loadBalancerBackendAddressPools) {
-        this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceIpConfigurationProperties();
+        }
+        this.innerProperties().withLoadBalancerBackendAddressPools(loadBalancerBackendAddressPools);
         return this;
     }
 
@@ -265,8 +250,8 @@ public class VirtualMachineNetworkInterfaceIpConfiguration {
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineNetworkInterfaceIpConfiguration"));
         }
-        if (publicIpAddressConfiguration() != null) {
-            publicIpAddressConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

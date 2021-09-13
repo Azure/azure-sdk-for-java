@@ -9,6 +9,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
@@ -108,7 +109,8 @@ class VirtualMachineScaleSetVMsImpl
         VirtualMachineScaleSetsClient scaleSetInnerManager =
             this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets();
         return scaleSetInnerManager
-            .updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
+            .updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+                new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(instanceIdList));
     }
 
     @Override

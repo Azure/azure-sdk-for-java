@@ -5,43 +5,45 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Google model. */
-@JsonFlatten
+/** The configuration settings of the Google provider. */
 @Fluent
-public class Google extends ProxyOnlyResource {
+public final class Google {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Google.class);
 
     /*
-     * The enabled property.
+     * <code>false</code> if the Google provider should not be enabled despite
+     * the set registration; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties.enabled")
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The registration property.
+     * The configuration settings of the app registration for the Google
+     * provider.
      */
-    @JsonProperty(value = "properties.registration")
+    @JsonProperty(value = "registration")
     private ClientRegistration registration;
 
     /*
-     * The login property.
+     * The configuration settings of the login flow.
      */
-    @JsonProperty(value = "properties.login")
+    @JsonProperty(value = "login")
     private LoginScopes login;
 
     /*
-     * The validation property.
+     * The configuration settings of the Azure Active Directory token
+     * validation flow.
      */
-    @JsonProperty(value = "properties.validation")
+    @JsonProperty(value = "validation")
     private AllowedAudiencesValidation validation;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Google provider should not be enabled despite the
+     * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -50,7 +52,8 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the Google provider should not be enabled despite the
+     * set registration; otherwise, &lt;code&gt;true&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the Google object itself.
@@ -61,7 +64,7 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Get the registration property: The registration property.
+     * Get the registration property: The configuration settings of the app registration for the Google provider.
      *
      * @return the registration value.
      */
@@ -70,7 +73,7 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Set the registration property: The registration property.
+     * Set the registration property: The configuration settings of the app registration for the Google provider.
      *
      * @param registration the registration value to set.
      * @return the Google object itself.
@@ -81,7 +84,7 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Get the login property: The login property.
+     * Get the login property: The configuration settings of the login flow.
      *
      * @return the login value.
      */
@@ -90,7 +93,7 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Set the login property: The login property.
+     * Set the login property: The configuration settings of the login flow.
      *
      * @param login the login value to set.
      * @return the Google object itself.
@@ -101,7 +104,7 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Get the validation property: The validation property.
+     * Get the validation property: The configuration settings of the Azure Active Directory token validation flow.
      *
      * @return the validation value.
      */
@@ -110,7 +113,7 @@ public class Google extends ProxyOnlyResource {
     }
 
     /**
-     * Set the validation property: The validation property.
+     * Set the validation property: The configuration settings of the Azure Active Directory token validation flow.
      *
      * @param validation the validation value to set.
      * @return the Google object itself.
@@ -120,21 +123,12 @@ public class Google extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Google withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (registration() != null) {
             registration().validate();
         }

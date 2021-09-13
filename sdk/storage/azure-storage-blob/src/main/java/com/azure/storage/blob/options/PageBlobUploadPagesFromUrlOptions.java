@@ -4,7 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.http.HttpAuthorization;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.PageRange;
  * Extended options that may be passed when uploading a page range from a source URL.
  */
 @Fluent
-public class PageBlobUploadPagesFromUrlOptions {
+public final class PageBlobUploadPagesFromUrlOptions {
     private final PageRange range;
     private final String sourceUrl;
     private Long sourceOffset;

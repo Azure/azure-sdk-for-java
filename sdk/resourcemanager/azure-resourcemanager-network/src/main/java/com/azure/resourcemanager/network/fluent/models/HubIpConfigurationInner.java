@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IpConfigurations. */
-@JsonFlatten
 @Fluent
-public class HubIpConfigurationInner extends SubResource {
+public final class HubIpConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubIpConfigurationInner.class);
+
+    /*
+     * The properties of the Virtual Hub IPConfigurations.
+     */
+    @JsonProperty(value = "properties")
+    private HubIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
      * Name of the Ip Configuration.
@@ -37,35 +41,14 @@ public class HubIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The private IP address of the IP configuration.
+    /**
+     * Get the innerProperties property: The properties of the Virtual Hub IPConfigurations.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIpAddress;
-
-    /*
-     * The private IP address allocation method.
-     */
-    @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IpAllocationMethod privateIpAllocationMethod;
-
-    /*
-     * The reference to the subnet resource.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubnetInner subnet;
-
-    /*
-     * The reference to the public IP resource.
-     */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIpAddressInner publicIpAddress;
-
-    /*
-     * The provisioning state of the IP configuration resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private HubIpConfigurationPropertiesFormatInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the Ip Configuration.
@@ -105,13 +88,20 @@ public class HubIpConfigurationInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HubIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
      *
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
-        return this.privateIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
@@ -121,7 +111,10 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the HubIpConfigurationInner object itself.
      */
     public HubIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
-        this.privateIpAddress = privateIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
     }
 
@@ -131,7 +124,7 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.privateIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAllocationMethod();
     }
 
     /**
@@ -141,7 +134,10 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the HubIpConfigurationInner object itself.
      */
     public HubIpConfigurationInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
-        this.privateIpAllocationMethod = privateIpAllocationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
     }
 
@@ -151,7 +147,7 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the subnet value.
      */
     public SubnetInner subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -161,7 +157,10 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the HubIpConfigurationInner object itself.
      */
     public HubIpConfigurationInner withSubnet(SubnetInner subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -171,7 +170,7 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
-        return this.publicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
     }
 
     /**
@@ -181,7 +180,10 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the HubIpConfigurationInner object itself.
      */
     public HubIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubIpConfigurationPropertiesFormatInner();
+        }
+        this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
     }
 
@@ -191,14 +193,7 @@ public class HubIpConfigurationInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HubIpConfigurationInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -207,11 +202,8 @@ public class HubIpConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subnet() != null) {
-            subnet().validate();
-        }
-        if (publicIpAddress() != null) {
-            publicIpAddress().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

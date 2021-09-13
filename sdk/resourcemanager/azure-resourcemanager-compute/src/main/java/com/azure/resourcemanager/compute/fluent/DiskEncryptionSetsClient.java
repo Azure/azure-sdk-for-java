@@ -32,7 +32,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -50,7 +50,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -68,7 +68,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -86,7 +86,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -108,7 +108,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -126,7 +126,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -144,7 +144,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
      *     operation.
@@ -166,7 +166,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -184,7 +184,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -202,7 +202,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -220,7 +220,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -242,7 +242,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -260,7 +260,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -278,7 +278,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
      *     operation.
@@ -300,7 +300,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -316,7 +316,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -331,7 +331,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -346,7 +346,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -363,7 +363,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -378,7 +378,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -393,7 +393,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -408,7 +408,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,7 +425,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -440,7 +440,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -454,7 +454,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,7 +538,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -553,7 +553,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -568,7 +568,7 @@ public interface DiskEncryptionSetsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
-     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The
      *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

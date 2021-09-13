@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 /**
  * Properties for Monitoring an Azure App Configuratin Store.
  */
-public class AppConfigurationStoreMonitoring {
+public final class AppConfigurationStoreMonitoring {
 
     private boolean enabled = false;
 

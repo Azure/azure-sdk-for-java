@@ -2,6 +2,16 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-communication-common` to 1.0.4
 
 ## 1.0.3 (2021-06-09)
 Updated `azure-communication-sms` version

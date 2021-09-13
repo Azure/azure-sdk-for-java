@@ -5,6 +5,8 @@ package com.azure.data.schemaregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Locale;
+
 /**
  * The list of all serialization types.
  */
@@ -17,6 +19,6 @@ public class SerializationType extends ExpandableStringEnum<SerializationType> {
      * @return The {@link SerializationType} associated with this name.
      */
     public static SerializationType fromString(String name) {
-        return fromString(name, SerializationType.class);
+        return fromString(name.toLowerCase(Locale.ROOT), SerializationType.class);
     }
 }

@@ -48,6 +48,11 @@ def generate(
         module,
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
+    if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
+        # samples contains hand-written code
+        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'), ignore_errors = True)
+    else:
+        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -129,6 +134,8 @@ def update_changelog(changelog_file, changelog):
 
     first_version_part = old_changelog[:first_version.end() +
                                        second_version.start()]
+    # remove text starting from the first '###' (usually the block '### Features Added')
+    first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
     first_version_part += '\n\n' + changelog.strip() + '\n\n'
 

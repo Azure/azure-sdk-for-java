@@ -8,7 +8,10 @@ package com.azure.core.util;
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">design guidelines</a>.
  */
 public final class UserAgentUtil {
-
+    private static final int MAX_APPLICATION_ID_LENGTH = 24;
+    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
+        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
     public static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
 
     // From the design guidelines, the platform info format is:
@@ -30,17 +33,24 @@ public final class UserAgentUtil {
      * @param sdkVersion Version of the SDK.
      * @param configuration The configuration to use to determine if platform info should be included in the user agent
      * string.
+     *
      * @return User agent string as specified in design guidelines.
+     *
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
+     * length.
      */
     public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion,
         Configuration configuration) {
         StringBuilder userAgentBuilder = new StringBuilder();
 
-        // Only add the application ID if it is present as it is optional.
-        if (applicationId != null) {
-            applicationId = applicationId.length() > MAX_APP_ID_LENGTH ? applicationId.substring(0, MAX_APP_ID_LENGTH)
-                : applicationId;
-            userAgentBuilder.append(applicationId).append(" ");
+        if (!CoreUtils.isNullOrEmpty(applicationId)) {
+            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+                throw new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH);
+            } else if (applicationId.contains(" ")) {
+                throw new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE);
+            } else {
+                userAgentBuilder.append(applicationId).append(" ");
+            }
         }
 
         // Add the required default User-Agent string.

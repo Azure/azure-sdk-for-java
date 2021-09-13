@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -218,7 +219,8 @@ public class VirtualMachinesImpl
                 () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, null).block(),
                 Function.identity(),
                 Void.class,
-                null);
+                null,
+                Context.NONE);
     }
 
     @Override
@@ -258,7 +260,8 @@ public class VirtualMachinesImpl
                 () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).block(),
                 Function.identity(),
                 Void.class,
-                null);
+                null,
+                Context.NONE);
     }
 
     // Getters
