@@ -29,7 +29,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 ## Version Compatibility
 
 | Connector     | Minimum Spark Version | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
-| ------------- | --------------------- | -------------------- | -----------------------  | ----------------------------- | 
+| ------------- | --------------------- | -------------------- | -----------------------  | ----------------------------- |
 | 4.3.1         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.3.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.2.0         | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
