@@ -14,7 +14,7 @@ import reactor.core.publisher.Mono;
  * Authenticates a service principal with AAD using a client assertion.
  */
 class ClientAssertionCredential extends ManagedIdentityServiceCredential {
-    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
+    private final ClientLogger logger = new ClientLogger(ClientAssertionCredential.class);
 
     /**
      * Creates an instance of ClientAssertionCredential.
