@@ -4,7 +4,7 @@
 
 ### Dependency Updates
 
-- Updated `api-version` of features to `2021-08-01`.
+- Updated `api-version` to `2021-08-01`.
 
 ## 2.7.0 (2021-08-12)
 
