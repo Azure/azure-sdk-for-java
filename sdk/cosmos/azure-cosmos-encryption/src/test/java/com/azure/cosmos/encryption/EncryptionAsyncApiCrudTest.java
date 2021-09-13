@@ -155,6 +155,43 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void queryItemsAggregate() {
+        List<String> actualIds = new ArrayList<>();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+        properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+        properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+
+        // MAX query
+        String query1 = String.format("Select value max(c._ts) from c");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec1 = new SqlQuerySpec(query1);
+        CosmosPagedFlux<EncryptionPojo> feedResponseIterator1 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec1, cosmosQueryRequestOptions1, EncryptionPojo.class);
+        List<EncryptionPojo> feedResponse1 = feedResponseIterator1.byPage().blockFirst().getResults();
+        assertThat(feedResponse1.size()).isGreaterThanOrEqualTo(1);
+
+        // COUNT query
+        String query2 = String.format("Select top 1 value count(c) from c order by c._ts");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec2 = new SqlQuerySpec(query2);
+        CosmosPagedFlux<EncryptionPojo> feedResponseIterator2 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec2, cosmosQueryRequestOptions2, EncryptionPojo.class);
+        List<EncryptionPojo> feedResponse2 = feedResponseIterator2.byPage().blockFirst().getResults();
+        assertThat(feedResponse2.size()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void queryItemsOnEncryptedProperties() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,

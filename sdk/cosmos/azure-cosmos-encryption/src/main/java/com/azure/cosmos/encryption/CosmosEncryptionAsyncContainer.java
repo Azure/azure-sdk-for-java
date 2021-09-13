@@ -332,36 +332,14 @@ public class CosmosEncryptionAsyncContainer {
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getItemDeserializer();
     }
 
-    <T> Mono<byte[]> decryptResponse(
-        byte[] input) {
-
-        if (input == null) {
-            return Mono.empty();
-        }
-
-        return this.encryptionProcessor.decrypt(
-            input);
-    }
-
-    <T> Mono<byte[]> decryptResponse(
-        ObjectNode jsonNode) {
+    Mono<JsonNode> decryptResponseNode(
+        JsonNode jsonNode) {
 
         if (jsonNode == null) {
             return Mono.empty();
         }
 
-        return this.encryptionProcessor.decrypt(
-            jsonNode);
-    }
-
-    Mono<ObjectNode> decryptResponseObjectNode(
-        ObjectNode jsonNode) {
-
-        if (jsonNode == null) {
-            return Mono.empty();
-        }
-
-        return this.encryptionProcessor.decryptObjectNode(
+        return this.encryptionProcessor.decryptJsonNode(
             jsonNode);
     }
 
@@ -386,10 +364,16 @@ public class CosmosEncryptionAsyncContainer {
                         boolean isNoChangesResponse = isChangeFeed ?
                             ModelBridgeInternal.getNoCHangesFromFeedResponse(page)
                             : false;
-                        List<Mono<byte[]>> byteArrayMonoList =
-                            page.getResults().stream().map(jsonNode -> decryptResponse((ObjectNode) jsonNode)).collect(Collectors.toList());
+                        List<Mono<JsonNode>> byteArrayMonoList =
+                            page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
                         return Flux.concat(byteArrayMonoList).map(
-                            item -> getItemDeserializer().parseFrom(classType, item)
+                            item -> {
+                                if (item.isValueNode()) {
+                                    return (T)item;
+                                } else {
+                                    return getItemDeserializer().parseFrom(classType, EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), item));
+                                }
+                            }
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                             page.getResponseHeaders(),
                             BridgeInternal.queryMetricsFromFeedResponse(page),
@@ -741,8 +725,8 @@ public class CosmosEncryptionAsyncContainer {
                 ObjectNode objectNode =
                     this.cosmosBatchOperationResultAccessor.getResourceObject(cosmosBatchOperationResult);
                 if (objectNode != null) {
-                    decryptMonoList.add(encryptionProcessor.decryptObjectNode(objectNode).flatMap(jsonNode -> {
-                        this.cosmosBatchOperationResultAccessor.setResourceObject(cosmosBatchOperationResult, jsonNode);
+                    decryptMonoList.add(encryptionProcessor.decryptJsonNode(objectNode).flatMap(jsonNode -> {
+                        this.cosmosBatchOperationResultAccessor.setResourceObject(cosmosBatchOperationResult, (ObjectNode) jsonNode);
                         return Mono.empty();
                     }));
                 }
