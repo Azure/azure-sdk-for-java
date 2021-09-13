@@ -1,4 +1,4 @@
-# Azure Cosmos DB OLTP Spark 3 connector
+## Azure Cosmos DB OLTP Spark 3 connector
 
 **Azure Cosmos DB OLTP Spark connector** provides Apache Spark support for Azure Cosmos DB using 
 the [SQL API][sql_api_query].
@@ -8,7 +8,7 @@ developers to work with data using a variety of standard APIs, such as SQL, Mong
 If you have any feedback or ideas on how to improve your experience please let us know here:
 https://github.com/Azure/azure-sdk-for-java/issues/new
 
-## Documentation
+### Documentation
 
 - [Getting started](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/quick-start.md)
 - [Catalog API](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3-1_2-12/docs/catalog-api.md)
@@ -22,7 +22,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 [//]: # (//TODO: moderakh Azure Cosmos DB Partition)
 [//]: # (//TODO: moderakh Troubleshooting)
 
-## Version Compatibility
+### Version Compatibility
 
 | Connector     | Minimum Spark Version | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
 | ------------- | --------------------- | -------------------- | -----------------------  | ----------------------------- |
@@ -35,7 +35,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 | 4.0.0-beta.2  | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
 | 4.0.0-beta.1  | 3.1.1                 | 8                    | 2.12                     | 8.\*                          |
 
-## Download
+### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 8 from Maven:
 `com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.3.1`
@@ -47,17 +47,17 @@ libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-1_2-12" 
 
 Cosmos DB Spark Connector is available on [Maven Central Repo](https://search.maven.org/search?q=g:com.azure.cosmos.spark).
 
-### General
+#### General
 
 If you encounter any bug, please file an issue [here](https://github.com/Azure/azure-sdk-for-java/issues/new).
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
 
-## License
+### License
 This project is under MIT license and uses and repackages other third party libraries as an uber jar.
 See [NOTICE.txt](https://github.com/Azure/azure-sdk-for-java/blob/main/NOTICE.txt).
 
-## Contributing
+### Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
 [Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
