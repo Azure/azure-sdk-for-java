@@ -15,17 +15,13 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -209,16 +205,6 @@ public class UserAgentTests {
 
             validator.accept(request);
             return Mono.just(new MockHttpResponse(request, 200));
-        }
-    }
-
-    @Test
-    public void triggerOom() {
-        List<ByteBuffer> bigBufferList = new ArrayList<>();
-
-        // Create 5 1GB ByteBuffers to trigger an OutOfMemoryError.
-        for (int i = 0; i < 5; i++) {
-            bigBufferList.add(ByteBuffer.allocate(1024 * 1024 * 1024));
         }
     }
 }
