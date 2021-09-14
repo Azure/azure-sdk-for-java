@@ -63,15 +63,15 @@ function Log-Input-Params()
 
 . (Join-Path $PSScriptRoot common.ps1)
 Log-Input-Params
-$ArtifactPath = Join-Path $ArtifactPath $ArtifactName
+
 $artifacts = $ArtifactList.Split(",")
-foreach ($artifactName in $artifacts)
+foreach ($pkgName in $artifacts)
 {
-    Write-Host "Processing $($artifactName)"
+    Write-Host "Processing $($pkgName)"
     $packages = @{}
     if ($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn"))
     {
-        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $artifactName
+        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgName
     }
     else
     {
@@ -85,7 +85,7 @@ foreach ($artifactName in $artifacts)
     if ($packages)
     {
         $pkgPath = $packages.Values[0]
-        if (Shoud-Process-Package -pkgPath $pkgPath -packageName $artifactName)
+        if (Shoud-Process-Package -pkgPath $pkgPath -packageName $pkgName)
         {
             Write-Host "Submitting API Review for package $($pkg)"
             $filePath = $pkgPath.Replace($ArtifactPath , "").Replace("\", "/")
