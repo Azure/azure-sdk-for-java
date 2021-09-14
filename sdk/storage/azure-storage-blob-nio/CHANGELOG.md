@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.0.0-beta.9 (2021-09-15)
-### Dependency Updates
+### Other changes
+#### Dependency Updates
 - Updated `azure-storage-blob` to version `12.14.0`
 
 ## 12.0.0-beta.8 (2021-07-28)
