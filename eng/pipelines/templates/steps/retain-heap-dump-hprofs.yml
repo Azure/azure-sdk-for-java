@@ -9,9 +9,9 @@ steps:
       }
       [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/oom-hprofs","$(Build.ArtifactStagingDirectory)/oom-hprofs.zip")
     displayName: 'Copy OOM hprofs'
-    condition: always()
+    condition: succeededOrFailed()
 
   - publish: $(Build.ArtifactStagingDirectory)/oom-hprofs.zip
     displayName: 'Publish OOM hprofs'
     artifact: oom-hprofs-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: always()
+    condition: succeededOrFailed()
