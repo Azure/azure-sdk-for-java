@@ -133,6 +133,10 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringeventhubs
         skipPublishDocMs: true
+      - name: azure-spring-servicebus
+        groupId: com.azure.spring
+        safeName: azurespringservicebus
+        skipPublishDocMs: true
       - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring
         safeName: azurespringcloudautoconfigure

@@ -3,7 +3,7 @@
 
 package com.azure.spring.integration.servicebus.topic;
 
-import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.test.support.InboundChannelAdapterTest;

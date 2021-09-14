@@ -8,7 +8,7 @@ import com.azure.spring.servicebus.stream.binder.properties.ServiceBusTopicExten
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
+import com.azure.spring.servicebus.core.topic.ServiceBusTopicOperation;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.integration.core.MessageProducer;

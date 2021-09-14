@@ -5,7 +5,7 @@ package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;

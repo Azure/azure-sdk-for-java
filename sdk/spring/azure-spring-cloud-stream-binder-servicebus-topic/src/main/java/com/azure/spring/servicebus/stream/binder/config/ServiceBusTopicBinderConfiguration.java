@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicAutoC
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
+import com.azure.spring.servicebus.core.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusTopicMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusTopicExtendedBindingProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;

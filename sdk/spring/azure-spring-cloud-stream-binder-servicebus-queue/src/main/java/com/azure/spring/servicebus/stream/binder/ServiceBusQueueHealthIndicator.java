@@ -4,7 +4,7 @@ package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.integration.servicebus.health.Instrumentation;
 import com.azure.spring.integration.servicebus.health.InstrumentationManager;
-import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 

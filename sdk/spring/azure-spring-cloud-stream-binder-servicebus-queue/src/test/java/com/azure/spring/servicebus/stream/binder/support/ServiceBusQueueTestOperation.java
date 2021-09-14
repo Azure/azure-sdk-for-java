@@ -7,9 +7,9 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.core.api.PartitionSupplier;
-import com.azure.spring.integration.servicebus.DefaultServiceBusMessageProcessor;
-import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
+import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 

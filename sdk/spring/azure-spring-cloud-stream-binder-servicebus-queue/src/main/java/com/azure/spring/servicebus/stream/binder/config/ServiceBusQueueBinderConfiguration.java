@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueAutoConfiguration;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
-import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.stream.binder.ServiceBusQueueMessageChannelBinder;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
 import com.azure.spring.servicebus.stream.binder.provisioning.ServiceBusChannelProvisioner;

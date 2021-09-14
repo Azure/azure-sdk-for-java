@@ -514,7 +514,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="MethodName" files="com.azure.spring.data.gremlin.common.GremlinConfig.java"/>
 
   <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
-  <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.servicebus.support.ServiceBusClientConfig.java"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
   <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>

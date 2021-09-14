@@ -4,11 +4,11 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
-import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
-import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
+import com.azure.spring.servicebus.support.ServiceBusClientConfig;
+import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
+import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
+import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;

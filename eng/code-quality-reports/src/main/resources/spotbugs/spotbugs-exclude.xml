@@ -2338,7 +2338,7 @@
   <Match>
     <Or>
       <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
-      <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
     </Or>
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>

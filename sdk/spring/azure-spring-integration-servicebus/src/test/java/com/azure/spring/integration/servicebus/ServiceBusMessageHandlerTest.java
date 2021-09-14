@@ -4,8 +4,8 @@
 package com.azure.spring.integration.servicebus;
 
 import com.azure.spring.integration.core.DefaultMessageHandler;
-import com.azure.spring.integration.core.api.PartitionSupplier;
-import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
+import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.test.support.MessageHandlerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

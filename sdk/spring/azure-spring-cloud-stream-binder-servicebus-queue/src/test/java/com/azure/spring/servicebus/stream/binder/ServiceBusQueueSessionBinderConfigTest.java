@@ -4,7 +4,7 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
+import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.stream.binder.config.ServiceBusQueueBinderConfiguration;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusQueueExtendedBindingProperties;
