@@ -17,6 +17,7 @@ import com.azure.communication.callingserver.implementation.converters.StopHoldM
 import com.azure.communication.callingserver.implementation.converters.TransferCallRequestConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
+import com.azure.communication.callingserver.implementation.models.CancelMediaOperationRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.GetParticipantByIdRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
@@ -77,31 +78,6 @@ public final class CallConnectionAsync {
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudio(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        return playAudioInternal(audioFileUri, loop, audioFileId, callbackUri, operationContext);
-    }
-
-    /**
-     * Play audio in a call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -111,28 +87,7 @@ public final class CallConnectionAsync {
     public Mono<PlayAudioResult> playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
         return playAudioInternal(audioFileUri, playAudioOptions);
 
-    }
-
-    Mono<PlayAudioResult> playAudioInternal(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setLoop(loop)
-                    .setAudioFileId(audioFileId)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
-            return playAudioInternal(playAudioRequest);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
+    }    
 
     Mono<PlayAudioResult> playAudioInternal(String audioFileUri, PlayAudioOptions playAudioOptions) {
         try {
@@ -933,10 +888,11 @@ public final class CallConnectionAsync {
      * Play audio to a participant.
      *
      * @param participantId The participant id.
-     * @param audioFileUri The uri of the audio file.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The operation context.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * @param playAudioOptions Options for play audio.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
@@ -945,20 +901,23 @@ public final class CallConnectionAsync {
     public Mono<PlayAudioResult> PlayAudioToParticipant(
         String participantId,
         String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext
+        PlayAudioOptions playAudioOptions,
+        final Context context
     ) {
         try {
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setAudioFileId(audioFileId)
-                    .setLoop(false)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
+            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
-            return callConnectionInternal.participantPlayAudioAsync(callConnectionId, participantId, playAudioRequest)
+            PlayAudioRequest playAudioRequest = new PlayAudioRequest().setAudioFileUri(audioFileUri);
+            if (playAudioOptions != null) {
+                playAudioRequest
+                    .setLoop(playAudioOptions.isLoop())
+                    .setOperationContext(playAudioOptions.getOperationContext())
+                    .setAudioFileId(playAudioOptions.getAudioFileId())
+                    .setCallbackUri(playAudioOptions.getCallbackUri());
+            }
+
+            return callConnectionInternal.participantPlayAudioAsync(callConnectionId, participantId, playAudioRequest, context)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
         } catch (RuntimeException ex) {
@@ -970,10 +929,11 @@ public final class CallConnectionAsync {
      * Play audio to a participant.
      *
      * @param participantId The participant id.
-     * @param audioFileUri The uri of the audio file.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The operation context.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * @param playAudioOptions Options for play audio.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
@@ -982,28 +942,21 @@ public final class CallConnectionAsync {
     public Mono<Response<PlayAudioResult>> PlayAudioToParticipantWithResponse(
         String participantId,
         String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext
+        PlayAudioOptions playAudioOptions,
+        final Context context
     ) {
-        return PlayAudioToParticipantWithResponse(participantId, audioFileUri, audioFileId, callbackUri, operationContext, null);
-    }
-
-    Mono<Response<PlayAudioResult>> PlayAudioToParticipantWithResponse(
-        String participantId,
-        String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,  
-        Context context) {
         try {
-            PlayAudioRequest playAudioRequest =
-                new PlayAudioRequest()
-                    .setAudioFileUri(audioFileUri)
-                    .setAudioFileId(audioFileId)
-                    .setLoop(false)
-                    .setOperationContext(operationContext)
-                    .setCallbackUri(callbackUri);
+            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
+
+            PlayAudioRequest playAudioRequest = new PlayAudioRequest().setAudioFileUri(audioFileUri);
+            if (playAudioOptions != null) {
+                playAudioRequest
+                    .setLoop(playAudioOptions.isLoop())
+                    .setOperationContext(playAudioOptions.getOperationContext())
+                    .setAudioFileId(playAudioOptions.getAudioFileId())
+                    .setCallbackUri(playAudioOptions.getCallbackUri());
+            }
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -1011,6 +964,78 @@ public final class CallConnectionAsync {
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                     new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Cancel Participant Media Operation.
+     *
+     * @param participantId The participant id.
+     * @param mediaOperationId The Id of the media operation to Cancel.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> CancelParticipantMediaOperation(
+        String participantId,
+        String mediaOperationId,
+        final Context context
+    ) {
+        try {
+            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+            Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
+
+            CancelMediaOperationRequest cancelMediaOperationRequest =
+                new CancelMediaOperationRequest()
+                    .setMediaOperationId(mediaOperationId);
+
+            return callConnectionInternal.cancelParticipantMediaOperationAsync(callConnectionId, participantId, cancelMediaOperationRequest, context)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Cancel Participant Media Operation.
+     *
+     * @param participantId The participant id.
+     * @param mediaOperationId The Id of the media operation to Cancel.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> CancelParticipantMediaOperationWithResponse(
+        String participantId,
+        String mediaOperationId,
+        final Context context
+    ) {
+        Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+        Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
+        return CancelParticipantMediaOperationWithResponseInternal(participantId, mediaOperationId, context);
+    }
+
+    Mono<Response<Void>> CancelParticipantMediaOperationWithResponseInternal(
+        String participantId,
+        String mediaOperationId,
+        final Context context) {
+        try {
+            CancelMediaOperationRequest cancelMediaOperationRequest =
+                new CancelMediaOperationRequest()
+                    .setMediaOperationId(mediaOperationId);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.cancelParticipantMediaOperationWithResponseAsync(callConnectionId, participantId, cancelMediaOperationRequest, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

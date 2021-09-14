@@ -47,32 +47,6 @@ public final class CallConnection {
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
-     * @param loop The flag indicating whether audio file needs to be played in loop or not.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri call back uri to receive notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(
-        String audioFileUri,
-        boolean loop,
-        String audioFileId,
-        String callbackUri,
-        String operationContext) {
-        return callConnectionAsync
-            .playAudioInternal(audioFileUri, loop, audioFileId, callbackUri, operationContext).block();
-    }
-
-    /**
-     * Play audio in the call.
-     *
-     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
-     *                     audio prompts are supported. More specifically, the audio content in the wave file must
-     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,7 +393,7 @@ public final class CallConnection {
      * @param participantId The participant id.
      * @param audioFileUri The uri of the audio file.
      * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for start hold music operation.
@@ -435,7 +409,7 @@ public final class CallConnection {
      * @param participantId The participant id.
      * @param audioFileUri The uri of the audio file.
      * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
+     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,10 +476,11 @@ public final class CallConnection {
      * Play audio to a participant.
      *
      * @param participantId The participant id.
-     * @param audioFileUri The uri of the audio file.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The operation context.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * @param playAudioOptions Options for play audio.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
@@ -514,21 +489,21 @@ public final class CallConnection {
     public PlayAudioResult PlayAudioToParticipant(
         String participantId,
         String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext
+        PlayAudioOptions playAudioOptions,        
+        final Context context
     ) {
-        return callConnectionAsync.PlayAudioToParticipant(participantId, audioFileUri, audioFileId, callbackUri, operationContext).block();
+        return callConnectionAsync.PlayAudioToParticipant(participantId, audioFileUri, playAudioOptions, context).block();
     }
 
     /**
      * Play audio to a participant.
      *
      * @param participantId The participant id.
-     * @param audioFileUri The uri of the audio file.
-     * @param audioFileId An id for the media in the AudioFileUri, using which we cache the media.
-     * @param callbackUri The callback Uri to receive PlayAudio status notifications.
-     * @param operationContext The operation context.
+     * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
+     *                     audio prompts are supported. More specifically, the audio content in the wave file must
+     *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
+     * @param playAudioOptions Options for play audio.
+     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
@@ -537,10 +512,46 @@ public final class CallConnection {
     public Response<PlayAudioResult> PlayAudioToParticipantWithResponse(
         String participantId,
         String audioFileUri,
-        String audioFileId,
-        String callbackUri,
-        String operationContext,
+        PlayAudioOptions playAudioOptions,
+        final Context context
+    ) {
+        return callConnectionAsync.PlayAudioToParticipantWithResponse(participantId, audioFileUri, playAudioOptions, context).block();
+    }
+
+    /**
+     * Cancel Participant Media Operation.
+     *
+     * @param participantId The participant id.
+     * @param mediaOperationId The Id of the media operation to Cancel.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void CancelParticipantMediaOperation(
+        String participantId,
+        String mediaOperationId,
+        final Context context
+    ) {
+        return callConnectionAsync.CancelParticipantMediaOperation(participantId, mediaOperationId, context).block();
+    }
+
+    /**
+     * Cancel Participant Media Operation.
+     *
+     * @param participantId The participant id.
+     * @param mediaOperationId The Id of the media operation to Cancel.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> CancelParticipantMediaOperationWithResponse(
+        String participantId,
+        String mediaOperationId,
         final Context context) {
-        return callConnectionAsync.PlayAudioToParticipantWithResponse(participantId, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
+        return callConnectionAsync.CancelParticipantMediaOperationWithResponse(participantId, mediaOperationId, context).block();
     }
 }
