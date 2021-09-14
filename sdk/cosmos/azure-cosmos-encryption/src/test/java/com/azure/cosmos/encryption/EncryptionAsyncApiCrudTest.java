@@ -26,7 +26,6 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -187,8 +186,8 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         for (Object pojo: feedResponse1) {
             timeStamp = Integer.parseInt(pojo.toString());
         }
-        Assert.assertTrue(timeStamp > startTime);
-        Assert.assertTrue(timeStamp <= endTime);
+        assertThat(timeStamp).isGreaterThanOrEqualTo((int)startTime);
+        assertThat(timeStamp).isLessThanOrEqualTo((int)endTime);
         assertThat(feedResponse1.size()).isEqualTo(1);
 
         // COUNT query
