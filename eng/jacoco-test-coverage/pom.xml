@@ -111,11 +111,11 @@
       <artifactId>azure-analytics-synapse-artifacts</artifactId>
       <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-analytics-synapse-spark</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-spark;current} -->
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>com.azure</groupId>-->
+<!--      <artifactId>azure-analytics-synapse-spark</artifactId>-->
+<!--      <version>1.0.0-beta.5</version> &lt;!&ndash; {x-version-update;com.azure:azure-analytics-synapse-spark;current} &ndash;&gt;-->
+<!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>

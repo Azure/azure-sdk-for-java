@@ -145,7 +145,7 @@
         <module>sdk/synapse/azure-analytics-synapse-artifacts</module>
         <module>sdk/synapse/azure-analytics-synapse-managedprivateendpoints</module>
         <module>sdk/synapse/azure-analytics-synapse-monitoring</module>
-        <module>sdk/synapse/azure-analytics-synapse-spark</module>
+<!--        <module>sdk/synapse/azure-analytics-synapse-spark</module>-->
 
         <!-- Azure Tables -->
         <module>sdk/tables/azure-data-tables</module>
