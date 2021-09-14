@@ -25,7 +25,7 @@ public class StorageFileHealthConfiguration {
 
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
-    public StorageFileHealthIndicator fileStorageHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
+    public StorageFileHealthIndicator storageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
         return new StorageFileHealthIndicator(shareServiceAsyncClient);
     }
 

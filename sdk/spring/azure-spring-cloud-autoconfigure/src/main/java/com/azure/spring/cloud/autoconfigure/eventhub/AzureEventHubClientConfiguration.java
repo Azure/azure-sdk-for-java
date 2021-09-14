@@ -9,6 +9,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventHubClientBuilderFactory;
+import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
@@ -69,6 +70,7 @@ class AzureEventHubClientConfiguration {
         final EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
 
         builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
+        builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_EVENT_HUB);
         return builderFactory;
     }
 

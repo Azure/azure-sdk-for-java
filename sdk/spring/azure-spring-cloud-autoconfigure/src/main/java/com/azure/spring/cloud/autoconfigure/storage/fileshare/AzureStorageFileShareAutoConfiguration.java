@@ -31,7 +31,7 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
     public AzureStorageFileShareProperties storageFileShareProperties() {
-        return copyProperties(this.azureProperties, new AzureStorageFileShareProperties());
+        return loadProperties(this.azureProperties, new AzureStorageFileShareProperties());
     }
 
     @Bean

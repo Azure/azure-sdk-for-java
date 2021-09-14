@@ -31,7 +31,7 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.certificate")
     @Bean
     public AzureKeyVaultCertificateProperties keyVaultCertificateProperties() {
-        return copyProperties(this.azureProperties, new AzureKeyVaultCertificateProperties());
+        return loadProperties(this.azureProperties, new AzureKeyVaultCertificateProperties());
     }
 
     @Bean

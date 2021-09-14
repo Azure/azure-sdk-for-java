@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.core.properties.AzureProperties;
-import org.springframework.beans.BeanUtils;
+import com.azure.spring.core.properties.AzurePropertiesUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,12 +24,8 @@ public abstract class AzureServiceConfigurationBase {
         this.azureProperties = azureProperties;
     }
 
-    protected <T extends AzureProperties> T copyProperties(AzureConfigurationProperties source, T target) {
-        BeanUtils.copyProperties(source.getClient(), target.getClient());
-        BeanUtils.copyProperties(source.getProxy(), target.getProxy());
-        BeanUtils.copyProperties(source.getRetry(), target.getRetry());
-        BeanUtils.copyProperties(source.getProfile(), target.getProfile());
-        BeanUtils.copyProperties(source.getCredential(), target.getCredential());
+    protected <T extends AzureProperties> T loadProperties(AzureConfigurationProperties source, T target) {
+        AzurePropertiesUtils.copyAzureProperties(source, target);
         return target;
     }
 }

@@ -4,9 +4,7 @@
 package com.azure.spring.integration.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
@@ -56,7 +54,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     public ServiceBusProcessorClient getOrCreateProcessor(
         String name,
         ServiceBusClientConfig clientConfig,
-        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        ServiceBusMessageProcessor messageProcessor) {
         return this.processorClientMap.computeIfAbsent(name,
                                                        n -> createProcessorClient(n, clientConfig, messageProcessor));
     }
@@ -69,7 +67,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     private ServiceBusProcessorClient createProcessorClient(
         String name,
         ServiceBusClientConfig clientConfig,
-        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        ServiceBusMessageProcessor messageProcessor) {
         if (clientConfig.getConcurrency() != 1) {
             LOGGER.warn("It is detected that concurrency is set, this attribute has been deprecated,"
                 + " you can use " + (clientConfig.isSessionsEnabled() ? "maxConcurrentSessions" : "maxConcurrentCalls") + " instead");

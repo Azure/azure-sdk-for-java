@@ -6,6 +6,9 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.autoconfigure.keyvault.AzureKeyVaultProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Properties for Azure Key Vault Secrets.
  */
@@ -15,6 +18,8 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
 
     private SecretServiceVersion serviceVersion;
 
+    private final List<AzureKeyVaultPropertySourceProperties> propertySources = new ArrayList<>();
+
     public SecretServiceVersion getServiceVersion() {
         return serviceVersion;
     }
@@ -22,4 +27,10 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
     public void setServiceVersion(SecretServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
     }
+
+    public List<AzureKeyVaultPropertySourceProperties> getPropertySources() {
+        return propertySources;
+    }
+
+
 }

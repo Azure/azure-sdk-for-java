@@ -25,7 +25,7 @@ public class StorageBlobHealthConfiguration {
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
     @ConditionalOnBean(BlobServiceAsyncClient.class)
-    public StorageBlobHealthIndicator blobStorageHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
+    public StorageBlobHealthIndicator storageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
         return new StorageBlobHealthIndicator(blobServiceAsyncClient);
     }
 

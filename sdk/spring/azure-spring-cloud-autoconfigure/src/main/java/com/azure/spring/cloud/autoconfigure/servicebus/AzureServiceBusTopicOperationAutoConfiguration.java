@@ -36,6 +36,7 @@ public class AzureServiceBusTopicOperationAutoConfiguration {
     public ServiceBusTopicClientFactory topicClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                            ObjectProvider<ServiceBusTopicProvisioner> serviceBusTopicProvisioners) {
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(serviceBusClientBuilder);
+
         // TODO (xiada) the application id should be different for spring integration
 
         clientFactory.setTopicProvisioner(serviceBusTopicProvisioners.getIfAvailable());

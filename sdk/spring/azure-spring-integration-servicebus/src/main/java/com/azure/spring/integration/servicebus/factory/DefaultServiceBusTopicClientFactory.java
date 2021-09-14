@@ -5,9 +5,7 @@ package com.azure.spring.integration.servicebus.factory;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
@@ -59,7 +57,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         String topic,
         String subscription,
         ServiceBusClientConfig clientConfig,
-        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        ServiceBusMessageProcessor messageProcessor) {
         return this.topicProcessorMap.computeIfAbsent(Tuple.of(topic, subscription),
                                                       t -> createProcessor(t.getFirst(),
                                                                            t.getSecond(),
@@ -76,8 +74,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     private ServiceBusProcessorClient createProcessor(String topic,
                                                       String subscription,
                                                       ServiceBusClientConfig config,
-                                                      ServiceBusMessageProcessor<ServiceBusReceivedMessageContext,
-                                                                                    ServiceBusErrorContext> messageProcessor) {
+                                                      ServiceBusMessageProcessor messageProcessor) {
 
         if (config.getConcurrency() != 1) {
             LOGGER.warn("It is detected that concurrency is set, this attribute has been deprecated,"

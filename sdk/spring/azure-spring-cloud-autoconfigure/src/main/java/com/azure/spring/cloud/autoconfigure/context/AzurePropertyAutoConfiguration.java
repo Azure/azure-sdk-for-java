@@ -35,12 +35,11 @@ public class AzurePropertyAutoConfiguration {
                                             BeanDefinitionRegistry registry) {
             if (!registry.containsBeanDefinition(AZURE_PROPERTY_BEAN_NAME)) {
                 registry.registerBeanDefinition(AZURE_PROPERTY_BEAN_NAME,
-                    BeanDefinitionBuilder
-                        .genericBeanDefinition(AzureConfigurationProperties.class,
-                                               () -> Binder.get(this.environment)
-                                                           .bindOrCreate(AzureConfigurationProperties.PREFIX,
-                                                                         AzureConfigurationProperties.class))
-                        .getBeanDefinition());
+                    BeanDefinitionBuilder.genericBeanDefinition(AzureConfigurationProperties.class,
+                                                                () -> Binder.get(this.environment)
+                                                                            .bindOrCreate(AzureConfigurationProperties.PREFIX,
+                                                                                          AzureConfigurationProperties.class))
+                                         .getBeanDefinition());
             }
         }
 

@@ -7,6 +7,8 @@ import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.credential.TokenCredentialProperties;
@@ -19,6 +21,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Azu
 
     @Override
     public AzureTokenCredentialProvider resolve(AzureProperties properties) {
+        // TODO (xiada): the token credential logic
         final TokenCredentialProperties credential = properties.getCredential();
         if (credential == null) {
             return null;
@@ -40,6 +43,13 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Azu
                 .tenantId(credential.getTenantId())
                 .build();
             return new AzureTokenCredentialProvider(clientCertificateCredential);
+        }
+
+        if (credential.getManagedIdentityClientId() != null) {
+            final ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+                .clientId(credential.getManagedIdentityClientId())
+                .build();
+            return new AzureTokenCredentialProvider(managedIdentityCredential);
         }
         return null;
     }

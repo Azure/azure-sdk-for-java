@@ -57,7 +57,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     protected TokenCredential defaultTokenCredential = new DefaultAzureCredentialBuilder().build();
     private AzureEnvironment azureEnvironment = AzureEnvironment.AZURE;
-    private String applicationId;
+    private String applicationId; // end-user
+    private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
 
     /**
@@ -163,5 +164,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         this.connectionStringProvider = connectionStringProvider;
     }
 
-
+    public void setSpringIdentifier(String springIdentifier) {
+        this.springIdentifier = springIdentifier;
+    }
 }

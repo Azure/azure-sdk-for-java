@@ -30,7 +30,7 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
     @Bean
     @ConfigurationProperties(AzureCosmosProperties.PREFIX)
     public AzureCosmosProperties azureCosmosProperties() {
-        return copyProperties(this.azureProperties, new AzureCosmosProperties());
+        return loadProperties(this.azureProperties, new AzureCosmosProperties());
     }
 
     @Bean

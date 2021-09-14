@@ -29,8 +29,8 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
 
     private AmqpClientProperties client = new AmqpClientProperties();
 
-    private final ServiceBusSender sender = new ServiceBusSender();
-    private final ServiceBusReceiver receiver = new ServiceBusReceiver();
+    private final ServiceBusProducer producer = new ServiceBusProducer();
+    private final ServiceBusConsumer consumer = new ServiceBusConsumer();
     private final ServiceBusProcessor processor = new ServiceBusProcessor();
 
     public String getFQDN() {
@@ -78,17 +78,46 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
         this.client = client;
     }
 
-    public ServiceBusSender getSender() {
-        return sender;
+    public ServiceBusProducer getProducer() {
+        return producer;
     }
 
-    public ServiceBusReceiver getReceiver() {
-        return receiver;
+    public ServiceBusConsumer getConsumer() {
+        return consumer;
     }
 
-    static class ServiceBusSender {
+    static class ServiceBusProducer extends AzureAmqpConfigurationProperties {
+
+        private String domainName = "servicebus.windows.net";
+        private String namespace;
+        private String connectionString;
+
         private String queueName;
         private String topicName;
+
+        public String getDomainName() {
+            return domainName;
+        }
+
+        public void setDomainName(String domainName) {
+            this.domainName = domainName;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getConnectionString() {
+            return connectionString;
+        }
+
+        public void setConnectionString(String connectionString) {
+            this.connectionString = connectionString;
+        }
 
         public String getQueueName() {
             return queueName;
@@ -107,7 +136,12 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
         }
     }
 
-    static class ServiceBusReceiver {
+    static class ServiceBusConsumer extends AzureAmqpConfigurationProperties {
+
+        private String domainName = "servicebus.windows.net";
+        private String namespace;
+        private String connectionString;
+
         // TODO (xiada): name for session
         private boolean sessionAware = false;
         private boolean autoComplete = true;
@@ -118,6 +152,30 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration;
+
+        public String getDomainName() {
+            return domainName;
+        }
+
+        public void setDomainName(String domainName) {
+            this.domainName = domainName;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getConnectionString() {
+            return connectionString;
+        }
+
+        public void setConnectionString(String connectionString) {
+            this.connectionString = connectionString;
+        }
 
         public boolean isSessionAware() {
             return sessionAware;
@@ -192,7 +250,7 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
         }
     }
 
-    static class ServiceBusProcessor extends ServiceBusReceiver {
+    static class ServiceBusProcessor extends ServiceBusConsumer {
         private Integer maxConcurrentCalls;
         private Integer maxConcurrentSessions;
 

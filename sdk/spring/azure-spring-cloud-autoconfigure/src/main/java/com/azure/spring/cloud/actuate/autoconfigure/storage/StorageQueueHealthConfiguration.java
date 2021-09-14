@@ -25,7 +25,7 @@ public class StorageQueueHealthConfiguration {
     @Bean
     @ConditionalOnEnabledHealthIndicator("azure-storage")
     @ConditionalOnBean(QueueServiceAsyncClient.class)
-    public StorageQueueHealthIndicator fileStorageHealthIndicator(QueueServiceAsyncClient queueServiceAsyncClient) {
+    public StorageQueueHealthIndicator storageQueueHealthIndicator(QueueServiceAsyncClient queueServiceAsyncClient) {
         return new StorageQueueHealthIndicator(queueServiceAsyncClient);
     }
 

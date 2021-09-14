@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import static com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessorHelper.DEFAULT_REFRESH_INTERVAL_MS;
+import static com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties.DEFAULT_REFRESH_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CaseSensitiveKeyVaultTest {
@@ -37,7 +37,7 @@ public class CaseSensitiveKeyVaultTest {
     public void testGet() {
         final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
             keyVaultClient,
-            DEFAULT_REFRESH_INTERVAL_MS,
+            DEFAULT_REFRESH_INTERVAL,
             new ArrayList<>(),
             true);
 

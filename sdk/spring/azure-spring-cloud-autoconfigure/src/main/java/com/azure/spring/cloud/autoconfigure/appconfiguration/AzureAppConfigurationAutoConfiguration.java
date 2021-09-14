@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Bean;
  * Auto-configuration for a {@link ConfigurationClientBuilder} and Azure App Configuration clients.
  */
 @ConditionalOnClass(ConfigurationClientBuilder.class)
-// TODO (xiada): what's the right way to call this prefix, appconfiguration or app-configuration?
 @ConditionalOnProperty(prefix = AzureAppConfigurationProperties.PREFIX, name = "enabled", matchIfMissing = true)
 @ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigurationBase {
@@ -31,7 +30,7 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
     @ConfigurationProperties(prefix = AzureAppConfigurationProperties.PREFIX)
     @Bean
     public AzureAppConfigurationProperties appConfigurationProperties() {
-        return copyProperties(this.azureProperties, new AzureAppConfigurationProperties());
+        return loadProperties(this.azureProperties, new AzureAppConfigurationProperties());
     }
 
     @Bean

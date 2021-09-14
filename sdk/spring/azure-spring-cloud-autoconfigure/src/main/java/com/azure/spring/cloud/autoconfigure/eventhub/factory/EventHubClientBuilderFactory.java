@@ -117,4 +117,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         );
     }
 
+    @Override
+    protected String getApplicationId() {
+        return super.getApplicationId();
+    }
 }

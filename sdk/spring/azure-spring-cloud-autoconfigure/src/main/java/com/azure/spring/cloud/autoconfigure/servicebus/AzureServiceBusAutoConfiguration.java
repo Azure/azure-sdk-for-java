@@ -20,8 +20,8 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, name = "enabled", matchIfMissing = true)
 @Import({
     AzureServiceBusClientBuilderConfiguration.class,
-    AzureServiceBusReceiverClientConfiguration.class,
-    AzureServiceBusSenderClientConfiguration.class,
+    AzureServiceBusProducerClientConfiguration.class,
+    AzureServiceBusConsumerClientConfiguration.class,
     AzureServiceBusProcessorConfiguration.class
 })
 @ConditionalOnBean(AzureConfigurationProperties.class)
@@ -35,7 +35,7 @@ public class AzureServiceBusAutoConfiguration extends AzureServiceConfigurationB
     @Bean
     @ConfigurationProperties(AzureServiceBusProperties.PREFIX)
     public AzureServiceBusProperties azureServiceBusProperties(AzureConfigurationProperties azureProperties) {
-        return copyProperties(this.azureProperties, new AzureServiceBusProperties());
+        return loadProperties(this.azureProperties, new AzureServiceBusProperties());
     }
 
 }

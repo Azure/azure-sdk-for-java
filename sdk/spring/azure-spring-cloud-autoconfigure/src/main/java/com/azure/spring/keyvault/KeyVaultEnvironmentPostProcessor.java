@@ -3,27 +3,46 @@
 
 package com.azure.spring.keyvault;
 
-import com.azure.spring.cloud.autoconfigure.context.PreLegacyPropertyEnvironmentPostProcessor;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.secrets.SecretClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.core.properties.AzurePropertiesUtils;
+import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
+import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 /**
  * Leverage {@link EnvironmentPostProcessor} to add Key Vault secrets as a property source.
  */
 public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
-    public static final int DEFAULT_ORDER = PreLegacyPropertyEnvironmentPostProcessor.DEFAULT_ORDER + 1;
-    private int order = DEFAULT_ORDER;
+
+    public static final int ORDER = ConfigDataEnvironmentPostProcessor.ORDER + 1;
+
+    private final Log logger;
+
+    public KeyVaultEnvironmentPostProcessor(Log logger) {
+        this.logger = logger;
+    }
+
 
     /**
-     * Post process the environment.
+     * Post-process the environment.
      *
      * <p>
-     * Here we are going to process any key vault(s) and make them as available
-     * PropertySource(s). Note this supports both the singular key vault setup,
-     * as well as the multiple key vault setup.
+     * Here we are going to process any key vault(s) and make them as available PropertySource(s). Note this supports
+     * both the singular key vault setup, as well as the multiple key vault setup.
      * </p>
      *
      * @param environment the environment.
@@ -31,61 +50,107 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        final KeyVaultEnvironmentPostProcessorHelper helper
-            = new KeyVaultEnvironmentPostProcessorHelper(environment);
-        if (hasMultipleKeyVaultsEnabled(environment)) {
-            final String property = environment.
-                getProperty(KeyVaultProperties.getPropertyName(KeyVaultProperties.Property.ORDER), "");
-            final String[] keyVaultNames = property.split(",");
-            for (int i = keyVaultNames.length - 1; i >= 0; i--) {
-                final String normalizedName = keyVaultNames[i].trim();
-                if (isKeyVaultEnabled(environment, normalizedName)) {
-                    helper.addKeyVaultPropertySource(normalizedName);
-                }
+        final AzureKeyVaultSecretProperties keyVaultSecretProperties = loadProperties(Binder.get(environment));
+
+        if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
+            for (AzureKeyVaultPropertySourceProperties propertySource : keyVaultSecretProperties.getPropertySources()) {
+                final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
+                                                                                            propertySource);
+                addKeyVaultPropertySource(environment, properties);
             }
-        } else if (isKeyVaultEnabled(environment, "")) {
-            helper.addKeyVaultPropertySource("");
+        } else {
+            logger.debug("Key Vault property source is not enabled");
         }
     }
 
+    private AzureKeyVaultPropertySourceProperties getMergeProperties(AzureKeyVaultSecretProperties secretProperties,
+                                                                     AzureKeyVaultPropertySourceProperties propertySource) {
+        AzureKeyVaultPropertySourceProperties mergedResult = new AzureKeyVaultPropertySourceProperties();
+        AzurePropertiesUtils.copyAzureProperties(secretProperties, mergedResult);
+        AzurePropertiesUtils.copyAzurePropertiesIgnoreNull(propertySource, mergedResult);
+
+        return mergedResult;
+    }
+
+
     /**
-     * Is the key vault enabled.
-     * @param environment the environment.
-     * @param normalizedName the normalized name used to differentiate between
-     *                       multiple key vaults.
-     * @return true if the key vault is enabled, false otherwise.
+     * Add a key vault property source.
+     *
+     * <p>
+     * The normalizedName is used to target a specific key vault (note if the name is the empty string it works as
+     * before with only one key vault present). The normalized name is the name of the specific key vault plus a
+     * trailing "." at the end.
+     * </p>
+     *
+     * @param environment The Spring environment.
+     * @param propertySource The property source properties.
+     * @throws IllegalStateException If KeyVaultOperations fails to initialize.
      */
-    private boolean isKeyVaultEnabled(ConfigurableEnvironment environment, String normalizedName) {
-        return environment.getProperty(
-                KeyVaultProperties.getPropertyName(normalizedName, KeyVaultProperties.Property.ENABLED),
-                Boolean.class,
-                true)
-            && environment.getProperty(KeyVaultProperties
-            .getPropertyName(normalizedName, KeyVaultProperties.Property.URI)) != null
-            && isKeyVaultClientAvailable();
+    public void addKeyVaultPropertySource(ConfigurableEnvironment environment,
+                                          AzureKeyVaultPropertySourceProperties propertySource) {
+        Assert.notNull(propertySource.getVaultUrl(), "vaultUri must not be null!");
+
+        AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
+        AzurePropertiesUtils.copyAzureProperties(propertySource, secretProperties);
+        secretProperties.setServiceVersion(propertySource.getServiceVersion());
+        secretProperties.setVaultUrl(propertySource.getVaultUrl());
+
+        final SecretClient secretClient = new SecretClientBuilderFactory(secretProperties).build().buildClient();
+        try {
+            final MutablePropertySources sources = environment.getPropertySources();
+            final boolean caseSensitive = Boolean.TRUE.equals(propertySource.getCaseSensitive());
+            final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(secretClient,
+                                                                              propertySource.getRefreshInterval(),
+                                                                              propertySource.getSecretKeys(),
+                                                                              caseSensitive);
+
+            KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(propertySource.getName(),
+                                                                                       keyVaultOperation);
+
+            if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
+                sources.addAfter(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, keyVaultPropertySource);
+            } else {
+                sources.addFirst(keyVaultPropertySource);
+            }
+
+        } catch (final Exception ex) {
+            throw new IllegalStateException("Failed to configure KeyVault property source", ex);
+        }
+    }
+
+    private AzureKeyVaultSecretProperties loadProperties(Binder binder) {
+        AzureConfigurationProperties azureProperties = binder
+            .bind(AzureConfigurationProperties.PREFIX, Bindable.of(AzureConfigurationProperties.class))
+            .orElseGet(AzureConfigurationProperties::new);
+
+        AzureKeyVaultSecretProperties existingValue = new AzureKeyVaultSecretProperties();
+        AzurePropertiesUtils.copyAzureProperties(azureProperties, existingValue);
+
+
+        return binder
+            .bind(AzureKeyVaultSecretProperties.PREFIX,
+                  Bindable.of(AzureKeyVaultSecretProperties.class).withExistingValue(existingValue))
+            .orElseGet(AzureKeyVaultSecretProperties::new);
     }
 
     /**
-     * Determine whether or not multiple key vaults are enabled.
-     * @param environment the environment.
-     * @return true if enabled, false otherwise.
+     * Is the Key Vault property source enabled.
+     *
+     * @param properties The Azure Key Vault Secret properties.
+     * @return true if the key vault is enabled, false otherwise.
      */
-    private boolean hasMultipleKeyVaultsEnabled(ConfigurableEnvironment environment) {
-        return environment.getProperty(KeyVaultProperties.getPropertyName(KeyVaultProperties.Property.ORDER)) != null;
+    private boolean isKeyVaultPropertySourceEnabled(AzureKeyVaultSecretProperties properties) {
+        return isKeyVaultClientAvailable() && !properties.getPropertySources().isEmpty();
     }
 
     private boolean isKeyVaultClientAvailable() {
         return ClassUtils.isPresent("com.azure.security.keyvault.secrets.SecretClient",
-            KeyVaultEnvironmentPostProcessor.class.getClassLoader());
+                                    KeyVaultEnvironmentPostProcessor.class.getClassLoader());
     }
 
     @Override
     public int getOrder() {
-        return order;
+        return ORDER;
     }
 
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
 }

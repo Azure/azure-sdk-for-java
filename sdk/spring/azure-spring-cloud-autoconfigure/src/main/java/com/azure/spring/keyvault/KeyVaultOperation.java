@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -31,10 +32,10 @@ import java.util.stream.StreamSupport;
  */
 public class KeyVaultOperation {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultOperation.class);
 
     /**
-     * Stores the case sensitive flag.
+     * Stores the case-sensitive flag.
      */
     private final boolean caseSensitive;
 
@@ -60,16 +61,14 @@ public class KeyVaultOperation {
     /**
      * Constructor.
      * @param secretClient the Key Vault secret client.
-     * @param refreshInMillis the refresh in milliseconds (0 or less disables refresh).
+     * @param refreshDuration the refresh in milliseconds (0 or less disables refresh).
      * @param secretKeys the secret keys to look for.
-     * @param caseSensitive the case sensitive flag.
+     * @param caseSensitive the case-sensitive flag.
      */
-    public KeyVaultOperation(
-        final SecretClient secretClient,
-        final long refreshInMillis,
-        List<String> secretKeys,
-        boolean caseSensitive
-    ) {
+    public KeyVaultOperation(final SecretClient secretClient,
+                             final Duration refreshDuration,
+                             List<String> secretKeys,
+                             boolean caseSensitive) {
 
         this.caseSensitive = caseSensitive;
         this.secretClient = secretClient;
@@ -77,6 +76,7 @@ public class KeyVaultOperation {
 
         refreshProperties();
 
+        final long refreshInMillis = refreshDuration.toMillis();
         if (refreshInMillis > 0) {
             synchronized (KeyVaultOperation.class) {
                 if (timer != null) {
@@ -84,7 +84,7 @@ public class KeyVaultOperation {
                         timer.cancel();
                         timer.purge();
                     } catch (RuntimeException runtimeException) {
-                        LOG.error("Error of terminating Timer", runtimeException);
+                        LOGGER.error("Error of terminating Timer", runtimeException);
                     }
                 }
                 timer = new Timer(true);
@@ -212,10 +212,10 @@ public class KeyVaultOperation {
         } catch (HttpResponseException httpResponseException) {
             result = httpResponseException.getResponse().getStatusCode() < 500;
         } catch (HttpRequestException httpRequestException) {
-            LOG.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
+            LOGGER.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
             result = false;
         } catch (RuntimeException runtimeException) {
-            LOG.error("A runtime error occurred while checking key vault connectivity", runtimeException);
+            LOGGER.error("A runtime error occurred while checking key vault connectivity", runtimeException);
             result = false;
         }
         return result;
