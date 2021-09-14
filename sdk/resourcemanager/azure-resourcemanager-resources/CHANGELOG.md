@@ -2,6 +2,10 @@
 
 ## 2.8.0-beta.1 (Unreleased)
 
+### Dependency Updates
+
+- Updated `api-version` of policy to `2021-06-01`.
+
 ### Other Changes
 
 - Updated to use `PATCH` HTTP method for the update flow of `GenericResource`. For tagging resource, it is advised to use `TagOperations` instead.
