@@ -122,6 +122,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -129,7 +130,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -187,12 +188,13 @@ public final class IntegrationRuntimeNodeIpAddressOperationsClientImpl
         if (nodeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter nodeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
