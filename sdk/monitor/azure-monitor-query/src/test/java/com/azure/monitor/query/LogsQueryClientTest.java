@@ -6,7 +6,6 @@ package com.azure.monitor.query;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -21,6 +20,7 @@ import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
+import com.azure.monitor.query.models.MonitorQueryTimeInterval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -87,7 +87,7 @@ public class LogsQueryClientTest extends TestBase {
     @Test
     public void testLogsQuery() {
         LogsQueryResult queryResults = client.query(WORKSPACE_ID, "AppRequests",
-                new TimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
+                new MonitorQueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getAllTables().size());
         assertEquals(902, queryResults.getAllTables().get(0).getAllTableCells().size());

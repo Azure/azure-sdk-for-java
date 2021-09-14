@@ -4,7 +4,6 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.models.TimeInterval;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @Fluent
 public final class MetricsQueryOptions {
-    private TimeInterval timeInterval;
+    private MonitorQueryTimeInterval timeInterval;
     private Duration granularity;
     private List<AggregationType> aggregations;
     private Integer top;
@@ -27,7 +26,7 @@ public final class MetricsQueryOptions {
      * Returns the time span for which the metrics data is queried.
      * @return the time span for which the metrics data is queried.
      */
-    public TimeInterval getTimeInterval() {
+    public MonitorQueryTimeInterval getTimeInterval() {
         return timeInterval;
     }
 
@@ -37,7 +36,7 @@ public final class MetricsQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setTimeInterval(TimeInterval timeInterval) {
+    public MetricsQueryOptions setTimeInterval(MonitorQueryTimeInterval timeInterval) {
         this.timeInterval = timeInterval;
         return this;
     }

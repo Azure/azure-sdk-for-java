@@ -7,12 +7,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.experimental.models.HttpResponseError;
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.implementation.metrics.models.Metric;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
 import com.azure.monitor.query.implementation.metrics.models.MetadataValue;
@@ -28,6 +28,7 @@ import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import com.azure.monitor.query.models.MonitorQueryTimeInterval;
 import com.azure.monitor.query.models.TimeSeriesElement;
 import com.azure.monitor.query.models.MetricValue;
 import reactor.core.publisher.Mono;
@@ -189,7 +190,8 @@ public final class MetricsQueryAsyncClient {
                     .map(type -> String.valueOf(type.ordinal()))
                     .collect(Collectors.joining(","));
         }
-        String timespan = options.getTimeInterval() == null ? null : options.getTimeInterval().toIso8601Format();
+        String timespan = options.getTimeInterval() == null ? null
+                : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
         return metricsClient
                 .getMetrics()
                 .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
@@ -202,7 +204,7 @@ public final class MetricsQueryAsyncClient {
         MetricsResponse metricsResponse = response.getValue();
         MetricsQueryResult metricsQueryResult = new MetricsQueryResult(
                 metricsResponse.getCost(),
-                metricsResponse.getTimespan() == null ? null : TimeInterval.parse(metricsResponse.getTimespan()),
+                metricsResponse.getTimespan() == null ? null : MonitorQueryTimeInterval.parse(metricsResponse.getTimespan()),
                 metricsResponse.getInterval(),
                 metricsResponse.getNamespace(), metricsResponse.getResourceregion(), mapMetrics(metricsResponse.getValue()));
 

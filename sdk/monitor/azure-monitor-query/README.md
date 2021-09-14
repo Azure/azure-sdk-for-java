@@ -155,7 +155,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .buildClient();
 
 LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-        new TimeInterval(Duration.ofDays(2)));
+        new MonitorQueryTimeInterval(Duration.ofDays(2)));
 
 for (LogsTableRow row : queryResults.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -186,7 +186,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .buildClient();
 
 List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-        new TimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+        new MonitorQueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
@@ -201,9 +201,9 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .buildClient();
 
 LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
-String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
-String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
+String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new MonitorQueryTimeInterval(Duration.ofDays(2)));
+String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new MonitorQueryTimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new MonitorQueryTimeInterval(Duration.ofDays(10)));
 
 LogsBatchQueryResultCollection batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -237,7 +237,7 @@ LogsQueryOptions options = new LogsQueryOptions()
     .setServerTimeout(Duration.ofMinutes(10));
 
 Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
-        "{kusto-query}", new TimeInterval(Duration.ofDays(2)), options, Context.NONE);
+        "{kusto-query}", new MonitorQueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
 ```
 
 ### Get logs from multiple workspaces
@@ -254,7 +254,7 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .buildClient();
 
 Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
-        new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+        new MonitorQueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                 .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
         Context.NONE);
 LogsQueryResult result = response.getValue();
