@@ -11,13 +11,14 @@ Param (
   [Parameter(Mandatory=$True)]
   [string] $ArtifactList,
   [string] $ArtifactName = "packages",
-  [string] $APIViewUri = "http://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
+  [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges"
 )
 
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
 function Submit-Request($filePath)
 {
-    $queryParam = "artifactName=$ArtifactName&buildId=$BuildId&filePath=$filePath&commitSha=$CommitSha&language=$Language&pullRequestNumber=$PullRequestNumber"    
+    $repoName = "azure-sdk-for-$Language"
+    $queryParam = "artifactName=$ArtifactName&buildId=$BuildId&filePath=$filePath&commitSha=$CommitSha&repoName=$repoName&pullRequestNumber=$PullRequestNumber"    
     $uri= "$($APIViewUri)?$($queryParam)"
     Write-Host "Request URI: $uri"
     try
@@ -58,7 +59,6 @@ function Log-Input-Params()
     Write-Host "BuildId: $($BuildId)"
     Write-Host "Language: $($Language)"
     Write-Host "Commit SHA: $($CommitSha)"
-    Write-Host "ArtifactJson: $($ArtifactJson)"
 }
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -87,7 +87,6 @@ foreach ($pkgName in $artifacts)
         $pkgPath = $packages.Values[0]
         if (Shoud-Process-Package -pkgPath $pkgPath -packageName $pkgName)
         {
-            Write-Host "Submitting API Review for package $($pkg)"
             $filePath = $pkgPath.Replace($ArtifactPath , "").Replace("\", "/")
             Submit-Request -filePath $filePath
         }
