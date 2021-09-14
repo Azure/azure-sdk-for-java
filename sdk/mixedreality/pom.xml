@@ -19,7 +19,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-mixedreality-authentication</artifactId>
-          <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
+          <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;current} -->
         </dependency>
       </dependencies>
       <build>

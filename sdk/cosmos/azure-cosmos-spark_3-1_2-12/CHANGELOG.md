@@ -1,5 +1,7 @@
 ## Release History
 
+### 4.4.0-beta.1 (Unreleased)
+
 ### 4.3.1 (2021-09-13)
 #### Key Bug Fixes
 * Fixed issue resulting in option `spark.cosmos.read.maxItemCount` not always being honored
