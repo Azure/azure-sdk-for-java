@@ -1,7 +1,7 @@
 # Release History
 
-## 12.11.0-beta.2 (Unreleased)
-
+## 12.11.0 (2021-09-15)
+- GA release
 
 ## 12.11.0-beta.1 (2021-07-28)
 - Added support to reliably download a file. 
