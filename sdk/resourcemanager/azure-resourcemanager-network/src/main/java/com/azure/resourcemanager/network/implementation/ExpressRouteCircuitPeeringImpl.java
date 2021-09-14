@@ -5,11 +5,11 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.fluent.models.Ipv6ExpressRouteCircuitPeeringConfigInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -184,7 +184,7 @@ class ExpressRouteCircuitPeeringImpl<
     }
 
     @Override
-    public Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig() {
+    public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
         return innerModel().ipv6PeeringConfig();
     }
 

@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.models.Ipv6ExpressRouteCircuitPeeringConfigInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
@@ -11,7 +10,7 @@ import java.util.List;
 
 /** An client-side representation of a load balancer frontend. */
 @Fluent
-public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuitPeeringConfigInner> {
+public interface Ipv6PeeringConfig extends HasInnerModel<Ipv6ExpressRouteCircuitPeeringConfig> {
 
     /** Grouping of public frontend definition stages. */
     interface DefinitionStages {

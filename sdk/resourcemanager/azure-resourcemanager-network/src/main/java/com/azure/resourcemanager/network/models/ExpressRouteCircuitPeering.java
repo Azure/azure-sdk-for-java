@@ -5,7 +5,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.fluent.models.Ipv6ExpressRouteCircuitPeeringConfigInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -74,7 +73,7 @@ public interface ExpressRouteCircuitPeering
     String lastModifiedBy();
 
     /** @return the IPv6 peering configuration */
-    Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig();
+    Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig();
 
     /** The entirety of the express route circuit peering definition. */
     interface Definition

@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig
 import com.azure.resourcemanager.network.models.ExpressRouteConnectionId;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -125,7 +126,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
      * The IPv6 peering configuration.
      */
     @JsonProperty(value = "ipv6PeeringConfig")
-    private Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig;
+    private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
 
     /*
      * The ExpressRoute connection.
@@ -493,7 +494,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
      * 
      * @return the ipv6PeeringConfig value.
      */
-    public Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig() {
+    public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
         return this.ipv6PeeringConfig;
     }
 
@@ -504,7 +505,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
      * @return the ExpressRouteCircuitPeeringPropertiesFormatInner object
      * itself.
      */
-    public ExpressRouteCircuitPeeringPropertiesFormatInner withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig) {
+    public ExpressRouteCircuitPeeringPropertiesFormatInner withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
         this.ipv6PeeringConfig = ipv6PeeringConfig;
         return this;
     }

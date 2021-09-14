@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -373,7 +374,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * 
      * @return the ipv6PeeringConfig value.
      */
-    public Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig() {
+    public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
         return this.innerProperties() == null ? null : this.innerProperties().ipv6PeeringConfig();
     }
 
@@ -383,7 +384,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      * @param ipv6PeeringConfig the ipv6PeeringConfig value to set.
      * @return the ExpressRouteCrossConnectionPeeringInner object itself.
      */
-    public ExpressRouteCrossConnectionPeeringInner withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfigInner ipv6PeeringConfig) {
+    public ExpressRouteCrossConnectionPeeringInner withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }

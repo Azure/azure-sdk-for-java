@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.fluent.models.Ipv6ExpressRouteCircuitPeeringConfigInner;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.Ipv6PeeringConfig;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Implementation for Ipv6PeeringConfig. */
-class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuitPeeringConfigInner>
+class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuitPeeringConfig>
     implements Ipv6PeeringConfig,
         Ipv6PeeringConfig.Definition<ExpressRouteCrossConnectionPeering.DefinitionStages.WithCreate>,
         Ipv6PeeringConfig.UpdateDefinition<ExpressRouteCrossConnectionPeering.Update>,
@@ -21,7 +21,7 @@ class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuit
     private final ExpressRouteCrossConnectionPeeringImpl parent;
 
     Ipv6PeeringConfigImpl(
-        Ipv6ExpressRouteCircuitPeeringConfigInner innerObject, ExpressRouteCrossConnectionPeeringImpl parent) {
+        Ipv6ExpressRouteCircuitPeeringConfig innerObject, ExpressRouteCrossConnectionPeeringImpl parent) {
         super(innerObject);
         this.parent = parent;
     }
