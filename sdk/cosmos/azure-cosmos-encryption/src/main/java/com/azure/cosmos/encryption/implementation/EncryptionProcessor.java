@@ -366,6 +366,9 @@ public class EncryptionProcessor {
 
     public Mono<JsonNode> decryptJsonNode(JsonNode itemJObj) {
         assert (itemJObj != null);
+        if (itemJObj.isValueNode()) {
+            return Mono.just(itemJObj);
+        }
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 if (StringUtils.isEmpty(includedPath.getPath()) || includedPath.getPath().charAt(0) != '/' || includedPath.getPath().lastIndexOf('/') != 0) {
