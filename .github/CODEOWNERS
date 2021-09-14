@@ -62,7 +62,7 @@
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                     @srnagar @lmolkova
+/sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar
