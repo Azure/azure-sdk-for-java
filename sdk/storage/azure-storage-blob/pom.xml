@@ -164,18 +164,6 @@
         <directory>${basedir}/src/test/resources</directory>
       </testResource>
     </testResources>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-        <configuration>
-          <systemPropertyVariables combine.children="append">
-            <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-    </plugins>
   </build>
 
   <profiles>
