@@ -18,7 +18,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResults;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import org.junit.jupiter.api.BeforeEach;
@@ -100,7 +100,7 @@ public class LogsQueryClientTest extends TestBase {
         logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
         logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 3", null);
 
-        LogsBatchQueryResults batchResultCollection = client
+        LogsBatchQueryResultCollection batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
@@ -143,7 +143,7 @@ public class LogsQueryClientTest extends TestBase {
         logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null);
         logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take", null);
 
-        LogsBatchQueryResults batchResultCollection = client
+        LogsBatchQueryResultCollection batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
@@ -172,7 +172,7 @@ public class LogsQueryClientTest extends TestBase {
         logsBatchQuery.addQuery(WORKSPACE_ID, "AppRequests | take 2", null,
                         new LogsQueryOptions().setIncludeStatistics(true));
 
-        LogsBatchQueryResults batchResultCollection = client
+        LogsBatchQueryResultCollection batchResultCollection = client
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();

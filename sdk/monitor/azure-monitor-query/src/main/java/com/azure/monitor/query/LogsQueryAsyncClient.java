@@ -7,10 +7,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.models.HttpResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -28,7 +28,7 @@ import com.azure.monitor.query.implementation.logs.models.QueryResults;
 import com.azure.monitor.query.implementation.logs.models.Table;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResults;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
@@ -39,10 +39,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -165,8 +163,8 @@ public final class LogsQueryAsyncClient {
      * @param timeInterval The time period for which the logs should be looked up.
      * @return A collection of query results corresponding to the input batch of queries.
      */
-    Mono<LogsBatchQueryResults> queryBatch(String workspaceId, List<String> queries,
-                                           TimeInterval timeInterval) {
+    Mono<LogsBatchQueryResultCollection> queryBatch(String workspaceId, List<String> queries,
+                                                    TimeInterval timeInterval) {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         queries.forEach(query -> logsBatchQuery.addQuery(workspaceId, query, timeInterval));
         return queryBatchWithResponse(logsBatchQuery).map(Response::getValue);
@@ -183,7 +181,7 @@ public final class LogsQueryAsyncClient {
      * @return A collection of query results corresponding to the input batch of queries.@return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogsBatchQueryResults> queryBatch(LogsBatchQuery logsBatchQuery) {
+    public Mono<LogsBatchQueryResultCollection> queryBatch(LogsBatchQuery logsBatchQuery) {
         return queryBatchWithResponse(logsBatchQuery)
                 .map(Response::getValue);
     }
@@ -194,11 +192,11 @@ public final class LogsQueryAsyncClient {
      * @return A collection of query results corresponding to the input batch of queries.@return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogsBatchQueryResults>> queryBatchWithResponse(LogsBatchQuery logsBatchQuery) {
+    public Mono<Response<LogsBatchQueryResultCollection>> queryBatchWithResponse(LogsBatchQuery logsBatchQuery) {
         return queryBatchWithResponse(logsBatchQuery, Context.NONE);
     }
 
-    Mono<Response<LogsBatchQueryResults>> queryBatchWithResponse(LogsBatchQuery logsBatchQuery, Context context) {
+    Mono<Response<LogsBatchQueryResultCollection>> queryBatchWithResponse(LogsBatchQuery logsBatchQuery, Context context) {
         List<BatchQueryRequest> requests = LogsQueryHelper.getBatchQueries(logsBatchQuery);
         Duration maxServerTimeout = LogsQueryHelper.getMaxServerTimeout(logsBatchQuery);
         if (maxServerTimeout != null) {
@@ -227,9 +225,9 @@ public final class LogsQueryAsyncClient {
         return context;
     }
 
-    private Response<LogsBatchQueryResults> convertToLogQueryBatchResult(Response<BatchResponse> response) {
+    private Response<LogsBatchQueryResultCollection> convertToLogQueryBatchResult(Response<BatchResponse> response) {
         List<LogsBatchQueryResult> batchResults = new ArrayList<>();
-        LogsBatchQueryResults logsBatchQueryResults = new LogsBatchQueryResults(batchResults);
+        LogsBatchQueryResultCollection logsBatchQueryResultCollection = new LogsBatchQueryResultCollection(batchResults);
 
         BatchResponse batchResponse = response.getValue();
 
@@ -244,20 +242,11 @@ public final class LogsQueryAsyncClient {
             batchResults.add(logsBatchQueryResult);
         }
         batchResults.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getId())));
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), logsBatchQueryResults);
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), logsBatchQueryResultCollection);
     }
 
     private HttpResponseError mapLogsQueryError(ErrorInfo errors) {
         if (errors != null) {
-            List<HttpResponseError> errorDetails = Collections.emptyList();
-            if (errors.getDetails() != null) {
-                errorDetails = errors.getDetails()
-                        .stream()
-                        .map(errorDetail -> new HttpResponseError(errorDetail.getCode(), errorDetail.getMessage())
-                                .setTarget(errorDetail.getTarget()))
-                        .collect(Collectors.toList());
-            }
-
             ErrorInfo innerError = errors.getInnererror();
             ErrorInfo currentError = errors.getInnererror();
             while (currentError != null) {
@@ -268,7 +257,7 @@ public final class LogsQueryAsyncClient {
             if (errors.getCode() != null && innerError != null && errors.getCode().equals(innerError.getCode())) {
                 code = innerError.getCode();
             }
-            return new HttpResponseError(code, errors.getMessage()).setErrorDetails(errorDetails);
+            return new HttpResponseError(code, errors.getMessage());
         }
 
         return null;

@@ -20,11 +20,11 @@ public final class CosmosBatchOperationResult {
 
     private final String eTag;
     private final double requestCharge;
-    private final ObjectNode resourceObject;
     private final int statusCode;
     private final Duration retryAfter;
     private final int subStatusCode;
     private final CosmosItemOperation cosmosItemOperation;
+    private ObjectNode resourceObject;
 
     /**
      * Initializes a new instance of the {@link CosmosBatchOperationResult} class.
@@ -157,6 +157,12 @@ public final class CosmosBatchOperationResult {
                 @Override
                 public ObjectNode getResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult) {
                     return cosmosBatchOperationResult.getResourceObject();
+                }
+
+                @Override
+                public void setResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult,
+                                              ObjectNode objectNode) {
+                    cosmosBatchOperationResult.resourceObject = objectNode;
                 }
             });
     }

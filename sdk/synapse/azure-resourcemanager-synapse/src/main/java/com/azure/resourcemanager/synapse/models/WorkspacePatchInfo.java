@@ -5,22 +5,23 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.WorkspacePatchProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Workspace patch details. */
-@JsonFlatten
 @Fluent
-public class WorkspacePatchInfo {
+public final class WorkspacePatchInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePatchInfo.class);
 
     /*
      * Resource tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -30,46 +31,10 @@ public class WorkspacePatchInfo {
     private ManagedIdentity identity;
 
     /*
-     * SQL administrator login password
+     * Workspace patch properties
      */
-    @JsonProperty(value = "properties.sqlAdministratorLoginPassword")
-    private String sqlAdministratorLoginPassword;
-
-    /*
-     * Managed Virtual Network Settings
-     */
-    @JsonProperty(value = "properties.managedVirtualNetworkSettings")
-    private ManagedVirtualNetworkSettings managedVirtualNetworkSettings;
-
-    /*
-     * Git integration settings
-     */
-    @JsonProperty(value = "properties.workspaceRepositoryConfiguration")
-    private WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration;
-
-    /*
-     * Purview Configuration
-     */
-    @JsonProperty(value = "properties.purviewConfiguration")
-    private PurviewConfiguration purviewConfiguration;
-
-    /*
-     * Resource provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The encryption details of the workspace
-     */
-    @JsonProperty(value = "properties.encryption")
-    private EncryptionDetails encryption;
-
-    /*
-     * Enable or Disable pubic network access to workspace
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private WorkspacePublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "properties")
+    private WorkspacePatchProperties innerProperties;
 
     /**
      * Get the tags property: Resource tags.
@@ -112,12 +77,21 @@ public class WorkspacePatchInfo {
     }
 
     /**
+     * Get the innerProperties property: Workspace patch properties.
+     *
+     * @return the innerProperties value.
+     */
+    private WorkspacePatchProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
      *
      * @return the sqlAdministratorLoginPassword value.
      */
     public String sqlAdministratorLoginPassword() {
-        return this.sqlAdministratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().sqlAdministratorLoginPassword();
     }
 
     /**
@@ -127,7 +101,10 @@ public class WorkspacePatchInfo {
      * @return the WorkspacePatchInfo object itself.
      */
     public WorkspacePatchInfo withSqlAdministratorLoginPassword(String sqlAdministratorLoginPassword) {
-        this.sqlAdministratorLoginPassword = sqlAdministratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePatchProperties();
+        }
+        this.innerProperties().withSqlAdministratorLoginPassword(sqlAdministratorLoginPassword);
         return this;
     }
 
@@ -137,7 +114,7 @@ public class WorkspacePatchInfo {
      * @return the managedVirtualNetworkSettings value.
      */
     public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
-        return this.managedVirtualNetworkSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().managedVirtualNetworkSettings();
     }
 
     /**
@@ -148,7 +125,10 @@ public class WorkspacePatchInfo {
      */
     public WorkspacePatchInfo withManagedVirtualNetworkSettings(
         ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
-        this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePatchProperties();
+        }
+        this.innerProperties().withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
         return this;
     }
 
@@ -158,7 +138,7 @@ public class WorkspacePatchInfo {
      * @return the workspaceRepositoryConfiguration value.
      */
     public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
-        return this.workspaceRepositoryConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceRepositoryConfiguration();
     }
 
     /**
@@ -169,7 +149,10 @@ public class WorkspacePatchInfo {
      */
     public WorkspacePatchInfo withWorkspaceRepositoryConfiguration(
         WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
-        this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePatchProperties();
+        }
+        this.innerProperties().withWorkspaceRepositoryConfiguration(workspaceRepositoryConfiguration);
         return this;
     }
 
@@ -179,7 +162,7 @@ public class WorkspacePatchInfo {
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration purviewConfiguration() {
-        return this.purviewConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().purviewConfiguration();
     }
 
     /**
@@ -189,7 +172,10 @@ public class WorkspacePatchInfo {
      * @return the WorkspacePatchInfo object itself.
      */
     public WorkspacePatchInfo withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
-        this.purviewConfiguration = purviewConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePatchProperties();
+        }
+        this.innerProperties().withPurviewConfiguration(purviewConfiguration);
         return this;
     }
 
@@ -199,7 +185,7 @@ public class WorkspacePatchInfo {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -208,7 +194,7 @@ public class WorkspacePatchInfo {
      * @return the encryption value.
      */
     public EncryptionDetails encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -218,27 +204,33 @@ public class WorkspacePatchInfo {
      * @return the WorkspacePatchInfo object itself.
      */
     public WorkspacePatchInfo withEncryption(EncryptionDetails encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePatchProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
     /**
-     * Get the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @return the publicNetworkAccess value.
      */
     public WorkspacePublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
-     * Set the publicNetworkAccess property: Enable or Disable pubic network access to workspace.
+     * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspacePatchInfo object itself.
      */
     public WorkspacePatchInfo withPublicNetworkAccess(WorkspacePublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePatchProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -251,17 +243,8 @@ public class WorkspacePatchInfo {
         if (identity() != null) {
             identity().validate();
         }
-        if (managedVirtualNetworkSettings() != null) {
-            managedVirtualNetworkSettings().validate();
-        }
-        if (workspaceRepositoryConfiguration() != null) {
-            workspaceRepositoryConfiguration().validate();
-        }
-        if (purviewConfiguration() != null) {
-            purviewConfiguration().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
