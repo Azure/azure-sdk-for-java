@@ -73,7 +73,7 @@ public final class CallConnection {
     public Response<PlayAudioResult> playAudioWithResponse(
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        final Context context) {
+        Context context) {
         return callConnectionAsync
             .playAudioWithResponseInternal(audioFileUri, playAudioOptions, context)
             .block();
@@ -99,7 +99,7 @@ public final class CallConnection {
      * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangupWithResponse(final Context context) {
+    public Response<Void> hangupWithResponse(Context context) {
         return callConnectionAsync.hangupWithResponse(context).block();
     }
 
@@ -130,7 +130,7 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
         String operationContext,
-        final Context context) {
+        Context context) {
         return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
     }
 
@@ -170,7 +170,7 @@ public final class CallConnection {
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
-        final Context context) {
+        Context context) {
         return callConnectionAsync
             .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
     }
@@ -197,7 +197,7 @@ public final class CallConnection {
      * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String participantId, final Context context) {
+    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
         return callConnectionAsync.removeParticipantWithResponse(participantId, context).block();
     }
 
@@ -223,7 +223,7 @@ public final class CallConnection {
      * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantByIdWithResponse(CommunicationIdentifier participant, final Context context) {
+    public Response<Void> removeParticipantByIdWithResponse(CommunicationIdentifier participant, Context context) {
         return callConnectionAsync.removeParticipantByIdWithResponse(participant, context).block();
     }
 
@@ -252,7 +252,7 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, final Context context) {
+    public Response<Void> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, Context context) {
         return callConnectionAsync.transferToParticipantWithResponse(targetParticipant, userToUserInformation, context).block();
     }
 
@@ -277,7 +277,7 @@ public final class CallConnection {
      * @return Response for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> getWithResponse(final Context context) {
+    public Response<CallConnectionProperties> getWithResponse(Context context) {
         return callConnectionAsync.getWithResponse(context).block();
     }
 
@@ -302,7 +302,7 @@ public final class CallConnection {
      * @return Response for a successful get participants request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<CallParticipant>> getParticipantsWithResponse(final Context context) {
+    public Response<List<CallParticipant>> getParticipantsWithResponse(Context context) {
         return callConnectionAsync.getParticipantsWithResponse(context).block();
     }
 
@@ -329,7 +329,7 @@ public final class CallConnection {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallParticipant> getParticipantWithResponse(String participantId, final Context context) {
+    public Response<CallParticipant> getParticipantWithResponse(String participantId, Context context) {
         return callConnectionAsync.getParticipantWithResponse(participantId, context).block();
     }
 
@@ -356,7 +356,7 @@ public final class CallConnection {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<CallParticipant>> getParticipantByIdWithResponse(CommunicationIdentifier participant, final Context context) {
+    public Response<List<CallParticipant>> getParticipantByIdWithResponse(CommunicationIdentifier participant, Context context) {
         return callConnectionAsync.getParticipantByIdWithResponse(participant, context).block();
     }
 
@@ -383,7 +383,7 @@ public final class CallConnection {
      * @return Response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(String participantId, final Context context) {  
+    public Response<StartHoldMusicResult> startHoldMusicWithResponse(String participantId, Context context) {  
         return callConnectionAsync.startHoldMusicWithResponse(participantId, context).block();
     }
 
@@ -416,7 +416,7 @@ public final class CallConnection {
      * @return Response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(String participantId, String audioFileUri, String audioFileId, String callbackUri, final Context context) {  
+    public Response<StartHoldMusicResult> startHoldMusicWithResponse(String participantId, String audioFileUri, String audioFileId, String callbackUri, Context context) {  
         return callConnectionAsync.startHoldMusicWithResponse(participantId, audioFileUri, audioFileId, callbackUri, context).block();
     }
 
@@ -443,7 +443,7 @@ public final class CallConnection {
      * @return Response payload for stop hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(String participantId, final Context context) {  
+    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(String participantId, Context context) {  
         return callConnectionAsync.stopHoldMusicWithResponse(participantId, context).block();
     }
 
@@ -468,7 +468,7 @@ public final class CallConnection {
      * @return Response for a successful keep alive request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> keepAliveWithResponse(final Context context) {
+    public Response<Void> keepAliveWithResponse(Context context) {
         return callConnectionAsync.keepAliveWithResponse(context).block();
     }
 
@@ -490,9 +490,9 @@ public final class CallConnection {
         String participantId,
         String audioFileUri,
         PlayAudioOptions playAudioOptions,        
-        final Context context
+        Context context
     ) {
-        return callConnectionAsync.PlayAudioToParticipant(participantId, audioFileUri, playAudioOptions, context).block();
+        return callConnectionAsync.PlayAudioToParticipantInternal(participantId, audioFileUri, playAudioOptions, context).block();
     }
 
     /**
@@ -513,9 +513,9 @@ public final class CallConnection {
         String participantId,
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        final Context context
+        Context context
     ) {
-        return callConnectionAsync.PlayAudioToParticipantWithResponse(participantId, audioFileUri, playAudioOptions, context).block();
+        return callConnectionAsync.PlayAudioToParticipantWithResponseInternal(participantId, audioFileUri, playAudioOptions, context).block();
     }
 
     /**
@@ -532,9 +532,9 @@ public final class CallConnection {
     public Void CancelParticipantMediaOperation(
         String participantId,
         String mediaOperationId,
-        final Context context
+        Context context
     ) {
-        return callConnectionAsync.CancelParticipantMediaOperation(participantId, mediaOperationId, context).block();
+        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participantId, mediaOperationId, context).block().getValue();
     }
 
     /**
@@ -551,7 +551,7 @@ public final class CallConnection {
     public Response<Void> CancelParticipantMediaOperationWithResponse(
         String participantId,
         String mediaOperationId,
-        final Context context) {
-        return callConnectionAsync.CancelParticipantMediaOperationWithResponse(participantId, mediaOperationId, context).block();
+        Context context) {
+        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participantId, mediaOperationId, context).block();
     }
 }

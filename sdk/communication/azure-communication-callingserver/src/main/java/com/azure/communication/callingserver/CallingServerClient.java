@@ -22,7 +22,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * Synchronous client that supports calling server operations.
  *
@@ -78,7 +77,7 @@ public final class CallingServerClient {
         CommunicationIdentifier source,
         List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions,
-        final Context context) {
+        Context context) {
         return callingServerAsyncClient
             .createCallConnectionWithResponseInternal(source, targets, createCallOptions, context).block();
     }
@@ -117,7 +116,7 @@ public final class CallingServerClient {
         String serverCallId,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions,
-        final Context context) {
+        Context context) {
         return callingServerAsyncClient.joinWithResponseInternal(serverCallId, source, joinCallOptions, context).block();
     }
 
@@ -151,7 +150,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceEndpoint, OutputStream destinationStream, HttpRange httpRange) {
-        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, null);
+        downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, Context.NONE);
     }
 
     /**
@@ -168,7 +167,7 @@ public final class CallingServerClient {
     public Response<Void> downloadToWithResponse(String sourceEndpoint,
                                                  OutputStream destinationStream,
                                                  HttpRange httpRange,
-                                                 final Context context) {
+                                                 Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         return callingServerAsyncClient
@@ -190,7 +189,7 @@ public final class CallingServerClient {
                            Path destinationPath,
                            ParallelDownloadOptions parallelDownloadOptions,
                            boolean overwrite) {
-        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, null);
+        downloadToWithResponse(sourceEndpoint, destinationPath, parallelDownloadOptions, overwrite, Context.NONE);
     }
 
     /**
@@ -209,7 +208,7 @@ public final class CallingServerClient {
                                                  Path destinationPath,
                                                  ParallelDownloadOptions parallelDownloadOptions,
                                                  boolean overwrite,
-                                                 final Context context) {
+                                                 Context context) {
         Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
@@ -230,7 +229,7 @@ public final class CallingServerClient {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String serverCallId, String audioFileUri, PlayAudioOptions playAudioOptions, final Context context) {
+    public PlayAudioResult playAudio(String serverCallId, String audioFileUri, PlayAudioOptions playAudioOptions, Context context) {
         return callingServerAsyncClient.playAudioInternal(serverCallId, audioFileUri, playAudioOptions, context).block();
     }
 
@@ -252,7 +251,7 @@ public final class CallingServerClient {
         String serverCallId,
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        final Context context) {
+        Context context) {
         return callingServerAsyncClient
             .playAudioWithResponseInternal(serverCallId, audioFileUri, playAudioOptions, context)
             .block();
@@ -270,7 +269,7 @@ public final class CallingServerClient {
      * @return Response containing the http response information 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelParticipantMediaOperation(String serverCallId, String participantId, String mediaOperationId, final Context context) {
+    public void cancelParticipantMediaOperation(String serverCallId, String participantId, String mediaOperationId, Context context) {
         cancelParticipantMediaOperationWithResponse(serverCallId, participantId, mediaOperationId, context);
     }
 
@@ -281,7 +280,6 @@ public final class CallingServerClient {
      * @param participantId The participant id.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @param context A {@link Context} representing the request context.
-     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response containing the http response information 
@@ -291,9 +289,9 @@ public final class CallingServerClient {
         String serverCallId,
         String participantId,
         String mediaOperationId,
-        final Context context) {
+        Context context) {
         return callingServerAsyncClient
-            .cancelParticipantMediaOperationWithResponse(serverCallId, participantId, mediaOperationId, context).block();
+            .cancelParticipantMediaOperationWithResponseInternal(serverCallId, participantId, mediaOperationId, context).block();
     }
     
     /**
@@ -311,7 +309,7 @@ public final class CallingServerClient {
      * @return Response payload for play audio to participant operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudioToParticipant(String serverCallId, String participantId, String audioFileUri, PlayAudioOptions playAudioOptions, final Context context) {
+    public PlayAudioResult playAudioToParticipant(String serverCallId, String participantId, String audioFileUri, PlayAudioOptions playAudioOptions, Context context) {
         return callingServerAsyncClient.playAudioToParticipantInternal(serverCallId, participantId, audioFileUri, playAudioOptions, context).block();
     }
 
@@ -335,7 +333,7 @@ public final class CallingServerClient {
         String participantId,
         String audioFileUri,
         PlayAudioOptions playAudioOptions,
-        final Context context) {
+        Context context) {
         return callingServerAsyncClient
             .playAudioToParticipantWithResponseInternal(serverCallId, participantId, audioFileUri, playAudioOptions, context)
             .block();
