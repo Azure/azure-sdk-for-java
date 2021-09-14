@@ -208,7 +208,7 @@ public class IdentityClient {
                 return Mono.error(logger.logExceptionAsError(
                     new IllegalArgumentException("Must provide client secret or client certificate path."
                         +  " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                        + "https://aka.ms/azure-identity-java-azure-service-principal-authentication-troubleshoot")));
+                        + "https://aka.ms/azsdk/java/identity/serviceprincipalauthentication/troubleshoot")));
             }
 
             ConfidentialClientApplication.Builder applicationBuilder =
@@ -423,7 +423,7 @@ public class IdentityClient {
             } else {
                 throw logger.logExceptionAsError(new IllegalStateException("A Safe Working directory could not be"
                     + " found to execute CLI command from. To mitigate this issue, please refer to the troubleshooting "
-                    + " guidelines here at https://aka.ms/azure-identity-java--azure-cli-credential-troubleshoot"));
+                    + " guidelines here at https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
             }
             builder.redirectErrorStream(true);
 
@@ -444,7 +444,7 @@ public class IdentityClient {
                         new CredentialUnavailableException(
                             "AzureCliCredential authentication unavailable. Azure CLI not installed."
                                 + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                                + "https://aka.ms/azure-identity-java--azure-cli-credential-troubleshoot"));
+                                + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
                 }
                 output.append(line);
             }
@@ -461,7 +461,7 @@ public class IdentityClient {
                                 "AzureCliCredential authentication unavailable."
                                     + " Please run 'az login' to set up account. To further mitigate this"
                                     + " issue, please refer to the troubleshooting guidelines here at "
-                                    + "https://aka.ms/azure-identity-java--azure-cli-credential-troubleshoot"));
+                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
                     }
                     throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
@@ -527,7 +527,7 @@ public class IdentityClient {
                         return Mono.error(new ClientAuthenticationException(
                             "Azure Powershell authentication failed. Error Details: " + t.getMessage()
                                 + ". To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                                + "https://aka.ms/azure-identity-java--azure-powershell-credential-troubleshoot",
+                                + "https://aka.ms/azsdk/java/identity/powershellcredential/troubleshoot",
                             null, t));
                     }
                     exceptions.add((CredentialUnavailableException) t);
@@ -544,7 +544,7 @@ public class IdentityClient {
                         + "\r\n" + "Azure Powershell authentication failed using powershell-core(powershell)"
                         + " with following error: " + last.getMessage()
                         + (z == 0 ?  ". To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                        + "https://aka.ms/azure-identity-java--azure-powershell-credential-troubleshoot" : ""),
+                        + "https://aka.ms/azsdk/java/identity/powershellcredential/troubleshoot" : ""),
                         last.getCause());
                 }
                 return Mono.error(last);
@@ -559,7 +559,6 @@ public class IdentityClient {
                 logger.verbose("Azure Powershell Authentication = > Checking if Az.Accounts module is installed or "
                     + "not in Azure Powershell by executing this command `%s`. This module is required to execute Azure"
                     + " Powershell Credential.", azAccountsCommand);
-                String
                 return manager.runCommand(azAccountsCommand)
                     .flatMap(output -> {
                         if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
@@ -652,7 +651,7 @@ public class IdentityClient {
                }
                )).onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with username and "
                 + "password. To mitigate this issue, please refer to the troubleshooting guidelines "
-                + "here at https://aka.ms/azure-identity-java--azure-username-password-credential-troubleshoot",
+                + "here at https://aka.ms/azsdk/net/identity/usernamepasswordcredential/troubleshoot",
                 null, t)).map(MsalToken::new);
     }
 
@@ -768,7 +767,7 @@ public class IdentityClient {
             return Mono.error(new CredentialUnavailableException("VsCodeCredential  "
                 + "authentication unavailable. ADFS tenant/authorities are not supported. "
                 + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                + "https://aka.ms/azure-identity-java-azure-vscode-credential-troubleshoot"));
+                + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot"));
         }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
@@ -796,7 +795,7 @@ public class IdentityClient {
                         return Mono.error(new CredentialUnavailableException("Failed to acquire token with"
                             + " VS code credential."
                             + " To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                            + "https://aka.ms/azure-identity-java-azure-vscode-credential-troubleshoot", t));
+                            + "https://aka.ms/azsdk/net/identity/vscodecredential/troubleshoot", t));
                     }
                     return Mono.error(new ClientAuthenticationException("Failed to acquire token with"
                         + " VS code credential", null, t));
