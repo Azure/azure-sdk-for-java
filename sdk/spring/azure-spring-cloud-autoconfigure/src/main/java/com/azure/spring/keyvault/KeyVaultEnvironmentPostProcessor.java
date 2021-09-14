@@ -12,6 +12,7 @@ import com.azure.spring.core.properties.AzurePropertiesUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigDataEnvironmentPostProcessor;
+import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
@@ -53,6 +54,10 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         final AzureKeyVaultSecretProperties keyVaultSecretProperties = loadProperties(Binder.get(environment));
 
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
+            if (keyVaultSecretProperties.getPropertySources().isEmpty()) {
+                keyVaultSecretProperties.getPropertySources().add(new AzureKeyVaultPropertySourceProperties());
+            }
+
             for (AzureKeyVaultPropertySourceProperties propertySource : keyVaultSecretProperties.getPropertySources()) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
@@ -63,11 +68,23 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         }
     }
 
+    // TODO (xiada) better way to implement this
     private AzureKeyVaultPropertySourceProperties getMergeProperties(AzureKeyVaultSecretProperties secretProperties,
                                                                      AzureKeyVaultPropertySourceProperties propertySource) {
         AzureKeyVaultPropertySourceProperties mergedResult = new AzureKeyVaultPropertySourceProperties();
         AzurePropertiesUtils.copyAzureProperties(secretProperties, mergedResult);
         AzurePropertiesUtils.copyAzurePropertiesIgnoreNull(propertySource, mergedResult);
+
+        mergedResult.setVaultUrl(secretProperties.getVaultUrl());
+        mergedResult.setServiceVersion(secretProperties.getServiceVersion());
+        mergedResult.setName(propertySource.getName());
+        mergedResult.setCaseSensitive(propertySource.getCaseSensitive());
+        mergedResult.setSecretKeys(propertySource.getSecretKeys());
+        mergedResult.setRefreshInterval(propertySource.getRefreshInterval());
+
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        propertyMapper.from(propertySource.getVaultUrl()).to(mergedResult::setVaultUrl);
+        propertyMapper.from(propertySource.getServiceVersion()).to(mergedResult::setServiceVersion);
 
         return mergedResult;
     }
@@ -140,7 +157,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return true if the key vault is enabled, false otherwise.
      */
     private boolean isKeyVaultPropertySourceEnabled(AzureKeyVaultSecretProperties properties) {
-        return isKeyVaultClientAvailable() && !properties.getPropertySources().isEmpty();
+        return isKeyVaultClientAvailable()
+                   && (Boolean.TRUE.equals(properties.getPropertySourceEnabled())
+                           || !properties.getPropertySources().isEmpty());
     }
 
     private boolean isKeyVaultClientAvailable() {

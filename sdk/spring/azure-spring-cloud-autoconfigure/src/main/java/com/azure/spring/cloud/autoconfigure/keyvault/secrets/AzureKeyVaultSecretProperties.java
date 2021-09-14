@@ -19,6 +19,7 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
     private SecretServiceVersion serviceVersion;
 
     private final List<AzureKeyVaultPropertySourceProperties> propertySources = new ArrayList<>();
+    private Boolean propertySourceEnabled;
 
     public SecretServiceVersion getServiceVersion() {
         return serviceVersion;
@@ -32,5 +33,11 @@ public class AzureKeyVaultSecretProperties extends AzureKeyVaultProperties {
         return propertySources;
     }
 
+    public Boolean getPropertySourceEnabled() {
+        return propertySourceEnabled;
+    }
 
+    public void setPropertySourceEnabled(Boolean propertySourceEnabled) {
+        this.propertySourceEnabled = propertySourceEnabled;
+    }
 }

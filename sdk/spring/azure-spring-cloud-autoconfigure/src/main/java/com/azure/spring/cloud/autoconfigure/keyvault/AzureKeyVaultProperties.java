@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.keyvault;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureHttpConfigurationProperties;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Common properties for Azure Key Vault
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 public class AzureKeyVaultProperties extends AzureHttpConfigurationProperties {
 
     // TODO (xiada): the default vault url
-    @Value("${:}")
     private String vaultUrl;
 
     public String getVaultUrl() {

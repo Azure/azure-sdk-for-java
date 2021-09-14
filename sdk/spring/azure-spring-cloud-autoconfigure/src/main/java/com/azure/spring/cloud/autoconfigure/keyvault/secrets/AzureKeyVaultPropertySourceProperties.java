@@ -12,16 +12,16 @@ import java.util.List;
 import static com.azure.spring.keyvault.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 
 /**
- * Configurations to set when Azure Key Vault is used as an external property source.  
+ * Configurations to set when Azure Key Vault is used as an external property source.
  */
 public class AzureKeyVaultPropertySourceProperties extends AzureHttpConfigurationProperties {
 
     public static final Duration DEFAULT_REFRESH_INTERVAL = Duration.ofMinutes(30);
 
-    private String name = DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
     private String vaultUrl;
     private SecretServiceVersion serviceVersion;
 
+    private String name = DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
     /**
      * Defines the constant for the property that enables/disables case-sensitive keys.
      */

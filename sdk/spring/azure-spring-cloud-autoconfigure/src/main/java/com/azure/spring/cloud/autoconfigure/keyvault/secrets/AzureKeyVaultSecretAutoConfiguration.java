@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Bean;
  * Auto-configuration for a {@link SecretClientBuilder} and Azure Key Vault secret clients.
  */
 @ConditionalOnClass(SecretClientBuilder.class)
-@ConditionalOnProperty(prefix = AzureKeyVaultSecretProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnProperty("spring.cloud.azure.keyvault.secret.vault-url")
 @ConditionalOnBean(AzureConfigurationProperties.class)
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
@@ -28,8 +28,8 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
         super(azureProperties);
     }
 
-    @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
     @Bean
+    @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
     public AzureKeyVaultSecretProperties keyVaultSecretProperties() {
         return loadProperties(this.azureProperties, new AzureKeyVaultSecretProperties());
     }
