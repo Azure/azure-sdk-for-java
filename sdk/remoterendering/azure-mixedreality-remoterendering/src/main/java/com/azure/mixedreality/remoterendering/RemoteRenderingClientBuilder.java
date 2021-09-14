@@ -80,7 +80,6 @@ public final class RemoteRenderingClientBuilder {
             // generated code uses deprecated httpLogOptions.getApplicationId(), so we set that here.
             if (httpLogOptions == null) {
                 httpLogOptions = new HttpLogOptions();
-                httpLogOptions.addAllowedHeaderName("MS-CV");
                 builder.httpLogOptions(httpLogOptions);
             }
             httpLogOptions.setApplicationId(clientOptions.getApplicationId());
