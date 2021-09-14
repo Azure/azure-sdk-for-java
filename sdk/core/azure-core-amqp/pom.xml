@@ -152,23 +152,14 @@
       <activation>
         <jdk>[11,)</jdk>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
+      <properties>
+        <javaModulesSurefireArgLine>
+          --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
+          --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
 
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+          --add-reads com.azure.core.amqp=ALL-UNNAMED
+        </javaModulesSurefireArgLine>
+      </properties>
     </profile>
   </profiles>
 </project>
