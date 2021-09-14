@@ -84,6 +84,13 @@ public interface App {
     String template();
 
     /**
+     * Gets the state property: The current state of the application.
+     *
+     * @return the state value.
+     */
+    AppState state();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -233,11 +240,7 @@ public interface App {
 
     /** The template for App update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithSubdomain,
-            UpdateStages.WithTemplate {
+        extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithDisplayName, UpdateStages.WithSubdomain {
         /**
          * Executes the update request.
          *
@@ -294,20 +297,6 @@ public interface App {
              * @return the next definition stage.
              */
             Update withSubdomain(String subdomain);
-        }
-        /** The stage of the App update allowing to specify template. */
-        interface WithTemplate {
-            /**
-             * Specifies the template property: The ID of the application template, which is a blueprint that defines
-             * the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank
-             * blueprint and allows the application to be defined from scratch..
-             *
-             * @param template The ID of the application template, which is a blueprint that defines the characteristics
-             *     and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows
-             *     the application to be defined from scratch.
-             * @return the next definition stage.
-             */
-            Update withTemplate(String template);
         }
     }
     /**

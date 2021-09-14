@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
+import com.azure.resourcemanager.iotcentral.models.AppState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -51,6 +52,12 @@ public class AppInner extends Resource {
      */
     @JsonProperty(value = "properties.template")
     private String template;
+
+    /*
+     * The current state of the application.
+     */
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private AppState state;
 
     /**
      * Get the sku property: A valid instance SKU.
@@ -143,6 +150,15 @@ public class AppInner extends Resource {
     public AppInner withTemplate(String template) {
         this.template = template;
         return this;
+    }
+
+    /**
+     * Get the state property: The current state of the application.
+     *
+     * @return the state value.
+     */
+    public AppState state() {
+        return this.state;
     }
 
     /** {@inheritDoc} */

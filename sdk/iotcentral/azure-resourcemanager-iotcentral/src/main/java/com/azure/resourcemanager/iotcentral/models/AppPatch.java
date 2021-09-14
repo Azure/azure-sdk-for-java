@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class AppPatch {
      * Instance tags
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -55,6 +57,12 @@ public class AppPatch {
      */
     @JsonProperty(value = "properties.template")
     private String template;
+
+    /*
+     * The current state of the application.
+     */
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private AppState state;
 
     /**
      * Get the tags property: Instance tags.
@@ -167,6 +175,15 @@ public class AppPatch {
     public AppPatch withTemplate(String template) {
         this.template = template;
         return this;
+    }
+
+    /**
+     * Get the state property: The current state of the application.
+     *
+     * @return the state value.
+     */
+    public AppState state() {
+        return this.state;
     }
 
     /**

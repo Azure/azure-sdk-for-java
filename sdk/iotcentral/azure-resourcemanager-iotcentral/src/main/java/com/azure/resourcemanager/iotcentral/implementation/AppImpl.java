@@ -10,6 +10,7 @@ import com.azure.resourcemanager.iotcentral.fluent.models.AppInner;
 import com.azure.resourcemanager.iotcentral.models.App;
 import com.azure.resourcemanager.iotcentral.models.AppPatch;
 import com.azure.resourcemanager.iotcentral.models.AppSkuInfo;
+import com.azure.resourcemanager.iotcentral.models.AppState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -61,6 +62,10 @@ public final class AppImpl implements App, App.Definition, App.Update {
 
     public String template() {
         return this.innerModel().template();
+    }
+
+    public AppState state() {
+        return this.innerModel().state();
     }
 
     public Region region() {
@@ -212,13 +217,8 @@ public final class AppImpl implements App, App.Definition, App.Update {
     }
 
     public AppImpl withTemplate(String template) {
-        if (isInCreateMode()) {
-            this.innerModel().withTemplate(template);
-            return this;
-        } else {
-            this.updateAppPatch.withTemplate(template);
-            return this;
-        }
+        this.innerModel().withTemplate(template);
+        return this;
     }
 
     private boolean isInCreateMode() {
