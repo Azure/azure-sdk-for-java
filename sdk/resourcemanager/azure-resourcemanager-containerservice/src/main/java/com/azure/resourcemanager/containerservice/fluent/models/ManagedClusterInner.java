@@ -24,6 +24,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -758,6 +759,31 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
+     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
+     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

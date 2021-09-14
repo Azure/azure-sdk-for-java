@@ -193,6 +193,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -200,7 +201,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
                     service
                         .listByWorkspace(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -251,12 +252,13 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByWorkspace(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -384,6 +386,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         } else {
             ipFirewallRuleInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -391,7 +394,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -450,12 +453,13 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         } else {
             ipFirewallRuleInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -689,6 +693,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -696,7 +701,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -743,12 +748,13 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -942,6 +948,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -949,7 +956,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -996,12 +1003,13 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         if (ruleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ruleName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1106,6 +1114,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         } else {
             request.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1113,7 +1122,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
                     service
                         .replaceAll(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1162,12 +1171,13 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
         } else {
             request.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .replaceAll(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

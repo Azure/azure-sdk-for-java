@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of SQL pools. */
+/** SQL pool collection List of SQL pools. */
 @Fluent
 public final class SqlPoolInfoListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolInfoListResult.class);
