@@ -371,7 +371,6 @@ public class CosmosEncryptionAsyncContainer {
                                 if (item.isValueNode()) {
                                     return (T)item;
                                 } else {
-//                                    return getItemDeserializer().parseFrom(classType, EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), item));
                                     return getItemDeserializer().convert(classType, (ObjectNode) item);
                                 }
                             }
