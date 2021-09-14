@@ -8,7 +8,7 @@ To build the SDK for Communication Phone Numbers library, simply Install AutoRes
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
