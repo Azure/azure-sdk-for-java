@@ -16,6 +16,7 @@
 #                             In case the argument is not provided the branch name is release/{ArtifactName}_{ReleaseVersion}.
 #                             The script pushes the branch to remote URL https://github.com/Azure/azure-sdk-for-java.git
 # 6. PushToRemote           - Whether the commited changes should be pushed to the remote branch or not. This is not a required parameter. The default value is false.
+# 7. SkipCodeQuality        - Whether codequality should be skipped or not. The default value is false.
 #
 # Example:  .\eng\scripts\Generate-Patch.ps1 -ArtifactName azure-mixedreality-remoterendering -ServiceDirectory remoterendering -ReleaseVersion 1.0.0 -PatchVersion 1.0.1
 # This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
@@ -26,7 +27,8 @@ param(
   [Parameter(Mandatory=$true)][string]$ReleaseVersion,
   [Parameter(Mandatory=$false)][string]$PatchVersion,
   [Parameter(Mandatory=$false)][string]$BranchName,
-  [Parameter(Mandatory=$false)][boolean]$PushToRemote
+  [Parameter(Mandatory=$false)][boolean]$PushToRemote,
+  [Parameter(Mandatory=$false)][boolean]$SkipCodeQuality
 )
 
 function TestPathThrow($Path) {
@@ -111,7 +113,7 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
   Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
 }
 
-function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
+function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName, $SkipCodeQuality) {
   $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
@@ -151,24 +153,59 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   if(Test-Path $TestResourcesFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $TestResourcesFilePath
   }
+  
+  if($SkipCodeQuality) {
+    ## We need to update the POM file to have the skip coverage flags.
+    $pomFilePath = Join-Path $ArtifactDirPath "pom.xml"
+    if(!(Test-Path $pomFilePath)) {
+      LogError "Could not find the pom file to update the skip code quality tags."
+      exit 1
+    }
 
-  if(Test-Path $CheckStyleSuppressionFilePath) {
-    $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
-  }
+    $pomFileContent = New-Object System.Xml.XmlDocument
+    $pomFileContent.PreserveWhitespace = $true
 
-  if(Test-Path $CheckStyleFilePath) {
-    $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleFilePath
-  }
+    $pomFileContent.Load($pomFilePath)
+    $projectNode = $pomFileContent.project
+    if(!$projectNode) {
+      LogError "Failed to log the elements"
+      exit 1
+    }
 
-  if(Test-Path $SpotBugsFilePath) {
-    $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
-  }
+    $propertiesNode = $projectNode.properties
+	$namespaces = $projectNode.NamespaceURI
+    $pomFileContent.PreserveWhitespace = $false
+    if(!$propertiesNode) {
+      $propertiesNode = $pomFileContent.CreateElement("properties", $namespaces)
+      $dependenciesNode = $projectNode.GetElementsByTagName("dependencies")
+      $orderedPropertiesTag = $pomFileContent.DocumentElement.InsertBefore($propertiesNode, $dependenciesNode[0])
+    }
+
+    $checkstyleNodeElement = $propertiesNode.AppendChild($pomFileContent.CreateElement("checkstyle.skip", $namespaces))
+    $checkstyleNodeValue = $checkstyleNodeElement.AppendChild($pomFileContent.CreateTextNode("true"))
+    $spotBugsNodeElement = $propertiesNode.AppendChild($pomFileContent.CreateElement("spotbugs.skip", $namespaces))
+    $spotBugsNodeValue = $spotBugsNodeElement.AppendChild($pomFileContent.CreateTextNode("true"))
+    $pomFileContent.Save($pomFilePath)
+  } else {
+    ## We are not skipping stylechecks
+    if(Test-Path $CheckStyleSuppressionFilePath) {
+      $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
+    }
+
+    if(Test-Path $CheckStyleFilePath) {
+      $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleFilePath
+    }
+
+    if(Test-Path $SpotBugsFilePath) {
+      $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
+    }
 
    ## Commit these changes.
-  $cmdOutput = git commit -a -m "Reset changes to the patch version."
-  if($LASTEXITCODE -ne 0) {
-    LogError "Could not commit the changes locally.Exiting..."
-    exit 1
+    $cmdOutput = git commit -a -m "Reset changes to the patch version."
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not commit the changes locally.Exiting..."
+      exit 1
+    }
   }
 }
 
@@ -225,15 +262,15 @@ if(!$BranchName) {
 
 try {
   ## Creating a new branch
-  $cmdOutput = git checkout -b $BranchName $RemoteName/main
+  $CmdOutput = git checkout $BranchName
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
+    LogError "Could not checkout branch $BranchName. Exiting..."
     exit 1
   }
   
   ## Hard reseting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
-  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
+  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName -SkipCodeQuality $SkipCodeQuality
   CreatePatchRelease -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -PatchVersion $PatchVersion -RepoRoot $RepoRoot
   $cmdOutput = git add $RepoRoot
   if($LASTEXITCODE -ne 0) {
