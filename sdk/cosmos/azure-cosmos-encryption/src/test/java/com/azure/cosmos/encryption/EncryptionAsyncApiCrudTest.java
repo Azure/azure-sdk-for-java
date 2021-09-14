@@ -24,6 +24,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -177,15 +178,16 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
 
         SqlQuerySpec querySpec1 = new SqlQuerySpec(query1);
-        CosmosPagedFlux<EncryptionPojo> feedResponseIterator1 =
-            cosmosEncryptionAsyncContainer.queryItems(querySpec1, cosmosQueryRequestOptions1, EncryptionPojo.class);
-        List<EncryptionPojo> feedResponse1 = feedResponseIterator1.byPage().blockFirst().getResults();
+        CosmosPagedFlux<JsonNode> feedResponseIterator1 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec1, cosmosQueryRequestOptions1, JsonNode.class);
+        List<JsonNode> feedResponse1 = feedResponseIterator1.byPage().blockFirst().getResults();
+        int timeStamp = feedResponse1.get(0).asInt();
         long endTime = Instant.now().getEpochSecond();
 
-        int timeStamp = 0;
-        for (Object pojo: feedResponse1) {
-            timeStamp = Integer.parseInt(pojo.toString());
-        }
+//        int timeStamp = 0;
+//        for (Object pojo: feedResponse1) {
+//            timeStamp = Integer.parseInt(pojo.toString());
+//        }
         assertThat(timeStamp).isGreaterThanOrEqualTo((int)startTime);
         assertThat(timeStamp).isLessThanOrEqualTo((int)endTime);
         assertThat(feedResponse1.size()).isEqualTo(1);
