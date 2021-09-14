@@ -156,12 +156,6 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-      - task: DownloadPipelineArtifact@2
-        condition: succeededOrFailed()
-        inputs:
-          artifactName: 'packages'
-          targetPath: $(Build.ArtifactStagingDirectory)
-
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
