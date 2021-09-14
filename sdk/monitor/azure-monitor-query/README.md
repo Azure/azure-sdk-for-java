@@ -74,6 +74,10 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
     .buildAsyncClient();
 ```
 
+### Execute the query
+
+For examples of Logs and Metrics queries, see the [Examples](#examples) section.
+
 ## Key concepts
 
 ### Logs query rate limits and throttling
