@@ -62,7 +62,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-file-datalake</artifactId>
-          <version>12.7.0</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+          <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
