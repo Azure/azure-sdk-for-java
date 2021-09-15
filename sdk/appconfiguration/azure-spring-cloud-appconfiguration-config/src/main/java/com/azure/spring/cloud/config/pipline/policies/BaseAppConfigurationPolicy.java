@@ -30,9 +30,14 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     static Boolean watchRequests = false;
 
-    static Boolean isDev = false;
+    final Boolean isDev;
 
-    static Boolean isKeyVaultConfigured = false;
+    final Boolean isKeyVaultConfigured;
+    
+    public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured) {
+        this.isDev = isDev;
+        this.isKeyVaultConfigured = isKeyVaultConfigured;
+    }
 
     /**
      * 
@@ -41,7 +46,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
      * @param request The http request that will be traced, used to check operation being run.
      * @return String of the value for the correlation-context header.
      */
-    private static String getTracingInfo(HttpRequest request) {
+    private String getTracingInfo(HttpRequest request) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && track.equalsIgnoreCase("false")) {
             return "";
@@ -64,7 +69,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     }
 
-    private static String getEnvInfo() {
+    private String getEnvInfo() {
         String envInfo = "";
 
         envInfo = buildEnvTracingInfo(envInfo, isDev, DEV_ENV_TRACING);
@@ -73,7 +78,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         return envInfo;
     }
 
-    private static String buildEnvTracingInfo(String envInfo, Boolean check, String checkString) {
+    private String buildEnvTracingInfo(String envInfo, Boolean check, String checkString) {
         if (check) {
             if (envInfo.length() > 0) {
                 envInfo += ",";
@@ -111,20 +116,6 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
             getTracingInfo(context.getHttpRequest()));
 
         return next.process();
-    }
-
-    /**
-     * @param isDev the isDev to set
-     */
-    public static void setIsDev(Boolean isDev) {
-        BaseAppConfigurationPolicy.isDev = isDev;
-    }
-
-    /**
-     * @param isKeyVaultConfigured the isKeyVaultConfigured to set
-     */
-    public static void setIsKeyVaultConfigured(Boolean isKeyVaultConfigured) {
-        BaseAppConfigurationPolicy.isKeyVaultConfigured = isKeyVaultConfigured;
     }
 
     /**

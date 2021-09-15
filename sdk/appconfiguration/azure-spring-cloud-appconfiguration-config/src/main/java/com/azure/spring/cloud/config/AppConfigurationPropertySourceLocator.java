@@ -28,7 +28,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
-import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects;
@@ -101,12 +100,6 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         }
 
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
-
-        profiles.stream().forEach(profile -> {
-            if (profile.equalsIgnoreCase("dev")) {
-                BaseAppConfigurationPolicy.setIsDev(true);
-            }
-        });
 
         CompositePropertySource composite = new CompositePropertySource(PROPERTY_SOURCE_NAME);
         Collections.reverse(configStores); // Last store has highest precedence

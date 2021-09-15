@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.ConfigStore;
@@ -92,14 +93,12 @@ public class AppConfigurationBootstrapConfiguration {
         if (!keyVaultCredentialProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
-            BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
             keyVaultCredentialProvider = keyVaultCredentialProviderOptional.get();
         }
 
         if (!keyVaultClientProviderOptional.isPresent()) {
             LOGGER.debug("No KeyVaultCredentialProvider found.");
         } else {
-            BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
             keyVaultClientProvider = keyVaultClientProviderOptional.get();
         }
 
@@ -124,15 +123,21 @@ public class AppConfigurationBootstrapConfiguration {
      * @param properties Client configurations for setting up connections to each config store.
      * @param appProperties Library configurations for setting up connections to each config store.
      * @param pool Basic connection info for connecting to each config store.
-     * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App Configuration.
+     * @param env used to check it if it is a dev environment
+     * @param tokenCredentialProviderOptional Optional provider for overriding Token Credentials for connecting to App
+     * Configuration.
      * @param clientProviderOptional Optional client for overriding Client Connections to App Configuration stores.
+     * @param keyVaultCredentialProviderOptional optional provider, used to see if Key Vault is configured
+     * @param keyVaultClientProviderOptional optional client, used to see if Key Vault is configured
      * @return ClientStore
      */
     @Bean
     public ClientStore buildClientStores(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, ConnectionPool pool,
+        AppConfigurationProviderProperties appProperties, ConnectionPool pool, Environment env,
         Optional<AppConfigurationCredentialProvider> tokenCredentialProviderOptional,
-        Optional<ConfigurationClientBuilderSetup> clientProviderOptional) {
+        Optional<ConfigurationClientBuilderSetup> clientProviderOptional,
+        Optional<KeyVaultCredentialProvider> keyVaultCredentialProviderOptional,
+        Optional<SecretClientBuilderSetup> keyVaultClientProviderOptional) {
 
         AppConfigurationCredentialProvider tokenCredentialProvider = null;
         ConfigurationClientBuilderSetup clientProvider = null;
@@ -149,6 +154,22 @@ public class AppConfigurationBootstrapConfiguration {
             clientProvider = clientProviderOptional.get();
         }
 
-        return new ClientStore(appProperties, pool, tokenCredentialProvider, clientProvider);
+        Boolean isDev = false;
+        Boolean isKeyVaultConfigured = false;
+
+        List<String> profiles = Arrays.asList(env.getActiveProfiles());
+
+        for (String profile : profiles) {
+            if (profile.equalsIgnoreCase("dev")) {
+                isDev = true;
+            }
+        }
+
+        if (keyVaultCredentialProviderOptional.isPresent() || keyVaultClientProviderOptional.isPresent()) {
+            isKeyVaultConfigured = true;
+        }
+
+        return new ClientStore(appProperties, pool, tokenCredentialProvider, clientProvider, isDev,
+            isKeyVaultConfigured);
     }
 }

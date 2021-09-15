@@ -43,15 +43,21 @@ public final class ClientStore {
     private final ConfigurationClientBuilderSetup clientProvider;
 
     private final HashMap<String, ConfigurationClient> clients;
+    
+    private final Boolean isDev;
+    
+    private final Boolean isKeyVaultConfigurated;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
-        ConfigurationClientBuilderSetup clientProvider) {
+        ConfigurationClientBuilderSetup clientProvider, Boolean isDev, Boolean isKeyVaultConfigured) {
         this.appProperties = appProperties;
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
         this.clients = new HashMap<String, ConfigurationClient>();
+        this.isDev = isDev;
+        this.isKeyVaultConfigurated = isKeyVaultConfigured;
     }
 
     private ConfigurationClient getClient(String store) throws IllegalArgumentException {
@@ -62,7 +68,7 @@ public final class ClientStore {
             Duration.ofMillis(800), Duration.ofSeconds(8));
         
         ConfigurationClientBuilder builder = getBuilder()
-            .addPolicy(new BaseAppConfigurationPolicy())
+            .addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigurated))
             .retryPolicy(new RetryPolicy(retryPolicy));
 
         TokenCredential tokenCredential = null;

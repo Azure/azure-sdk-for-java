@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.AppConfigurationConstants.CORRELATION_CONTEXT;
 import static com.azure.spring.cloud.config.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.config.AppConfigurationConstants.USER_AGENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_LABEL;
 import static com.azure.spring.cloud.config.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
@@ -19,11 +17,9 @@ import static com.azure.spring.cloud.config.TestConstants.TEST_VALUE_1;
 import static com.azure.spring.cloud.config.TestUtils.createItem;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,7 +27,6 @@ import static org.mockito.Mockito.when;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -52,16 +47,13 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
@@ -157,8 +149,6 @@ public class AppConfigurationPropertySourceLocatorTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        BaseAppConfigurationPolicy.setIsDev(false);
-        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(false);
         when(emptyEnvironment.getActiveProfiles()).thenReturn(new String[] {});
         when(devEnvironment.getActiveProfiles()).thenReturn(new String[] { PROFILE_NAME_1 });
         when(multiEnvironment.getActiveProfiles()).thenReturn(new String[] { PROFILE_NAME_1, PROFILE_NAME_2 });
@@ -248,7 +238,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(false);
     }
 
     @Test
@@ -274,7 +263,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(true);
     }
 
     @Test
@@ -299,7 +287,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(true);
     }
 
     @Test
@@ -333,8 +320,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-
-        checkIsDev(false);
     }
 
     @Test
@@ -364,7 +349,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(false);
     }
 
     @Test
@@ -390,7 +374,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/application/store1/\0" };
         assertEquals(1, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(false);
     }
 
     @Test
@@ -415,7 +398,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] expectedSourceNames = new String[] { "/application/store1/\0" };
         assertEquals(1, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(false);
     }
 
     @Test
@@ -430,7 +412,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
         verify(configStoreMock, times(1)).isFailFast();
-        checkIsDev(false);
     }
 
     @Test
@@ -448,7 +429,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         NullPointerException e = assertThrows(NullPointerException.class, () -> locator.locate(emptyEnvironment));
         assertNull(e.getMessage());
-        checkIsDev(false);
     }
 
     @Test
@@ -466,7 +446,6 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         // Once a store fails it should stop attempting to load
         verify(configStoreMock, times(1)).isFailFast();
-        checkIsDev(false);
     }
 
     @Test
@@ -493,7 +472,6 @@ public class AppConfigurationPropertySourceLocatorTest {
             "/application/" + TEST_STORE_NAME_1 + "/\0" };
         assertEquals(2, sources.size());
         assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(s -> s.getName()).toArray());
-        checkIsDev(false);
     }
 
     @Test
@@ -541,29 +519,5 @@ public class AppConfigurationPropertySourceLocatorTest {
         }
         assertTrue(threwException);
         verify(appPropertiesMock, times(1)).getPrekillTime();
-        checkIsDev(false);
-    }
-
-    private void checkIsDev(Boolean isDev) {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
-
-        URL url = null;
-        try {
-            url = new URL("https://www.test.url/kv");
-        } catch (MalformedURLException e) {
-            fail();
-        }
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
-        when(contextMock.getHttpRequest()).thenReturn(request);
-
-        policy.process(contextMock, nextMock);
-        String correlationContext = contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue();
-        if (isDev) {
-            assertTrue(correlationContext.contains(",Env=Dev"));
-        } else {
-            assertFalse(correlationContext.contains(",Env=Dev"));
-        }
-
     }
 }

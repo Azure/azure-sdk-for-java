@@ -40,8 +40,6 @@ public class BaseAppConfigurationPolicyTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        BaseAppConfigurationPolicy.setIsDev(false);
-        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(false);
         BaseAppConfigurationPolicy.setWatchRequests(false);
     }
 
@@ -55,7 +53,7 @@ public class BaseAppConfigurationPolicyTest {
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(false, false);
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 
@@ -94,8 +92,7 @@ public class BaseAppConfigurationPolicyTest {
 
     @Test
     public void devIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy.setIsDev(true);
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(true, false);
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
@@ -109,8 +106,7 @@ public class BaseAppConfigurationPolicyTest {
 
     @Test
     public void keyVaultIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(false, true);
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
@@ -124,9 +120,7 @@ public class BaseAppConfigurationPolicyTest {
 
     @Test
     public void devAndKeyVaultAreConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy.setIsDev(true);
-        BaseAppConfigurationPolicy.setIsKeyVaultConfigured(true);
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy();
+        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(true, true);
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
