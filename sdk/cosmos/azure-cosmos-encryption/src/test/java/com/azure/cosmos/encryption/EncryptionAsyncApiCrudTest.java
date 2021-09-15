@@ -79,6 +79,21 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void createItem() {
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        EncryptionPojo responseItem = itemResponse.getItem();
+        validateResponse(properties, responseItem);
+
+        properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse1 = cosmosEncryptionAsyncContainer.createItem(properties, new CosmosItemRequestOptions()).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        EncryptionPojo responseItem1 = itemResponse1.getItem();
+        validateResponse(properties, responseItem1);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
