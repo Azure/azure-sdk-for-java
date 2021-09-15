@@ -156,16 +156,16 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - script: |
-          wget https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -O /builds/openjdk-17_linux-x64_bin.tar.gz
+          wget https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -O $(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz
 
       - task: JavaToolInstaller@0
         inputs:
           versionSpec: "17"
           jdkArchitectureOption: x64
           jdkSourceOption: LocalDirectory
-          jdkFile: "/builds/openjdk-17_linux-x64_bin.tar.gz"
-          jdkDestinationDirectory: "/builds/binaries/externals"
-          cleanDestinationDirectory: true
+          jdkFile: "$(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz"
+          jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
+          cleanDestinationDirectory: false
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
