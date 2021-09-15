@@ -1,7 +1,8 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
+## 1.1.0 (2021-09-15)
+* Minor logging change to ensure MS-CV values are not dedacted from by default.
+* Updated dependencies.
 
 ## 1.0.0 (2021-03-05)
 * Release client.
