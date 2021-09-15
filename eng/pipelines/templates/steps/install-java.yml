@@ -6,7 +6,7 @@ parameters:
 steps:
   - script: |
       wget https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -O $(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz
-    condition: and(succeeded(), eq('${{ parameters.JavaVersion }}', '1.17'))
+    condition: and(succeeded(), eq('$[parameters.JavaVersion]', '1.17'))
 
   - task: JavaToolInstaller@0
     inputs:
@@ -16,4 +16,4 @@ steps:
       jdkFile: "$(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz"
       jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
       cleanDestinationDirectory: false
-    condition: and(succeeded(), eq($[parameters.JavaVersion], '1.17'))
+    condition: and(succeeded(), eq('$[parameters.JavaVersion]', '1.17'))
