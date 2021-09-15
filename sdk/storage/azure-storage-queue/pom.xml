@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+  <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
 
   <name>Microsoft Azure client library for Queue Storage</name>
   <description>This module contains client library for Microsoft Azure Queue Storage.</description>

@@ -130,7 +130,7 @@ com.azure:azure-storage-file-share;12.11.0;12.12.0-beta.1
 com.azure:azure-storage-file-datalake;12.7.0;12.8.0-beta.1
 com.azure:azure-storage-internal-avro;12.0.5;12.1.0
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.10.0;12.11.0
+com.azure:azure-storage-queue;12.11.0;12.12.0-beta.1
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.2;1.0.0-beta.3
