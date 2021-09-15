@@ -15,6 +15,7 @@ import java.util.Map;
 /** An immutable client-side representation of an outbound rule. */
 public interface LoadBalancerOutboundRule
     extends HasInnerModel<OutboundRuleInner>,
+    HasProtocol<OutboundRulePropertiesFormatProtocol>,
     ChildResource<LoadBalancer> {
 
     /** @return the associated frontends */
@@ -35,6 +36,9 @@ public interface LoadBalancerOutboundRule
     /** @return if TCP reset is enabled */
     boolean tcpResetEnabled();
 
+    /** @return outbound rule protocol */
+    OutboundRulePropertiesFormatProtocol protocol();
+
     /** Grouping of outbound rule definition stages. */
     interface DefinitionStages {
         /**
@@ -42,7 +46,7 @@ public interface LoadBalancerOutboundRule
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends LoadBalancerOutboundRule.DefinitionStages.WithBackend<ParentT> {
+        interface Blank<ParentT> extends LoadBalancerOutboundRule.DefinitionStages.WithProtocol<ParentT> {
         }
 
         /**
@@ -57,6 +61,15 @@ public interface LoadBalancerOutboundRule
             extends Attachable.InDefinition<ParentT>,
             LoadBalancerOutboundRule.DefinitionStages.WithEnableTcpReset<ParentT>,
             LoadBalancerOutboundRule.DefinitionStages.WithIdleTimeout<ParentT> {
+        }
+
+        /**
+         * The stage of an outbound rule definition allowing to specify the transport protocol.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithProtocol<ParentT>
+            extends HasProtocol.DefinitionStages.WithProtocol<LoadBalancerOutboundRule.DefinitionStages.WithBackend<ParentT>, OutboundRulePropertiesFormatProtocol> {
         }
 
         /**
@@ -133,6 +146,7 @@ public interface LoadBalancerOutboundRule
      */
     interface Definition<ParentT>
         extends LoadBalancerOutboundRule.DefinitionStages.Blank<ParentT>,
+        LoadBalancerOutboundRule.DefinitionStages.WithProtocol<ParentT>,
         LoadBalancerOutboundRule.DefinitionStages.WithBackend<ParentT>,
         LoadBalancerOutboundRule.DefinitionStages.WithFrontend<ParentT>,
         LoadBalancerOutboundRule.DefinitionStages.WithAttach<ParentT> {
@@ -169,6 +183,12 @@ public interface LoadBalancerOutboundRule
         }
 
         /**
+         * The stage of an outbound rule update allowing to specify the transport protocol for the rule to apply to.
+         */
+        interface WithProtocol<ParentT> extends HasProtocol.UpdateStages.WithProtocol<Update<ParentT>, OutboundRulePropertiesFormatProtocol> {
+        }
+
+        /**
          * The stage of an outbound rule definition allowing to update the TCP reset enablement for this outbound
          * rule.
          *
@@ -201,6 +221,7 @@ public interface LoadBalancerOutboundRule
     /** The entirety of an inbound NAT rule update as part of a load balancer update. */
     interface Update<ParentT>
         extends Settable<ParentT>,
+        LoadBalancerOutboundRule.UpdateStages.WithProtocol<ParentT>,
         LoadBalancerOutboundRule.UpdateStages.WithBackend<ParentT>,
         LoadBalancerOutboundRule.UpdateStages.WithFrontend<ParentT>,
         LoadBalancerOutboundRule.UpdateStages.WithEnableTcpReset<ParentT>,
