@@ -134,6 +134,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             return Mono
                 .error(new IllegalArgumentException("Parameter maintenanceWindowName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -141,7 +142,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -198,12 +199,13 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
             return Mono
                 .error(new IllegalArgumentException("Parameter maintenanceWindowName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -332,13 +334,14 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -402,11 +405,12 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

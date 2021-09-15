@@ -8,7 +8,7 @@ To build the SDK for Sms Client, simply Install AutoRest and in this folder, run
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install

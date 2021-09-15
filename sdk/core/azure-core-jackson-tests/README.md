@@ -4,7 +4,9 @@ Azure Core Jackson Tests is a test package that tests `azure-core` library again
 
 ## Getting started
 
-This package is intended to run in Live Test Azure Pipeline (`java - core - test`) under `jackson_versions` test name), but you can run it locally by setting `AZURE_CORE_TEST_JACKSON_VERSION` environment variable.
+This package is intended to run in Live Test Azure Pipeline (`java - core - test`) under `jackson_supported_versions` and
+`jackson_unsupported_versions` test name), but you can run it locally by setting `AZURE_CORE_TEST_SUPPORTED_JACKSON_VERSION` 
+or `AZURE_CORE_TEST_UNSUPPORTED_JACKSON_VERSION` environment variables.
 
 ## Key concepts
 
@@ -15,14 +17,14 @@ Here's how you can test arbitrary Jackson version from `azure-core-jackson-tests
 Windows:
 
 ```powershell
-PS> $env:AZURE_CORE_TEST_JACKSON_VERSION="2.12.1"
+PS> $env:AZURE_CORE_TEST_SUPPORTED_JACKSON_VERSION="2.12.1"
 PS> mvn test
 ```
 
 Linux:
 
 ```bash
-$ export AZURE_CORE_TEST_JACKSON_VERSION="2.12.2"
+$ export AZURE_CORE_TEST_SUPPORTED_JACKSON_VERSION="2.12.2"
 $ mvn test
 ```
 
