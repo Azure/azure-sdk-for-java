@@ -3,7 +3,7 @@
     "@{ enableHsm = $true }": "HSM"
   },
   "matrix": {
-    "$IMPORT": "/eng/pipelines/templates/stages/platform-matrix.json"
+    "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
   },
   "exclude": [
     {
