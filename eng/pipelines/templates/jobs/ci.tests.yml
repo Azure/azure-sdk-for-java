@@ -163,6 +163,8 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
+      - template: ../steps/retain-heap-dump-hprofs.yml
+
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
