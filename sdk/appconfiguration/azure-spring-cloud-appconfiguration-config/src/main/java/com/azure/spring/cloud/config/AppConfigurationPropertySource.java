@@ -10,7 +10,6 @@ import static java.util.stream.Collectors.toMap;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +27,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -159,7 +159,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
         Date date = new Date();
         SettingSelector settingSelector = new SettingSelector();
 
-        List<ConfigurationSetting> features = new ArrayList<>();
+        PagedIterable<ConfigurationSetting> features = null;
         // Reading In Features
         if (configStore.getFeatureFlags().getEnabled()) {
             settingSelector.setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
@@ -179,7 +179,7 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
                 .setLabelFilter(label);
 
             // * for wildcard match
-            List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
+            PagedIterable<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
 
             if (settings == null) {
                 throw new IOException("Unable to load properties from App Configuration Store.");
@@ -260,10 +260,13 @@ public final class AppConfigurationPropertySource extends EnumerablePropertySour
             featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
         throws IOException {
+        if (features == null) {
+            return featureSet;
+        }
         // Reading In Features
-        for (ConfigurationSetting setting : settings) {
+        for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
                 Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
                 if (feature != null) {

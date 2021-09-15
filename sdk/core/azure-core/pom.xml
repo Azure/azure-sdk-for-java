@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -269,6 +269,7 @@
                 --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
                 --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED

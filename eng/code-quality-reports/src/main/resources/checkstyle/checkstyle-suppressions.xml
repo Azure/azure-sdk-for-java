@@ -23,12 +23,12 @@
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
 
   <!-- Code was copied from FasterXML.com and use their license instead of our usual one. -->
-  <suppress checks="Header" files="com.azure.core.implementation.OptionModule"/>
-  <suppress checks="Header" files="com.azure.core.implementation.OptionPropertiesModifier"/>
-  <suppress checks="Header" files="com.azure.core.implementation.OptionBeanPropertyWriter"/>
-  <suppress checks="Header" files="com.azure.core.implementation.OptionTypeModifier"/>
-  <suppress checks="Header" files="com.azure.core.implementation.OptionSerializerProvider"/>
-  <suppress checks="Header" files="com.azure.core.implementation.OptionSerializer"/>
+  <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionModule"/>
+  <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionPropertiesModifier"/>
+  <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionBeanPropertyWriter"/>
+  <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionTypeModifier"/>
+  <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionSerializerProvider"/>
+  <suppress checks="Header" files="com.azure.core.implementation.jackson.OptionSerializer"/>
 
   <!-- empty Enum Singleton Pattern -->
   <suppress checks="NoWhitespaceBefore" files="Messages.java"/>

@@ -24,6 +24,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
@@ -234,10 +235,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             List<ConfigurationSetting> watchKeysFeatures = new ArrayList<ConfigurationSetting>();
 
             for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
-                    .setLabelFilter(trigger.getLabel());
-
-                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
+                ConfigurationSetting watchKey = clients.getWatchKey(trigger.getKey(), trigger.getLabel(),
                     store.getEndpoint());
                 if (watchKey != null) {
                     watchKeysSettings.add(watchKey);
@@ -251,10 +249,13 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     .setKeyFilter(store.getFeatureFlags().getKeyFilter())
                     .setLabelFilter(store.getFeatureFlags().getLabelFilter());
 
-                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
+                PagedIterable<ConfigurationSetting> watchKeys = clients.getFeatureFlagWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKey.setKey(store.getFeatureFlags().getKeyFilter());
-                watchKeysFeatures.add(watchKey);
+
+                watchKeys.forEach(watchKey -> {
+                    watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey));
+                });
+
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
                     store.getMonitoring().getFeatureFlagRefreshInterval());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);

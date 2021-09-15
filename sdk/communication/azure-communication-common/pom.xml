@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-common</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
 
   <name>Microsoft Azure common library for communication service client</name>
   <description>
@@ -46,12 +46,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
