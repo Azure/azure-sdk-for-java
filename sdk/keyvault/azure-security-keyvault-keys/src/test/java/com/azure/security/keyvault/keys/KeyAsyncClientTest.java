@@ -89,21 +89,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        if (isManagedHsmTest && interceptorManager.isPlaybackMode()) {
-            // Setting a key with an empty name returns 500 in MHSM, we don't currently produce a recording for that the
-            // way things are set.
-            return;
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        final KeyType keyType;
+
+        if (isManagedHsmTest) {
+            keyType = KeyType.RSA_HSM;
+        } else {
+            keyType = KeyType.RSA;
         }
 
-        createKeyAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.createKey("", KeyType.RSA))
-            .verifyErrorSatisfies(ex -> {
-                if (isManagedHsmTest) {
-                    assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_SERVER_ERROR);
-                } else {
-                    assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
-                }
-            });
+        StepVerifier.create(client.createKey("", keyType)).verifyErrorSatisfies(ex ->
+            assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     /**

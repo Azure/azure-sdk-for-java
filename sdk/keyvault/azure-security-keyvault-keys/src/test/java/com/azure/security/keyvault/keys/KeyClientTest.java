@@ -90,13 +90,16 @@ public class KeyClientTest extends KeyClientTestBase {
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
+        final KeyType keyType;
+
         if (isManagedHsmTest) {
-            assertRestException(() -> client.createKey("", KeyType.RSA_HSM), HttpResponseException.class,
-                HttpURLConnection.HTTP_SERVER_ERROR);
+            keyType = KeyType.RSA_HSM;
         } else {
-            assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class,
-                HttpURLConnection.HTTP_BAD_REQUEST);
+            keyType = KeyType.RSA;
         }
+
+        assertRestException(() -> client.createKey("", keyType), ResourceModifiedException.class,
+            HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
