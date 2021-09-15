@@ -12,16 +12,16 @@ import com.azure.storage.file.share.ShareServiceVersion;
 public class AzureStorageFileShareProperties extends AzureStorageProperties {
 
     public static final String PREFIX = "spring.cloud.azure.storage.fileshare";
+    public static final String FILE_ENDPOINT_PATTERN = "https://%s.file%s";
 
-    private String endpoint;
     private ShareServiceVersion serviceVersion;
 
     public String getEndpoint() {
-        return endpoint;
+        return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }
 
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    private String buildEndpointFromAccountName() {
+        return String.format(FILE_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
     }
 
     public ShareServiceVersion getServiceVersion() {

@@ -3,22 +3,20 @@
 
 package com.azure.spring.cloud.autoconfigure.properties;
 
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
- * Configuration properties base class for all Azure Http clients.
+ * Configuration properties base class for all Azure clients.
  */
-public abstract class AzureHttpConfigurationProperties implements AzureProperties {
+public abstract class AbstractAzureServiceConfigurationProperties implements AzureProperties {
 
-    @NestedConfigurationProperty
-    protected final ClientProperties client = new ClientProperties();
+    protected boolean enabled = true;
 
     @NestedConfigurationProperty
     protected final ProxyProperties proxy = new ProxyProperties();
@@ -35,9 +33,12 @@ public abstract class AzureHttpConfigurationProperties implements AzurePropertie
     @NestedConfigurationProperty
     protected final AzureResourceMetadata resource = new AzureResourceMetadata();
 
-    @Override
-    public ClientProperties getClient() {
-        return client;
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

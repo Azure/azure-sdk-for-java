@@ -23,24 +23,25 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Azu
     public AzureTokenCredentialProvider resolve(AzureProperties properties) {
         // TODO (xiada): the token credential logic
         final TokenCredentialProperties credential = properties.getCredential();
+        final String tenantId = properties.getProfile().getTenantId();
         if (credential == null) {
             return null;
         }
-        if (StringUtils.hasText(credential.getTenantId()) && StringUtils.hasText(
-            credential.getClientId()) && StringUtils.hasText(credential.getClientSecret())) {
+        if (StringUtils.hasText(tenantId) && StringUtils.hasText(credential.getClientId())
+                && StringUtils.hasText(credential.getClientSecret())) {
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(credential.getClientId())
                 .clientSecret(credential.getClientSecret())
-                .tenantId(credential.getTenantId())
+                .tenantId(tenantId)
                 .build();
             return new AzureTokenCredentialProvider(clientSecretCredential);
         }
 
-        if (StringUtils.hasText(credential.getTenantId()) && StringUtils.hasText(credential.getClientCertificatePath())) {
+        if (StringUtils.hasText(tenantId) && StringUtils.hasText(credential.getClientCertificatePath())) {
             final ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
                 .clientId(credential.getClientId())
                 .pemCertificate(credential.getClientCertificatePath())
-                .tenantId(credential.getTenantId())
+                .tenantId(tenantId)
                 .build();
             return new AzureTokenCredentialProvider(clientCertificateCredential);
         }

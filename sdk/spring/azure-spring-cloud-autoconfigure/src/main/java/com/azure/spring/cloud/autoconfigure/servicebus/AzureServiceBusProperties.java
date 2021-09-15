@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.cloud.autoconfigure.properties.AzureAmqpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
 import com.azure.spring.core.properties.client.AmqpClientProperties;
 
 import java.time.Duration;
@@ -13,7 +13,7 @@ import java.time.Duration;
 /**
  *
  */
-public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties {
+public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationProperties {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
@@ -86,7 +86,7 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
         return consumer;
     }
 
-    static class ServiceBusProducer extends AzureAmqpConfigurationProperties {
+    static class ServiceBusProducer extends AbstractAzureAmqpConfigurationProperties {
 
         private String domainName = "servicebus.windows.net";
         private String namespace;
@@ -136,7 +136,7 @@ public class AzureServiceBusProperties extends AzureAmqpConfigurationProperties 
         }
     }
 
-    static class ServiceBusConsumer extends AzureAmqpConfigurationProperties {
+    static class ServiceBusConsumer extends AbstractAzureAmqpConfigurationProperties {
 
         private String domainName = "servicebus.windows.net";
         private String namespace;

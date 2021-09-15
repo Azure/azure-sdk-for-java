@@ -12,18 +12,18 @@ import com.azure.storage.queue.QueueServiceVersion;
 public class AzureStorageQueueProperties extends AzureStorageProperties {
 
     public static final String PREFIX = "spring.cloud.azure.storage.queue";
+    public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
 
-    private String endpoint;
     private QueueServiceVersion serviceVersion;
     private String messageEncoding;
 
 
     public String getEndpoint() {
-        return endpoint;
+        return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }
 
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    private String buildEndpointFromAccountName() {
+        return String.format(QUEUE_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
     }
 
     public QueueServiceVersion getServiceVersion() {

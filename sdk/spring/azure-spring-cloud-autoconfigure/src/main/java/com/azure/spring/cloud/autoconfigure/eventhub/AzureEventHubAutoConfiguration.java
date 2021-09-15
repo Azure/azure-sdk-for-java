@@ -7,12 +7,18 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubOperation}
@@ -21,13 +27,13 @@ import org.springframework.context.annotation.Import;
  */
 
 @ConditionalOnClass(EventHubClientBuilder.class)
-@ConditionalOnProperty(prefix = AzureEventHubProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@AzureEventHubAutoConfiguration.ConditionalOnEventHub
 @Import({
     AzureEventHubClientConfiguration.class,
     AzureBlobCheckpointStoreConfiguration.class,
     AzureEventProcessorClientConfiguration.class
 })
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@Configuration(proxyBeanMethods = false)
 public class AzureEventHubAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureEventHubAutoConfiguration(AzureConfigurationProperties azureProperties) {
@@ -38,6 +44,15 @@ public class AzureEventHubAutoConfiguration extends AzureServiceConfigurationBas
     @ConfigurationProperties(AzureEventHubProperties.PREFIX)
     public AzureEventHubProperties azureEventHubProperties() {
         return loadProperties(this.azureProperties, new AzureEventHubProperties());
+    }
+
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ConditionalOnExpression("${spring.cloud.azure.eventhub.enabled:true} and "
+                                 + "(!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhub.connection-string:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhub.namespace:}'))")
+    public @interface ConditionalOnEventHub {
     }
 
 }

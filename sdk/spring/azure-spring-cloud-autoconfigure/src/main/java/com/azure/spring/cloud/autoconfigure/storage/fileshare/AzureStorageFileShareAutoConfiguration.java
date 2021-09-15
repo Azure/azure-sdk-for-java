@@ -3,25 +3,28 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageFileProtocolResolver;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Auto-configuration for a {@link ShareServiceClientBuilder} and file share service clients.
  */
 @ConditionalOnClass(ShareServiceClientBuilder.class)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.storage.fileshare", name = "enabled", matchIfMissing = true)
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@AzureStorageFileShareAutoConfiguration.ConditionalOnStorageFileShare
 public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageFileShareAutoConfiguration(AzureConfigurationProperties azureProperties) {
@@ -30,25 +33,25 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
-    public AzureStorageFileShareProperties storageFileShareProperties() {
+    public AzureStorageFileShareProperties azureStorageFileShareProperties() {
         return loadProperties(this.azureProperties, new AzureStorageFileShareProperties());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClient blobClient(ShareServiceClientBuilder builder) {
+    public ShareServiceClient shareServiceClient(ShareServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceAsyncClient blobAsyncClient(ShareServiceClientBuilder builder) {
+    public ShareServiceAsyncClient shareServiceAsyncClient(ShareServiceClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilderFactory factory(AzureStorageFileShareProperties properties) {
+    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(AzureStorageFileShareProperties properties) {
         return new ShareServiceClientBuilderFactory(properties);
     }
 
@@ -58,10 +61,14 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
         return factory.build();
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
-        return new AzureStorageFileProtocolResolver(shareServiceClient);
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ConditionalOnExpression("${spring.cloud.azure.storage.fileshare.enabled:true} and ("
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.fileshare.account-name:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.fileshare.endpoint:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.fileshare.connection-string:}'))")
+    public @interface ConditionalOnStorageFileShare {
     }
 
 }

@@ -8,8 +8,8 @@ import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Bean;
  * Auto-configuration for a {@link CertificateClientBuilder} and Azure Key Vault secret clients.
  */
 @ConditionalOnClass(CertificateClientBuilder.class)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.keyvault.certificate", name = "enabled", matchIfMissing = true)
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@ConditionalOnExpression("${spring.cloud.azure.keyvault.certificate.enabled:true}")
+@ConditionalOnProperty("spring.cloud.azure.keyvault.certificate.vault-url")
 public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfigurationBase {
 
 
@@ -30,19 +30,19 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
 
     @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.certificate")
     @Bean
-    public AzureKeyVaultCertificateProperties keyVaultCertificateProperties() {
+    public AzureKeyVaultCertificateProperties azureKeyVaultCertificateProperties() {
         return loadProperties(this.azureProperties, new AzureKeyVaultCertificateProperties());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CertificateClient azureKeyVaultSecretClient(CertificateClientBuilder builder) {
+    public CertificateClient azureKeyVaultCertificateClient(CertificateClientBuilder builder) {
         return builder.buildClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CertificateAsyncClient azureKeyVaultSecretAsyncClient(CertificateClientBuilder builder) {
+    public CertificateAsyncClient azureKeyVaultCertificateAsyncClient(CertificateClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
@@ -57,4 +57,5 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     public CertificateClientBuilderFactory certificateClientBuilderFactory(AzureKeyVaultCertificateProperties properties) {
         return new CertificateClientBuilderFactory(properties);
     }
+
 }

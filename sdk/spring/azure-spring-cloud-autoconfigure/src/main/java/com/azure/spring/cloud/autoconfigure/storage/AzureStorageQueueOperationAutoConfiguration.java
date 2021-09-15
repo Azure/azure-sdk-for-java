@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueProperties;
 import com.azure.spring.integration.storage.queue.StorageQueueOperation;
 import com.azure.spring.integration.storage.queue.StorageQueueTemplate;
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
@@ -13,8 +12,8 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(StorageQueueClientFactory.class)
-@ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@ConditionalOnExpression("${spring.cloud.azure.storage.queue.enabled:true}")
 @ConditionalOnBean(QueueServiceAsyncClient.class)
 @AutoConfigureAfter(AzureStorageQueueAutoConfiguration.class)
 public class AzureStorageQueueOperationAutoConfiguration {

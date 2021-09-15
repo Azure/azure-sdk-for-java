@@ -9,11 +9,15 @@ import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
+import static com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties.PREFIX;
 
 /**
  *
  */
+@ConfigurationProperties(PREFIX)
 public class AzureConfigurationProperties implements AzureProperties {
 
     public static final String PREFIX = "spring.cloud.azure";

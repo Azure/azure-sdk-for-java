@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault;
 
-import com.azure.spring.cloud.autoconfigure.properties.AzureHttpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
 
 /**
  * Common properties for Azure Key Vault
  */
-public class AzureKeyVaultProperties extends AzureHttpConfigurationProperties {
+public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationProperties {
 
     // TODO (xiada): the default vault url
     private String vaultUrl;

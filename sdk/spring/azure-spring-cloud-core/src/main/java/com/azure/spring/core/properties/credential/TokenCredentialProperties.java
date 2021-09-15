@@ -35,11 +35,6 @@ public class TokenCredentialProperties {
 
     private String managedIdentityClientId;
 
-    /**
-     * Tenant id for the Azure resources.
-     */
-    private String tenantId;
-
     public String getClientId() {
         return clientId;
     }
@@ -96,11 +91,4 @@ public class TokenCredentialProperties {
         this.managedIdentityClientId = managedIdentityClientId;
     }
 
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
-    }
 }

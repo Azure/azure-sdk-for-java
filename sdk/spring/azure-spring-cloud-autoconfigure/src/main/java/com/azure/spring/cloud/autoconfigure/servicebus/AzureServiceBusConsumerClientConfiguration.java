@@ -17,12 +17,14 @@ import com.azure.spring.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
@@ -47,9 +49,7 @@ class AzureServiceBusConsumerClientConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusConsumerClientConfiguration.class);
 
     public static final String CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME";
-    private static final String CONSUMER_CLIENT_BUILDER_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.CONSUMER_CLIENT_BUILDER_BEAN_NAME";
-
-    private final PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+    public static final String CONSUMER_CLIENT_BUILDER_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.CONSUMER_CLIENT_BUILDER_BEAN_NAME";
 
     private final AzureServiceBusProperties serviceBusProperties;
 
@@ -73,7 +73,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
     @Bean(CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnSeparateServiceBusConsumer
+    @ServiceBusConditions.ConditionalOnDedicatedServiceBusConsumer
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
 
         final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
@@ -93,14 +93,14 @@ class AzureServiceBusConsumerClientConfiguration {
         return clientBuilderFactory.build();
     }
 
-    @ConditionalOnProperty(name = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "false", matchIfMissing = true)
+    @ConditionalOnExpression("!${spring.cloud.azure.servicebus.consumer.session-aware:false}")
     static class NoneSessionConsumerClientConfiguration {
 
         @Bean
-        @ConditionalOnMissingBean(name = CONSUMER_CLIENT_BUILDER_BEAN_NAME, value = ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
+        @Conditional(ServiceBusConditions.ConditionOnGlobalClientBuilderAndMissingReceiverClientBuilder.class)
         public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
             AzureServiceBusProperties serviceBusProperties,
-            @Qualifier(CONSUMER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+            ServiceBusClientBuilder serviceBusClientBuilder) {
 
             return buildReceiverClientBuilder(serviceBusProperties, serviceBusClientBuilder);
         }
@@ -110,7 +110,7 @@ class AzureServiceBusConsumerClientConfiguration {
         @ConditionalOnMissingBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
         public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilderForConsumer(
             AzureServiceBusProperties serviceBusProperties,
-            ServiceBusClientBuilder serviceBusClientBuilder) {
+            @Qualifier(CONSUMER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
 
             return buildReceiverClientBuilder(serviceBusProperties, serviceBusClientBuilder);
         }
@@ -156,9 +156,11 @@ class AzureServiceBusConsumerClientConfiguration {
             }
             return receiverClientBuilder;
         }
+
+
     }
 
-    @ConditionalOnProperty("spring.cloud.azure.servicebus.consumer.session-aware")
+    @ConditionalOnExpression("${spring.cloud.azure.servicebus.consumer.session-aware:false}")
     static class SessionConsumerClientConfiguration {
 
         @Bean
@@ -235,14 +237,6 @@ class AzureServiceBusConsumerClientConfiguration {
     public @interface ConditionalOnServiceBusConsumer {
     }
 
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.consumer.connection-string:}') or "
-            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.consumer.namespace:}')"
-    )
-    public @interface ConditionalOnSeparateServiceBusConsumer {
-    }
+
 
 }

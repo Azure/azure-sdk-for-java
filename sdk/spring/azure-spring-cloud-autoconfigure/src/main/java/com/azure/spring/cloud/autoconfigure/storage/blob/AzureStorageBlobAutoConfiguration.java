@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageBlobProtocolResolver;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -14,21 +13,25 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Auto-configuration for a {@link BlobClientBuilder} and blob service clients.
  */
 @ConditionalOnClass(BlobClientBuilder.class)
-@ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "enabled", matchIfMissing = true)
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@AzureStorageBlobAutoConfiguration.ConditionalOnStorageBlob
 public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
-
 
     public AzureStorageBlobAutoConfiguration(AzureConfigurationProperties azureProperties) {
         super(azureProperties);
@@ -36,7 +39,7 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
-    public AzureStorageBlobProperties storageBlobProperties() {
+    public AzureStorageBlobProperties azureStorageBlobProperties() {
         return loadProperties(this.azureProperties, new AzureStorageBlobProperties());
     }
 
@@ -86,20 +89,32 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceClientBuilderFactory factory(AzureStorageBlobProperties properties) {
+    public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(AzureStorageBlobProperties properties) {
         return new BlobServiceClientBuilderFactory(properties);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceClientBuilder blobClientBuilder(BlobServiceClientBuilderFactory factory) {
+    public BlobServiceClientBuilder blobServiceClientBuilder(BlobServiceClientBuilderFactory factory) {
         return factory.build();
     }
 
-    @Bean
-    @ConditionalOnBean(BlobServiceClient.class)
-    public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver(BlobServiceClient blobServiceClient) {
-        return new AzureStorageBlobProtocolResolver(blobServiceClient);
+
+
+ /*   @Configuration
+    @ConditionalOnClass(AzureStorageBlobProtocolResolver.class)
+    @Import(AzureStorageBlobProtocolResolver.class)
+    static class StorageBlobResourceConfiguration {
+    }*/
+
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ConditionalOnExpression("${spring.cloud.azure.storage.blob.enabled:true} and ("
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.blob.account-name:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.blob.endpoint:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.blob.connection-string:}'))")
+    public @interface ConditionalOnStorageBlob {
     }
 
 }

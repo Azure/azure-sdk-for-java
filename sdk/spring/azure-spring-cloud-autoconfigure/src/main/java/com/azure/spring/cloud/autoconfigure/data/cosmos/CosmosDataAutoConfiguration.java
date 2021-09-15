@@ -7,17 +7,25 @@ import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * Auto Configure Cosmos properties and connection policy.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ CosmosTemplate.class }) // Spring data
+@ConditionalOnClass({ CosmosTemplate.class })
+@ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true} and"
+                             + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}')")
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
     private final AzureCosmosProperties cosmosProperties;
+
+    @Autowired(required = false)
+    private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
 
     public CosmosDataAutoConfiguration(AzureCosmosProperties cosmosProperties) {
         this.cosmosProperties = cosmosProperties;
@@ -31,9 +39,13 @@ public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
     @Override
     public CosmosConfig cosmosConfig() {
-        return CosmosConfig.builder()
-                           .enableQueryMetrics(cosmosProperties.isPopulateQueryMetrics())
-                           .responseDiagnosticsProcessor(cosmosProperties.getResponseDiagnosticsProcessor())
-                           .build();
+        final CosmosConfig.CosmosConfigBuilder builder = CosmosConfig.builder();
+        builder.enableQueryMetrics(cosmosProperties.isPopulateQueryMetrics());
+
+        if (responseDiagnosticsProcessor != null) {
+            builder.responseDiagnosticsProcessor(responseDiagnosticsProcessor);
+        }
+
+        return builder.build();
     }
 }

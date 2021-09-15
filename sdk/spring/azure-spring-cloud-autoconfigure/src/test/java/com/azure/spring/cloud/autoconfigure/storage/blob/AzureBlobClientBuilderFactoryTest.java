@@ -10,11 +10,9 @@ import com.azure.spring.cloud.autoconfigure.core.TestHttpClient;
 import com.azure.spring.cloud.autoconfigure.core.TestHttpClientProvider;
 import com.azure.spring.cloud.autoconfigure.core.TestPerCallHttpPipelinePolicy;
 import com.azure.spring.cloud.autoconfigure.core.TestPerRetryHttpPipelinePolicy;
-import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.BeanUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -41,8 +39,9 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
     void testClientSecretTokenCredentialConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
-        TokenCredentialProperties tokenCredentialProperties = buildClientSecretTokenCredentialProperties();
-        BeanUtils.copyProperties(tokenCredentialProperties, properties.getCredential());
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setClientSecret("test-secret");
+        properties.getProfile().setTenantId("test-tenant");
 
         final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
         final BlobServiceClient client = builder.buildClient();
@@ -54,8 +53,10 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
     void testClientCertificateTokenCredentialConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
-        TokenCredentialProperties tokenCredentialProperties = buildClientCertificateTokenCredentialProperties();
-        BeanUtils.copyProperties(tokenCredentialProperties, properties.getCredential());
+        properties.getCredential().setClientId("test-client");
+        properties.getCredential().setClientCertificatePath("test-cert-path");
+        properties.getCredential().setClientCertificatePassword("test-cert-password");
+        properties.getProfile().setTenantId("test-tenant");
 
         final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
         verify(builder, times(1)).credential(any(ClientCertificateCredential.class));

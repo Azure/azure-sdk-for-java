@@ -128,11 +128,6 @@ public class AzureBlobStorageResourceTests {
     static class StorageBlobClientConfiguration {
 
         @Bean
-        public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver(BlobServiceClient blobServiceClient) {
-            return new AzureStorageBlobProtocolResolver(blobServiceClient);
-        }
-
-        @Bean
         public BlobServiceClient blobServiceClient() {
             return mockBlobServiceClientBuilder().buildClient();
         }

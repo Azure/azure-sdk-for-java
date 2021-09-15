@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
-import com.azure.spring.cloud.autoconfigure.properties.AzureHttpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
 
 /**
  * Properties for Azure App Configuration.
  */
-public class AzureAppConfigurationProperties extends AzureHttpConfigurationProperties {
+public class AzureAppConfigurationProperties extends AbstractAzureHttpConfigurationProperties {
 
     public static final String PREFIX = "spring.cloud.azure.appconfiguration";
 

@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhub;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.cloud.autoconfigure.properties.AzureAmqpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,7 +17,7 @@ import java.util.Map;
  * Azure Event Hub related properties.
  */
 @Validated
-public class AzureEventHubProperties extends AzureAmqpConfigurationProperties {
+public class AzureEventHubProperties extends AbstractAzureAmqpConfigurationProperties {
 
     public static final String PREFIX = "spring.cloud.azure.eventhub";
 

@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,8 +20,8 @@ import org.springframework.context.annotation.Bean;
  * Auto-configuration for a {@link CosmosClientBuilder} and cosmos clients.
  */
 @ConditionalOnClass(CosmosClientBuilder.class)
-@ConditionalOnProperty(prefix = AzureCosmosProperties.PREFIX, name = "enabled", matchIfMissing = true)
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true} and"
+                             + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}')")
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureCosmosAutoConfiguration(AzureConfigurationProperties azureProperties) {

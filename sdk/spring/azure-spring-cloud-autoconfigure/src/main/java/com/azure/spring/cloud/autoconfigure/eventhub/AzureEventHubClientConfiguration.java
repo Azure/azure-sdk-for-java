@@ -64,8 +64,7 @@ class AzureEventHubClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubClientBuilderFactory factory(
-        AzureEventHubProperties properties,
+    public EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
         final EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
 

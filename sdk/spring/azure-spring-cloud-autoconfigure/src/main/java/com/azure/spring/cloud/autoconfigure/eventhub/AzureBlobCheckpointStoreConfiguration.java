@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
+import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -12,16 +13,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configures a {@link com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore}
+ * Configures a {@link BlobCheckpointStore}
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore.class)
+@ConditionalOnClass(BlobCheckpointStore.class)
 public class AzureBlobCheckpointStoreConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureEventHubProperties.PREFIX, name = "processor.checkpoint-store.container-name")
-    public com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore blobCheckpointStore(AzureEventHubProperties eventHubProperties) {
+    public BlobCheckpointStore blobCheckpointStore(AzureEventHubProperties eventHubProperties) {
         final AzureEventHubProperties.Processor.BlobCheckpointStore checkpointStoreProperties = eventHubProperties
             .getProcessor()
             .getCheckpointStore();
@@ -32,7 +33,7 @@ public class AzureBlobCheckpointStoreConfiguration {
             .getBlobContainerAsyncClient(checkpointStoreProperties.getContainerName());
 
 
-        return new com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore(blobContainerAsyncClient);
+        return new BlobCheckpointStore(blobContainerAsyncClient);
     }
 
 }

@@ -12,21 +12,25 @@ import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Auto-configuration for a {@link QueueServiceClientBuilder} and queue service clients.
  */
 @ConditionalOnClass(QueueServiceClientBuilder.class)
-@ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "enabled", matchIfMissing = true)
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@AzureStorageQueueAutoConfiguration.ConditionalOnStorageQueue
 public class AzureStorageQueueAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageQueueAutoConfiguration(AzureConfigurationProperties azureProperties) {
@@ -35,26 +39,26 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
-    public AzureStorageQueueProperties storageQueueProperties() {
+    public AzureStorageQueueProperties azureStorageQueueProperties() {
         return loadProperties(this.azureProperties, new AzureStorageQueueProperties());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClient blobClient(QueueServiceClientBuilder builder) {
+    public QueueServiceClient queueServiceClient(QueueServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceAsyncClient blobAsyncClient(QueueServiceClientBuilder builder) {
+    public QueueServiceAsyncClient queueServiceAsyncClient(QueueServiceClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilderFactory factory(AzureStorageQueueProperties properties,
-                                                    ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders) {
+    public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(AzureStorageQueueProperties properties,
+                                                                             ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders) {
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
         factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
         return factory;
@@ -62,7 +66,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilder queueClientBuilder(QueueServiceClientBuilderFactory factory) {
+    public QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
         return factory.build();
     }
 
@@ -74,6 +78,16 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_QUEUE,
                                                     storageQueueProperties.getConnectionString());
+    }
+
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ConditionalOnExpression("${spring.cloud.azure.storage.queue.enabled:true} and ("
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.queue.account-name:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.queue.endpoint:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.queue.connection-string:}'))")
+    public @interface ConditionalOnStorageQueue {
     }
 
 }

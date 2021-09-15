@@ -13,13 +13,23 @@ public class AzureStorageBlobProperties extends AzureStorageProperties {
 
     public static final String PREFIX = "spring.cloud.azure.storage.blob";
 
+    private static final String BLOB_ENDPOINT_PATTERN = "https://%s.blob%s";
+
     private String customerProvidedKey;
     private String encryptionScope;
-    private String endpoint;
     private BlobServiceVersion serviceVersion;
 
     private String containerName;
     private String blobName;
+
+    // TODO (xiada): should we calculate the endpoint from the account name
+    public String getEndpoint() {
+        return endpoint == null ? buildEndpointFromAccountName() : endpoint;
+    }
+
+    private String buildEndpointFromAccountName() {
+        return String.format(BLOB_ENDPOINT_PATTERN, accountName, profile.getEnvironment().getStorageEndpointSuffix());
+    }
 
     public String getCustomerProvidedKey() {
         return customerProvidedKey;
@@ -35,14 +45,6 @@ public class AzureStorageBlobProperties extends AzureStorageProperties {
 
     public void setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
-    }
-
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
     }
 
     public BlobServiceVersion getServiceVersion() {

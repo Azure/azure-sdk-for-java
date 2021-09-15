@@ -9,7 +9,6 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
-import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -31,18 +30,18 @@ public class AzureCosmosProperties extends AzureConfigurationProperties {
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String uri;
 
-    @NotEmpty
+//    @NotEmpty
     private String key;
 
     /**
      * Override enabled, session capturing is enabled by default for {@link ConsistencyLevel#SESSION}
      */
-    private boolean sessionCapturingOverrideEnabled;
-    private boolean connectionSharingAcrossClientsEnabled;
-    private boolean contentResponseOnWriteEnabled;
-    private CosmosPermissionProperties permissions;
-    private GatewayConnectionConfig gatewayConnectionConfig;
-    private DirectConnectionConfig directConnectionConfig;
+    private boolean sessionCapturingOverrideEnabled = false;
+    private boolean connectionSharingAcrossClientsEnabled = false;
+    private boolean contentResponseOnWriteEnabled = false;
+    private final CosmosPermissionProperties permissions = new CosmosPermissionProperties();
+    private final GatewayConnectionConfig gatewayConnection = new GatewayConnectionConfig();
+    private final DirectConnectionConfig directConnection = new DirectConnectionConfig();
 
     /**
      * Document DB consistency level.
@@ -66,57 +65,16 @@ public class AzureCosmosProperties extends AzureConfigurationProperties {
      */
     private ConnectionMode connectionMode;
 
-    /**
-     * Response Diagnostics processor
-     * Default implementation is to log the response diagnostics string
-     */
-    private ResponseDiagnosticsProcessor responseDiagnosticsProcessor =
-        responseDiagnostics -> {
-            if (populateQueryMetrics) {
-                LOGGER.info("Response Diagnostics {}", responseDiagnostics);
-            }
-        };
-
-
-    public String getDatabase() {
-        return database;
-    }
-
-    public void setDatabase(String databaseName) {
-        this.database = databaseName;
-    }
-
-    public ConsistencyLevel getConsistencyLevel() {
-        return consistencyLevel;
-    }
-
-    public void setConsistencyLevel(ConsistencyLevel consistencyLevel) {
-        this.consistencyLevel = consistencyLevel;
-    }
-
-    public boolean isPopulateQueryMetrics() {
-        return populateQueryMetrics;
-    }
-
-    public void setPopulateQueryMetrics(boolean populateQueryMetrics) {
-        this.populateQueryMetrics = populateQueryMetrics;
-    }
-
-    public ResponseDiagnosticsProcessor getResponseDiagnosticsProcessor() {
-        return responseDiagnosticsProcessor;
-    }
-
-    public void setResponseDiagnosticsProcessor(ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
-        this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
-    }
-
-    public ConnectionMode getConnectionMode() {
-        return connectionMode;
-    }
-
-    public void setConnectionMode(ConnectionMode connectionMode) {
-        this.connectionMode = connectionMode;
-    }
+//    /**
+//     * Response Diagnostics processor
+//     * Default implementation is to log the response diagnostics string
+//     */
+//    private ResponseDiagnosticsProcessor responseDiagnosticsProcessor =
+//        responseDiagnostics -> {
+//            if (populateQueryMetrics) {
+//                LOGGER.info("Response Diagnostics {}", responseDiagnostics);
+//            }
+//        };
 
     public String getUri() {
         return uri;
@@ -138,24 +96,67 @@ public class AzureCosmosProperties extends AzureConfigurationProperties {
         return sessionCapturingOverrideEnabled;
     }
 
+    public void setSessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
+    }
+
     public boolean isConnectionSharingAcrossClientsEnabled() {
         return connectionSharingAcrossClientsEnabled;
+    }
+
+    public void setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
+        this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
     }
 
     public boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
 
+    public void setContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+    }
+
     public CosmosPermissionProperties getPermissions() {
         return permissions;
     }
 
-    public GatewayConnectionConfig getGatewayConnectionConfig() {
-        return gatewayConnectionConfig;
+    public GatewayConnectionConfig getGatewayConnection() {
+        return gatewayConnection;
     }
 
-    public DirectConnectionConfig getDirectConnectionConfig() {
-        return directConnectionConfig;
+    public DirectConnectionConfig getDirectConnection() {
+        return directConnection;
     }
 
+    public ConsistencyLevel getConsistencyLevel() {
+        return consistencyLevel;
+    }
+
+    public void setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+        this.consistencyLevel = consistencyLevel;
+    }
+
+    public String getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(String database) {
+        this.database = database;
+    }
+
+    public boolean isPopulateQueryMetrics() {
+        return populateQueryMetrics;
+    }
+
+    public void setPopulateQueryMetrics(boolean populateQueryMetrics) {
+        this.populateQueryMetrics = populateQueryMetrics;
+    }
+
+    public ConnectionMode getConnectionMode() {
+        return connectionMode;
+    }
+
+    public void setConnectionMode(ConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
+    }
 }
