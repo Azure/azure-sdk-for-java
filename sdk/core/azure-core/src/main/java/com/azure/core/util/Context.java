@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -28,7 +29,17 @@ public class Context {
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, null, null);
+    public static final Context NONE = new Context(null, null, null) {
+        @Override
+        public Optional<Object> getData(Object key) {
+            return Optional.empty();
+        }
+
+        @Override
+        public Map<Object, Object> getValues() {
+            return Collections.emptyMap();
+        }
+    };
 
     private final Context parent;
     private final Object key;
