@@ -1,7 +1,5 @@
 parameters:
-  - name: JavaVersion
-    type: string
-    default: $(JavaBuildVersion)
+  JavaVersion: $(JavaBuildVersion)
 
 steps:
   - script: |
