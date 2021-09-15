@@ -1,14 +1,3 @@
-variables:
-  ${{ if contains(variables['OSVmImage'], 'ubuntu') }}:
-    jdkUri: https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz
-    jdkFilename: openjdk-17_linux-x64_bin.tar.gz
-  ${{ elseif contains(variables['OSVmImage'], 'macOS') }}:
-    jdkUri: https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-x64_bin.tar.gz
-    jdkFilename: openjdk-17_macos-x64_bin.tar.gz
-  ${{ else }}:
-    jdkUri: https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_windows-x64_bin.zip
-    jdkFilename: openjdk-17_windows-x64_bin.zip
-
 steps:
   - pwsh: Invoke-WebRequest -Uri $(jdkUri) -OutFile $(agent.tempDirectory)/$(jdkFilename)
 
