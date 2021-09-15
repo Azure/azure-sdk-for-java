@@ -206,7 +206,7 @@ com.azure.resourcemanager:azure-resourcemanager-containerservice;2.8.0;2.9.0-bet
 com.azure.resourcemanager:azure-resourcemanager-cosmos;2.7.0;2.8.0
 com.azure.resourcemanager:azure-resourcemanager-dns;2.7.0;2.8.0
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.7.0;2.8.0
-com.azure.resourcemanager:azure-resourcemanager-keyvault;2.7.0;2.8.0
+com.azure.resourcemanager:azure-resourcemanager-keyvault;2.8.0;2.9.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-monitor;2.7.0;2.8.0
 com.azure.resourcemanager:azure-resourcemanager-msi;2.7.0;2.8.0
 com.azure.resourcemanager:azure-resourcemanager-network;2.7.0;2.8.0
