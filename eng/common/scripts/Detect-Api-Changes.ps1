@@ -10,7 +10,7 @@ Param (
   [string] $CommitSha,
   [Parameter(Mandatory=$True)]
   [string] $ArtifactList,
-  [string] $RepoName = "azure/azure-sdk-for-$Language",
+  [string] $RepoFullName = "",
   [string] $ArtifactName = "packages",
   [string] $APIViewUri = "https://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
 )
@@ -18,12 +18,16 @@ Param (
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
 function Submit-Request($filePath)
 {
+    $repoName = $RepoFullName
+    if (!$repoName) {
+        $repoName = "azure/azure-sdk-for-$Language",
+    }
     $query = [System.Web.HttpUtility]::ParseQueryString('')
     $query.Add('artifactName', $ArtifactName)
     $query.Add('buildId', $BuildId)
     $query.Add('filePath', $filePath)
     $query.Add('commitSha', $CommitSha)
-    $query.Add('repoName', $RepoName)
+    $query.Add('repoName', $repoName)
     $query.Add('pullRequestNumber', $PullRequestNumber)
     $uri = [System.UriBuilder]$APIViewUri
     $uri.query = $query.toString()
@@ -66,7 +70,7 @@ function Log-Input-Params()
     Write-Host "BuildId: $($BuildId)"
     Write-Host "Language: $($Language)"
     Write-Host "Commit SHA: $($CommitSha)"
-    Write-Host "Repo Name: $($RepoName)"
+    Write-Host "Repo Name: $($RepoFullName)"
 }
 
 . (Join-Path $PSScriptRoot common.ps1)
