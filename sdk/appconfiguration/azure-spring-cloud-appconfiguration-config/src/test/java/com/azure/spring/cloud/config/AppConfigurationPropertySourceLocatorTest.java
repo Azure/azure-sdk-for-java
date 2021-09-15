@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mock;
@@ -72,7 +72,7 @@ import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
 import reactor.core.publisher.Flux;
-@TestMethodOrder(Alphanumeric.class)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class AppConfigurationPropertySourceLocatorTest {
 
     private static final String APPLICATION_NAME = "foo";
@@ -259,7 +259,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1)
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
             tokenCredentialProvider, null, null);
@@ -309,7 +309,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         selects.add(selectedKeys);
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1)
             .thenReturn(FEATURE_ITEM);
 
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
