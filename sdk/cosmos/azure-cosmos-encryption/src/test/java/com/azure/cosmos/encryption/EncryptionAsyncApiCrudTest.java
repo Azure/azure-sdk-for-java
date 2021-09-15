@@ -81,6 +81,21 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         this.client.close();
     }
 
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void createItem() {
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        EncryptionPojo responseItem = itemResponse.getItem();
+        validateResponse(properties, responseItem);
+
+        properties = getItem(UUID.randomUUID().toString());
+        CosmosItemResponse<EncryptionPojo> itemResponse1 = cosmosEncryptionAsyncContainer.createItem(properties, new CosmosItemRequestOptions()).block();
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        EncryptionPojo responseItem1 = itemResponse1.getItem();
+        validateResponse(properties, responseItem1);
+    }
+
     @Test(groups = {"encryption"}, priority = 1, timeOut = TIMEOUT)// Doing max of a string in the query_aggregate so has to set the priority for this one as 1.
     public void createItemEncrypt_readItemDecrypt() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
