@@ -8,7 +8,10 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.core.properties.aware.credential.KeyAware;
+import com.azure.spring.core.properties.client.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +23,7 @@ import javax.validation.constraints.Pattern;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class AzureCosmosProperties extends AzureConfigurationProperties {
+public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements KeyAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureCosmosProperties.class);
 
@@ -65,7 +68,12 @@ public class AzureCosmosProperties extends AzureConfigurationProperties {
      */
     private ConnectionMode connectionMode;
 
-//    /**
+    @Override
+    public ClientProperties getClient() {
+        return new ClientProperties();
+    }
+
+    //    /**
 //     * Response Diagnostics processor
 //     * Default implementation is to log the response diagnostics string
 //     */

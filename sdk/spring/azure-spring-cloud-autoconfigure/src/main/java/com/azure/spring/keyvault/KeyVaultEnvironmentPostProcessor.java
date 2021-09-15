@@ -51,9 +51,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        if (!isKeyVaultClientAvailable()) {
+            logger.info("Key Vault client is not present, skip the Key Vault property source");
+            return;
+        }
+
         final AzureKeyVaultSecretProperties keyVaultSecretProperties = loadProperties(Binder.get(environment));
 
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
+
             if (keyVaultSecretProperties.getPropertySources().isEmpty()) {
                 keyVaultSecretProperties.getPropertySources().add(new AzureKeyVaultPropertySourceProperties());
             }
@@ -157,9 +163,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return true if the key vault is enabled, false otherwise.
      */
     private boolean isKeyVaultPropertySourceEnabled(AzureKeyVaultSecretProperties properties) {
-        return isKeyVaultClientAvailable()
-                   && (Boolean.TRUE.equals(properties.getPropertySourceEnabled())
-                           || !properties.getPropertySources().isEmpty());
+        return Boolean.TRUE.equals(properties.getPropertySourceEnabled())
+                   || !properties.getPropertySources().isEmpty();
     }
 
     private boolean isKeyVaultClientAvailable() {
