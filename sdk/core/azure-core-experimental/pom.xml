@@ -130,8 +130,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                  <include>org.graalvm.sdk:graal-sdk:[21.2.0]</include>
-                  <include>org.graalvm.nativeimage:svm:[21.2.0]</include>
+                  <include>org.graalvm.sdk:graal-sdk:[21.2.0]</include> <!-- {x-include-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
+                  <include>org.graalvm.nativeimage:svm:[21.2.0]</include> <!-- {x-include-update;org.graalvm.nativeimage:svm;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
