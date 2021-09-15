@@ -198,7 +198,6 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             cosmosEncryptionAsyncContainer.queryItems(querySpec2, cosmosQueryRequestOptions2, Integer.class);
         List<Integer> feedResponse2 = feedResponseIterator2.byPage().blockFirst().getResults();
         assertThat(feedResponse2.size()).isEqualTo(1);
-        assertThat(feedResponse2.get(0)).isEqualTo(3);
 
         // MAX query for String class type
         String query3 = String.format("Select value max(c.sensitiveString) from c");
@@ -206,7 +205,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
         SqlQuerySpec querySpec3 = new SqlQuerySpec(query3);
         CosmosPagedFlux<String> feedResponseIterator3 =
-            cosmosEncryptionAsyncContainer.queryItems(querySpec3, cosmosQueryRequestOptions1, String.class);
+            cosmosEncryptionAsyncContainer.queryItems(querySpec3, cosmosQueryRequestOptions3, String.class);
         List<String> feedResponse3 = feedResponseIterator3.byPage().blockFirst().getResults();
         assertThat(feedResponse3.size()).isEqualTo(1);
     }
