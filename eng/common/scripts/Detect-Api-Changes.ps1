@@ -9,7 +9,7 @@ Param (
   [Parameter(Mandatory=$True)]
   [string] $CommitSha,
   [Parameter(Mandatory=$True)]
-  [string] $ArtifactList,
+  [array] $ArtifactList,
   [string] $RepoFullName = "",
   [string] $ArtifactName = "packages",
   [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges"
@@ -20,7 +20,7 @@ function Submit-Request($filePath)
 {
     $repoName = $RepoFullName
     if (!$repoName) {
-        $repoName = "azure/azure-sdk-for-$Language"
+        $repoName = "azure/azure-sdk-for-$LanguageShort"
     }
     $query = [System.Web.HttpUtility]::ParseQueryString('')
     $query.Add('artifactName', $ArtifactName)
@@ -34,7 +34,7 @@ function Submit-Request($filePath)
     Write-Host "Request URI: $($uri.Uri.OriginalString)"
     try
     {
-        $Response = Invoke-WebRequest -Method 'GET' -Uri $uri.Uri
+        $Response = Invoke-WebRequest -Method 'GET' -Uri $uri.Uri -MaximumRetryCount 3
         $StatusCode = $Response.StatusCode
     }
     catch
@@ -51,7 +51,7 @@ function Should-Process-Package($pkgPath, $packageName)
     $pkg = Split-Path -Leaf $pkgPath
     $configFileDir = Join-Path -Path $ArtifactPath "PackageInfo"
     $pkgPropPath = Join-Path -Path $configFileDir "$packageName.json"
-    if (-Not (Test-Path $pkgPropPath))
+    if (!(Test-Path $pkgPropPath))
     {
         Write-Host " Package property file path $($pkgPropPath) is invalid."
         return $False
@@ -76,24 +76,18 @@ function Log-Input-Params()
 . (Join-Path $PSScriptRoot common.ps1)
 Log-Input-Params
 
-$artifacts = $ArtifactList.Split(",")
-foreach ($pkgName in $artifacts)
+if (!($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn")))
+{
+    Write-Host "The function for 'FindArtifactForApiReviewFn' was not found.`
+    Make sure it is present in eng/scripts/Language-Settings.ps1 and referenced in eng/common/scripts/common.ps1.`
+    See https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/common_engsys.md#code-structure"
+    exit 1
+}
+
+foreach ($pkgName in $ArtifactList)
 {
     Write-Host "Processing $pkgName"
-    $packages = @{}
-    if ($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiReviewFn"))
-    {
-        $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgName
-    }
-    else
-    {
-        Write-Host "The function for 'FindArtifactForApiReviewFn' was not found.`
-        Make sure it is present in eng/scripts/Language-Settings.ps1 and referenced in eng/common/scripts/common.ps1.`
-        See https://github.com/Azure/azure-sdk-tools/blob/main/doc/common/common_engsys.md#code-structure"
-        exit 1
-    }
-
-
+    $packages = &$FindArtifactForApiReviewFn $ArtifactPath $pkgName
     if ($packages)
     {
         $pkgPath = $packages.Values[0]
@@ -105,6 +99,6 @@ foreach ($pkgName in $artifacts)
     }
     else
     {
-        Write-Host "No package is found in artifact path to submit review request"
+        Write-Host "No package is found in artifact path to find API changes"
     }
 }
