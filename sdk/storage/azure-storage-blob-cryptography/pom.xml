@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+  <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
 
   <name>Microsoft Azure client library for Blob Storage cryptography</name>
   <description>This module contains client library for Microsoft Azure Blob Storage cryptography.</description>
