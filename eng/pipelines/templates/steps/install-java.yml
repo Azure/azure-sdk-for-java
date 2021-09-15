@@ -16,4 +16,4 @@ steps:
       jdkFile: "$(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz"
       jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
       cleanDestinationDirectory: false
-    condition: and(succeeded(), eq('${{ parameters.JavaVersion }}'', '1.17'))
+    condition: and(succeeded(), eq('${{ parameters.JavaVersion }}', '1.17'))
