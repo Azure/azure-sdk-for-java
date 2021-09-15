@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
