@@ -648,6 +648,7 @@
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                     -snippetpath ${project.basedir}/sdk/attestation/azure-security-attestation/src/samples/java
                     -snippetpath ${project.basedir}/sdk/communication/azure-communication-callingserver/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/communication/azure-communication-chat/src/samples/java
                     -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
                     -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
