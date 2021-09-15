@@ -11,7 +11,7 @@ variables:
   # If reports about Maven dependency downloads become more common investigate re-introducing "-Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false", or other iterations of the configurations.
   WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60'
   DefaultOptions: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx3072m'
   DefaultTestOptions: '$(DefaultOptions) -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
