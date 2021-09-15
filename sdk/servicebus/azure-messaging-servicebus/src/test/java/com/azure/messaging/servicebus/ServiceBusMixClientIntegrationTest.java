@@ -90,15 +90,15 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
         final CountDownLatch countdownLatch = new CountDownLatch(1);
         final AtomicInteger receivedMessages = new AtomicInteger();
 
-        final String messageId = UUID.randomUUID().toString();
+        String messageId = UUID.randomUUID().toString();
         ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
         message.setSessionId(sessionId);
-        final List<ServiceBusMessage> messages = Arrays.asList(message);
+        List<ServiceBusMessage> messages = Arrays.asList(message);
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials).enableCrossEntityTransactions();
 
-        final ServiceBusSenderAsyncClient senderAsyncA;
-        final ServiceBusSenderClient senderSyncB;
+        ServiceBusSenderAsyncClient senderAsyncA;
+        ServiceBusSenderClient senderSyncB;
 
         // Initialize sender
         senderAsyncA = builder.sender().queueName(queueA).buildAsyncClient();
@@ -133,7 +133,7 @@ public class ServiceBusMixClientIntegrationTest extends IntegrationTestBase {
             }
         };
 
-        final ServiceBusProcessorClient processorA;
+        ServiceBusProcessorClient processorA;
         // Initialize processor client
         if (isSessionEnabled) {
             processorA = builder.sessionProcessor().disableAutoComplete().queueName(queueA)
