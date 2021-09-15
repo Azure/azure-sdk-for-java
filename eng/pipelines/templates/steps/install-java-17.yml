@@ -1,39 +1,11 @@
 steps:
-  - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_linux-x64_bin.tar.gz -OutFile $(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz
-    condition: and(succeeded(), contains(variables['OSVmImage'], 'ubuntu'))
-
-  - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_macos-x64_bin.tar.gz  -OutFile $(agent.tempDirectory)/openjdk-17_macos-x64_bin.tar.gz
-    condition: and(succeeded(), contains(variables['OSVmImage'], 'macOS'))
-
-  - pwsh: Invoke-WebRequest -Uri https://download.java.net/java/GA/jdk17/0d483333a00540d886896bac774ff48b/35/GPL/openjdk-17_windows-x64_bin.zip -OutFile openjdk-17_windows-x64_bin.zip
-    condition: and(succeeded(), contains(variables['OSVmImage'], '2019'))
+  - pwsh: Invoke-WebRequest -Uri $(jdkUri) -OutFile $(agent.tempDirectory)/$(jdkFilename)
 
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: "17"
       jdkArchitectureOption: x64
       jdkSourceOption: LocalDirectory
-      jdkFile: "$(agent.tempDirectory)/openjdk-17_linux-x64_bin.tar.gz"
+      jdkFile: "$(agent.tempDirectory)/$(jdkFilename)"
       jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
       cleanDestinationDirectory: false
-    condition: and(succeeded(), contains(variables['OSVmImage'], 'ubuntu'))
-
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: "17"
-      jdkArchitectureOption: x64
-      jdkSourceOption: LocalDirectory
-      jdkFile: "$(agent.tempDirectory)/openjdk-17_macos-x64_bin.tar.gz"
-      jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
-      cleanDestinationDirectory: false
-    condition: and(succeeded(), contains(variables['OSVmImage'], 'macOS'))
-
-  - task: JavaToolInstaller@0
-    inputs:
-      versionSpec: "17"
-      jdkArchitectureOption: x64
-      jdkSourceOption: LocalDirectory
-      jdkFile: "$(agent.tempDirectory)/openjdk-17_windows-x64_bin.zip"
-      jdkDestinationDirectory: "$(agent.toolsDirectory)/jdk17"
-      cleanDestinationDirectory: false
-    condition: and(succeeded(), contains(variables['OSVmImage'], '2019'))
