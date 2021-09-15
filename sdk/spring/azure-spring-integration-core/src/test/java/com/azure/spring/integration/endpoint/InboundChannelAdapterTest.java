@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support;
+package com.azure.spring.integration.endpoint;
 
-import com.azure.spring.integration.AbstractInboundChannelAdapter;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.integration.channel.DirectChannel;
@@ -16,9 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannelAdapter> {
 
@@ -49,10 +46,10 @@ public abstract class InboundChannelAdapterTest<A extends AbstractInboundChannel
         });
 
         this.messages.forEach(this.adapter::receiveMessage);
-        assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
+        Assertions.assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
-            assertEquals(receivedMessages.get(i), payloads[i]);
+            Assertions.assertEquals(receivedMessages.get(i), payloads[i]);
         }
     }
 

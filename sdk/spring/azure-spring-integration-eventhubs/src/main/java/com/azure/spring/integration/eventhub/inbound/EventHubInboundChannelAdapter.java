@@ -3,8 +3,8 @@
 
 package com.azure.spring.integration.eventhub.inbound;
 
-import com.azure.spring.integration.core.AbstractInboundChannelAdapter;
-import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
+import com.azure.spring.integration.endpoint.AbstractInboundChannelAdapter;
+import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;

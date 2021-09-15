@@ -133,6 +133,7 @@ org.springframework:spring-tx;5.3.9
 org.springframework:spring-web;5.3.9
 org.springframework:spring-webmvc;5.3.9
 org.springframework:spring-webflux;5.3.9
+org.springframework:spring-test;5.3.9
 
 org.springframework.boot:spring-boot-starter-parent;2.5.4
 

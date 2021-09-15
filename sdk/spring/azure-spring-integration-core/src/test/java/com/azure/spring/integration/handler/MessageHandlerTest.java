@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support;
+package com.azure.spring.integration.handler;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.expression.Expression;
 import org.springframework.integration.MessageTimeoutException;
@@ -24,7 +24,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.spy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class MessageHandlerTest<O extends SendOperation> {
 
@@ -125,7 +124,7 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
             .thenReturn(new CompletableFuture<>());
         this.handler.setSync(true);
         this.handler.setSendTimeout(1);
-        assertThrows(MessageTimeoutException.class, () -> this.handler.handleMessage(this.message));
+        Assertions.assertThrows(MessageTimeoutException.class, () -> this.handler.handleMessage(this.message));
     }
 
     @Test

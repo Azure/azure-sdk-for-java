@@ -173,7 +173,6 @@ com.azure.spring:azure-spring-integration-core;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-eventhubs;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-servicebus;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-storage-queue;4.0.0-beta.1;4.0.0-beta.1
-com.azure.spring:azure-spring-integration-test;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-messaging;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-eventhubs;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-servicebus;4.0.0-beta.1;4.0.0-beta.1

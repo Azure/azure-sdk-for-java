@@ -27,6 +27,7 @@
         <module>azure-spring-cloud-stream-binder-servicebus-topic</module>
         <module>azure-spring-messaging</module>
         <module>azure-spring-eventhubs</module>
+        <module>azure-spring-servicebus</module>
       </modules>
       <dependencies>
         <dependency>
@@ -98,6 +99,11 @@
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-eventhubs</artifactId>
           <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-eventhubs;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-servicebus</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-servicebus;current} -->
         </dependency>
       </dependencies>
 
@@ -172,9 +178,9 @@
         <module>azure-spring-integration-eventhubs</module>
         <module>azure-spring-integration-servicebus</module>
         <module>azure-spring-integration-storage-queue</module>
-        <module>azure-spring-integration-test</module>
         <module>azure-spring-messaging</module>
         <module>azure-spring-eventhubs</module>
+        <module>azure-spring-servicebus</module>
       </modules>
     </profile>
   </profiles>

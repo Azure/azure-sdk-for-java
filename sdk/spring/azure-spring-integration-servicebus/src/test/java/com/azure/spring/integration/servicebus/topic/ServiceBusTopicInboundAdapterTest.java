@@ -5,8 +5,8 @@ package com.azure.spring.integration.servicebus.topic;
 
 import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
-import com.azure.spring.integration.servicebus.support.ServiceBusTopicTestOperation;
-import com.azure.spring.integration.test.support.InboundChannelAdapterTest;
+import com.azure.spring.servicebus.support.ServiceBusTopicTestOperation;
+import com.azure.spring.integration.endpoint.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;

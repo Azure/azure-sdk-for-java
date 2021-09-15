@@ -3,7 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder;
 
-import com.azure.spring.integration.core.DefaultMessageHandler;
+import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;

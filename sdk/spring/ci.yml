@@ -56,7 +56,6 @@ trigger:
       - sdk/spring/azure-spring-integration-eventhubs/pom.xml
       - sdk/spring/azure-spring-integration-servicebus/pom.xml
       - sdk/spring/azure-spring-integration-storage-queue/pom.xml
-      - sdk/spring/azure-spring-integration-test/pom.xml
 
 pr:
   branches:
@@ -114,7 +113,6 @@ pr:
       - sdk/spring/azure-spring-integration-eventhubs/pom.xml
       - sdk/spring/azure-spring-integration-servicebus/pom.xml
       - sdk/spring/azure-spring-integration-storage-queue/pom.xml
-      - sdk/spring/azure-spring-integration-test/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -188,10 +186,6 @@ extends:
       - name: azure-spring-integration-core
         groupId: com.azure.spring
         safeName: azurespringintegrationcore
-        skipPublishDocMs: true
-      - name: azure-spring-integration-test
-        groupId: com.azure.spring
-        safeName: azurespringintegrationtest
         skipPublishDocMs: true
       - name: azure-spring-integration-eventhubs
         groupId: com.azure.spring

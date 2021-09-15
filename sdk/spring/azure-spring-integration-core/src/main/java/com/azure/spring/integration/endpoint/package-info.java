@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.integration;
+ * Package com.azure.spring.integration.endpoint;
  */
-package com.azure.spring.integration;
+package com.azure.spring.integration.endpoint;

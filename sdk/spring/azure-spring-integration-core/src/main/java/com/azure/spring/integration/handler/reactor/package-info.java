@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.integration.core.api.reactor;
+ * Package com.azure.spring.integration.handler.reactor;
  */
-package com.azure.spring.integration.core.handler.reactor;
+package com.azure.spring.integration.handler.reactor;

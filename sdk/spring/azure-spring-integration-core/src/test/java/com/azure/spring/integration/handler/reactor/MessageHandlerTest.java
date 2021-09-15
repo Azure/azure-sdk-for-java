@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.test.support.reactor;
+package com.azure.spring.integration.handler.reactor;
 
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.api.PartitionSupplier;
-import com.azure.spring.integration.handler.reactor.DefaultMessageHandler;
-import com.azure.spring.integration.core.api.reactor.SendOperation;
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.core.reactor.SendOperation;
 import org.junit.jupiter.api.Test;
 import org.springframework.expression.Expression;
 import org.springframework.integration.MessageTimeoutException;
