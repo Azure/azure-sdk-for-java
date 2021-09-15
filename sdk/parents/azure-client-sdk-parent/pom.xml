@@ -287,6 +287,7 @@
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
               <excludes>
+                <exclude>**/com/azure/core/experimental/implementation/graalvm/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
@@ -1435,7 +1436,7 @@
           <plugin>
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
-            <version>0.9.2</version>  <!-- {x-version-update;org.graalvm.buildtools:junit-platform-native;external_dependency} -->
+            <version>0.9.2</version>  <!-- {x-version-update;org.graalvm.buildtools:native-maven-plugin;external_dependency} -->
             <configuration>
               <skip>${graalvm.enable}</skip>
               <buildArgs>--no-fallback</buildArgs>
