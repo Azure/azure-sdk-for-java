@@ -73,7 +73,4 @@ class AzureEventHubSharedCredentialClientConfiguration {
         }
     }
 
-
-
-
 }

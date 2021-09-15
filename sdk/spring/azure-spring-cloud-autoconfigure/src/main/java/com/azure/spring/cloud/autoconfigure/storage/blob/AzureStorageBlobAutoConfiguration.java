@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -33,14 +33,14 @@ import java.lang.annotation.Target;
 @AzureStorageBlobAutoConfiguration.ConditionalOnStorageBlob
 public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageBlobAutoConfiguration(AzureConfigurationProperties azureProperties) {
-        super(azureProperties);
+    public AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
     public AzureStorageBlobProperties azureStorageBlobProperties() {
-        return loadProperties(this.azureProperties, new AzureStorageBlobProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureStorageBlobProperties());
     }
 
     @Bean

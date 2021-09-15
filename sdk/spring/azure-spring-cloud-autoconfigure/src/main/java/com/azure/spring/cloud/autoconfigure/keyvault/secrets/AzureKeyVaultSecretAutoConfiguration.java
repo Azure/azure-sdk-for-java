@@ -7,20 +7,13 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Auto-configuration for a {@link SecretClientBuilder} and Azure Key Vault secret clients.
@@ -31,14 +24,14 @@ import java.lang.annotation.Target;
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
 
-    public AzureKeyVaultSecretAutoConfiguration(AzureConfigurationProperties azureProperties) {
-        super(azureProperties);
+    public AzureKeyVaultSecretAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
     public AzureKeyVaultSecretProperties azureKeyVaultSecretProperties() {
-        return loadProperties(this.azureProperties, new AzureKeyVaultSecretProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureKeyVaultSecretProperties());
     }
 
     @Bean

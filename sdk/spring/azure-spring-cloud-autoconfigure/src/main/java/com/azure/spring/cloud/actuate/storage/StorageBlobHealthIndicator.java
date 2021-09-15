@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.actuate.storage;
 
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 
@@ -32,9 +33,9 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
                 healthBuilder.status(NOT_CONFIGURED_STATUS);
             } else {
                 healthBuilder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
-                StorageAccountInfo info;
+                final Response<BlobServiceProperties> info;
                 try {
-                    info = blobServiceAsyncClient.getAccountInfo().block(POLL_TIMEOUT);
+                     info = blobServiceAsyncClient.getPropertiesWithResponse().block(POLL_TIMEOUT);
                     if (info != null) {
                         healthBuilder.up();
                     }

@@ -22,9 +22,9 @@ public class StorageActuatorIT {
     public void testBlobStorageActuatorHealth() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("spring.cloud.azure.storage.account-name", AZURE_STORAGE_ACCOUNT_NAME);
-            app.property("spring.cloud.azure.storage.account-key", AZURE_STORAGE_ACCOUNT_KEY);
-            app.property("spring.cloud.azure.storage.blob-endpoint", AZURE_STORAGE_BLOB_ENDPOINT);
+            app.property("spring.cloud.azure.storage.blob.account-name", AZURE_STORAGE_ACCOUNT_NAME);
+            app.property("spring.cloud.azure.storage.blob.account-key", AZURE_STORAGE_ACCOUNT_KEY);
+            app.property("spring.cloud.azure.storage.blob.endpoint", AZURE_STORAGE_BLOB_ENDPOINT);
             app.property("blob", AZURE_STORAGE_BLOB);
             app.property("management.endpoint.health.show-details", "always");
             app.property("management.endpoints.web.exposure.include", "*");
@@ -49,9 +49,9 @@ public class StorageActuatorIT {
     public void testFileStorageActuatorHealth() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("spring.cloud.azure.storage.account-name", AZURE_STORAGE_ACCOUNT_NAME);
-            app.property("spring.cloud.azure.storage.account-key", AZURE_STORAGE_ACCOUNT_KEY);
-            app.property("spring.cloud.azure.storage.file-endpoint", AZURE_STORAGE_FILE_ENDPOINT);
+            app.property("spring.cloud.azure.storage.blob.account-name", AZURE_STORAGE_ACCOUNT_NAME);
+            app.property("spring.cloud.azure.storage.blob.account-key", AZURE_STORAGE_ACCOUNT_KEY);
+            app.property("spring.cloud.azure.storage.blob.file-endpoint", AZURE_STORAGE_FILE_ENDPOINT);
             app.property("file", AZURE_STORAGE_FILE);
             app.property("management.endpoint.health.show-details", "always");
             //start app

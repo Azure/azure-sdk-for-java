@@ -7,17 +7,17 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
 import com.azure.spring.core.properties.aware.credential.KeyAware;
 import com.azure.spring.core.properties.client.ClientProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
@@ -25,64 +25,50 @@ import javax.validation.constraints.Pattern;
 @Validated
 public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements KeyAware {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureCosmosProperties.class);
-
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
     @NotEmpty
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String uri;
 
-//    @NotEmpty
     private String key;
 
+    private String database;
+
+    private String resourceToken;
+
+    private Boolean clientTelemetryEnabled;
+    private Boolean endpointDiscoveryEnabled;
+    private Boolean connectionSharingAcrossClientsEnabled;
+    private Boolean contentResponseOnWriteEnabled;
+    private Boolean multipleWriteRegionsEnabled;
     /**
      * Override enabled, session capturing is enabled by default for {@link ConsistencyLevel#SESSION}
      */
-    private boolean sessionCapturingOverrideEnabled = false;
-    private boolean connectionSharingAcrossClientsEnabled = false;
-    private boolean contentResponseOnWriteEnabled = false;
-    private final CosmosPermissionProperties permissions = new CosmosPermissionProperties();
+    private Boolean sessionCapturingOverrideEnabled;
+    private Boolean readRequestsFallbackEnabled;
+
+    private final List<CosmosPermissionProperties> permissions = new ArrayList<>();
+
+    private final List<String> preferredRegions = new ArrayList<>();
+
+    private final ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+
+    private ConsistencyLevel consistencyLevel;
+    private ConnectionMode connectionMode;
     private final GatewayConnectionConfig gatewayConnection = new GatewayConnectionConfig();
     private final DirectConnectionConfig directConnection = new DirectConnectionConfig();
-
-    /**
-     * Document DB consistency level.
-     */
-    private ConsistencyLevel consistencyLevel;
-
-    // TODO (xiada): only for Spring Data Cosmos
-    /**
-     * Document DB database name.
-     */
-//    @NotEmpty
-    private String database;
 
     /**
      * Populate Diagnostics Strings and Query metrics
      */
     private boolean populateQueryMetrics;
 
-    /**
-     * Represents the connection mode to be used by the client in the Azure Cosmos DB database service.
-     */
-    private ConnectionMode connectionMode;
 
     @Override
     public ClientProperties getClient() {
         return new ClientProperties();
     }
-
-    //    /**
-//     * Response Diagnostics processor
-//     * Default implementation is to log the response diagnostics string
-//     */
-//    private ResponseDiagnosticsProcessor responseDiagnosticsProcessor =
-//        responseDiagnostics -> {
-//            if (populateQueryMetrics) {
-//                LOGGER.info("Response Diagnostics {}", responseDiagnostics);
-//            }
-//        };
 
     public String getUri() {
         return uri;
@@ -92,40 +78,86 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
         this.uri = uri;
     }
 
+    @Override
     public String getKey() {
         return key;
     }
 
+    @Override
     public void setKey(String key) {
         this.key = key;
     }
 
-    public boolean isSessionCapturingOverrideEnabled() {
-        return sessionCapturingOverrideEnabled;
+    public String getResourceToken() {
+        return resourceToken;
     }
 
-    public void setSessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
-        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
+    public void setResourceToken(String resourceToken) {
+        this.resourceToken = resourceToken;
     }
 
-    public boolean isConnectionSharingAcrossClientsEnabled() {
+    public Boolean getClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    public void setClientTelemetryEnabled(Boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+    }
+
+    public Boolean getEndpointDiscoveryEnabled() {
+        return endpointDiscoveryEnabled;
+    }
+
+    public void setEndpointDiscoveryEnabled(Boolean endpointDiscoveryEnabled) {
+        this.endpointDiscoveryEnabled = endpointDiscoveryEnabled;
+    }
+
+    public Boolean getConnectionSharingAcrossClientsEnabled() {
         return connectionSharingAcrossClientsEnabled;
     }
 
-    public void setConnectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
+    public void setConnectionSharingAcrossClientsEnabled(Boolean connectionSharingAcrossClientsEnabled) {
         this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
     }
 
-    public boolean isContentResponseOnWriteEnabled() {
+    public Boolean getContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
 
-    public void setContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+    public void setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 
-    public CosmosPermissionProperties getPermissions() {
+    public Boolean getMultipleWriteRegionsEnabled() {
+        return multipleWriteRegionsEnabled;
+    }
+
+    public void setMultipleWriteRegionsEnabled(Boolean multipleWriteRegionsEnabled) {
+        this.multipleWriteRegionsEnabled = multipleWriteRegionsEnabled;
+    }
+
+    public Boolean getSessionCapturingOverrideEnabled() {
+        return sessionCapturingOverrideEnabled;
+    }
+
+    public void setSessionCapturingOverrideEnabled(Boolean sessionCapturingOverrideEnabled) {
+        this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
+    }
+
+    public Boolean getReadRequestsFallbackEnabled() {
+        return readRequestsFallbackEnabled;
+    }
+
+    public void setReadRequestsFallbackEnabled(Boolean readRequestsFallbackEnabled) {
+        this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+    }
+
+    public List<CosmosPermissionProperties> getPermissions() {
         return permissions;
+    }
+
+    public List<String> getPreferredRegions() {
+        return preferredRegions;
     }
 
     public GatewayConnectionConfig getGatewayConnection() {
@@ -166,5 +198,9 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     public void setConnectionMode(ConnectionMode connectionMode) {
         this.connectionMode = connectionMode;
+    }
+
+    public ThrottlingRetryOptions getThrottlingRetryOptions() {
+        return throttlingRetryOptions;
     }
 }

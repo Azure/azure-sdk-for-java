@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.management.AzureEnvironment;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -12,16 +12,16 @@ import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AzurePropertyAutoConfigurationTest {
+class AzureGlobalPropertiesAutoConfigurationTest {
 
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzurePropertyAutoConfiguration.class));
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class));
 
     @Test
     void testAutoConfiguration() {
         this.contextRunner.run(context -> {
-            assertThat(context).hasSingleBean(AzurePropertyAutoConfiguration.class);
-            assertThat(context).hasSingleBean(AzureConfigurationProperties.class);
+            assertThat(context).hasSingleBean(AzureGlobalPropertiesAutoConfiguration.class);
+            assertThat(context).hasSingleBean(AzureGlobalProperties.class);
         });
     }
 
@@ -42,7 +42,7 @@ class AzurePropertyAutoConfigurationTest {
             "spring.cloud.azure.profile.cloud=azure_china"
             )
             .run(context -> {
-                final AzureConfigurationProperties azureProperties = context.getBean(AzureConfigurationProperties.class);
+                final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
                 assertThat(azureProperties).extracting("client.applicationId").isEqualTo("fake-application-id");
                 assertThat(azureProperties).extracting("credential.clientId").isEqualTo("fake-client-id");
                 assertThat(azureProperties).extracting("credential.clientSecret").isEqualTo("fake-client-secret");

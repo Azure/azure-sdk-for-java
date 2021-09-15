@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -24,9 +23,9 @@ import org.springframework.context.annotation.Import;
  * @author Warren Zhu
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(EventHubClientFactory.class)
+@ConditionalOnClass(EventHubOperation.class)
 @ConditionalOnBean(EventHubSharedAuthenticationClientBuilder.class)
-@ConditionalOnProperty(prefix = AzureEventHubProperties.PREFIX, name = "enabled", matchIfMissing = true)
+@AzureEventHubAutoConfiguration.ConditionalOnEventHub
 @AutoConfigureAfter(AzureEventHubAutoConfiguration.class)
 @Import(AzureEventHubSharedCredentialClientConfiguration.class)
 public class AzureEventHubOperationAutoConfiguration {

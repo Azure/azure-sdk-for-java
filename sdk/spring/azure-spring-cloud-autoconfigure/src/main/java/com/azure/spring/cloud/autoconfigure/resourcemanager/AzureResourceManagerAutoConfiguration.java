@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,6 +25,12 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty("spring.cloud.azure.profile.tenant-id")
 public class AzureResourceManagerAutoConfiguration {
 
+    private final AzureGlobalProperties globalProperties;
+
+    public AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
+        this.globalProperties = globalProperties;
+    }
+
     @Bean
     @ConditionalOnMissingBean
     public AzureResourceManager azureResourceManager(TokenCredential tokenCredential, AzureProfile azureProfile) {
@@ -35,12 +41,12 @@ public class AzureResourceManagerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AzureProfile azureProfile(AzureConfigurationProperties azureProperties) {
-        return new AzureProfile(azureProperties.getProfile().getTenantId(),
-                                azureProperties.getProfile().getSubscriptionId(),
-                                new AzureEnvironment(azureProperties.getProfile().getEnvironment().exportEndpointsMap()));
-
-
+    public AzureProfile azureProfile() {
+        return new AzureProfile(this.globalProperties.getProfile().getTenantId(),
+                                this.globalProperties.getProfile().getSubscriptionId(),
+                                new AzureEnvironment(this.globalProperties.getProfile()
+                                                                          .getEnvironment()
+                                                                          .exportEndpointsMap()));
     }
 
 }

@@ -4,7 +4,7 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.servicebus.stream.binder.config.ServiceBusQueueBinderConfiguration;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ServiceBusQueueSessionBinderConfigTest {
 
     ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureConfigurationProperties.class, AzureConfigurationProperties::new)
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
         .withUserConfiguration(ServiceBusQueueBinderConfiguration.class)
         .withPropertyValues(
             "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://test;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=test",

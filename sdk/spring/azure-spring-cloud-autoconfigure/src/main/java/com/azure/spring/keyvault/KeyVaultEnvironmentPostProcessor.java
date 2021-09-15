@@ -7,7 +7,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.SecretClientBuilderFactory;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
@@ -142,9 +142,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     }
 
     private AzureKeyVaultSecretProperties loadProperties(Binder binder) {
-        AzureConfigurationProperties azureProperties = binder
-            .bind(AzureConfigurationProperties.PREFIX, Bindable.of(AzureConfigurationProperties.class))
-            .orElseGet(AzureConfigurationProperties::new);
+        AzureGlobalProperties azureProperties = binder
+            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
+            .orElseGet(AzureGlobalProperties::new);
 
         AzureKeyVaultSecretProperties existingValue = new AzureKeyVaultSecretProperties();
         AzurePropertiesUtils.copyAzureProperties(azureProperties, existingValue);

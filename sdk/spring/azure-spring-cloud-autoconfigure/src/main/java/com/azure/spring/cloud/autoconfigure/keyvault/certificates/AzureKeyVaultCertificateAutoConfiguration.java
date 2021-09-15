@@ -7,7 +7,7 @@ import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,14 +24,14 @@ import org.springframework.context.annotation.Bean;
 public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfigurationBase {
 
 
-    public AzureKeyVaultCertificateAutoConfiguration(AzureConfigurationProperties azureProperties) {
-        super(azureProperties);
+    public AzureKeyVaultCertificateAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.certificate")
     @Bean
     public AzureKeyVaultCertificateProperties azureKeyVaultCertificateProperties() {
-        return loadProperties(this.azureProperties, new AzureKeyVaultCertificateProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureKeyVaultCertificateProperties());
     }
 
     @Bean

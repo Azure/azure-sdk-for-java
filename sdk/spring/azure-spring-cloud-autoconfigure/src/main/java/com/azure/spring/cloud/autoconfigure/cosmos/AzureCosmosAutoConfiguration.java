@@ -7,12 +7,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
@@ -24,14 +22,14 @@ import org.springframework.context.annotation.Bean;
                              + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}')")
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureCosmosAutoConfiguration(AzureConfigurationProperties azureProperties) {
-        super(azureProperties);
+    public AzureCosmosAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(AzureCosmosProperties.PREFIX)
     public AzureCosmosProperties azureCosmosProperties() {
-        return loadProperties(this.azureProperties, new AzureCosmosProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureCosmosProperties());
     }
 
     @Bean
@@ -42,6 +40,7 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
 
     @Bean
     @ConditionalOnMissingBean
+    // TODO (xiada): spring data cosmos also defines a CosmosAsyncClient
     public CosmosAsyncClient azureCosmosAsyncClient(CosmosClientBuilder builder) {
         return builder.buildAsyncClient();
     }

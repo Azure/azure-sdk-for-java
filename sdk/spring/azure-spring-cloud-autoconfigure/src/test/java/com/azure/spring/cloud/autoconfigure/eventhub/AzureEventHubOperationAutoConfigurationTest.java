@@ -7,9 +7,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 class AzureEventHubOperationAutoConfigurationTest {
-
-
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureEventHubOperationAutoConfiguration.class));
 
    /* @Test

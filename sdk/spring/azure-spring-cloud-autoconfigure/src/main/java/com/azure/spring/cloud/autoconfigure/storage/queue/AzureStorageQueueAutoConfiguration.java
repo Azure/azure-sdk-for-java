@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.queue;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
@@ -33,14 +33,14 @@ import java.lang.annotation.Target;
 @AzureStorageQueueAutoConfiguration.ConditionalOnStorageQueue
 public class AzureStorageQueueAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageQueueAutoConfiguration(AzureConfigurationProperties azureProperties) {
-        super(azureProperties);
+    public AzureStorageQueueAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
     public AzureStorageQueueProperties azureStorageQueueProperties() {
-        return loadProperties(this.azureProperties, new AzureStorageQueueProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureStorageQueueProperties());
     }
 
     @Bean

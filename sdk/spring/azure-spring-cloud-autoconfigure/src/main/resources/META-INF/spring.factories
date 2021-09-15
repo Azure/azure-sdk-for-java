@@ -12,7 +12,7 @@ com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
 com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.context.AzurePropertyAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\

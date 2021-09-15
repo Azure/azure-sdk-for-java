@@ -3,8 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.cosmos;
 
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -15,6 +17,7 @@ import java.time.Duration;
 import static com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosPropertiesTest.TEST_URI_HTTPS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -39,14 +42,40 @@ class AzureCosmosAutoConfigurationTest {
     }
 
     @Test
+    void configureWithoutUri() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.cosmos.enabled=true")
+            .run(context -> assertThat(context).doesNotHaveBean(AzureCosmosProperties.class));
+    }
+
+    @Test
+    void configureWithUri() {
+        final CosmosClientBuilder mockCosmosClientBuilder = mock(CosmosClientBuilder.class);
+        when(mockCosmosClientBuilder.buildClient()).thenReturn(mock(CosmosClient.class));
+        when(mockCosmosClientBuilder.buildAsyncClient()).thenReturn(mock(CosmosAsyncClient.class));
+
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.cosmos.uri=" + TEST_URI_HTTPS)
+            .withBean("azureProperties", AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilder.class, () -> mockCosmosClientBuilder)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCosmosProperties.class);
+                assertThat(context).hasSingleBean(CosmosClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(CosmosClientBuilder.class);
+                assertThat(context).hasSingleBean(CosmosClient.class);
+                assertThat(context).hasSingleBean(CosmosAsyncClient.class);
+            });
+    }
+
+    @Test
     void configureAzureCosmosProperties() {
-        AzureConfigurationProperties azureProperties = new AzureConfigurationProperties();
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
         azureProperties.getRetry().getBackoff().setDelay(Duration.ofSeconds(2));
 
         this.contextRunner
-            .withBean("azureProperties", AzureConfigurationProperties.class, () -> azureProperties)
+            .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .withPropertyValues("spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
                                 "spring.cloud.azure.cosmos.retry.backoff.delay=2m",
@@ -61,9 +90,9 @@ class AzureCosmosAutoConfigurationTest {
                 assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
                 assertThat(properties).extracting("uri").isEqualTo(TEST_URI_HTTPS);
                 assertThat(properties).extracting("key").isEqualTo("cosmos-key");
+
+                assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
     }
-
-
 
 }

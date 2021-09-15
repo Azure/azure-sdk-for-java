@@ -48,4 +48,5 @@ public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
         return builder.build();
     }
+
 }

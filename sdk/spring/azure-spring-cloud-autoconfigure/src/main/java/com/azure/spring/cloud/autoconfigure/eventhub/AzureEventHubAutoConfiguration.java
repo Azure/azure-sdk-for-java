@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhub;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -36,14 +36,14 @@ import java.lang.annotation.Target;
 @Configuration(proxyBeanMethods = false)
 public class AzureEventHubAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureEventHubAutoConfiguration(AzureConfigurationProperties azureProperties) {
-        super(azureProperties);
+    public AzureEventHubAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(AzureEventHubProperties.PREFIX)
     public AzureEventHubProperties azureEventHubProperties() {
-        return loadProperties(this.azureProperties, new AzureEventHubProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureEventHubProperties());
     }
 
     @Target({ ElementType.TYPE, ElementType.METHOD })

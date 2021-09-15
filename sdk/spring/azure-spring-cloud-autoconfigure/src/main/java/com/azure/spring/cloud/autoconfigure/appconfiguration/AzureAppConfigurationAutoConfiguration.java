@@ -7,7 +7,7 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.properties.AzureConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -20,17 +20,17 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnClass(ConfigurationClientBuilder.class)
 @ConditionalOnExpression("${spring.cloud.azure.appconfiguration.enabled:true}")
-@ConditionalOnBean(AzureConfigurationProperties.class)
+@ConditionalOnBean(AzureGlobalProperties.class)
 public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureAppConfigurationAutoConfiguration(AzureConfigurationProperties azureConfigurationProperties) {
-        super(azureConfigurationProperties);
+    public AzureAppConfigurationAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @ConfigurationProperties(prefix = AzureAppConfigurationProperties.PREFIX)
     @Bean
     public AzureAppConfigurationProperties azureAppConfigurationProperties() {
-        return loadProperties(this.azureProperties, new AzureAppConfigurationProperties());
+        return loadProperties(this.azureGlobalProperties, new AzureAppConfigurationProperties());
     }
 
     @Bean
