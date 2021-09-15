@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+  <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
 
   <name>Microsoft Azure client library for Blob Storage</name>
   <description>This module contains client library for Microsoft Azure Blob Storage.</description>

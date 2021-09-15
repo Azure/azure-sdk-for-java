@@ -46,7 +46,7 @@
     <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
     <azure.spring.boot.starter.keyvault.certificates.version>3.1.0</azure.spring.boot.starter.keyvault.certificates.version>
     <azure.spring.data.cosmos.version>3.11.0</azure.spring.data.cosmos.version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
-    <azure.storage.blob.version>12.13.0</azure.storage.blob.version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+    <azure.storage.blob.version>12.14.0</azure.storage.blob.version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     <azure.storage.fileshare.version>12.10.0</azure.storage.fileshare.version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
   </properties>
 
