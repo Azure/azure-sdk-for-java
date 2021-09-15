@@ -12,7 +12,7 @@ Param (
   [string] $ArtifactList,
   [string] $RepoName = "azure/azure-sdk-for-$Language",
   [string] $ArtifactName = "packages",
-  [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges"
+  [string] $APIViewUri = "https://apiviewstaging.azurewebsites.net/PullRequest/DetectApiChanges"
 )
 
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
