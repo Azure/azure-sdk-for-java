@@ -269,6 +269,7 @@
                 --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
                 --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED

@@ -53,7 +53,8 @@ public final class MetricsQueryClient {
      * @param resourceUri The resource URI for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @param options Options to filter the query.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param context Additional context that is passed through the Http pipeline during the service call. If no
+     * additional context is required, pass {@link Context#NONE} instead.
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -66,7 +67,7 @@ public final class MetricsQueryClient {
      * Lists all the metrics namespaces created for the resource URI.
      * @param resourceUri The resource URI for which the metrics namespaces are listed.
      * @param startTime The returned list of metrics namespaces are created after the specified start time.
-     * @return List of metrics namespaces.
+     * @return A {@link PagedIterable paged collection} of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
@@ -77,8 +78,9 @@ public final class MetricsQueryClient {
      * Lists all the metrics namespaces created for the resource URI.
      * @param resourceUri The resource URI for which the metrics namespaces are listed.
      * @param startTime The returned list of metrics namespaces are created after the specified start time.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return List of metrics namespaces.
+     * @param context Additional context that is passed through the Http pipeline during the service call. If no
+     * additional context is required, pass {@link Context#NONE} instead.
+     * @return A {@link PagedIterable paged collection} of metrics namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime,
@@ -89,7 +91,7 @@ public final class MetricsQueryClient {
     /**
      * Lists all the metrics definitions created for the resource URI.
      * @param resourceUri The resource URI for which the metrics definitions are listed.
-     * @return List of metrics definitions.
+     * @return A {@link PagedIterable paged collection} of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri) {
@@ -100,8 +102,9 @@ public final class MetricsQueryClient {
      * Lists all the metrics definitions created for the resource URI.
      * @param resourceUri The resource URI for which the metrics definitions are listed.
      * @param metricsNamespace The metrics namespace to which the listed metrics definitions belong.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return List of metrics definitions.
+     * @param context Additional context that is passed through the Http pipeline during the service call. If no
+     * additional context is required, pass {@link Context#NONE} instead.
+     * @return A {@link PagedIterable paged collection} of metrics definitions.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace,

@@ -6,36 +6,34 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.CustomOpenIdConnectProviderProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the custom Open ID Connect provider. */
 @Fluent
-public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
+public final class CustomOpenIdConnectProvider {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomOpenIdConnectProvider.class);
 
     /*
-     * CustomOpenIdConnectProvider resource specific properties
+     * <code>false</code> if the custom Open ID provider provider should not be
+     * enabled; otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "properties")
-    private CustomOpenIdConnectProviderProperties innerProperties;
+    @JsonProperty(value = "enabled")
+    private Boolean enabled;
 
-    /**
-     * Get the innerProperties property: CustomOpenIdConnectProvider resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The configuration settings of the app registration for the custom Open
+     * ID Connect provider.
      */
-    private CustomOpenIdConnectProviderProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "registration")
+    private OpenIdConnectRegistration registration;
 
-    /** {@inheritDoc} */
-    @Override
-    public CustomOpenIdConnectProvider withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    /*
+     * The configuration settings of the login flow of the custom Open ID
+     * Connect provider.
+     */
+    @JsonProperty(value = "login")
+    private OpenIdConnectLogin login;
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the custom Open ID provider provider should not be
@@ -44,7 +42,7 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+        return this.enabled;
     }
 
     /**
@@ -55,10 +53,7 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      * @return the CustomOpenIdConnectProvider object itself.
      */
     public CustomOpenIdConnectProvider withEnabled(Boolean enabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomOpenIdConnectProviderProperties();
-        }
-        this.innerProperties().withEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -69,7 +64,7 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      * @return the registration value.
      */
     public OpenIdConnectRegistration registration() {
-        return this.innerProperties() == null ? null : this.innerProperties().registration();
+        return this.registration;
     }
 
     /**
@@ -80,10 +75,7 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      * @return the CustomOpenIdConnectProvider object itself.
      */
     public CustomOpenIdConnectProvider withRegistration(OpenIdConnectRegistration registration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomOpenIdConnectProviderProperties();
-        }
-        this.innerProperties().withRegistration(registration);
+        this.registration = registration;
         return this;
     }
 
@@ -93,7 +85,7 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      * @return the login value.
      */
     public OpenIdConnectLogin login() {
-        return this.innerProperties() == null ? null : this.innerProperties().login();
+        return this.login;
     }
 
     /**
@@ -103,10 +95,7 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      * @return the CustomOpenIdConnectProvider object itself.
      */
     public CustomOpenIdConnectProvider withLogin(OpenIdConnectLogin login) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CustomOpenIdConnectProviderProperties();
-        }
-        this.innerProperties().withLogin(login);
+        this.login = login;
         return this;
     }
 
@@ -115,11 +104,12 @@ public final class CustomOpenIdConnectProvider extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (registration() != null) {
+            registration().validate();
+        }
+        if (login() != null) {
+            login().validate();
         }
     }
 }

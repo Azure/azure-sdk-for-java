@@ -31,6 +31,9 @@ public final class DiskCreateOption extends ExpandableStringEnum<DiskCreateOptio
     /** Static value Upload for DiskCreateOption. */
     public static final DiskCreateOption UPLOAD = fromString("Upload");
 
+    /** Static value CopyStart for DiskCreateOption. */
+    public static final DiskCreateOption COPY_START = fromString("CopyStart");
+
     /**
      * Creates or finds a DiskCreateOption from its string representation.
      *

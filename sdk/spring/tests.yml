@@ -13,9 +13,6 @@ stages:
           - name: azure-spring-boot-test-aad
             groupId: com.azure.spring
             safeName: azurespringboottestaad
-          - name: azure-spring-boot-test-aad-b2c
-            groupId: com.azure.spring
-            safeName: azurespringboottestaadb2c
         EnvVars:
           AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1-cn)
           AAD_USER_NAME_1: $(java-spring-aad-user-name-1-cn)

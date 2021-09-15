@@ -91,6 +91,10 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
         return this.innerModel().storageAccountType();
     }
 
+    public OffsetDateTime sourceDatabaseDeletionDate() {
+        return this.innerModel().sourceDatabaseDeletionDate();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -350,6 +354,16 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
             return this;
         } else {
             this.updateSqlPoolInfo.withStorageAccountType(storageAccountType);
+            return this;
+        }
+    }
+
+    public SqlPoolImpl withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
+        if (isInCreateMode()) {
+            this.innerModel().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
+            return this;
+        } else {
+            this.updateSqlPoolInfo.withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
             return this;
         }
     }

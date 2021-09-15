@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
@@ -15,53 +14,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a cluster principal assignment. */
-@JsonFlatten
 @Fluent
-public class ClusterPrincipalAssignmentInner extends ProxyResource {
+public final class ClusterPrincipalAssignmentInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterPrincipalAssignmentInner.class);
 
     /*
-     * The principal ID assigned to the cluster principal. It can be a user
-     * email, application ID, or security group name.
+     * The cluster principal.
      */
-    @JsonProperty(value = "properties.principalId")
-    private String principalId;
+    @JsonProperty(value = "properties")
+    private ClusterPrincipalProperties innerProperties;
 
-    /*
-     * Cluster principal role.
+    /**
+     * Get the innerProperties property: The cluster principal.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.role")
-    private ClusterPrincipalRole role;
-
-    /*
-     * The tenant id of the principal
-     */
-    @JsonProperty(value = "properties.tenantId")
-    private String tenantId;
-
-    /*
-     * Principal type.
-     */
-    @JsonProperty(value = "properties.principalType")
-    private PrincipalType principalType;
-
-    /*
-     * The tenant name of the principal
-     */
-    @JsonProperty(value = "properties.tenantName", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantName;
-
-    /*
-     * The principal name
-     */
-    @JsonProperty(value = "properties.principalName", access = JsonProperty.Access.WRITE_ONLY)
-    private String principalName;
-
-    /*
-     * The provisioned state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ClusterPrincipalProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the principalId property: The principal ID assigned to the cluster principal. It can be a user email,
@@ -70,7 +40,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -81,7 +51,10 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the ClusterPrincipalAssignmentInner object itself.
      */
     public ClusterPrincipalAssignmentInner withPrincipalId(String principalId) {
-        this.principalId = principalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPrincipalProperties();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -91,7 +64,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the role value.
      */
     public ClusterPrincipalRole role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
@@ -101,7 +74,10 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the ClusterPrincipalAssignmentInner object itself.
      */
     public ClusterPrincipalAssignmentInner withRole(ClusterPrincipalRole role) {
-        this.role = role;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPrincipalProperties();
+        }
+        this.innerProperties().withRole(role);
         return this;
     }
 
@@ -111,7 +87,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -121,7 +97,10 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the ClusterPrincipalAssignmentInner object itself.
      */
     public ClusterPrincipalAssignmentInner withTenantId(String tenantId) {
-        this.tenantId = tenantId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPrincipalProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
         return this;
     }
 
@@ -131,7 +110,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the principalType value.
      */
     public PrincipalType principalType() {
-        return this.principalType;
+        return this.innerProperties() == null ? null : this.innerProperties().principalType();
     }
 
     /**
@@ -141,7 +120,10 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the ClusterPrincipalAssignmentInner object itself.
      */
     public ClusterPrincipalAssignmentInner withPrincipalType(PrincipalType principalType) {
-        this.principalType = principalType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterPrincipalProperties();
+        }
+        this.innerProperties().withPrincipalType(principalType);
         return this;
     }
 
@@ -151,7 +133,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the tenantName value.
      */
     public String tenantName() {
-        return this.tenantName;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantName();
     }
 
     /**
@@ -160,7 +142,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the principalName value.
      */
     public String principalName() {
-        return this.principalName;
+        return this.innerProperties() == null ? null : this.innerProperties().principalName();
     }
 
     /**
@@ -169,7 +151,7 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -178,5 +160,8 @@ public class ClusterPrincipalAssignmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

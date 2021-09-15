@@ -100,4 +100,11 @@ public interface ContainerServiceManagementClient {
      * @return the ResolvePrivateLinkServiceIdsClient object.
      */
     ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds();
+
+    /**
+     * Gets the SnapshotsClient object to access its operations.
+     *
+     * @return the SnapshotsClient object.
+     */
+    SnapshotsClient getSnapshots();
 }
