@@ -54,7 +54,8 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-general
+      # name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: 'ubuntu-20.04'
 
     strategy:
       matrix:
