@@ -20,7 +20,7 @@ function Submit-Request($filePath)
 {
     $repoName = $RepoFullName
     if (!$repoName) {
-        $repoName = "azure/azure-sdk-for-$Language",
+        $repoName = "azure/azure-sdk-for-$Language"
     }
     $query = [System.Web.HttpUtility]::ParseQueryString('')
     $query.Add('artifactName', $ArtifactName)
