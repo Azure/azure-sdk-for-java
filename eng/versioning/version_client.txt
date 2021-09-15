@@ -196,7 +196,7 @@ com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-parent;1.0.0;1.0.0
 com.azure.resourcemanager:azure-resourcemanager;2.7.0;2.8.0
 com.azure.resourcemanager:azure-resourcemanager-appplatform;2.8.0;2.9.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appservice;2.7.0;2.8.0
+com.azure.resourcemanager:azure-resourcemanager-appservice;2.8.0;2.9.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.8.0;2.9.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.7.0;2.8.0
 com.azure.resourcemanager:azure-resourcemanager-compute;2.7.0;2.8.0
