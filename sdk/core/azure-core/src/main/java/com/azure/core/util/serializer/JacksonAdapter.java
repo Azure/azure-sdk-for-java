@@ -81,7 +81,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
      *
      * @return an instance of {@link ObjectMapper}.
-     * @deprecated deprecated in favor of {@code JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>)} constructor.
+     * @deprecated deprecated, use {@code JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper>)} constructor to
+     * configure modules.
      */
     @Deprecated
     protected ObjectMapper simpleMapper() {
@@ -102,7 +103,8 @@ public class JacksonAdapter implements SerializerAdapter {
 
     /**
      * @return the original serializer type.
-     * @deprecated deprecated in favor of using {@link ObjectMapperShim} or {@link JacksonAdapter}.
+     * @deprecated deprecated to avoid direct {@link ObjectMapper} usage in favor
+     * of using more resilient and debuggable {@link JacksonAdapter} APIs.
      */
     @Deprecated
     public ObjectMapper serializer() {
