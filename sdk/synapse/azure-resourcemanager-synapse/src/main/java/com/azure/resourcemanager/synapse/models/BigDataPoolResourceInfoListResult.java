@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Big Data pool information. */
+/** Collection of Big Data pools Collection of Big Data pool information. */
 @Fluent
 public final class BigDataPoolResourceInfoListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolResourceInfoListResult.class);

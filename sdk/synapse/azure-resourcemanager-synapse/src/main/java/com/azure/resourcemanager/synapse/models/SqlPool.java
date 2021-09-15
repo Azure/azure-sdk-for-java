@@ -49,7 +49,7 @@ public interface SqlPool {
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: SQL pool SKU.
+     * Gets the sku property: Sku SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -124,6 +124,13 @@ public interface SqlPool {
      * @return the storageAccountType value.
      */
     StorageAccountType storageAccountType();
+
+    /**
+     * Gets the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+     *
+     * @return the sourceDatabaseDeletionDate value.
+     */
+    OffsetDateTime sourceDatabaseDeletionDate();
 
     /**
      * Gets the region of the resource.
@@ -203,7 +210,8 @@ public interface SqlPool {
                 DefinitionStages.WithRestorePointInTime,
                 DefinitionStages.WithCreateMode,
                 DefinitionStages.WithCreationDate,
-                DefinitionStages.WithStorageAccountType {
+                DefinitionStages.WithStorageAccountType,
+                DefinitionStages.WithSourceDatabaseDeletionDate {
             /**
              * Executes the create request.
              *
@@ -232,9 +240,9 @@ public interface SqlPool {
         /** The stage of the SqlPool definition allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: SQL pool SKU.
+             * Specifies the sku property: Sku SQL pool SKU.
              *
-             * @param sku SQL pool SKU.
+             * @param sku Sku SQL pool SKU.
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
@@ -340,6 +348,16 @@ public interface SqlPool {
              */
             WithCreate withStorageAccountType(StorageAccountType storageAccountType);
         }
+        /** The stage of the SqlPool definition allowing to specify sourceDatabaseDeletionDate. */
+        interface WithSourceDatabaseDeletionDate {
+            /**
+             * Specifies the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+             *
+             * @param sourceDatabaseDeletionDate Specifies the time that the sql pool was deleted.
+             * @return the next definition stage.
+             */
+            WithCreate withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate);
+        }
     }
     /**
      * Begins update for the SqlPool resource.
@@ -361,7 +379,8 @@ public interface SqlPool {
             UpdateStages.WithRestorePointInTime,
             UpdateStages.WithCreateMode,
             UpdateStages.WithCreationDate,
-            UpdateStages.WithStorageAccountType {
+            UpdateStages.WithStorageAccountType,
+            UpdateStages.WithSourceDatabaseDeletionDate {
         /**
          * Executes the update request.
          *
@@ -392,9 +411,9 @@ public interface SqlPool {
         /** The stage of the SqlPool update allowing to specify sku. */
         interface WithSku {
             /**
-             * Specifies the sku property: SQL pool SKU.
+             * Specifies the sku property: Sku SQL pool SKU.
              *
-             * @param sku SQL pool SKU.
+             * @param sku Sku SQL pool SKU.
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
@@ -499,6 +518,16 @@ public interface SqlPool {
              * @return the next definition stage.
              */
             Update withStorageAccountType(StorageAccountType storageAccountType);
+        }
+        /** The stage of the SqlPool update allowing to specify sourceDatabaseDeletionDate. */
+        interface WithSourceDatabaseDeletionDate {
+            /**
+             * Specifies the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+             *
+             * @param sourceDatabaseDeletionDate Specifies the time that the sql pool was deleted.
+             * @return the next definition stage.
+             */
+            Update withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate);
         }
     }
     /**

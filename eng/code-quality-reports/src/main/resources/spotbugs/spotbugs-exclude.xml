@@ -167,7 +167,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -661,10 +661,10 @@
   <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
     <Or>
-      <Class name="com.azure.core.util.serializer.FlatteningSerializer"/>
-      <Class name="com.azure.core.util.serializer.FlatteningDeserializer"/>
-      <Class name="com.azure.core.util.serializer.AdditionalPropertiesSerializer"/>
-      <Class name="com.azure.core.util.serializer.AdditionalPropertiesDeserializer"/>
+      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+      <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer"/>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer"/>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesDeserializer"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>

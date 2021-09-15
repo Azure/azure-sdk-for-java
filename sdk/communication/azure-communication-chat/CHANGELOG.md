@@ -1,7 +1,8 @@
 # Release History
 
-## 1.1.0-beta.3 (2021-08-30)
-### Dependency updates
+## 1.1.0 (2021-09-15)
+- Added javadoc code samples
+- Removed redundant overload `ChatThreadAsyncClient.sendTypingNotification(TypingNotificationOptions options)`
 - Upgraded `azure-communication-common` to 1.0.4
 
 ## 1.1.0-beta.2 (2021-08-10)

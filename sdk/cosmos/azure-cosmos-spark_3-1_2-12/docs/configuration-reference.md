@@ -1,9 +1,7 @@
-Configuration Reference:
+## Configuration Reference:
 
 
 ## Generic Configuration
-
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.accountEndpoint`      | None   | Cosmos DB Account Endpoint Uri |
@@ -13,18 +11,15 @@ Configuration Reference:
 
 
 ### Additional Tuning
-
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.useGatewayMode`      | `false`    | Use gateway mode for the client operations  |
 | `spark.cosmos.read.forceEventualConsistency`  | `true`    | Makes the client use Eventual consistency for read operations instead of using the default account level consistency |
-| `spark.cosmos.read.maxItemCount`  | `1000`    | Overrides the maximum number of documents that can be returned for a single query- or change feed request. The default value is `1000` - consider increasing this only for average document sizes significantly smaller than 1KB.  |
 | `spark.cosmos.applicationName`      | None    | Application name  |
 | `spark.cosmos.preferredRegionsList`      | None    | Preferred regions list to be used for a multi region Cosmos DB account. This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. You should use a collocated spark cluster with your Cosmos DB account and pass the spark cluster region as preferred region. See list of azure regions [here](https://docs.microsoft.com/dotnet/api/microsoft.azure.documents.locationnames?view=azure-dotnet&preserve-view=true). Please note that you can also use `spark.cosmos.preferredRegions` as alias |
+| `spark.cosmos.diagnostics`      | None    | Can be used to enable more verbose diagnostics. Currently the only supported option is to set this property to `simple` - which will result in additional logs being emitted as `INFO` logs in the Driver and Executor logs.|
 
 ### Write Config
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.write.strategy`      | `ItemOverwrite`    | Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, ignore pre-existing items i.e., Conflicts), `ItemDelete` (delete all documents), `ItemDeleteIfNotModified` (delete all documents for which the etag hasn't changed)  |
@@ -37,9 +32,9 @@ Configuration Reference:
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.read.customQuery`      | None   | When provided the custom query will be processed against the Cosmos endpoint instead of dynamically generating the query via predicate push down. Usually it is recommended to rely on Spark's predicate push down because that will allow to generate the most efficient set of filters based on the query plan. But there are a couple of predicates like aggregates (count, group by, avg, sum etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow them to be pushed into the query sent to Cosmos. If specified, with schema inference enabled, the custom query will also be used to infer the schema. |
+| `spark.cosmos.read.maxItemCount`  | `1000`    | Overrides the maximum number of documents that can be returned for a single query- or change feed request. The default value is `1000` - consider increasing this only for average document sizes significantly smaller than 1KB or when projection reduces the number of properties selected in queries significantly (like when only selecting "id" of documents etc.).  |
 
 #### Schema Inference Config
-
 When doing read operations, users can specify a custom schema or allow the connector to infer it. Schema inference is enabled by default.
 
 | Config Property Name      | Default | Description |
@@ -51,23 +46,25 @@ When doing read operations, users can specify a custom schema or allow the conne
 | `spark.cosmos.read.inferSchema.includeTimestamp`     | `false`    | When schema inference is enabled, whether the resulting schema will include the document Timestamp (`_ts`). Not required if `spark.cosmos.read.inferSchema.includeSystemProperties` is enabled, as it will already include all system properties. |
 | `spark.cosmos.read.inferSchema.forceNullableProperties`     | `true`    | When schema inference is enabled, whether the resulting schema will make all columns nullable. By default, all columns (except cosmos system properties) will be treated as nullable even if all rows within the sample set have non-null values. When disabled, the inferred columns are treated as nullable or not depending on whether any record in the sample set has null-values within a column.  |
 
+#### Change feed (only for Spark-Streaming using `cosmos.oltp.changeFeed` data source, which is read-only) configuration
+| Config Property Name                            | Default       | Description |
+| :---                                            | :----         | :---        | 
+| spark.cosmos.changeFeed.startFrom               | `Beginning`   | ChangeFeed Start from settings (`Now`, `Beginning`  or a certain point in time (UTC) for example `2020-02-10T14:15:03`) - the default value is `Beginning`. If the write config contains a `checkpointLocation` and any checkpoints exist, the stream is always continued independent of the `spark.cosmos.changeFeed.startFrom` settings - you need to change `checkpointLocation` or delete checkpoints to restart the stream if that is the intention. | 
+| spark.cosmos.changeFeed.mode                    | `Incremental` | ChangeFeed mode (`Incremental` or `FullFidelity`) - NOTE: `FullFidelity` is in experimental state right now. It requires that the subscription/account has been enabled for the private preview and there are known breaking changes that will happen for `FullFidelity` (schema of the returned documents). It is recommended to only use `FullFidelity` for non-production scenarios at this point. | 
+| spark.cosmos.changeFeed.itemCountPerTriggerHint | None          | Approximate maximum number of items read from change feed for each micro-batch/trigger | 
+
 #### Json conversion configuration
-
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.read.schemaConversionMode`     | `Relaxed`    | The schema conversion behavior (`Relaxed`, `Strict`). When reading json documents, if a document contains an attribute that does not map to the schema type, the user can decide whether to use a `null` value (Relaxed) or an exception (Strict). |
 
 #### Partitioning Strategy Config
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.read.partitioning.strategy`     | `Default`    | The partitioning strategy used (Default, Custom, Restrictive or Aggressive) |
 | `spark.cosmos.partitioning.targetedCount`      | None    | The targeted Partition Count. This parameter is optional and ignored unless strategy==Custom is used. In this case the Spark Connector won't dynamically calculate number of partitions but stick with this value.  |
 
 ### Throughput Control Config
-
-
 | Config Property Name      | Default | Description |
 | :---        |    :----   |         :--- | 
 | `spark.cosmos.throughputControl.enabled`      | `false`    | Whether throughput control is enabled  |
@@ -79,7 +76,5 @@ When doing read operations, users can specify a custom schema or allow the conne
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
 | `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected |
 
-
-[//]: # (//TODO: fabianm, moderakh add streaming config once ready)
 
 

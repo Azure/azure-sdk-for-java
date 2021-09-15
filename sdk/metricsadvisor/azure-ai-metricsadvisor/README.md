@@ -20,7 +20,7 @@ of business dataFeedMetrics.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
