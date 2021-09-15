@@ -13,4 +13,7 @@ public class Hello {
     public final String getMessage() {
         return "hello";
     }
+    public final String getTestMessage() {
+        return "hello";
+    }
 }
