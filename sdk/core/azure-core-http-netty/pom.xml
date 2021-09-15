@@ -130,7 +130,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-all</artifactId>
-      <version>4.1.66.Final</version> <!-- {x-version-update;io.netty:netty-all;external_dependency} -->
+      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-all;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -205,6 +205,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>io.netty:netty-all:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-all;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
@@ -212,8 +213,8 @@
                 <include>io.netty:netty-handler-proxy:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
                 <include>io.netty:netty-transport-native-unix-common:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[1.0.10]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>io.netty:netty-transport-native-kqueue:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[1.0.10]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.graalvm.sdk:graal-sdk:[21.2.0]</include> <!-- {x-include-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
                 <include>org.graalvm.nativeimage:svm:[21.2.0]</include> <!-- {x-include-update;org.graalvm.nativeimage:svm;external_dependency} -->
               </includes>
