@@ -367,13 +367,7 @@ public class CosmosEncryptionAsyncContainer {
                         List<Mono<JsonNode>> jsonNodeArrayMonoList =
                             page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
                         return Flux.concat(jsonNodeArrayMonoList).map(
-                            item -> {
-                                if (item.isValueNode()) {
-                                    return (T)item;
-                                } else {
-                                    return getItemDeserializer().convert(classType, (ObjectNode) item);
-                                }
-                            }
+                            item -> getItemDeserializer().convert(classType, item)
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                             page.getResponseHeaders(),
                             BridgeInternal.queryMetricsFromFeedResponse(page),
