@@ -148,6 +148,8 @@ def update_changelog(changelog_file, changelog):
 
 def compare_with_maven_package(sdk_root, service, stable_version,
                                current_version):
+    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
+
     if stable_version == current_version:
         logging.info('[Changelog][Skip] no previous version')
         return

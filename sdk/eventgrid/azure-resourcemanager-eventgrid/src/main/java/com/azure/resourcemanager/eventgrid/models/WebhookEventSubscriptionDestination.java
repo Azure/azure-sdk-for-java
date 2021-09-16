@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.WebhookEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,56 +16,24 @@ import java.util.List;
 /** Information about the webhook destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("WebHook")
-@JsonFlatten
 @Fluent
-public class WebhookEventSubscriptionDestination extends EventSubscriptionDestination {
+public final class WebhookEventSubscriptionDestination extends EventSubscriptionDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookEventSubscriptionDestination.class);
 
     /*
-     * The URL that represents the endpoint of the destination of an event
-     * subscription.
+     * WebHook Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties.endpointUrl")
-    private String endpointUrl;
+    @JsonProperty(value = "properties")
+    private WebhookEventSubscriptionDestinationProperties innerProperties;
 
-    /*
-     * The base URL that represents the endpoint of the destination of an event
-     * subscription.
+    /**
+     * Get the innerProperties property: WebHook Properties of the event subscription destination.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endpointBaseUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpointBaseUrl;
-
-    /*
-     * Maximum number of events per batch.
-     */
-    @JsonProperty(value = "properties.maxEventsPerBatch")
-    private Integer maxEventsPerBatch;
-
-    /*
-     * Preferred batch size in Kilobytes.
-     */
-    @JsonProperty(value = "properties.preferredBatchSizeInKilobytes")
-    private Integer preferredBatchSizeInKilobytes;
-
-    /*
-     * The Azure Active Directory Tenant ID to get the access token that will
-     * be included as the bearer token in delivery requests.
-     */
-    @JsonProperty(value = "properties.azureActiveDirectoryTenantId")
-    private String azureActiveDirectoryTenantId;
-
-    /*
-     * The Azure Active Directory Application ID or URI to get the access token
-     * that will be included as the bearer token in delivery requests.
-     */
-    @JsonProperty(value = "properties.azureActiveDirectoryApplicationIdOrUri")
-    private String azureActiveDirectoryApplicationIdOrUri;
-
-    /*
-     * Delivery attribute details.
-     */
-    @JsonProperty(value = "properties.deliveryAttributeMappings")
-    private List<DeliveryAttributeMapping> deliveryAttributeMappings;
+    private WebhookEventSubscriptionDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
@@ -73,7 +41,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the endpointUrl value.
      */
     public String endpointUrl() {
-        return this.endpointUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().endpointUrl();
     }
 
     /**
@@ -83,7 +51,10 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the WebhookEventSubscriptionDestination object itself.
      */
     public WebhookEventSubscriptionDestination withEndpointUrl(String endpointUrl) {
-        this.endpointUrl = endpointUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withEndpointUrl(endpointUrl);
         return this;
     }
 
@@ -94,7 +65,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the endpointBaseUrl value.
      */
     public String endpointBaseUrl() {
-        return this.endpointBaseUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().endpointBaseUrl();
     }
 
     /**
@@ -103,7 +74,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the maxEventsPerBatch value.
      */
     public Integer maxEventsPerBatch() {
-        return this.maxEventsPerBatch;
+        return this.innerProperties() == null ? null : this.innerProperties().maxEventsPerBatch();
     }
 
     /**
@@ -113,7 +84,10 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the WebhookEventSubscriptionDestination object itself.
      */
     public WebhookEventSubscriptionDestination withMaxEventsPerBatch(Integer maxEventsPerBatch) {
-        this.maxEventsPerBatch = maxEventsPerBatch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withMaxEventsPerBatch(maxEventsPerBatch);
         return this;
     }
 
@@ -123,7 +97,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the preferredBatchSizeInKilobytes value.
      */
     public Integer preferredBatchSizeInKilobytes() {
-        return this.preferredBatchSizeInKilobytes;
+        return this.innerProperties() == null ? null : this.innerProperties().preferredBatchSizeInKilobytes();
     }
 
     /**
@@ -134,7 +108,10 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      */
     public WebhookEventSubscriptionDestination withPreferredBatchSizeInKilobytes(
         Integer preferredBatchSizeInKilobytes) {
-        this.preferredBatchSizeInKilobytes = preferredBatchSizeInKilobytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withPreferredBatchSizeInKilobytes(preferredBatchSizeInKilobytes);
         return this;
     }
 
@@ -145,7 +122,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the azureActiveDirectoryTenantId value.
      */
     public String azureActiveDirectoryTenantId() {
-        return this.azureActiveDirectoryTenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().azureActiveDirectoryTenantId();
     }
 
     /**
@@ -156,7 +133,10 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the WebhookEventSubscriptionDestination object itself.
      */
     public WebhookEventSubscriptionDestination withAzureActiveDirectoryTenantId(String azureActiveDirectoryTenantId) {
-        this.azureActiveDirectoryTenantId = azureActiveDirectoryTenantId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withAzureActiveDirectoryTenantId(azureActiveDirectoryTenantId);
         return this;
     }
 
@@ -167,7 +147,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the azureActiveDirectoryApplicationIdOrUri value.
      */
     public String azureActiveDirectoryApplicationIdOrUri() {
-        return this.azureActiveDirectoryApplicationIdOrUri;
+        return this.innerProperties() == null ? null : this.innerProperties().azureActiveDirectoryApplicationIdOrUri();
     }
 
     /**
@@ -179,7 +159,10 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      */
     public WebhookEventSubscriptionDestination withAzureActiveDirectoryApplicationIdOrUri(
         String azureActiveDirectoryApplicationIdOrUri) {
-        this.azureActiveDirectoryApplicationIdOrUri = azureActiveDirectoryApplicationIdOrUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withAzureActiveDirectoryApplicationIdOrUri(azureActiveDirectoryApplicationIdOrUri);
         return this;
     }
 
@@ -189,7 +172,7 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
-        return this.deliveryAttributeMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryAttributeMappings();
     }
 
     /**
@@ -200,7 +183,10 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
      */
     public WebhookEventSubscriptionDestination withDeliveryAttributeMappings(
         List<DeliveryAttributeMapping> deliveryAttributeMappings) {
-        this.deliveryAttributeMappings = deliveryAttributeMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withDeliveryAttributeMappings(deliveryAttributeMappings);
         return this;
     }
 
@@ -212,8 +198,8 @@ public class WebhookEventSubscriptionDestination extends EventSubscriptionDestin
     @Override
     public void validate() {
         super.validate();
-        if (deliveryAttributeMappings() != null) {
-            deliveryAttributeMappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
