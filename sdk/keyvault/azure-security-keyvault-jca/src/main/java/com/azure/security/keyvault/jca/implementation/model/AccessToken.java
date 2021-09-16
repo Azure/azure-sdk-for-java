@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -22,6 +23,23 @@ public class AccessToken {
      */
     @JsonProperty("expires_in")
     private long expiresIn;
+
+    /**
+     *
+     * @return the life duration of the access token in seconds
+     */
+    public long getExpiresIn() {
+        return expiresIn;
+    }
+
+    /**
+     * Set the life duration of the access token in seconds
+     *
+     * @param expiresIn
+     */
+    public void setExpiresIn(long expiresIn) {
+        this.expiresIn = expiresIn;
+    }
 
     /**
      * Stores the time when the token is retrieved for the first time.
