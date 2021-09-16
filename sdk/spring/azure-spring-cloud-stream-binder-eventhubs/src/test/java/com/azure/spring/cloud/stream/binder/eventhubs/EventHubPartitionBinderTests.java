@@ -10,7 +10,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProduce
 import com.azure.spring.eventhubs.support.StartPosition;
 import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import com.azure.spring.eventhubs.support.EventHubTestOperation;
-import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
+import com.azure.spring.cloud.stream.binder.servicebus.test.AzurePartitionBinderTests;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

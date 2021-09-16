@@ -1,1 +1,1 @@
-servicebus-queue: com.azure.spring.servicebus.stream.binder.config.ServiceBusQueueBinderConfiguration
+servicebus-queue: com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusQueueBinderConfiguration
