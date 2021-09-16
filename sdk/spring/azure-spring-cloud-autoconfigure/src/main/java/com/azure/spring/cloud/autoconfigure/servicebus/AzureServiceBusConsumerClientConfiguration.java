@@ -17,11 +17,9 @@ import com.azure.spring.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -29,17 +27,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
  * Configuration for a {@link ServiceBusSenderClient} or a {@link ServiceBusSenderAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@AzureServiceBusConsumerClientConfiguration.ConditionalOnServiceBusConsumer
+@ServiceBusConditions.ConditionalOnServiceBusConsumer
 @Import({
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
@@ -224,19 +216,5 @@ class AzureServiceBusConsumerClientConfiguration {
             return sessionReceiverClientBuilder;
         }
     }
-
-
-
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.consumer.queue-name:}') or "
-            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.consumer.topic-name:}')"
-    )
-    public @interface ConditionalOnServiceBusConsumer {
-    }
-
-
 
 }

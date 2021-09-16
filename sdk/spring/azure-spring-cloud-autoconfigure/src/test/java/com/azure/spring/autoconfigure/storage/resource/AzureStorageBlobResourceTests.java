@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.storage.resource;
 
+import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -33,7 +34,12 @@ import static org.mockito.Mockito.when;
 /**
  * @author Warren Zhu
  */
-@SpringBootTest(properties = "spring.main.banner-mode=off")
+@SpringBootTest(
+    properties = {
+        "spring.main.banner-mode=off",
+        "spring.cloud.azure.storage.blob.account-name=storage-account"
+    }
+)
 public class AzureStorageBlobResourceTests {
 
     private static final String CONTAINER_NAME = "container";
@@ -120,7 +126,7 @@ public class AzureStorageBlobResourceTests {
     }
 
     @Configuration
-    @Import({ StorageBlobClientConfiguration.class })
+    @Import({ StorageBlobClientConfiguration.class, AzureStorageBlobResourceAutoConfiguration.class })
     static class StorageApplication {
 
     }

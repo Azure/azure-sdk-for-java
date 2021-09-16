@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -23,18 +22,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(ServiceBusMessageProcessor.class)
-@AzureServiceBusProcessorConfiguration.ConditionalOnServiceBusProcessor
+@ServiceBusConditions.ConditionalOnServiceBusProcessor
 @Import({
     AzureServiceBusProcessorConfiguration.SessionProcessorClientConfiguration.class,
     AzureServiceBusProcessorConfiguration.NoneSessionProcessorClientConfiguration.class
@@ -69,7 +62,7 @@ class AzureServiceBusProcessorConfiguration {
 
     @Bean(PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnSeparateServiceBusProcessor
+    @ServiceBusConditions.ConditionalOnDedicatedServiceBusProcessor
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProcessor() {
 
         final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
@@ -221,26 +214,6 @@ class AzureServiceBusProcessorConfiguration {
 
             return sessionProcessorClientBuilder;
         }
-    }
-
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.processor.connection-string:}') or "
-            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.processor.producer.namespace:}')"
-    )
-    public @interface ConditionalOnSeparateServiceBusProcessor {
-    }
-
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.processor.queue-name:}') or "
-            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.processor.topic-name:}')"
-    )
-    public @interface ConditionalOnServiceBusProcessor {
     }
 
 }

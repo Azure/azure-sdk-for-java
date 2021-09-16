@@ -80,6 +80,9 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
                                                     storageQueueProperties.getConnectionString());
     }
 
+    /**
+     * Condition indicates when storage queue should be auto-configured.
+     */
     @Target({ ElementType.TYPE, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     @Documented

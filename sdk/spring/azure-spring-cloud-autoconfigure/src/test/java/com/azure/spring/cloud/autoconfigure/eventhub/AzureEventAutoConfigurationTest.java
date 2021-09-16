@@ -9,8 +9,8 @@ import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
-import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventHubClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.StaticConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -56,12 +56,7 @@ class AzureEventAutoConfigurationTest {
             .withBean(EventHubClientBuilder.class, () -> mockEventHubClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubProperties.class);
-                assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
-                assertThat(context).hasSingleBean(EventHubClientBuilder.class);
-                assertThat(context).hasSingleBean(EventHubProducerClient.class);
-                assertThat(context).hasSingleBean(EventHubProducerAsyncClient.class);
-                assertThat(context).hasSingleBean(EventHubConsumerClient.class);
-                assertThat(context).hasSingleBean(EventHubConsumerAsyncClient.class);
+                assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class);
             });
     }
 
@@ -75,12 +70,7 @@ class AzureEventAutoConfigurationTest {
             .withBean(EventHubClientBuilder.class, () -> mockEventHubClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubProperties.class);
-                assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
-                assertThat(context).hasSingleBean(EventHubClientBuilder.class);
-                assertThat(context).hasSingleBean(EventHubProducerClient.class);
-                assertThat(context).hasSingleBean(EventHubProducerAsyncClient.class);
-                assertThat(context).hasSingleBean(EventHubConsumerClient.class);
-                assertThat(context).hasSingleBean(EventHubConsumerAsyncClient.class);
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
             });
     }
 

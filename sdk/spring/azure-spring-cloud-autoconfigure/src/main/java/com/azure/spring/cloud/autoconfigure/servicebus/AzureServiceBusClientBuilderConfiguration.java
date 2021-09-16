@@ -10,7 +10,6 @@ import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -19,15 +18,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusClientBuilder.class)
-@AzureServiceBusClientBuilderConfiguration.ConditionalOnServiceBusClient
+@ServiceBusConditions.ConditionalOnServiceBusClient
 class AzureServiceBusClientBuilderConfiguration {
 
     private final AzureServiceBusProperties serviceBusProperties;
@@ -63,14 +56,6 @@ class AzureServiceBusClientBuilderConfiguration {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                                                     this.serviceBusProperties.getConnectionString());
-    }
-
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.connection-string:}') or "
-                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.namespace:}')")
-    public @interface ConditionalOnServiceBusClient {
     }
 
 }

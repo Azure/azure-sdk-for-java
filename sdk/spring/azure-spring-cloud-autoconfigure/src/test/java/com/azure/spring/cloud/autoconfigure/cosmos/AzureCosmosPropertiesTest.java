@@ -32,7 +32,7 @@ class AzureCosmosPropertiesTest {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
 
         Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
-        Assertions.assertEquals(2, violations.size());
+        Assertions.assertEquals(1, violations.size());
     }
 
     @Test
@@ -65,15 +65,6 @@ class AzureCosmosPropertiesTest {
 
         Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
         Assertions.assertTrue(violations.isEmpty());
-    }
-
-    @Test
-    void testEmptyKey() {
-        AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
-        cosmosProperties.setUri(TEST_URI_HTTPS);
-
-        Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
-        Assertions.assertEquals(1, violations.size());
     }
 
 }

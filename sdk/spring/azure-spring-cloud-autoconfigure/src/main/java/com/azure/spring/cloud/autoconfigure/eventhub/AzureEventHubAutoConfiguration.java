@@ -60,6 +60,9 @@ public class AzureEventHubAutoConfiguration extends AzureServiceConfigurationBas
                                                     eventHubProperties.getConnectionString());
     }
 
+    /**
+     * Condition indicates when event hub should be auto-configured.
+     */
     @Target({ ElementType.TYPE, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     @Documented

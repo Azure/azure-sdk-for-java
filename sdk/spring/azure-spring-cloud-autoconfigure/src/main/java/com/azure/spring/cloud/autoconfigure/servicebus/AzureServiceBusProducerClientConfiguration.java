@@ -16,24 +16,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
  * Configuration for a {@link ServiceBusReceiverClient} or a {@link ServiceBusReceiverAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@AzureServiceBusProducerClientConfiguration.ConditionalOnServiceBusProducer
+@ServiceBusConditions.ConditionalOnServiceBusProducer
 class AzureServiceBusProducerClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProducerClientConfiguration.class);
@@ -66,7 +59,7 @@ class AzureServiceBusProducerClientConfiguration {
 
     @Bean(PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnDedicatedServiceBusProducer
+    @ServiceBusConditions.ConditionalOnDedicatedServiceBusProducer
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProducer() {
 
         final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
@@ -130,25 +123,6 @@ class AzureServiceBusProducerClientConfiguration {
         }
 
         return senderClientBuilder;
-    }
-
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.queue-name:}') or "
-                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.topic-name:}')")
-    public @interface ConditionalOnServiceBusProducer {
-
-    }
-
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.connection-string:}') or "
-            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.namespace:}')"
-    )
-    public @interface ConditionalOnDedicatedServiceBusProducer {
     }
 
 }

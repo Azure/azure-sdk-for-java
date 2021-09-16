@@ -3,11 +3,10 @@
 
 package com.azure.spring.cloud.actuate.storage;
 
+import com.azure.core.http.rest.Response;
 import com.azure.spring.cloud.actuate.autoconfigure.storage.StorageBlobHealthConfiguration;
 import com.azure.storage.blob.BlobServiceAsyncClient;
-import com.azure.storage.blob.models.AccountKind;
-import com.azure.storage.blob.models.SkuName;
-import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.BlobServiceProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
@@ -70,10 +69,13 @@ class StorageBlobHealthIndicatorTest {
 
         @Bean
         BlobServiceAsyncClient blobAsyncClient() {
+            @SuppressWarnings("unchecked") Response<BlobServiceProperties> mockResponse =
+                (Response<BlobServiceProperties>) mock(
+                    Response.class);
+
             BlobServiceAsyncClient mockAsyncClient = mock(BlobServiceAsyncClient.class);
             when(mockAsyncClient.getAccountUrl()).thenReturn(MOCK_URL);
-            when(mockAsyncClient.getAccountInfo()).thenReturn(Mono.just(new StorageAccountInfo(SkuName.STANDARD_LRS,
-                AccountKind.BLOB_STORAGE)));
+            when(mockAsyncClient.getPropertiesWithResponse()).thenReturn(Mono.just(mockResponse));
             return mockAsyncClient;
         }
 
@@ -86,7 +88,7 @@ class StorageBlobHealthIndicatorTest {
         BlobServiceAsyncClient blobAsyncClient() {
             BlobServiceAsyncClient mockAsyncClient = mock(BlobServiceAsyncClient.class);
             when(mockAsyncClient.getAccountUrl()).thenReturn(MOCK_URL);
-            when(mockAsyncClient.getAccountInfo())
+            when(mockAsyncClient.getPropertiesWithResponse())
                 .thenReturn(Mono.error(new IllegalStateException("The gremlins have cut the cable.")));
             return mockAsyncClient;
         }

@@ -35,7 +35,7 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
                 healthBuilder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
                 final Response<BlobServiceProperties> info;
                 try {
-                     info = blobServiceAsyncClient.getPropertiesWithResponse().block(POLL_TIMEOUT);
+                    info = blobServiceAsyncClient.getPropertiesWithResponse().block(POLL_TIMEOUT);
                     if (info != null) {
                         healthBuilder.up();
                     }

@@ -99,6 +99,9 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
         return factory.build();
     }
 
+    /**
+     * Condition indicates when storage blob should be auto-configured.
+     */
     @Target({ ElementType.TYPE, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     @Documented

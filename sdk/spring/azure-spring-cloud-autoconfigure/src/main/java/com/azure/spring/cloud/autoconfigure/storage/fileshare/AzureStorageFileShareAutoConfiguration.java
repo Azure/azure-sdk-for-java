@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
@@ -63,6 +61,9 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
         return factory.build();
     }
 
+    /**
+     * Condition indicates when storage file share should be auto-configured.
+     */
     @Target({ ElementType.TYPE, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
