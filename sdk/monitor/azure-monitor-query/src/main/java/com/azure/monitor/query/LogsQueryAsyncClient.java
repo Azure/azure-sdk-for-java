@@ -8,9 +8,9 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -248,7 +248,7 @@ public final class LogsQueryAsyncClient {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), logsBatchQueryResultCollection);
     }
 
-    private HttpResponseError mapLogsQueryError(ErrorInfo errors) {
+    private ResponseError mapLogsQueryError(ErrorInfo errors) {
         if (errors != null) {
             ErrorInfo innerError = errors.getInnererror();
             ErrorInfo currentError = errors.getInnererror();
@@ -260,7 +260,7 @@ public final class LogsQueryAsyncClient {
             if (errors.getCode() != null && innerError != null && errors.getCode().equals(innerError.getCode())) {
                 code = innerError.getCode();
             }
-            return new HttpResponseError(code, errors.getMessage());
+            return new ResponseError(code, errors.getMessage());
         }
 
         return null;

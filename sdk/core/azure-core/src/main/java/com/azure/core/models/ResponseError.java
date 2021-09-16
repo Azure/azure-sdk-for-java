@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.models;
+package com.azure.core.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * This class represents the error details of an HTTP response.
  */
-public final class HttpResponseError {
+public final class ResponseError {
 
     @JsonProperty(value = "code", required = true)
     private final String code;
@@ -23,20 +23,20 @@ public final class HttpResponseError {
     private String target;
 
     @JsonProperty(value = "innererror")
-    private HttpResponseInnerError innerError;
+    private ResponseInnerError innerError;
 
     @JsonProperty(value = "details")
-    private List<HttpResponseError> errorDetails;
+    private List<ResponseError> errorDetails;
 
     /**
-     * Creates an instance of {@link HttpResponseError}.
+     * Creates an instance of {@link ResponseError}.
      *
      * @param code the error code of this error.
      * @param message the error message of this error.
      */
     @JsonCreator
-    public HttpResponseError(@JsonProperty(value = "code", required = true)String code,
-                             @JsonProperty(value = "message", required = true)String message) {
+    public ResponseError(@JsonProperty(value = "code", required = true)String code,
+                         @JsonProperty(value = "message", required = true)String message) {
         this.code = code;
         this.message = message;
     }
@@ -72,9 +72,9 @@ public final class HttpResponseError {
      * Sets the target of this error.
      *
      * @param target the target of this error.
-     * @return the updated {@link HttpResponseError} instance.
+     * @return the updated {@link ResponseError} instance.
      */
-    HttpResponseError setTarget(String target) {
+    ResponseError setTarget(String target) {
         this.target = target;
         return this;
     }
@@ -84,16 +84,16 @@ public final class HttpResponseError {
      *
      * @return the inner error for this error.
      */
-    HttpResponseInnerError getInnerError() {
+    ResponseInnerError getInnerError() {
         return innerError;
     }
 
     /**
      * Sets the inner error information for this error.
      * @param innerError the inner error for this error.
-     * @return the updated {@link HttpResponseError} instance.
+     * @return the updated {@link ResponseError} instance.
      */
-    HttpResponseError setInnerError(HttpResponseInnerError innerError) {
+    ResponseError setInnerError(ResponseInnerError innerError) {
         this.innerError = innerError;
         return this;
     }
@@ -103,7 +103,7 @@ public final class HttpResponseError {
      *
      * @return the error details.
      */
-    List<HttpResponseError> getErrorDetails() {
+    List<ResponseError> getErrorDetails() {
         return errorDetails;
     }
 
@@ -111,9 +111,9 @@ public final class HttpResponseError {
      * Sets a list of details about specific errors that led to this reported error.
      *
      * @param errorDetails the error details.
-     * @return the updated {@link HttpResponseError} instance.
+     * @return the updated {@link ResponseError} instance.
      */
-    HttpResponseError setErrorDetails(List<HttpResponseError> errorDetails) {
+    ResponseError setErrorDetails(List<ResponseError> errorDetails) {
         this.errorDetails = errorDetails;
         return this;
     }

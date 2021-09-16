@@ -4,7 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.experimental.models.HttpResponseError;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public final class LogsBatchQueryResult extends LogsQueryResult {
      * @param error The error details if there was an error executing the query.
      */
     public LogsBatchQueryResult(String id, int status, List<LogsTable> logsTables, BinaryData statistics,
-                                BinaryData visualization, HttpResponseError error) {
+                                BinaryData visualization, ResponseError error) {
         super(logsTables, statistics, visualization, error);
         this.id = id;
         this.status = status;
