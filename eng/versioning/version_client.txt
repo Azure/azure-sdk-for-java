@@ -101,7 +101,7 @@ com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-mixedreality-authentication;1.1.1;1.2.0-beta.1
-com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0-beta.1
+com.azure:azure-mixedreality-remoterendering;1.0.0;1.1.0
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
