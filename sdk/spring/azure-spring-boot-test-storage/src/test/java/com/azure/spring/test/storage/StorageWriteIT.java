@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.test.storage;
+package com.azure.spring.test.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,15 +18,15 @@ import org.springframework.util.StreamUtils;
 @SpringBootTest
 public class StorageWriteIT {
 
-    @Value("${blob}")
+    @Value("${my-blob}")
     private Resource blobStorage;
 
-    @Value("${file}")
+    @Value("${my-file}")
     private Resource fileStorage;
 
     @Test
     public void testWriteBlobStorage() throws IOException {
-        String data = "test blob storage";
+        String data = "this is my content";
         try (OutputStream os = ((WritableResource) this.blobStorage).getOutputStream()) {
             os.write(data.getBytes());
         }
@@ -37,7 +37,7 @@ public class StorageWriteIT {
 
     @Test
     public void testWriteFileStorage() throws IOException {
-        String data = "test file storage";
+        String data = "this is my file";
         try (OutputStream os = ((WritableResource) this.fileStorage).getOutputStream()) {
             os.write(data.getBytes());
         }

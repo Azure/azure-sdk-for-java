@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
  * @author Warren Zhu
  */
 @SpringBootTest(properties = "spring.main.banner-mode=off")
-public class AzureBlobStorageResourceTests {
+public class AzureStorageBlobResourceTests {
 
     private static final String CONTAINER_NAME = "container";
     private static final String NON_EXISTING = "non-existing";
@@ -49,13 +49,13 @@ public class AzureBlobStorageResourceTests {
 
     @Test
     void testEmptyPath() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobStorageResource(this.blobServiceClient,
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new StorageBlobResource(this.blobServiceClient,
             "azure-blob://"));
     }
 
     @Test
     void testSlashPath() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobStorageResource(this.blobServiceClient,
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new StorageBlobResource(this.blobServiceClient,
             "azure-blob:///"));
     }
 
@@ -77,7 +77,7 @@ public class AzureBlobStorageResourceTests {
     void testWritableOutputStream() throws Exception {
         String location = "azure-blob://container/blob";
 
-        BlobStorageResource resource = new BlobStorageResource(blobServiceClient, location);
+        StorageBlobResource resource = new StorageBlobResource(blobServiceClient, location);
         OutputStream os = resource.getOutputStream();
         Assertions.assertNotNull(os);
     }
@@ -86,7 +86,7 @@ public class AzureBlobStorageResourceTests {
     void testWritableOutputStreamNoAutoCreateOnNullBlob() {
         String location = "azure-blob://container/non-existing";
 
-        BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient, location);
+        StorageBlobResource resource = new StorageBlobResource(this.blobServiceClient, location);
         Assertions.assertThrows(FileNotFoundException.class, () -> resource.getOutputStream());
     }
 
@@ -94,27 +94,27 @@ public class AzureBlobStorageResourceTests {
     void testGetInputStreamOnNullBlob() {
         String location = "azure-blob://container/non-existing";
 
-        BlobStorageResource resource = new BlobStorageResource(blobServiceClient, location);
+        StorageBlobResource resource = new StorageBlobResource(blobServiceClient, location);
         Assertions.assertThrows(FileNotFoundException.class, () -> resource.getInputStream());
     }
 
     @Test
     void testGetFilenameOnNonExistingBlob() {
         String location = "azure-blob://container/non-existing";
-        BlobStorageResource resource = new BlobStorageResource(blobServiceClient, location);
+        StorageBlobResource resource = new StorageBlobResource(blobServiceClient, location);
         Assertions.assertEquals(NON_EXISTING, resource.getFilename());
     }
 
     @Test
     void testContainerDoesNotExist() {
-        BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient,
+        StorageBlobResource resource = new StorageBlobResource(this.blobServiceClient,
             "azure-blob://non-existing/blob");
         Assertions.assertFalse(resource.exists());
     }
 
     @Test
     void testContainerExistsButResourceDoesNot() {
-        BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient,
+        StorageBlobResource resource = new StorageBlobResource(this.blobServiceClient,
             "azure-blob://container/non-existing");
         Assertions.assertFalse(resource.exists());
     }

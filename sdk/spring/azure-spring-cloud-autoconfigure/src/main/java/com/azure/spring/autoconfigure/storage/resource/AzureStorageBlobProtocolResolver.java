@@ -52,7 +52,7 @@ public class AzureStorageBlobProtocolResolver implements ProtocolResolver, Resou
     @Override
     public Resource resolve(String location, ResourceLoader resourceLoader) {
         if (AzureStorageUtils.isAzureStorageResource(location, StorageType.BLOB)) {
-            return new BlobStorageResource(getBlobServiceClient(), location, true);
+            return new StorageBlobResource(getBlobServiceClient(), location, true);
         }
         return null;
     }

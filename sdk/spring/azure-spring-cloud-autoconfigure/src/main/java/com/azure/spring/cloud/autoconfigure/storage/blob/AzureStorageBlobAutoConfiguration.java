@@ -99,14 +99,6 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
         return factory.build();
     }
 
-
-
- /*   @Configuration
-    @ConditionalOnClass(AzureStorageBlobProtocolResolver.class)
-    @Import(AzureStorageBlobProtocolResolver.class)
-    static class StorageBlobResourceConfiguration {
-    }*/
-
     @Target({ ElementType.TYPE, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     @Documented

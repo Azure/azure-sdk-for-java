@@ -23,10 +23,9 @@ import java.net.URL;
  * Implements {@link WritableResource} for reading and writing objects in Azure
  * StorageAccount file. An instance of this class represents a handle to a file.
  *
- * @author Warren Zhu
  */
-public class FileStorageResource extends AzureStorageResource {
-    private static final Logger LOG = LoggerFactory.getLogger(FileStorageResource.class);
+public class StorageFileResource extends AzureStorageResource {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileResource.class);
     private static final String MSG_FAIL_GET = "Failed to get file or container";
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
     private static final String MSG_FAIL_CHECK_EXIST = "Failed to check existence of file or container";
@@ -37,11 +36,11 @@ public class FileStorageResource extends AzureStorageResource {
     private final String location;
     private final boolean autoCreateFiles;
 
-    public FileStorageResource(ShareServiceClient shareServiceClient, String location) {
+    public StorageFileResource(ShareServiceClient shareServiceClient, String location) {
         this(shareServiceClient, location, false);
     }
 
-    FileStorageResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles) {
+    StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles) {
         assertIsAzureStorageLocation(location);
         this.autoCreateFiles = autoCreateFiles;
         this.location = location;
@@ -63,7 +62,7 @@ public class FileStorageResource extends AzureStorageResource {
             }
             return this.shareFileClient.getFileOutputStream();
         } catch (ShareStorageException e) {
-            LOG.error(MSG_FAIL_OPEN_OUTPUT, e);
+            LOGGER.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
         }
     }
@@ -96,7 +95,7 @@ public class FileStorageResource extends AzureStorageResource {
     @Override
     public Resource createRelative(String relativePath) {
         String newLocation = this.location + "/" + relativePath;
-        return new FileStorageResource(this.shareServiceClient, newLocation, autoCreateFiles);
+        return new StorageFileResource(this.shareServiceClient, newLocation, autoCreateFiles);
     }
 
     @Override
@@ -117,7 +116,7 @@ public class FileStorageResource extends AzureStorageResource {
             assertExisted();
             return this.shareFileClient.openInputStream();
         } catch (ShareStorageException e) {
-            LOG.error("Failed to open input stream of cloud file", e);
+            LOGGER.error("Failed to open input stream of cloud file", e);
             throw new IOException("Failed to open input stream of cloud file");
         }
     }

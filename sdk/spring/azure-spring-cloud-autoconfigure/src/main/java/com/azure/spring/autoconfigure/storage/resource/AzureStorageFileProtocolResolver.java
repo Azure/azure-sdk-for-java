@@ -52,7 +52,7 @@ public class AzureStorageFileProtocolResolver implements ProtocolResolver, Resou
     @Override
     public Resource resolve(String location, ResourceLoader resourceLoader) {
         if (AzureStorageUtils.isAzureStorageResource(location, StorageType.FILE)) {
-            return new FileStorageResource(getShareServiceClient(), location, true);
+            return new StorageFileResource(getShareServiceClient(), location, true);
         }
 
         return null;
