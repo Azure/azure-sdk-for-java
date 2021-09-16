@@ -6,6 +6,7 @@ package com.azure.core.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,14 +22,28 @@ import java.util.Optional;
  */
 @Immutable
 public class Context {
-    private final ClientLogger logger = new ClientLogger(Context.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
     // All fields must be immutable.
     //
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, null, null);
+    public static final Context NONE = new Context(null, null, null) {
+        @Override
+        public Optional<Object> getData(Object key) {
+            if (key == null) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+            }
+
+            return Optional.empty();
+        }
+
+        @Override
+        public Map<Object, Object> getValues() {
+            return Collections.emptyMap();
+        }
+    };
 
     private final Context parent;
     private final Object key;
@@ -72,7 +87,7 @@ public class Context {
      */
     public Context addData(Object key, Object value) {
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
         return new Context(this, key, value);
     }
@@ -119,7 +134,7 @@ public class Context {
      */
     public Optional<Object> getData(Object key) {
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
         for (Context c = this; c != null; c = c.parent) {
             if (key.equals(c.key)) {

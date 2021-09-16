@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
-import com.azure.resourcemanager.resources.models.Tags;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
 import reactor.core.publisher.Mono;
 
@@ -288,49 +287,50 @@ public interface TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(String scope, Tags properties);
+    Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
+        String scope, TagsResourceInner parameters);
 
     /**
      * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, Tags properties);
+    Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, TagsResourceInner parameters);
 
     /**
      * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TagsResourceInner createOrUpdateAtScope(String scope, Tags properties);
+    TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters);
 
     /**
      * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -338,7 +338,8 @@ public interface TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(String scope, Tags properties, Context context);
+    Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(
+        String scope, TagsResourceInner parameters, Context context);
 
     /**
      * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.

@@ -1,7 +1,14 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2021-09-16)
 
+### Other changes
+- Minor logging change to ensure MS-CV values are not redacted from the log by default.
+
+#### Dependency updates
+
+- Updated azure-core to 1.20.0.
+- Updated azure-core-http-netty to 1.11.0.
 
 ## 1.0.0 (2021-03-05)
 * Release client.
