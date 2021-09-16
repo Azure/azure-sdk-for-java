@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhub.stream.binder.config;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
 @Import({
+    AzureGlobalPropertiesAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureEventHubResourceManagerAutoConfiguration.class,
     AzureEventHubAutoConfiguration.class,

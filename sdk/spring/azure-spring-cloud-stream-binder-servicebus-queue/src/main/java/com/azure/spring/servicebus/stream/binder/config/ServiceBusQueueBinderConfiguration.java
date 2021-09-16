@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.config;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
@@ -28,9 +29,10 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
 @Import({
-    AzureServiceBusAutoConfiguration.class,
+    AzureGlobalPropertiesAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureServiceBusResourceManagerAutoConfiguration.class,
+    AzureServiceBusAutoConfiguration.class,
     AzureServiceBusQueueOperationAutoConfiguration.class,
     ServiceBusQueueBinderHealthIndicatorConfiguration.class
 })

@@ -3,6 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.config;
 
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
@@ -28,13 +29,14 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
 @Import({
+    AzureGlobalPropertiesAutoConfiguration.class,
     AzureServiceBusAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureServiceBusResourceManagerAutoConfiguration.class,
     AzureServiceBusTopicOperationAutoConfiguration.class,
     ServiceBusTopicBinderHealthIndicatorConfiguration.class
 })
-@EnableConfigurationProperties({ServiceBusTopicExtendedBindingProperties.class })
+@EnableConfigurationProperties(ServiceBusTopicExtendedBindingProperties.class)
 public class ServiceBusTopicBinderConfiguration {
 
     @Bean
@@ -50,7 +52,7 @@ public class ServiceBusTopicBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean({ ServiceBusChannelProvisioner.class, ServiceBusTopicProvisioner.class })
-    public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner() {
+    public ServiceBusChannelProvisioner serviceBusChannelProvisioner() {
         return new ServiceBusChannelProvisioner();
     }
 
