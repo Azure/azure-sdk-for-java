@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.config;
 
-import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
+import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 import com.azure.spring.messaging.container.DefaultAzureListenerContainerFactory;
 import com.azure.spring.messaging.container.ListenerContainerFactory;
 import com.azure.spring.messaging.container.MessageListenerContainer;

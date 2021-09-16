@@ -1,1 +1,1 @@
-eventhub: com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration
+eventhub: com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubBinderConfiguration

@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.container;
 
-import com.azure.spring.integration.core.api.SubscribeByGroupOperation;
+import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 
 /**
  * @author Warren Zhu

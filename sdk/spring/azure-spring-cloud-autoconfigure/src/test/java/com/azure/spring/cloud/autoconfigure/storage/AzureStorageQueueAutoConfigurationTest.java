@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.storage;
 
-import com.azure.spring.integration.storage.queue.StorageQueueOperation;
-import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
-import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.StorageQueueOperation;
+import com.azure.spring.storage.queue.core.DefaultStorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.StorageQueueClientFactory;
 import com.azure.storage.queue.QueueServiceClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
