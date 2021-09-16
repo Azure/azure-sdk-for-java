@@ -18,8 +18,8 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <jacoco.min.linecoverage>0.09</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.14</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
