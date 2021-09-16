@@ -1,5 +1,5 @@
-# Spring Cloud for Azure context client library for Java
-This package helps developers to finish the auto-configuration of Azure Context.
+# Spring Cloud for Azure Core client library for Java
+This package provides the common framework for all Azure Spring libraries.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
 
@@ -9,18 +9,18 @@ This package helps developers to finish the auto-configuration of Azure Context.
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-context;current})
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-core;current})
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-context</artifactId>
-    <version>2.8.0</version>
+    <artifactId>azure-spring-cloud-core</artifactId>
+    <version>4.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
-Azure contexts represent your active subscription to run commands against, and the authentication information needed to connect to an Azure cloud. With Azure contexts, Spring Cloud for Azure services doesn't need to reauthenticate your account each time you switch subscriptions.
+
 ## Examples
 
 ## Troubleshooting

@@ -68,8 +68,9 @@ public class ServiceBusQueueSessionBinderConfigTest {
             "spring.cloud.stream.servicebus.queue.bindings.consume-in-0.consumer.sessionsEnabled:false",
             "spring.cloud.stream.servicebus.queue.bindings.consume-in-0.consumer.concurrency:20")
             .run(context -> {
-                ServiceBusConsumerProperties properties =
-                    context.getBean(ServiceBusQueueExtendedBindingProperties.class).getBindings().get("consume-in-0").getConsumer();
+                ServiceBusConsumerProperties properties = context.getBean(ServiceBusQueueExtendedBindingProperties.class)
+                                                                 .getBindings().get("consume-in-0")
+                                                                 .getConsumer();
                 ExtendedConsumerProperties<ServiceBusConsumerProperties> serviceBusProperties = new ExtendedConsumerProperties<>(properties);
                 ServiceBusClientConfig config = context.getBean(ServiceBusQueueMessageChannelBinder.class).buildClientConfig(serviceBusProperties);
                 assertEquals(config.getMaxConcurrentCalls(), 20);

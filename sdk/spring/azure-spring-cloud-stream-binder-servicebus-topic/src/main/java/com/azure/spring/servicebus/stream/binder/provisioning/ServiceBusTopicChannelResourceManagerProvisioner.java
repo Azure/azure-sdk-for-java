@@ -3,13 +3,7 @@
 
 package com.azure.spring.servicebus.stream.binder.provisioning;
 
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.resourcemanager.servicebus.models.Topic;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusTopicSubscriptionManager;
-import com.azure.spring.core.util.Tuple;
-import org.springframework.cloud.stream.provisioning.ProvisioningException;
+import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -18,37 +12,23 @@ import org.springframework.util.Assert;
  */
 public class ServiceBusTopicChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 
-    private final ServiceBusNamespaceManager serviceBusNamespaceManager;
-    private final ServiceBusTopicManager serviceBusTopicManager;
-    private final ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager;
+    private final ServiceBusTopicProvisioner serviceBusTopicProvisioner;
     private final String namespace;
 
-    public ServiceBusTopicChannelResourceManagerProvisioner(
-            @NonNull ServiceBusNamespaceManager serviceBusNamespaceManager,
-            @NonNull ServiceBusTopicManager serviceBusTopicManager,
-            @NonNull ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager, @NonNull String namespace) {
+    public ServiceBusTopicChannelResourceManagerProvisioner(@NonNull String namespace,
+                                                            @NonNull ServiceBusTopicProvisioner topicProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
-        this.serviceBusNamespaceManager = serviceBusNamespaceManager;
-        this.serviceBusTopicManager = serviceBusTopicManager;
-        this.serviceBusTopicSubscriptionManager = serviceBusTopicSubscriptionManager;
+        this.serviceBusTopicProvisioner = topicProvisioner;
         this.namespace = namespace;
     }
 
     @Override
     protected void validateOrCreateForConsumer(String name, String group) {
-        ServiceBusNamespace namespace = serviceBusNamespaceManager.getOrCreate(this.namespace);
-        Topic topic = serviceBusTopicManager.getOrCreate(Tuple.of(namespace, name));
-        if (topic == null) {
-            throw new ProvisioningException(
-                    String.format("Event hub with name '%s' in namespace '%s' not existed", name, namespace));
-        }
-
-        this.serviceBusTopicSubscriptionManager.getOrCreate(Tuple.of(topic, group));
+        this.serviceBusTopicProvisioner.provisionSubscription(this.namespace, name, group);
     }
 
     @Override
     protected void validateOrCreateForProducer(String name) {
-        ServiceBusNamespace namespace = serviceBusNamespaceManager.getOrCreate(this.namespace);
-        serviceBusTopicManager.getOrCreate(Tuple.of(namespace, name));
+        this.serviceBusTopicProvisioner.provisionTopic(this.namespace, name);
     }
 }

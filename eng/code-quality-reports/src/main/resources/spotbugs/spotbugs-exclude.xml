@@ -2319,29 +2319,18 @@
         <Class name="com.azure.spring.core.credential.resolver.AzureKeyCredentialResolver"/>
         <Class name="com.azure.spring.core.credential.resolver.AzureNamedKeyCredentialResolver"/>
         <Class name="com.azure.spring.core.credential.resolver.AzureSasCredentialResolver"/>
+        <Class name="com.azure.spring.cloud.autoconfigure.storage.common.credential.StorageSharedKeyCredentialResolver" />
       </Or>
       <Method name="resolve"/>
     </And>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
   </Match>
-  <Match>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
+  
   <Match>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
-      <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
-    </Or>
-    <Method name="OnCloseSessionAsync"/>
-    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
   </Match>
 
   <Match>
@@ -2364,12 +2353,6 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.identity.SpringCredentialBuilderBase"/>
-    <Field name="environment"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-
-  <Match>
     <Class name="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"/>
     <Field name="pricingTier"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
@@ -2379,12 +2362,6 @@
     <Class name="com.azure.spring.keyvault.KeyVaultOperation" />
     <Field name="timer" />
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.spring.autoconfigure.cosmos.CosmosAutoConfiguration"/>
-    <Field name="azureProperties"/>
-    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Field is initialized in postProcessEnvironment function -->

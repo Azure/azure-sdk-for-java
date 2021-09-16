@@ -3,8 +3,8 @@
 
 package com.azure.spring.aad.webapi.validator;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.aad.implementation.constants.AADTokenClaim;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;

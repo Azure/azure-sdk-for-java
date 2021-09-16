@@ -5,50 +5,23 @@ package com.azure.spring.core.properties;
 
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.credential.TokenCredentialProperties;
+import com.azure.spring.core.properties.profile.AzureProfile;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 
 /**
  * Unified properties for Azure SDK clients.
  */
-public class AzureProperties {
+public interface AzureProperties {
 
-    protected ClientProperties client;
+    ClientProperties getClient();
 
-    protected ProxyProperties proxy;
+    ProxyProperties getProxy();
 
-    protected RetryProperties retry;
+    RetryProperties getRetry();
 
-    protected TokenCredentialProperties credential;
+    TokenCredentialProperties getCredential();
 
-    public ClientProperties getClient() {
-        return client;
-    }
+    AzureProfile getProfile();
 
-    public void setClient(ClientProperties client) {
-        this.client = client;
-    }
-
-    public ProxyProperties getProxy() {
-        return proxy;
-    }
-
-    public void setProxy(ProxyProperties proxy) {
-        this.proxy = proxy;
-    }
-
-    public RetryProperties getRetry() {
-        return retry;
-    }
-
-    public void setRetry(RetryProperties retry) {
-        this.retry = retry;
-    }
-
-    public TokenCredentialProperties getCredential() {
-        return credential;
-    }
-
-    public void setCredential(TokenCredentialProperties credential) {
-        this.credential = credential;
-    }
 }

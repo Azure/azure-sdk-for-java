@@ -3,138 +3,73 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.context.core.api.AzureResourceMetadata;
-import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
-import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.StaticConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
-import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubOperation}
  *
  * @author Warren Zhu
  */
-@Configuration
-@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
-@ConditionalOnClass(EventHubConsumerAsyncClient.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhub.enabled", matchIfMissing = true)
-@EnableConfigurationProperties(AzureEventHubProperties.class)
-public class AzureEventHubAutoConfiguration {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubAutoConfiguration.class);
+@ConditionalOnClass(EventHubClientBuilder.class)
+@AzureEventHubAutoConfiguration.ConditionalOnEventHub
+@Import({
+    AzureEventHubClientConfiguration.class,
+    AzureBlobCheckpointStoreConfiguration.class,
+    AzureEventProcessorClientConfiguration.class
+})
+public class AzureEventHubAutoConfiguration extends AzureServiceConfigurationBase {
+
+    public AzureEventHubAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
+    }
 
     @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
-    public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
-                                                             AzureResourceMetadata azureResourceMetadata) {
-        return new EventHubNamespaceManager(azureResourceManager, azureResourceMetadata);
+    @ConfigurationProperties(AzureEventHubProperties.PREFIX)
+    public AzureEventHubProperties azureEventHubProperties() {
+        return loadProperties(this.azureGlobalProperties, new AzureEventHubProperties());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean({ AzureResourceManager.class, AzureResourceMetadata.class })
-    @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.checkpoint-storage-account")
-    public StorageAccountManager storageAccountManager(AzureResourceManager azureResourceManager,
-                                                       AzureResourceMetadata azureResourceMetadata) {
-        return new StorageAccountManager(azureResourceManager, azureResourceMetadata);
+    @Order(Ordered.HIGHEST_PRECEDENCE + 100)
+    @ConditionalOnProperty("spring.cloud.azure.eventhub.connection-string")
+    public StaticConnectionStringProvider<AzureServiceType.EventHub> eventHubStaticConnectionStringProvider(
+        AzureEventHubProperties eventHubProperties) {
+        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUB,
+                                                    eventHubProperties.getConnectionString());
     }
 
     /**
-     * Create a {@link EventHubConnectionStringProvider} bean. The bean will hold the connection string to the eventhub.
-     * If connection-string property is configured in the property files, it will use it. Otherwise, it will try to
-     * construct the connection-string using the resource manager.
-     *
-     * @param namespaceManager The resource manager for Event Hubs namespaces.
-     * @param properties The Event Hubs properties.
-     * @return The {@link EventHubConnectionStringProvider} bean.
-     * @throws IllegalArgumentException If connection string is empty.
+     * Condition indicates when event hub should be auto-configured.
      */
-    @Bean
-    @ConditionalOnMissingBean
-    public EventHubConnectionStringProvider eventHubConnectionStringProvider(
-        @Autowired(required = false) EventHubNamespaceManager namespaceManager,
-        AzureEventHubProperties properties) {
-
-        final String namespace = properties.getNamespace();
-        final String connectionString = properties.getConnectionString();
-
-        if (StringUtils.hasText(connectionString)) {
-            return new EventHubConnectionStringProvider(connectionString);
-        } else if (namespaceManager != null && StringUtils.hasText(namespace)) {
-            return new EventHubConnectionStringProvider(namespaceManager.getOrCreate(namespace));
-        }
-
-        LOGGER.warn("Can't construct the EventHubConnectionStringProvider, namespace: {}, connectionString: {}",
-            namespace, connectionString);
-        return null;
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public EventHubClientFactory eventhubClientFactory(
-        @Autowired(required = false) AzureEnvironment azureEnvironment,
-        @Autowired(required = false) StorageAccountManager storageAccountManager,
-        EventHubConnectionStringProvider eventHubConnectionStringProvider,
-        AzureEventHubProperties properties
-    ) {
-        if (eventHubConnectionStringProvider == null) {
-            LOGGER.info("No event hub connection string provided.");
-            return null;
-        }
-
-        final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
-        final String storageConnectionString = getStorageConnectionString(properties,
-                                                                          storageAccountManager, azureEnvironment);
-
-        return new DefaultEventHubClientFactory(eventHubConnectionString, storageConnectionString,
-            properties.getCheckpointContainer());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public EventHubOperation eventHubOperation(EventHubClientFactory clientFactory) {
-        return new EventHubTemplate(clientFactory);
-    }
-
-    private String getStorageConnectionString(AzureEventHubProperties properties,
-                                              StorageAccountManager storageAccountManager,
-                                              AzureEnvironment azureEnvironment) {
-
-        final String accountName = properties.getCheckpointStorageAccount();
-        final String accountKey = properties.getCheckpointAccessKey();
-        final StorageConnectionStringProvider provider;
-
-        if (accountName == null) {
-            return null;
-        }
-
-        if (storageAccountManager != null) {
-            provider = new StorageConnectionStringProvider(storageAccountManager.getOrCreate(accountName));
-        } else {
-            provider = new StorageConnectionStringProvider(accountName, accountKey, azureEnvironment);
-        }
-
-        return provider.getConnectionString();
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    @Documented
+    @ConditionalOnExpression("${spring.cloud.azure.eventhub.enabled:true} and "
+                                 + "(!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhub.connection-string:}') or "
+                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhub.namespace:}'))")
+    public @interface ConditionalOnEventHub {
     }
 
 }
