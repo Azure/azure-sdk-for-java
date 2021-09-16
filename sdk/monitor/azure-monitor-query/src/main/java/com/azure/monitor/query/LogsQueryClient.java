@@ -43,7 +43,7 @@ public final class LogsQueryClient {
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.query#String-String-MonitorQueryTimeInterval}
+     * {@codesnippet com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval}
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
@@ -99,7 +99,7 @@ public final class LogsQueryClient {
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-MonitorQueryTimeInterval-LogsQueryOptions-Context}
+     * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context}
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.

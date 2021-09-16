@@ -72,7 +72,7 @@ public final class LogsQueryAsyncClient {
      * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
-     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.query#String-String-MonitorQueryTimeInterval}
+     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.query#String-String-QueryTimeInterval}
      *
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
@@ -122,7 +122,7 @@ public final class LogsQueryAsyncClient {
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.queryWithResponse#String-String-MonitorQueryTimeInterval-LogsQueryOptions}
+     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions}
      *
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
