@@ -85,7 +85,7 @@ def generate(
 def compile_package(sdk_root, service):
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
-            'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
@@ -101,7 +101,7 @@ def generate_changelog_and_breaking_change(
     logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(
         old_jar, new_jar))
     stdout = subprocess.run(
-        'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
+        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
         .format(sdk_root, old_jar, new_jar),
         stdout = subprocess.PIPE,
         shell = True,
