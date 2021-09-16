@@ -98,6 +98,8 @@ jobs:
           ${{ each var in parameters.EnvVars }}:
             ${{ var.key }}: ${{ var.value }}
 
+      - template: ../steps/retain-heap-dump-hprofs.yml
+
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:

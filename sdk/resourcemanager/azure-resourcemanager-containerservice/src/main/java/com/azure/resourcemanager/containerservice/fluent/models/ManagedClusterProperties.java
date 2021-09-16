@@ -20,6 +20,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityP
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -233,6 +234,14 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "securityProfile")
     private ManagedClusterSecurityProfile securityProfile;
+
+    /*
+     * Whether the cluster can be accessed through public network or not
+     * Default value is 'Enabled' (case insensitive). Could be set to
+     * 'Disabled' to enable private cluster
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Get the provisioningState property: The current provisioning state.
@@ -782,6 +791,28 @@ public final class ManagedClusterProperties {
      */
     public ManagedClusterProperties withSecurityProfile(ManagedClusterSecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
+     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
+     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

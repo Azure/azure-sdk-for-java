@@ -79,8 +79,6 @@ public class CosmosBulkGatewayTest extends BatchTestBase {
         });
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(100);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(5);
 
         Flux<CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux =
             container.executeBulkOperations(cosmosItemOperationFlux1, cosmosBulkExecutionOptions);

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyDefinitionGroup;
@@ -18,56 +18,39 @@ import java.util.List;
 import java.util.Map;
 
 /** The policy set definition. */
-@JsonFlatten
 @Fluent
-public class PolicySetDefinitionInner extends ProxyResource {
+public final class PolicySetDefinitionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetDefinitionInner.class);
 
     /*
-     * The type of policy definition. Possible values are NotSpecified,
-     * BuiltIn, Custom, and Static.
+     * The policy definition properties.
      */
-    @JsonProperty(value = "properties.policyType")
-    private PolicyType policyType;
+    @JsonProperty(value = "properties")
+    private PolicySetDefinitionProperties innerProperties;
 
     /*
-     * The display name of the policy set definition.
+     * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /*
-     * The policy set definition description.
+    /**
+     * Get the innerProperties property: The policy definition properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private PolicySetDefinitionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The policy set definition metadata.  Metadata is an open ended object
-     * and is typically a collection of key value pairs.
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The policy set definition parameters that can be used in policy
-     * definition references.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, ParameterDefinitionsValue> parameters;
-
-    /*
-     * An array of policy definition references.
-     */
-    @JsonProperty(value = "properties.policyDefinitions")
-    private List<PolicyDefinitionReference> policyDefinitions;
-
-    /*
-     * The metadata describing groups of policy definition references within
-     * the policy set definition.
-     */
-    @JsonProperty(value = "properties.policyDefinitionGroups")
-    private List<PolicyDefinitionGroup> policyDefinitionGroups;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
@@ -76,7 +59,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the policyType value.
      */
     public PolicyType policyType() {
-        return this.policyType;
+        return this.innerProperties() == null ? null : this.innerProperties().policyType();
     }
 
     /**
@@ -87,7 +70,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withPolicyType(PolicyType policyType) {
-        this.policyType = policyType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withPolicyType(policyType);
         return this;
     }
 
@@ -97,7 +83,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -107,7 +93,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -117,7 +106,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -127,7 +116,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -138,7 +130,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the metadata value.
      */
     public Object metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -149,7 +141,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withMetadata(Object metadata) {
-        this.metadata = metadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -160,7 +155,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the parameters value.
      */
     public Map<String, ParameterDefinitionsValue> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -171,7 +166,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withParameters(Map<String, ParameterDefinitionsValue> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -181,7 +179,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the policyDefinitions value.
      */
     public List<PolicyDefinitionReference> policyDefinitions() {
-        return this.policyDefinitions;
+        return this.innerProperties() == null ? null : this.innerProperties().policyDefinitions();
     }
 
     /**
@@ -191,7 +189,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withPolicyDefinitions(List<PolicyDefinitionReference> policyDefinitions) {
-        this.policyDefinitions = policyDefinitions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withPolicyDefinitions(policyDefinitions);
         return this;
     }
 
@@ -202,7 +203,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the policyDefinitionGroups value.
      */
     public List<PolicyDefinitionGroup> policyDefinitionGroups() {
-        return this.policyDefinitionGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().policyDefinitionGroups();
     }
 
     /**
@@ -213,7 +214,10 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @return the PolicySetDefinitionInner object itself.
      */
     public PolicySetDefinitionInner withPolicyDefinitionGroups(List<PolicyDefinitionGroup> policyDefinitionGroups) {
-        this.policyDefinitionGroups = policyDefinitionGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicySetDefinitionProperties();
+        }
+        this.innerProperties().withPolicyDefinitionGroups(policyDefinitionGroups);
         return this;
     }
 
@@ -223,21 +227,8 @@ public class PolicySetDefinitionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (policyDefinitions() != null) {
-            policyDefinitions().forEach(e -> e.validate());
-        }
-        if (policyDefinitionGroups() != null) {
-            policyDefinitionGroups().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

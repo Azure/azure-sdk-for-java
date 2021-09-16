@@ -36,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SapTableSource", value = SapTableSource.class),
     @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
     @JsonSubTypes.Type(name = "SqlServerSource", value = SqlServerSource.class),
+    @JsonSubTypes.Type(name = "AmazonRdsForSqlServerSource", value = AmazonRdsForSqlServerSource.class),
     @JsonSubTypes.Type(name = "AzureSqlSource", value = AzureSqlSource.class),
     @JsonSubTypes.Type(name = "SqlMISource", value = SqlMISource.class),
     @JsonSubTypes.Type(name = "SqlDWSource", value = SqlDWSource.class),

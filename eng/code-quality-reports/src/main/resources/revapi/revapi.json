@@ -360,6 +360,41 @@
           "code": "java.method.defaultMethodAddedToInterface",
           "new": "method boolean com.azure.core.http.policy.RetryStrategy::shouldRetryException(java.lang.Throwable)",
           "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>, java.lang.Throwable)",
+        "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Long com.azure.core.util.BinaryData::getLength()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Flux<java.nio.ByteBuffer> com.azure.core.util.BinaryData::toFluxByteBuffer()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.util.BinaryData> com.azure.core.util.BinaryData::fromFlux(reactor.core.publisher.Flux<java.nio.ByteBuffer>, java.lang.Long)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path, int)",
+        "justification": "New method added to BinaryData in azure-core."
       }
     ]
   }

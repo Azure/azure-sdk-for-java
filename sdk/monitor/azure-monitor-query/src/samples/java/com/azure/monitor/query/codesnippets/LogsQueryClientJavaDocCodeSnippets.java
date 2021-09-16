@@ -13,7 +13,7 @@ import com.azure.monitor.query.LogsQueryClient;
 import com.azure.monitor.query.LogsQueryClientBuilder;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResults;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTableCell;
@@ -133,7 +133,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
         String queryId2 = batchQuery.addQuery("{workspace-id-2}", "{kusto-query-2}", TimeInterval.LAST_7_DAYS,
                 new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
         
-        Mono<LogsBatchQueryResults> batchQueryResponse = logsQueryAsyncClient.queryBatch(batchQuery);
+        Mono<LogsBatchQueryResultCollection> batchQueryResponse = logsQueryAsyncClient.queryBatch(batchQuery);
         
         batchQueryResponse.subscribe(result -> {
             for (LogsBatchQueryResult queryResult : result.getBatchResults()) {
@@ -160,7 +160,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
         String queryId2 = batchQuery.addQuery("{workspace-id-2}", "{kusto-query-2}", TimeInterval.LAST_7_DAYS,
                 new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
         
-        LogsBatchQueryResults batchQueryResponse = logsQueryClient.queryBatch(batchQuery);
+        LogsBatchQueryResultCollection batchQueryResponse = logsQueryClient.queryBatch(batchQuery);
 
         for (LogsBatchQueryResult queryResult : batchQueryResponse.getBatchResults()) {
             System.out.println("Logs query result for query id " + queryResult.getId());

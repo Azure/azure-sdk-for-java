@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,44 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.6 (2021-09-10)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ManagedIdentityCredential` was removed
+
+* `models.ServicePrincipalCredential` was removed
+
+### Features Added
+
+* `models.IntegrationRuntimeCustomerVirtualNetwork` was added
+
+* `models.AmazonRdsForOracleSource` was added
+
+* `models.AmazonRdsForOracleLinkedService` was added
+
+* `models.AmazonRdsForSqlServerSource` was added
+
+* `models.AmazonRdsForOraclePartitionSettings` was added
+
+* `models.AmazonRdsForOracleTableDataset` was added
+
+* `models.AmazonRdsForSqlServerTableDataset` was added
+
+* `models.AmazonRdsForSqlServerLinkedService` was added
+
+#### `models.ManagedIntegrationRuntime` was modified
+
+* `withCustomerVirtualNetwork(models.IntegrationRuntimeCustomerVirtualNetwork)` was added
+* `customerVirtualNetwork()` was added
+
+#### `models.SqlAlwaysEncryptedProperties` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
 
 ## 1.0.0-beta.5 (2021-08-25)
 
