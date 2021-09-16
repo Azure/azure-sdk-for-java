@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.StorageQueueEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,30 +15,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Information about the storage queue destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("StorageQueue")
-@JsonFlatten
 @Fluent
-public class StorageQueueEventSubscriptionDestination extends EventSubscriptionDestination {
+public final class StorageQueueEventSubscriptionDestination extends EventSubscriptionDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageQueueEventSubscriptionDestination.class);
 
     /*
-     * The Azure Resource ID of the storage account that contains the queue
-     * that is the destination of an event subscription.
+     * Storage Queue Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private StorageQueueEventSubscriptionDestinationProperties innerProperties;
 
-    /*
-     * The name of the Storage queue under a storage account that is the
-     * destination of an event subscription.
+    /**
+     * Get the innerProperties property: Storage Queue Properties of the event subscription destination.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.queueName")
-    private String queueName;
-
-    /*
-     * Storage queue message time to live in seconds.
-     */
-    @JsonProperty(value = "properties.queueMessageTimeToLiveInSeconds")
-    private Long queueMessageTimeToLiveInSeconds;
+    private StorageQueueEventSubscriptionDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the resourceId property: The Azure Resource ID of the storage account that contains the queue that is the
@@ -47,7 +41,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -58,7 +52,10 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      * @return the StorageQueueEventSubscriptionDestination object itself.
      */
     public StorageQueueEventSubscriptionDestination withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageQueueEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -69,7 +66,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      * @return the queueName value.
      */
     public String queueName() {
-        return this.queueName;
+        return this.innerProperties() == null ? null : this.innerProperties().queueName();
     }
 
     /**
@@ -80,7 +77,10 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      * @return the StorageQueueEventSubscriptionDestination object itself.
      */
     public StorageQueueEventSubscriptionDestination withQueueName(String queueName) {
-        this.queueName = queueName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageQueueEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withQueueName(queueName);
         return this;
     }
 
@@ -90,7 +90,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      * @return the queueMessageTimeToLiveInSeconds value.
      */
     public Long queueMessageTimeToLiveInSeconds() {
-        return this.queueMessageTimeToLiveInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().queueMessageTimeToLiveInSeconds();
     }
 
     /**
@@ -101,7 +101,10 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
      */
     public StorageQueueEventSubscriptionDestination withQueueMessageTimeToLiveInSeconds(
         Long queueMessageTimeToLiveInSeconds) {
-        this.queueMessageTimeToLiveInSeconds = queueMessageTimeToLiveInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageQueueEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withQueueMessageTimeToLiveInSeconds(queueMessageTimeToLiveInSeconds);
         return this;
     }
 
@@ -113,5 +116,8 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
