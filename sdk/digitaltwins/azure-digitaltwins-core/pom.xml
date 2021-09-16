@@ -146,6 +146,7 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.digitaltwins.core/com.azure.digitaltwins.core=ALL-UNNAMED
               </argLine>
             </configuration>
