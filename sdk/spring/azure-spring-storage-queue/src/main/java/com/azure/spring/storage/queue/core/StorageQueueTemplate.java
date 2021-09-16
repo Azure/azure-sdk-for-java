@@ -1,19 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.storage.queue;
+package com.azure.spring.storage.queue.core;
 
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueStorageException;
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.api.CheckpointMode;
-import com.azure.spring.integration.core.api.PartitionSupplier;
-import com.azure.spring.integration.core.api.reactor.AzureCheckpointer;
-import com.azure.spring.integration.core.api.reactor.Checkpointer;
-import com.azure.spring.integration.storage.queue.converter.StorageQueueMessageConverter;
-import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
-import com.azure.spring.integration.storage.queue.util.StorageQueueHelper;
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.checkpoint.reactor.AzureCheckpointer;
+import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
+import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.azure.spring.storage.queue.support.StorageQueueHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;

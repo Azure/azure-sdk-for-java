@@ -10,12 +10,11 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-servicebus</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging-servicebus;current} -->
+  <artifactId>azure-spring-storage-queue</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging-storage-queue;current} -->
 
-  <name>Azure Spring Service Bus</name>
+  <name>Azure Spring Storage Queue</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -38,8 +37,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.4.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <artifactId>azure-storage-queue</artifactId>
+      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <dependency>
@@ -79,6 +78,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
@@ -97,18 +97,6 @@
             </bannedDependencies>
           </rules>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>

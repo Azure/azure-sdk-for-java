@@ -28,6 +28,7 @@
         <module>azure-spring-messaging</module>
         <module>azure-spring-eventhubs</module>
         <module>azure-spring-servicebus</module>
+        <module>azure-spring-storage-queue</module>
       </modules>
       <dependencies>
         <dependency>
@@ -105,6 +106,11 @@
           <artifactId>azure-spring-servicebus</artifactId>
           <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-servicebus;current} -->
         </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-storage-queue</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-storage-queue;current} -->
+        </dependency>
       </dependencies>
 
       <build>
@@ -181,6 +187,7 @@
         <module>azure-spring-messaging</module>
         <module>azure-spring-eventhubs</module>
         <module>azure-spring-servicebus</module>
+        <module>azure-spring-storage-queue</module>
       </modules>
     </profile>
   </profiles>

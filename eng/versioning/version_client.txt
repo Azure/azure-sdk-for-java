@@ -176,6 +176,7 @@ com.azure.spring:azure-spring-integration-storage-queue;4.0.0-beta.1;4.0.0-beta.
 com.azure.spring:azure-spring-messaging;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-eventhubs;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-servicebus;4.0.0-beta.1;4.0.0-beta.1
+com.azure.spring:azure-spring-storage-queue;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-b2c;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-selenium-common;1.0.0;1.0.0

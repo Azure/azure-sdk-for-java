@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.storage.queue;
+package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.integration.core.api.reactor.ReceiveOperation;
-import com.azure.spring.integration.core.api.reactor.SendOperation;
+import com.azure.spring.messaging.core.reactor.ReceiveOperation;
+import com.azure.spring.messaging.core.reactor.SendOperation;
 
 /**
  * Azure storage queue operation to support send and receive

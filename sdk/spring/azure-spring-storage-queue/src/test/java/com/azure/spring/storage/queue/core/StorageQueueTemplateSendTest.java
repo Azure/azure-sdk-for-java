@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.storage.queue;
+package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
-import com.azure.spring.integration.test.support.reactor.SendOperationTest;
+import com.azure.spring.messaging.core.reactor.SendOperationTest;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.SendMessageResult;
 import org.junit.jupiter.api.AfterEach;

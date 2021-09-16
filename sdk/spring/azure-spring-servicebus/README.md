@@ -1,4 +1,4 @@
-# Azure Spring Event Hubs client library for Java
+# Azure Spring Service Bus client library for Java
 
 
 ## Getting started

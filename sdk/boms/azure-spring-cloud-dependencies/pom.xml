@@ -98,6 +98,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-storage-queue</artifactId>
+        <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-cloud-autoconfigure</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>

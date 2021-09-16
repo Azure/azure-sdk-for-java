@@ -30,6 +30,11 @@
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
     <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-storage-queue</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-storage-queue;current} -->
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
@@ -44,5 +49,40 @@
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.7.2</version>
+      <scope>test</scope> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>org.junit.vintage:junit-vintage-engine:[5.7.2]</include> <!-- {x-include-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
+                <include>org.mockito:mockito-core:[3.9.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
+                <include>org.powermock:powermock-api-mockito2:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+                <include>org.powermock:powermock-module-junit4:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

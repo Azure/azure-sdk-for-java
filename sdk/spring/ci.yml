@@ -135,6 +135,10 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringservicebus
         skipPublishDocMs: true
+      - name: azure-spring-storage-queue
+        groupId: com.azure.spring
+        safeName: azurespringstoragequeue
+        skipPublishDocMs: true
       - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring
         safeName: azurespringcloudautoconfigure
