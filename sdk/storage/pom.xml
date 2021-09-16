@@ -52,7 +52,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob-nio</artifactId>
-          <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+          <version>12.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
