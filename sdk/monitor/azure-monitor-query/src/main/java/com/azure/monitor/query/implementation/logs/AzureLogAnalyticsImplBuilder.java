@@ -192,7 +192,7 @@ public final class AzureLogAnalyticsImplBuilder {
      */
     public AzureLogAnalyticsImpl buildClient() {
         if (host == null) {
-            this.host = "https://api.loganalytics.io/v1";
+            this.host = "https://api.monitor.azure.com/v1";
         }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
@@ -217,8 +217,8 @@ public final class AzureLogAnalyticsImplBuilder {
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, "https://api.loganalytics.io" +
-            "/.default");
+        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                "https://api.monitor.azure.com/.default");
         policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());

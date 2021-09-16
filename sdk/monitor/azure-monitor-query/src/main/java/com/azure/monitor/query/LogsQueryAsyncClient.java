@@ -7,8 +7,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.experimental.models.HttpResponseError;
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
@@ -31,11 +31,14 @@ import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
+import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.LogsTableColumn;
 import com.azure.monitor.query.models.LogsTableRow;
+import com.azure.monitor.query.models.QueryTimeInterval;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SynchronousSink;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -69,7 +72,7 @@ public final class LogsQueryAsyncClient {
      * Returns all the Azure Monitor logs matching the given query in the specified workspaceId.
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
-     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.query#String-String-TimeInterval}
+     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.query#String-String-QueryTimeInterval}
      *
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
@@ -77,7 +80,7 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogsQueryResult> query(String workspaceId, String query, TimeInterval timeInterval) {
+    public Mono<LogsQueryResult> query(String workspaceId, String query, QueryTimeInterval timeInterval) {
         return queryWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions())
                 .map(Response::getValue);
     }
@@ -92,7 +95,7 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<List<T>> query(String workspaceId, String query, TimeInterval timeInterval, Class<T> type) {
+    public <T> Mono<List<T>> query(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
         return query(workspaceId, query, timeInterval)
                 .map(result -> LogsQueryHelper.toObject(result.getTable(), type));
     }
@@ -108,7 +111,7 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<List<T>> query(String workspaceId, String query, TimeInterval timeInterval,
+    public <T> Mono<List<T>> query(String workspaceId, String query, QueryTimeInterval timeInterval,
             Class<T> type, LogsQueryOptions options) {
         return queryWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
                 .map(response -> LogsQueryHelper.toObject(response.getValue().getTable(), type));
@@ -119,7 +122,7 @@ public final class LogsQueryAsyncClient {
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.queryWithResponse#String-String-TimeInterval-LogsQueryOptions}
+     * {@codesnippet com.azure.monitor.query.LogsQueryAsyncClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions}
      *
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
@@ -130,7 +133,7 @@ public final class LogsQueryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LogsQueryResult>> queryWithResponse(String workspaceId, String query,
-                                                             TimeInterval timeInterval, LogsQueryOptions options) {
+                                                             QueryTimeInterval timeInterval, LogsQueryOptions options) {
         return withContext(context -> queryWithResponse(workspaceId, query, timeInterval, options, context));
     }
 
@@ -147,7 +150,7 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<List<T>>> queryWithResponse(String workspaceId, String query, TimeInterval timeInterval,
+    public <T> Mono<Response<List<T>>> queryWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                    Class<T> type, LogsQueryOptions options) {
         return queryWithResponse(workspaceId, query, timeInterval, options)
                 .map(response -> new SimpleResponse<>(response.getRequest(),
@@ -164,7 +167,7 @@ public final class LogsQueryAsyncClient {
      * @return A collection of query results corresponding to the input batch of queries.
      */
     Mono<LogsBatchQueryResultCollection> queryBatch(String workspaceId, List<String> queries,
-                                                    TimeInterval timeInterval) {
+                                                    QueryTimeInterval timeInterval) {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         queries.forEach(query -> logsBatchQuery.addQuery(workspaceId, query, timeInterval));
         return queryBatchWithResponse(logsBatchQuery).map(Response::getValue);
@@ -263,14 +266,14 @@ public final class LogsQueryAsyncClient {
         return null;
     }
 
-    Mono<Response<LogsQueryResult>> queryWithResponse(String workspaceId, String query, TimeInterval timeInterval,
+    Mono<Response<LogsQueryResult>> queryWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                       LogsQueryOptions options, Context context) {
         String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
         context = updateContext(options.getServerTimeout(), context);
 
         QueryBody queryBody = new QueryBody(query);
         if (timeInterval != null) {
-            queryBody.setTimespan(timeInterval.toIso8601Format());
+            queryBody.setTimespan(LogsQueryHelper.toIso8601Format(timeInterval));
         }
         queryBody.setWorkspaces(getAllWorkspaces(options));
         return innerClient
@@ -288,7 +291,16 @@ public final class LogsQueryAsyncClient {
                     }
                     return ex;
                 })
-                .map(this::convertToLogQueryResult);
+                .map(this::convertToLogQueryResult)
+                .handle((Response<LogsQueryResult> response, SynchronousSink<Response<LogsQueryResult>> sink) -> {
+                    if (response.getValue().getQueryResultStatus() == LogsQueryResultStatus.PARTIAL_FAILURE) {
+                        sink.error(new ServiceResponseException("Query execution returned partial errors. To "
+                                + "disable exceptions on partial errors, set disableExceptionOnPartialErrors in "
+                                + "LogsQueryOptions to true."));
+                    } else {
+                        sink.next(response);
+                    }
+                });
     }
 
     private Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {

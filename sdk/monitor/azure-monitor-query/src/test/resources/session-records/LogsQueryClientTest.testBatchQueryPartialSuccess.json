@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.loganalytics.io/v1/$batch",
+    "Uri" : "https://REDACTED.monitor.azure.com/v1/$batch",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
