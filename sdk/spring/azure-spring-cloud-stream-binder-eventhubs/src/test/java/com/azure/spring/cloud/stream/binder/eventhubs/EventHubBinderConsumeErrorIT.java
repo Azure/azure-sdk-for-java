@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.test.eventhubs;
+package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.spring.integration.core.AzureHeaders;
-import com.azure.spring.integration.core.api.reactor.Checkpointer;
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;

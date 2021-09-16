@@ -4,7 +4,7 @@
 package com.azure.spring.servicebus.stream.binder.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.spring.integration.core.api.CheckpointMode;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;

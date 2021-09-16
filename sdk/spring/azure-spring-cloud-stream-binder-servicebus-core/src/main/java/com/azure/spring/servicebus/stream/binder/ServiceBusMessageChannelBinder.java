@@ -4,8 +4,8 @@
 package com.azure.spring.servicebus.stream.binder;
 
 import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.core.api.CheckpointConfig;
-import com.azure.spring.integration.core.api.SendOperation;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerProperties;
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusExtendedBindingProperties;

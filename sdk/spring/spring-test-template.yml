@@ -8,7 +8,7 @@ parameters:
     - spring/azure-spring-boot-test-keyvault-certificate
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
-    - spring/azure-spring-cloud-test-eventhubs
+    - spring/azure-spring-cloud-stream-binder-eventhubs
     - spring/azure-spring-cloud-test-eventhubs-kafka
     - spring/azure-spring-cloud-test-servicebus-binder
   Artifacts:
@@ -51,9 +51,6 @@ parameters:
     - name: azure-spring-boot-test-servicebus-jms
       groupId: com.azure.spring
       safeName: azurespringboottestservicebusjms
-    - name: azure-spring-cloud-test-eventhubs
-      groupId: com.azure.spring
-      safeName: azurespringcloudtesteventhubs
     - name: azure-spring-cloud-test-eventhubs-kafka
       groupId: com.azure.spring
       safeName: azurespringcloudtesteventhubskafka

@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.test.eventhubs.stream.binder;
+package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -26,26 +24,22 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EventHubBinderSyncModeIT.TestConfig.class)
+@SpringBootTest(classes = EventHubBinderRecordModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-        "spring.cloud.stream.eventhub.bindings.input.producer.sync=true",
-        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-sync",
-        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-sync",
-        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-sync"
+        "spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=RECORD",
+        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-record",
+        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-record",
+        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-record"
     })
-public class EventHubBinderSyncModeIT {
+public class EventHubBinderRecordModeIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderSyncModeIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderRecordModeIT.class);
     private static String message = UUID.randomUUID().toString();
+    private static CountDownLatch latch = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
-
-    @Rule
-    public OutputCaptureRule capture = new OutputCaptureRule();
-
-    private static CountDownLatch latch = new CountDownLatch(1);
 
     @EnableAutoConfiguration
     public static class TestConfig {
@@ -66,7 +60,7 @@ public class EventHubBinderSyncModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderSyncModeIT.message) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
+                if (message.getPayload().equals(EventHubBinderRecordModeIT.message)) {
                     latch.countDown();
                 }
             };
@@ -75,11 +69,11 @@ public class EventHubBinderSyncModeIT {
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("EventHubBinderSyncModeIT begin.");
-        EventHubBinderSyncModeIT.latch.await(15, TimeUnit.SECONDS);
+        LOGGER.info("EventHubBinderRecordModeIT begin.");
+        EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderSyncModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("EventHubBinderSyncModeIT end.");
+        assertThat(EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("EventHubBinderRecordModeIT end.");
     }
 }

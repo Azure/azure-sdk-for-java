@@ -191,7 +191,6 @@ com.azure.spring:azure-spring-boot-test-keyvault-reactive;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-parent;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-servicebus-binder;1.0.0;1.0.0
-com.azure.spring:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-eventhubs-kafka;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0

@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.test.eventhubs.stream.binder;
+package com.azure.spring.cloud.stream.binder.eventhubs;
 
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,17 +27,17 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EventHubBinderRecordModeIT.TestConfig.class)
+@SpringBootTest(classes = EventHubBinderManualModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-        "spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=RECORD",
-        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-record",
-        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-record",
-        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-record"
+        "spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=MANUAL",
+        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-manual",
+        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-manual",
+        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-manual"
     })
-public class EventHubBinderRecordModeIT {
+public class EventHubBinderManualModeIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderRecordModeIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderManualModeIT.class);
     private static String message = UUID.randomUUID().toString();
     private static CountDownLatch latch = new CountDownLatch(1);
 
@@ -52,15 +55,19 @@ public class EventHubBinderRecordModeIT {
         @Bean
         public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
-                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m.getPayload()))
+                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m))
                              .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
         public Consumer<Message<String>> consume() {
             return message -> {
-                LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderRecordModeIT.message)) {
+                LOGGER.info("EventHubBinderManualModeIT: New message received: '{}'", message.getPayload());
+                if (message.getPayload().equals(EventHubBinderManualModeIT.message)) {
+                    Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(AzureHeaders.CHECKPOINTER);
+                    checkpointer.success().handle((r, ex) -> {
+                        Assertions.assertNull(ex);
+                    });
                     latch.countDown();
                 }
             };
@@ -69,11 +76,11 @@ public class EventHubBinderRecordModeIT {
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("EventHubBinderRecordModeIT begin.");
-        EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS);
+        LOGGER.info("EventHubBinderManualModeIT begin.");
+        EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("EventHubBinderRecordModeIT end.");
+        assertThat(EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        LOGGER.info("EventHubBinderManualModeIT end.");
     }
 }
