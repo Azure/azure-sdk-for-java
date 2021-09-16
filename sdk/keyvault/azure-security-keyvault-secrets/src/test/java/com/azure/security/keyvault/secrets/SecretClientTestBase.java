@@ -402,7 +402,7 @@ public abstract class SecretClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            System.getenv("AZURE_KEYVAULT_ENDPOINT") != null ? System.getenv("AZURE_KEYVAULT_ENDPOINT") : "http://localhost:8080";
 
         Objects.requireNonNull(endpoint);
 
