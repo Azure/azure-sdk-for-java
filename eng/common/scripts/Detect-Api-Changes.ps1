@@ -111,7 +111,7 @@ foreach ($artifact in $ArtifactList)
 if ($responses)
 {
     Write-Warning "API change detection failed for following packages:"
-    foreach($pkg in $responses)
+    foreach($pkg in $responses.keys)
     {
         Write-Host "$pkg"
     }
