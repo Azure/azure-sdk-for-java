@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceProvisioningState;
@@ -14,56 +12,62 @@ import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
-/** EventGrid Partner Namespace. */
+/** Properties of the partner namespace. */
 @Fluent
-public final class PartnerNamespaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceInner.class);
+public final class PartnerNamespaceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceProperties.class);
 
     /*
-     * Properties of the partner namespace.
+     * The privateEndpointConnections property.
      */
-    @JsonProperty(value = "properties")
-    private PartnerNamespaceProperties innerProperties;
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
-     * The system metadata relating to Partner Namespace resource.
+     * Provisioning state of the partner namespace.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private PartnerNamespaceProvisioningState provisioningState;
 
-    /**
-     * Get the innerProperties property: Properties of the partner namespace.
-     *
-     * @return the innerProperties value.
+    /*
+     * The fully qualified ARM Id of the partner registration that should be
+     * associated with this partner namespace. This takes the following format:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
      */
-    private PartnerNamespaceProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "partnerRegistrationFullyQualifiedId")
+    private String partnerRegistrationFullyQualifiedId;
 
-    /**
-     * Get the systemData property: The system metadata relating to Partner Namespace resource.
-     *
-     * @return the systemData value.
+    /*
+     * Endpoint for the partner namespace.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String endpoint;
 
-    /** {@inheritDoc} */
-    @Override
-    public PartnerNamespaceInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
+    /*
+     * This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring <seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
+     * />
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
-    /** {@inheritDoc} */
-    @Override
-    public PartnerNamespaceInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
+    /*
+     * This can be used to restrict traffic from specific IPs instead of all
+     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     */
+    @JsonProperty(value = "inboundIpRules")
+    private List<InboundIpRule> inboundIpRules;
+
+    /*
+     * This boolean is used to enable or disable local auth. Default value is
+     * false. When the property is set to true, only AAD token will be used to
+     * authenticate if user is allowed to publish to the partner namespace.
+     */
+    @JsonProperty(value = "disableLocalAuth")
+    private Boolean disableLocalAuth;
 
     /**
      * Get the privateEndpointConnections property: The privateEndpointConnections property.
@@ -71,7 +75,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -80,7 +84,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the provisioningState value.
      */
     public PartnerNamespaceProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+        return this.provisioningState;
     }
 
     /**
@@ -91,7 +95,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the partnerRegistrationFullyQualifiedId value.
      */
     public String partnerRegistrationFullyQualifiedId() {
-        return this.innerProperties() == null ? null : this.innerProperties().partnerRegistrationFullyQualifiedId();
+        return this.partnerRegistrationFullyQualifiedId;
     }
 
     /**
@@ -100,13 +104,11 @@ public final class PartnerNamespaceInner extends Resource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
      *
      * @param partnerRegistrationFullyQualifiedId the partnerRegistrationFullyQualifiedId value to set.
-     * @return the PartnerNamespaceInner object itself.
+     * @return the PartnerNamespaceProperties object itself.
      */
-    public PartnerNamespaceInner withPartnerRegistrationFullyQualifiedId(String partnerRegistrationFullyQualifiedId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PartnerNamespaceProperties();
-        }
-        this.innerProperties().withPartnerRegistrationFullyQualifiedId(partnerRegistrationFullyQualifiedId);
+    public PartnerNamespaceProperties withPartnerRegistrationFullyQualifiedId(
+        String partnerRegistrationFullyQualifiedId) {
+        this.partnerRegistrationFullyQualifiedId = partnerRegistrationFullyQualifiedId;
         return this;
     }
 
@@ -116,7 +118,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the endpoint value.
      */
     public String endpoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpoint();
+        return this.endpoint;
     }
 
     /**
@@ -128,7 +130,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+        return this.publicNetworkAccess;
     }
 
     /**
@@ -138,13 +140,10 @@ public final class PartnerNamespaceInner extends Resource {
      * /&gt;.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the PartnerNamespaceInner object itself.
+     * @return the PartnerNamespaceProperties object itself.
      */
-    public PartnerNamespaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PartnerNamespaceProperties();
-        }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+    public PartnerNamespaceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
@@ -155,7 +154,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
-        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
+        return this.inboundIpRules;
     }
 
     /**
@@ -163,13 +162,10 @@ public final class PartnerNamespaceInner extends Resource {
      * These are considered only if PublicNetworkAccess is enabled.
      *
      * @param inboundIpRules the inboundIpRules value to set.
-     * @return the PartnerNamespaceInner object itself.
+     * @return the PartnerNamespaceProperties object itself.
      */
-    public PartnerNamespaceInner withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PartnerNamespaceProperties();
-        }
-        this.innerProperties().withInboundIpRules(inboundIpRules);
+    public PartnerNamespaceProperties withInboundIpRules(List<InboundIpRule> inboundIpRules) {
+        this.inboundIpRules = inboundIpRules;
         return this;
     }
 
@@ -181,7 +177,7 @@ public final class PartnerNamespaceInner extends Resource {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+        return this.disableLocalAuth;
     }
 
     /**
@@ -190,13 +186,10 @@ public final class PartnerNamespaceInner extends Resource {
      * the partner namespace.
      *
      * @param disableLocalAuth the disableLocalAuth value to set.
-     * @return the PartnerNamespaceInner object itself.
+     * @return the PartnerNamespaceProperties object itself.
      */
-    public PartnerNamespaceInner withDisableLocalAuth(Boolean disableLocalAuth) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PartnerNamespaceProperties();
-        }
-        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+    public PartnerNamespaceProperties withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
         return this;
     }
 
@@ -206,8 +199,11 @@ public final class PartnerNamespaceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (inboundIpRules() != null) {
+            inboundIpRules().forEach(e -> e.validate());
         }
     }
 }

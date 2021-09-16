@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.PartnerNamespaceUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,9 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 /** Properties of the PartnerNamespace update. */
-@JsonFlatten
 @Fluent
-public class PartnerNamespaceUpdateParameters {
+public final class PartnerNamespaceUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerNamespaceUpdateParameters.class);
 
     /*
@@ -27,30 +26,10 @@ public class PartnerNamespaceUpdateParameters {
     private Map<String, String> tags;
 
     /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties"
-         + ".InboundIpRules"
-     * />
+     * Properties of the Partner Namespace.
      */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-     */
-    @JsonProperty(value = "properties.inboundIpRules")
-    private List<InboundIpRule> inboundIpRules;
-
-    /*
-     * This boolean is used to enable or disable local auth. Default value is
-     * false. When the property is set to true, only AAD token will be used to
-     * authenticate if user is allowed to publish to the partner namespace.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
+    @JsonProperty(value = "properties")
+    private PartnerNamespaceUpdateParameterProperties innerProperties;
 
     /**
      * Get the tags property: Tags of the partner namespace.
@@ -73,6 +52,15 @@ public class PartnerNamespaceUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the Partner Namespace.
+     *
+     * @return the innerProperties value.
+     */
+    private PartnerNamespaceUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
      * enabled. You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceUpdateParameterProperties"
@@ -82,7 +70,7 @@ public class PartnerNamespaceUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -96,7 +84,10 @@ public class PartnerNamespaceUpdateParameters {
      * @return the PartnerNamespaceUpdateParameters object itself.
      */
     public PartnerNamespaceUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerNamespaceUpdateParameterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -107,7 +98,7 @@ public class PartnerNamespaceUpdateParameters {
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
-        return this.inboundIpRules;
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
     }
 
     /**
@@ -118,7 +109,10 @@ public class PartnerNamespaceUpdateParameters {
      * @return the PartnerNamespaceUpdateParameters object itself.
      */
     public PartnerNamespaceUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inboundIpRules = inboundIpRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerNamespaceUpdateParameterProperties();
+        }
+        this.innerProperties().withInboundIpRules(inboundIpRules);
         return this;
     }
 
@@ -130,7 +124,7 @@ public class PartnerNamespaceUpdateParameters {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -142,7 +136,10 @@ public class PartnerNamespaceUpdateParameters {
      * @return the PartnerNamespaceUpdateParameters object itself.
      */
     public PartnerNamespaceUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerNamespaceUpdateParameterProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -152,8 +149,8 @@ public class PartnerNamespaceUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (inboundIpRules() != null) {
-            inboundIpRules().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

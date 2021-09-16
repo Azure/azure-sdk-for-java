@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.EventChannelDestination;
 import com.azure.resourcemanager.eventgrid.models.EventChannelFilter;
@@ -17,40 +15,59 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Event Channel. */
+/** Properties of the Event Channel. */
 @Fluent
-public final class EventChannelInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelInner.class);
+public final class EventChannelProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventChannelProperties.class);
 
     /*
-     * Properties of the EventChannel.
+     * Source of the event channel. This represents a unique resource in the
+     * partner's resource model.
      */
-    @JsonProperty(value = "properties")
-    private EventChannelProperties innerProperties;
+    @JsonProperty(value = "source")
+    private EventChannelSource source;
 
     /*
-     * The system metadata relating to Event Channel resource.
+     * Represents the destination of an event channel.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    @JsonProperty(value = "destination")
+    private EventChannelDestination destination;
 
-    /**
-     * Get the innerProperties property: Properties of the EventChannel.
-     *
-     * @return the innerProperties value.
+    /*
+     * Provisioning state of the event channel.
      */
-    private EventChannelProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private EventChannelProvisioningState provisioningState;
 
-    /**
-     * Get the systemData property: The system metadata relating to Event Channel resource.
-     *
-     * @return the systemData value.
+    /*
+     * The readiness state of the corresponding partner topic.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "partnerTopicReadinessState", access = JsonProperty.Access.WRITE_ONLY)
+    private PartnerTopicReadinessState partnerTopicReadinessState;
+
+    /*
+     * Expiration time of the event channel. If this timer expires while the
+     * corresponding partner topic is never activated,
+     * the event channel and corresponding partner topic are deleted.
+     */
+    @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
+    private OffsetDateTime expirationTimeIfNotActivatedUtc;
+
+    /*
+     * Information about the filter for the event channel.
+     */
+    @JsonProperty(value = "filter")
+    private EventChannelFilter filter;
+
+    /*
+     * Friendly description about the topic. This can be set by the
+     * publisher/partner to show custom description for the customer partner
+     * topic.
+     * This will be helpful to remove any ambiguity of the origin of creation
+     * of the partner topic for the customer.
+     */
+    @JsonProperty(value = "partnerTopicFriendlyDescription")
+    private String partnerTopicFriendlyDescription;
 
     /**
      * Get the source property: Source of the event channel. This represents a unique resource in the partner's resource
@@ -59,7 +76,7 @@ public final class EventChannelInner extends ProxyResource {
      * @return the source value.
      */
     public EventChannelSource source() {
-        return this.innerProperties() == null ? null : this.innerProperties().source();
+        return this.source;
     }
 
     /**
@@ -67,13 +84,10 @@ public final class EventChannelInner extends ProxyResource {
      * model.
      *
      * @param source the source value to set.
-     * @return the EventChannelInner object itself.
+     * @return the EventChannelProperties object itself.
      */
-    public EventChannelInner withSource(EventChannelSource source) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventChannelProperties();
-        }
-        this.innerProperties().withSource(source);
+    public EventChannelProperties withSource(EventChannelSource source) {
+        this.source = source;
         return this;
     }
 
@@ -83,20 +97,17 @@ public final class EventChannelInner extends ProxyResource {
      * @return the destination value.
      */
     public EventChannelDestination destination() {
-        return this.innerProperties() == null ? null : this.innerProperties().destination();
+        return this.destination;
     }
 
     /**
      * Set the destination property: Represents the destination of an event channel.
      *
      * @param destination the destination value to set.
-     * @return the EventChannelInner object itself.
+     * @return the EventChannelProperties object itself.
      */
-    public EventChannelInner withDestination(EventChannelDestination destination) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventChannelProperties();
-        }
-        this.innerProperties().withDestination(destination);
+    public EventChannelProperties withDestination(EventChannelDestination destination) {
+        this.destination = destination;
         return this;
     }
 
@@ -106,7 +117,7 @@ public final class EventChannelInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public EventChannelProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+        return this.provisioningState;
     }
 
     /**
@@ -115,7 +126,7 @@ public final class EventChannelInner extends ProxyResource {
      * @return the partnerTopicReadinessState value.
      */
     public PartnerTopicReadinessState partnerTopicReadinessState() {
-        return this.innerProperties() == null ? null : this.innerProperties().partnerTopicReadinessState();
+        return this.partnerTopicReadinessState;
     }
 
     /**
@@ -126,7 +137,7 @@ public final class EventChannelInner extends ProxyResource {
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().expirationTimeIfNotActivatedUtc();
+        return this.expirationTimeIfNotActivatedUtc;
     }
 
     /**
@@ -135,13 +146,10 @@ public final class EventChannelInner extends ProxyResource {
      * deleted.
      *
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
-     * @return the EventChannelInner object itself.
+     * @return the EventChannelProperties object itself.
      */
-    public EventChannelInner withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventChannelProperties();
-        }
-        this.innerProperties().withExpirationTimeIfNotActivatedUtc(expirationTimeIfNotActivatedUtc);
+    public EventChannelProperties withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
+        this.expirationTimeIfNotActivatedUtc = expirationTimeIfNotActivatedUtc;
         return this;
     }
 
@@ -151,20 +159,17 @@ public final class EventChannelInner extends ProxyResource {
      * @return the filter value.
      */
     public EventChannelFilter filter() {
-        return this.innerProperties() == null ? null : this.innerProperties().filter();
+        return this.filter;
     }
 
     /**
      * Set the filter property: Information about the filter for the event channel.
      *
      * @param filter the filter value to set.
-     * @return the EventChannelInner object itself.
+     * @return the EventChannelProperties object itself.
      */
-    public EventChannelInner withFilter(EventChannelFilter filter) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventChannelProperties();
-        }
-        this.innerProperties().withFilter(filter);
+    public EventChannelProperties withFilter(EventChannelFilter filter) {
+        this.filter = filter;
         return this;
     }
 
@@ -176,7 +181,7 @@ public final class EventChannelInner extends ProxyResource {
      * @return the partnerTopicFriendlyDescription value.
      */
     public String partnerTopicFriendlyDescription() {
-        return this.innerProperties() == null ? null : this.innerProperties().partnerTopicFriendlyDescription();
+        return this.partnerTopicFriendlyDescription;
     }
 
     /**
@@ -185,13 +190,10 @@ public final class EventChannelInner extends ProxyResource {
      * ambiguity of the origin of creation of the partner topic for the customer.
      *
      * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set.
-     * @return the EventChannelInner object itself.
+     * @return the EventChannelProperties object itself.
      */
-    public EventChannelInner withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventChannelProperties();
-        }
-        this.innerProperties().withPartnerTopicFriendlyDescription(partnerTopicFriendlyDescription);
+    public EventChannelProperties withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription) {
+        this.partnerTopicFriendlyDescription = partnerTopicFriendlyDescription;
         return this;
     }
 
@@ -201,8 +203,14 @@ public final class EventChannelInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (source() != null) {
+            source().validate();
+        }
+        if (destination() != null) {
+            destination().validate();
+        }
+        if (filter() != null) {
+            filter().validate();
         }
     }
 }
