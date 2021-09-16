@@ -16,7 +16,7 @@ Maven dependency for the Azure Key Vault Secrets client library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.4.0-beta.1</version>
+    <version>4.3.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

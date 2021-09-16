@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,10 +22,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Event Subscription. */
-@JsonFlatten
 @Fluent
-public class EventSubscriptionInner extends ProxyResource {
+public final class EventSubscriptionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionInner.class);
+
+    /*
+     * Properties of the event subscription.
+     */
+    @JsonProperty(value = "properties")
+    private EventSubscriptionProperties innerProperties;
 
     /*
      * The system metadata relating to Event Subscription resource.
@@ -34,88 +38,14 @@ public class EventSubscriptionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Name of the topic of the event subscription.
+    /**
+     * Get the innerProperties property: Properties of the event subscription.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.topic", access = JsonProperty.Access.WRITE_ONLY)
-    private String topic;
-
-    /*
-     * Provisioning state of the event subscription.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private EventSubscriptionProvisioningState provisioningState;
-
-    /*
-     * Information about the destination where events have to be delivered for
-     * the event subscription.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
-     */
-    @JsonProperty(value = "properties.destination")
-    private EventSubscriptionDestination destination;
-
-    /*
-     * Information about the destination where events have to be delivered for
-     * the event subscription.
-     * Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery
-     * / dead-lettering.
-     */
-    @JsonProperty(value = "properties.deliveryWithResourceIdentity")
-    private DeliveryWithResourceIdentity deliveryWithResourceIdentity;
-
-    /*
-     * Information about the filter for the event subscription.
-     */
-    @JsonProperty(value = "properties.filter")
-    private EventSubscriptionFilter filter;
-
-    /*
-     * List of user defined labels.
-     */
-    @JsonProperty(value = "properties.labels")
-    private List<String> labels;
-
-    /*
-     * Expiration time of the event subscription.
-     */
-    @JsonProperty(value = "properties.expirationTimeUtc")
-    private OffsetDateTime expirationTimeUtc;
-
-    /*
-     * The event delivery schema for the event subscription.
-     */
-    @JsonProperty(value = "properties.eventDeliverySchema")
-    private EventDeliverySchema eventDeliverySchema;
-
-    /*
-     * The retry policy for events. This can be used to configure maximum
-     * number of delivery attempts and time to live for events.
-     */
-    @JsonProperty(value = "properties.retryPolicy")
-    private RetryPolicy retryPolicy;
-
-    /*
-     * The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter
-     * destination.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
-     */
-    @JsonProperty(value = "properties.deadLetterDestination")
-    private DeadLetterDestination deadLetterDestination;
-
-    /*
-     * The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter
-     * destination.
-     * Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery
-     * / dead-lettering.
-     */
-    @JsonProperty(value = "properties.deadLetterWithResourceIdentity")
-    private DeadLetterWithResourceIdentity deadLetterWithResourceIdentity;
+    private EventSubscriptionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to Event Subscription resource.
@@ -132,7 +62,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the topic value.
      */
     public String topic() {
-        return this.topic;
+        return this.innerProperties() == null ? null : this.innerProperties().topic();
     }
 
     /**
@@ -141,7 +71,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public EventSubscriptionProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -152,7 +82,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the destination value.
      */
     public EventSubscriptionDestination destination() {
-        return this.destination;
+        return this.innerProperties() == null ? null : this.innerProperties().destination();
     }
 
     /**
@@ -164,7 +94,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withDestination(EventSubscriptionDestination destination) {
-        this.destination = destination;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withDestination(destination);
         return this;
     }
 
@@ -176,7 +109,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the deliveryWithResourceIdentity value.
      */
     public DeliveryWithResourceIdentity deliveryWithResourceIdentity() {
-        return this.deliveryWithResourceIdentity;
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryWithResourceIdentity();
     }
 
     /**
@@ -189,7 +122,10 @@ public class EventSubscriptionInner extends ProxyResource {
      */
     public EventSubscriptionInner withDeliveryWithResourceIdentity(
         DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
-        this.deliveryWithResourceIdentity = deliveryWithResourceIdentity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
         return this;
     }
 
@@ -199,7 +135,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the filter value.
      */
     public EventSubscriptionFilter filter() {
-        return this.filter;
+        return this.innerProperties() == null ? null : this.innerProperties().filter();
     }
 
     /**
@@ -209,7 +145,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withFilter(EventSubscriptionFilter filter) {
-        this.filter = filter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withFilter(filter);
         return this;
     }
 
@@ -219,7 +158,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the labels value.
      */
     public List<String> labels() {
-        return this.labels;
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
     }
 
     /**
@@ -229,7 +168,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withLabels(List<String> labels) {
-        this.labels = labels;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withLabels(labels);
         return this;
     }
 
@@ -239,7 +181,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the expirationTimeUtc value.
      */
     public OffsetDateTime expirationTimeUtc() {
-        return this.expirationTimeUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimeUtc();
     }
 
     /**
@@ -249,7 +191,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withExpirationTimeUtc(OffsetDateTime expirationTimeUtc) {
-        this.expirationTimeUtc = expirationTimeUtc;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withExpirationTimeUtc(expirationTimeUtc);
         return this;
     }
 
@@ -259,7 +204,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the eventDeliverySchema value.
      */
     public EventDeliverySchema eventDeliverySchema() {
-        return this.eventDeliverySchema;
+        return this.innerProperties() == null ? null : this.innerProperties().eventDeliverySchema();
     }
 
     /**
@@ -269,7 +214,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withEventDeliverySchema(EventDeliverySchema eventDeliverySchema) {
-        this.eventDeliverySchema = eventDeliverySchema;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withEventDeliverySchema(eventDeliverySchema);
         return this;
     }
 
@@ -280,7 +228,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the retryPolicy value.
      */
     public RetryPolicy retryPolicy() {
-        return this.retryPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().retryPolicy();
     }
 
     /**
@@ -291,7 +239,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withRetryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withRetryPolicy(retryPolicy);
         return this;
     }
 
@@ -303,7 +254,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the deadLetterDestination value.
      */
     public DeadLetterDestination deadLetterDestination() {
-        return this.deadLetterDestination;
+        return this.innerProperties() == null ? null : this.innerProperties().deadLetterDestination();
     }
 
     /**
@@ -315,7 +266,10 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the EventSubscriptionInner object itself.
      */
     public EventSubscriptionInner withDeadLetterDestination(DeadLetterDestination deadLetterDestination) {
-        this.deadLetterDestination = deadLetterDestination;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withDeadLetterDestination(deadLetterDestination);
         return this;
     }
 
@@ -328,7 +282,7 @@ public class EventSubscriptionInner extends ProxyResource {
      * @return the deadLetterWithResourceIdentity value.
      */
     public DeadLetterWithResourceIdentity deadLetterWithResourceIdentity() {
-        return this.deadLetterWithResourceIdentity;
+        return this.innerProperties() == null ? null : this.innerProperties().deadLetterWithResourceIdentity();
     }
 
     /**
@@ -342,7 +296,10 @@ public class EventSubscriptionInner extends ProxyResource {
      */
     public EventSubscriptionInner withDeadLetterWithResourceIdentity(
         DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
-        this.deadLetterWithResourceIdentity = deadLetterWithResourceIdentity;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventSubscriptionProperties();
+        }
+        this.innerProperties().withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
         return this;
     }
 
@@ -352,23 +309,8 @@ public class EventSubscriptionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (destination() != null) {
-            destination().validate();
-        }
-        if (deliveryWithResourceIdentity() != null) {
-            deliveryWithResourceIdentity().validate();
-        }
-        if (filter() != null) {
-            filter().validate();
-        }
-        if (retryPolicy() != null) {
-            retryPolicy().validate();
-        }
-        if (deadLetterDestination() != null) {
-            deadLetterDestination().validate();
-        }
-        if (deadLetterWithResourceIdentity() != null) {
-            deadLetterWithResourceIdentity().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

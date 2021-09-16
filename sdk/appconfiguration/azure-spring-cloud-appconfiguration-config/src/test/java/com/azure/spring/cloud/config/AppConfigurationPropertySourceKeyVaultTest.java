@@ -37,6 +37,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -109,6 +110,9 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Mock
     private PagedResponse<ConfigurationSetting> pagedResponseMock;
 
+    @Mock
+    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
 
     @BeforeEach
@@ -144,8 +148,10 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void testKeyVaultTest() throws Exception {
         TEST_ITEMS.add(KEY_VAULT_ITEM);
-        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(TEST_ITEMS)
-            .thenReturn(new ArrayList<ConfigurationSetting>());
+        when(pagedFluxMock.iterator()).thenReturn(TEST_ITEMS.iterator())
+            .thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
+            .thenReturn(pagedFluxMock);
 
         Mockito.when(builderMock.buildAsyncClient()).thenReturn(clientMock);
 

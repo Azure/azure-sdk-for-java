@@ -6,6 +6,7 @@ package com.azure.monitor.query.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class LogsQueryResult {
     private final BinaryData statistics;
     private final HttpResponseError error;
     private final BinaryData visualization;
+    private final LogsQueryResultStatus queryResultStatus;
     private final ClientLogger logger = new ClientLogger(LogsQueryResult.class);
 
     /**
@@ -35,6 +37,14 @@ public class LogsQueryResult {
         this.statistics = statistics;
         this.error = error;
         this.visualization = visualization;
+
+        if (CoreUtils.isNullOrEmpty(logsTables) && error != null) {
+            queryResultStatus = LogsQueryResultStatus.FAILURE;
+        } else if (!CoreUtils.isNullOrEmpty(logsTables) && error != null) {
+            queryResultStatus = LogsQueryResultStatus.PARTIAL_FAILURE;
+        } else {
+            queryResultStatus = LogsQueryResultStatus.SUCCESS;
+        }
     }
 
     /**
@@ -106,5 +116,13 @@ public class LogsQueryResult {
      */
     public BinaryData getVisualization() {
         return visualization;
+    }
+
+    /**
+     * Returns the status of the query result.
+     * @return the status of the query result.
+     */
+    public LogsQueryResultStatus getQueryResultStatus() {
+        return queryResultStatus;
     }
 }
