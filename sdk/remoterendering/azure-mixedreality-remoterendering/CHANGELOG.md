@@ -1,7 +1,12 @@
 # Release History
 
-## 1.1.0 (2021-09-15)
+## 1.1.0 (2021-09-16)
+
+### Other changes
 * Minor logging change to ensure MS-CV values are not redacted from by default.
+
+#### Dependency updates
+
 * Updated dependencies.
 
 ## 1.0.0 (2021-03-05)
