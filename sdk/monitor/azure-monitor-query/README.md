@@ -39,35 +39,35 @@ This client library provides access to query metrics and logs collected by Azure
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L41 -->
 ```java
-LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+public void createLogsClients() {
+    LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
 ```
 
 ### Create Logs query async client
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
 ```java
+
 LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAsyncClient();
 ```
 ### Create Metrics query client
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L54 -->
 ```java
-MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+public void createMetricsClients() {
+    MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
 ```
 
 ### Create Metrics query async client
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
+
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAsyncClient();
 ```
 
 ## Key concepts
@@ -150,60 +150,61 @@ time-stamped data. Each set of metric values is a time series with the following
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L65-L74 -->
 ```java
+ic void queryLogs() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-        new MonitorQueryTimeInterval(Duration.ofDays(2)));
+        new QueryTimeInterval(Duration.ofDays(2)));
 
 for (LogsTableRow row : queryResults.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
-}
 ```
 
 ### Get logs for a query and read the response as a model type
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L80-L91 -->
 ```java
-public class CustomLogModel {
-    private String resourceGroup;
-    private String operationName;
 
-    public String getResourceGroup() {
-        return resourceGroup;
-    }
+ic class CustomLogModel {
+private String resourceGroup;
+private String operationName;
 
-    public String getOperationName() {
-        return operationName;
-    }
+public String getResourceGroup() {
+    return resourceGroup;
+}
+
+public String getOperationName() {
+    return operationName;
 }
 ```
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L106 -->
 ```java
+ic void queryLogsAsModel() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-        new MonitorQueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+        new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
-}
 ```
 ### Get logs for a batch of queries
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L113-L138 -->
 ```java
+ic void queryBatch() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new MonitorQueryTimeInterval(Duration.ofDays(2)));
-String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new MonitorQueryTimeInterval(Duration.ofDays(30)));
-String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new MonitorQueryTimeInterval(Duration.ofDays(10)));
+String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
 LogsBatchQueryResultCollection batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -219,15 +220,15 @@ for (CustomLogModel customLogModel : customLogModels) {
 }
 
 LogsBatchQueryResult query3Result = batchResults.getResult(query3);
-if (query3Result.hasFailed()) {
+if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
     System.out.println(query3Result.getError().getMessage());
-}
 ```
 
 ### Get logs for a query with server timeout
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L146-L155 -->
 ```java
+ic void getLogsWithServerTimeout() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -237,7 +238,6 @@ LogsQueryOptions options = new LogsQueryOptions()
     .setServerTimeout(Duration.ofMinutes(10));
 
 Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
-        "{kusto-query}", new MonitorQueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
 ```
 
 ### Get logs from multiple workspaces
@@ -249,15 +249,15 @@ to include this column.
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
 ```java
+ic void getLogsQueryFromMultipleWorkspaces() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
-        new MonitorQueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+        new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                 .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
         Context.NONE);
-LogsQueryResult result = response.getValue();
 ```
 
 #### Response structure for Logs Query
@@ -293,6 +293,7 @@ A resource ID, as denoted by the `{resource-id}` placeholder in the sample below
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L178-L193 -->
 ```java
+ic void getMetrics() {
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -308,13 +309,13 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
         }
     }
-}
 ```
 
 ### Get average and count metrics
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L200-L221 -->
 ```java
+ic void getMetricsWithOptions() {
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -336,7 +337,6 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
         }
     }
-}
 ```
 ### Response structure for Metrics query
 

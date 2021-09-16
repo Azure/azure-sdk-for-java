@@ -28,7 +28,7 @@ import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.MonitorQueryTimeInterval;
+import com.azure.monitor.query.models.QueryTimeInterval;
 import com.azure.monitor.query.models.TimeSeriesElement;
 import com.azure.monitor.query.models.MetricValue;
 import reactor.core.publisher.Mono;
@@ -204,7 +204,7 @@ public final class MetricsQueryAsyncClient {
         MetricsResponse metricsResponse = response.getValue();
         MetricsQueryResult metricsQueryResult = new MetricsQueryResult(
                 metricsResponse.getCost(),
-                metricsResponse.getTimespan() == null ? null : MonitorQueryTimeInterval.parse(metricsResponse.getTimespan()),
+                metricsResponse.getTimespan() == null ? null : QueryTimeInterval.parse(metricsResponse.getTimespan()),
                 metricsResponse.getInterval(),
                 metricsResponse.getNamespace(), metricsResponse.getResourceregion(), mapMetrics(metricsResponse.getValue()));
 

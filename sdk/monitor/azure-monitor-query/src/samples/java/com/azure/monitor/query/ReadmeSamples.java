@@ -18,7 +18,7 @@ import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricValue;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.MonitorQueryTimeInterval;
+import com.azure.monitor.query.models.QueryTimeInterval;
 import com.azure.monitor.query.models.TimeSeriesElement;
 
 import java.time.Duration;
@@ -68,7 +68,7 @@ public class ReadmeSamples {
                 .buildClient();
 
         LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-                new MonitorQueryTimeInterval(Duration.ofDays(2)));
+                new QueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -100,7 +100,7 @@ public class ReadmeSamples {
                 .buildClient();
 
         List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-                new MonitorQueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+                new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
@@ -116,9 +116,9 @@ public class ReadmeSamples {
                 .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new MonitorQueryTimeInterval(Duration.ofDays(2)));
-        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new MonitorQueryTimeInterval(Duration.ofDays(30)));
-        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new MonitorQueryTimeInterval(Duration.ofDays(10)));
+        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
         LogsBatchQueryResultCollection batchResults = logsQueryClient
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -153,7 +153,7 @@ public class ReadmeSamples {
             .setServerTimeout(Duration.ofMinutes(10));
 
         Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
-                "{kusto-query}", new MonitorQueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
+                "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
     }
 
     /**
@@ -165,7 +165,7 @@ public class ReadmeSamples {
                 .buildClient();
 
         Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
-                new MonitorQueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+                new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
                 Context.NONE);
         LogsQueryResult result = response.getValue();

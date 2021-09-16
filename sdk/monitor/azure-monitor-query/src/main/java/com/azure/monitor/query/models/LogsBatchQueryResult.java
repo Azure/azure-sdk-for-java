@@ -45,7 +45,7 @@ public final class LogsBatchQueryResult extends LogsQueryResult {
      * Returns the response status of the query.
      * @return The response status of the query.
      */
-    public int getStatus() {
+    int getStatus() {
         return status;
     }
 }

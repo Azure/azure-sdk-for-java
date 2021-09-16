@@ -14,7 +14,7 @@ import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
-import com.azure.monitor.query.models.MonitorQueryTimeInterval;
+import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.util.List;
 
@@ -50,7 +50,7 @@ public final class LogsQueryClient {
      * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsQueryResult query(String workspaceId, String query, MonitorQueryTimeInterval timeInterval) {
+    public LogsQueryResult query(String workspaceId, String query, QueryTimeInterval timeInterval) {
         return asyncClient.query(workspaceId, query, timeInterval).block();
     }
 
@@ -64,7 +64,7 @@ public final class LogsQueryClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> List<T> query(String workspaceId, String query, MonitorQueryTimeInterval timeInterval, Class<T> type) {
+    public <T> List<T> query(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
         LogsQueryResult logsQueryResult = asyncClient.query(workspaceId, query, timeInterval).block();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
@@ -84,7 +84,7 @@ public final class LogsQueryClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> List<T> query(String workspaceId, String query, MonitorQueryTimeInterval timeInterval,
+    public <T> List<T> query(String workspaceId, String query, QueryTimeInterval timeInterval,
                              Class<T> type, LogsQueryOptions options) {
         LogsQueryResult logsQueryResult = queryWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
                 .getValue();
@@ -110,7 +110,7 @@ public final class LogsQueryClient {
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryResult> queryWithResponse(String workspaceId, String query, MonitorQueryTimeInterval timeInterval,
+    public Response<LogsQueryResult> queryWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                        LogsQueryOptions options, Context context) {
         return asyncClient.queryWithResponse(workspaceId, query, timeInterval, options, context).block();
     }
@@ -130,7 +130,7 @@ public final class LogsQueryClient {
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<List<T>> queryWithResponse(String workspaceId, String query, MonitorQueryTimeInterval timeInterval,
+    public <T> Response<List<T>> queryWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
                                                        Class<T> type, LogsQueryOptions options, Context context) {
         return asyncClient.queryWithResponse(workspaceId, query, timeInterval, options, context)
                 .map(response -> new SimpleResponse<>(response.getRequest(),
@@ -146,7 +146,7 @@ public final class LogsQueryClient {
      * @param timeInterval The time period for which the logs should be looked up.
      * @return A collection of query results corresponding to the input batch of queries.
      */
-    LogsBatchQueryResultCollection queryBatch(String workspaceId, List<String> queries, MonitorQueryTimeInterval timeInterval) {
+    LogsBatchQueryResultCollection queryBatch(String workspaceId, List<String> queries, QueryTimeInterval timeInterval) {
         return asyncClient.queryBatch(workspaceId, queries, timeInterval).block();
     }
 

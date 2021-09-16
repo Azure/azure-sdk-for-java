@@ -11,7 +11,7 @@ import com.azure.monitor.query.models.LogsColumnType;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableRow;
-import com.azure.monitor.query.models.MonitorQueryTimeInterval;
+import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -157,7 +157,7 @@ public final class LogsQueryHelper {
      *
      * @return ISO 8601 formatted string representation of this {@link com.azure.core.experimental.models.TimeInterval} instance.
      */
-    public static String toIso8601Format(MonitorQueryTimeInterval timeInterval) {
+    public static String toIso8601Format(QueryTimeInterval timeInterval) {
         if (timeInterval.getStartTime() != null && timeInterval.getEndTime() != null) {
             return timeInterval.getStartTime() + "/" + timeInterval.getEndTime();
         }

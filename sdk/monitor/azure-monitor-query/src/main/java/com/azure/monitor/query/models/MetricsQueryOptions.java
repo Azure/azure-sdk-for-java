@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Fluent
 public final class MetricsQueryOptions {
-    private MonitorQueryTimeInterval timeInterval;
+    private QueryTimeInterval timeInterval;
     private Duration granularity;
     private List<AggregationType> aggregations;
     private Integer top;
@@ -26,7 +26,7 @@ public final class MetricsQueryOptions {
      * Returns the time span for which the metrics data is queried.
      * @return the time span for which the metrics data is queried.
      */
-    public MonitorQueryTimeInterval getTimeInterval() {
+    public QueryTimeInterval getTimeInterval() {
         return timeInterval;
     }
 
@@ -36,7 +36,7 @@ public final class MetricsQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsQueryOptions setTimeInterval(MonitorQueryTimeInterval timeInterval) {
+    public MetricsQueryOptions setTimeInterval(QueryTimeInterval timeInterval) {
         this.timeInterval = timeInterval;
         return this;
     }

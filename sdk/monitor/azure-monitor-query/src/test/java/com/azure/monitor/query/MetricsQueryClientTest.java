@@ -21,7 +21,7 @@ import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.MonitorQueryTimeInterval;
+import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,7 +78,7 @@ public class MetricsQueryClientTest extends TestBase {
             .queryWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
                 new MetricsQueryOptions()
                     .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeInterval(new MonitorQueryTimeInterval(Duration.ofDays(10)))
+                    .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
                     .setGranularity(Duration.ofHours(1))
                     .setTop(100)
                     .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,

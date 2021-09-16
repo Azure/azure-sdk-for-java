@@ -35,11 +35,6 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>

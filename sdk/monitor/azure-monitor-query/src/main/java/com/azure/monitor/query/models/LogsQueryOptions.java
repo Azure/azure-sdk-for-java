@@ -16,11 +16,10 @@ import java.util.List;
 public final class LogsQueryOptions {
     private boolean includeVisualization;
     private boolean includeStatistics;
-
-    private boolean disableExceptionOnPartialErrors;
-
+    private boolean allowPartialErrors;
     private Duration serverTimeout;
     private List<String> additionalWorkspaces;
+
     /**
      * Returns the server timeout for this query.
      * @return The server timeout duration.
@@ -81,17 +80,19 @@ public final class LogsQueryOptions {
      *
      * @return Returns true if partial errors should not throw exception.
      */
-    public boolean isDisableExceptionOnPartialErrors() {
-        return disableExceptionOnPartialErrors;
+    public boolean isAllowPartialErrors() {
+        return allowPartialErrors;
     }
 
     /**
      * If set to {@code true}, exception is not thrown if query returns partial errors. The partial error information
      * is available as part of the query result.
-     * @param disableExceptionOnPartialErrors set this to {@code true} to not throw exception if a query returns partial errors.
+     * @param allowPartialErrors set this to {@code true} to not throw exception if a query returns partial errors.
+     * @return The updated options instance.
      */
-    public void setDisableExceptionOnPartialErrors(boolean disableExceptionOnPartialErrors) {
-        this.disableExceptionOnPartialErrors = disableExceptionOnPartialErrors;
+    public LogsQueryOptions setAllowPartialErrors(boolean allowPartialErrors) {
+        this.allowPartialErrors = allowPartialErrors;
+        return this;
     }
 
     /**

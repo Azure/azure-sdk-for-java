@@ -20,7 +20,8 @@ import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
-import com.azure.monitor.query.models.MonitorQueryTimeInterval;
+import com.azure.monitor.query.models.LogsQueryResultStatus;
+import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -87,7 +88,7 @@ public class LogsQueryClientTest extends TestBase {
     @Test
     public void testLogsQuery() {
         LogsQueryResult queryResults = client.query(WORKSPACE_ID, "AppRequests",
-                new MonitorQueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
+                new QueryTimeInterval(OffsetDateTime.of(LocalDateTime.of(2021, 01, 01, 0, 0), ZoneOffset.UTC),
                         OffsetDateTime.of(LocalDateTime.of(2021, 06, 10, 0, 0), ZoneOffset.UTC)));
         assertEquals(1, queryResults.getAllTables().size());
         assertEquals(902, queryResults.getAllTables().get(0).getAllTableCells().size());
@@ -149,9 +150,9 @@ public class LogsQueryClientTest extends TestBase {
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         assertEquals(2, responses.size());
-        assertEquals(200, responses.get(0).getStatus());
+        assertEquals(LogsQueryResultStatus.SUCCESS, responses.get(0).getQueryResultStatus());
         assertNull(responses.get(0).getError());
-        assertEquals(400, responses.get(1).getStatus());
+        assertEquals(LogsQueryResultStatus.FAILURE, responses.get(1).getQueryResultStatus());
         assertNotNull(responses.get(1).getError());
         assertEquals("BadArgumentError", responses.get(1).getError().getCode());
     }
@@ -178,10 +179,10 @@ public class LogsQueryClientTest extends TestBase {
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         assertEquals(2, responses.size());
-        assertEquals(200, responses.get(0).getStatus());
+        assertEquals(LogsQueryResultStatus.SUCCESS, responses.get(0).getQueryResultStatus());
         assertNull(responses.get(0).getError());
         assertNull(responses.get(0).getStatistics());
-        assertEquals(200, responses.get(1).getStatus());
+        assertEquals(LogsQueryResultStatus.SUCCESS, responses.get(1).getQueryResultStatus());
         assertNull(responses.get(1).getError());
         assertNotNull(responses.get(1).getStatistics());
     }

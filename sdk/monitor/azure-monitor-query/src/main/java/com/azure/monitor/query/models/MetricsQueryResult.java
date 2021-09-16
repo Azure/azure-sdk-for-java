@@ -17,7 +17,7 @@ import java.util.Objects;
 public final class MetricsQueryResult {
 
     private final Integer cost;
-    private final MonitorQueryTimeInterval timeInterval;
+    private final QueryTimeInterval timeInterval;
     private final Duration granularity;
     private final String namespace;
     private final String resourceRegion;
@@ -32,7 +32,7 @@ public final class MetricsQueryResult {
      * @param resourceRegion the region of the resource been queried for metrics.
      * @param metrics the value of the collection.
      */
-    public MetricsQueryResult(Integer cost, MonitorQueryTimeInterval timeInterval, Duration granularity, String namespace,
+    public MetricsQueryResult(Integer cost, QueryTimeInterval timeInterval, Duration granularity, String namespace,
                               String resourceRegion, List<MetricResult> metrics) {
         this.cost = cost;
         this.timeInterval = timeInterval;
@@ -54,7 +54,7 @@ public final class MetricsQueryResult {
      * Returns the time interval for which the data was retrieved.
      * @return the time interval for which the data was retrieved.
      */
-    public MonitorQueryTimeInterval getTimeInterval() {
+    public QueryTimeInterval getTimeInterval() {
         return timeInterval;
     }
 
