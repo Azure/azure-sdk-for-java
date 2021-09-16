@@ -12,7 +12,7 @@ Param (
   [array] $ArtifactList,
   [string] $RepoFullName = "",
   [string] $ArtifactName = "packages",
-  [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges"
+  [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges1"
 )
 
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
@@ -84,6 +84,7 @@ if (!($FindArtifactForApiReviewFn -and (Test-Path "Function:$FindArtifactForApiR
     exit 1
 }
 
+$responses = @{}
 foreach ($artifact in $ArtifactList)
 {
     Write-Host "Processing $($artifact.name)"
@@ -94,11 +95,24 @@ foreach ($artifact in $ArtifactList)
         if (Should-Process-Package -pkgPath $pkgPath -packageName $artifact.name)
         {
             $filePath = $pkgPath.Replace($ArtifactPath , "").Replace("\", "/")
-            Submit-Request -filePath $filePath
+            $respCode = Submit-Request -filePath $filePath
+            if ($respCode -ne '200')
+            {
+                $responses[$artifact.name] = $respCode
+            }
         }
     }
     else
     {
-        Write-Host "No package is found in artifact path to find API changes"
+        Write-Host "No package is found in artifact path to find API changes for $($artifact.name)"
+    }
+}
+
+if ($responses)
+{
+    Write-Warning "API change detection failed for following packages:"
+    foreach($pkg in $responses)
+    {
+        Write-Host "$pkg"
     }
 }
