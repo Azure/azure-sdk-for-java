@@ -175,7 +175,6 @@ public class KeyVaultClientTest {
            keyVaultClient.getAliases();
            keyVaultClient.getAliases(); // get aliases the second time.
            tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(1));
-
        }
     }
 }
