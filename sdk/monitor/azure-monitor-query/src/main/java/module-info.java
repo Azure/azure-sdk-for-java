@@ -6,6 +6,7 @@
  */
 module com.azure.monitor.query {
     requires transitive com.azure.core;
+    requires transitive com.azure.core.experimental;
     exports com.azure.monitor.query;
     exports com.azure.monitor.query.models;
     opens com.azure.monitor.query.models to com.fasterxml.jackson.databind, com.azure.core;
