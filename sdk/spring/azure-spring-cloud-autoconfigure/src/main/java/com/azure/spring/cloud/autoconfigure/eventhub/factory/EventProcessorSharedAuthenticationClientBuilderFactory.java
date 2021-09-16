@@ -29,13 +29,13 @@ import java.util.function.BiConsumer;
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
  * blob properties.
  */
-public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorSharedAuthenticationClientBuilder> {
+public class EventProcessorSharedAuthenticationClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorSharedAuthenticationClientBuilder> {
 
     private final AzureEventHubProperties eventHubProperties;
     private final CheckpointStore checkpointStore;
 
-    public EventProcessorServiceClientBuilderFactory(AzureEventHubProperties eventHubProperties,
-                                                     CheckpointStore checkpointStore) {
+    public EventProcessorSharedAuthenticationClientBuilderFactory(AzureEventHubProperties eventHubProperties,
+                                                                  CheckpointStore checkpointStore) {
         this.eventHubProperties = eventHubProperties;
         this.checkpointStore = checkpointStore;
     }
@@ -67,7 +67,7 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return null;
+        return this.eventHubProperties;
     }
 
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
@@ -98,13 +98,10 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
         EventProcessorSharedAuthenticationClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                                eventHubProperties.getEventHubName(),
                                                                                 provider.getCredential())),
             new SasAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                           eventHubProperties.getEventHubName(),
                                                                            provider.getCredential())),
             new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                             eventHubProperties.getEventHubName(),
                                                                              provider.getCredential()))
         );
     }
@@ -117,7 +114,6 @@ public class EventProcessorServiceClientBuilderFactory extends AbstractAzureAmqp
     @Override
     protected BiConsumer<EventProcessorSharedAuthenticationClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, tokenCredential) -> builder.credential(eventHubProperties.getFQDN(),
-                                                                eventHubProperties.getEventHubName(),
                                                                 tokenCredential);
     }
 

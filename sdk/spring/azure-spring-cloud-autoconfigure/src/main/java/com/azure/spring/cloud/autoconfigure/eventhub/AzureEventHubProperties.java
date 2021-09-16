@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
@@ -37,7 +38,7 @@ public class AzureEventHubProperties extends AbstractAzureAmqpConfigurationPrope
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
     public String getFQDN() {
-        return this.namespace + "." + domainName;
+        return this.namespace == null ? extractFQDNFromConnectionString() : (this.namespace + "." + domainName);
     }
 
     public String getDomainName() {
@@ -57,7 +58,21 @@ public class AzureEventHubProperties extends AbstractAzureAmqpConfigurationPrope
     }
 
     public String getEventHubName() {
-        return eventHubName;
+        return eventHubName == null ? extractEventHubNameFromConnectionString() : eventHubName;
+    }
+
+    private String extractFQDNFromConnectionString() {
+        if (this.connectionString == null) {
+            return null;
+        }
+        return new ConnectionStringProperties(this.connectionString).getEndpoint().getHost();
+    }
+
+    private String extractEventHubNameFromConnectionString() {
+        if (this.connectionString == null) {
+            return null;
+        }
+        return new ConnectionStringProperties(this.connectionString).getEntityPath();
     }
 
     public void setEventHubName(String eventHubName) {

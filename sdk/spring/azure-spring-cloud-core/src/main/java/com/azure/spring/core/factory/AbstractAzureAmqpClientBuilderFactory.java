@@ -32,16 +32,13 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureCore(T builder) {
-        configureAzureEnvironment(builder);
-        configureCredential(builder);
+        super.configureCore(builder);
         configureAmqpClient(builder);
     }
 
     protected void configureAmqpClient(T builder) {
         configureClientProperties(builder);
         configureAmqpTransportProperties(builder);
-        configureProxy(builder);
-        configureRetry(builder);
     }
 
     protected void configureAmqpTransportProperties(T builder) {
@@ -58,7 +55,6 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureClientProperties(T builder) {
-        configureApplicationId(builder);
         consumeClientOptions().accept(builder, this.clientOptions);
     }
 

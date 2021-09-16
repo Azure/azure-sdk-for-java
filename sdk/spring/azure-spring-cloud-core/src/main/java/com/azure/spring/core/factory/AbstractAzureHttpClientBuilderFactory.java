@@ -38,15 +38,11 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureCore(T builder) {
-        configureAzureEnvironment(builder);
-        configureRetry(builder);
-        configureCredential(builder);
+        super.configureCore(builder);
         configureHttpClient(builder);
     }
 
     protected void configureHttpClient(T builder) {
-        configureApplicationId(builder);
-        configureProxy(builder);
         configureHttpHeaders(builder);
         configureHttpTransportProperties(builder);
         configureHttpPipelinePolicies(builder);

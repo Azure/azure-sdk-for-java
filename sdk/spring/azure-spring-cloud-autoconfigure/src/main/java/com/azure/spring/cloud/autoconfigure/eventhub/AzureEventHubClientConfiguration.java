@@ -16,6 +16,7 @@ import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ import org.springframework.core.annotation.Order;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventHubClientBuilder.class)
+@ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhub.eventhub-name:}')")
 class AzureEventHubClientConfiguration {
 
     @Bean
@@ -73,13 +75,4 @@ class AzureEventHubClientConfiguration {
         return builderFactory;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @Order(Ordered.HIGHEST_PRECEDENCE + 100)
-    @ConditionalOnProperty(prefix = AzureEventHubProperties.PREFIX, name = "connection-string")
-    public StaticConnectionStringProvider<AzureServiceType.EventHub> eventHubStaticConnectionStringProvider(
-        AzureEventHubProperties eventHubProperties) {
-        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUB,
-                                                    eventHubProperties.getConnectionString());
-    }
 }

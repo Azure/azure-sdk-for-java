@@ -28,11 +28,11 @@ import java.util.function.BiConsumer;
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
  * blob properties.
  */
-public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubSharedAuthenticationClientBuilder> {
+public class EventHubSharedAuthenticationClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubSharedAuthenticationClientBuilder> {
 
     private final AzureEventHubProperties eventHubProperties;
 
-    public EventHubServiceClientBuilderFactory(AzureEventHubProperties eventHubProperties) {
+    public EventHubSharedAuthenticationClientBuilderFactory(AzureEventHubProperties eventHubProperties) {
         this.eventHubProperties = eventHubProperties;
     }
 
@@ -105,13 +105,10 @@ public class EventHubServiceClientBuilderFactory extends AbstractAzureAmqpClient
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubSharedAuthenticationClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                                eventHubProperties.getEventHubName(),
                                                                                 provider.getCredential())),
             new SasAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                           eventHubProperties.getEventHubName(),
                                                                            provider.getCredential())),
             new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                             eventHubProperties.getEventHubName(),
                                                                              provider.getCredential()))
         );
     }

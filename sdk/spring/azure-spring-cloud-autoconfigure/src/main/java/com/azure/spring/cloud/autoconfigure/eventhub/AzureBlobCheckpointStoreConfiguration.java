@@ -32,7 +32,6 @@ public class AzureBlobCheckpointStoreConfiguration {
             .buildAsyncClient()
             .getBlobContainerAsyncClient(checkpointStoreProperties.getContainerName());
 
-
         return new BlobCheckpointStore(blobContainerAsyncClient);
     }
 

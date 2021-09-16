@@ -33,7 +33,7 @@ public class EventHubBinderHealthIT {
         String resourceName = "test-eventhub-health";
         try (AppRunner app = new AppRunner(Application.class)) {
 
-            app.property("spring.cloud.azure.eventhub.checkpoint-container", resourceName);
+            app.property("spring.cloud.azure.eventhub.processor.checkpoint-store.container-name", resourceName);
             app.property("spring.cloud.stream.bindings.consume-in-0.destination", resourceName);
             app.property("spring.cloud.stream.bindings.supply-out-0.destination", resourceName);
 

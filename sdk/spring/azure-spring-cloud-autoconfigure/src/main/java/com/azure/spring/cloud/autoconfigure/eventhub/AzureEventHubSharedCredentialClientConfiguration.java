@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventHubServiceClientBuilderFactory;
-import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventProcessorServiceClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventHubSharedAuthenticationClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventProcessorSharedAuthenticationClientBuilderFactory;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
@@ -32,23 +32,23 @@ import org.springframework.context.annotation.Import;
 })
 class AzureEventHubSharedCredentialClientConfiguration {
 
-
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnClass(EventHubSharedAuthenticationClientBuilder.class)
     static class EventHubServiceClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubSharedAuthenticationClientBuilder eventHubClientBuilder(EventHubServiceClientBuilderFactory factory) {
+        public EventHubSharedAuthenticationClientBuilder eventHubSharedAuthenticationClientBuilder(
+            EventHubSharedAuthenticationClientBuilderFactory factory) {
             return factory.build();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubServiceClientBuilderFactory factory(
+        public EventHubSharedAuthenticationClientBuilderFactory eventHubServiceClientBuilderFactory(
             AzureEventHubProperties properties,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
-            final EventHubServiceClientBuilderFactory builderFactory = new EventHubServiceClientBuilderFactory(properties);
+            final EventHubSharedAuthenticationClientBuilderFactory builderFactory = new EventHubSharedAuthenticationClientBuilderFactory(properties);
 
             builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
             return builderFactory;
@@ -61,15 +61,21 @@ class AzureEventHubSharedCredentialClientConfiguration {
     static class EventProcessorServiceClientConfiguration {
         @Bean
         @ConditionalOnMissingBean
-        public EventProcessorSharedAuthenticationClientBuilder evenProcessorClientBuilder(EventProcessorServiceClientBuilderFactory factory) {
+        public EventProcessorSharedAuthenticationClientBuilder eventProcessorSharedAuthenticationClientBuilder(
+            EventProcessorSharedAuthenticationClientBuilderFactory factory) {
             return factory.build();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventProcessorServiceClientBuilderFactory factory(AzureEventHubProperties properties,
-                                                                 CheckpointStore checkpointStore) {
-            return new EventProcessorServiceClientBuilderFactory(properties, checkpointStore);
+        public EventProcessorSharedAuthenticationClientBuilderFactory eventProcessorSharedAuthenticationClientBuilderFactory(
+            AzureEventHubProperties properties,
+            CheckpointStore checkpointStore,
+            ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
+            final EventProcessorSharedAuthenticationClientBuilderFactory builderFactory = new EventProcessorSharedAuthenticationClientBuilderFactory(
+                properties, checkpointStore);
+            builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
+            return builderFactory;
         }
     }
 

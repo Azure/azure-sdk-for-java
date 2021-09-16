@@ -6,6 +6,7 @@ package com.azure.spring.integration.eventhub.factory;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 
 /**
@@ -14,6 +15,11 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 public class EventProcessorSharedAuthenticationClientBuilder extends EventProcessorClientBuilder {
 
     private String eventHubName;
+    private String fullyQualifiedNamespace;
+    private AzureNamedKeyCredential namedKeyCredential;
+    private AzureSasCredential sasCredential;
+    private TokenCredential tokenCredential;
+    private String connectionString;
 
 
     public EventProcessorSharedAuthenticationClientBuilder eventHubName(String eventHubName) {
@@ -22,25 +28,46 @@ public class EventProcessorSharedAuthenticationClientBuilder extends EventProces
     }
 
     public EventProcessorSharedAuthenticationClientBuilder connectionString(String connectionString) {
-        super.connectionString(connectionString, this.eventHubName);
+        this.connectionString = connectionString;
         return this;
     }
 
     public EventProcessorSharedAuthenticationClientBuilder credential(String fullyQualifiedNamespace,
                                                                       TokenCredential credential) {
-        super.credential(fullyQualifiedNamespace, this.eventHubName, credential);
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.tokenCredential = credential;
         return this;
     }
 
     public EventProcessorSharedAuthenticationClientBuilder credential(String fullyQualifiedNamespace,
                                                                       AzureSasCredential credential) {
-        super.credential(fullyQualifiedNamespace, eventHubName, credential);
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.sasCredential = credential;
         return this;
     }
 
     public EventProcessorSharedAuthenticationClientBuilder credential(String fullyQualifiedNamespace,
                                                                       AzureNamedKeyCredential credential) {
-        super.credential(fullyQualifiedNamespace, eventHubName, credential);
+        this.fullyQualifiedNamespace = fullyQualifiedNamespace;
+        this.namedKeyCredential = credential;
         return this;
+    }
+
+    @Override
+    public EventProcessorClient buildEventProcessorClient() {
+        if (this.tokenCredential != null) {
+            super.credential(this.fullyQualifiedNamespace, this.eventHubName, this.tokenCredential);
+        }
+        if (this.sasCredential != null) {
+            super.credential(this.fullyQualifiedNamespace, this.eventHubName, this.sasCredential);
+        }
+        if (this.namedKeyCredential != null) {
+            super.credential(this.fullyQualifiedNamespace, this.eventHubName, this.namedKeyCredential);
+        }
+        if (this.connectionString != null) {
+            super.connectionString(this.connectionString, this.eventHubName);
+        }
+
+        return super.buildEventProcessorClient();
     }
 }

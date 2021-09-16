@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * @author Warren Zhu
+ *
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
@@ -34,7 +34,7 @@ import org.springframework.context.annotation.Import;
     AzureEventHubOperationAutoConfiguration.class,
     EventHubBinderHealthIndicatorConfiguration.class
 })
-@EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
+@EnableConfigurationProperties(EventHubExtendedBindingProperties.class)
 public class EventHubBinderConfiguration {
 
 

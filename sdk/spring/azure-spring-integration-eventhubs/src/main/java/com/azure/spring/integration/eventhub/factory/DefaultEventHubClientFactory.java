@@ -76,10 +76,11 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
             .buildAsyncProducerClient();
     }
 
-    private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
+    private EventProcessorClient createEventProcessorClientInternal(String eventHubName,
+                                                                    String consumerGroup,
                                                                     EventHubProcessor eventHubProcessor) {
         return eventProcessorServiceClientBuilder
-                   .eventHubName(eventHubName)
+            .eventHubName(eventHubName)
             .consumerGroup(consumerGroup)
             .processPartitionInitialization(eventHubProcessor::onInitialize)
             .processPartitionClose(eventHubProcessor::onClose)
