@@ -6,10 +6,10 @@ package com.azure.monitor.query;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.models.HttpResponseError;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
@@ -215,7 +215,7 @@ public final class MetricsQueryAsyncClient {
         return value.stream()
                 .map(metric -> new MetricResult(metric.getId(), metric.getType(), metric.getUnit(), metric.getName().getValue(),
                         mapTimeSeries(metric.getTimeseries()), metric.getDisplayDescription(),
-                        new HttpResponseError(metric.getErrorCode(), metric.getErrorMessage())))
+                        new ResponseError(metric.getErrorCode(), metric.getErrorMessage())))
                 .collect(Collectors.toList());
     }
 
