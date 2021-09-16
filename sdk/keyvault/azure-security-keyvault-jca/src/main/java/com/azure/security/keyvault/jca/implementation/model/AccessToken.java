@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
