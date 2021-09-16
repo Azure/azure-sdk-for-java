@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-changefeed</artifactId>
-  <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+  <version>12.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
 
   <name>Microsoft Azure client library for Blob Storage changefeed</name>
   <description>This module contains client library for Microsoft Azure Blob Storage changefeed.</description>
