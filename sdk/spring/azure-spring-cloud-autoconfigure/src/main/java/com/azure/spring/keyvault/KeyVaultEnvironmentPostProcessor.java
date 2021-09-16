@@ -22,6 +22,9 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
 /**
@@ -60,11 +63,15 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
         if (isKeyVaultPropertySourceEnabled(keyVaultSecretProperties)) {
 
-            if (keyVaultSecretProperties.getPropertySources().isEmpty()) {
-                keyVaultSecretProperties.getPropertySources().add(new AzureKeyVaultPropertySourceProperties());
+            // TODO (xiada): confirm the order
+            final List<AzureKeyVaultPropertySourceProperties> propertySources = keyVaultSecretProperties.getPropertySources();
+            Collections.reverse(propertySources);
+
+            if (propertySources.isEmpty()) {
+                propertySources.add(new AzureKeyVaultPropertySourceProperties());
             }
 
-            for (AzureKeyVaultPropertySourceProperties propertySource : keyVaultSecretProperties.getPropertySources()) {
+            for (AzureKeyVaultPropertySourceProperties propertySource : propertySources) {
                 final AzureKeyVaultPropertySourceProperties properties = getMergeProperties(keyVaultSecretProperties,
                                                                                             propertySource);
                 addKeyVaultPropertySource(environment, properties);
@@ -133,6 +140,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
                 sources.addAfter(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME, keyVaultPropertySource);
             } else {
+                // TODO (xiada): confirm the order
                 sources.addFirst(keyVaultPropertySource);
             }
 

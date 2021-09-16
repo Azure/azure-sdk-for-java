@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultSe
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
 import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -23,6 +24,7 @@ import org.springframework.core.annotation.Order;
  */
 @ConditionalOnExpression("${spring.cloud.azure.servicebus.enabled:true}")
 @ConditionalOnBean(AzureResourceManager.class)
+@AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
 
     private final AzureServiceBusProperties serviceBusProperties;

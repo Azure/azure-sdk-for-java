@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(AzureResourceManager.class)
 @ConditionalOnExpression("${spring.cloud.azure.resource-manager.enabled:true}")
-@ConditionalOnProperty("spring.cloud.azure.profile.tenant-id")
+@ConditionalOnProperty({ "spring.cloud.azure.profile.tenant-id", "spring.cloud.azure.profile.subscription-id" })
 public class AzureResourceManagerAutoConfiguration {
 
     private final AzureGlobalProperties globalProperties;
