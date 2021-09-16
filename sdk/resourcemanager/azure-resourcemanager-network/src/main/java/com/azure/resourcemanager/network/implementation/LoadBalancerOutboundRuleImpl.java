@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
 import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRule;
-import com.azure.resourcemanager.network.models.OutboundRulePropertiesFormatProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -32,7 +32,7 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
 
     // Getters
     @Override
-    public OutboundRulePropertiesFormatProtocol protocol() {
+    public LoadBalancerOutboundRuleProtocol protocol() {
         return this.innerModel().protocol();
     }
 
@@ -86,7 +86,7 @@ public class LoadBalancerOutboundRuleImpl extends ChildResourceImpl<OutboundRule
     // Fluent setters
 
     @Override
-    public LoadBalancerOutboundRuleImpl withProtocol(OutboundRulePropertiesFormatProtocol protocol) {
+    public LoadBalancerOutboundRuleImpl withProtocol(LoadBalancerOutboundRuleProtocol protocol) {
         this.innerModel().withProtocol(protocol);
         return this;
     }

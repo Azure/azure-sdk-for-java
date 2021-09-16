@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.OutboundRulePropertiesFormatProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -214,7 +214,7 @@ public final class OutboundRuleInner extends SubResource {
      * 
      * @return the protocol value.
      */
-    public OutboundRulePropertiesFormatProtocol protocol() {
+    public LoadBalancerOutboundRuleProtocol protocol() {
         return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
@@ -224,7 +224,7 @@ public final class OutboundRuleInner extends SubResource {
      * @param protocol the protocol value to set.
      * @return the OutboundRuleInner object itself.
      */
-    public OutboundRuleInner withProtocol(OutboundRulePropertiesFormatProtocol protocol) {
+    public OutboundRuleInner withProtocol(LoadBalancerOutboundRuleProtocol protocol) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OutboundRulePropertiesFormat();
         }

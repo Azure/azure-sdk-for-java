@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.OutboundRulePropertiesFormatProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -52,7 +52,7 @@ public final class OutboundRulePropertiesFormat {
      * Protocol - TCP, UDP or All
      */
     @JsonProperty(value = "protocol", required = true)
-    private OutboundRulePropertiesFormatProtocol protocol;
+    private LoadBalancerOutboundRuleProtocol protocol;
 
     /*
      * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
@@ -166,7 +166,7 @@ public final class OutboundRulePropertiesFormat {
      * 
      * @return the protocol value.
      */
-    public OutboundRulePropertiesFormatProtocol protocol() {
+    public LoadBalancerOutboundRuleProtocol protocol() {
         return this.protocol;
     }
 
@@ -176,7 +176,7 @@ public final class OutboundRulePropertiesFormat {
      * @param protocol the protocol value to set.
      * @return the OutboundRulePropertiesFormat object itself.
      */
-    public OutboundRulePropertiesFormat withProtocol(OutboundRulePropertiesFormatProtocol protocol) {
+    public OutboundRulePropertiesFormat withProtocol(LoadBalancerOutboundRuleProtocol protocol) {
         this.protocol = protocol;
         return this;
     }

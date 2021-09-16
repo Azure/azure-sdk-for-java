@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.models.LoadBalancerOutboundRule;
 import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.network.models.OutboundRulePropertiesFormatProtocol;
+import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
@@ -225,7 +225,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         loadBalancer
             .update()
             .defineOutboundRule(outboundRuleName2)
-            .withProtocol(OutboundRulePropertiesFormatProtocol.TCP)
+            .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
             .fromBackend(backendPoolName)
             .toFrontend(frontendName2)
             .withIdleTimeoutInMinutes(10)
@@ -361,7 +361,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
                 .attach()
                 // add outbound rule
                 .defineOutboundRule(outboundRuleName)
-                .withProtocol(OutboundRulePropertiesFormatProtocol.TCP)
+                .withProtocol(LoadBalancerOutboundRuleProtocol.TCP)
                 .fromBackend(backendPoolName)
                 .toFrontend(frontendName2)
                 .withEnableTcpReset(false)

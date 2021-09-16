@@ -15,7 +15,7 @@ import java.util.Map;
 /** An immutable client-side representation of an outbound rule. */
 public interface LoadBalancerOutboundRule
     extends HasInnerModel<OutboundRuleInner>,
-    HasProtocol<OutboundRulePropertiesFormatProtocol>,
+    HasProtocol<LoadBalancerOutboundRuleProtocol>,
     ChildResource<LoadBalancer> {
 
     /** @return the associated frontends */
@@ -37,7 +37,7 @@ public interface LoadBalancerOutboundRule
     boolean tcpResetEnabled();
 
     /** @return outbound rule protocol */
-    OutboundRulePropertiesFormatProtocol protocol();
+    LoadBalancerOutboundRuleProtocol protocol();
 
     /** Grouping of outbound rule definition stages. */
     interface DefinitionStages {
@@ -69,7 +69,7 @@ public interface LoadBalancerOutboundRule
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithProtocol<ParentT>
-            extends HasProtocol.DefinitionStages.WithProtocol<LoadBalancerOutboundRule.DefinitionStages.WithBackend<ParentT>, OutboundRulePropertiesFormatProtocol> {
+            extends HasProtocol.DefinitionStages.WithProtocol<LoadBalancerOutboundRule.DefinitionStages.WithBackend<ParentT>, LoadBalancerOutboundRuleProtocol> {
         }
 
         /**
@@ -185,7 +185,7 @@ public interface LoadBalancerOutboundRule
         /**
          * The stage of an outbound rule update allowing to specify the transport protocol for the rule to apply to.
          */
-        interface WithProtocol<ParentT> extends HasProtocol.UpdateStages.WithProtocol<Update<ParentT>, OutboundRulePropertiesFormatProtocol> {
+        interface WithProtocol<ParentT> extends HasProtocol.UpdateStages.WithProtocol<Update<ParentT>, LoadBalancerOutboundRuleProtocol> {
         }
 
         /**
