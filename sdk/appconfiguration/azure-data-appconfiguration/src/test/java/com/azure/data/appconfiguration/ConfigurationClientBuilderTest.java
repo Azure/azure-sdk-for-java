@@ -20,6 +20,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import org.junit.jupiter.api.Test;
@@ -47,6 +48,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
     private final String value = "newValue";
     private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
     static String connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientBuilderTest.class);
 
     @Test
     @DoNotRecord
@@ -147,8 +149,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void nullServiceVersion(HttpClient httpClient) {
         connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-
+            : System.getenv(AZURE_APPCONFIG_CONNECTION_STRING);
+        logger.info("ConfigurationClientBuilderTest.nullServiceVersion AZURE_APPCONFIG_CONNECTION_STRING: " + connectionString);
         Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
 
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
@@ -171,8 +173,8 @@ public class ConfigurationClientBuilderTest extends TestBase {
     public void defaultPipeline() {
         connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-
+            : System.getenv(AZURE_APPCONFIG_CONNECTION_STRING);
+        logger.info("ConfigurationClientBuilderTest.defaultPipeline AZURE_APPCONFIG_CONNECTION_STRING: " + connectionString);
         Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
 
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()

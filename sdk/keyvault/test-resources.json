@@ -492,7 +492,7 @@
   "outputs": {
     "AZURE_KEYVAULT_ENDPOINT": {
       "type": "string",
-      "value": "[reference(variables('kvName')).vaultUri]"
+      "value": "[concat('https://', variables('kvName'), parameters('keyVaultEndpointSuffix'))]"
     },
     "AZURE_MANAGEDHSM_ENDPOINT": {
       "type": "string",

@@ -30,7 +30,8 @@ public class CertificateClientBuilderTest {
 
     @BeforeEach
     public void setUp() {
-        vaultUrl = "https://key-vault-url.vault.azure.net/";
+        vaultUrl = System.getenv("AZURE_KEYVAULT_ENDPOINT");
+        assertNotNull(vaultUrl);
         certificateName = "TestCertificate";
         serviceVersion = CertificateServiceVersion.V7_3;
     }

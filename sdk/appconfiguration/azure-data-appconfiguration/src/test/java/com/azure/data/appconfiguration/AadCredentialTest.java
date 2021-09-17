@@ -5,7 +5,7 @@ package com.azure.data.appconfiguration;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -26,9 +26,11 @@ public class AadCredentialTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     static String connectionString;
     static TokenCredential tokenCredential;
+    private final ClientLogger logger = new ClientLogger(AadCredentialTest.class);
 
     private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
         throws InvalidKeyException, NoSuchAlgorithmException {
+        logger.info("AadCredentialTest.setup isPlaybackMode: " + interceptorManager.isPlaybackMode());
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
@@ -40,7 +42,8 @@ public class AadCredentialTest extends TestBase {
                 .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
         } else {
-            connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+            logger.info("AadCredentialTest.setup AZURE_APPCONFIG_CONNECTION_STRING: " + System.getenv(AZURE_APPCONFIG_CONNECTION_STRING));
+            connectionString = System.getenv(AZURE_APPCONFIG_CONNECTION_STRING);
             tokenCredential = new DefaultAzureCredentialBuilder().build();
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();

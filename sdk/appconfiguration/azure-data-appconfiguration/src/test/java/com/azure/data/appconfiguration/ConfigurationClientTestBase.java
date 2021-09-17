@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
@@ -49,10 +48,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
+    private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
 
     static String connectionString;
-
-    private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
 
     String keyPrefix;
     String labelPrefix;
@@ -66,9 +64,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             connectionString = interceptorManager.isPlaybackMode()
                 ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+                : System.getenv(AZURE_APPCONFIG_CONNECTION_STRING);
         }
-
+        logger.info("ConfigurationClientTestBase.clientSetup AZURE_APPCONFIG_CONNECTION_STRING: " + connectionString);
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
 
         T client;
