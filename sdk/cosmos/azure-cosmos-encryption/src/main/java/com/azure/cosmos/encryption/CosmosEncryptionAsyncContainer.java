@@ -100,11 +100,16 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * create item and encrypts the requested fields
+     * Creates an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * created Cosmos item. In case of failure the {@link Mono} will error.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @return an {@link Mono} containing the single resource response with the
+     * created Cosmos item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item) {
@@ -112,12 +117,12 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * create item and encrypts the requested fields
+     * Creates a Cosmos item.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param requestOptions the item request options.
+     * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -132,13 +137,17 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * create item and encrypts the requested fields
+     * Creates an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * created Cosmos item. In case of failure the {@link Mono} will error.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -173,19 +182,19 @@ public class CosmosEncryptionAsyncContainer {
     /**
      * Deletes the item.
      * <p>
-     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
-     * single Cosmos item response with the deleted item.
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
-     * @param itemId       id of the item.
+     * @param itemId id of the item.
      * @param partitionKey partitionKey of the item.
-     * @param options      the request options.
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
                                                        PartitionKey partitionKey,
-                                                       CosmosItemRequestOptions options) {
+                                                       CosmosItemRequestOptions requestOptions) {
 
-        return container.deleteItem(itemId, partitionKey, options);
+        return container.deleteItem(itemId, partitionKey, requestOptions);
     }
 
     /**
@@ -224,11 +233,15 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * upserts item and encrypts the requested fields
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item) {
@@ -236,12 +249,16 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * upserts item and encrypts the requested fields
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions requestOptions) {
@@ -255,13 +272,17 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * upserts item and encrypts the requested fields
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
@@ -281,7 +302,7 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Replaces an item with the passed in item.
+     * Replaces an item with the passed in item  and encrypts the requested fields.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
@@ -297,14 +318,17 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * replaces item and encrypts the requested fields
+     * Replaces an item with the passed in item  and encrypts the requested fields.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param itemId         the item id.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item to replace (containing the item id).
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request comosItemRequestOptions.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
@@ -330,25 +354,28 @@ public class CosmosEncryptionAsyncContainer {
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain an item response with the read item.
      *
-     * @param itemId             item id
-     * @param partitionKey   the partition key.
-     * @param classType      deserialization class type
-     * @param <T>            type
+     * @param <T> the type parameter.
+     * @param id the item id.
+     * @param partitionKey the partition key.
+     * @param classType the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
-    public <T> Mono<CosmosItemResponse<T>> readItem(String itemId, PartitionKey partitionKey, Class<T> classType) {
-        return readItem(itemId, partitionKey, ModelBridgeInternal.createCosmosItemRequestOptions(partitionKey), classType);
+    public <T> Mono<CosmosItemResponse<T>> readItem(String id, PartitionKey partitionKey, Class<T> classType) {
+        return readItem(id, partitionKey, ModelBridgeInternal.createCosmosItemRequestOptions(partitionKey), classType);
     }
 
     /**
-     * Reads item and decrypt the encrypted fields
+     * Reads an item using a configured {@link CosmosItemRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
      *
-     * @param id             item id
-     * @param partitionKey   the partition key.
-     * @param requestOptions request options
-     * @param classType      deserialization class type
-     * @param <T>            type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param id the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request {@link CosmosItemRequestOptions}.
+     * @param classType the item type.
+     * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
                                                     PartitionKey partitionKey,
@@ -366,13 +393,14 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query for items in the current container.
      * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
-     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query text.
+     * @param <T> the type parameter.
+     * @param query the query.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
@@ -384,23 +412,24 @@ public class CosmosEncryptionAsyncContainer {
     /**
      * Query for items in the current container using a string.
      * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
-     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query text.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param query the query.
+     * @param requestOptions the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions requestOptions,
                                              Class<T> classType) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
+        if (requestOptions == null) {
+            requestOptions = new CosmosQueryRequestOptions();
         }
 
-        return this.queryItems(new SqlQuerySpec(query), options, classType);
+        return this.queryItems(new SqlQuerySpec(query), requestOptions, classType);
     }
 
     /**
@@ -421,25 +450,26 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a {@link SqlQuerySpec}.
+     * Query for items in the current container using a {@link SqlQuerySpec} and {@link CosmosQueryRequestOptions}.
      * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
-     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param query the SQL query specification.
+     * @param requestOptions the query request options.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions requestOptions,
                                              Class<T> classType) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
+        if (requestOptions == null) {
+            requestOptions = new CosmosQueryRequestOptions();
         }
 
-        return queryItemsHelper(query, options, classType,false);
+        return queryItemsHelper(query, requestOptions, classType,false);
     }
 
     /**
@@ -478,6 +508,19 @@ public class CosmosEncryptionAsyncContainer {
         }
     }
 
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
+     * items or an error.
+     */
     @Beta(value = Beta.SinceVersion.V1, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
