@@ -177,4 +177,23 @@ public class KeyVaultClientTest {
             tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(1));
         }
     }
+
+    @Test
+    public void testCacheTokenExpired() {
+        try (MockedStatic<AccessTokenUtil> tokenUtilMockedStatic = Mockito.mockStatic(AccessTokenUtil.class); MockedStatic<HttpUtil> httpUtilMockedStatic = Mockito.mockStatic(HttpUtil.class)) {
+            AccessToken cacheToken = new AccessToken();
+            cacheToken.setExpiresIn(50); // 50 seconds.
+            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString())).thenReturn(cacheToken);
+            CertificateItem fakeCertificateItem = new CertificateItem();
+            fakeCertificateItem.setId("certificates/fakeCertificateItem");
+            CertificateListResult certificateListResult = new CertificateListResult();
+            certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
+            String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap())).thenReturn(certificateListResultString);
+            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, "");
+            keyVaultClient.getAliases();
+            keyVaultClient.getAliases(); // get aliases the second time.
+            tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(2));
+        }
+    }
 }
