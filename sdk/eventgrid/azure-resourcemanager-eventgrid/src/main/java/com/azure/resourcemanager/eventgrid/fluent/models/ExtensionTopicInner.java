@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources. */
-@JsonFlatten
 @Fluent
-public class ExtensionTopicInner extends ProxyResource {
+public final class ExtensionTopicInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionTopicInner.class);
 
     /*
-     * Description of the extension topic.
+     * Properties of the extension topic
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties")
+    private ExtensionTopicProperties innerProperties;
 
-    /*
-     * System topic resource id which is mapped to the source.
+    /**
+     * Get the innerProperties property: Properties of the extension topic.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.systemTopic")
-    private String systemTopic;
+    private ExtensionTopicProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Description of the extension topic.
@@ -35,7 +36,7 @@ public class ExtensionTopicInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -45,7 +46,10 @@ public class ExtensionTopicInner extends ProxyResource {
      * @return the ExtensionTopicInner object itself.
      */
     public ExtensionTopicInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExtensionTopicProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class ExtensionTopicInner extends ProxyResource {
      * @return the systemTopic value.
      */
     public String systemTopic() {
-        return this.systemTopic;
+        return this.innerProperties() == null ? null : this.innerProperties().systemTopic();
     }
 
     /**
@@ -65,7 +69,10 @@ public class ExtensionTopicInner extends ProxyResource {
      * @return the ExtensionTopicInner object itself.
      */
     public ExtensionTopicInner withSystemTopic(String systemTopic) {
-        this.systemTopic = systemTopic;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExtensionTopicProperties();
+        }
+        this.innerProperties().withSystemTopic(systemTopic);
         return this;
     }
 
@@ -75,5 +82,8 @@ public class ExtensionTopicInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
