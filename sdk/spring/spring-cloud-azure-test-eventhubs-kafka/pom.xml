@@ -11,11 +11,11 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>azure-spring-cloud-test-eventhubs-kafka</artifactId>
+  <artifactId>spring-cloud-azure-test-eventhubs-kafka</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version>  <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-kafka;dependency} -->
 
-  <name>azure-spring-cloud-test-eventhubs-kafka</name>
+  <name>spring-cloud-azure-test-eventhubs-kafka</name>
   <description>EventHubs Test project for Spring Cloud</description>
 
   <dependencies>

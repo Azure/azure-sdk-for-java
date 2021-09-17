@@ -43,8 +43,8 @@
 
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-stream-binder-test</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-test;current} -->
+      <artifactId>spring-cloud-azure-stream-binder-test</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-test;current} -->
       <scope>test</scope>
     </dependency>
 

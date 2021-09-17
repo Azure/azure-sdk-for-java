@@ -168,7 +168,7 @@ com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;4.0.0-beta.1;4.
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus-queue;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus-topic;4.0.0-beta.1;4.0.0-beta.1
-com.azure.spring:azure-spring-cloud-stream-binder-test;4.0.0-beta.1;4.0.0-beta.1
+com.azure.spring:spring-cloud-azure-stream-binder-test;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-core;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-eventhubs;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-integration-servicebus;4.0.0-beta.1;4.0.0-beta.1
@@ -187,8 +187,8 @@ com.azure.spring:azure-spring-boot-test-keyvault;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-keyvault-reactive;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-parent;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
-com.azure.spring:azure-spring-cloud-test-servicebus-binder;1.0.0;1.0.0
-com.azure.spring:azure-spring-cloud-test-eventhubs-kafka;1.0.0;1.0.0
+com.azure.spring:spring-cloud-azure-test-servicebus-binder;1.0.0;1.0.0
+com.azure.spring:spring-cloud-azure-test-eventhubs-kafka;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-parent;1.0.0;1.0.0
