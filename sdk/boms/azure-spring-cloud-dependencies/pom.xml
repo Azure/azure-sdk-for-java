@@ -125,12 +125,12 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
+        <artifactId>spring-cloud-azure-stream-binder-servicebus-topic</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+        <artifactId>spring-cloud-azure-stream-binder-servicebus-queue</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
 

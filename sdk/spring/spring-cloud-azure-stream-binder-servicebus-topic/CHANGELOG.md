@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Change artifact id from `azure-spring-cloud-stream-binder-servicebus-topic` to `spring-cloud-azure-stream-binder-servicebus-topic`.
 
 ### Bugs Fixed
 

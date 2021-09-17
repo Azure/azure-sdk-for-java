@@ -300,18 +300,18 @@
         groupId: com.microsoft.azure
         artifactId: azure-servicebus
       artifacts:
-        - artifactId: azure-spring-cloud-stream-binder-servicebus-topic
+        - artifactId: spring-cloud-azure-stream-binder-servicebus-topic
           groupId: com.azure.spring
           versionGA: 4.0.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Service Bus Topic which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Service Bus Topic.
           type: spring
           links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-topic
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-servicebus-topic
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-topic/4.0.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-topic
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-servicebus-topic/4.0.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/spring-cloud-azure-stream-binder-servicebus-topic
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
@@ -324,18 +324,18 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-topic
                 version: 2.2.0
-        - artifactId: azure-spring-cloud-stream-binder-servicebus-queue
+        - artifactId: spring-cloud-azure-stream-binder-servicebus-queue
           groupId: com.azure.spring
           versionGA: 4.0.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Service Bus Queue which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Service Bus Queue.
           type: spring
           links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-servicebus-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-servicebus-queue/4.0.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-servicebus-queue/4.0.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/spring-cloud-azure-stream-binder-servicebus-queue
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.4.0-M1,2.4.5]"
