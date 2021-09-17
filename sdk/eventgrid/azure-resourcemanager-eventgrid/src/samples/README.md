@@ -32,8 +32,7 @@ For details on including this dependency in other build tools (Gradle, SBT, etc)
 
 ## Sample details
 
-Azure event grid publish and consume sample is in 'sdk/eventgrid/azure-resourcemanager-eventgrid/src/main/samples/java/com/azure/resourcemanager/eventgrid/EventGridPublishAndConsumeExample.java',
-it has the `main()` function and can be run directly.
+Azure event grid publish and consume sample code is [here][EVENTGRID_SAMPLE_CODE]. It has the `main()` function and can be run directly.
 
 The sample demonstrates following operations:
 
@@ -71,4 +70,5 @@ If you don't have a Microsoft Azure subscription you can get a FREE trial accoun
 [EVENTGRID_README_CONTRIBUTING]:https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid#contributing
 [EVENTGRID_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid#getting-started
 [EVENTGRID_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid#key-concepts
+[EVENTGRID_SAMPLE_CODE]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-resourcemanager-eventgrid/src/samples/java/com/azure/resourcemanager/eventgrid/EventGridPublishAndConsumeExample.java
 
