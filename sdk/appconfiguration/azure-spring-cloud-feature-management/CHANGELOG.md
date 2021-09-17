@@ -3,7 +3,7 @@
 ## 2.1.0-beta.1 (Unreleased)
 
 - Added `evaluate` Feature configuration, which disables Feature Flags with Feature Filters.
-- Added `AllwaysOnFilter` which always returns true.
+- Added `AlwaysOnFilter` which always returns true.
 - Updated to JUnit 5
 
 ## 2.0.0 (2021-06-21)
