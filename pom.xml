@@ -604,6 +604,7 @@
                   <!-- codesnippets4javadoc does not support scanning sub-directories and doesn't support wildcards for filepaths.
                       So, path for aggregate reports have to be defined relative to parent pom -->
                   <additionalOptions>-maxLineLength 120
+                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
                     -snippetpath ${project.basedir}/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java
                     -snippetpath ${project.basedir}/sdk/confidentialledger/azure-security-confidentialledger/src/samples/java
                     -snippetpath ${project.basedir}/sdk/containerregistry/azure-containers-containerregistry/src/samples/java
@@ -619,11 +620,11 @@
                     -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                     -snippetpath ${project.basedir}/sdk/digitaltwins/azure-digitaltwins-core/src/samples/java
                     -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
-                    -snippetpath ${project.basedir}/sdk/agrifood/azure-verticals-agrifood-farming/src/samples/java
                     <!-- -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java-->
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                     -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
+                    -snippetpath ${project.basedir}/sdk/monitor/azure-monitor-query/src/samples/java
                     -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-catalog/src/samples/java
                     -snippetpath ${project.basedir}/sdk/purview/azure-analytics-purview-scanning/src/samples/java
                     -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
@@ -724,6 +725,7 @@
         <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
+        <module>sdk/baremetalinfrastructure</module>
         <module>sdk/batch</module>
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
@@ -790,6 +792,7 @@
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/operationsmanagement</module>
@@ -800,6 +803,7 @@
         <module>sdk/powerbidedicated</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
+        <module>sdk/quota</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>

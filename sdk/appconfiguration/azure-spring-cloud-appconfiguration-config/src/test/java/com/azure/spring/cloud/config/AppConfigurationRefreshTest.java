@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config;
 
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_ETAG;
-import static com.azure.spring.cloud.config.TestConstants.TEST_STORE_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,14 +24,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.endpoint.event.RefreshEvent;
 import org.springframework.context.ApplicationEventPublisher;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
@@ -42,33 +43,50 @@ import com.azure.spring.cloud.config.properties.ConfigStore;
 import com.azure.spring.cloud.config.properties.FeatureFlagStore;
 import com.azure.spring.cloud.config.stores.ClientStore;
 
-@TestMethodOrder(Alphanumeric.class)
 public class AppConfigurationRefreshTest {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshTest.class);
+
+    private static final String TEST_STORE_NAME = "store1Refresh";
+
     private static final String WATCHED_KEYS = "/application/*";
+
     AppConfigurationRefresh configRefresh;
+
     @Mock
     private ApplicationEventPublisher eventPublisher;
+
     @Mock
     private AppConfigurationProperties properties;
+
     private ArrayList<ConfigurationSetting> keys;
+
     @Mock
     private Map<String, List<String>> contextsMap;
+
     private AppConfigurationStoreTrigger trigger;
+
     private AppConfigurationStoreMonitoring monitoring;
+
     private FeatureFlagStore featureFlagStore;
+
     @Mock
     private Date date;
+
     @Mock
     private ClientStore clientStoreMock;
 
+    @Mock
+    private PagedIterable<ConfigurationSetting> pagedFluxMock;
+
     @BeforeEach
-    public void setup() {
+    public void setup(TestInfo testInfo) {
         MockitoAnnotations.openMocks(this);
 
         ConfigStore store = new ConfigStore();
-        store.setEndpoint(TEST_STORE_NAME);
+        store.setEndpoint(TEST_STORE_NAME + testInfo.getDisplayName());
         store.setConnectionString(TEST_CONN_STRING);
+        store.setEnabled(true);
 
         monitoring = new AppConfigurationStoreMonitoring();
         trigger = new AppConfigurationStoreTrigger();
@@ -81,7 +99,7 @@ public class AppConfigurationRefreshTest {
         monitoring.setFeatureFlagRefreshInterval(Duration.ofMinutes(-60));
         monitoring.setEnabled(true);
         store.setMonitoring(monitoring);
-        
+
         featureFlagStore = new FeatureFlagStore();
         store.setFeatureFlags(featureFlagStore);
 
@@ -89,7 +107,7 @@ public class AppConfigurationRefreshTest {
         properties.setStores(Arrays.asList(store));
 
         contextsMap = new ConcurrentHashMap<>();
-        contextsMap.put(TEST_STORE_NAME, Arrays.asList(TEST_ETAG));
+        contextsMap.put(TEST_STORE_NAME + testInfo.getDisplayName(), Arrays.asList(TEST_ETAG));
         keys = new ArrayList<ConfigurationSetting>();
         ConfigurationSetting kvi = new ConfigurationSetting();
         kvi.setKey("fake-etag/application/test.key");
@@ -100,51 +118,56 @@ public class AppConfigurationRefreshTest {
         item.setKey("fake-etag/application/test.key");
         item.setETag("fake-etag");
         configRefresh = new AppConfigurationRefresh(properties, clientStoreMock);
-        StateHolder.setLoadState(TEST_STORE_NAME, true);
-        StateHolder.setLoadStateFeatureFlag(TEST_STORE_NAME, true);
-        
+        StateHolder.setLoadState(TEST_STORE_NAME + testInfo.getDisplayName(), true);
+        StateHolder.setLoadStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), true);
+
         List<ConfigurationSetting> watchKeys = new ArrayList<>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
-        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getFeatureFlagRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getFeatureFlagRefreshInterval());
     }
 
     @AfterEach
-    public void cleanupMethod() throws Exception {
+    public void cleanupMethod(TestInfo testInfo) throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        StateHolder.setState(TEST_STORE_NAME, new ArrayList<>(), monitoring.getRefreshInterval());
-        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, new ArrayList<>(), monitoring.getFeatureFlagRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), new ArrayList<>(), monitoring.getRefreshInterval());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), new ArrayList<>(), monitoring.getFeatureFlagRefreshInterval());
     }
 
     @Test
-    public void nonUpdatedEtagShouldntPublishEvent() throws Exception {
+    public void nonUpdatedEtagShouldntPublishEvent(TestInfo testInfo) throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(initialResponse());
 
         configRefresh.refreshConfigurations().get();
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
-        assertEquals(AppConfigurationStoreHealth.UP, configRefresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME));
+        assertEquals(AppConfigurationStoreHealth.UP,
+            configRefresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME + testInfo.getDisplayName()));
     }
 
     @Test
-    public void updatedEtagShouldPublishEvent() throws Exception {
+    public void updatedEtagShouldPublishEvent(TestInfo testInfo) throws Exception {
+        LOGGER.error("=====updatedEtagShouldPublishEvent=====\n" + StateHolder.getLoadState(TEST_STORE_NAME + testInfo.getDisplayName()));
+
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(initialResponse());
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(updatedResponse());
 
         // If there is a change it should update
         assertTrue(configRefresh.refreshConfigurations().get());
@@ -152,7 +175,7 @@ public class AppConfigurationRefreshTest {
 
         watchKeys = new ArrayList<>();
         watchKeys.add(updatedResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
         HashMap<String, String> map = new HashMap<>();
         map.put("store1_configuration", "fake-etag-updated");
@@ -162,29 +185,32 @@ public class AppConfigurationRefreshTest {
         updated.setETag("fake-etag-updated");
         watchKeys = new ArrayList<>();
         watchKeys.add(updated);
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
         // If there is no change it shouldn't update
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(1)).publishEvent(any(RefreshEvent.class));
     }
-    
+
     @Test
-    public void updatedFeatureFlagEtagShouldPublishEvent() throws Exception {
+    public void updatedFeatureFlagEtagShouldPublishEvent(TestInfo testInfo) throws Exception {
+        LOGGER
+            .error("=====updatedFeatureFlagEtagShouldPublishEvent=====\n" + StateHolder.getLoadState(TEST_STORE_NAME + testInfo.getDisplayName()));
         monitoring.setEnabled(false);
         featureFlagStore.setEnabled(true);
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(initialResponse());
+        when(pagedFluxMock.iterator()).thenReturn(Arrays.asList(initialResponse()).iterator())
+            .thenReturn(Arrays.asList(updatedResponse()).iterator());
+
+        when(clientStoreMock.getFeatureFlagWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
-
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(updatedResponse());
 
         // If there is a change it should update
         assertTrue(configRefresh.refreshConfigurations().get());
@@ -192,17 +218,20 @@ public class AppConfigurationRefreshTest {
 
         watchKeys = new ArrayList<>();
         watchKeys.add(updatedResponse());
-        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
         HashMap<String, String> map = new HashMap<>();
         map.put("store1_configuration", "fake-etag-updated");
         map.put("store1_feature", "fake-etag-updated");
 
         ConfigurationSetting updated = new ConfigurationSetting();
-        updated.setETag("fake-etag-updated");
+        updated.setETag("fake-etag-updated").setKey("fake-key");
         watchKeys = new ArrayList<>();
         watchKeys.add(updated);
-        StateHolder.setStateFeatureFlag(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setStateFeatureFlag(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
+
+        when(clientStoreMock.getFeatureFlagWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+        when(pagedFluxMock.iterator()).thenReturn(Arrays.asList(updatedResponse()).iterator());
 
         // If there is no change it shouldn't update
         assertFalse(configRefresh.refreshConfigurations().get());
@@ -210,12 +239,12 @@ public class AppConfigurationRefreshTest {
     }
 
     @Test
-    public void noEtagReturned() throws Exception {
+    public void noEtagReturned(TestInfo testInfo) throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString()))
+        when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
             .thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
@@ -223,11 +252,13 @@ public class AppConfigurationRefreshTest {
         assertFalse(configRefresh.refreshConfigurations().get());
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
     }
-    
+
     @Test
-    public void watchKeyThrowError() throws Exception {
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString()))
-            .thenThrow(new RuntimeException("This would be an IO Exception. An existing connection was forcibly closed by the remote host. Test"));
+    public void watchKeyThrowError(TestInfo testInfo) throws Exception {
+        LOGGER.error("=====watchKeyThrowError=====\n" + StateHolder.getLoadState(TEST_STORE_NAME + testInfo.getDisplayName()));
+        when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+            .thenThrow(new RuntimeException(
+                "This would be an IO Exception. An existing connection was forcibly closed by the remote host. Test"));
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
@@ -237,19 +268,21 @@ public class AppConfigurationRefreshTest {
         } catch (RuntimeException e) {
             sawError = true;
             verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
-            assertEquals(AppConfigurationStoreHealth.DOWN, configRefresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME));
+            assertEquals(AppConfigurationStoreHealth.DOWN,
+                configRefresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME + testInfo.getDisplayName()));
         }
-        
+
         assertTrue(sawError);
     }
 
     @Test
-    public void nullItemsReturned() throws Exception {
+    public void nullItemsReturned(TestInfo testInfo) throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(null);
+        when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(null);
         configRefresh.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
@@ -258,20 +291,11 @@ public class AppConfigurationRefreshTest {
     }
 
     @Test
-    public void noInitialStateNoEtag() throws Exception {
+    public void noInitialStateNoEtag(TestInfo testInfo) throws Exception {
         ConfigStore store = new ConfigStore();
-        store.setEndpoint(TEST_STORE_NAME);
+        store.setEndpoint(TEST_STORE_NAME + testInfo.getDisplayName());
         store.setConnectionString(TEST_CONN_STRING);
 
-        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        monitoring.setEnabled(true);
-        trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey(WATCHED_KEYS);
-        trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
-        triggers.add(trigger);
-        monitoring.setTriggers(triggers);
-        monitoring.setRefreshInterval(Duration.ofMinutes(-60));
         store.setMonitoring(monitoring);
 
         AppConfigurationProperties propertiesLost = new AppConfigurationProperties();
@@ -279,8 +303,8 @@ public class AppConfigurationRefreshTest {
 
         AppConfigurationRefresh configRefreshLost = new AppConfigurationRefresh(propertiesLost,
             clientStoreMock);
-        StateHolder.setLoadState(TEST_STORE_NAME, true);
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(null);
+        when(clientStoreMock.getWatchKey(Mockito.anyString(), Mockito.anyString(), Mockito.anyString()))
+            .thenReturn(null);
         configRefreshLost.setApplicationEventPublisher(eventPublisher);
 
         // The first time an action happens it can't update
@@ -289,24 +313,17 @@ public class AppConfigurationRefreshTest {
     }
 
     @Test
-    public void notRefreshTime() throws Exception {
+    public void notRefreshTime(TestInfo testInfo) throws Exception {
         List<ConfigurationSetting> watchKeys = new ArrayList<ConfigurationSetting>();
         watchKeys.add(initialResponse());
-        StateHolder.setState(TEST_STORE_NAME, watchKeys, monitoring.getRefreshInterval());
+        StateHolder.setState(TEST_STORE_NAME + testInfo.getDisplayName(), watchKeys, monitoring.getRefreshInterval());
 
         ConfigStore store = new ConfigStore();
-        store.setEndpoint(TEST_STORE_NAME);
+        store.setEndpoint(TEST_STORE_NAME + testInfo.getDisplayName());
         store.setConnectionString(TEST_CONN_STRING);
 
-        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        monitoring.setEnabled(true);
-        trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey(WATCHED_KEYS);
-        trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
-        triggers.add(trigger);
-        monitoring.setTriggers(triggers);
         monitoring.setRefreshInterval(Duration.ofMinutes(60));
+
         store.setMonitoring(monitoring);
 
         AppConfigurationProperties properties = new AppConfigurationProperties();
@@ -320,23 +337,16 @@ public class AppConfigurationRefreshTest {
         // The first time an action happens it can update
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
     }
-    
+
     @Test
-    public void storeDisabled() throws Exception {
+    public void storeDisabled(TestInfo testInfo) throws Exception {
         ConfigStore store = new ConfigStore();
-        store.setEndpoint(TEST_STORE_NAME);
+        store.setEndpoint(TEST_STORE_NAME + testInfo.getDisplayName());
         store.setConnectionString(TEST_CONN_STRING);
         store.setEnabled(false);
 
-        AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
-        monitoring.setEnabled(true);
-        trigger = new AppConfigurationStoreTrigger();
-        trigger.setKey(WATCHED_KEYS);
-        trigger.setLabel("\0");
-        List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
-        triggers.add(trigger);
-        monitoring.setTriggers(triggers);
         monitoring.setRefreshInterval(Duration.ofMinutes(60));
+
         store.setMonitoring(monitoring);
 
         AppConfigurationProperties properties = new AppConfigurationProperties();
@@ -349,15 +359,16 @@ public class AppConfigurationRefreshTest {
 
         // The first time an action happens it can update
         verify(eventPublisher, times(0)).publishEvent(any(RefreshEvent.class));
-        assertEquals(AppConfigurationStoreHealth.NOT_LOADED, refresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME));
+        assertEquals(AppConfigurationStoreHealth.NOT_LOADED,
+            refresh.getAppConfigurationStoresHealth().get(TEST_STORE_NAME + testInfo.getDisplayName()));
     }
 
     private ConfigurationSetting initialResponse() {
-        return new ConfigurationSetting().setETag("fake-etag");
+        return new ConfigurationSetting().setETag("fake-etag").setKey("fake-key").setLabel("\0");
     }
 
     private ConfigurationSetting updatedResponse() {
-        return new ConfigurationSetting().setETag("fake-etag-updated");
+        return new ConfigurationSetting().setETag("fake-etag-updated").setKey("fake-key").setLabel("\0");
     }
 
 }

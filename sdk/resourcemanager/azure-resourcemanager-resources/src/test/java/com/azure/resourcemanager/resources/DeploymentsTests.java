@@ -49,6 +49,7 @@ public class DeploymentsTests extends ResourceManagementTest {
     private static final String UPDATE_TEMPLATE = "{\"$schema\":\"https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"parameters\":{\"vnetName\":{\"type\":\"string\",\"defaultValue\":\"VNet2\",\"metadata\":{\"description\":\"VNet name\"}},\"vnetAddressPrefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/16\",\"metadata\":{\"description\":\"Address prefix\"}},\"subnet1Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.0.0/24\",\"metadata\":{\"description\":\"Subnet 1 Prefix\"}},\"subnet1Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet1\",\"metadata\":{\"description\":\"Subnet 1 Name\"}},\"subnet2Prefix\":{\"type\":\"string\",\"defaultValue\":\"10.0.1.0/24\",\"metadata\":{\"description\":\"Subnet 2 Prefix\"}},\"subnet2Name\":{\"type\":\"string\",\"defaultValue\":\"Subnet222\",\"metadata\":{\"description\":\"Subnet 2 Name\"}}},\"variables\":{\"apiVersion\":\"2015-06-15\"},\"resources\":[{\"apiVersion\":\"[variables('apiVersion')]\",\"type\":\"Microsoft.Network/virtualNetworks\",\"name\":\"[parameters('vnetName')]\",\"location\":\"[resourceGroup().location]\",\"properties\":{\"addressSpace\":{\"addressPrefixes\":[\"[parameters('vnetAddressPrefix')]\"]},\"subnets\":[{\"name\":\"[parameters('subnet1Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet1Prefix')]\"}},{\"name\":\"[parameters('subnet2Name')]\",\"properties\":{\"addressPrefix\":\"[parameters('subnet2Prefix')]\"}}]}}]}";
     private static final String UPDATE_PARAMETERS = "{\"vnetAddressPrefix\":{\"value\":\"10.0.0.0/16\"},\"subnet1Name\":{\"value\":\"Subnet1\"},\"subnet1Prefix\":{\"value\":\"10.0.0.0/24\"}}";
     private static final String CONTENT_VERSION = "1.0.0.0";
+    private static final String NETWORK_API_VERSION = "2020-11-01";
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -94,7 +95,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dpName);
         Assertions.assertNotNull(deployment);
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
+        GenericResource generic = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
         Assertions.assertNotNull(generic);
         // Export
         Assertions.assertNotNull(deployment.exportTemplate().templateAsJson());
@@ -105,7 +106,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals(5, TestUtilities.getSize(operations));
         DeploymentOperation op = deployment.deploymentOperations().getById(operations.iterator().next().operationId());
         Assertions.assertNotNull(op);
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
+        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
 
     @Test
@@ -144,7 +145,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals("Succeeded", result.status());
         Assertions.assertEquals(3, result.changes().size());
 
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
+        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
 
     @Test
@@ -184,7 +185,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         Assertions.assertEquals("Succeeded", result.status());
         Assertions.assertEquals(0, result.changes().size());
 
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
+        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION);
     }
 
     @Test
@@ -206,7 +207,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         deployment.cancel();
         deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals("Canceled", deployment.provisioningState());
-        Assertions.assertFalse(resourceClient.genericResources().checkExistence(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15"));
+        Assertions.assertFalse(resourceClient.genericResources().checkExistence(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", NETWORK_API_VERSION));
     }
 
     @Test
@@ -238,9 +239,9 @@ public class DeploymentsTests extends ResourceManagementTest {
         deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals(DeploymentMode.INCREMENTAL, deployment.mode());
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
-        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
+        GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
         Assertions.assertNotNull(genericVnet);
-        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
+        resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", NETWORK_API_VERSION);
     }
 
     @Test

@@ -18,7 +18,7 @@ Azure Storage Common is a library that has common dependencies for all Azure Sto
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-common</artifactId>
-    <version>12.12.0</version>
+    <version>12.13.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

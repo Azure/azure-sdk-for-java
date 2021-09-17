@@ -11,6 +11,9 @@ import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -21,13 +24,17 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -74,7 +81,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, priority = 1, timeOut = TIMEOUT)// Doing max of a string in the query_aggregate so has to set the priority for this one as 1.
     public void createItemEncrypt_readItemDecrypt() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
@@ -148,6 +155,59 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 validateResponse(pojo, responseItem);
             }
         }
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void queryItemsAggregate() {
+        long startTime = Instant.now().getEpochSecond();
+        List<String> actualIds = new ArrayList<>();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+        properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+        properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+
+        // MAX query
+        String query1 = String.format("Select value max(c._ts) from c");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec1 = new SqlQuerySpec(query1);
+        CosmosPagedFlux<Integer> feedResponseIterator1 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec1, cosmosQueryRequestOptions1, Integer.class);
+        List<Integer> feedResponse1 = feedResponseIterator1.byPage().blockFirst().getResults();
+        int timeStamp = feedResponse1.get(0);
+        long endTime = Instant.now().getEpochSecond();
+
+        assertThat(timeStamp).isGreaterThanOrEqualTo((int)startTime);
+        assertThat(timeStamp).isLessThanOrEqualTo((int)endTime);
+        assertThat(feedResponse1.size()).isEqualTo(1);
+
+        // COUNT query
+        String query2 = String.format("Select top 1 value count(c) from c order by c._ts");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec2 = new SqlQuerySpec(query2);
+        CosmosPagedFlux<Integer> feedResponseIterator2 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec2, cosmosQueryRequestOptions2, Integer.class);
+        List<Integer> feedResponse2 = feedResponseIterator2.byPage().blockFirst().getResults();
+        assertThat(feedResponse2.size()).isEqualTo(1);
+
+        // MAX query for String class type
+        String query3 = String.format("Select value max(c.sensitiveString) from c");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions3 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec3 = new SqlQuerySpec(query3);
+        CosmosPagedFlux<String> feedResponseIterator3 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec3, cosmosQueryRequestOptions3, String.class);
+        List<String> feedResponse3 = feedResponseIterator3.byPage().blockFirst().getResults();
+        assertThat(feedResponse3.size()).isEqualTo(1);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
@@ -425,6 +485,21 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                     validateResponse(encryptionPojoForQueryItemsOnEncryptedProperties, pojo);
                 }
             }
+
+            //Deleting and creating container
+            encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
+            createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
+
+            String itemId= UUID.randomUUID().toString();
+            EncryptionPojo createPojo = getItem(itemId);
+            CosmosBatch cosmosEncryptionBatch = CosmosBatch.createCosmosBatch(new PartitionKey(itemId));
+            cosmosEncryptionBatch.createItemOperation(createPojo);
+            cosmosEncryptionBatch.readItemOperation(itemId);
+
+            CosmosBatchResponse batchResponse = encryptionAsyncContainerOriginal.executeCosmosBatch(cosmosEncryptionBatch).block();
+            assertThat(batchResponse.getResults().size()).isEqualTo(2);
+            validateResponse(createPojo, batchResponse.getResults().get(0).getItem(EncryptionPojo.class));
+            validateResponse(createPojo, batchResponse.getResults().get(1).getItem(EncryptionPojo.class));
         } finally {
             try {
                 //deleting the database created for this test
@@ -448,6 +523,60 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
         }
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void batchExecution() {
+        String itemId= UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+        EncryptionPojo replacePojo =  getItem(itemId);
+        replacePojo.setSensitiveString("ReplacedSensitiveString");
+        CosmosBatch cosmosEncryptionBatch = CosmosBatch.createCosmosBatch(new PartitionKey(itemId));
+        cosmosEncryptionBatch.createItemOperation(createPojo);
+        cosmosEncryptionBatch.replaceItemOperation(itemId, replacePojo);
+        cosmosEncryptionBatch.upsertItemOperation(createPojo);
+        cosmosEncryptionBatch.readItemOperation(itemId);
+        cosmosEncryptionBatch.deleteItemOperation(itemId);
+
+        CosmosBatchResponse batchResponse = this.cosmosEncryptionAsyncContainer.executeCosmosBatch(cosmosEncryptionBatch).block();
+        assertThat(batchResponse.getResults().size()).isEqualTo(5);
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        validateResponse(batchResponse.getResults().get(0).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(1).getItem(EncryptionPojo.class), replacePojo);
+        validateResponse(batchResponse.getResults().get(2).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(3).getItem(EncryptionPojo.class), createPojo);
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void batchExecutionWithOptionsApi() {
+        String itemId= UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+        EncryptionPojo replacePojo =  getItem(itemId);
+        replacePojo.setSensitiveString("ReplacedSensitiveString");
+        CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(new PartitionKey(itemId));
+        CosmosBatchItemRequestOptions cosmosBatchItemRequestOptions = new CosmosBatchItemRequestOptions();
+
+        cosmosBatch.createItemOperation(createPojo, cosmosBatchItemRequestOptions);
+        cosmosBatch.replaceItemOperation(itemId, replacePojo,cosmosBatchItemRequestOptions);
+        cosmosBatch.upsertItemOperation(createPojo, cosmosBatchItemRequestOptions);
+        cosmosBatch.readItemOperation(itemId, cosmosBatchItemRequestOptions);
+        cosmosBatch.deleteItemOperation(itemId, cosmosBatchItemRequestOptions);
+
+        CosmosBatchResponse batchResponse = this.cosmosEncryptionAsyncContainer.executeCosmosBatch(cosmosBatch).block();
+        assertThat(batchResponse.getResults().size()).isEqualTo(5);
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        validateResponse(batchResponse.getResults().get(0).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(1).getItem(EncryptionPojo.class), replacePojo);
+        validateResponse(batchResponse.getResults().get(2).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(3).getItem(EncryptionPojo.class), createPojo);
     }
 
     static void validateResponseWithOneFieldEncryption(EncryptionPojo originalItem, EncryptionPojo result) {

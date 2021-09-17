@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -56,6 +57,27 @@ public final class PrivateEndpointPropertiesInner {
      */
     @JsonProperty(value = "customDnsConfigs")
     private List<CustomDnsConfigPropertiesFormat> customDnsConfigs;
+
+    /*
+     * Application security groups in which the private endpoint IP
+     * configuration is included.
+     */
+    @JsonProperty(value = "applicationSecurityGroups")
+    private List<ApplicationSecurityGroupInner> applicationSecurityGroups;
+
+    /*
+     * A list of IP configurations of the private endpoint. This will be used
+     * to map to the First Party Service's endpoints.
+     */
+    @JsonProperty(value = "ipConfigurations")
+    private List<PrivateEndpointIpConfiguration> ipConfigurations;
+
+    /*
+     * The custom name of the network interface attached to the private
+     * endpoint.
+     */
+    @JsonProperty(value = "customNetworkInterfaceName")
+    private String customNetworkInterfaceName;
 
     /**
      * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
@@ -163,6 +185,73 @@ public final class PrivateEndpointPropertiesInner {
     }
 
     /**
+     * Get the applicationSecurityGroups property: Application security groups in which the private endpoint IP
+     * configuration is included.
+     *
+     * @return the applicationSecurityGroups value.
+     */
+    public List<ApplicationSecurityGroupInner> applicationSecurityGroups() {
+        return this.applicationSecurityGroups;
+    }
+
+    /**
+     * Set the applicationSecurityGroups property: Application security groups in which the private endpoint IP
+     * configuration is included.
+     *
+     * @param applicationSecurityGroups the applicationSecurityGroups value to set.
+     * @return the PrivateEndpointPropertiesInner object itself.
+     */
+    public PrivateEndpointPropertiesInner withApplicationSecurityGroups(
+        List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
+        this.applicationSecurityGroups = applicationSecurityGroups;
+        return this;
+    }
+
+    /**
+     * Get the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
+     * to the First Party Service's endpoints.
+     *
+     * @return the ipConfigurations value.
+     */
+    public List<PrivateEndpointIpConfiguration> ipConfigurations() {
+        return this.ipConfigurations;
+    }
+
+    /**
+     * Set the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
+     * to the First Party Service's endpoints.
+     *
+     * @param ipConfigurations the ipConfigurations value to set.
+     * @return the PrivateEndpointPropertiesInner object itself.
+     */
+    public PrivateEndpointPropertiesInner withIpConfigurations(List<PrivateEndpointIpConfiguration> ipConfigurations) {
+        this.ipConfigurations = ipConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the customNetworkInterfaceName property: The custom name of the network interface attached to the private
+     * endpoint.
+     *
+     * @return the customNetworkInterfaceName value.
+     */
+    public String customNetworkInterfaceName() {
+        return this.customNetworkInterfaceName;
+    }
+
+    /**
+     * Set the customNetworkInterfaceName property: The custom name of the network interface attached to the private
+     * endpoint.
+     *
+     * @param customNetworkInterfaceName the customNetworkInterfaceName value to set.
+     * @return the PrivateEndpointPropertiesInner object itself.
+     */
+    public PrivateEndpointPropertiesInner withCustomNetworkInterfaceName(String customNetworkInterfaceName) {
+        this.customNetworkInterfaceName = customNetworkInterfaceName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -182,6 +271,12 @@ public final class PrivateEndpointPropertiesInner {
         }
         if (customDnsConfigs() != null) {
             customDnsConfigs().forEach(e -> e.validate());
+        }
+        if (applicationSecurityGroups() != null) {
+            applicationSecurityGroups().forEach(e -> e.validate());
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
         }
     }
 }

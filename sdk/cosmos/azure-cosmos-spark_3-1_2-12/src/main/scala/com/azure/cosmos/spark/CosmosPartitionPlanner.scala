@@ -153,6 +153,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
   // scalastyle:off method.length
   // scalastyle:off parameter.number
+  // Based on a start offset, calculate which is the next end offset
   def getLatestOffset
   (
     userConfig: Map[String, String],
@@ -192,10 +193,19 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
       readLimit
     )
 
+    if (isDebugLogEnabled) {
+      val endOffsetDebug = new StringBuilder("EndOffSet using EndLsn: ")
+      for (range <- inputPartitions) {
+        endOffsetDebug ++= s"${range.feedRange.min}-${range.feedRange.max}: ${range.endLsn},"
+      }
+
+      logDebug(endOffsetDebug.toString)
+    }
+
     val changeFeedStateJson = SparkBridgeImplementationInternal
       .createChangeFeedStateJson(
         startOffset.changeFeedState,
-        orderedMetadataWithStartLsn.map(m => (m.feedRange, m.endLsn.getOrElse(m.latestLsn))))
+        inputPartitions.map(m => (m.feedRange, m.endLsn.get)))
 
     ChangeFeedOffset(changeFeedStateJson, Some(inputPartitions))
   }
@@ -379,7 +389,7 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     partitionPlanningInfo
   }
 
-  private[this] def calculateEndLsn
+  private[spark] def calculateEndLsn
   (
     metadata: Array[PartitionMetadata],
     readLimit: ReadLimit
@@ -398,7 +408,13 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
           case _: ReadMaxRows =>
             val gap = math.max(0, metadata.latestLsn - metadata.startLsn)
             val weightFactor = metadata.getWeightedLsnGap.toDouble / totalWeightedLsnGap.get
-            val allowedRate = (weightFactor * gap).toLong
+            val allowedRate = (weightFactor * gap).toLong.max(1)
+            if (isDebugLogEnabled) {
+              val calculateDebugLine = s"calculateEndLsn - gap $gap weightFactor $weightFactor " +
+                s"documentCount ${metadata.documentCount} latestLsn ${metadata.latestLsn} " +
+                s"startLsn ${metadata.startLsn} allowedRate $allowedRate weightedGap ${metadata.getWeightedLsnGap}"
+              logDebug(calculateDebugLine)
+            }
 
             math.min(metadata.latestLsn, metadata.startLsn + allowedRate)
           case _: ReadMaxFiles => throw new IllegalStateException("ReadLimitMaxFiles not supported by this source.")

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.EnforcementMode;
 import com.azure.resourcemanager.resources.models.Identity;
@@ -18,10 +18,15 @@ import java.util.List;
 import java.util.Map;
 
 /** The policy assignment. */
-@JsonFlatten
 @Fluent
-public class PolicyAssignmentInner extends ProxyResource {
+public final class PolicyAssignmentInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentInner.class);
+
+    /*
+     * Properties for the policy assignment.
+     */
+    @JsonProperty(value = "properties")
+    private PolicyAssignmentProperties innerProperties;
 
     /*
      * The location of the policy assignment. Only required when utilizing
@@ -37,62 +42,19 @@ public class PolicyAssignmentInner extends ProxyResource {
     private Identity identity;
 
     /*
-     * The display name of the policy assignment.
+     * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /*
-     * The ID of the policy definition or policy set definition being assigned.
+    /**
+     * Get the innerProperties property: Properties for the policy assignment.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.policyDefinitionId")
-    private String policyDefinitionId;
-
-    /*
-     * The scope for the policy assignment.
-     */
-    @JsonProperty(value = "properties.scope", access = JsonProperty.Access.WRITE_ONLY)
-    private String scope;
-
-    /*
-     * The policy's excluded scopes.
-     */
-    @JsonProperty(value = "properties.notScopes")
-    private List<String> notScopes;
-
-    /*
-     * The parameter values for the assigned policy rule. The keys are the
-     * parameter names.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, ParameterValuesValue> parameters;
-
-    /*
-     * This message will be part of response in case of policy violation.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The policy assignment metadata. Metadata is an open ended object and is
-     * typically a collection of key value pairs.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The policy assignment enforcement mode. Possible values are Default and
-     * DoNotEnforce.
-     */
-    @JsonProperty(value = "properties.enforcementMode")
-    private EnforcementMode enforcementMode;
-
-    /*
-     * The messages that describe why a resource is non-compliant with the
-     * policy.
-     */
-    @JsonProperty(value = "properties.nonComplianceMessages")
-    private List<NonComplianceMessage> nonComplianceMessages;
+    private PolicyAssignmentProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
@@ -135,12 +97,21 @@ public class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the displayName property: The display name of the policy assignment.
      *
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -150,7 +121,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -160,7 +134,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
-        return this.policyDefinitionId;
+        return this.innerProperties() == null ? null : this.innerProperties().policyDefinitionId();
     }
 
     /**
@@ -170,7 +144,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withPolicyDefinitionId(String policyDefinitionId) {
-        this.policyDefinitionId = policyDefinitionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withPolicyDefinitionId(policyDefinitionId);
         return this;
     }
 
@@ -180,7 +157,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -189,7 +166,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the notScopes value.
      */
     public List<String> notScopes() {
-        return this.notScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().notScopes();
     }
 
     /**
@@ -199,7 +176,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withNotScopes(List<String> notScopes) {
-        this.notScopes = notScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withNotScopes(notScopes);
         return this;
     }
 
@@ -209,7 +189,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the parameters value.
      */
     public Map<String, ParameterValuesValue> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -219,7 +199,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withParameters(Map<String, ParameterValuesValue> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -229,7 +212,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -239,7 +222,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -250,7 +236,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the metadata value.
      */
     public Object metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -261,7 +247,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withMetadata(Object metadata) {
-        this.metadata = metadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -272,7 +261,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the enforcementMode value.
      */
     public EnforcementMode enforcementMode() {
-        return this.enforcementMode;
+        return this.innerProperties() == null ? null : this.innerProperties().enforcementMode();
     }
 
     /**
@@ -283,7 +272,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withEnforcementMode(EnforcementMode enforcementMode) {
-        this.enforcementMode = enforcementMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withEnforcementMode(enforcementMode);
         return this;
     }
 
@@ -294,7 +286,7 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the nonComplianceMessages value.
      */
     public List<NonComplianceMessage> nonComplianceMessages() {
-        return this.nonComplianceMessages;
+        return this.innerProperties() == null ? null : this.innerProperties().nonComplianceMessages();
     }
 
     /**
@@ -305,7 +297,10 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @return the PolicyAssignmentInner object itself.
      */
     public PolicyAssignmentInner withNonComplianceMessages(List<NonComplianceMessage> nonComplianceMessages) {
-        this.nonComplianceMessages = nonComplianceMessages;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withNonComplianceMessages(nonComplianceMessages);
         return this;
     }
 
@@ -315,21 +310,11 @@ public class PolicyAssignmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
-        if (nonComplianceMessages() != null) {
-            nonComplianceMessages().forEach(e -> e.validate());
         }
     }
 }

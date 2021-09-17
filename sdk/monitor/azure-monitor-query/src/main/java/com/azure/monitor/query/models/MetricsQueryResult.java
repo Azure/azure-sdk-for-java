@@ -4,9 +4,11 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The response to a metrics query.
@@ -15,26 +17,26 @@ import java.util.List;
 public final class MetricsQueryResult {
 
     private final Integer cost;
-    private final String timeSpan;
-    private final Duration interval;
+    private final QueryTimeInterval timeInterval;
+    private final Duration granularity;
     private final String namespace;
     private final String resourceRegion;
-    private final List<Metric> metrics;
+    private final List<MetricResult> metrics;
 
     /**
      * Creates an instance of the response to a metrics query.
      * @param cost the integer value representing the cost of the query, for data case.
-     * @param timeSpan the timespan for which the data was retrieved. Its value consists of two
-     * datetimes concatenated, separated by '/'.
-     * @param interval the interval (window size) for which the metric data was returned in.
+     * @param timeInterval the time interval for which the data was retrieved.
+     * @param granularity the interval (window size) for which the metric data was returned in.
      * @param namespace the namespace of the metrics been queried.
      * @param resourceRegion the region of the resource been queried for metrics.
      * @param metrics the value of the collection.
      */
-    public MetricsQueryResult(Integer cost, String timeSpan, Duration interval, String namespace, String resourceRegion, List<Metric> metrics) {
+    public MetricsQueryResult(Integer cost, QueryTimeInterval timeInterval, Duration granularity, String namespace,
+                              String resourceRegion, List<MetricResult> metrics) {
         this.cost = cost;
-        this.timeSpan = timeSpan;
-        this.interval = interval;
+        this.timeInterval = timeInterval;
+        this.granularity = granularity;
         this.namespace = namespace;
         this.resourceRegion = resourceRegion;
         this.metrics = metrics;
@@ -49,21 +51,19 @@ public final class MetricsQueryResult {
     }
 
     /**
-     * Returns the timespan for which the data was retrieved. Its value consists of two
-     * datetimes concatenated, separated by '/'.
-     * @return the timespan for which the data was retrieved. Its value consists of two
-     * datetimes concatenated, separated by '/'.
+     * Returns the time interval for which the data was retrieved.
+     * @return the time interval for which the data was retrieved.
      */
-    public String getTimeSpan() {
-        return timeSpan;
+    public QueryTimeInterval getTimeInterval() {
+        return timeInterval;
     }
 
     /**
      * Returns the interval (window size) for which the metric data was returned in.
      * @return the interval (window size) for which the metric data was returned in.
      */
-    public Duration getInterval() {
-        return interval;
+    public Duration getGranularity() {
+        return granularity;
     }
 
     /**
@@ -86,7 +86,25 @@ public final class MetricsQueryResult {
      * Returns the value of the collection.
      * @return the value of the collection.
      */
-    public List<Metric> getMetrics() {
+    public List<MetricResult> getMetrics() {
         return metrics;
+    }
+
+    /**
+     * Returns the metric result for the {@code metricName}.
+     *
+     * @param metricName The name of the metric to look up the result for.
+     * @return The {@link MetricResult} for {@code metricName} if found, {@code null} otherwise.
+     */
+    public MetricResult getMetrics(String metricName) {
+        Objects.requireNonNull(metricName, "'metricName' cannot be null");
+        if (CoreUtils.isNullOrEmpty(metrics)) {
+            return null;
+        }
+
+        return metrics.stream()
+                .filter(metricResult -> metricResult.getMetricName().equals(metricName))
+                .findFirst()
+                .orElse(null);
     }
 }

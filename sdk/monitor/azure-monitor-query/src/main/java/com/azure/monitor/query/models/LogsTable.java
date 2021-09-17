@@ -61,7 +61,7 @@ public final class LogsTable {
      * @param <T> The type into which each row of the table is converted to.
      * @return A list of objects corresponding to the list of rows in the table.
      */
-    public <T> List<T> toObject(Class<T> type) {
+    <T> List<T> toObject(Class<T> type) {
         return tableRows
                 .stream()
                 .map(row -> row.toObject(type))

@@ -25,7 +25,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8c2180506/providers/Microsoft.Storage/storageAccounts/b77260b6afe54ad7b421?api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8c2180506/providers/Microsoft.Storage/storageAccounts/b77260b6afe54ad7b421?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -44,7 +44,7 @@
       "x-content-type-options" : "nosniff",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20200609T031020Z:28b2848b-d1db-4e2e-8946-01b95856e61c",
       "content-type" : "text/plain; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/6873949c-4356-4819-8f6d-9d0c442ff0dd?monitor=true&api-version=2021-02-01",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/6873949c-4356-4819-8f6d-9d0c442ff0dd?monitor=true&api-version=2021-04-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "6873949c-4356-4819-8f6d-9d0c442ff0dd",
       "Body" : ""
@@ -78,7 +78,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/6873949c-4356-4819-8f6d-9d0c442ff0dd?monitor=true&api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/6873949c-4356-4819-8f6d-9d0c442ff0dd?monitor=true&api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager/null (14.0.1; Windows 10 10.0)"
     },
@@ -102,7 +102,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8c2180506/providers/Microsoft.Storage/storageAccounts/b77260b6afe54ad7b421?api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8c2180506/providers/Microsoft.Storage/storageAccounts/b77260b6afe54ad7b421?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"
@@ -210,7 +210,7 @@
     }
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8c2180506/providers/Microsoft.Storage/storageAccounts/b77260b6afe54ad7b421/listKeys?api-version=2021-02-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg8c2180506/providers/Microsoft.Storage/storageAccounts/b77260b6afe54ad7b421/listKeys?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.0.0 (14.0.1; Windows 10 10.0)",
       "Content-Type" : "application/json"

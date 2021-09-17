@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+  <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
 
   <name>Microsoft Azure client library for Blob Storage</name>
   <description>This module contains client library for Microsoft Azure Blob Storage.</description>
@@ -36,6 +36,7 @@
     <src.dir>src/main/java</src.dir>
     <test.dir>src/test/java</test.dir>
     <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
+    <surefireXmx>6g</surefireXmx>
   </properties>
 
   <pluginRepositories>
@@ -56,22 +57,22 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -86,7 +87,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -94,19 +95,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -148,7 +149,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -228,19 +229,6 @@
               </dependency>
             </dependencies>
           </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                -Xmx6g
-              </argLine>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>
@@ -250,6 +238,26 @@
       <activation>
         <jdk>[9,)</jdk>
       </activation>
+      <properties>
+        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+        <javaModulesSurefireArgLine>
+          --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+          --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+          --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+          --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
+          --add-opens com.azure.storage.common/com.azure.storage.common.sas=ALL-UNNAMED
+          --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
+          --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
+          --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation.util=ALL-UNNAMED
+          --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
+          --add-opens com.azure.storage.blob/com.azure.storage.blob.changefeed=ALL-UNNAMED
+          --add-reads com.azure.core=ALL-UNNAMED
+          --add-reads com.azure.core.test=ALL-UNNAMED
+          --add-reads com.azure.core.amqp=ALL-UNNAMED
+          --add-reads com.azure.storage.common=ALL-UNNAMED
+          --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
+        </javaModulesSurefireArgLine>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -299,35 +307,6 @@
                 <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
               </dependency>
             </dependencies>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                -Xmx6g
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.common/com.azure.storage.common.sas=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation.util=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.changefeed=ALL-UNNAMED
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-                --add-reads com.azure.storage.common=ALL-UNNAMED
-                --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
-              </argLine>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
           </plugin>
         </plugins>
       </build>

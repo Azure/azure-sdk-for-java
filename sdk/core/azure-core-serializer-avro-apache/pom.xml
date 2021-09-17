@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-avro-apache</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+  <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
 
   <name>Microsoft Azure Apache Avro Serializer Library</name>
   <description>This package contains the Apache Avro serializer client plugin for azure-core.</description>
@@ -58,12 +58,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -156,21 +156,12 @@
       <activation>
         <jdk>[11,)</jdk>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports com.azure.core.serializer.avro.apache/com.azure.core.serializer.avro.apache.generatedtestsources=org.apache.avro
-                --add-opens com.azure.core.serializer.avro.apache/com.azure.core.serializer.avro.apache=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <javaModulesSurefireArgLine>
+          --add-exports com.azure.core.serializer.avro.apache/com.azure.core.serializer.avro.apache.generatedtestsources=org.apache.avro
+          --add-opens com.azure.core.serializer.avro.apache/com.azure.core.serializer.avro.apache=ALL-UNNAMED
+        </javaModulesSurefireArgLine>
+      </properties>
     </profile>
   </profiles>
 </project>
