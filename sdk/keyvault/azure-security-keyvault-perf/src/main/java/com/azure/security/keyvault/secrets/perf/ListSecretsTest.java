@@ -10,16 +10,40 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
+    private String[] _secretNames;
+
     public ListSecretsTest(PerfStressOptions options) {
         super(options);
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(Flux.range(0, options.getCount())
-                .map(i -> "listSecretsPerfTest-" + UUID.randomUUID())
+        super.globalSetupAsync().block();
+
+        // Validate that vault contains 0 secrets (including soft-deleted secrets), since additional secrets
+        // (including soft-deleted) impact performance.
+        if (secretClient.listPropertiesOfSecrets().iterator().hasNext() ||
+            secretClient.listDeletedSecrets().iterator().hasNext()) {
+
+            throw new RuntimeException("KeyVault " + secretClient.getVaultUrl() + "must contain 0 " +
+                "secrets (including soft-deleted) before starting perf test");
+        }
+
+        _secretNames = new String[options.getCount()];
+
+        return Flux.range(0, options.getCount())
+                .map(i -> {
+                    String name = "listSecretsPerfTest-" + UUID.randomUUID();
+                    _secretNames[i] = name;
+                    return name;
+                })
                 .flatMap(b -> secretAsyncClient.setSecret(b, b))
-                .then());
+                .then();
+    }
+
+    @Override
+    public Mono<Void> globalCleanupAsync() {
+        return deleteSecretsAsync(_secretNames).then(super.globalCleanupAsync());
     }
 
     @Override
