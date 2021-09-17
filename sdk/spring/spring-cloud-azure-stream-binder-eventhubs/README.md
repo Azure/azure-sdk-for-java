@@ -16,7 +16,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+  <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
 </dependency>
 ```
 

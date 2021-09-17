@@ -46,8 +46,8 @@ trigger:
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
       - sdk/spring/azure-spring-cloud-storage/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
       - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
       - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
@@ -104,8 +104,8 @@ pr:
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
       - sdk/spring/azure-spring-cloud-storage/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-eventhubs-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
       - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
       - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
@@ -244,11 +244,11 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudservicebusqueuestreambinder
         skipPublishDocMs: true
-      - name: azure-spring-cloud-stream-binder-eventhubs
+      - name: spring-cloud-azure-stream-binder-eventhubs
         groupId: com.azure.spring
-        safeName: azurespringcloudeventhubsstreambinder
+        safeName: springcloudazurestreambindereventhubs
         skipPublishDocMs: true
-      - name: azure-spring-cloud-stream-binder-eventhubs-core
+      - name: spring-cloud-azure-stream-binder-eventhubs-core
         groupId: com.azure.spring
-        safeName: azurespringcloudeventhubsstreambindercore
+        safeName: springcloudazurestreambindereventhubscore
         skipPublishDocMs: true

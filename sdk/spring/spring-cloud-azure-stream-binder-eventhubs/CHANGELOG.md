@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-
+- Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.
 ### Bugs Fixed
 
 ### Other Changes

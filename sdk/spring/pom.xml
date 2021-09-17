@@ -21,8 +21,8 @@
         <module>azure-spring-integration-servicebus</module>
         <module>azure-spring-integration-storage-queue</module>
         <module>spring-cloud-azure-messaging</module>
-        <module>azure-spring-cloud-stream-binder-eventhubs</module>
-        <module>azure-spring-cloud-stream-binder-eventhubs-core</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>azure-spring-cloud-stream-binder-servicebus-core</module>
         <module>azure-spring-cloud-stream-binder-servicebus-queue</module>
         <module>azure-spring-cloud-stream-binder-servicebus-topic</module>
@@ -74,13 +74,13 @@
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-stream-binder-eventhubs-core</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs-core;current} -->
+          <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+          <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -176,8 +176,8 @@
         <module>spring-cloud-azure-starter-eventhubs-kafka</module>
         <module>spring-cloud-azure-starter-servicebus</module>
         <module>spring-cloud-azure-starter-storage-queue</module>
-        <module>azure-spring-cloud-stream-binder-eventhubs</module>
-        <module>azure-spring-cloud-stream-binder-eventhubs-core</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>azure-spring-cloud-stream-binder-servicebus-core</module>
         <module>azure-spring-cloud-stream-binder-servicebus-queue</module>
         <module>azure-spring-cloud-stream-binder-servicebus-topic</module>

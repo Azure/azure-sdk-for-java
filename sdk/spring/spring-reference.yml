@@ -436,18 +436,18 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs
                 version: 2.2.0
-        - artifactId: azure-spring-cloud-stream-binder-eventhubs
+        - artifactId: spring-cloud-azure-stream-binder-eventhubs
           groupId: com.azure.spring
           versionGA: 4.0.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Event Hub which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hub service.
           type: spring
           links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-azure-event-hub
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-cloud-stream-binder-eventhubs/4.0.0/index.html
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-eventhubs
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-eventhubs/4.0.0/index.html
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-stream-binder-eventhubs
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/spring-cloud-azure-stream-binder-eventhubs
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"

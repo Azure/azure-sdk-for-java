@@ -11,8 +11,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+  <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
 
   <name>Azure Spring Cloud Stream Event Hubs binder</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -30,8 +30,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-stream-binder-eventhubs-core</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs-core;current} -->
+      <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
     </dependency>
 
     <dependency>
