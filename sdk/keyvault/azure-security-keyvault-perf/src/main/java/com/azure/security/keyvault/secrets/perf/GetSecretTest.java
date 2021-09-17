@@ -9,18 +9,23 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public class GetSecretTest extends SecretsTest<PerfStressOptions> {
-    private final String secretName;
+    private static final String secretName = "getSecretPerfTest-" + UUID.randomUUID();
 
     public GetSecretTest(PerfStressOptions options) {
         super(options);
-
-        secretName = "getSecretPerfTest-" + UUID.randomUUID();
     }
 
+    @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(secretAsyncClient.setSecret(secretName, secretName))
             .then();
+    }
+
+    @Override
+    public Mono<Void> globalCleanupAsync() {
+        return deleteSecretsAsync(secretName)
+            .then(super.globalCleanupAsync());
     }
 
     @Override

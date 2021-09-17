@@ -11,6 +11,9 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 public abstract class SecretsTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     protected final SecretClient secretClient;
     protected final SecretAsyncClient secretAsyncClient;
@@ -40,5 +43,11 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
 
         secretClient = builder.buildClient();
         secretAsyncClient = builder.buildAsyncClient();
+    }
+
+    protected static Mono<Void> deleteSecretsAsync(String ... names) {
+        return Flux.fromArray(names)
+            .flatMap(name -> secretAsyncClient.beginDeleteSecret(name).then(secretAsyncClient.purgeDeletedSecret(name)))
+            .then();
     }
 }
