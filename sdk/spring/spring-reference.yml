@@ -412,17 +412,17 @@
         groupId: com.azure
         artifactId: azure-messaging-eventhubs
       artifacts:
-        - artifactId: azure-spring-cloud-starter-eventhubs
+        - artifactId: spring-cloud-azure-starter-eventhubs
           groupId: com.azure.spring
           versionGA: 2.8.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Starter helps developers to finish the auto-configuration of Event Hubs and provides Spring Integration on Event Hubs.
           type: spring
           links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs
-            msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs/README.md
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-eventhubs
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-eventhubs
+            msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-eventhubs/README.md
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-eventhubs
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/spring-cloud-azure-starter-eventhubs
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies

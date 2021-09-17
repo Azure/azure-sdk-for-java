@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-
+- Change artifact id from `azure-spring-cloud-starter-eventhubs` to `spring-cloud-azure-starter-eventhubs`.
 ### Bugs Fixed
 
 ### Other Changes

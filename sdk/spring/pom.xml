@@ -172,7 +172,7 @@
         <module>azure-spring-cloud-resourcemanager</module>
         <module>spring-cloud-azure-messaging</module>
         <module>azure-spring-cloud-starter-cache</module>
-        <module>azure-spring-cloud-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-eventhubs</module>
         <module>azure-spring-cloud-starter-eventhubs-kafka</module>
         <module>azure-spring-cloud-starter-servicebus</module>
         <module>azure-spring-cloud-starter-storage-queue</module>
