@@ -24,7 +24,7 @@ public class GetSecretTest extends SecretsTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return deleteSecretsAsync(secretName)
+        return deleteAndPurgeSecretsAsync(secretName)
             .then(super.globalCleanupAsync());
     }
 

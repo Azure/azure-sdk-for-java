@@ -43,7 +43,7 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
     @Override
     public Mono<Void> globalCleanupAsync() {
         if (_secretNames != null) {
-            return deleteSecretsAsync(_secretNames).then(super.globalCleanupAsync());
+            return deleteAndPurgeSecretsAsync(_secretNames).then(super.globalCleanupAsync());
         }
         else {
             return super.globalCleanupAsync();
