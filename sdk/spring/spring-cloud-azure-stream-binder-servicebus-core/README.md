@@ -16,7 +16,7 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus][azure_se
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
+  <artifactId>spring-cloud-azure-stream-binder-servicebus-core</artifactId>
 </dependency>
 ```
 

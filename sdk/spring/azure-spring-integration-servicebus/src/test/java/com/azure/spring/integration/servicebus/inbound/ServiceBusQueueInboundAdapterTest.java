@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.servicebus.queue;
+package com.azure.spring.integration.servicebus.inbound;
 
 import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
-import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
 import com.azure.spring.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.integration.endpoint.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;

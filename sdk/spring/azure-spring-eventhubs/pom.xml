@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-eventhubs</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging-eventhubs;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-eventhubs;current} -->
 
   <name>Azure Spring Event Hubs</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

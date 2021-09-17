@@ -60,7 +60,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

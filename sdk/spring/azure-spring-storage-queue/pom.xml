@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-storage-queue</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging-storage-queue;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-storage-queue;current} -->
 
   <name>Azure Spring Storage Queue</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

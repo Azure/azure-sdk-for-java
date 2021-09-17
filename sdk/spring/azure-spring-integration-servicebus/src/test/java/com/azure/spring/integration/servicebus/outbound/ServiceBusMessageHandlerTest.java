@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.servicebus;
+package com.azure.spring.integration.servicebus.outbound;
 
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.PartitionSupplier;

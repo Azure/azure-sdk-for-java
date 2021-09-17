@@ -106,9 +106,9 @@ pr:
       - sdk/spring/azure-spring-cloud-storage/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue/pom.xml
-      - sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
       - sdk/spring/azure-spring-integration-core/pom.xml
