@@ -55,6 +55,8 @@ Key concepts are explained in detail [here][EVENTGRID_README_KEY_CONCEPTS].
 
 Start using Event Grid Java SDK in your solutions. Our SDK details could be found at [SDK README][EVENTGRID_SDK_README].
 
+For more information about other Azure Management SDK, refer [here][MGMT_SDK_LINK].
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Find [more contributing][EVENTGRID_README_CONTRIBUTING] details here.
@@ -71,4 +73,4 @@ If you don't have a Microsoft Azure subscription you can get a FREE trial accoun
 [EVENTGRID_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid#getting-started
 [EVENTGRID_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventgrid/azure-resourcemanager-eventgrid#key-concepts
 [EVENTGRID_SAMPLE_CODE]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventgrid/azure-resourcemanager-eventgrid/src/samples/java/com/azure/resourcemanager/eventgrid/EventGridPublishAndConsumeExample.java
-
+[MGMT_SDK_LINK]: https://aka.ms/azsdk/java/mgmt 
