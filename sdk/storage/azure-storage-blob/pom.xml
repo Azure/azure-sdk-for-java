@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob</artifactId>
-  <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+  <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
 
   <name>Microsoft Azure client library for Blob Storage</name>
   <description>This module contains client library for Microsoft Azure Blob Storage.</description>
@@ -67,12 +67,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
