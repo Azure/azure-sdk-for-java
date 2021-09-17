@@ -45,6 +45,7 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
         secretAsyncClient = builder.buildAsyncClient();
     }
 
+    // TODO: Handle 404 errors like .NET SecretsScenarioBase.DeleteSecretsAsync()
     protected Mono<Void> deleteSecretsAsync(String ... names) {
         return Flux.fromArray(names)
             .flatMap(name -> secretAsyncClient.beginDeleteSecret(name).then(secretAsyncClient.purgeDeletedSecret(name)))
