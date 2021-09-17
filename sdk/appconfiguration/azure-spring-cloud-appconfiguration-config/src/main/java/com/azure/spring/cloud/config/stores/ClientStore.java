@@ -44,9 +44,9 @@ public final class ClientStore {
 
     private final HashMap<String, ConfigurationClient> clients;
     
-    private final Boolean isDev;
+    private final boolean isDev;
     
-    private final Boolean isKeyVaultConfigurated;
+    private final boolean isKeyVaultConfigurated;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,

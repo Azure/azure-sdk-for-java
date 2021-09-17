@@ -30,9 +30,9 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     static Boolean watchRequests = false;
 
-    final Boolean isDev;
+    final boolean isDev;
 
-    final Boolean isKeyVaultConfigured;
+    final boolean isKeyVaultConfigured;
     
     public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured) {
         this.isDev = isDev;
@@ -52,7 +52,7 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
             return "";
         }
 
-        String requestTypeValue = watchRequests ? RequestType.WATCH.toString() : RequestType.STARTUP.toString();
+        RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
 
         String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY.toString() + "=" + requestTypeValue;
         String hostType = getHostType();

@@ -73,16 +73,7 @@ public final class AppConfigurationStoreSelects {
     }
 
     public String getLabelFilterText(List<String> profiles) {
-        String[] labels = getLabelFilter(profiles);
-
-        StringBuilder bld = new StringBuilder();
-        for (String label : labels) {
-            if (bld.length() > 0) {
-                bld.append(",");
-            }
-            bld.append(label);
-        }
-        return bld.toString();
+        return String.join(",", getLabelFilter(profiles));
     }
 
     /**

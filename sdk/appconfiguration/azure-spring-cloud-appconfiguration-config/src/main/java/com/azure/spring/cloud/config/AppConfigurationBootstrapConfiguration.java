@@ -154,8 +154,8 @@ public class AppConfigurationBootstrapConfiguration {
             clientProvider = clientProviderOptional.get();
         }
 
-        Boolean isDev = false;
-        Boolean isKeyVaultConfigured = false;
+        boolean isDev = false;
+        boolean isKeyVaultConfigured = false;
 
         List<String> profiles = Arrays.asList(env.getActiveProfiles());
 
