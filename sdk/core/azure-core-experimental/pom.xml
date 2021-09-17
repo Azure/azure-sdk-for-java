@@ -62,21 +62,6 @@
       <artifactId>azure-core</artifactId>
       <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
-
-    <dependency>
-      <groupId>org.graalvm.sdk</groupId>
-      <artifactId>graal-sdk</artifactId>
-      <version>21.2.0</version>  <!-- {x-version-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.graalvm.nativeimage</groupId>
-      <artifactId>svm</artifactId>
-      <version>21.2.0</version>  <!-- {x-version-update;org.graalvm.nativeimage:svm;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -119,22 +104,6 @@
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
           </compilerArgs>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                  <include>org.graalvm.sdk:graal-sdk:[21.2.0]</include> <!-- {x-include-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
-                  <include>org.graalvm.nativeimage:svm:[21.2.0]</include> <!-- {x-include-update;org.graalvm.nativeimage:svm;external_dependency} -->
-              </includes>
-            </bannedDependencies>
-          </rules>
         </configuration>
       </plugin>
     </plugins>

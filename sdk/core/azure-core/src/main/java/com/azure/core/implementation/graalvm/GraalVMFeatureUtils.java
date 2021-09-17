@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.implementation.graalvm;
+package com.azure.core.implementation.graalvm;
 
 import com.oracle.svm.core.jdk.proxy.DynamicProxyRegistry;
 import org.graalvm.nativeimage.ImageSingletons;
@@ -24,8 +24,6 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Stream;
-
-import static org.graalvm.nativeimage.hosted.RuntimeReflection.register;
 
 /**
  * Utility class to configure GraalVM features.
@@ -81,34 +79,34 @@ public final class GraalVMFeatureUtils {
 
             // fields
             if (reflectiveClass.includeDeclaredFields()) {
-                register(cls.getDeclaredFields());
+                RuntimeReflection.register(cls.getDeclaredFields());
             }
             if (reflectiveClass.includePublicFields()) {
-                register(cls.getFields());
+                RuntimeReflection.register(cls.getFields());
             }
 
             // constructors
             if (reflectiveClass.includeDeclaredConstructors()) {
-                register(cls.getDeclaredConstructors());
+                RuntimeReflection.register(cls.getDeclaredConstructors());
             }
             if (reflectiveClass.includePublicConstructors()) {
-                register(cls.getConstructors());
+                RuntimeReflection.register(cls.getConstructors());
             }
 
             // methods
             if (reflectiveClass.includeDeclaredMethods()) {
-                register(cls.getDeclaredMethods());
+                RuntimeReflection.register(cls.getDeclaredMethods());
             }
             if (reflectiveClass.includePublicMethods()) {
-                register(cls.getMethods());
+                RuntimeReflection.register(cls.getMethods());
             }
 
             // classes
             if (reflectiveClass.includeDeclaredClasses()) {
-                register(cls.getDeclaredClasses());
+                RuntimeReflection.register(cls.getDeclaredClasses());
             }
             if (reflectiveClass.includePublicClasses()) {
-                register(cls.getClasses());
+                RuntimeReflection.register(cls.getClasses());
             }
         });
     }

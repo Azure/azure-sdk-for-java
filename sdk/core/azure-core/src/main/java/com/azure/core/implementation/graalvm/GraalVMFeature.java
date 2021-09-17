@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.implementation.graalvm;
+package com.azure.core.implementation.graalvm;
 
 import org.graalvm.nativeimage.hosted.Feature;
 
@@ -10,10 +10,9 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.addProxyClass;
-import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.findClass;
-import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.getClassesForPackage;
-import static com.azure.core.experimental.implementation.graalvm.GraalVMFeatureUtils.registerClass;
+import static com.azure.core.implementation.graalvm.GraalVMFeatureUtils.findClass;
+import static com.azure.core.implementation.graalvm.GraalVMFeatureUtils.getClassesForPackage;
+import static com.azure.core.implementation.graalvm.GraalVMFeatureUtils.registerClass;
 
 /**
  * Implementations of this interface should configure the features specific to the Azure SDK client libraries.
@@ -68,7 +67,7 @@ public interface GraalVMFeature extends Feature {
         } else {
             System.out.println("AZURE SDK: Registering Azure GraalVM support for " + getClass());
             reflectionClasses.forEach(reflectiveClass -> registerClass(access, reflectiveClass));
-            dynamicProxies.forEach(interfaces -> addProxyClass(access, interfaces));
+            dynamicProxies.forEach(interfaces -> GraalVMFeatureUtils.addProxyClass(access, interfaces));
 
             // we also register all other classes as discovered in the exported packages set
             getClassesForPackage(access, getRootPackage(), true)

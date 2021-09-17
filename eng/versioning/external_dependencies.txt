@@ -91,6 +91,7 @@ org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
 org.graalvm.buildtools:junit-platform-native;0.9.2
+org.graalvm.buildtools:native-maven-plugin;0.9.2
 org.graalvm.sdk:graal-sdk;21.2.0
 org.graalvm.nativeimage:svm;21.2.0
 org.powermock:powermock-api-mockito2;2.0.2
