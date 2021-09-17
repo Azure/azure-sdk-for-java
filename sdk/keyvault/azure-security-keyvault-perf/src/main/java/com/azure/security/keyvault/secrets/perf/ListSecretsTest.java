@@ -29,15 +29,14 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
                 "secrets (including soft-deleted) before starting perf test");
         }
 
+        // TODO: Populate array before returning flux
         _secretNames = new String[options.getCount()];
+        for (int i=0; i < _secretNames.length; i++) {
+            _secretNames[i] = "listSecretsPerfTest-" + UUID.randomUUID();
+        }
 
-        return Flux.range(0, options.getCount())
-                .map(i -> {
-                    String name = "listSecretsPerfTest-" + UUID.randomUUID();
-                    _secretNames[i] = name;
-                    return name;
-                })
-                .flatMap(b -> secretAsyncClient.setSecret(b, b))
+        return Flux.fromArray(_secretNames)
+                .flatMap(secretName -> secretAsyncClient.setSecret(secretName, secretName))
                 .then();
     }
 
