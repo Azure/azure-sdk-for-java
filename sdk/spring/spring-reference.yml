@@ -267,17 +267,17 @@
         groupId: com.azure
         artifactId: azure-storage-queue
       artifacts:
-        - artifactId: azure-spring-cloud-starter-storage-queue
+        - artifactId: spring-cloud-azure-starter-storage-queue
           groupId: com.azure.spring
           versionGA: 4.0.0
           versionPreview: 2.0.0-beta.1
           description: Microsoft's Spring Cloud Starter helps developers to finish the auto-configuration of Storage Queue and provides Spring Integration with Storage Queue.
           type: spring
           links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-cloud-starter-storage-queue
-            msdocs: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-cloud-starter-storage-queue/README.md
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-starter-storage-queue
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-cloud-starter-storage-queue
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-storage-queue
+            msdocs: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-starter-storage-queue/README.md
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-storage-queue
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/spring-cloud-azure-starter-storage-queue
           springProperties:
             starter: true
             bom: azure-spring-cloud-dependencies

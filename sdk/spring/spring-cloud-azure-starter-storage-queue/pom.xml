@@ -14,8 +14,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-storage-queue;current} -->
+  <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
 
   <name>Azure Spring Cloud Starter Storage Queue</name>
   <dependencies>

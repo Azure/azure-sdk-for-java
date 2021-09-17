@@ -157,7 +157,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
+        <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
 

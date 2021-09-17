@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-
+- Change artifact id from `azure-spring-cloud-starter-storage-queue` to `spring-cloud-azure-starter-storage-queue`.
 ### Bugs Fixed
 
 ### Other Changes
