@@ -45,7 +45,7 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
         secretAsyncClient = builder.buildAsyncClient();
     }
 
-    protected static Mono<Void> deleteSecretsAsync(String ... names) {
+    protected Mono<Void> deleteSecretsAsync(String ... names) {
         return Flux.fromArray(names)
             .flatMap(name -> secretAsyncClient.beginDeleteSecret(name).then(secretAsyncClient.purgeDeletedSecret(name)))
             .then();
