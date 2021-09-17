@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes metadata for retrieving price info. */
+/**
+ * Describes metadata for retrieving price info.
+ */
 @Immutable
 public final class ResourceSkuCosts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCosts.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceSkuCosts.class);
 
     /*
      * Used for querying price from commerce.
@@ -34,7 +39,7 @@ public final class ResourceSkuCosts {
 
     /**
      * Get the meterId property: Used for querying price from commerce.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -42,8 +47,9 @@ public final class ResourceSkuCosts {
     }
 
     /**
-     * Get the quantity property: The multiplier is needed to extend the base metered cost.
-     *
+     * Get the quantity property: The multiplier is needed to extend the base
+     * metered cost.
+     * 
      * @return the quantity value.
      */
     public Long quantity() {
@@ -52,7 +58,7 @@ public final class ResourceSkuCosts {
 
     /**
      * Get the extendedUnit property: An invariant to show the extended unit.
-     *
+     * 
      * @return the extendedUnit value.
      */
     public String extendedUnit() {
@@ -61,7 +67,7 @@ public final class ResourceSkuCosts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

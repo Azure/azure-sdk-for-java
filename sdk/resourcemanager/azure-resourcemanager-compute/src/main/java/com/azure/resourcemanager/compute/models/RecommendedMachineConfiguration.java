@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The properties describe the recommended machine configuration for this Image Definition. These properties are
- * updatable.
+ * The properties describe the recommended machine configuration for this Image
+ * Definition. These properties are updatable.
  */
 @Fluent
 public final class RecommendedMachineConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedMachineConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecommendedMachineConfiguration.class);
 
     /*
      * Describes the resource range.
@@ -31,7 +34,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Get the vCPUs property: Describes the resource range.
-     *
+     * 
      * @return the vCPUs value.
      */
     public ResourceRange vCPUs() {
@@ -40,7 +43,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Set the vCPUs property: Describes the resource range.
-     *
+     * 
      * @param vCPUs the vCPUs value to set.
      * @return the RecommendedMachineConfiguration object itself.
      */
@@ -51,7 +54,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Get the memory property: Describes the resource range.
-     *
+     * 
      * @return the memory value.
      */
     public ResourceRange memory() {
@@ -60,7 +63,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Set the memory property: Describes the resource range.
-     *
+     * 
      * @param memory the memory value to set.
      * @return the RecommendedMachineConfiguration object itself.
      */
@@ -71,7 +74,7 @@ public final class RecommendedMachineConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

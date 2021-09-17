@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the disallowed configuration for a virtual machine image. */
+/**
+ * Specifies the disallowed configuration for a virtual machine image.
+ */
 @Fluent
 public final class DisallowedConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DisallowedConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DisallowedConfiguration.class);
 
     /*
      * VM disk types which are disallowed.
@@ -22,7 +27,7 @@ public final class DisallowedConfiguration {
 
     /**
      * Get the vmDiskType property: VM disk types which are disallowed.
-     *
+     * 
      * @return the vmDiskType value.
      */
     public VmDiskTypes vmDiskType() {
@@ -31,7 +36,7 @@ public final class DisallowedConfiguration {
 
     /**
      * Set the vmDiskType property: VM disk types which are disallowed.
-     *
+     * 
      * @param vmDiskType the vmDiskType value to set.
      * @return the DisallowedConfiguration object itself.
      */
@@ -42,7 +47,7 @@ public final class DisallowedConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

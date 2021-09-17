@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a reference to Key Vault Key. */
+/**
+ * Describes a reference to Key Vault Key.
+ */
 @Fluent
 public final class KeyVaultKeyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyVaultKeyReference.class);
 
     /*
      * The URL referencing a key encryption key in Key Vault.
@@ -28,8 +33,9 @@ public final class KeyVaultKeyReference {
     private SubResource sourceVault;
 
     /**
-     * Get the keyUrl property: The URL referencing a key encryption key in Key Vault.
-     *
+     * Get the keyUrl property: The URL referencing a key encryption key in Key
+     * Vault.
+     * 
      * @return the keyUrl value.
      */
     public String keyUrl() {
@@ -37,8 +43,9 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Set the keyUrl property: The URL referencing a key encryption key in Key Vault.
-     *
+     * Set the keyUrl property: The URL referencing a key encryption key in Key
+     * Vault.
+     * 
      * @param keyUrl the keyUrl value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -48,8 +55,9 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Get the sourceVault property: The relative URL of the Key Vault containing the key.
-     *
+     * Get the sourceVault property: The relative URL of the Key Vault
+     * containing the key.
+     * 
      * @return the sourceVault value.
      */
     public SubResource sourceVault() {
@@ -57,8 +65,9 @@ public final class KeyVaultKeyReference {
     }
 
     /**
-     * Set the sourceVault property: The relative URL of the Key Vault containing the key.
-     *
+     * Set the sourceVault property: The relative URL of the Key Vault
+     * containing the key.
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -69,20 +78,15 @@ public final class KeyVaultKeyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyUrl in model KeyVaultKeyReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property keyUrl in model KeyVaultKeyReference"));
         }
         if (sourceVault() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceVault in model KeyVaultKeyReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sourceVault in model KeyVaultKeyReference"));
         }
     }
 }

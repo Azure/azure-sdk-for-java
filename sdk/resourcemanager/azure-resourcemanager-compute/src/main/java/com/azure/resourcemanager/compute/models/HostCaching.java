@@ -7,18 +7,28 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for HostCaching. */
+/**
+ * Defines values for HostCaching.
+ */
 public enum HostCaching {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value ReadOnly. */
+    /**
+     * Enum value ReadOnly.
+     */
     READ_ONLY("ReadOnly"),
 
-    /** Enum value ReadWrite. */
+    /**
+     * Enum value ReadWrite.
+     */
     READ_WRITE("ReadWrite");
 
-    /** The actual serialized value for a HostCaching instance. */
+    /**
+     * The actual serialized value for a HostCaching instance.
+     */
     private final String value;
 
     HostCaching(String value) {
@@ -27,7 +37,7 @@ public enum HostCaching {
 
     /**
      * Parses a serialized value to a HostCaching instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HostCaching object, or null if unable to parse.
      */

@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List disk encryption set operation response. */
+/**
+ * The List disk encryption set operation response.
+ */
 @Fluent
 public final class DiskEncryptionSetList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DiskEncryptionSetList.class);
 
     /*
      * A list of disk encryption sets.
@@ -31,7 +36,7 @@ public final class DiskEncryptionSetList {
 
     /**
      * Get the value property: A list of disk encryption sets.
-     *
+     * 
      * @return the value value.
      */
     public List<DiskEncryptionSetInner> value() {
@@ -40,7 +45,7 @@ public final class DiskEncryptionSetList {
 
     /**
      * Set the value property: A list of disk encryption sets.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiskEncryptionSetList object itself.
      */
@@ -50,9 +55,10 @@ public final class DiskEncryptionSetList {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of disk encryption sets. Call ListNext() with this to
-     * fetch the next page of disk encryption sets.
-     *
+     * Get the nextLink property: The uri to fetch the next page of disk
+     * encryption sets. Call ListNext() with this to fetch the next page of
+     * disk encryption sets.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +66,10 @@ public final class DiskEncryptionSetList {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of disk encryption sets. Call ListNext() with this to
-     * fetch the next page of disk encryption sets.
-     *
+     * Set the nextLink property: The uri to fetch the next page of disk
+     * encryption sets. Call ListNext() with this to fetch the next page of
+     * disk encryption sets.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DiskEncryptionSetList object itself.
      */
@@ -73,14 +80,12 @@ public final class DiskEncryptionSetList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DiskEncryptionSetList"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model DiskEncryptionSetList"));
         } else {
             value().forEach(e -> e.validate());
         }

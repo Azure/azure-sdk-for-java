@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestrationServiceStateAction. */
+/**
+ * Defines values for OrchestrationServiceStateAction.
+ */
 public final class OrchestrationServiceStateAction extends ExpandableStringEnum<OrchestrationServiceStateAction> {
-    /** Static value Resume for OrchestrationServiceStateAction. */
+    /**
+     * Static value Resume for OrchestrationServiceStateAction.
+     */
     public static final OrchestrationServiceStateAction RESUME = fromString("Resume");
 
-    /** Static value Suspend for OrchestrationServiceStateAction. */
+    /**
+     * Static value Suspend for OrchestrationServiceStateAction.
+     */
     public static final OrchestrationServiceStateAction SUSPEND = fromString("Suspend");
 
     /**
      * Creates or finds a OrchestrationServiceStateAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrchestrationServiceStateAction.
      */
@@ -27,7 +33,9 @@ public final class OrchestrationServiceStateAction extends ExpandableStringEnum<
         return fromString(name, OrchestrationServiceStateAction.class);
     }
 
-    /** @return known OrchestrationServiceStateAction values. */
+    /**
+     * @return known OrchestrationServiceStateAction values.
+     */
     public static Collection<OrchestrationServiceStateAction> values() {
         return values(OrchestrationServiceStateAction.class);
     }

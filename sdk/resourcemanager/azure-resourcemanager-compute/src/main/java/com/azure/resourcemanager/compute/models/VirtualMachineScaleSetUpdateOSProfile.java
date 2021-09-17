@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set OS profile. */
+/**
+ * Describes a virtual machine scale set OS profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetUpdateOSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateOSProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateOSProfile.class);
 
     /*
      * A base-64 encoded string of custom data.
@@ -41,7 +46,7 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
 
     /**
      * Get the customData property: A base-64 encoded string of custom data.
-     *
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -50,7 +55,7 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
 
     /**
      * Set the customData property: A base-64 encoded string of custom data.
-     *
+     * 
      * @param customData the customData value to set.
      * @return the VirtualMachineScaleSetUpdateOSProfile object itself.
      */
@@ -60,8 +65,9 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     }
 
     /**
-     * Get the windowsConfiguration property: The Windows Configuration of the OS profile.
-     *
+     * Get the windowsConfiguration property: The Windows Configuration of the
+     * OS profile.
+     * 
      * @return the windowsConfiguration value.
      */
     public WindowsConfiguration windowsConfiguration() {
@@ -69,8 +75,9 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     }
 
     /**
-     * Set the windowsConfiguration property: The Windows Configuration of the OS profile.
-     *
+     * Set the windowsConfiguration property: The Windows Configuration of the
+     * OS profile.
+     * 
      * @param windowsConfiguration the windowsConfiguration value to set.
      * @return the VirtualMachineScaleSetUpdateOSProfile object itself.
      */
@@ -80,8 +87,9 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     }
 
     /**
-     * Get the linuxConfiguration property: The Linux Configuration of the OS profile.
-     *
+     * Get the linuxConfiguration property: The Linux Configuration of the OS
+     * profile.
+     * 
      * @return the linuxConfiguration value.
      */
     public LinuxConfiguration linuxConfiguration() {
@@ -89,8 +97,9 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     }
 
     /**
-     * Set the linuxConfiguration property: The Linux Configuration of the OS profile.
-     *
+     * Set the linuxConfiguration property: The Linux Configuration of the OS
+     * profile.
+     * 
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the VirtualMachineScaleSetUpdateOSProfile object itself.
      */
@@ -100,8 +109,9 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     }
 
     /**
-     * Get the secrets property: The List of certificates for addition to the VM.
-     *
+     * Get the secrets property: The List of certificates for addition to the
+     * VM.
+     * 
      * @return the secrets value.
      */
     public List<VaultSecretGroup> secrets() {
@@ -109,8 +119,9 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     }
 
     /**
-     * Set the secrets property: The List of certificates for addition to the VM.
-     *
+     * Set the secrets property: The List of certificates for addition to the
+     * VM.
+     * 
      * @param secrets the secrets value to set.
      * @return the VirtualMachineScaleSetUpdateOSProfile object itself.
      */
@@ -121,7 +132,7 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

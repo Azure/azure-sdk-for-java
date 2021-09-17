@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.RunCommandDocumentBaseInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Virtual Machine operation response. */
+/**
+ * The List Virtual Machine operation response.
+ */
 @Fluent
 public final class RunCommandListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RunCommandListResult.class);
 
     /*
      * The list of virtual machine run commands.
@@ -31,7 +36,7 @@ public final class RunCommandListResult {
 
     /**
      * Get the value property: The list of virtual machine run commands.
-     *
+     * 
      * @return the value value.
      */
     public List<RunCommandDocumentBaseInner> value() {
@@ -40,7 +45,7 @@ public final class RunCommandListResult {
 
     /**
      * Set the value property: The list of virtual machine run commands.
-     *
+     * 
      * @param value the value value to set.
      * @return the RunCommandListResult object itself.
      */
@@ -50,9 +55,10 @@ public final class RunCommandListResult {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
-     * next page of run commands.
-     *
+     * Get the nextLink property: The uri to fetch the next page of run
+     * commands. Call ListNext() with this to fetch the next page of run
+     * commands.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +66,10 @@ public final class RunCommandListResult {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
-     * next page of run commands.
-     *
+     * Set the nextLink property: The uri to fetch the next page of run
+     * commands. Call ListNext() with this to fetch the next page of run
+     * commands.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RunCommandListResult object itself.
      */
@@ -73,14 +80,12 @@ public final class RunCommandListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

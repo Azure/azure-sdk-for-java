@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** disk encryption set update resource. */
+/**
+ * disk encryption set update resource.
+ */
 @Fluent
 public final class DiskEncryptionSetUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdate.class);
 
     /*
      * disk encryption set resource update properties.
@@ -30,16 +35,10 @@ public final class DiskEncryptionSetUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The managed identity for the disk encryption set. It should be given
-     * permission on the key vault before it can be used to encrypt disks.
-     */
-    @JsonProperty(value = "identity")
-    private EncryptionSetIdentity identity;
-
     /**
-     * Get the innerProperties property: disk encryption set resource update properties.
-     *
+     * Get the innerProperties property: disk encryption set resource update
+     * properties.
+     * 
      * @return the innerProperties value.
      */
     private DiskEncryptionSetUpdateProperties innerProperties() {
@@ -48,7 +47,7 @@ public final class DiskEncryptionSetUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -57,7 +56,7 @@ public final class DiskEncryptionSetUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DiskEncryptionSetUpdate object itself.
      */
@@ -67,68 +66,23 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the identity property: The managed identity for the disk encryption set. It should be given permission on the
-     * key vault before it can be used to encrypt disks.
-     *
-     * @return the identity value.
-     */
-    public EncryptionSetIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The managed identity for the disk encryption set. It should be given permission on the
-     * key vault before it can be used to encrypt disks.
-     *
-     * @param identity the identity value to set.
-     * @return the DiskEncryptionSetUpdate object itself.
-     */
-    public DiskEncryptionSetUpdate withIdentity(EncryptionSetIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
-     *
-     * @return the encryptionType value.
-     */
-    public DiskEncryptionSetType encryptionType() {
-        return this.innerProperties() == null ? null : this.innerProperties().encryptionType();
-    }
-
-    /**
-     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
-     *
-     * @param encryptionType the encryptionType value to set.
-     * @return the DiskEncryptionSetUpdate object itself.
-     */
-    public DiskEncryptionSetUpdate withEncryptionType(DiskEncryptionSetType encryptionType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DiskEncryptionSetUpdateProperties();
-        }
-        this.innerProperties().withEncryptionType(encryptionType);
-        return this;
-    }
-
-    /**
-     * Get the activeKey property: Key Vault Key Url to be used for server side encryption of Managed Disks and
-     * Snapshots.
-     *
+     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK
+     * is optional and when provided is used to unwrap the encryptionKey.
+     * 
      * @return the activeKey value.
      */
-    public KeyForDiskEncryptionSet activeKey() {
+    public KeyVaultAndKeyReference activeKey() {
         return this.innerProperties() == null ? null : this.innerProperties().activeKey();
     }
 
     /**
-     * Set the activeKey property: Key Vault Key Url to be used for server side encryption of Managed Disks and
-     * Snapshots.
-     *
+     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK
+     * is optional and when provided is used to unwrap the encryptionKey.
+     * 
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetUpdate object itself.
      */
-    public DiskEncryptionSetUpdate withActiveKey(KeyForDiskEncryptionSet activeKey) {
+    public DiskEncryptionSetUpdate withActiveKey(KeyVaultAndKeyReference activeKey) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DiskEncryptionSetUpdateProperties();
         }
@@ -137,41 +91,13 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
-     * encryption set to the latest key version.
-     *
-     * @return the rotationToLatestKeyVersionEnabled value.
-     */
-    public Boolean rotationToLatestKeyVersionEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().rotationToLatestKeyVersionEnabled();
-    }
-
-    /**
-     * Set the rotationToLatestKeyVersionEnabled property: Set this flag to true to enable auto-updating of this disk
-     * encryption set to the latest key version.
-     *
-     * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
-     * @return the DiskEncryptionSetUpdate object itself.
-     */
-    public DiskEncryptionSetUpdate withRotationToLatestKeyVersionEnabled(Boolean rotationToLatestKeyVersionEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DiskEncryptionSetUpdateProperties();
-        }
-        this.innerProperties().withRotationToLatestKeyVersionEnabled(rotationToLatestKeyVersionEnabled);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
         }
     }
 }

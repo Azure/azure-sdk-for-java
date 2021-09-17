@@ -7,18 +7,28 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResourceSkuCapacityScaleType. */
+/**
+ * Defines values for ResourceSkuCapacityScaleType.
+ */
 public enum ResourceSkuCapacityScaleType {
-    /** Enum value Automatic. */
+    /**
+     * Enum value Automatic.
+     */
     AUTOMATIC("Automatic"),
 
-    /** Enum value Manual. */
+    /**
+     * Enum value Manual.
+     */
     MANUAL("Manual"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a ResourceSkuCapacityScaleType instance. */
+    /**
+     * The actual serialized value for a ResourceSkuCapacityScaleType instance.
+     */
     private final String value;
 
     ResourceSkuCapacityScaleType(String value) {
@@ -27,7 +37,7 @@ public enum ResourceSkuCapacityScaleType {
 
     /**
      * Parses a serialized value to a ResourceSkuCapacityScaleType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceSkuCapacityScaleType object, or null if unable to parse.
      */

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the parameters of a ScaleSet managed disk. */
+/**
+ * Describes the parameters of a ScaleSet managed disk.
+ */
 @Fluent
 public final class VirtualMachineScaleSetManagedDiskParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetManagedDiskParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetManagedDiskParameters.class);
 
     /*
      * Specifies the storage account type for the managed disk. NOTE:
@@ -30,9 +35,10 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
-     * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * Get the storageAccountType property: Specifies the storage account type
+     * for the managed disk. NOTE: UltraSSD_LRS can only be used with data
+     * disks, it cannot be used with OS Disk.
+     * 
      * @return the storageAccountType value.
      */
     public StorageAccountTypes storageAccountType() {
@@ -40,9 +46,10 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     }
 
     /**
-     * Set the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * Set the storageAccountType property: Specifies the storage account type
+     * for the managed disk. NOTE: UltraSSD_LRS can only be used with data
+     * disks, it cannot be used with OS Disk.
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
@@ -52,9 +59,9 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     }
 
     /**
-     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed disk.
-     *
+     * Get the diskEncryptionSet property: Specifies the customer managed disk
+     * encryption set resource id for the managed disk.
+     * 
      * @return the diskEncryptionSet value.
      */
     public DiskEncryptionSetParameters diskEncryptionSet() {
@@ -62,21 +69,20 @@ public final class VirtualMachineScaleSetManagedDiskParameters {
     }
 
     /**
-     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed disk.
-     *
+     * Set the diskEncryptionSet property: Specifies the customer managed disk
+     * encryption set resource id for the managed disk.
+     * 
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the VirtualMachineScaleSetManagedDiskParameters object itself.
      */
-    public VirtualMachineScaleSetManagedDiskParameters withDiskEncryptionSet(
-        DiskEncryptionSetParameters diskEncryptionSet) {
+    public VirtualMachineScaleSetManagedDiskParameters withDiskEncryptionSet(DiskEncryptionSetParameters diskEncryptionSet) {
         this.diskEncryptionSet = diskEncryptionSet;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

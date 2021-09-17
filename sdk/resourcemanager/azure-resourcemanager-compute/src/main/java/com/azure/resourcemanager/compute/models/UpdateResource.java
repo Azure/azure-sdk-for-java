@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The Update Resource model definition. */
+/**
+ * The Update Resource model definition.
+ */
 @Fluent
 public class UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateResource.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UpdateResource.class);
 
     /*
      * Resource tags
@@ -25,7 +30,7 @@ public class UpdateResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +39,7 @@ public class UpdateResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the UpdateResource object itself.
      */
@@ -45,7 +50,7 @@ public class UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

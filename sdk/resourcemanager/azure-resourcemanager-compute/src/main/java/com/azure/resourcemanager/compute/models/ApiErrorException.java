@@ -7,11 +7,13 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
 
-/** Exception thrown for an invalid response with ApiError information. */
+/**
+ * Exception thrown for an invalid response with ApiError information.
+ */
 public final class ApiErrorException extends ManagementException {
     /**
      * Initializes a new instance of the ApiErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class ApiErrorException extends ManagementException {
 
     /**
      * Initializes a new instance of the ApiErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.

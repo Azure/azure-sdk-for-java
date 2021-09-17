@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiffDiskPlacement. */
+/**
+ * Defines values for DiffDiskPlacement.
+ */
 public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacement> {
-    /** Static value CacheDisk for DiffDiskPlacement. */
+    /**
+     * Static value CacheDisk for DiffDiskPlacement.
+     */
     public static final DiffDiskPlacement CACHE_DISK = fromString("CacheDisk");
 
-    /** Static value ResourceDisk for DiffDiskPlacement. */
+    /**
+     * Static value ResourceDisk for DiffDiskPlacement.
+     */
     public static final DiffDiskPlacement RESOURCE_DISK = fromString("ResourceDisk");
 
     /**
      * Creates or finds a DiffDiskPlacement from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiffDiskPlacement.
      */
@@ -27,7 +33,9 @@ public final class DiffDiskPlacement extends ExpandableStringEnum<DiffDiskPlacem
         return fromString(name, DiffDiskPlacement.class);
     }
 
-    /** @return known DiffDiskPlacement values. */
+    /**
+     * @return known DiffDiskPlacement values.
+     */
     public static Collection<DiffDiskPlacement> values() {
         return values(DiffDiskPlacement.class);
     }

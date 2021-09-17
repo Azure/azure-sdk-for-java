@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data used for requesting a SAS. */
+/**
+ * Data used for requesting a SAS.
+ */
 @Fluent
 public final class GrantAccessData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GrantAccessData.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GrantAccessData.class);
 
     /*
      * The access property.
@@ -28,7 +33,7 @@ public final class GrantAccessData {
 
     /**
      * Get the access property: The access property.
-     *
+     * 
      * @return the access value.
      */
     public AccessLevel access() {
@@ -37,7 +42,7 @@ public final class GrantAccessData {
 
     /**
      * Set the access property: The access property.
-     *
+     * 
      * @param access the access value to set.
      * @return the GrantAccessData object itself.
      */
@@ -47,8 +52,9 @@ public final class GrantAccessData {
     }
 
     /**
-     * Get the durationInSeconds property: Time duration in seconds until the SAS access expires.
-     *
+     * Get the durationInSeconds property: Time duration in seconds until the
+     * SAS access expires.
+     * 
      * @return the durationInSeconds value.
      */
     public int durationInSeconds() {
@@ -56,8 +62,9 @@ public final class GrantAccessData {
     }
 
     /**
-     * Set the durationInSeconds property: Time duration in seconds until the SAS access expires.
-     *
+     * Set the durationInSeconds property: Time duration in seconds until the
+     * SAS access expires.
+     * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the GrantAccessData object itself.
      */
@@ -68,14 +75,12 @@ public final class GrantAccessData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (access() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property access in model GrantAccessData"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property access in model GrantAccessData"));
         }
     }
 }

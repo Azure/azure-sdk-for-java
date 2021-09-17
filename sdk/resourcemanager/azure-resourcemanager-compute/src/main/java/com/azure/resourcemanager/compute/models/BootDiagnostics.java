@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM status.
- * &lt;br&gt;&lt;br&gt; You can easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also enables you
- * to see a screenshot of the VM from the hypervisor.
+ * Boot Diagnostics is a debugging feature which allows you to view Console
+ * Output and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can
+ * easily view the output of your console log. &lt;br&gt;&lt;br&gt; Azure also
+ * enables you to see a screenshot of the VM from the hypervisor.
  */
 @Fluent
 public final class BootDiagnostics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnostics.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BootDiagnostics.class);
 
     /*
      * Whether boot diagnostics should be enabled on the Virtual Machine.
@@ -33,8 +37,9 @@ public final class BootDiagnostics {
     private String storageUri;
 
     /**
-     * Get the enabled property: Whether boot diagnostics should be enabled on the Virtual Machine.
-     *
+     * Get the enabled property: Whether boot diagnostics should be enabled on
+     * the Virtual Machine.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -42,8 +47,9 @@ public final class BootDiagnostics {
     }
 
     /**
-     * Set the enabled property: Whether boot diagnostics should be enabled on the Virtual Machine.
-     *
+     * Set the enabled property: Whether boot diagnostics should be enabled on
+     * the Virtual Machine.
+     * 
      * @param enabled the enabled value to set.
      * @return the BootDiagnostics object itself.
      */
@@ -53,9 +59,11 @@ public final class BootDiagnostics {
     }
 
     /**
-     * Get the storageUri property: Uri of the storage account to use for placing the console output and screenshot.
-     * &lt;br&gt;&lt;br&gt;If storageUri is not specified while enabling boot diagnostics, managed storage will be used.
-     *
+     * Get the storageUri property: Uri of the storage account to use for
+     * placing the console output and screenshot. &lt;br&gt;&lt;br&gt;If
+     * storageUri is not specified while enabling boot diagnostics, managed
+     * storage will be used.
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -63,9 +71,11 @@ public final class BootDiagnostics {
     }
 
     /**
-     * Set the storageUri property: Uri of the storage account to use for placing the console output and screenshot.
-     * &lt;br&gt;&lt;br&gt;If storageUri is not specified while enabling boot diagnostics, managed storage will be used.
-     *
+     * Set the storageUri property: Uri of the storage account to use for
+     * placing the console output and screenshot. &lt;br&gt;&lt;br&gt;If
+     * storageUri is not specified while enabling boot diagnostics, managed
+     * storage will be used.
+     * 
      * @param storageUri the storageUri value to set.
      * @return the BootDiagnostics object itself.
      */
@@ -76,7 +86,7 @@ public final class BootDiagnostics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

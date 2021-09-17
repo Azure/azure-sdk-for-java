@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Api input base class for LogAnalytics Api. */
+/**
+ * Api input base class for LogAnalytics Api.
+ */
 @Fluent
 public class LogAnalyticsInputBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsInputBase.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LogAnalyticsInputBase.class);
 
     /*
      * SAS Uri of the logging blob container to which LogAnalytics Api writes
@@ -65,9 +70,9 @@ public class LogAnalyticsInputBase {
     private Boolean groupByUserAgent;
 
     /**
-     * Get the blobContainerSasUri property: SAS Uri of the logging blob container to which LogAnalytics Api writes
-     * output logs to.
-     *
+     * Get the blobContainerSasUri property: SAS Uri of the logging blob
+     * container to which LogAnalytics Api writes output logs to.
+     * 
      * @return the blobContainerSasUri value.
      */
     public String blobContainerSasUri() {
@@ -75,9 +80,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the blobContainerSasUri property: SAS Uri of the logging blob container to which LogAnalytics Api writes
-     * output logs to.
-     *
+     * Set the blobContainerSasUri property: SAS Uri of the logging blob
+     * container to which LogAnalytics Api writes output logs to.
+     * 
      * @param blobContainerSasUri the blobContainerSasUri value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -88,7 +93,7 @@ public class LogAnalyticsInputBase {
 
     /**
      * Get the fromTime property: From time of the query.
-     *
+     * 
      * @return the fromTime value.
      */
     public OffsetDateTime fromTime() {
@@ -97,7 +102,7 @@ public class LogAnalyticsInputBase {
 
     /**
      * Set the fromTime property: From time of the query.
-     *
+     * 
      * @param fromTime the fromTime value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -108,7 +113,7 @@ public class LogAnalyticsInputBase {
 
     /**
      * Get the toTime property: To time of the query.
-     *
+     * 
      * @return the toTime value.
      */
     public OffsetDateTime toTime() {
@@ -117,7 +122,7 @@ public class LogAnalyticsInputBase {
 
     /**
      * Set the toTime property: To time of the query.
-     *
+     * 
      * @param toTime the toTime value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -127,8 +132,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByThrottlePolicy property: Group query result by Throttle Policy applied.
-     *
+     * Get the groupByThrottlePolicy property: Group query result by Throttle
+     * Policy applied.
+     * 
      * @return the groupByThrottlePolicy value.
      */
     public Boolean groupByThrottlePolicy() {
@@ -136,8 +142,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByThrottlePolicy property: Group query result by Throttle Policy applied.
-     *
+     * Set the groupByThrottlePolicy property: Group query result by Throttle
+     * Policy applied.
+     * 
      * @param groupByThrottlePolicy the groupByThrottlePolicy value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -147,8 +154,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByOperationName property: Group query result by Operation Name.
-     *
+     * Get the groupByOperationName property: Group query result by Operation
+     * Name.
+     * 
      * @return the groupByOperationName value.
      */
     public Boolean groupByOperationName() {
@@ -156,8 +164,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByOperationName property: Group query result by Operation Name.
-     *
+     * Set the groupByOperationName property: Group query result by Operation
+     * Name.
+     * 
      * @param groupByOperationName the groupByOperationName value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -167,8 +176,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByResourceName property: Group query result by Resource Name.
-     *
+     * Get the groupByResourceName property: Group query result by Resource
+     * Name.
+     * 
      * @return the groupByResourceName value.
      */
     public Boolean groupByResourceName() {
@@ -176,8 +186,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByResourceName property: Group query result by Resource Name.
-     *
+     * Set the groupByResourceName property: Group query result by Resource
+     * Name.
+     * 
      * @param groupByResourceName the groupByResourceName value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -187,8 +198,9 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByClientApplicationId property: Group query result by Client Application ID.
-     *
+     * Get the groupByClientApplicationId property: Group query result by
+     * Client Application ID.
+     * 
      * @return the groupByClientApplicationId value.
      */
     public Boolean groupByClientApplicationId() {
@@ -196,9 +208,11 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByClientApplicationId property: Group query result by Client Application ID.
-     *
-     * @param groupByClientApplicationId the groupByClientApplicationId value to set.
+     * Set the groupByClientApplicationId property: Group query result by
+     * Client Application ID.
+     * 
+     * @param groupByClientApplicationId the groupByClientApplicationId value
+     * to set.
      * @return the LogAnalyticsInputBase object itself.
      */
     public LogAnalyticsInputBase withGroupByClientApplicationId(Boolean groupByClientApplicationId) {
@@ -208,7 +222,7 @@ public class LogAnalyticsInputBase {
 
     /**
      * Get the groupByUserAgent property: Group query result by User Agent.
-     *
+     * 
      * @return the groupByUserAgent value.
      */
     public Boolean groupByUserAgent() {
@@ -217,7 +231,7 @@ public class LogAnalyticsInputBase {
 
     /**
      * Set the groupByUserAgent property: Group query result by User Agent.
-     *
+     * 
      * @param groupByUserAgent the groupByUserAgent value to set.
      * @return the LogAnalyticsInputBase object itself.
      */
@@ -228,25 +242,18 @@ public class LogAnalyticsInputBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (blobContainerSasUri() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property blobContainerSasUri in model LogAnalyticsInputBase"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property blobContainerSasUri in model LogAnalyticsInputBase"));
         }
         if (fromTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fromTime in model LogAnalyticsInputBase"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property fromTime in model LogAnalyticsInputBase"));
         }
         if (toTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property toTime in model LogAnalyticsInputBase"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property toTime in model LogAnalyticsInputBase"));
         }
     }
 }

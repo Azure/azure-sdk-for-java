@@ -7,15 +7,23 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for VirtualMachineScaleSetSkuScaleType. */
+/**
+ * Defines values for VirtualMachineScaleSetSkuScaleType.
+ */
 public enum VirtualMachineScaleSetSkuScaleType {
-    /** Enum value Automatic. */
+    /**
+     * Enum value Automatic.
+     */
     AUTOMATIC("Automatic"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a VirtualMachineScaleSetSkuScaleType instance. */
+    /**
+     * The actual serialized value for a VirtualMachineScaleSetSkuScaleType instance.
+     */
     private final String value;
 
     VirtualMachineScaleSetSkuScaleType(String value) {
@@ -24,7 +32,7 @@ public enum VirtualMachineScaleSetSkuScaleType {
 
     /**
      * Parses a serialized value to a VirtualMachineScaleSetSkuScaleType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VirtualMachineScaleSetSkuScaleType object, or null if unable to parse.
      */

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a image disk. */
+/**
+ * Describes a image disk.
+ */
 @Fluent
 public class ImageDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDisk.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImageDisk.class);
 
     /*
      * The snapshot.
@@ -66,7 +71,7 @@ public class ImageDisk {
 
     /**
      * Get the snapshot property: The snapshot.
-     *
+     * 
      * @return the snapshot value.
      */
     public SubResource snapshot() {
@@ -75,7 +80,7 @@ public class ImageDisk {
 
     /**
      * Set the snapshot property: The snapshot.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the ImageDisk object itself.
      */
@@ -86,7 +91,7 @@ public class ImageDisk {
 
     /**
      * Get the managedDisk property: The managedDisk.
-     *
+     * 
      * @return the managedDisk value.
      */
     public SubResource managedDisk() {
@@ -95,7 +100,7 @@ public class ImageDisk {
 
     /**
      * Set the managedDisk property: The managedDisk.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the ImageDisk object itself.
      */
@@ -106,7 +111,7 @@ public class ImageDisk {
 
     /**
      * Get the blobUri property: The Virtual Hard Disk.
-     *
+     * 
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -115,7 +120,7 @@ public class ImageDisk {
 
     /**
      * Set the blobUri property: The Virtual Hard Disk.
-     *
+     * 
      * @param blobUri the blobUri value to set.
      * @return the ImageDisk object itself.
      */
@@ -125,10 +130,12 @@ public class ImageDisk {
     }
 
     /**
-     * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
-     *
+     * Get the caching property: Specifies the caching requirements.
+     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
+     * &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
+     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for
+     * Premium storage**.
+     * 
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -136,10 +143,12 @@ public class ImageDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
-     *
+     * Set the caching property: Specifies the caching requirements.
+     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
+     * &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
+     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for
+     * Premium storage**.
+     * 
      * @param caching the caching value to set.
      * @return the ImageDisk object itself.
      */
@@ -149,10 +158,11 @@ public class ImageDisk {
     }
 
     /**
-     * Get the diskSizeGB property: Specifies the size of empty data disks in gigabytes. This element can be used to
-     * overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
-     * 1023 GB.
-     *
+     * Get the diskSizeGB property: Specifies the size of empty data disks in
+     * gigabytes. This element can be used to overwrite the name of the disk in
+     * a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
+     * larger than 1023 GB.
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -160,10 +170,11 @@ public class ImageDisk {
     }
 
     /**
-     * Set the diskSizeGB property: Specifies the size of empty data disks in gigabytes. This element can be used to
-     * overwrite the name of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
-     * 1023 GB.
-     *
+     * Set the diskSizeGB property: Specifies the size of empty data disks in
+     * gigabytes. This element can be used to overwrite the name of the disk in
+     * a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
+     * larger than 1023 GB.
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the ImageDisk object itself.
      */
@@ -173,9 +184,10 @@ public class ImageDisk {
     }
 
     /**
-     * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * Get the storageAccountType property: Specifies the storage account type
+     * for the managed disk. NOTE: UltraSSD_LRS can only be used with data
+     * disks, it cannot be used with OS Disk.
+     * 
      * @return the storageAccountType value.
      */
     public StorageAccountTypes storageAccountType() {
@@ -183,9 +195,10 @@ public class ImageDisk {
     }
 
     /**
-     * Set the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * Set the storageAccountType property: Specifies the storage account type
+     * for the managed disk. NOTE: UltraSSD_LRS can only be used with data
+     * disks, it cannot be used with OS Disk.
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the ImageDisk object itself.
      */
@@ -195,9 +208,9 @@ public class ImageDisk {
     }
 
     /**
-     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed image disk.
-     *
+     * Get the diskEncryptionSet property: Specifies the customer managed disk
+     * encryption set resource id for the managed image disk.
+     * 
      * @return the diskEncryptionSet value.
      */
     public DiskEncryptionSetParameters diskEncryptionSet() {
@@ -205,9 +218,9 @@ public class ImageDisk {
     }
 
     /**
-     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed image disk.
-     *
+     * Set the diskEncryptionSet property: Specifies the customer managed disk
+     * encryption set resource id for the managed image disk.
+     * 
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the ImageDisk object itself.
      */
@@ -218,7 +231,7 @@ public class ImageDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

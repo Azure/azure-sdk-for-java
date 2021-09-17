@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The API entity reference. */
+/**
+ * The API entity reference.
+ */
 @Fluent
 public final class ApiEntityReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiEntityReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApiEntityReference.class);
 
     /*
      * The ARM resource id in the form of
@@ -24,7 +29,7 @@ public final class ApiEntityReference {
     /**
      * Get the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +39,7 @@ public final class ApiEntityReference {
     /**
      * Set the id property: The ARM resource id in the form of
      * /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
-     *
+     * 
      * @param id the id value to set.
      * @return the ApiEntityReference object itself.
      */
@@ -45,7 +50,7 @@ public final class ApiEntityReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

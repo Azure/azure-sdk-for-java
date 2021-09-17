@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes a Virtual Machine Scale Set. */
+/**
+ * Describes a Virtual Machine Scale Set.
+ */
 @Fluent
 public final class VirtualMachineScaleSetUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdate.class);
 
     /*
      * The virtual machine scale set sku.
@@ -44,7 +50,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Get the sku property: The virtual machine scale set sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +59,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Set the sku property: The virtual machine scale set sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -63,8 +69,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the plan property: The purchase plan when deploying a virtual machine scale set from VM Marketplace images.
-     *
+     * Get the plan property: The purchase plan when deploying a virtual
+     * machine scale set from VM Marketplace images.
+     * 
      * @return the plan value.
      */
     public Plan plan() {
@@ -72,8 +79,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the plan property: The purchase plan when deploying a virtual machine scale set from VM Marketplace images.
-     *
+     * Set the plan property: The purchase plan when deploying a virtual
+     * machine scale set from VM Marketplace images.
+     * 
      * @param plan the plan value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -83,8 +91,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the innerProperties property: Describes the properties of a Virtual Machine Scale Set.
-     *
+     * Get the innerProperties property: Describes the properties of a Virtual
+     * Machine Scale Set.
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetUpdateProperties innerProperties() {
@@ -92,8 +101,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the identity property: The identity of the virtual machine scale set, if configured.
-     *
+     * Get the identity property: The identity of the virtual machine scale
+     * set, if configured.
+     * 
      * @return the identity value.
      */
     public VirtualMachineScaleSetIdentity identity() {
@@ -101,8 +111,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the identity property: The identity of the virtual machine scale set, if configured.
-     *
+     * Set the identity property: The identity of the virtual machine scale
+     * set, if configured.
+     * 
      * @param identity the identity value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -111,7 +122,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -120,7 +133,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Get the upgradePolicy property: The upgrade policy.
-     *
+     * 
      * @return the upgradePolicy value.
      */
     public UpgradePolicy upgradePolicy() {
@@ -129,7 +142,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Set the upgradePolicy property: The upgrade policy.
-     *
+     * 
      * @param upgradePolicy the upgradePolicy value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -143,7 +156,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Get the automaticRepairsPolicy property: Policy for automatic repairs.
-     *
+     * 
      * @return the automaticRepairsPolicy value.
      */
     public AutomaticRepairsPolicy automaticRepairsPolicy() {
@@ -152,7 +165,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Set the automaticRepairsPolicy property: Policy for automatic repairs.
-     *
+     * 
      * @param automaticRepairsPolicy the automaticRepairsPolicy value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -166,7 +179,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Get the virtualMachineProfile property: The virtual machine profile.
-     *
+     * 
      * @return the virtualMachineProfile value.
      */
     public VirtualMachineScaleSetUpdateVMProfile virtualMachineProfile() {
@@ -175,12 +188,11 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Set the virtualMachineProfile property: The virtual machine profile.
-     *
+     * 
      * @param virtualMachineProfile the virtualMachineProfile value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
-    public VirtualMachineScaleSetUpdate withVirtualMachineProfile(
-        VirtualMachineScaleSetUpdateVMProfile virtualMachineProfile) {
+    public VirtualMachineScaleSetUpdate withVirtualMachineProfile(VirtualMachineScaleSetUpdateVMProfile virtualMachineProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
@@ -189,8 +201,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the overprovision property: Specifies whether the Virtual Machine Scale Set should be overprovisioned.
-     *
+     * Get the overprovision property: Specifies whether the Virtual Machine
+     * Scale Set should be overprovisioned.
+     * 
      * @return the overprovision value.
      */
     public Boolean overprovision() {
@@ -198,8 +211,9 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the overprovision property: Specifies whether the Virtual Machine Scale Set should be overprovisioned.
-     *
+     * Set the overprovision property: Specifies whether the Virtual Machine
+     * Scale Set should be overprovisioned.
+     * 
      * @param overprovision the overprovision value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -212,10 +226,11 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the doNotRunExtensionsOnOverprovisionedVMs property: When Overprovision is enabled, extensions are launched
-     * only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions
-     * do not run on the extra overprovisioned VMs.
-     *
+     * Get the doNotRunExtensionsOnOverprovisionedVMs property: When
+     * Overprovision is enabled, extensions are launched only on the requested
+     * number of VMs which are finally kept. This property will hence ensure
+     * that the extensions do not run on the extra overprovisioned VMs.
+     * 
      * @return the doNotRunExtensionsOnOverprovisionedVMs value.
      */
     public Boolean doNotRunExtensionsOnOverprovisionedVMs() {
@@ -223,15 +238,16 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the doNotRunExtensionsOnOverprovisionedVMs property: When Overprovision is enabled, extensions are launched
-     * only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions
-     * do not run on the extra overprovisioned VMs.
-     *
-     * @param doNotRunExtensionsOnOverprovisionedVMs the doNotRunExtensionsOnOverprovisionedVMs value to set.
+     * Set the doNotRunExtensionsOnOverprovisionedVMs property: When
+     * Overprovision is enabled, extensions are launched only on the requested
+     * number of VMs which are finally kept. This property will hence ensure
+     * that the extensions do not run on the extra overprovisioned VMs.
+     * 
+     * @param doNotRunExtensionsOnOverprovisionedVMs the
+     * doNotRunExtensionsOnOverprovisionedVMs value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
-    public VirtualMachineScaleSetUpdate withDoNotRunExtensionsOnOverprovisionedVMs(
-        Boolean doNotRunExtensionsOnOverprovisionedVMs) {
+    public VirtualMachineScaleSetUpdate withDoNotRunExtensionsOnOverprovisionedVMs(Boolean doNotRunExtensionsOnOverprovisionedVMs) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetUpdateProperties();
         }
@@ -240,10 +256,11 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the singlePlacementGroup property: When true this limits the scale set to a single placement group, of max
-     * size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if
-     * singlePlacementGroup is false, it may not be modified to true.
-     *
+     * Get the singlePlacementGroup property: When true this limits the scale
+     * set to a single placement group, of max size 100 virtual machines. NOTE:
+     * If singlePlacementGroup is true, it may be modified to false. However,
+     * if singlePlacementGroup is false, it may not be modified to true.
+     * 
      * @return the singlePlacementGroup value.
      */
     public Boolean singlePlacementGroup() {
@@ -251,10 +268,11 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the singlePlacementGroup property: When true this limits the scale set to a single placement group, of max
-     * size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if
-     * singlePlacementGroup is false, it may not be modified to true.
-     *
+     * Set the singlePlacementGroup property: When true this limits the scale
+     * set to a single placement group, of max size 100 virtual machines. NOTE:
+     * If singlePlacementGroup is true, it may be modified to false. However,
+     * if singlePlacementGroup is false, it may not be modified to true.
+     * 
      * @param singlePlacementGroup the singlePlacementGroup value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -267,10 +285,12 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the Virtual
-     * Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to
-     * support attaching managed data disks with UltraSSD_LRS storage account type.
-     *
+     * Get the additionalCapabilities property: Specifies additional
+     * capabilities enabled or disabled on the Virtual Machines in the Virtual
+     * Machine Scale Set. For instance: whether the Virtual Machines have the
+     * capability to support attaching managed data disks with UltraSSD_LRS
+     * storage account type.
+     * 
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
@@ -278,10 +298,12 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the Virtual
-     * Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to
-     * support attaching managed data disks with UltraSSD_LRS storage account type.
-     *
+     * Set the additionalCapabilities property: Specifies additional
+     * capabilities enabled or disabled on the Virtual Machines in the Virtual
+     * Machine Scale Set. For instance: whether the Virtual Machines have the
+     * capability to support attaching managed data disks with UltraSSD_LRS
+     * storage account type.
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -294,9 +316,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
-     *
+     * Get the scaleInPolicy property: Specifies the scale-in policy that
+     * decides which virtual machines are chosen for removal when a Virtual
+     * Machine Scale Set is scaled-in.
+     * 
      * @return the scaleInPolicy value.
      */
     public ScaleInPolicy scaleInPolicy() {
@@ -304,9 +327,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
-     *
+     * Set the scaleInPolicy property: Specifies the scale-in policy that
+     * decides which virtual machines are chosen for removal when a Virtual
+     * Machine Scale Set is scaled-in.
+     * 
      * @param scaleInPolicy the scaleInPolicy value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -319,9 +343,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * Get the proximityPlacementGroup property: Specifies information about
+     * the proximity placement group that the virtual machine scale set should
+     * be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * 
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -329,9 +354,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * Set the proximityPlacementGroup property: Specifies information about
+     * the proximity placement group that the virtual machine scale set should
+     * be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.
      */
@@ -345,7 +371,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

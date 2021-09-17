@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.UpgradeOperationHistoricalStatusInfoProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Machine Scale Set OS Upgrade History operation response. */
+/**
+ * Virtual Machine Scale Set OS Upgrade History operation response.
+ */
 @Immutable
 public final class UpgradeOperationHistoricalStatusInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradeOperationHistoricalStatusInfoInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UpgradeOperationHistoricalStatusInfoInner.class);
 
     /*
      * Information about the properties of the upgrade operation.
@@ -34,8 +39,9 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
     private String location;
 
     /**
-     * Get the properties property: Information about the properties of the upgrade operation.
-     *
+     * Get the properties property: Information about the properties of the
+     * upgrade operation.
+     * 
      * @return the properties value.
      */
     public UpgradeOperationHistoricalStatusInfoProperties properties() {
@@ -44,7 +50,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -53,7 +59,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -62,7 +68,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

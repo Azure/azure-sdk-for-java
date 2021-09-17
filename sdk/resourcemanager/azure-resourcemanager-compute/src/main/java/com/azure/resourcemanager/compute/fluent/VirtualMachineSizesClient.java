@@ -8,14 +8,20 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
+import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineSizesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * VirtualMachineSizesClient.
+ */
 public interface VirtualMachineSizesClient {
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     *
+     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,8 +32,8 @@ public interface VirtualMachineSizesClient {
     PagedFlux<VirtualMachineSizeInner> listAsync(String location);
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     *
+     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,8 +44,8 @@ public interface VirtualMachineSizesClient {
     PagedIterable<VirtualMachineSizeInner> list(String location);
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
-     *
+     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
+     * 
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

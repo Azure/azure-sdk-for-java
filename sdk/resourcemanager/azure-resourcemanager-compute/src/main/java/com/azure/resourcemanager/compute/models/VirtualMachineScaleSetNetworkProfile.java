@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set network profile. */
+/**
+ * Describes a virtual machine scale set network profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkProfile.class);
 
     /*
      * A reference to a load balancer probe used to determine the health of an
@@ -30,19 +35,12 @@ public final class VirtualMachineScaleSetNetworkProfile {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
-    /*
-     * specifies the Microsoft.Network API version used when creating
-     * networking resources in the Network Interface Configurations for Virtual
-     * Machine Scale Set with orchestration mode 'Flexible'
-     */
-    @JsonProperty(value = "networkApiVersion")
-    private NetworkApiVersion networkApiVersion;
-
     /**
-     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
-     * the virtual machine scale set. The reference will be in the form:
+     * Get the healthProbe property: A reference to a load balancer probe used
+     * to determine the health of an instance in the virtual machine scale set.
+     * The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
-     *
+     * 
      * @return the healthProbe value.
      */
     public ApiEntityReference healthProbe() {
@@ -50,10 +48,11 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
-     * the virtual machine scale set. The reference will be in the form:
+     * Set the healthProbe property: A reference to a load balancer probe used
+     * to determine the health of an instance in the virtual machine scale set.
+     * The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
-     *
+     * 
      * @param healthProbe the healthProbe value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
@@ -63,8 +62,9 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Get the networkInterfaceConfigurations property: The list of network configurations.
-     *
+     * Get the networkInterfaceConfigurations property: The list of network
+     * configurations.
+     * 
      * @return the networkInterfaceConfigurations value.
      */
     public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
@@ -72,44 +72,21 @@ public final class VirtualMachineScaleSetNetworkProfile {
     }
 
     /**
-     * Set the networkInterfaceConfigurations property: The list of network configurations.
-     *
-     * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
+     * Set the networkInterfaceConfigurations property: The list of network
+     * configurations.
+     * 
+     * @param networkInterfaceConfigurations the networkInterfaceConfigurations
+     * value to set.
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
-    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(
-        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }
 
     /**
-     * Get the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
-     * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
-     * 'Flexible'.
-     *
-     * @return the networkApiVersion value.
-     */
-    public NetworkApiVersion networkApiVersion() {
-        return this.networkApiVersion;
-    }
-
-    /**
-     * Set the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
-     * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
-     * 'Flexible'.
-     *
-     * @param networkApiVersion the networkApiVersion value to set.
-     * @return the VirtualMachineScaleSetNetworkProfile object itself.
-     */
-    public VirtualMachineScaleSetNetworkProfile withNetworkApiVersion(NetworkApiVersion networkApiVersion) {
-        this.networkApiVersion = networkApiVersion;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

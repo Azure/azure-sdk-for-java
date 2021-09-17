@@ -5,22 +5,32 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the OS disk image. */
+/**
+ * This is the OS disk image.
+ */
 @Fluent
 public final class GalleryOSDiskImage extends GalleryDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryOSDiskImage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryOSDiskImage.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryOSDiskImage withHostCaching(HostCaching hostCaching) {
         super.withHostCaching(hostCaching);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryOSDiskImage withSource(GalleryArtifactVersionSource source) {
         super.withSource(source);
@@ -29,7 +39,7 @@ public final class GalleryOSDiskImage extends GalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

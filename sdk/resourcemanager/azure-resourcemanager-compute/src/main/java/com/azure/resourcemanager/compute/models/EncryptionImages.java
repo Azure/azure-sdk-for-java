@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery artifact.
+ * Optional. Allows users to provide customer managed keys for encrypting the
+ * OS and data disks in the gallery artifact.
  */
 @Fluent
 public final class EncryptionImages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionImages.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionImages.class);
 
     /*
      * Contains encryption settings for an OS disk image.
@@ -30,8 +34,9 @@ public final class EncryptionImages {
     private List<DataDiskImageEncryption> dataDiskImages;
 
     /**
-     * Get the osDiskImage property: Contains encryption settings for an OS disk image.
-     *
+     * Get the osDiskImage property: Contains encryption settings for an OS
+     * disk image.
+     * 
      * @return the osDiskImage value.
      */
     public OSDiskImageEncryption osDiskImage() {
@@ -39,8 +44,9 @@ public final class EncryptionImages {
     }
 
     /**
-     * Set the osDiskImage property: Contains encryption settings for an OS disk image.
-     *
+     * Set the osDiskImage property: Contains encryption settings for an OS
+     * disk image.
+     * 
      * @param osDiskImage the osDiskImage value to set.
      * @return the EncryptionImages object itself.
      */
@@ -50,8 +56,9 @@ public final class EncryptionImages {
     }
 
     /**
-     * Get the dataDiskImages property: A list of encryption specifications for data disk images.
-     *
+     * Get the dataDiskImages property: A list of encryption specifications for
+     * data disk images.
+     * 
      * @return the dataDiskImages value.
      */
     public List<DataDiskImageEncryption> dataDiskImages() {
@@ -59,8 +66,9 @@ public final class EncryptionImages {
     }
 
     /**
-     * Set the dataDiskImages property: A list of encryption specifications for data disk images.
-     *
+     * Set the dataDiskImages property: A list of encryption specifications for
+     * data disk images.
+     * 
      * @param dataDiskImages the dataDiskImages value to set.
      * @return the EncryptionImages object itself.
      */
@@ -71,7 +79,7 @@ public final class EncryptionImages {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

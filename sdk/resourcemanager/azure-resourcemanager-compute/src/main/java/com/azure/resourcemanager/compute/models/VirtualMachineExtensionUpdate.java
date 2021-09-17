@@ -5,16 +5,22 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionUpdateProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes a Virtual Machine Extension. */
+/**
+ * Describes a Virtual Machine Extension.
+ */
 @Fluent
 public final class VirtualMachineExtensionUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionUpdate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionUpdate.class);
 
     /*
      * Describes the properties of a Virtual Machine Extension.
@@ -23,15 +29,18 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     private VirtualMachineExtensionUpdateProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
-     *
+     * Get the innerProperties property: Describes the properties of a Virtual
+     * Machine Extension.
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineExtensionUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineExtensionUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -39,9 +48,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
-     * configuration has not changed.
-     *
+     * Get the forceUpdateTag property: How the extension handler should be
+     * forced to update even if the extension configuration has not changed.
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -49,9 +58,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the forceUpdateTag property: How the extension handler should be forced to update even if the extension
-     * configuration has not changed.
-     *
+     * Set the forceUpdateTag property: How the extension handler should be
+     * forced to update even if the extension configuration has not changed.
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -65,7 +74,7 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -74,7 +83,7 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -87,8 +96,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * Get the type property: Specifies the type of the extension; an example
+     * is "CustomScriptExtension".
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,8 +106,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * Set the type property: Specifies the type of the extension; an example
+     * is "CustomScriptExtension".
+     * 
      * @param type the type value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -110,8 +121,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * Get the typeHandlerVersion property: Specifies the version of the script
+     * handler.
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -119,8 +131,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * Set the typeHandlerVersion property: Specifies the version of the script
+     * handler.
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -133,10 +146,11 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
-     * redeployed, even with this property set to true.
-     *
+     * Get the autoUpgradeMinorVersion property: Indicates whether the
+     * extension should use a newer minor version if one is available at
+     * deployment time. Once deployed, however, the extension will not upgrade
+     * minor versions unless redeployed, even with this property set to true.
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -144,10 +158,11 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
-     * redeployed, even with this property set to true.
-     *
+     * Set the autoUpgradeMinorVersion property: Indicates whether the
+     * extension should use a newer minor version if one is available at
+     * deployment time. Once deployed, however, the extension will not upgrade
+     * minor versions unless redeployed, even with this property set to true.
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -160,9 +175,10 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
-     * platform if there is a newer version of the extension available.
-     *
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension
+     * should be automatically upgraded by the platform if there is a newer
+     * version of the extension available.
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -170,9 +186,10 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
-     * platform if there is a newer version of the extension available.
-     *
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension
+     * should be automatically upgraded by the platform if there is a newer
+     * version of the extension available.
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -185,8 +202,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the settings property: Json formatted public settings for the extension.
-     *
+     * Get the settings property: Json formatted public settings for the
+     * extension.
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -194,8 +212,9 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the settings property: Json formatted public settings for the extension.
-     *
+     * Set the settings property: Json formatted public settings for the
+     * extension.
+     * 
      * @param settings the settings value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -208,9 +227,10 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the protectedSettings property: The extension can contain either protectedSettings or
-     * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * Get the protectedSettings property: The extension can contain either
+     * protectedSettings or protectedSettingsFromKeyVault or no protected
+     * settings at all.
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -218,9 +238,10 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Set the protectedSettings property: The extension can contain either protectedSettings or
-     * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * Set the protectedSettings property: The extension can contain either
+     * protectedSettings or protectedSettingsFromKeyVault or no protected
+     * settings at all.
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the VirtualMachineExtensionUpdate object itself.
      */
@@ -233,35 +254,8 @@ public final class VirtualMachineExtensionUpdate extends UpdateResource {
     }
 
     /**
-     * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @return the suppressFailures value.
-     */
-    public Boolean suppressFailures() {
-        return this.innerProperties() == null ? null : this.innerProperties().suppressFailures();
-    }
-
-    /**
-     * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @param suppressFailures the suppressFailures value to set.
-     * @return the VirtualMachineExtensionUpdate object itself.
-     */
-    public VirtualMachineExtensionUpdate withSuppressFailures(Boolean suppressFailures) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineExtensionUpdateProperties();
-        }
-        this.innerProperties().withSuppressFailures(suppressFailures);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the replication status of the gallery image version. */
+/**
+ * This is the replication status of the gallery Image Version.
+ */
 @Immutable
 public final class ReplicationStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationStatus.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ReplicationStatus.class);
 
     /*
      * This is the aggregated replication status based on all the regional
@@ -29,9 +34,9 @@ public final class ReplicationStatus {
     private List<RegionalReplicationStatus> summary;
 
     /**
-     * Get the aggregatedState property: This is the aggregated replication status based on all the regional replication
-     * status flags.
-     *
+     * Get the aggregatedState property: This is the aggregated replication
+     * status based on all the regional replication status flags.
+     * 
      * @return the aggregatedState value.
      */
     public AggregatedReplicationState aggregatedState() {
@@ -39,8 +44,9 @@ public final class ReplicationStatus {
     }
 
     /**
-     * Get the summary property: This is a summary of replication status for each region.
-     *
+     * Get the summary property: This is a summary of replication status for
+     * each region.
+     * 
      * @return the summary value.
      */
     public List<RegionalReplicationStatus> summary() {
@@ -49,7 +55,7 @@ public final class ReplicationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

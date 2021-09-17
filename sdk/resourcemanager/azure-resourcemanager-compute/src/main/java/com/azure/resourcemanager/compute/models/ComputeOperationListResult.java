@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.ComputeOperationValueInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Compute Operation operation response. */
+/**
+ * The List Compute Operation operation response.
+ */
 @Immutable
 public final class ComputeOperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeOperationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeOperationListResult.class);
 
     /*
      * The list of compute operations
@@ -24,7 +29,7 @@ public final class ComputeOperationListResult {
 
     /**
      * Get the value property: The list of compute operations.
-     *
+     * 
      * @return the value value.
      */
     public List<ComputeOperationValueInner> value() {
@@ -33,7 +38,7 @@ public final class ComputeOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

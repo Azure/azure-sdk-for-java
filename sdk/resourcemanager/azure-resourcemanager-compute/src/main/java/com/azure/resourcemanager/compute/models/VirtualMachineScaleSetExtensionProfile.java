@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set extension profile. */
+/**
+ * Describes a virtual machine scale set extension profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetExtensionProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionProfile.class);
 
     /*
      * The virtual machine scale set child extension resources.
@@ -32,8 +37,9 @@ public final class VirtualMachineScaleSetExtensionProfile {
     private String extensionsTimeBudget;
 
     /**
-     * Get the extensions property: The virtual machine scale set child extension resources.
-     *
+     * Get the extensions property: The virtual machine scale set child
+     * extension resources.
+     * 
      * @return the extensions value.
      */
     public List<VirtualMachineScaleSetExtensionInner> extensions() {
@@ -41,22 +47,24 @@ public final class VirtualMachineScaleSetExtensionProfile {
     }
 
     /**
-     * Set the extensions property: The virtual machine scale set child extension resources.
-     *
+     * Set the extensions property: The virtual machine scale set child
+     * extension resources.
+     * 
      * @param extensions the extensions value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
-    public VirtualMachineScaleSetExtensionProfile withExtensions(
-        List<VirtualMachineScaleSetExtensionInner> extensions) {
+    public VirtualMachineScaleSetExtensionProfile withExtensions(List<VirtualMachineScaleSetExtensionInner> extensions) {
         this.extensions = extensions;
         return this;
     }
 
     /**
-     * Get the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
-     * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
-     *
+     * Get the extensionsTimeBudget property: Specifies the time alloted for
+     * all extensions to start. The time duration should be between 15 minutes
+     * and 120 minutes (inclusive) and should be specified in ISO 8601 format.
+     * The default value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum
+     * api-version: 2020-06-01.
+     * 
      * @return the extensionsTimeBudget value.
      */
     public String extensionsTimeBudget() {
@@ -64,10 +72,12 @@ public final class VirtualMachineScaleSetExtensionProfile {
     }
 
     /**
-     * Set the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
-     * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
-     *
+     * Set the extensionsTimeBudget property: Specifies the time alloted for
+     * all extensions to start. The time duration should be between 15 minutes
+     * and 120 minutes (inclusive) and should be specified in ISO 8601 format.
+     * The default value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum
+     * api-version: 2020-06-01.
+     * 
      * @param extensionsTimeBudget the extensionsTimeBudget value to set.
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
      */
@@ -78,7 +88,7 @@ public final class VirtualMachineScaleSetExtensionProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

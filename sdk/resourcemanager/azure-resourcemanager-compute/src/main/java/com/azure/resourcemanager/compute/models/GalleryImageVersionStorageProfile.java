@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the storage profile of a Gallery Image Version. */
+/**
+ * This is the storage profile of a Gallery Image Version.
+ */
 @Fluent
 public final class GalleryImageVersionStorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionStorageProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryImageVersionStorageProfile.class);
 
     /*
      * The gallery artifact version source.
@@ -35,7 +40,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Get the source property: The gallery artifact version source.
-     *
+     * 
      * @return the source value.
      */
     public GalleryArtifactVersionSource source() {
@@ -44,7 +49,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Set the source property: The gallery artifact version source.
-     *
+     * 
      * @param source the source value to set.
      * @return the GalleryImageVersionStorageProfile object itself.
      */
@@ -55,7 +60,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Get the osDiskImage property: This is the OS disk image.
-     *
+     * 
      * @return the osDiskImage value.
      */
     public GalleryOSDiskImage osDiskImage() {
@@ -64,7 +69,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Set the osDiskImage property: This is the OS disk image.
-     *
+     * 
      * @param osDiskImage the osDiskImage value to set.
      * @return the GalleryImageVersionStorageProfile object itself.
      */
@@ -75,7 +80,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Get the dataDiskImages property: A list of data disk images.
-     *
+     * 
      * @return the dataDiskImages value.
      */
     public List<GalleryDataDiskImage> dataDiskImages() {
@@ -84,7 +89,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Set the dataDiskImages property: A list of data disk images.
-     *
+     * 
      * @param dataDiskImages the dataDiskImages value to set.
      * @return the GalleryImageVersionStorageProfile object itself.
      */
@@ -95,7 +100,7 @@ public final class GalleryImageVersionStorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,17 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskEncryptionSetIdentityType. */
+/**
+ * Defines values for DiskEncryptionSetIdentityType.
+ */
 public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<DiskEncryptionSetIdentityType> {
-    /** Static value SystemAssigned for DiskEncryptionSetIdentityType. */
+    /**
+     * Static value SystemAssigned for DiskEncryptionSetIdentityType.
+     */
     public static final DiskEncryptionSetIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
-
-    /** Static value None for DiskEncryptionSetIdentityType. */
-    public static final DiskEncryptionSetIdentityType NONE = fromString("None");
 
     /**
      * Creates or finds a DiskEncryptionSetIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskEncryptionSetIdentityType.
      */
@@ -27,7 +28,9 @@ public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<Di
         return fromString(name, DiskEncryptionSetIdentityType.class);
     }
 
-    /** @return known DiskEncryptionSetIdentityType values. */
+    /**
+     * @return known DiskEncryptionSetIdentityType values.
+     */
     public static Collection<DiskEncryptionSetIdentityType> values() {
         return values(DiskEncryptionSetIdentityType.class);
     }

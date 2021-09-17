@@ -4,15 +4,21 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the number of virtual machine instances in each upgrade state. */
+/**
+ * Information about the number of virtual machine instances in each upgrade
+ * state.
+ */
 @Immutable
 public final class RollingUpgradeProgressInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradeProgressInfo.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RollingUpgradeProgressInfo.class);
 
     /*
      * The number of instances that have been successfully upgraded.
@@ -39,8 +45,9 @@ public final class RollingUpgradeProgressInfo {
     private Integer pendingInstanceCount;
 
     /**
-     * Get the successfulInstanceCount property: The number of instances that have been successfully upgraded.
-     *
+     * Get the successfulInstanceCount property: The number of instances that
+     * have been successfully upgraded.
+     * 
      * @return the successfulInstanceCount value.
      */
     public Integer successfulInstanceCount() {
@@ -48,8 +55,9 @@ public final class RollingUpgradeProgressInfo {
     }
 
     /**
-     * Get the failedInstanceCount property: The number of instances that have failed to be upgraded successfully.
-     *
+     * Get the failedInstanceCount property: The number of instances that have
+     * failed to be upgraded successfully.
+     * 
      * @return the failedInstanceCount value.
      */
     public Integer failedInstanceCount() {
@@ -57,8 +65,9 @@ public final class RollingUpgradeProgressInfo {
     }
 
     /**
-     * Get the inProgressInstanceCount property: The number of instances that are currently being upgraded.
-     *
+     * Get the inProgressInstanceCount property: The number of instances that
+     * are currently being upgraded.
+     * 
      * @return the inProgressInstanceCount value.
      */
     public Integer inProgressInstanceCount() {
@@ -66,8 +75,9 @@ public final class RollingUpgradeProgressInfo {
     }
 
     /**
-     * Get the pendingInstanceCount property: The number of instances that have not yet begun to be upgraded.
-     *
+     * Get the pendingInstanceCount property: The number of instances that have
+     * not yet begun to be upgraded.
+     * 
      * @return the pendingInstanceCount value.
      */
     public Integer pendingInstanceCount() {
@@ -76,7 +86,7 @@ public final class RollingUpgradeProgressInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

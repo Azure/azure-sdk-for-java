@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The health status of the VM. */
+/**
+ * The health status of the VM.
+ */
 @Immutable
 public final class VirtualMachineHealthStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineHealthStatus.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineHealthStatus.class);
 
     /*
      * The health status information for the VM.
@@ -22,7 +27,7 @@ public final class VirtualMachineHealthStatus {
 
     /**
      * Get the status property: The health status information for the VM.
-     *
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -31,7 +36,7 @@ public final class VirtualMachineHealthStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

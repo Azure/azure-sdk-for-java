@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a run command parameter. */
+/**
+ * Describes the properties of a run command parameter.
+ */
 @Fluent
 public final class RunCommandInputParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandInputParameter.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RunCommandInputParameter.class);
 
     /*
      * The run command parameter name.
@@ -28,7 +33,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Get the name property: The run command parameter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +42,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Set the name property: The run command parameter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RunCommandInputParameter object itself.
      */
@@ -48,7 +53,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Get the value property: The run command parameter value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +62,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Set the value property: The run command parameter value.
-     *
+     * 
      * @param value the value value to set.
      * @return the RunCommandInputParameter object itself.
      */
@@ -68,19 +73,15 @@ public final class RunCommandInputParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
         }
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
         }
     }
 }

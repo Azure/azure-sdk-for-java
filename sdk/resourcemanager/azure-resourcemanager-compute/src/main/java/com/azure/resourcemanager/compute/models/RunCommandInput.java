@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Capture Virtual Machine parameters. */
+/**
+ * Capture Virtual Machine parameters.
+ */
 @Fluent
 public final class RunCommandInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandInput.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RunCommandInput.class);
 
     /*
      * The run command id.
@@ -36,7 +41,7 @@ public final class RunCommandInput {
 
     /**
      * Get the commandId property: The run command id.
-     *
+     * 
      * @return the commandId value.
      */
     public String commandId() {
@@ -45,7 +50,7 @@ public final class RunCommandInput {
 
     /**
      * Set the commandId property: The run command id.
-     *
+     * 
      * @param commandId the commandId value to set.
      * @return the RunCommandInput object itself.
      */
@@ -55,9 +60,10 @@ public final class RunCommandInput {
     }
 
     /**
-     * Get the script property: Optional. The script to be executed. When this value is given, the given script will
-     * override the default script of the command.
-     *
+     * Get the script property: Optional. The script to be executed.  When this
+     * value is given, the given script will override the default script of the
+     * command.
+     * 
      * @return the script value.
      */
     public List<String> script() {
@@ -65,9 +71,10 @@ public final class RunCommandInput {
     }
 
     /**
-     * Set the script property: Optional. The script to be executed. When this value is given, the given script will
-     * override the default script of the command.
-     *
+     * Set the script property: Optional. The script to be executed.  When this
+     * value is given, the given script will override the default script of the
+     * command.
+     * 
      * @param script the script value to set.
      * @return the RunCommandInput object itself.
      */
@@ -78,7 +85,7 @@ public final class RunCommandInput {
 
     /**
      * Get the parameters property: The run command parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public List<RunCommandInputParameter> parameters() {
@@ -87,7 +94,7 @@ public final class RunCommandInput {
 
     /**
      * Set the parameters property: The run command parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the RunCommandInput object itself.
      */
@@ -98,14 +105,12 @@ public final class RunCommandInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (commandId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property commandId in model RunCommandInput"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());

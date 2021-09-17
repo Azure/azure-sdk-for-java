@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters of a managed disk. */
+/**
+ * The parameters of a managed disk.
+ */
 @Fluent
 public final class ManagedDiskParameters extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDiskParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedDiskParameters.class);
 
     /*
-     * Specifies the storage account type for the managed disk. NOTE:
-     * UltraSSD_LRS can only be used with data disks, it cannot be used with OS
-     * Disk.
+     * Specifies the storage account type for the managed disk. Managed OS disk
+     * storage account type can only be set when you create the scale set.
+     * NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used
+     * with OS Disk.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
@@ -31,9 +37,11 @@ public final class ManagedDiskParameters extends SubResource {
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
-     * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * Get the storageAccountType property: Specifies the storage account type
+     * for the managed disk. Managed OS disk storage account type can only be
+     * set when you create the scale set. NOTE: UltraSSD_LRS can only be used
+     * with data disks, it cannot be used with OS Disk.
+     * 
      * @return the storageAccountType value.
      */
     public StorageAccountTypes storageAccountType() {
@@ -41,9 +49,11 @@ public final class ManagedDiskParameters extends SubResource {
     }
 
     /**
-     * Set the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
-     *
+     * Set the storageAccountType property: Specifies the storage account type
+     * for the managed disk. Managed OS disk storage account type can only be
+     * set when you create the scale set. NOTE: UltraSSD_LRS can only be used
+     * with data disks, it cannot be used with OS Disk.
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the ManagedDiskParameters object itself.
      */
@@ -53,9 +63,9 @@ public final class ManagedDiskParameters extends SubResource {
     }
 
     /**
-     * Get the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed disk.
-     *
+     * Get the diskEncryptionSet property: Specifies the customer managed disk
+     * encryption set resource id for the managed disk.
+     * 
      * @return the diskEncryptionSet value.
      */
     public DiskEncryptionSetParameters diskEncryptionSet() {
@@ -63,9 +73,9 @@ public final class ManagedDiskParameters extends SubResource {
     }
 
     /**
-     * Set the diskEncryptionSet property: Specifies the customer managed disk encryption set resource id for the
-     * managed disk.
-     *
+     * Set the diskEncryptionSet property: Specifies the customer managed disk
+     * encryption set resource id for the managed disk.
+     * 
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the ManagedDiskParameters object itself.
      */
@@ -74,7 +84,9 @@ public final class ManagedDiskParameters extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedDiskParameters withId(String id) {
         super.withId(id);
@@ -83,7 +95,7 @@ public final class ManagedDiskParameters extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

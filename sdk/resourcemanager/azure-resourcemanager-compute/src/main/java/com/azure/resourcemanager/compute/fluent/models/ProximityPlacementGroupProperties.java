@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the properties of a Proximity Placement Group. */
+/**
+ * Describes the properties of a Proximity Placement Group.
+ */
 @Fluent
 public final class ProximityPlacementGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupProperties.class);
 
     /*
      * Specifies the type of the proximity placement group. <br><br> Possible
@@ -54,10 +59,12 @@ public final class ProximityPlacementGroupProperties {
     private InstanceViewStatus colocationStatus;
 
     /**
-     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
-     *
+     * Get the proximityPlacementGroupType property: Specifies the type of the
+     * proximity placement group. &lt;br&gt;&lt;br&gt; Possible values are:
+     * &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
+     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future
+     * use.
+     * 
      * @return the proximityPlacementGroupType value.
      */
     public ProximityPlacementGroupType proximityPlacementGroupType() {
@@ -65,22 +72,25 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
-     *
-     * @param proximityPlacementGroupType the proximityPlacementGroupType value to set.
+     * Set the proximityPlacementGroupType property: Specifies the type of the
+     * proximity placement group. &lt;br&gt;&lt;br&gt; Possible values are:
+     * &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
+     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future
+     * use.
+     * 
+     * @param proximityPlacementGroupType the proximityPlacementGroupType value
+     * to set.
      * @return the ProximityPlacementGroupProperties object itself.
      */
-    public ProximityPlacementGroupProperties withProximityPlacementGroupType(
-        ProximityPlacementGroupType proximityPlacementGroupType) {
+    public ProximityPlacementGroupProperties withProximityPlacementGroupType(ProximityPlacementGroupType proximityPlacementGroupType) {
         this.proximityPlacementGroupType = proximityPlacementGroupType;
         return this;
     }
 
     /**
-     * Get the virtualMachines property: A list of references to all virtual machines in the proximity placement group.
-     *
+     * Get the virtualMachines property: A list of references to all virtual
+     * machines in the proximity placement group.
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResourceWithColocationStatus> virtualMachines() {
@@ -88,9 +98,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Get the virtualMachineScaleSets property: A list of references to all virtual machine scale sets in the proximity
-     * placement group.
-     *
+     * Get the virtualMachineScaleSets property: A list of references to all
+     * virtual machine scale sets in the proximity placement group.
+     * 
      * @return the virtualMachineScaleSets value.
      */
     public List<SubResourceWithColocationStatus> virtualMachineScaleSets() {
@@ -98,9 +108,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Get the availabilitySets property: A list of references to all availability sets in the proximity placement
-     * group.
-     *
+     * Get the availabilitySets property: A list of references to all
+     * availability sets in the proximity placement group.
+     * 
      * @return the availabilitySets value.
      */
     public List<SubResourceWithColocationStatus> availabilitySets() {
@@ -108,8 +118,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Get the colocationStatus property: Describes colocation status of the Proximity Placement Group.
-     *
+     * Get the colocationStatus property: Describes colocation status of the
+     * Proximity Placement Group.
+     * 
      * @return the colocationStatus value.
      */
     public InstanceViewStatus colocationStatus() {
@@ -117,8 +128,9 @@ public final class ProximityPlacementGroupProperties {
     }
 
     /**
-     * Set the colocationStatus property: Describes colocation status of the Proximity Placement Group.
-     *
+     * Set the colocationStatus property: Describes colocation status of the
+     * Proximity Placement Group.
+     * 
      * @param colocationStatus the colocationStatus value to set.
      * @return the ProximityPlacementGroupProperties object itself.
      */
@@ -129,7 +141,7 @@ public final class ProximityPlacementGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
@@ -12,15 +13,18 @@ import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
-import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine Image. */
+/**
+ * Describes the properties of a Virtual Machine Image.
+ */
 @Fluent
 public final class VirtualMachineImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImageProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineImageProperties.class);
 
     /*
      * Used for establishing the purchase context of any 3rd Party artifact
@@ -60,15 +64,10 @@ public final class VirtualMachineImageProperties {
     @JsonProperty(value = "disallowed")
     private DisallowedConfiguration disallowed;
 
-    /*
-     * The features property.
-     */
-    @JsonProperty(value = "features")
-    private List<VirtualMachineImageFeature> features;
-
     /**
-     * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
-     *
+     * Get the plan property: Used for establishing the purchase context of any
+     * 3rd Party artifact through MarketPlace.
+     * 
      * @return the plan value.
      */
     public PurchasePlan plan() {
@@ -76,8 +75,9 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Set the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
-     *
+     * Set the plan property: Used for establishing the purchase context of any
+     * 3rd Party artifact through MarketPlace.
+     * 
      * @param plan the plan value to set.
      * @return the VirtualMachineImageProperties object itself.
      */
@@ -88,7 +88,7 @@ public final class VirtualMachineImageProperties {
 
     /**
      * Get the osDiskImage property: Contains the os disk image information.
-     *
+     * 
      * @return the osDiskImage value.
      */
     public OSDiskImage osDiskImage() {
@@ -97,7 +97,7 @@ public final class VirtualMachineImageProperties {
 
     /**
      * Set the osDiskImage property: Contains the os disk image information.
-     *
+     * 
      * @param osDiskImage the osDiskImage value to set.
      * @return the VirtualMachineImageProperties object itself.
      */
@@ -108,7 +108,7 @@ public final class VirtualMachineImageProperties {
 
     /**
      * Get the dataDiskImages property: The dataDiskImages property.
-     *
+     * 
      * @return the dataDiskImages value.
      */
     public List<DataDiskImage> dataDiskImages() {
@@ -117,7 +117,7 @@ public final class VirtualMachineImageProperties {
 
     /**
      * Set the dataDiskImages property: The dataDiskImages property.
-     *
+     * 
      * @param dataDiskImages the dataDiskImages value to set.
      * @return the VirtualMachineImageProperties object itself.
      */
@@ -127,8 +127,9 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Get the automaticOSUpgradeProperties property: Describes automatic OS upgrade properties on the image.
-     *
+     * Get the automaticOSUpgradeProperties property: Describes automatic OS
+     * upgrade properties on the image.
+     * 
      * @return the automaticOSUpgradeProperties value.
      */
     public AutomaticOSUpgradeProperties automaticOSUpgradeProperties() {
@@ -136,20 +137,21 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Set the automaticOSUpgradeProperties property: Describes automatic OS upgrade properties on the image.
-     *
-     * @param automaticOSUpgradeProperties the automaticOSUpgradeProperties value to set.
+     * Set the automaticOSUpgradeProperties property: Describes automatic OS
+     * upgrade properties on the image.
+     * 
+     * @param automaticOSUpgradeProperties the automaticOSUpgradeProperties
+     * value to set.
      * @return the VirtualMachineImageProperties object itself.
      */
-    public VirtualMachineImageProperties withAutomaticOSUpgradeProperties(
-        AutomaticOSUpgradeProperties automaticOSUpgradeProperties) {
+    public VirtualMachineImageProperties withAutomaticOSUpgradeProperties(AutomaticOSUpgradeProperties automaticOSUpgradeProperties) {
         this.automaticOSUpgradeProperties = automaticOSUpgradeProperties;
         return this;
     }
 
     /**
      * Get the hyperVGeneration property: Specifies the HyperVGeneration Type.
-     *
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
@@ -158,7 +160,7 @@ public final class VirtualMachineImageProperties {
 
     /**
      * Set the hyperVGeneration property: Specifies the HyperVGeneration Type.
-     *
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the VirtualMachineImageProperties object itself.
      */
@@ -168,8 +170,9 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Get the disallowed property: Specifies disallowed configuration for the VirtualMachine created from the image.
-     *
+     * Get the disallowed property: Specifies disallowed configuration for the
+     * VirtualMachine created from the image.
+     * 
      * @return the disallowed value.
      */
     public DisallowedConfiguration disallowed() {
@@ -177,8 +180,9 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Set the disallowed property: Specifies disallowed configuration for the VirtualMachine created from the image.
-     *
+     * Set the disallowed property: Specifies disallowed configuration for the
+     * VirtualMachine created from the image.
+     * 
      * @param disallowed the disallowed value to set.
      * @return the VirtualMachineImageProperties object itself.
      */
@@ -188,28 +192,8 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Get the features property: The features property.
-     *
-     * @return the features value.
-     */
-    public List<VirtualMachineImageFeature> features() {
-        return this.features;
-    }
-
-    /**
-     * Set the features property: The features property.
-     *
-     * @param features the features value to set.
-     * @return the VirtualMachineImageProperties object itself.
-     */
-    public VirtualMachineImageProperties withFeatures(List<VirtualMachineImageFeature> features) {
-        this.features = features;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -227,9 +211,6 @@ public final class VirtualMachineImageProperties {
         }
         if (disallowed() != null) {
             disallowed().validate();
-        }
-        if (features() != null) {
-            features().forEach(e -> e.validate());
         }
     }
 }

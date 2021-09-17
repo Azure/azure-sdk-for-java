@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the os disk image information. */
+/**
+ * Contains the os disk image information.
+ */
 @Fluent
 public final class OSDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDiskImage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OSDiskImage.class);
 
     /*
      * The operating system of the osDiskImage.
@@ -21,8 +26,9 @@ public final class OSDiskImage {
     private OperatingSystemTypes operatingSystem;
 
     /**
-     * Get the operatingSystem property: The operating system of the osDiskImage.
-     *
+     * Get the operatingSystem property: The operating system of the
+     * osDiskImage.
+     * 
      * @return the operatingSystem value.
      */
     public OperatingSystemTypes operatingSystem() {
@@ -30,8 +36,9 @@ public final class OSDiskImage {
     }
 
     /**
-     * Set the operatingSystem property: The operating system of the osDiskImage.
-     *
+     * Set the operatingSystem property: The operating system of the
+     * osDiskImage.
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the OSDiskImage object itself.
      */
@@ -42,14 +49,12 @@ public final class OSDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operatingSystem() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operatingSystem in model OSDiskImage"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property operatingSystem in model OSDiskImage"));
         }
     }
 }

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Key Vault Secret Url and vault id of the encryption key. */
+/**
+ * Key Vault Secret Url and vault id of the encryption key.
+ */
 @Fluent
 public final class KeyVaultAndSecretReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultAndSecretReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyVaultAndSecretReference.class);
 
     /*
      * Resource id of the KeyVault containing the key or secret
@@ -27,8 +32,9 @@ public final class KeyVaultAndSecretReference {
     private String secretUrl;
 
     /**
-     * Get the sourceVault property: Resource id of the KeyVault containing the key or secret.
-     *
+     * Get the sourceVault property: Resource id of the KeyVault containing the
+     * key or secret.
+     * 
      * @return the sourceVault value.
      */
     public SourceVault sourceVault() {
@@ -36,8 +42,9 @@ public final class KeyVaultAndSecretReference {
     }
 
     /**
-     * Set the sourceVault property: Resource id of the KeyVault containing the key or secret.
-     *
+     * Set the sourceVault property: Resource id of the KeyVault containing the
+     * key or secret.
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultAndSecretReference object itself.
      */
@@ -48,7 +55,7 @@ public final class KeyVaultAndSecretReference {
 
     /**
      * Get the secretUrl property: Url pointing to a key or secret in KeyVault.
-     *
+     * 
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -57,7 +64,7 @@ public final class KeyVaultAndSecretReference {
 
     /**
      * Set the secretUrl property: Url pointing to a key or secret in KeyVault.
-     *
+     * 
      * @param secretUrl the secretUrl value to set.
      * @return the KeyVaultAndSecretReference object itself.
      */
@@ -68,23 +75,17 @@ public final class KeyVaultAndSecretReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceVault() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceVault in model KeyVaultAndSecretReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sourceVault in model KeyVaultAndSecretReference"));
         } else {
             sourceVault().validate();
         }
         if (secretUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretUrl in model KeyVaultAndSecretReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property secretUrl in model KeyVaultAndSecretReference"));
         }
     }
 }

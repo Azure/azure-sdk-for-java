@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a virtual machine scale set virtual machine profile. */
+/**
+ * Describes a virtual machine scale set virtual machine profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetUpdateVMProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateVMProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateVMProfile.class);
 
     /*
      * The virtual machine scale set OS profile.
@@ -69,16 +74,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     @JsonProperty(value = "scheduledEventsProfile")
     private ScheduledEventsProfile scheduledEventsProfile;
 
-    /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
-     */
-    @JsonProperty(value = "userData")
-    private String userData;
-
     /**
      * Get the osProfile property: The virtual machine scale set OS profile.
-     *
+     * 
      * @return the osProfile value.
      */
     public VirtualMachineScaleSetUpdateOSProfile osProfile() {
@@ -87,7 +85,7 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
 
     /**
      * Set the osProfile property: The virtual machine scale set OS profile.
-     *
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
@@ -97,8 +95,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the storageProfile property: The virtual machine scale set storage profile.
-     *
+     * Get the storageProfile property: The virtual machine scale set storage
+     * profile.
+     * 
      * @return the storageProfile value.
      */
     public VirtualMachineScaleSetUpdateStorageProfile storageProfile() {
@@ -106,20 +105,21 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the storageProfile property: The virtual machine scale set storage profile.
-     *
+     * Set the storageProfile property: The virtual machine scale set storage
+     * profile.
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateVMProfile withStorageProfile(
-        VirtualMachineScaleSetUpdateStorageProfile storageProfile) {
+    public VirtualMachineScaleSetUpdateVMProfile withStorageProfile(VirtualMachineScaleSetUpdateStorageProfile storageProfile) {
         this.storageProfile = storageProfile;
         return this;
     }
 
     /**
-     * Get the networkProfile property: The virtual machine scale set network profile.
-     *
+     * Get the networkProfile property: The virtual machine scale set network
+     * profile.
+     * 
      * @return the networkProfile value.
      */
     public VirtualMachineScaleSetUpdateNetworkProfile networkProfile() {
@@ -127,20 +127,21 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the networkProfile property: The virtual machine scale set network profile.
-     *
+     * Set the networkProfile property: The virtual machine scale set network
+     * profile.
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateVMProfile withNetworkProfile(
-        VirtualMachineScaleSetUpdateNetworkProfile networkProfile) {
+    public VirtualMachineScaleSetUpdateVMProfile withNetworkProfile(VirtualMachineScaleSetUpdateNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
         return this;
     }
 
     /**
-     * Get the securityProfile property: The virtual machine scale set Security profile.
-     *
+     * Get the securityProfile property: The virtual machine scale set Security
+     * profile.
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -148,8 +149,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the securityProfile property: The virtual machine scale set Security profile.
-     *
+     * Set the securityProfile property: The virtual machine scale set Security
+     * profile.
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
@@ -159,8 +161,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the diagnosticsProfile property: The virtual machine scale set diagnostics profile.
-     *
+     * Get the diagnosticsProfile property: The virtual machine scale set
+     * diagnostics profile.
+     * 
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -168,8 +171,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the diagnosticsProfile property: The virtual machine scale set diagnostics profile.
-     *
+     * Set the diagnosticsProfile property: The virtual machine scale set
+     * diagnostics profile.
+     * 
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
@@ -179,8 +183,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the extensionProfile property: The virtual machine scale set extension profile.
-     *
+     * Get the extensionProfile property: The virtual machine scale set
+     * extension profile.
+     * 
      * @return the extensionProfile value.
      */
     public VirtualMachineScaleSetExtensionProfile extensionProfile() {
@@ -188,20 +193,21 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the extensionProfile property: The virtual machine scale set extension profile.
-     *
+     * Set the extensionProfile property: The virtual machine scale set
+     * extension profile.
+     * 
      * @param extensionProfile the extensionProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateVMProfile withExtensionProfile(
-        VirtualMachineScaleSetExtensionProfile extensionProfile) {
+    public VirtualMachineScaleSetUpdateVMProfile withExtensionProfile(VirtualMachineScaleSetExtensionProfile extensionProfile) {
         this.extensionProfile = extensionProfile;
         return this;
     }
 
     /**
-     * Get the licenseType property: The license type, which is for bring your own license scenario.
-     *
+     * Get the licenseType property: The license type, which is for bring your
+     * own license scenario.
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -209,8 +215,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the licenseType property: The license type, which is for bring your own license scenario.
-     *
+     * Set the licenseType property: The license type, which is for bring your
+     * own license scenario.
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
@@ -220,9 +227,10 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
-     *
+     * Get the billingProfile property: Specifies the billing related details
+     * of a Azure Spot VMSS. &lt;br&gt;&lt;br&gt;Minimum api-version:
+     * 2019-03-01.
+     * 
      * @return the billingProfile value.
      */
     public BillingProfile billingProfile() {
@@ -230,9 +238,10 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a Azure Spot VMSS.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
-     *
+     * Set the billingProfile property: Specifies the billing related details
+     * of a Azure Spot VMSS. &lt;br&gt;&lt;br&gt;Minimum api-version:
+     * 2019-03-01.
+     * 
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
@@ -242,8 +251,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Get the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
-     *
+     * Get the scheduledEventsProfile property: Specifies Scheduled Event
+     * related configurations.
+     * 
      * @return the scheduledEventsProfile value.
      */
     public ScheduledEventsProfile scheduledEventsProfile() {
@@ -251,42 +261,20 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     }
 
     /**
-     * Set the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
-     *
+     * Set the scheduledEventsProfile property: Specifies Scheduled Event
+     * related configurations.
+     * 
      * @param scheduledEventsProfile the scheduledEventsProfile value to set.
      * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateVMProfile withScheduledEventsProfile(
-        ScheduledEventsProfile scheduledEventsProfile) {
+    public VirtualMachineScaleSetUpdateVMProfile withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
         this.scheduledEventsProfile = scheduledEventsProfile;
         return this;
     }
 
     /**
-     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
-     * @return the userData value.
-     */
-    public String userData() {
-        return this.userData;
-    }
-
-    /**
-     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
-     * @param userData the userData value to set.
-     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
-     */
-    public VirtualMachineScaleSetUpdateVMProfile withUserData(String userData) {
-        this.userData = userData;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

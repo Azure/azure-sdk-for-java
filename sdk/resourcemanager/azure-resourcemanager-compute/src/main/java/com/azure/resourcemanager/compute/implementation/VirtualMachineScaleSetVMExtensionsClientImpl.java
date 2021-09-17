@@ -33,136 +33,80 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVME
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMExtensionsListResultInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExtensionUpdate;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in VirtualMachineScaleSetVMExtensionsClient.
+ * An instance of this class provides access to all the operations defined in
+ * VirtualMachineScaleSetVMExtensionsClient.
  */
 public final class VirtualMachineScaleSetVMExtensionsClientImpl implements VirtualMachineScaleSetVMExtensionsClient {
     private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMExtensionsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachineScaleSetVMExtensionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachineScaleSetVMExtensionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineScaleSetVMExtensionsClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    VirtualMachineScaleSetVMExtensionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualMachineScaleSetVMExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeManagementClientVirtualMachineScaleSetVMExtensions to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for
+     * ComputeManagementClientVirtualMachineScaleSetVMExtensions to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface VirtualMachineScaleSetVMExtensionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("vmExtensionName") String vmExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualMachineScaleSetVMExtensionInner extensionParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId, @PathParam("vmExtensionName") String vmExtensionName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") VirtualMachineScaleSetVMExtensionInner extensionParameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("vmExtensionName") String vmExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId, @PathParam("vmExtensionName") String vmExtensionName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") VirtualMachineScaleSetVMExtensionUpdate extensionParameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("vmExtensionName") String vmExtensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId, @PathParam("vmExtensionName") String vmExtensionName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineScaleSetVMExtensionInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @PathParam("vmExtensionName") String vmExtensionName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VirtualMachineScaleSetVMExtensionInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId, @PathParam("vmExtensionName") String vmExtensionName, @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vmScaleSetName") String vmScaleSetName,
-            @PathParam("instanceId") String instanceId,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> list(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vmScaleSetName") String vmScaleSetName, @PathParam("instanceId") String instanceId, @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -174,21 +118,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -197,44 +132,25 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            vmExtensionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            extensionParameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, apiVersion, this.client.getSubscriptionId(), extensionParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -247,22 +163,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -271,41 +177,25 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                vmExtensionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                extensionParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, apiVersion, this.client.getSubscriptionId(), extensionParameters, accept, context);
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -317,29 +207,14 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters);
-        return this
-            .client
-            .<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineScaleSetVMExtensionInner.class,
-                VirtualMachineScaleSetVMExtensionInner.class,
-                Context.NONE);
+    public PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters);
+        return this.client.<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(mono, this.client.getHttpPipeline(), VirtualMachineScaleSetVMExtensionInner.class, VirtualMachineScaleSetVMExtensionInner.class, Context.NONE);
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -352,31 +227,15 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionInner extensionParameters,
-            Context context) {
+    private PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context);
-        return this
-            .client
-            .<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineScaleSetVMExtensionInner.class,
-                VirtualMachineScaleSetVMExtensionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context);
+        return this.client.<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(mono, this.client.getHttpPipeline(), VirtualMachineScaleSetVMExtensionInner.class, VirtualMachineScaleSetVMExtensionInner.class, context);
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -388,21 +247,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
-            .getSyncPoller();
-    }
+    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
+            .getSyncPoller();}
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -415,22 +266,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionInner extensionParameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
-            .getSyncPoller();
-    }
+    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
+            .getSyncPoller();}
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -442,21 +284,15 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
+    public Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -469,22 +305,15 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
+    private Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -496,19 +325,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMExtensionInner createOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters) {
-        return createOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
-            .block();
+    public VirtualMachineScaleSetVMExtensionInner createOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters) {
+        return createOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters).block();
     }
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -521,21 +344,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMExtensionInner createOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
-            .block();
+    public VirtualMachineScaleSetVMExtensionInner createOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context).block();
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -547,21 +362,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -570,44 +376,25 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            vmExtensionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            extensionParameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, apiVersion, this.client.getSubscriptionId(), extensionParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -620,22 +407,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -644,41 +421,25 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (extensionParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter extensionParameters is required and cannot be null."));
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                vmExtensionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                extensionParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, apiVersion, this.client.getSubscriptionId(), extensionParameters, accept, context);
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -690,29 +451,14 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters);
-        return this
-            .client
-            .<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineScaleSetVMExtensionInner.class,
-                VirtualMachineScaleSetVMExtensionInner.class,
-                Context.NONE);
+    public PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters);
+        return this.client.<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(mono, this.client.getHttpPipeline(), VirtualMachineScaleSetVMExtensionInner.class, VirtualMachineScaleSetVMExtensionInner.class, Context.NONE);
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -725,31 +471,15 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-            Context context) {
+    private PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context);
-        return this
-            .client
-            .<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VirtualMachineScaleSetVMExtensionInner.class,
-                VirtualMachineScaleSetVMExtensionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context);
+        return this.client.<VirtualMachineScaleSetVMExtensionInner, VirtualMachineScaleSetVMExtensionInner>getLroResult(mono, this.client.getHttpPipeline(), VirtualMachineScaleSetVMExtensionInner.class, VirtualMachineScaleSetVMExtensionInner.class, context);
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -761,20 +491,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginUpdate(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
+    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -787,22 +510,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginUpdate(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-            Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
-            .getSyncPoller();
-    }
+    public SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
+            .getSyncPoller();}
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -814,12 +528,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
+    public Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -827,7 +536,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -840,22 +549,15 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
+    private Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -867,18 +569,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMExtensionInner update(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
+    public VirtualMachineScaleSetVMExtensionInner update(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters) {
         return updateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters).block();
     }
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -891,20 +588,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMExtensionInner update(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-        Context context) {
-        return updateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context)
-            .block();
+    public VirtualMachineScaleSetVMExtensionInner update(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context) {
+        return updateAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, extensionParameters, context).block();
     }
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -915,17 +605,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -934,37 +619,20 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            vmExtensionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -976,17 +644,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -995,34 +658,20 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                vmExtensionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1033,18 +682,14 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1056,19 +701,15 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1079,14 +720,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+        return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName)
+            .getSyncPoller();}
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1098,15 +738,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1117,8 +755,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1126,7 +763,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1138,8 +775,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1147,7 +783,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1163,7 +799,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1174,14 +810,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
+    public void delete(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context) {
         deleteAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, context).block();
     }
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1193,17 +828,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand) {
+    public Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -1212,38 +842,20 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            vmExtensionName,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1256,22 +868,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        String expand,
-        Context context) {
+    private Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -1280,35 +882,20 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (vmExtensionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter vmExtensionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                vmExtensionName,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1320,22 +907,20 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand) {
+    public Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetVMExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<VirtualMachineScaleSetVMExtensionInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1346,23 +931,21 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+    public Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetVMExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<VirtualMachineScaleSetVMExtensionInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1373,15 +956,14 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMExtensionInner get(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
+    public VirtualMachineScaleSetVMExtensionInner get(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName) {
         final String expand = null;
         return getAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand).block();
     }
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1394,20 +976,13 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualMachineScaleSetVMExtensionInner> getWithResponse(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        String expand,
-        Context context) {
-        return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand, context)
-            .block();
+    public Response<VirtualMachineScaleSetVMExtensionInner> getWithResponse(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand, Context context) {
+        return getWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, vmExtensionName, expand, context).block();
     }
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1418,17 +993,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand) {
+    public Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -1437,33 +1007,17 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            vmScaleSetName,
-                            instanceId,
-                            expand,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1475,17 +1029,12 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
+    private Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (vmScaleSetName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vmScaleSetName is required and cannot be null."));
@@ -1494,30 +1043,17 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
             return Mono.error(new IllegalArgumentException("Parameter instanceId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                vmScaleSetName,
-                instanceId,
-                expand,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), resourceGroupName, vmScaleSetName, instanceId, expand, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1528,22 +1064,20 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand) {
+    public Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String expand) {
         return listWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetVMExtensionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<VirtualMachineScaleSetVMExtensionsListResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1553,23 +1087,21 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId) {
+    public Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId) {
         final String expand = null;
         return listWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetVMExtensionsListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<VirtualMachineScaleSetVMExtensionsListResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1579,15 +1111,14 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualMachineScaleSetVMExtensionsListResultInner list(
-        String resourceGroupName, String vmScaleSetName, String instanceId) {
+    public VirtualMachineScaleSetVMExtensionsListResultInner list(String resourceGroupName, String vmScaleSetName, String instanceId) {
         final String expand = null;
         return listAsync(resourceGroupName, vmScaleSetName, instanceId, expand).block();
     }
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -1599,8 +1130,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualMachineScaleSetVMExtensionsListResultInner> listWithResponse(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
+    public Response<VirtualMachineScaleSetVMExtensionsListResultInner> listWithResponse(String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context) {
         return listWithResponseAsync(resourceGroupName, vmScaleSetName, instanceId, expand, context).block();
     }
 }

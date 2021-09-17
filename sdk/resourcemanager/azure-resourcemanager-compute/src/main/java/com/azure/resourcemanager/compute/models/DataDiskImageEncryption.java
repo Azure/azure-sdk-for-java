@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains encryption settings for a data disk image. */
+/**
+ * Contains encryption settings for a data disk image.
+ */
 @Fluent
 public final class DataDiskImageEncryption extends DiskImageEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskImageEncryption.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DataDiskImageEncryption.class);
 
     /*
      * This property specifies the logical unit number of the data disk. This
@@ -24,10 +29,11 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
     private int lun;
 
     /**
-     * Get the lun property: This property specifies the logical unit number of the data disk. This value is used to
-     * identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the
-     * Virtual Machine.
-     *
+     * Get the lun property: This property specifies the logical unit number of
+     * the data disk. This value is used to identify data disks within the
+     * Virtual Machine and therefore must be unique for each data disk attached
+     * to the Virtual Machine.
+     * 
      * @return the lun value.
      */
     public int lun() {
@@ -35,10 +41,11 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
     }
 
     /**
-     * Set the lun property: This property specifies the logical unit number of the data disk. This value is used to
-     * identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the
-     * Virtual Machine.
-     *
+     * Set the lun property: This property specifies the logical unit number of
+     * the data disk. This value is used to identify data disks within the
+     * Virtual Machine and therefore must be unique for each data disk attached
+     * to the Virtual Machine.
+     * 
      * @param lun the lun value to set.
      * @return the DataDiskImageEncryption object itself.
      */
@@ -47,7 +54,9 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataDiskImageEncryption withDiskEncryptionSetId(String diskEncryptionSetId) {
         super.withDiskEncryptionSetId(diskEncryptionSetId);
@@ -56,7 +65,7 @@ public final class DataDiskImageEncryption extends DiskImageEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

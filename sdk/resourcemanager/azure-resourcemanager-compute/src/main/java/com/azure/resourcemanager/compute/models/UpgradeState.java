@@ -7,21 +7,33 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UpgradeState. */
+/**
+ * Defines values for UpgradeState.
+ */
 public enum UpgradeState {
-    /** Enum value RollingForward. */
+    /**
+     * Enum value RollingForward.
+     */
     ROLLING_FORWARD("RollingForward"),
 
-    /** Enum value Cancelled. */
+    /**
+     * Enum value Cancelled.
+     */
     CANCELLED("Cancelled"),
 
-    /** Enum value Completed. */
+    /**
+     * Enum value Completed.
+     */
     COMPLETED("Completed"),
 
-    /** Enum value Faulted. */
+    /**
+     * Enum value Faulted.
+     */
     FAULTED("Faulted");
 
-    /** The actual serialized value for a UpgradeState instance. */
+    /**
+     * The actual serialized value for a UpgradeState instance.
+     */
     private final String value;
 
     UpgradeState(String value) {
@@ -30,7 +42,7 @@ public enum UpgradeState {
 
     /**
      * Parses a serialized value to a UpgradeState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UpgradeState object, or null if unable to parse.
      */

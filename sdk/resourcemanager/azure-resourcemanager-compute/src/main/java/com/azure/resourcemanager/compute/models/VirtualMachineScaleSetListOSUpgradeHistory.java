@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.UpgradeOperationHistoricalStatusInfoInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Virtual Machine Scale Set OS Upgrade History operation response. */
+/**
+ * List of Virtual Machine Scale Set OS Upgrade History operation response.
+ */
 @Fluent
 public final class VirtualMachineScaleSetListOSUpgradeHistory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListOSUpgradeHistory.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetListOSUpgradeHistory.class);
 
     /*
      * The list of OS upgrades performed on the virtual machine scale set.
@@ -30,8 +35,9 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     private String nextLink;
 
     /**
-     * Get the value property: The list of OS upgrades performed on the virtual machine scale set.
-     *
+     * Get the value property: The list of OS upgrades performed on the virtual
+     * machine scale set.
+     * 
      * @return the value value.
      */
     public List<UpgradeOperationHistoricalStatusInfoInner> value() {
@@ -39,8 +45,9 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     }
 
     /**
-     * Set the value property: The list of OS upgrades performed on the virtual machine scale set.
-     *
+     * Set the value property: The list of OS upgrades performed on the virtual
+     * machine scale set.
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineScaleSetListOSUpgradeHistory object itself.
      */
@@ -50,9 +57,10 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to
-     * fetch the next page of history of upgrades.
-     *
+     * Get the nextLink property: The uri to fetch the next page of OS Upgrade
+     * History. Call ListNext() with this to fetch the next page of history of
+     * upgrades.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +68,10 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of OS Upgrade History. Call ListNext() with this to
-     * fetch the next page of history of upgrades.
-     *
+     * Set the nextLink property: The uri to fetch the next page of OS Upgrade
+     * History. Call ListNext() with this to fetch the next page of history of
+     * upgrades.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineScaleSetListOSUpgradeHistory object itself.
      */
@@ -73,15 +82,12 @@ public final class VirtualMachineScaleSetListOSUpgradeHistory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineScaleSetListOSUpgradeHistory"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model VirtualMachineScaleSetListOSUpgradeHistory"));
         } else {
             value().forEach(e -> e.validate());
         }

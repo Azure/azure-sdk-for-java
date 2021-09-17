@@ -5,20 +5,27 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes the parameter of customer managed disk encryption set resource id that can be specified for disk.
- * &lt;br&gt;&lt;br&gt; NOTE: The disk encryption set resource id can only be specified for managed disk. Please refer
- * https://aka.ms/mdssewithcmkoverview for more details.
+ * Describes the parameter of customer managed disk encryption set resource id
+ * that can be specified for disk. &lt;br&gt;&lt;br&gt; NOTE: The disk
+ * encryption set resource id can only be specified for managed disk. Please
+ * refer https://aka.ms/mdssewithcmkoverview for more details.
  */
 @Fluent
 public final class DiskEncryptionSetParameters extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DiskEncryptionSetParameters.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiskEncryptionSetParameters withId(String id) {
         super.withId(id);
@@ -27,7 +34,7 @@ public final class DiskEncryptionSetParameters extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

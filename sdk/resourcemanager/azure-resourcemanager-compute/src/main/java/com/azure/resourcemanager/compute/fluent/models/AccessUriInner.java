@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A disk access SAS uri. */
+/**
+ * A disk access SAS uri.
+ */
 @Immutable
 public final class AccessUriInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessUriInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AccessUriInner.class);
 
     /*
      * A SAS uri for accessing a disk.
@@ -22,7 +27,7 @@ public final class AccessUriInner {
 
     /**
      * Get the accessSas property: A SAS uri for accessing a disk.
-     *
+     * 
      * @return the accessSas value.
      */
     public String accessSas() {
@@ -31,7 +36,7 @@ public final class AccessUriInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

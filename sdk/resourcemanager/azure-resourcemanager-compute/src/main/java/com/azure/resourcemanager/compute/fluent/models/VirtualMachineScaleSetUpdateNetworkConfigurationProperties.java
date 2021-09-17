@@ -5,24 +5,25 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateIpConfiguration;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Describes a virtual machine scale set updatable network profile's IP configuration.Use this object for updating
- * network profile's IP Configuration.
+ * Describes a virtual machine scale set updatable network profile's IP
+ * configuration.Use this object for updating network profile's IP
+ * Configuration.
  */
 @Fluent
 public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(VirtualMachineScaleSetUpdateNetworkConfigurationProperties.class);
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateNetworkConfigurationProperties.class);
 
     /*
      * Whether this is a primary NIC on a virtual machine.
@@ -67,15 +68,10 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     @JsonProperty(value = "enableIPForwarding")
     private Boolean enableIpForwarding;
 
-    /*
-     * Specify what happens to the network interface when the VM is deleted
-     */
-    @JsonProperty(value = "deleteOption")
-    private DeleteOptions deleteOption;
-
     /**
-     * Get the primary property: Whether this is a primary NIC on a virtual machine.
-     *
+     * Get the primary property: Whether this is a primary NIC on a virtual
+     * machine.
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -83,10 +79,12 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Set the primary property: Whether this is a primary NIC on a virtual machine.
-     *
+     * Set the primary property: Whether this is a primary NIC on a virtual
+     * machine.
+     * 
      * @param primary the primary value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withPrimary(Boolean primary) {
         this.primary = primary;
@@ -94,9 +92,9 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: Specifies whether the network interface is accelerated
-     * networking-enabled.
-     *
+     * Get the enableAcceleratedNetworking property: Specifies whether the
+     * network interface is accelerated networking-enabled.
+     * 
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
@@ -104,21 +102,23 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: Specifies whether the network interface is accelerated
-     * networking-enabled.
-     *
-     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * Set the enableAcceleratedNetworking property: Specifies whether the
+     * network interface is accelerated networking-enabled.
+     * 
+     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value
+     * to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableAcceleratedNetworking(
-        Boolean enableAcceleratedNetworking) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
         return this;
     }
 
     /**
-     * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
-     *
+     * Get the enableFpga property: Specifies whether the network interface is
+     * FPGA networking-enabled.
+     * 
      * @return the enableFpga value.
      */
     public Boolean enableFpga() {
@@ -126,10 +126,12 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Set the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
-     *
+     * Set the enableFpga property: Specifies whether the network interface is
+     * FPGA networking-enabled.
+     * 
      * @param enableFpga the enableFpga value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableFpga(Boolean enableFpga) {
         this.enableFpga = enableFpga;
@@ -138,7 +140,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Get the networkSecurityGroup property: The network security group.
-     *
+     * 
      * @return the networkSecurityGroup value.
      */
     public SubResource networkSecurityGroup() {
@@ -147,19 +149,20 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the networkSecurityGroup property: The network security group.
-     *
+     * 
      * @param networkSecurityGroup the networkSecurityGroup value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withNetworkSecurityGroup(
-        SubResource networkSecurityGroup) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withNetworkSecurityGroup(SubResource networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }
 
     /**
-     * Get the dnsSettings property: The dns settings to be applied on the network interfaces.
-     *
+     * Get the dnsSettings property: The dns settings to be applied on the
+     * network interfaces.
+     * 
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings() {
@@ -167,20 +170,22 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Set the dnsSettings property: The dns settings to be applied on the network interfaces.
-     *
+     * Set the dnsSettings property: The dns settings to be applied on the
+     * network interfaces.
+     * 
      * @param dnsSettings the dnsSettings value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDnsSettings(
-        VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDnsSettings(VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
 
     /**
-     * Get the ipConfigurations property: The virtual machine scale set IP Configuration.
-     *
+     * Get the ipConfigurations property: The virtual machine scale set IP
+     * Configuration.
+     * 
      * @return the ipConfigurations value.
      */
     public List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations() {
@@ -188,20 +193,22 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Set the ipConfigurations property: The virtual machine scale set IP Configuration.
-     *
+     * Set the ipConfigurations property: The virtual machine scale set IP
+     * Configuration.
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withIpConfigurations(
-        List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withIpConfigurations(List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
-     * Get the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
-     *
+     * Get the enableIpForwarding property: Whether IP forwarding enabled on
+     * this NIC.
+     * 
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
@@ -209,40 +216,21 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
-     * Set the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
-     *
+     * Set the enableIpForwarding property: Whether IP forwarding enabled on
+     * this NIC.
+     * 
      * @param enableIpForwarding the enableIpForwarding value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+     * object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableIpForwarding(
-        Boolean enableIpForwarding) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
         return this;
     }
 
     /**
-     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.deleteOption;
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
-     */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

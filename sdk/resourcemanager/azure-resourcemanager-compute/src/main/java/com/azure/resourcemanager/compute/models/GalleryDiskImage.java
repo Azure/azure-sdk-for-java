@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the disk image base class. */
+/**
+ * This is the disk image base class.
+ */
 @Fluent
 public class GalleryDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryDiskImage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryDiskImage.class);
 
     /*
      * This property indicates the size of the VHD to be created.
@@ -34,8 +39,9 @@ public class GalleryDiskImage {
     private GalleryArtifactVersionSource source;
 
     /**
-     * Get the sizeInGB property: This property indicates the size of the VHD to be created.
-     *
+     * Get the sizeInGB property: This property indicates the size of the VHD
+     * to be created.
+     * 
      * @return the sizeInGB value.
      */
     public Integer sizeInGB() {
@@ -43,8 +49,9 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
-     *
+     * Get the hostCaching property: The host caching of the disk. Valid values
+     * are 'None', 'ReadOnly', and 'ReadWrite'.
+     * 
      * @return the hostCaching value.
      */
     public HostCaching hostCaching() {
@@ -52,8 +59,9 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
-     *
+     * Set the hostCaching property: The host caching of the disk. Valid values
+     * are 'None', 'ReadOnly', and 'ReadWrite'.
+     * 
      * @param hostCaching the hostCaching value to set.
      * @return the GalleryDiskImage object itself.
      */
@@ -64,7 +72,7 @@ public class GalleryDiskImage {
 
     /**
      * Get the source property: The gallery artifact version source.
-     *
+     * 
      * @return the source value.
      */
     public GalleryArtifactVersionSource source() {
@@ -73,7 +81,7 @@ public class GalleryDiskImage {
 
     /**
      * Set the source property: The gallery artifact version source.
-     *
+     * 
      * @param source the source value to set.
      * @return the GalleryDiskImage object itself.
      */
@@ -84,7 +92,7 @@ public class GalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

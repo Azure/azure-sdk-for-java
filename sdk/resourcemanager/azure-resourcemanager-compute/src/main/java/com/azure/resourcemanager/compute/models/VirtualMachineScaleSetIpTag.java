@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the IP tag associated with the public IP address. */
+/**
+ * Contains the IP tag associated with the public IP address.
+ */
 @Fluent
 public final class VirtualMachineScaleSetIpTag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIpTag.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIpTag.class);
 
     /*
      * IP tag type. Example: FirstPartyUsage.
@@ -28,7 +33,7 @@ public final class VirtualMachineScaleSetIpTag {
 
     /**
      * Get the ipTagType property: IP tag type. Example: FirstPartyUsage.
-     *
+     * 
      * @return the ipTagType value.
      */
     public String ipTagType() {
@@ -37,7 +42,7 @@ public final class VirtualMachineScaleSetIpTag {
 
     /**
      * Set the ipTagType property: IP tag type. Example: FirstPartyUsage.
-     *
+     * 
      * @param ipTagType the ipTagType value to set.
      * @return the VirtualMachineScaleSetIpTag object itself.
      */
@@ -47,8 +52,9 @@ public final class VirtualMachineScaleSetIpTag {
     }
 
     /**
-     * Get the tag property: IP tag associated with the public IP. Example: SQL, Storage etc.
-     *
+     * Get the tag property: IP tag associated with the public IP. Example:
+     * SQL, Storage etc.
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -56,8 +62,9 @@ public final class VirtualMachineScaleSetIpTag {
     }
 
     /**
-     * Set the tag property: IP tag associated with the public IP. Example: SQL, Storage etc.
-     *
+     * Set the tag property: IP tag associated with the public IP. Example:
+     * SQL, Storage etc.
+     * 
      * @param tag the tag value to set.
      * @return the VirtualMachineScaleSetIpTag object itself.
      */
@@ -68,7 +75,7 @@ public final class VirtualMachineScaleSetIpTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

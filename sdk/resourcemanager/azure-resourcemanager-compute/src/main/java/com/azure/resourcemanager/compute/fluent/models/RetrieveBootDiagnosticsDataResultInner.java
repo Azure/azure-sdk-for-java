@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SAS URIs of the console screenshot and serial log blobs. */
+/**
+ * The SAS URIs of the console screenshot and serial log blobs.
+ */
 @Immutable
 public final class RetrieveBootDiagnosticsDataResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetrieveBootDiagnosticsDataResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RetrieveBootDiagnosticsDataResultInner.class);
 
     /*
      * The console screenshot blob URI
@@ -27,8 +32,9 @@ public final class RetrieveBootDiagnosticsDataResultInner {
     private String serialConsoleLogBlobUri;
 
     /**
-     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI.
-     *
+     * Get the consoleScreenshotBlobUri property: The console screenshot blob
+     * URI.
+     * 
      * @return the consoleScreenshotBlobUri value.
      */
     public String consoleScreenshotBlobUri() {
@@ -36,8 +42,9 @@ public final class RetrieveBootDiagnosticsDataResultInner {
     }
 
     /**
-     * Get the serialConsoleLogBlobUri property: The serial console log blob URI.
-     *
+     * Get the serialConsoleLogBlobUri property: The serial console log blob
+     * URI.
+     * 
      * @return the serialConsoleLogBlobUri value.
      */
     public String serialConsoleLogBlobUri() {
@@ -46,7 +53,7 @@ public final class RetrieveBootDiagnosticsDataResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

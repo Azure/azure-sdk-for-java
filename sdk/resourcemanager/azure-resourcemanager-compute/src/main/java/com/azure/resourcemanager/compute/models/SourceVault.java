@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class SourceVault {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceVault.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SourceVault.class);
 
     /*
      * Resource Id
@@ -25,7 +28,7 @@ public final class SourceVault {
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +37,7 @@ public final class SourceVault {
 
     /**
      * Set the id property: Resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SourceVault object itself.
      */
@@ -45,7 +48,7 @@ public final class SourceVault {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

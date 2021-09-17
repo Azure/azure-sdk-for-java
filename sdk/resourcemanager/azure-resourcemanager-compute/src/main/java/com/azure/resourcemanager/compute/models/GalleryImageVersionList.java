@@ -5,33 +5,38 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryImageVersionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Gallery Image version operation response. */
+/**
+ * The List Gallery Image version operation response.
+ */
 @Fluent
 public final class GalleryImageVersionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryImageVersionList.class);
 
     /*
-     * A list of gallery image versions.
+     * A list of gallery Image Versions.
      */
     @JsonProperty(value = "value", required = true)
     private List<GalleryImageVersionInner> value;
 
     /*
-     * The uri to fetch the next page of gallery image versions. Call
-     * ListNext() with this to fetch the next page of gallery image versions.
+     * The uri to fetch the next page of gallery Image Versions. Call
+     * ListNext() with this to fetch the next page of gallery Image Versions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: A list of gallery image versions.
-     *
+     * Get the value property: A list of gallery Image Versions.
+     * 
      * @return the value value.
      */
     public List<GalleryImageVersionInner> value() {
@@ -39,8 +44,8 @@ public final class GalleryImageVersionList {
     }
 
     /**
-     * Set the value property: A list of gallery image versions.
-     *
+     * Set the value property: A list of gallery Image Versions.
+     * 
      * @param value the value value to set.
      * @return the GalleryImageVersionList object itself.
      */
@@ -50,9 +55,10 @@ public final class GalleryImageVersionList {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of gallery image versions. Call ListNext() with this to
-     * fetch the next page of gallery image versions.
-     *
+     * Get the nextLink property: The uri to fetch the next page of gallery
+     * Image Versions. Call ListNext() with this to fetch the next page of
+     * gallery Image Versions.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +66,10 @@ public final class GalleryImageVersionList {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of gallery image versions. Call ListNext() with this to
-     * fetch the next page of gallery image versions.
-     *
+     * Set the nextLink property: The uri to fetch the next page of gallery
+     * Image Versions. Call ListNext() with this to fetch the next page of
+     * gallery Image Versions.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryImageVersionList object itself.
      */
@@ -73,14 +80,12 @@ public final class GalleryImageVersionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model GalleryImageVersionList"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model GalleryImageVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }

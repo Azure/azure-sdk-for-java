@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TerminateNotificationProfile model. */
+/**
+ * The TerminateNotificationProfile model.
+ */
 @Fluent
 public final class TerminateNotificationProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TerminateNotificationProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TerminateNotificationProfile.class);
 
     /*
      * Configurable length of time a Virtual Machine being deleted will have to
@@ -30,10 +35,12 @@ public final class TerminateNotificationProfile {
     private Boolean enable;
 
     /**
-     * Get the notBeforeTimeout property: Configurable length of time a Virtual Machine being deleted will have to
-     * potentially approve the Terminate Scheduled Event before the event is auto approved (timed out). The
-     * configuration must be specified in ISO 8601 format, the default value is 5 minutes (PT5M).
-     *
+     * Get the notBeforeTimeout property: Configurable length of time a Virtual
+     * Machine being deleted will have to potentially approve the Terminate
+     * Scheduled Event before the event is auto approved (timed out). The
+     * configuration must be specified in ISO 8601 format, the default value is
+     * 5 minutes (PT5M).
+     * 
      * @return the notBeforeTimeout value.
      */
     public String notBeforeTimeout() {
@@ -41,10 +48,12 @@ public final class TerminateNotificationProfile {
     }
 
     /**
-     * Set the notBeforeTimeout property: Configurable length of time a Virtual Machine being deleted will have to
-     * potentially approve the Terminate Scheduled Event before the event is auto approved (timed out). The
-     * configuration must be specified in ISO 8601 format, the default value is 5 minutes (PT5M).
-     *
+     * Set the notBeforeTimeout property: Configurable length of time a Virtual
+     * Machine being deleted will have to potentially approve the Terminate
+     * Scheduled Event before the event is auto approved (timed out). The
+     * configuration must be specified in ISO 8601 format, the default value is
+     * 5 minutes (PT5M).
+     * 
      * @param notBeforeTimeout the notBeforeTimeout value to set.
      * @return the TerminateNotificationProfile object itself.
      */
@@ -54,8 +63,9 @@ public final class TerminateNotificationProfile {
     }
 
     /**
-     * Get the enable property: Specifies whether the Terminate Scheduled event is enabled or disabled.
-     *
+     * Get the enable property: Specifies whether the Terminate Scheduled event
+     * is enabled or disabled.
+     * 
      * @return the enable value.
      */
     public Boolean enable() {
@@ -63,8 +73,9 @@ public final class TerminateNotificationProfile {
     }
 
     /**
-     * Set the enable property: Specifies whether the Terminate Scheduled event is enabled or disabled.
-     *
+     * Set the enable property: Specifies whether the Terminate Scheduled event
+     * is enabled or disabled.
+     * 
      * @param enable the enable value to set.
      * @return the TerminateNotificationProfile object itself.
      */
@@ -75,7 +86,7 @@ public final class TerminateNotificationProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

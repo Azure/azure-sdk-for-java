@@ -5,14 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the dedicated host unutilized capacity in terms of a specific VM size. */
+/**
+ * Represents the dedicated host unutilized capacity in terms of a specific VM
+ * size.
+ */
 @Fluent
 public final class DedicatedHostAllocatableVM {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostAllocatableVM.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DedicatedHostAllocatableVM.class);
 
     /*
      * VM size in terms of which the unutilized capacity is represented.
@@ -28,8 +34,9 @@ public final class DedicatedHostAllocatableVM {
     private Double count;
 
     /**
-     * Get the vmSize property: VM size in terms of which the unutilized capacity is represented.
-     *
+     * Get the vmSize property: VM size in terms of which the unutilized
+     * capacity is represented.
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -37,8 +44,9 @@ public final class DedicatedHostAllocatableVM {
     }
 
     /**
-     * Set the vmSize property: VM size in terms of which the unutilized capacity is represented.
-     *
+     * Set the vmSize property: VM size in terms of which the unutilized
+     * capacity is represented.
+     * 
      * @param vmSize the vmSize value to set.
      * @return the DedicatedHostAllocatableVM object itself.
      */
@@ -48,9 +56,9 @@ public final class DedicatedHostAllocatableVM {
     }
 
     /**
-     * Get the count property: Maximum number of VMs of size vmSize that can fit in the dedicated host's remaining
-     * capacity.
-     *
+     * Get the count property: Maximum number of VMs of size vmSize that can
+     * fit in the dedicated host's remaining capacity.
+     * 
      * @return the count value.
      */
     public Double count() {
@@ -58,9 +66,9 @@ public final class DedicatedHostAllocatableVM {
     }
 
     /**
-     * Set the count property: Maximum number of VMs of size vmSize that can fit in the dedicated host's remaining
-     * capacity.
-     *
+     * Set the count property: Maximum number of VMs of size vmSize that can
+     * fit in the dedicated host's remaining capacity.
+     * 
      * @param count the count value to set.
      * @return the DedicatedHostAllocatableVM object itself.
      */
@@ -71,7 +79,7 @@ public final class DedicatedHostAllocatableVM {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

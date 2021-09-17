@@ -4,12 +4,16 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes each OS upgrade on the Virtual Machine Scale Set. */
+/**
+ * Describes each OS upgrade on the Virtual Machine Scale Set.
+ */
 @Immutable
 public final class UpgradeOperationHistoricalStatusInfoProperties {
     @JsonIgnore
@@ -52,8 +56,9 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
     private RollbackStatusInfo rollbackInfo;
 
     /**
-     * Get the runningStatus property: Information about the overall status of the upgrade operation.
-     *
+     * Get the runningStatus property: Information about the overall status of
+     * the upgrade operation.
+     * 
      * @return the runningStatus value.
      */
     public UpgradeOperationHistoryStatus runningStatus() {
@@ -62,7 +67,7 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
 
     /**
      * Get the progress property: Counts of the VMs in each state.
-     *
+     * 
      * @return the progress value.
      */
     public RollingUpgradeProgressInfo progress() {
@@ -71,7 +76,7 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
 
     /**
      * Get the error property: Error Details for this upgrade if there are any.
-     *
+     * 
      * @return the error value.
      */
     public ApiError error() {
@@ -80,7 +85,7 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
 
     /**
      * Get the startedBy property: Invoker of the Upgrade Operation.
-     *
+     * 
      * @return the startedBy value.
      */
     public UpgradeOperationInvoker startedBy() {
@@ -89,7 +94,7 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
 
     /**
      * Get the targetImageReference property: Image Reference details.
-     *
+     * 
      * @return the targetImageReference value.
      */
     public ImageReference targetImageReference() {
@@ -97,8 +102,9 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
     }
 
     /**
-     * Get the rollbackInfo property: Information about OS rollback if performed.
-     *
+     * Get the rollbackInfo property: Information about OS rollback if
+     * performed.
+     * 
      * @return the rollbackInfo value.
      */
     public RollbackStatusInfo rollbackInfo() {
@@ -107,7 +113,7 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

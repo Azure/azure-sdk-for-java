@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Describes virtual machine scale set operating system disk Update Object. This should be used for Updating VMSS OS
- * Disk.
+ * Describes virtual machine scale set operating system disk Update Object.
+ * This should be used for Updating VMSS OS Disk.
  */
 @Fluent
 public final class VirtualMachineScaleSetUpdateOSDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateOSDisk.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateOSDisk.class);
 
     /*
      * The caching type.
@@ -61,7 +64,7 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Get the caching property: The caching type.
-     *
+     * 
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -70,7 +73,7 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Set the caching property: The caching type.
-     *
+     * 
      * @param caching the caching value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
      */
@@ -80,9 +83,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
-     *
+     * Get the writeAcceleratorEnabled property: Specifies whether
+     * writeAccelerator should be enabled or disabled on the disk.
+     * 
      * @return the writeAcceleratorEnabled value.
      */
     public Boolean writeAcceleratorEnabled() {
@@ -90,9 +93,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
-     *
+     * Set the writeAcceleratorEnabled property: Specifies whether
+     * writeAccelerator should be enabled or disabled on the disk.
+     * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
      */
@@ -102,10 +105,11 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the diskSizeGB property: Specifies the size of the operating system disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
-     *
+     * Get the diskSizeGB property: Specifies the size of the operating system
+     * disk in gigabytes. This element can be used to overwrite the size of the
+     * disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot
+     * be larger than 1023 GB.
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -113,10 +117,11 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the diskSizeGB property: Specifies the size of the operating system disk in gigabytes. This element can be
-     * used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
-     *
+     * Set the diskSizeGB property: Specifies the size of the operating system
+     * disk in gigabytes. This element can be used to overwrite the size of the
+     * disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot
+     * be larger than 1023 GB.
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
      */
@@ -126,10 +131,11 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the image property: The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using
-     * it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not
-     * exist.
-     *
+     * Get the image property: The Source User Image VirtualHardDisk. This
+     * VirtualHardDisk will be copied before using it to attach to the Virtual
+     * Machine. If SourceImage is provided, the destination VirtualHardDisk
+     * should not exist.
+     * 
      * @return the image value.
      */
     public VirtualHardDisk image() {
@@ -137,10 +143,11 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the image property: The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using
-     * it to attach to the Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not
-     * exist.
-     *
+     * Set the image property: The Source User Image VirtualHardDisk. This
+     * VirtualHardDisk will be copied before using it to attach to the Virtual
+     * Machine. If SourceImage is provided, the destination VirtualHardDisk
+     * should not exist.
+     * 
      * @param image the image value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
      */
@@ -150,8 +157,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Get the vhdContainers property: The list of virtual hard disk container uris.
-     *
+     * Get the vhdContainers property: The list of virtual hard disk container
+     * uris.
+     * 
      * @return the vhdContainers value.
      */
     public List<String> vhdContainers() {
@@ -159,8 +167,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     }
 
     /**
-     * Set the vhdContainers property: The list of virtual hard disk container uris.
-     *
+     * Set the vhdContainers property: The list of virtual hard disk container
+     * uris.
+     * 
      * @param vhdContainers the vhdContainers value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
      */
@@ -171,7 +180,7 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Get the managedDisk property: The managed disk parameters.
-     *
+     * 
      * @return the managedDisk value.
      */
     public VirtualMachineScaleSetManagedDiskParameters managedDisk() {
@@ -180,7 +189,7 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Set the managedDisk property: The managed disk parameters.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
      */
@@ -191,7 +200,7 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

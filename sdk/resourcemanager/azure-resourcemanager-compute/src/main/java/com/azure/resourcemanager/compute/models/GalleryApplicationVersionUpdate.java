@@ -5,33 +5,44 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the gallery Application Version that you want to update. */
+/**
+ * Specifies information about the gallery Application Version that you want to
+ * update.
+ */
 @Fluent
 public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionUpdate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionUpdate.class);
 
     /*
-     * Describes the properties of a gallery image version.
+     * Describes the properties of a gallery Image Version.
      */
     @JsonProperty(value = "properties")
     private GalleryApplicationVersionProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a gallery image version.
-     *
+     * Get the innerProperties property: Describes the properties of a gallery
+     * Image Version.
+     * 
      * @return the innerProperties value.
      */
     private GalleryApplicationVersionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -39,8 +50,9 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     }
 
     /**
-     * Get the publishingProfile property: The publishing profile of a gallery image version.
-     *
+     * Get the publishingProfile property: The publishing profile of a gallery
+     * image version.
+     * 
      * @return the publishingProfile value.
      */
     public GalleryApplicationVersionPublishingProfile publishingProfile() {
@@ -48,13 +60,13 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     }
 
     /**
-     * Set the publishingProfile property: The publishing profile of a gallery image version.
-     *
+     * Set the publishingProfile property: The publishing profile of a gallery
+     * image version.
+     * 
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryApplicationVersionUpdate object itself.
      */
-    public GalleryApplicationVersionUpdate withPublishingProfile(
-        GalleryApplicationVersionPublishingProfile publishingProfile) {
+    public GalleryApplicationVersionUpdate withPublishingProfile(GalleryApplicationVersionPublishingProfile publishingProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new GalleryApplicationVersionProperties();
         }
@@ -63,9 +75,10 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery Application Version. The provisioning state,
-     * which only appears in the response.
-     *
+     * Get the provisioningState property: The current state of the gallery
+     * Application Version. The provisioning state, which only appears in the
+     * response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryApplicationVersionPropertiesProvisioningState provisioningState() {
@@ -73,8 +86,9 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery image version.
-     *
+     * Get the replicationStatus property: This is the replication status of
+     * the gallery Image Version.
+     * 
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
@@ -83,7 +97,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GalleryPropertiesProvisioningState. */
+/**
+ * Defines values for GalleryPropertiesProvisioningState.
+ */
 public final class GalleryPropertiesProvisioningState extends ExpandableStringEnum<GalleryPropertiesProvisioningState> {
-    /** Static value Creating for GalleryPropertiesProvisioningState. */
+    /**
+     * Static value Creating for GalleryPropertiesProvisioningState.
+     */
     public static final GalleryPropertiesProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for GalleryPropertiesProvisioningState. */
+    /**
+     * Static value Updating for GalleryPropertiesProvisioningState.
+     */
     public static final GalleryPropertiesProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Failed for GalleryPropertiesProvisioningState. */
+    /**
+     * Static value Failed for GalleryPropertiesProvisioningState.
+     */
     public static final GalleryPropertiesProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for GalleryPropertiesProvisioningState. */
+    /**
+     * Static value Succeeded for GalleryPropertiesProvisioningState.
+     */
     public static final GalleryPropertiesProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for GalleryPropertiesProvisioningState. */
+    /**
+     * Static value Deleting for GalleryPropertiesProvisioningState.
+     */
     public static final GalleryPropertiesProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Migrating for GalleryPropertiesProvisioningState. */
+    /**
+     * Static value Migrating for GalleryPropertiesProvisioningState.
+     */
     public static final GalleryPropertiesProvisioningState MIGRATING = fromString("Migrating");
 
     /**
      * Creates or finds a GalleryPropertiesProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GalleryPropertiesProvisioningState.
      */
@@ -39,7 +53,9 @@ public final class GalleryPropertiesProvisioningState extends ExpandableStringEn
         return fromString(name, GalleryPropertiesProvisioningState.class);
     }
 
-    /** @return known GalleryPropertiesProvisioningState values. */
+    /**
+     * @return known GalleryPropertiesProvisioningState values.
+     */
     public static Collection<GalleryPropertiesProvisioningState> values() {
         return values(GalleryPropertiesProvisioningState.class);
     }
