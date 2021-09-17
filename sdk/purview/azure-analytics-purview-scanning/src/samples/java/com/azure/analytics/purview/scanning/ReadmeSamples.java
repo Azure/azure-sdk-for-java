@@ -20,7 +20,7 @@ public class ReadmeSamples {
      */
     public void createClient() {
         SystemScanRulesetsBaseClient client = new PurviewScanningClientBuilder()
-            .endpoint(System.getenv("<account-name>.scan.purview.azure.com"))
+            .endpoint("<account-name>.scan.purview.azure.com")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildSystemScanRulesetsBaseClient();
     }
