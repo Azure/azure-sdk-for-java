@@ -24,18 +24,12 @@ parameters:
     - name: azure-spring-boot-test-aad
       groupId: com.azure.spring
       safeName: azurespringboottestaad
-    - name: azure-spring-boot-test-aad-b2c
-      groupId: com.azure.spring
-      safeName: azurespringboottestaadb2c
     - name: azure-spring-boot-test-aad-webapp-and-resource-server-with-obo
       groupId: com.azure.spring
       safeName: azurespringboottestaadobo
     - name: azure-spring-boot-test-aad-resource-server
       groupId: com.azure.spring
       safeName: azurespringboottestaadresourceserver
-    - name: azure-spring-boot-test-aad-resource-server-by-filter
-      groupId: com.azure.spring
-      safeName: azurespringboottestaadresourceserverbyfilter
     - name: azure-spring-boot-test-keyvault
       groupId: com.azure.spring
       safeName: azurespringboottestkeyvault

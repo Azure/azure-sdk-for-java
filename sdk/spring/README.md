@@ -23,7 +23,6 @@ You can find them in [Maven Central Repository][maven-central-repository]. The s
 Artifact Id | Version for Spring Boot 2.3.x and 2.2.x | Version for Spring Boot 2.4.x
 ---|:---:|---
 [azure-spring-boot-starter-active-directory][aad-starter-readme] | [![Maven Central][new-aad-starter-mvn-2.3.x-img]][new-aad-starter-mvn-2.3.x] | [![Maven Central][new-aad-starter-mvn-2.4.x-img]][new-aad-starter-mvn-2.4.x]
-[azure-spring-boot-starter-active-directory-b2c][aad-b2c-starter-readme] | [![Maven Central][new-aad-b2c-starter-mvn-2.3.x-img]][new-aad-b2c-starter-mvn-2.3.x]| [![Maven Central][new-aad-b2c-starter-mvn-2.4.x-img]][new-aad-b2c-starter-mvn-2.4.x]
 [azure-spring-boot-starter-cosmos][cosmos-starter-readme] | [![Maven Central][new-cosmosdb-starter-mvn-2.3.x-img]][new-cosmosdb-starter-mvn-2.3.x] | [![Maven Central][new-cosmosdb-starter-mvn-2.4.x-img]][new-cosmosdb-starter-mvn-2.4.x]
 [azure-spring-boot-starter-keyvault-certificates][keyvault-certificates-starter-readme] | [![Maven Central][new-keyvault-certificates-starter-mvn-2.3.x-img]][new-keyvault-certificates-starter-mvn-2.3.x] | [![Maven Central][new-keyvault-certificates-starter-mvn-2.4.x-img]][new-keyvault-certificates-starter-mvn-2.4.x]
 [azure-spring-boot-starter-keyvault-secrets][keyvault-secrets-starter-readme] | [![Maven Central][new-keyvault-secrets-starter-mvn-2.3.x-img]][new-keyvault-secrets-starter-mvn-2.3.x] | [![Maven Central][new-keyvault-secrets-starter-mvn-2.4.x-img]][new-keyvault-secrets-starter-mvn-2.4.x]
@@ -154,7 +153,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [new-aad-starter-mvn-2.4.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-boot-starter-active-directory.svg
 [new-aad-starter-mvn-2.4.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-active-directory%22
 
-[aad-b2c-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c
 [new-aad-b2c-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-boot-starter-active-directory-b2c/3.2.svg
 [new-aad-b2c-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-active-directory-b2c%22AND%20v:3.2.*
 [new-aad-b2c-starter-mvn-2.4.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-boot-starter-active-directory-b2c.svg

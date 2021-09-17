@@ -3,6 +3,7 @@
 
 package com.azure.spring.sample.eventhubs.kafka;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,7 +29,8 @@ public class EventHubKafkaBinderApplicationIT {
     @Autowired
     private MockMvc mvc;
 
-    @Test
+//    @Test
+    @Disabled // TODO (xiada): add test
     public void testSendAndReceiveMessage(CapturedOutput capturedOutput) throws Exception {
         Thread.sleep(10000);
         String message = UUID.randomUUID().toString();

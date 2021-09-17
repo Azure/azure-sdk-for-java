@@ -80,16 +80,16 @@ public class ChangeFeedEncryptionProcessorBuilder {
      */
     public ChangeFeedEncryptionProcessorBuilder handleChanges(Consumer<List<JsonNode>> consumer) {
         this.encryptionConsumer = jsonNodes -> {
-            List<Mono<byte[]>> byteArrayMonoList =
+            List<Mono<ObjectNode>> objectNodeMonoList =
                 jsonNodes.stream().map(jsonNode -> {
                     if (jsonNode.isObject()) {
-                        return feedContainer.decryptResponse((ObjectNode) jsonNode);
+                        return feedContainer.decryptResponseObjectNode((ObjectNode) jsonNode);
                     } else {
                         throw new IllegalStateException("Current operation not supported in change feed encryption");
                     }
                 }).collect(Collectors.toList());
-            Flux.concat(byteArrayMonoList).publishOn(Schedulers.boundedElastic()).map(
-                item -> feedContainer.getItemDeserializer().parseFrom(JsonNode.class, item)
+            Flux.concat(objectNodeMonoList).publishOn(Schedulers.boundedElastic()).map(
+                item -> (JsonNode)item
             ).collectList().doOnSuccess(consumer).block(); //TODO: https://github.com/Azure/azure-sdk-for-java/issues/23738
         };
 

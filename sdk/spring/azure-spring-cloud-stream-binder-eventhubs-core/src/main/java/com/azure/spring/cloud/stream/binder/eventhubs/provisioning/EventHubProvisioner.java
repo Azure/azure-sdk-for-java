@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.stream.binder.eventhubs.provisioning;
 
 /**
- *
+ * An interface to provision Event Hubs resources.
  */
 public interface EventHubProvisioner {
 
-    void provisionEventHubNamespace(String namespace);
+    void provisionNamespace(String namespace);
 
     void provisionEventHub(String namespace, String eventHub);
 

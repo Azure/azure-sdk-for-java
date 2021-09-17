@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.util.Beta;
 
@@ -19,7 +20,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Response of a {@link CosmosBatch} request.
  */
 @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-public class CosmosBatchResponse {
+public final class CosmosBatchResponse {
 
     private final Map<String, String> responseHeaders;
     private final int statusCode;
@@ -206,5 +207,19 @@ public class CosmosBatchResponse {
 
     void addAll(List<? extends CosmosBatchOperationResult> collection) {
         this.results.addAll(collection);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.CosmosBatchResponseHelper.setCosmosBatchResponseAccessor(
+            new ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor() {
+                @Override
+                public List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse) {
+                    return cosmosBatchResponse.results;
+                }
+            });
     }
 }

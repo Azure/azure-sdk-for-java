@@ -3,11 +3,12 @@
 package com.azure.spring.aad.webapi.validator;
 
 import com.azure.spring.aad.implementation.constants.AADTokenClaim;
-import java.util.List;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * Validates the "aud" claim in a {@link Jwt}, that is matches a configured value

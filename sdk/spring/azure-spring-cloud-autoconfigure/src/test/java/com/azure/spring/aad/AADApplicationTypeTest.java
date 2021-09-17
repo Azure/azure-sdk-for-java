@@ -9,11 +9,11 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.util.ClassUtils;
 
-import static com.azure.spring.aad.AADApplicationType.SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME;
-import static com.azure.spring.aad.AADApplicationType.SPRING_SECURITY_OAUTH2_CLIENT_CLASS_NAME;
-import static com.azure.spring.aad.AADApplicationType.WEB_APPLICATION;
 import static com.azure.spring.aad.AADApplicationType.RESOURCE_SERVER;
 import static com.azure.spring.aad.AADApplicationType.RESOURCE_SERVER_WITH_OBO;
+import static com.azure.spring.aad.AADApplicationType.SPRING_SECURITY_OAUTH2_CLIENT_CLASS_NAME;
+import static com.azure.spring.aad.AADApplicationType.SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME;
+import static com.azure.spring.aad.AADApplicationType.WEB_APPLICATION;
 import static com.azure.spring.aad.AADApplicationType.inferApplicationTypeByDependencies;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;

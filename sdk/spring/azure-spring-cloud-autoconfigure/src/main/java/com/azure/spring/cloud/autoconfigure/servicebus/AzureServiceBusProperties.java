@@ -3,24 +3,47 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
+import com.azure.spring.core.properties.client.AmqpClientProperties;
+
+import java.time.Duration;
 
 /**
- * @author Warren Zhu
+ *
  */
-@ConfigurationProperties("spring.cloud.azure.servicebus")
-public class AzureServiceBusProperties {
+public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationProperties {
+
+    public static final String PREFIX = "spring.cloud.azure.servicebus";
+
+    // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
+    // https://docs.microsoft.com/en-us/rest/api/servicebus/addressing-and-protocol
+    private String domainName = "servicebus.windows.net";
 
     private String namespace;
 
     private String connectionString;
 
-    private AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(ServiceBusConstants.OPERATION_TIMEOUT);
+    private boolean crossEntityTransactions;
 
-    private AmqpTransportType transportType = AmqpTransportType.AMQP;
+    private AmqpClientProperties client = new AmqpClientProperties();
+
+    private final ServiceBusProducer producer = new ServiceBusProducer();
+    private final ServiceBusConsumer consumer = new ServiceBusConsumer();
+    private final ServiceBusProcessor processor = new ServiceBusProcessor();
+
+    public String getFQDN() {
+        return this.namespace + "." + this.domainName;
+    }
+
+    public String getDomainName() {
+        return domainName;
+    }
+
+    public void setDomainName(String domainName) {
+        this.domainName = domainName;
+    }
 
     public String getNamespace() {
         return namespace;
@@ -38,19 +61,235 @@ public class AzureServiceBusProperties {
         this.connectionString = connectionString;
     }
 
-    public AmqpTransportType getTransportType() {
-        return transportType;
+    public boolean isCrossEntityTransactions() {
+        return crossEntityTransactions;
     }
 
-    public void setTransportType(AmqpTransportType transportType) {
-        this.transportType = transportType;
+    public void setCrossEntityTransactions(boolean crossEntityTransactions) {
+        this.crossEntityTransactions = crossEntityTransactions;
     }
 
-    public AmqpRetryOptions getRetryOptions() {
-        return retryOptions;
+    @Override
+    public AmqpClientProperties getClient() {
+        return client;
     }
 
-    public void setRetryOptions(AmqpRetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
+    public void setClient(AmqpClientProperties client) {
+        this.client = client;
     }
+
+    public ServiceBusProducer getProducer() {
+        return producer;
+    }
+
+    public ServiceBusConsumer getConsumer() {
+        return consumer;
+    }
+
+    static class ServiceBusProducer extends AbstractAzureAmqpConfigurationProperties {
+
+        private String domainName = "servicebus.windows.net";
+        private String namespace;
+        private String connectionString;
+
+        private String queueName;
+        private String topicName;
+
+        public String getDomainName() {
+            return domainName;
+        }
+
+        public void setDomainName(String domainName) {
+            this.domainName = domainName;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getConnectionString() {
+            return connectionString;
+        }
+
+        public void setConnectionString(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        public String getQueueName() {
+            return queueName;
+        }
+
+        public void setQueueName(String queueName) {
+            this.queueName = queueName;
+        }
+
+        public String getTopicName() {
+            return topicName;
+        }
+
+        public void setTopicName(String topicName) {
+            this.topicName = topicName;
+        }
+    }
+
+    static class ServiceBusConsumer extends AbstractAzureAmqpConfigurationProperties {
+
+        private String domainName = "servicebus.windows.net";
+        private String namespace;
+        private String connectionString;
+
+        // TODO (xiada): name for session
+        private boolean sessionAware = false;
+        private boolean autoComplete = true;
+        private Integer prefetchCount;
+        private String queueName;
+        private SubQueue subQueue;
+        private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
+        private String subscriptionName;
+        private String topicName;
+        private Duration maxAutoLockRenewDuration;
+
+        public String getDomainName() {
+            return domainName;
+        }
+
+        public void setDomainName(String domainName) {
+            this.domainName = domainName;
+        }
+
+        public String getNamespace() {
+            return namespace;
+        }
+
+        public void setNamespace(String namespace) {
+            this.namespace = namespace;
+        }
+
+        public String getConnectionString() {
+            return connectionString;
+        }
+
+        public void setConnectionString(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        public boolean isSessionAware() {
+            return sessionAware;
+        }
+
+        public void setSessionAware(boolean sessionAware) {
+            this.sessionAware = sessionAware;
+        }
+
+        public boolean isAutoComplete() {
+            return autoComplete;
+        }
+
+        public void setAutoComplete(boolean autoComplete) {
+            this.autoComplete = autoComplete;
+        }
+
+        public Integer getPrefetchCount() {
+            return prefetchCount;
+        }
+
+        public void setPrefetchCount(Integer prefetchCount) {
+            this.prefetchCount = prefetchCount;
+        }
+
+        public String getQueueName() {
+            return queueName;
+        }
+
+        public void setQueueName(String queueName) {
+            this.queueName = queueName;
+        }
+
+        public SubQueue getSubQueue() {
+            return subQueue;
+        }
+
+        public void setSubQueue(SubQueue subQueue) {
+            this.subQueue = subQueue;
+        }
+
+        public ServiceBusReceiveMode getReceiveMode() {
+            return receiveMode;
+        }
+
+        public void setReceiveMode(ServiceBusReceiveMode receiveMode) {
+            this.receiveMode = receiveMode;
+        }
+
+        public String getSubscriptionName() {
+            return subscriptionName;
+        }
+
+        public void setSubscriptionName(String subscriptionName) {
+            this.subscriptionName = subscriptionName;
+        }
+
+        public String getTopicName() {
+            return topicName;
+        }
+
+        public void setTopicName(String topicName) {
+            this.topicName = topicName;
+        }
+
+        public Duration getMaxAutoLockRenewDuration() {
+            return maxAutoLockRenewDuration;
+        }
+
+        public void setMaxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
+            this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
+        }
+    }
+
+    static class ServiceBusProcessor extends ServiceBusConsumer {
+        private Integer maxConcurrentCalls;
+        private Integer maxConcurrentSessions;
+
+        public Integer getMaxConcurrentCalls() {
+            return maxConcurrentCalls;
+        }
+
+        public void setMaxConcurrentCalls(Integer maxConcurrentCalls) {
+            this.maxConcurrentCalls = maxConcurrentCalls;
+        }
+
+        public Integer getMaxConcurrentSessions() {
+            return maxConcurrentSessions;
+        }
+
+        public void setMaxConcurrentSessions(Integer maxConcurrentSessions) {
+            this.maxConcurrentSessions = maxConcurrentSessions;
+        }
+    }
+
+    public ServiceBusProcessor getProcessor() {
+        return processor;
+    }
+
+    // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?
+//    public AmqpRetryOptions getRetryOptions() {
+//        return retryOptions;
+//    }
+//
+//    public void setRetryOptions(AmqpRetryOptions retryOptions) {
+//        this.retryOptions = retryOptions;
+//    }
+//
+//    @DeprecatedConfigurationProperty(reason = "Use ", replacement = "")
+//    public AmqpTransportType getTransportType() {
+//        return transportType;
+//    }
+//
+//    public void setTransportType(AmqpTransportType transportType) {
+//        this.transportType = transportType;
+//    }
 }

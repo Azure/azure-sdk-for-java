@@ -21,6 +21,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,11 +72,7 @@ public class KeyVaultOperationUnitTest {
     }
 
     public void setupSecretBundle(List<String> secretKeysConfig) {
-        keyVaultOperation = new KeyVaultOperation(
-            keyVaultClient,
-            0,
-            secretKeysConfig,
-            false);
+        keyVaultOperation = new KeyVaultOperation(keyVaultClient, Duration.ZERO, secretKeysConfig, false);
     }
 
     @Test

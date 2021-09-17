@@ -22,17 +22,18 @@ public class TokenCredentialProperties {
     /**
      * Path of a PEM certificate file to use when performing service principal authentication with Azure.
      */
-    private String certificatePath;
+    private String clientCertificatePath;
 
     /**
      * Password of the certificate file.
      */
-    private String certificatePassword;
+    private String clientCertificatePassword;
 
-    /**
-     * Tenant id for the Azure resources.
-     */
-    private String tenantId;
+    private String username;
+
+    private String password;
+
+    private String managedIdentityClientId;
 
     public String getClientId() {
         return clientId;
@@ -50,27 +51,44 @@ public class TokenCredentialProperties {
         this.clientSecret = clientSecret;
     }
 
-    public String getCertificatePath() {
-        return certificatePath;
+    public String getClientCertificatePath() {
+        return clientCertificatePath;
     }
 
-    public void setCertificatePath(String certificatePath) {
-        this.certificatePath = certificatePath;
+    public void setClientCertificatePath(String clientCertificatePath) {
+        this.clientCertificatePath = clientCertificatePath;
     }
 
-    public String getCertificatePassword() {
-        return certificatePassword;
+    public String getClientCertificatePassword() {
+        return clientCertificatePassword;
     }
 
-    public void setCertificatePassword(String certificatePassword) {
-        this.certificatePassword = certificatePassword;
+    public void setClientCertificatePassword(String clientCertificatePassword) {
+        this.clientCertificatePassword = clientCertificatePassword;
     }
 
-    public String getTenantId() {
-        return tenantId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
+    public void setUsername(String username) {
+        this.username = username;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getManagedIdentityClientId() {
+        return managedIdentityClientId;
+    }
+
+    public void setManagedIdentityClientId(String managedIdentityClientId) {
+        this.managedIdentityClientId = managedIdentityClientId;
+    }
+
 }

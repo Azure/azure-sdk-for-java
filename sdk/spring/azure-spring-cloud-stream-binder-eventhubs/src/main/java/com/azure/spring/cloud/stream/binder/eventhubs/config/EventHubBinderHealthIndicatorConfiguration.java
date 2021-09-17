@@ -7,12 +7,13 @@ import com.azure.spring.cloud.stream.binder.eventhubs.EventHubHealthIndicator;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubMessageChannelBinder;
 import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
+import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnClass(name = "org.springframework.boot.actuate.health.HealthIndicator")
+@ConditionalOnClass(HealthIndicator.class)
 @ConditionalOnEnabledHealthIndicator("binders")
 class EventHubBinderHealthIndicatorConfiguration {
 

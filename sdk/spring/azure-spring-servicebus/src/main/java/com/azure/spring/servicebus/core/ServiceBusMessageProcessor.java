@@ -3,14 +3,18 @@
 
 package com.azure.spring.servicebus.core;
 
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+
 import java.util.function.Consumer;
 
 /**
  *
  */
-public interface ServiceBusMessageProcessor<M, E> {
+public interface ServiceBusMessageProcessor {
 
-    Consumer<E> processError();
+    Consumer<ServiceBusErrorContext> processError();
 
-    Consumer<M> processMessage();
+    Consumer<ServiceBusReceivedMessageContext> processMessage();
+
 }

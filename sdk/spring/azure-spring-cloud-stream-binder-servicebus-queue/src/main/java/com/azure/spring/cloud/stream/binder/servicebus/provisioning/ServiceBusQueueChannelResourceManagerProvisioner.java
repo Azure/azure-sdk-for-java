@@ -3,12 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
-import com.azure.resourcemanager.servicebus.models.Queue;
-import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
-import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
-import com.azure.spring.core.util.Tuple;
-import org.springframework.cloud.stream.provisioning.ProvisioningException;
+import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
@@ -18,31 +13,22 @@ import org.springframework.util.Assert;
 public class ServiceBusQueueChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 
     private final String namespace;
-    private final ServiceBusNamespaceManager serviceBusNamespaceManager;
-    private final ServiceBusQueueManager serviceBusQueueManager;
+    private final ServiceBusQueueProvisioner serviceBusQueueProvisioner;
 
-    public ServiceBusQueueChannelResourceManagerProvisioner(
-            @NonNull ServiceBusNamespaceManager serviceBusNamespaceManager,
-            @NonNull ServiceBusQueueManager serviceBusQueueManager, @NonNull String namespace) {
+    public ServiceBusQueueChannelResourceManagerProvisioner(@NonNull String namespace,
+                                                            @NonNull ServiceBusQueueProvisioner queueProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
-        this.serviceBusNamespaceManager = serviceBusNamespaceManager;
-        this.serviceBusQueueManager = serviceBusQueueManager;
         this.namespace = namespace;
+        this.serviceBusQueueProvisioner = queueProvisioner;
     }
 
     @Override
     protected void validateOrCreateForConsumer(String name, String group) {
-        ServiceBusNamespace namespace = serviceBusNamespaceManager.getOrCreate(this.namespace);
-        Queue queue = serviceBusQueueManager.getOrCreate(Tuple.of(namespace, name));
-        if (queue == null) {
-            throw new ProvisioningException(
-                    String.format("Event hub with name '%s' in namespace '%s' not existed", name, namespace));
-        }
+        this.serviceBusQueueProvisioner.provisionQueue(namespace, name);
     }
 
     @Override
     protected void validateOrCreateForProducer(String name) {
-        ServiceBusNamespace namespace = serviceBusNamespaceManager.getOrCreate(this.namespace);
-        serviceBusQueueManager.getOrCreate(Tuple.of(namespace, name));
+        this.serviceBusQueueProvisioner.provisionQueue(namespace, name);
     }
 }

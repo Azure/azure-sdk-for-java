@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.jms;
 
-import com.azure.spring.autoconfigure.unity.AzureProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
@@ -16,7 +15,8 @@ import javax.annotation.PostConstruct;
  */
 @Validated
 @ConfigurationProperties(AzureServiceBusJMSProperties.PREFIX)
-public class AzureServiceBusJMSProperties extends AzureProperties {
+// TODO(xiada): does this need to implement AzureProperties?
+public class AzureServiceBusJMSProperties {
 
     public static final String PREFIX = "spring.jms.servicebus";
 

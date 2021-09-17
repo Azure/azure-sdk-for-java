@@ -28,11 +28,11 @@ public class KeyVaultActuatorIT {
     public void testSpringBootActuatorHealth() {
         LOGGER.info("testSpringBootActuatorHealth begin.");
         try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("spring.cloud.azure.keyvault.enabled", "true");
-            app.property("spring.cloud.azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("spring.cloud.azure.keyvault.credential.client-id", SPRING_CLIENT_ID);
-            app.property("spring.cloud.azure.keyvault.credential.client-secret", SPRING_CLIENT_SECRET);
-            app.property("spring.cloud.azure.keyvault.credential.tenant-id", SPRING_TENANT_ID);
+            app.property("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+            app.property("spring.cloud.azure.keyvault.secret.vault-url", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.secret.credential.client-id", SPRING_CLIENT_ID);
+            app.property("spring.cloud.azure.keyvault.secret.credential.client-secret", SPRING_CLIENT_SECRET);
+            app.property("spring.cloud.azure.keyvault.secret.profile.tenant-id", SPRING_TENANT_ID);
             app.property("management.endpoint.health.show-details", "always");
             app.property("management.endpoints.web.exposure.include", "*");
             app.property("management.health.azure-key-vault.enabled", "true");
@@ -53,11 +53,11 @@ public class KeyVaultActuatorIT {
     public void testSpringBootActuatorEnv() {
         LOGGER.info("testSpringBootActuatorEnv begin.");
         try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("spring.cloud.azure.keyvault.enabled", "true");
-            app.property("spring.cloud.azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("spring.cloud.azure.keyvault.credential.client-id", SPRING_CLIENT_ID);
-            app.property("spring.cloud.azure.keyvault.credential.client-secret", SPRING_CLIENT_SECRET);
-            app.property("spring.cloud.azure.keyvault.credential.tenant-id", SPRING_TENANT_ID);
+            app.property("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+            app.property("spring.cloud.azure.keyvault.secret.vault-url", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.secret.credential.client-id", SPRING_CLIENT_ID);
+            app.property("spring.cloud.azure.keyvault.secret.credential.client-secret", SPRING_CLIENT_SECRET);
+            app.property("spring.cloud.azure.keyvault.secret.profile.tenant-id", SPRING_TENANT_ID);
             app.property("management.endpoint.health.show-details", "always");
             app.property("management.endpoints.web.exposure.include", "*");
             app.property("management.health.azure-key-vault.enabled", "true");

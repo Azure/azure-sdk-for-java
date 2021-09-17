@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 7.4.1 (2021-09-13)
+### Bugs Fixed
+- Fixed a bug that was causing leaking of boundedElastic-evictor threads associated with the `ServiceBusSessionManager` objects. Issue [23539](https://github.com/Azure/azure-sdk-for-java/issues/23539).
+
+#### Dependency Updates
+ - Update `azure-core` dependency to `1.20.0`.
+ - Update `azure-core-amqp` dependency to `2.3.2`.
+
 ## 7.4.0 (2021-08-20)
 ### Features Added
  - Updated ServiceBusAdministrationClientBuilder to Support HttpPipelinePosition.

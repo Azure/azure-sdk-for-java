@@ -12,6 +12,7 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static com.azure.spring.keyvault.KeyVaultPropertySource.DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @ExtendWith(SpringExtension.class)
@@ -26,7 +27,7 @@ public class InitializerTest {
         final MutablePropertySources sources =
             ((ConfigurableEnvironment) context.getEnvironment()).getPropertySources();
 
-        assertFalse(sources.contains(KeyVaultEnvironmentPostProcessorHelper.AZURE_KEYVAULT_PROPERTYSOURCE_NAME), "PropertySources should not "
+        assertFalse(sources.contains(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME), "PropertySources should not "
             + "contains azurekv when enabled=false");
     }
 }

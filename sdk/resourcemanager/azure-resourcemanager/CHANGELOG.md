@@ -1,7 +1,10 @@
 # Release History
 
-## 2.8.0-beta.1 (Unreleased)
+## 2.8.0 (2021-09-15)
 
+### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.7.0 (2021-08-12)
 

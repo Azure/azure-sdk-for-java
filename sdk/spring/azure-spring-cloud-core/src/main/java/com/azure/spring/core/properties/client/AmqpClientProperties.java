@@ -10,7 +10,7 @@ import com.azure.core.amqp.AmqpTransportType;
  */
 public class AmqpClientProperties extends ClientProperties {
 
-    private AmqpTransportType transportType;
+    private AmqpTransportType transportType = AmqpTransportType.AMQP;
 
     public AmqpTransportType getTransportType() {
         return transportType;

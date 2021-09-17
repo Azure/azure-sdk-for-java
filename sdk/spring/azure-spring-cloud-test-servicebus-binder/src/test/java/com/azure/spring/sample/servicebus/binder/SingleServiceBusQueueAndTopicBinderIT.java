@@ -23,16 +23,18 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = { SingleServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
-    SingleServiceBusQueueAndTopicBinderIT.TestTopicConfig.class })
+@SpringBootTest(classes = {
+    SingleServiceBusQueueAndTopicBinderIT.TestQueueConfig.class,
+    SingleServiceBusQueueAndTopicBinderIT.TestTopicConfig.class
+})
 @ActiveProfiles("single")
 public class SingleServiceBusQueueAndTopicBinderIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingleServiceBusQueueAndTopicBinderIT.class);
 
-    private static String message = UUID.randomUUID().toString();
+    private static final String message = UUID.randomUUID().toString();
 
-    private static CountDownLatch latch = new CountDownLatch(2);
+    private static final CountDownLatch latch = new CountDownLatch(2);
 
     @Autowired
     private Sinks.Many<Message<String>> manyQueue;

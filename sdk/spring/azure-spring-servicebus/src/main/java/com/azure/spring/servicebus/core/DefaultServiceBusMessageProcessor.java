@@ -26,8 +26,7 @@ import java.util.function.Consumer;
 /**
  * Message processor for Service Bus.
  */
-public class DefaultServiceBusMessageProcessor
-    implements ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> {
+public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusMessageProcessor.class);
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";

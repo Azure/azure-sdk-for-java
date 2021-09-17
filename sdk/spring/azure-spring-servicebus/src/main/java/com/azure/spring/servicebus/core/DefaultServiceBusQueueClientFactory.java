@@ -3,13 +3,8 @@
 
 package com.azure.spring.servicebus.core;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.util.ClientOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import org.slf4j.Logger;
@@ -19,9 +14,6 @@ import org.springframework.beans.factory.DisposableBean;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.core.ApplicationId.VERSION;
 
 
 /**
@@ -36,20 +28,9 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     private final Map<String, ServiceBusProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> senderClientMap = new ConcurrentHashMap<>();
 
-    // TODO (xiada) whether will this reuse the underlying connection?
-    private final ServiceBusClientBuilder serviceBusClientBuilder;
-
-    public DefaultServiceBusQueueClientFactory(String connectionString) {
-        this(connectionString, AmqpTransportType.AMQP);
-    }
-
-    public DefaultServiceBusQueueClientFactory(String connectionString, AmqpTransportType amqpTransportType) {
-        super(connectionString);
-        this.serviceBusClientBuilder = new ServiceBusClientBuilder()
-                                           .connectionString(connectionString)
-                                           .transportType(amqpTransportType)
-                                           .clientOptions(new ClientOptions()
-                                                              .setApplicationId(AZURE_SPRING_SERVICE_BUS + VERSION));
+    public DefaultServiceBusQueueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
+        super(serviceBusClientBuilder);
+        // TODO (xiada) the application id should be different for spring integration
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {
@@ -72,7 +53,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     public ServiceBusProcessorClient getOrCreateProcessor(
         String name,
         ServiceBusClientConfig clientConfig,
-        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        ServiceBusMessageProcessor messageProcessor) {
         return this.processorClientMap.computeIfAbsent(name,
                                                        n -> createProcessorClient(n, clientConfig, messageProcessor));
     }
@@ -85,7 +66,7 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     private ServiceBusProcessorClient createProcessorClient(
         String name,
         ServiceBusClientConfig clientConfig,
-        ServiceBusMessageProcessor<ServiceBusReceivedMessageContext, ServiceBusErrorContext> messageProcessor) {
+        ServiceBusMessageProcessor messageProcessor) {
         if (clientConfig.getConcurrency() != 1) {
             LOGGER.warn("It is detected that concurrency is set, this attribute has been deprecated,"
                 + " you can use " + (clientConfig.isSessionsEnabled() ? "maxConcurrentSessions" : "maxConcurrentCalls") + " instead");
@@ -123,10 +104,6 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
 
     private ServiceBusSenderAsyncClient createQueueSender(String name) {
         return serviceBusClientBuilder.sender().queueName(name).buildAsyncClient();
-    }
-
-    public void setRetryOptions(AmqpRetryOptions amqpRetryOptions) {
-        serviceBusClientBuilder.retryOptions(amqpRetryOptions);
     }
 
 }

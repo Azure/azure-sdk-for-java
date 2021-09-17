@@ -151,14 +151,12 @@
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-starter</module>
         <module>azure-spring-boot-starter-active-directory</module>
-        <module>azure-spring-boot-starter-active-directory-b2c</module>
         <module>azure-spring-boot-starter-cosmos</module>
         <module>azure-spring-boot-starter-keyvault-certificates</module>
         <module>azure-spring-boot-starter-keyvault-secrets</module>
         <module>azure-spring-boot-starter-servicebus-jms</module>
         <module>azure-spring-boot-starter-storage</module>
         <module>azure-spring-boot-test-aad</module>
-        <module>azure-spring-boot-test-aad-b2c</module>
         <module>azure-spring-boot-test-aad-webapp-and-resource-server-with-obo</module>
         <module>azure-spring-boot-test-aad-resource-server</module>
         <module>azure-spring-boot-test-application</module>
