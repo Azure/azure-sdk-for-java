@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Change artifact id from `azure-spring-cloud-messaging` to `spring-cloud-azure-messaging`.
 
 ### Bugs Fixed
 

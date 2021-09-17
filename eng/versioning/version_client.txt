@@ -157,7 +157,7 @@ com.azure.spring:azure-spring-cloud-autoconfigure;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-core;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-resourcemanager;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter;4.0.0-beta.1;4.0.0-beta.1
-com.azure.spring:azure-spring-cloud-messaging;4.0.0-beta.1;4.0.0-beta.1
+com.azure.spring:spring-cloud-azure-messaging;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-cache;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-eventhubs;4.0.0-beta.1;4.0.0-beta.1

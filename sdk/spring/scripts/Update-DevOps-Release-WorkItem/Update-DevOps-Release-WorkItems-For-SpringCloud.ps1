@@ -6,7 +6,7 @@ $springtCloudReleaseVersion = "2.6.0"
 
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-autoconfigure
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-context
-. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-cloud-messaging
+. ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion spring-cloud-azure-messaging
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-messaging
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-eventhubs
 . ${PSScriptRoot}\Update-DevOps-Release-WorkItem-Util.ps1 $releaseDate $serviceDirectory $springtCloudReleaseVersion azure-spring-servicebus

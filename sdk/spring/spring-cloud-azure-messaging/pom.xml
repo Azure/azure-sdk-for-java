@@ -11,8 +11,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-messaging</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+  <artifactId>spring-cloud-azure-messaging</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-messaging;current} -->
 
   <name>Azure Spring Cloud Messaging</name>
 

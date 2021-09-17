@@ -35,7 +35,7 @@ trigger:
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
       - sdk/spring/azure-spring-cloud-context/pom.xml
-      - sdk/spring/azure-spring-cloud-messaging/pom.xml
+      - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
       - sdk/spring/azure-spring-servicebus/pom.xml
@@ -93,7 +93,7 @@ pr:
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
       - sdk/spring/azure-spring-cloud-context/pom.xml
-      - sdk/spring/azure-spring-cloud-messaging/pom.xml
+      - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
       - sdk/spring/azure-spring-servicebus/pom.xml
@@ -199,9 +199,9 @@ extends:
       - name: azure-spring-integration-storage-queue
         groupId: com.azure.spring
         safeName: azurespringintegrationstoragequeue
-      - name: azure-spring-cloud-messaging
+      - name: spring-cloud-azure-messaging
         groupId: com.azure.spring
-        safeName: azurespringcloudmessaging
+        safeName: springcloudazuremessaging
         skipPublishDocMs: true
       - name: azure-spring-cloud-starter-cache
         groupId: com.azure.spring

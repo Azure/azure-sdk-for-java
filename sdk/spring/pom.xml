@@ -20,7 +20,7 @@
         <module>azure-spring-integration-eventhubs</module>
         <module>azure-spring-integration-servicebus</module>
         <module>azure-spring-integration-storage-queue</module>
-        <module>azure-spring-cloud-messaging</module>
+        <module>spring-cloud-azure-messaging</module>
         <module>azure-spring-cloud-stream-binder-eventhubs</module>
         <module>azure-spring-cloud-stream-binder-eventhubs-core</module>
         <module>azure-spring-cloud-stream-binder-servicebus-core</module>
@@ -69,8 +69,8 @@
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-messaging</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+          <artifactId>spring-cloud-azure-messaging</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-messaging;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -170,7 +170,7 @@
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
         <module>azure-spring-cloud-resourcemanager</module>
-        <module>azure-spring-cloud-messaging</module>
+        <module>spring-cloud-azure-messaging</module>
         <module>azure-spring-cloud-starter-cache</module>
         <module>azure-spring-cloud-starter-eventhubs</module>
         <module>azure-spring-cloud-starter-eventhubs-kafka</module>

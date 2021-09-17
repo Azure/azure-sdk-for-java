@@ -108,7 +108,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-messaging</artifactId>
+        <artifactId>spring-cloud-azure-messaging</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
 
