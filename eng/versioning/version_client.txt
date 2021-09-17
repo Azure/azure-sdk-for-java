@@ -42,7 +42,7 @@ com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.0.2;1.1.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-textanalytics;5.1.1;5.2.0-beta.2
+com.azure:azure-ai-textanalytics;5.1.2;5.2.0-beta.2
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-analytics-purview-catalog;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.1;1.0.0-beta.1
@@ -231,7 +231,7 @@ com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.3;1.0.
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0;1.1.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0;1.1.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.0.0-beta.1;1.0.0-beta.2
@@ -325,7 +325,7 @@ com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.1;1.0.0-beta.2
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-
+unreleased_com.azure:azure-core;1.21.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
