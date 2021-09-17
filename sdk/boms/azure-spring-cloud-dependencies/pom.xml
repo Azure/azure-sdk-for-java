@@ -142,7 +142,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
+        <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
         <version>${azure.spring.cloud.version}</version>
       </dependency>
       <dependency>

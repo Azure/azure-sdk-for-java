@@ -15,7 +15,7 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
+  <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
 </dependency>
 ```
 

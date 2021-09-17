@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-
+- Change artifact id from `azure-spring-cloud-starter-servicebus` to `spring-cloud-azure-starter-servicebus`.
 ### Bugs Fixed
 
 ### Other Changes
