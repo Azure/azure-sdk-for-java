@@ -54,7 +54,7 @@ Key concepts are explained in detail [here][EVENTGRID_README_KEY_CONCEPTS].
 
 ## Next steps
 
-Start using Storage blob Java SDK in your solutions. Our SDK details could be found at [SDK README][EVENTGRID_SDK_README].
+Start using Event Grid Java SDK in your solutions. Our SDK details could be found at [SDK README][EVENTGRID_SDK_README].
 
 ## Contributing
 
