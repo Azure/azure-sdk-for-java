@@ -62,9 +62,14 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private ConnectionStringProvider<?> connectionStringProvider;
 
     /**
-     * 1. create a builder instance 2. configure builder 2.1 configure azure core level configuration 2.1.1 configure
-     * http client getHttpClientInstance 2.2 configure service level configuration 3. customize builder 4. return
-     * builder
+     * 1. create a builder instance
+     * 2. configure builder
+     *   2.1 configure azure core level configuration
+     *     2.1.1 configure
+     *       http client getHttpClientInstance
+     *   2.2 configure service level configuration
+     * 3. customize builder
+     * 4. return builder
      *
      * @return the service client builder
      */

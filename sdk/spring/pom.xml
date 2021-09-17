@@ -16,6 +16,7 @@
         <module>azure-spring-cloud-core</module>
         <module>azure-spring-cloud-autoconfigure</module>
         <module>azure-spring-cloud-resourcemanager</module>
+        <module>azure-spring-cloud-trace-sleuth</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
         <module>azure-spring-integration-servicebus</module>
@@ -41,6 +42,11 @@
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-resourcemanager</artifactId>
           <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-trace-sleuth</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-trace-sleuth;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -140,6 +146,7 @@
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
         <module>azure-spring-cloud-resourcemanager</module>
+        <module>azure-spring-cloud-trace-sleuth</module>
         <module>azure-spring-cloud-messaging</module>
         <module>azure-spring-cloud-starter-cache</module>
         <module>azure-spring-cloud-starter-eventhubs</module>

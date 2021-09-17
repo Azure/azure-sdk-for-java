@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.spring.cloud.autoconfigure.AzureServiceClientBuilderFactoryTestBase;
@@ -13,6 +14,7 @@ import com.azure.spring.cloud.autoconfigure.core.TestPerRetryHttpPipelinePolicy;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -31,7 +33,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
     void testMinimalSettings() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
-        final BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilderFactory(properties).build();
+        final BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilderFactory(properties, null).build();
         final BlobServiceClient client = clientBuilder.buildClient();
     }
 
@@ -43,7 +45,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
         properties.getCredential().setClientSecret("test-secret");
         properties.getProfile().setTenantId("test-tenant");
 
-        final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
+        final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties, null).build();
         final BlobServiceClient client = builder.buildClient();
 
         verify(builder, times(1)).credential(any(ClientSecretCredential.class));
@@ -58,7 +60,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
         properties.getCredential().setClientCertificatePassword("test-cert-password");
         properties.getProfile().setTenantId("test-tenant");
 
-        final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties).build();
+        final BlobServiceClientBuilder builder = new BlobServiceClientBuilderFactoryExt(properties, null).build();
         verify(builder, times(1)).credential(any(ClientCertificateCredential.class));
     }
 
@@ -66,7 +68,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
     void testHttpClientConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
-        final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
+        final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties, null);
 
         builderFactory.setHttpClientProvider(new TestHttpClientProvider());
 
@@ -80,7 +82,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
     void testDefaultHttpPipelinePoliciesConfigured() {
         AzureStorageBlobProperties properties = createMinimalServiceProperties();
 
-        final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
+        final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties, null);
 
         builderFactory.addHttpPipelinePolicy(new TestPerCallHttpPipelinePolicy());
         builderFactory.addHttpPipelinePolicy(new TestPerRetryHttpPipelinePolicy());
@@ -102,8 +104,9 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     static class BlobServiceClientBuilderFactoryExt extends BlobServiceClientBuilderFactory {
 
-        BlobServiceClientBuilderFactoryExt(AzureStorageBlobProperties blobProperties) {
-            super(blobProperties);
+        BlobServiceClientBuilderFactoryExt(AzureStorageBlobProperties blobProperties,
+                                           ObjectProvider<HttpPipelinePolicy> policies) {
+            super(blobProperties, policies);
         }
 
         @Override

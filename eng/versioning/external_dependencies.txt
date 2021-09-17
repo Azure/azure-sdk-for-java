@@ -142,6 +142,7 @@ org.springframework.cloud:spring-cloud-dependencies;2020.0.3
 org.springframework.cloud:spring-cloud-starter-bootstrap;3.0.3
 org.springframework.cloud:spring-cloud-bus;3.0.3
 org.springframework.cloud:spring-cloud-context;3.0.3
+org.springframework.cloud:spring-cloud-sleuth-api;3.0.3
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.1.3
 org.springframework.cloud:spring-cloud-stream-binder-test;3.1.3
 org.springframework.cloud:spring-cloud-stream;3.1.3

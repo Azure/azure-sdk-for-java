@@ -3,9 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,12 +24,13 @@ public class AzureBlobCheckpointStoreConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureEventHubProperties.PREFIX, name = "processor.checkpoint-store.container-name")
-    public BlobCheckpointStore blobCheckpointStore(AzureEventHubProperties eventHubProperties) {
+    public BlobCheckpointStore blobCheckpointStore(AzureEventHubProperties eventHubProperties,
+                                                   ObjectProvider<HttpPipelinePolicy> policies) {
         final AzureEventHubProperties.Processor.BlobCheckpointStore checkpointStoreProperties = eventHubProperties
             .getProcessor()
             .getCheckpointStore();
 
-        final BlobContainerAsyncClient blobContainerAsyncClient = new BlobServiceClientBuilderFactory(checkpointStoreProperties)
+        final BlobContainerAsyncClient blobContainerAsyncClient = new BlobServiceClientBuilderFactory(checkpointStoreProperties, policies)
             .build()
             .buildAsyncClient()
             .getBlobContainerAsyncClient(checkpointStoreProperties.getContainerName());

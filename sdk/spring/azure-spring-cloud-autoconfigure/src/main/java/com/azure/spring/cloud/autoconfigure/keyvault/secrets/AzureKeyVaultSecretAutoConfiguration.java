@@ -3,11 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -54,8 +56,9 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
 
     @Bean
     @ConditionalOnMissingBean
-    public SecretClientBuilderFactory secretClientBuilderFactory(AzureKeyVaultSecretProperties properties) {
-        return new SecretClientBuilderFactory(properties);
+    public SecretClientBuilderFactory secretClientBuilderFactory(AzureKeyVaultSecretProperties properties,
+                                                                 ObjectProvider<HttpPipelinePolicy> policies) {
+        return new SecretClientBuilderFactory(properties, policies);
     }
 
 }

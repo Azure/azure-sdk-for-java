@@ -33,6 +33,7 @@ com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAuto
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.actuate.autoconfigure.cosmos.CosmosHealthConfiguration,\
 com.azure.spring.cloud.actuate.autoconfigure.eventhub.EventHubHealthConfiguration,\
 com.azure.spring.cloud.actuate.autoconfigure.storage.StorageBlobHealthConfiguration,\
@@ -42,4 +43,3 @@ com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoCon
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
-

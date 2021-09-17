@@ -155,6 +155,7 @@ com.azure.spring:azure-spring-boot-starter-servicebus-jms;4.0.0-beta.1;4.0.0-bet
 com.azure.spring:azure-spring-boot-starter-storage;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-autoconfigure;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-core;4.0.0-beta.1;4.0.0-beta.1
+com.azure.spring:azure-spring-cloud-trace-sleuth;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-resourcemanager;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-messaging;4.0.0-beta.1;4.0.0-beta.1

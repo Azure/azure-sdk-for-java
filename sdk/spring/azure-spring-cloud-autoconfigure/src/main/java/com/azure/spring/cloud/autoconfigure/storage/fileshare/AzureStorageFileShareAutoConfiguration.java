@@ -3,11 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -51,8 +53,9 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(AzureStorageFileShareProperties properties) {
-        return new ShareServiceClientBuilderFactory(properties);
+    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(AzureStorageFileShareProperties properties,
+                                                                             ObjectProvider<HttpPipelinePolicy> policies) {
+        return new ShareServiceClientBuilderFactory(properties, policies);
     }
 
     @Bean
