@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-
+- Change artifact id from `azure-spring-cloud-starter-eventhubs-kafka` to `spring-cloud-azure-starter-eventhubs-kafka`.
 ### Bugs Fixed
 
 ### Other Changes

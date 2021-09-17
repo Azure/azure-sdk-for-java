@@ -25,8 +25,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;current} -->
+      <artifactId>spring-cloud-azure-starter-eventhubs-kafka</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs-kafka;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.kafka</groupId>

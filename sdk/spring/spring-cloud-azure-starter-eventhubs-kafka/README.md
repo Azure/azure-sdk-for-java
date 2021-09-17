@@ -14,7 +14,7 @@ This starter for Apache Kafka with Azure Event Hubs helps developers to finish t
 ```xml
 <dependency>
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-cloud-starter-eventhubs-kafka</artifactId>
+  <artifactId>spring-cloud-azure-starter-eventhubs-kafka</artifactId>
 </dependency>
 ```
 

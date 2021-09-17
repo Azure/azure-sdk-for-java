@@ -42,7 +42,7 @@ trigger:
       - sdk/spring/azure-spring-storage-queue/pom.xml
       - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/azure-spring-cloud-starter-servicebus/pom.xml
       - sdk/spring/azure-spring-cloud-starter-storage-queue/pom.xml
       - sdk/spring/azure-spring-cloud-storage/pom.xml
@@ -100,7 +100,7 @@ pr:
       - sdk/spring/azure-spring-storage-queue/pom.xml
       - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/azure-spring-cloud-starter-servicebus/pom.xml
       - sdk/spring/azure-spring-cloud-starter-storage-queue/pom.xml
       - sdk/spring/azure-spring-cloud-storage/pom.xml
@@ -213,9 +213,9 @@ extends:
         safeName: springcloudazurestartereventhubs
         skipPublishDocMs: true
         skipUpdatePackageJson: true
-      - name: azure-spring-cloud-starter-eventhubs-kafka
+      - name: spring-cloud-azure-starter-eventhubs-kafka
         groupId: com.azure.spring
-        safeName: azurespringcloudstartereventhubskafka
+        safeName: springcloudazurestartereventhubskafka
         skipPublishDocMs: true
         skipUpdatePackageJson: true
       - name: azure-spring-cloud-starter-servicebus
