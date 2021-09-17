@@ -230,16 +230,8 @@ public class TracerProvider {
                 }
             }).doOnError(throwable -> {
                 if (isEnabled() && !isNestedCall) {
-                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-                    if (unwrappedException instanceof CosmosException) {
-                        CosmosException dce = (CosmosException) unwrappedException;
-                        try {
-                            addDiagnosticsOnTracerEvent(dce.getDiagnostics(), parentContext.get());
-                        } catch (JsonProcessingException ex) {
-                            LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                        }
-                    }
-
+                    // not adding diagnostics on trace event for exception as this information is already there as
+                    // part of exception message
                     this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });
@@ -289,10 +281,18 @@ public class TracerProvider {
 
     private void end(int statusCode, Throwable throwable, Context context) {
         if (throwable != null) {
-            tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
-            tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+            if (statusCode == HttpConstants.StatusCodes.NOTFOUND) {
+                tracer.setAttribute(TracerProvider.ERROR_MSG, "Not found exception", context);
+                tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+                tracer.end(statusCode, null, context);
+            } else {
+                tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
+                tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+                tracer.end(statusCode, throwable, context);
+            }
+        } else {
+            tracer.end(statusCode, null, context);
         }
-        tracer.end(statusCode, throwable, context);
     }
 
     private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,

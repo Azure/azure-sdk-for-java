@@ -439,7 +439,6 @@ public class CosmosTracerTest extends TestSuiteBase {
         traceApiCounter++;
 
         String errorType = null;
-        CosmosDiagnostics cosmosDiagnostics = null;
         try {
             PartitionKey partitionKey = new PartitionKey("wrongPk");
             cosmosAsyncContainer.readItem("testDoc", partitionKey, null, InternalObjectNode.class).block();
@@ -447,12 +446,13 @@ public class CosmosTracerTest extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             errorType = ex.getClass().getName();
-            cosmosDiagnostics = ex.getDiagnostics();
         }
 
         verifyTracerAttributes(tracerProvider, mockTracer, "readItem." + cosmosAsyncContainer.getId(), context,
             cosmosAsyncDatabase.getId(), traceApiCounter
-            , errorType, cosmosDiagnostics, attributesMap);
+            , errorType, null, attributesMap);
+        // sending null diagnostics as we don't want diagnostics in events for exception as this information is
+        // already there as part of exception message
     }
 
     @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
