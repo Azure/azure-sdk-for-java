@@ -9,13 +9,13 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.DocumentClassification;
-import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesAction;
-import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesActionResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesResult;
+import com.azure.ai.textanalytics.models.CustomClassifyDocumentMultiCategoriesAction;
+import com.azure.ai.textanalytics.models.CustomClassifyDocumentMultiCategoriesActionResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.ai.textanalytics.util.ClassifyCustomCategoriesResultCollection;
+import com.azure.ai.textanalytics.util.CustomClassifyDocumentMultiCategoriesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
@@ -66,8 +66,8 @@ public class AnalyzeClassificationsAction {
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setClassifyCustomCategoriesActions(
-                        new ClassifyCustomCategoriesAction("myFirstBlackBox", "model1")),
+                    .setCustomClassifyDocumentMultiCategoriesActions(
+                        new CustomClassifyDocumentMultiCategoriesAction("myFirstBlackBox", "model1")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 
@@ -88,12 +88,12 @@ public class AnalyzeClassificationsAction {
             System.out.printf("Response code: %d, Continuation Token: %s.%n", perPage.getStatusCode(),
                 perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-                for (ClassifyCustomCategoriesActionResult actionResult : actionsResult.getClassifyCustomCategoriesResults()) {
+                for (CustomClassifyDocumentMultiCategoriesActionResult actionResult : actionsResult.getCustomClassifyDocumentMultiCategoriesResults()) {
                     if (!actionResult.isError()) {
-                        final ClassifyCustomCategoriesResultCollection documentsResults = actionResult.getDocumentsResults();
+                        final CustomClassifyDocumentMultiCategoriesResultCollection documentsResults = actionResult.getDocumentsResults();
                         System.out.printf("Project Name: %s, model name: %s.%n",
                             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                        for (ClassifyCustomCategoriesResult documentResult : documentsResults) {
+                        for (ClassifyDocumentMultiCategoriesResult documentResult : documentsResults) {
                             if (!documentResult.isError()) {
                                 for (DocumentClassification documentClassification : documentResult.getDocumentClassifications()) {
                                     System.out.printf("\tCategory: %s, confidence score: %f.%n",

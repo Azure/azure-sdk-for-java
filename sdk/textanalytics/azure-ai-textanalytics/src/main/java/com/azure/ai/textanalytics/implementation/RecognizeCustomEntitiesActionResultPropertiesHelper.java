@@ -3,11 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesActionResult;
+import com.azure.ai.textanalytics.util.CustomRecognizeEntitiesResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link RecognizeCustomEntitiesActionResult} instance.
+ * The helper class to set the non-public properties of an {@link CustomRecognizeEntitiesActionResult} instance.
  */
 public final class RecognizeCustomEntitiesActionResultPropertiesHelper {
     private static RecognizeCustomEntitiesActionResultAccessor accessor;
@@ -15,16 +15,16 @@ public final class RecognizeCustomEntitiesActionResultPropertiesHelper {
     private RecognizeCustomEntitiesActionResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link RecognizeCustomEntitiesActionResult}
+     * Type defining the methods to set the non-public properties of an {@link CustomRecognizeEntitiesActionResult}
      * instance.
      */
     public interface RecognizeCustomEntitiesActionResultAccessor {
-        void setDocumentsResults(RecognizeCustomEntitiesActionResult actionResult,
-            RecognizeCustomEntitiesResultCollection documentsResults);
+        void setDocumentsResults(CustomRecognizeEntitiesActionResult actionResult,
+            CustomRecognizeEntitiesResultCollection documentsResults);
     }
 
     /**
-     * The method called from {@link RecognizeCustomEntitiesActionResult} to set it's accessor.
+     * The method called from {@link CustomRecognizeEntitiesActionResult} to set it's accessor.
      *
      * @param recognizeCustomEntitiesActionResultAccessor The accessor.
      */
@@ -33,8 +33,8 @@ public final class RecognizeCustomEntitiesActionResultPropertiesHelper {
         accessor = recognizeCustomEntitiesActionResultAccessor;
     }
 
-    public static void setDocumentsResults(RecognizeCustomEntitiesActionResult actionResult,
-        RecognizeCustomEntitiesResultCollection documentsResults) {
+    public static void setDocumentsResults(CustomRecognizeEntitiesActionResult actionResult,
+        CustomRecognizeEntitiesResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

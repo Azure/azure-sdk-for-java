@@ -22,9 +22,9 @@ public final class TextAnalyticsActions {
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
-    private Iterable<RecognizeCustomEntitiesAction> RecognizeCustomEntitiesActions;
-    private Iterable<ClassifyCustomCategoryAction> classifyCustomCategoryActions;
-    private Iterable<ClassifyCustomCategoriesAction> classifyCustomCategoriesActions;
+    private Iterable<CustomRecognizeEntitiesAction> customRecognizeEntitiesActions;
+    private Iterable<CustomClassifyDocumentSingleCategoryAction> customClassifyDocumentSingleCategoryActions;
+    private Iterable<CustomClassifyDocumentMultiCategoriesAction> customClassifyDocumentMultiCategoriesActions;
 
     /**
      * Gets the custom name for the actions.
@@ -204,85 +204,88 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * Gets the list of {@link CustomRecognizeEntitiesAction} to be executed.
      *
-     * @return the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * @return the list of {@link CustomRecognizeEntitiesAction} to be executed.
      */
-    public Iterable<RecognizeCustomEntitiesAction> getRecognizeCustomEntitiesActions() {
-        return RecognizeCustomEntitiesActions;
+    public Iterable<CustomRecognizeEntitiesAction> getCustomRecognizeEntitiesActions() {
+        return customRecognizeEntitiesActions;
     }
 
     /**
-     * Sets the list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * Sets the list of {@link CustomRecognizeEntitiesAction} to be executed.
      *
-     * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
+     * @param customRecognizeEntitiesActions The list of {@link CustomRecognizeEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link RecognizeCustomEntitiesAction} action are passed in.
+     * @throws IllegalArgumentException if more than one {@link CustomRecognizeEntitiesAction} action are passed in.
      * Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setRecognizeCustomEntitiesActions(
-        RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
-        validateActionsNumber(recognizeCustomEntitiesActions, RecognizeCustomEntitiesAction.class.getName());
-        this.RecognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null :
-                                                  Arrays.asList(recognizeCustomEntitiesActions);
+    public TextAnalyticsActions setCustomRecognizeEntitiesActions(
+        CustomRecognizeEntitiesAction... customRecognizeEntitiesActions) {
+        validateActionsNumber(customRecognizeEntitiesActions, CustomRecognizeEntitiesAction.class.getName());
+        this.customRecognizeEntitiesActions = customRecognizeEntitiesActions == null ? null
+                                                  : Arrays.asList(customRecognizeEntitiesActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ClassifyCustomCategoryAction} to be executed.
+     * Gets the list of {@link CustomClassifyDocumentSingleCategoryAction} to be executed.
      *
-     * @return the list of {@link ClassifyCustomCategoryAction} to be executed.
+     * @return the list of {@link CustomClassifyDocumentSingleCategoryAction} to be executed.
      */
-    public Iterable<ClassifyCustomCategoryAction> getClassifyCustomCategoryActions() {
-        return classifyCustomCategoryActions;
+    public Iterable<CustomClassifyDocumentSingleCategoryAction> getCustomClassifyDocumentSingleCategoryActions() {
+        return customClassifyDocumentSingleCategoryActions;
     }
 
     /**
-     * Sets the list of {@link ClassifyCustomCategoryAction} to be executed.
+     * Sets the list of {@link CustomClassifyDocumentSingleCategoryAction} to be executed.
      *
-     * @param classifyCustomCategoryActions The list of {@link ClassifyCustomCategoryAction} to be executed.
+     * @param customClassifyDocumentSingleCategoryActions The list of
+     * {@link CustomClassifyDocumentSingleCategoryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link ClassifyCustomCategoryAction} action are passed in.
+     * @throws IllegalArgumentException if more than one {@link CustomClassifyDocumentSingleCategoryAction}
+     * action are passed in.
      * Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setClassifyCustomCategoryActions(
-        ClassifyCustomCategoryAction... classifyCustomCategoryActions) {
-        validateActionsNumber(classifyCustomCategoryActions, ClassifyCustomCategoryAction.class.getName());
-        this.classifyCustomCategoryActions = classifyCustomCategoryActions == null ? null :
-                                                  Arrays.asList(classifyCustomCategoryActions);
+    public TextAnalyticsActions setCustomClassifyDocumentSingleCategoryActions(
+        CustomClassifyDocumentSingleCategoryAction... customClassifyDocumentSingleCategoryActions) {
+        validateActionsNumber(customClassifyDocumentSingleCategoryActions,
+            CustomClassifyDocumentSingleCategoryAction.class.getName());
+        this.customClassifyDocumentSingleCategoryActions = customClassifyDocumentSingleCategoryActions == null
+            ? null : Arrays.asList(customClassifyDocumentSingleCategoryActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ClassifyCustomCategoriesAction} to be executed.
+     * Gets the list of {@link CustomClassifyDocumentMultiCategoriesAction} to be executed.
      *
-     * @return the list of {@link ClassifyCustomCategoriesAction} to be executed.
+     * @return the list of {@link CustomClassifyDocumentMultiCategoriesAction} to be executed.
      */
-    public Iterable<ClassifyCustomCategoriesAction> getClassifyCustomCategoriesActions() {
-        return classifyCustomCategoriesActions;
+    public Iterable<CustomClassifyDocumentMultiCategoriesAction> getCustomClassifyDocumentMultiCategoriesActions() {
+        return customClassifyDocumentMultiCategoriesActions;
     }
 
     /**
-     * Sets the list of {@link ClassifyCustomCategoriesAction} to be executed.
+     * Sets the list of {@link CustomClassifyDocumentMultiCategoriesAction} to be executed.
      *
-     * @param classifyCustomCategoriesActions The list of {@link ClassifyCustomCategoriesAction} to
+     * @param customClassifyDocumentMultiCategoriesActions The list of {@link CustomClassifyDocumentMultiCategoriesAction} to
      * be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link ClassifyCustomCategoriesAction} action are
+     * @throws IllegalArgumentException if more than one {@link CustomClassifyDocumentMultiCategoriesAction} action are
      * passed in. Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setClassifyCustomCategoriesActions(
-        ClassifyCustomCategoriesAction... classifyCustomCategoriesActions) {
-        validateActionsNumber(classifyCustomCategoriesActions,
-            ClassifyCustomCategoriesAction.class.getName());
-        this.classifyCustomCategoriesActions = classifyCustomCategoriesActions == null ? null :
-                                                            Arrays.asList(classifyCustomCategoriesActions);
+    public TextAnalyticsActions setCustomClassifyDocumentMultiCategoriesActions(
+        CustomClassifyDocumentMultiCategoriesAction... customClassifyDocumentMultiCategoriesActions) {
+        validateActionsNumber(customClassifyDocumentMultiCategoriesActions,
+            CustomClassifyDocumentMultiCategoriesAction.class.getName());
+        this.customClassifyDocumentMultiCategoriesActions = customClassifyDocumentMultiCategoriesActions == null
+            ? null : Arrays.asList(customClassifyDocumentMultiCategoriesActions);
         return this;
     }
 

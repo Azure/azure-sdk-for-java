@@ -9,13 +9,13 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
+import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesAction;
+import com.azure.ai.textanalytics.models.CustomRecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.CustomRecognizeEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
@@ -66,8 +66,8 @@ public class AnalyzeCustomEntitiesAction {
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setRecognizeCustomEntitiesActions(
-                        new RecognizeCustomEntitiesAction("myFirstBlackBox", "model1")),
+                    .setCustomRecognizeEntitiesActions(
+                        new CustomRecognizeEntitiesAction("myFirstBlackBox", "model1")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 
@@ -89,9 +89,9 @@ public class AnalyzeCustomEntitiesAction {
                 perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
                 System.out.println("Custom entities recognition action results:");
-                for (RecognizeCustomEntitiesActionResult actionResult : actionsResult.getRecognizeCustomEntitiesResults()) {
+                for (CustomRecognizeEntitiesActionResult actionResult : actionsResult.getCustomRecognizeEntitiesResults()) {
                     if (!actionResult.isError()) {
-                        final RecognizeCustomEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
+                        final CustomRecognizeEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
                         System.out.printf("Project Name: %s, model name: %s.%n",
                             documentsResults.getProjectName(), documentsResults.getDeploymentName());
                         for (RecognizeEntitiesResult documentResult : documentsResults) {

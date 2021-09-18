@@ -4,10 +4,10 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.CustomRecognizeEntitiesResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link RecognizeCustomEntitiesResultCollection} instance.
+ * The helper class to set the non-public properties of an {@link CustomRecognizeEntitiesResultCollection} instance.
  */
 public final class RecognizeCustomEntitiesResultCollectionPropertiesHelper {
     private static RecognizeCustomEntitiesResultCollectionAccessor accessor;
@@ -15,18 +15,18 @@ public final class RecognizeCustomEntitiesResultCollectionPropertiesHelper {
     private RecognizeCustomEntitiesResultCollectionPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link RecognizeCustomEntitiesResultCollection}
+     * Type defining the methods to set the non-public properties of an {@link CustomRecognizeEntitiesResultCollection}
      * instance.
      */
     public interface RecognizeCustomEntitiesResultCollectionAccessor {
-        void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection, String projectName);
-        void setDeploymentName(RecognizeCustomEntitiesResultCollection resultCollection, String deploymentName);
-        void setStatistics(RecognizeCustomEntitiesResultCollection resultCollection,
+        void setProjectName(CustomRecognizeEntitiesResultCollection resultCollection, String projectName);
+        void setDeploymentName(CustomRecognizeEntitiesResultCollection resultCollection, String deploymentName);
+        void setStatistics(CustomRecognizeEntitiesResultCollection resultCollection,
             TextDocumentBatchStatistics statistics);
     }
 
     /**
-     * The method called from {@link RecognizeCustomEntitiesResultCollection} to set it's accessor.
+     * The method called from {@link CustomRecognizeEntitiesResultCollection} to set it's accessor.
      *
      * @param recognizeCustomEntitiesResultCollectionAccessor The accessor.
      */
@@ -35,16 +35,16 @@ public final class RecognizeCustomEntitiesResultCollectionPropertiesHelper {
         accessor = recognizeCustomEntitiesResultCollectionAccessor;
     }
 
-    public static void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection, String projectName) {
+    public static void setProjectName(CustomRecognizeEntitiesResultCollection resultCollection, String projectName) {
         accessor.setProjectName(resultCollection, projectName);
     }
 
-    public static void setDeploymentName(RecognizeCustomEntitiesResultCollection resultCollection,
+    public static void setDeploymentName(CustomRecognizeEntitiesResultCollection resultCollection,
         String deploymentName) {
         accessor.setDeploymentName(resultCollection, deploymentName);
     }
 
-    public static void setStatistics(RecognizeCustomEntitiesResultCollection resultCollection,
+    public static void setStatistics(CustomRecognizeEntitiesResultCollection resultCollection,
         TextDocumentBatchStatistics statistics) {
         accessor.setStatistics(resultCollection, statistics);
     }

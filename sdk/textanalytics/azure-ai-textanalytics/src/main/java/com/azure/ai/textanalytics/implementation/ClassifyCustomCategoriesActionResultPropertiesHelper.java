@@ -3,11 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesActionResult;
-import com.azure.ai.textanalytics.util.ClassifyCustomCategoriesResultCollection;
+import com.azure.ai.textanalytics.models.CustomClassifyDocumentMultiCategoriesActionResult;
+import com.azure.ai.textanalytics.util.CustomClassifyDocumentMultiCategoriesResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifyCustomCategoriesActionResult} instance.
+ * The helper class to set the non-public properties of an {@link CustomClassifyDocumentMultiCategoriesActionResult} instance.
  */
 public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
 
@@ -16,16 +16,16 @@ public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
     private ClassifyCustomCategoriesActionResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifyCustomCategoriesActionResult}
+     * Type defining the methods to set the non-public properties of an {@link CustomClassifyDocumentMultiCategoriesActionResult}
      * instance.
      */
     public interface ClassifyCustomCategoriesActionResultAccessor {
-        void setDocumentsResults(ClassifyCustomCategoriesActionResult actionResult,
-            ClassifyCustomCategoriesResultCollection documentsResults);
+        void setDocumentsResults(CustomClassifyDocumentMultiCategoriesActionResult actionResult,
+            CustomClassifyDocumentMultiCategoriesResultCollection documentsResults);
     }
 
     /**
-     * The method called from {@link ClassifyCustomCategoriesActionResult} to set it's accessor.
+     * The method called from {@link CustomClassifyDocumentMultiCategoriesActionResult} to set it's accessor.
      *
      * @param classifyCustomCategoriesActionResultAccessor The accessor.
      */
@@ -34,8 +34,8 @@ public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
         accessor = classifyCustomCategoriesActionResultAccessor;
     }
 
-    public static void setDocumentsResults(ClassifyCustomCategoriesActionResult actionResult,
-        ClassifyCustomCategoriesResultCollection documentsResults) {
+    public static void setDocumentsResults(CustomClassifyDocumentMultiCategoriesActionResult actionResult,
+        CustomClassifyDocumentMultiCategoriesResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }
