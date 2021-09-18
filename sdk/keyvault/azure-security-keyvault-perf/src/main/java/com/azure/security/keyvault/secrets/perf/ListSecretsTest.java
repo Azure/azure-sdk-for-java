@@ -24,6 +24,7 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
         // (including soft-deleted) impact performance.
         if (secretClient.listPropertiesOfSecrets().iterator().hasNext() ||
             secretClient.listDeletedSecrets().iterator().hasNext()) {
+
             throw new RuntimeException("KeyVault " + secretClient.getVaultUrl() + "must contain 0 " +
                 "secrets (including soft-deleted) before starting perf test");
         }
