@@ -4,6 +4,7 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -17,7 +18,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -74,7 +74,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential));
+            policies.add(new BearerTokenAuthenticationPolicy(credential));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

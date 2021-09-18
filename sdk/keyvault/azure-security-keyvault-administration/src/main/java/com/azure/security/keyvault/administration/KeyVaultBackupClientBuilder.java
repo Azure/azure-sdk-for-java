@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -23,7 +24,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
@@ -155,7 +155,7 @@ public final class KeyVaultBackupClientBuilder {
         // Add retry policy.
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new BearerTokenAuthenticationPolicy(credential));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);

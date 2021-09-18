@@ -6,6 +6,7 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -16,7 +17,6 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.security.MessageDigest;
@@ -74,7 +74,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier("<your-key-id>")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()))
+            .addPolicy(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build()))
             .httpClient(HttpClient.createDefault())
             .buildAsyncClient();
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation
@@ -90,7 +90,7 @@ public final class CryptographyAsyncClientJavaDocCodeSnippets {
     public CryptographyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .policies(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
             .build();
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .pipeline(pipeline)

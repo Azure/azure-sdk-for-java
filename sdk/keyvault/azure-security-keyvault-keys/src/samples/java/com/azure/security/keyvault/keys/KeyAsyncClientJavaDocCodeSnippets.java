@@ -7,10 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
@@ -74,7 +74,7 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
     public KeyAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new KeyVaultCredentialPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .policies(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
             .build();
         KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
             .pipeline(pipeline)
