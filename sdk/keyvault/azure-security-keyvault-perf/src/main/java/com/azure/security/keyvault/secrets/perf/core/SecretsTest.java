@@ -49,7 +49,7 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
     protected Mono<Void> deleteAndPurgeSecretsAsync(String ... names) {
         return Flux
             .fromArray(names)
-            .flatMap(name -> client
+            .flatMap(name -> secretAsyncClient
                 .beginDeleteSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())
                 .then(client.purgeDeletedSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())))
             .then();
