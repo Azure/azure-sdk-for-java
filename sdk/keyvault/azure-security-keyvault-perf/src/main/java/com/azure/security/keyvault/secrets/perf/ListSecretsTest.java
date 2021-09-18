@@ -29,7 +29,6 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
                 "secrets (including soft-deleted) before starting perf test");
         }
 
-        // TODO: Populate array before returning flux
         _secretNames = new String[options.getCount()];
         for (int i=0; i < _secretNames.length; i++) {
             _secretNames[i] = "listSecretsPerfTest-" + UUID.randomUUID();
