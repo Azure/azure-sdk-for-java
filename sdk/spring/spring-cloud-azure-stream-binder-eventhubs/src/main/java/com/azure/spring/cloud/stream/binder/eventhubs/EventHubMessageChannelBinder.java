@@ -11,7 +11,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.eventhubs.support.StartPosition;
 import com.azure.spring.integration.handler.reactor.DefaultMessageHandler;
 import com.azure.spring.eventhubs.core.EventHubOperation;
-import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
+import com.azure.spring.integration.eventhubs.inbound.EventHubInboundChannelAdapter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;

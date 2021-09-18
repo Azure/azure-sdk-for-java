@@ -494,7 +494,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration.java"/>
 
-  <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.messaging.checkpoint.CheckpointConfig.java"/>
   <suppress checks="MethodName" files="com.azure.spring.servicebus.support.ServiceBusClientConfig.java"/>
 
   <!-- Suppress warnings for EventProcessorSharedAuthenticationClientBuilder and EventHubSharedAuthenticationClientBuilder. They are used by Azure Spring. -->

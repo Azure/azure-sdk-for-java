@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.integration.eventhub.inbound;
+package com.azure.spring.integration.eventhubs.inbound;
 
 import com.azure.spring.integration.endpoint.AbstractInboundChannelAdapter;
 import com.azure.spring.messaging.core.SubscribeByGroupOperation;

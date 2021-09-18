@@ -5,8 +5,6 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.EventHubHealthIndicator;
-import com.azure.spring.cloud.stream.binder.eventhubs.EventHubMessageChannelBinder;
 import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

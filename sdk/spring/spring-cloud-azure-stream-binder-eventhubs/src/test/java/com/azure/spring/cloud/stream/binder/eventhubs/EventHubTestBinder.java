@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.spring.cloud.stream.binder.eventhubs.EventHubMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
