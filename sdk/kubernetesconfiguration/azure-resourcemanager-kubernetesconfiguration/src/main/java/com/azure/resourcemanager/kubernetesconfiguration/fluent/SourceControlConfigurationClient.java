@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for SourceControlConfigurationClient class. */
 public interface SourceControlConfigurationClient {
     /**
-     * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -45,11 +45,18 @@ public interface SourceControlConfigurationClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the SourceControlConfigurationsClient object to access its operations.
+     * Gets the ExtensionsClient object to access its operations.
      *
-     * @return the SourceControlConfigurationsClient object.
+     * @return the ExtensionsClient object.
      */
-    SourceControlConfigurationsClient getSourceControlConfigurations();
+    ExtensionsClient getExtensions();
+
+    /**
+     * Gets the OperationStatusClient object to access its operations.
+     *
+     * @return the OperationStatusClient object.
+     */
+    OperationStatusClient getOperationStatus();
 
     /**
      * Gets the OperationsClient object to access its operations.

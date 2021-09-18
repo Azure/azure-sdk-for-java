@@ -13,7 +13,7 @@ import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ResourceP
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * List all the available operations the KubernetesConfiguration resource provider supports.
+     * List all the available operations the KubernetesConfiguration resource provider supports, in this api-version.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -23,7 +23,7 @@ public interface OperationsClient {
     PagedIterable<ResourceProviderOperationInner> list();
 
     /**
-     * List all the available operations the KubernetesConfiguration resource provider supports.
+     * List all the available operations the KubernetesConfiguration resource provider supports, in this api-version.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
