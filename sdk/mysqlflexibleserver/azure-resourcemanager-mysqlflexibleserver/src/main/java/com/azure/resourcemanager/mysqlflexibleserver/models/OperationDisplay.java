@@ -4,38 +4,38 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Display metadata associated with the operation. */
-@Fluent
+@Immutable
 public final class OperationDisplay {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
 
     /*
      * Operation resource provider name.
      */
-    @JsonProperty(value = "provider")
+    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
      * Resource on which the operation is performed.
      */
-    @JsonProperty(value = "resource")
+    @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
      * Localized friendly name for the operation.
      */
-    @JsonProperty(value = "operation")
+    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * Operation description.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
@@ -48,34 +48,12 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the provider property: Operation resource provider name.
-     *
-     * @param provider the provider value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withProvider(String provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
      * Get the resource property: Resource on which the operation is performed.
      *
      * @return the resource value.
      */
     public String resource() {
         return this.resource;
-    }
-
-    /**
-     * Set the resource property: Resource on which the operation is performed.
-     *
-     * @param resource the resource value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withResource(String resource) {
-        this.resource = resource;
-        return this;
     }
 
     /**
@@ -88,34 +66,12 @@ public final class OperationDisplay {
     }
 
     /**
-     * Set the operation property: Localized friendly name for the operation.
-     *
-     * @param operation the operation value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withOperation(String operation) {
-        this.operation = operation;
-        return this;
-    }
-
-    /**
      * Get the description property: Operation description.
      *
      * @return the description value.
      */
     public String description() {
         return this.description;
-    }
-
-    /**
-     * Set the description property: Operation description.
-     *
-     * @param description the description value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay withDescription(String description) {
-        this.description = description;
-        return this;
     }
 
     /**

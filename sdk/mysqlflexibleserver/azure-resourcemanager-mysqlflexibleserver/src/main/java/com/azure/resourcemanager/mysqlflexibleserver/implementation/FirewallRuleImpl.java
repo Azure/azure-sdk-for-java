@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.FirewallRuleInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.FirewallRule;
@@ -24,10 +23,6 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String startIpAddress() {
@@ -52,7 +47,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
 
     private String firewallRuleName;
 
-    public FirewallRuleImpl withExistingFlexibleServer(String resourceGroupName, String serverName) {
+    public FirewallRuleImpl withExistingServer(String resourceGroupName, String serverName) {
         this.resourceGroupName = resourceGroupName;
         this.serverName = serverName;
         return this;
@@ -109,7 +104,7 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
         this.firewallRuleName = Utils.getValueFromIdByName(innerObject.id(), "firewallRules");
     }
 

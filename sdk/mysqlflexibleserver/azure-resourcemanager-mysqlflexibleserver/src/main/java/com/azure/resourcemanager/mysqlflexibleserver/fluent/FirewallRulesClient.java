@@ -90,7 +90,7 @@ public interface FirewallRulesClient {
         Context context);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -105,7 +105,7 @@ public interface FirewallRulesClient {
         String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -121,7 +121,7 @@ public interface FirewallRulesClient {
         String resourceGroupName, String serverName, String firewallRuleName, Context context);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -134,7 +134,7 @@ public interface FirewallRulesClient {
     void delete(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.

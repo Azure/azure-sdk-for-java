@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
 
 /** An immutable client-side representation of Configuration. */
@@ -29,13 +29,6 @@ public interface Configuration {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the value property: Value of the configuration.
@@ -77,28 +70,7 @@ public interface Configuration {
      *
      * @return the source value.
      */
-    ConfigurationSource source();
-
-    /**
-     * Gets the isReadOnly property: If is the configuration read only.
-     *
-     * @return the isReadOnly value.
-     */
-    IsReadOnly isReadOnly();
-
-    /**
-     * Gets the isConfigPendingRestart property: If is the configuration pending restart or not.
-     *
-     * @return the isConfigPendingRestart value.
-     */
-    IsConfigPendingRestart isConfigPendingRestart();
-
-    /**
-     * Gets the isDynamicConfig property: If is the configuration dynamic.
-     *
-     * @return the isDynamicConfig value.
-     */
-    IsDynamicConfig isDynamicConfig();
+    String source();
 
     /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner object.
@@ -106,4 +78,127 @@ public interface Configuration {
      * @return the inner object.
      */
     ConfigurationInner innerModel();
+
+    /** The entirety of the Configuration definition. */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+    /** The Configuration definition stages. */
+    interface DefinitionStages {
+        /** The first stage of the Configuration definition. */
+        interface Blank extends WithParentResource {
+        }
+        /** The stage of the Configuration definition allowing to specify parent resource. */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, serverName.
+             *
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param serverName The name of the server.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingServer(String resourceGroupName, String serverName);
+        }
+        /**
+         * The stage of the Configuration definition which contains all the minimum required properties for the resource
+         * to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithValue, DefinitionStages.WithSource {
+            /**
+             * Executes the create request.
+             *
+             * @return the created resource.
+             */
+            Configuration create();
+
+            /**
+             * Executes the create request.
+             *
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            Configuration create(Context context);
+        }
+        /** The stage of the Configuration definition allowing to specify value. */
+        interface WithValue {
+            /**
+             * Specifies the value property: Value of the configuration..
+             *
+             * @param value Value of the configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withValue(String value);
+        }
+        /** The stage of the Configuration definition allowing to specify source. */
+        interface WithSource {
+            /**
+             * Specifies the source property: Source of the configuration..
+             *
+             * @param source Source of the configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withSource(String source);
+        }
+    }
+    /**
+     * Begins update for the Configuration resource.
+     *
+     * @return the stage of resource update.
+     */
+    Configuration.Update update();
+
+    /** The template for Configuration update. */
+    interface Update extends UpdateStages.WithValue, UpdateStages.WithSource {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        Configuration apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        Configuration apply(Context context);
+    }
+    /** The Configuration update stages. */
+    interface UpdateStages {
+        /** The stage of the Configuration update allowing to specify value. */
+        interface WithValue {
+            /**
+             * Specifies the value property: Value of the configuration..
+             *
+             * @param value Value of the configuration.
+             * @return the next definition stage.
+             */
+            Update withValue(String value);
+        }
+        /** The stage of the Configuration update allowing to specify source. */
+        interface WithSource {
+            /**
+             * Specifies the source property: Source of the configuration..
+             *
+             * @param source Source of the configuration.
+             * @return the next definition stage.
+             */
+            Update withSource(String source);
+        }
+    }
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @return the refreshed resource.
+     */
+    Configuration refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    Configuration refresh(Context context);
 }

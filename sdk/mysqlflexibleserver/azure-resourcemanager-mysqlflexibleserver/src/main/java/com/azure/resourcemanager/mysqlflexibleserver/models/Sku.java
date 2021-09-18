@@ -15,19 +15,38 @@ public final class Sku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
 
     /*
-     * The name of the sku, e.g. Standard_D32s_v3.
+     * The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1,
+     * GP_Gen5_8.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The tier of the particular SKU, e.g. GeneralPurpose.
+     * The tier of the particular SKU, e.g. Basic.
      */
-    @JsonProperty(value = "tier", required = true)
+    @JsonProperty(value = "tier")
     private SkuTier tier;
 
+    /*
+     * The scale up/out capacity, representing server's compute units.
+     */
+    @JsonProperty(value = "capacity")
+    private Integer capacity;
+
+    /*
+     * The size code, to be interpreted by resource as appropriate.
+     */
+    @JsonProperty(value = "size")
+    private String size;
+
+    /*
+     * The family of hardware.
+     */
+    @JsonProperty(value = "family")
+    private String family;
+
     /**
-     * Get the name property: The name of the sku, e.g. Standard_D32s_v3.
+     * Get the name property: The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
      *
      * @return the name value.
      */
@@ -36,7 +55,7 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The name of the sku, e.g. Standard_D32s_v3.
+     * Set the name property: The name of the sku, typically, tier + family + cores, e.g. B_Gen4_1, GP_Gen5_8.
      *
      * @param name the name value to set.
      * @return the Sku object itself.
@@ -47,7 +66,7 @@ public final class Sku {
     }
 
     /**
-     * Get the tier property: The tier of the particular SKU, e.g. GeneralPurpose.
+     * Get the tier property: The tier of the particular SKU, e.g. Basic.
      *
      * @return the tier value.
      */
@@ -56,13 +75,73 @@ public final class Sku {
     }
 
     /**
-     * Set the tier property: The tier of the particular SKU, e.g. GeneralPurpose.
+     * Set the tier property: The tier of the particular SKU, e.g. Basic.
      *
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
     public Sku withTier(SkuTier tier) {
         this.tier = tier;
+        return this;
+    }
+
+    /**
+     * Get the capacity property: The scale up/out capacity, representing server's compute units.
+     *
+     * @return the capacity value.
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set the capacity property: The scale up/out capacity, representing server's compute units.
+     *
+     * @param capacity the capacity value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withCapacity(Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get the size property: The size code, to be interpreted by resource as appropriate.
+     *
+     * @return the size value.
+     */
+    public String size() {
+        return this.size;
+    }
+
+    /**
+     * Set the size property: The size code, to be interpreted by resource as appropriate.
+     *
+     * @param size the size value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withSize(String size) {
+        this.size = size;
+        return this;
+    }
+
+    /**
+     * Get the family property: The family of hardware.
+     *
+     * @return the family value.
+     */
+    public String family() {
+        return this.family;
+    }
+
+    /**
+     * Set the family property: The family of hardware.
+     *
+     * @param family the family value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withFamily(String family) {
+        this.family = family;
         return this;
     }
 
@@ -75,10 +154,6 @@ public final class Sku {
         if (name() == null) {
             throw logger
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
-        }
-        if (tier() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property tier in model Sku"));
         }
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of FirewallRules. */
 public interface FirewallRules {
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -23,7 +23,7 @@ public interface FirewallRules {
     void delete(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -112,7 +112,7 @@ public interface FirewallRules {
     Response<FirewallRule> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +122,7 @@ public interface FirewallRules {
     void deleteById(String id);
 
     /**
-     * Deletes a firewall rule.
+     * Deletes a server firewall rule.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

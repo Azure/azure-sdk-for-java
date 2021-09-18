@@ -11,10 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationListResultInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Configuration;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListForBatchUpdate;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListResult;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Configurations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,32 +26,6 @@ public final class ConfigurationsImpl implements Configurations {
         ConfigurationsClient innerClient, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Configuration update(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
-        ConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters);
-        if (inner != null) {
-            return new ConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Configuration update(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationInner parameters,
-        Context context) {
-        ConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters, context);
-        if (inner != null) {
-            return new ConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Configuration get(String resourceGroupName, String serverName, String configurationName) {
@@ -81,28 +52,6 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public ConfigurationListResult batchUpdate(
-        String resourceGroupName, String serverName, ConfigurationListForBatchUpdate parameters) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().batchUpdate(resourceGroupName, serverName, parameters);
-        if (inner != null) {
-            return new ConfigurationListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public ConfigurationListResult batchUpdate(
-        String resourceGroupName, String serverName, ConfigurationListForBatchUpdate parameters, Context context) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().batchUpdate(resourceGroupName, serverName, parameters, context);
-        if (inner != null) {
-            return new ConfigurationListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<ConfigurationInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
         return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
@@ -114,11 +63,69 @@ public final class ConfigurationsImpl implements Configurations {
         return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
+    public Configuration getById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String serverName = Utils.getValueFromIdByName(id, "servers");
+        if (serverName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
+        }
+        String configurationName = Utils.getValueFromIdByName(id, "configurations");
+        if (configurationName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, serverName, configurationName, Context.NONE).getValue();
+    }
+
+    public Response<Configuration> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String serverName = Utils.getValueFromIdByName(id, "servers");
+        if (serverName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String.format("The resource ID '%s' is not valid. Missing path segment 'servers'.", id)));
+        }
+        String configurationName = Utils.getValueFromIdByName(id, "configurations");
+        if (configurationName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, serverName, configurationName, context);
+    }
+
     private ConfigurationsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager() {
         return this.serviceManager;
+    }
+
+    public ConfigurationImpl define(String name) {
+        return new ConfigurationImpl(name, this.manager());
     }
 }

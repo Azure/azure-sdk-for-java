@@ -17,13 +17,6 @@ public interface ConfigurationListResult {
     List<Configuration> value();
 
     /**
-     * Gets the nextLink property: The link used to get the next page of operations.
-     *
-     * @return the nextLink value.
-     */
-    String nextLink();
-
-    /**
      * Gets the inner com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationListResultInner object.
      *
      * @return the inner object.

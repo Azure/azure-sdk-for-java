@@ -102,7 +102,7 @@ public interface Servers {
     PagedIterable<Server> list(Context context);
 
     /**
-     * Manual failover a server.
+     * Restarts a server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -110,10 +110,10 @@ public interface Servers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void failover(String resourceGroupName, String serverName);
+    void restart(String resourceGroupName, String serverName);
 
     /**
-     * Manual failover a server.
+     * Restarts a server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -122,35 +122,10 @@ public interface Servers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void failover(String resourceGroupName, String serverName, Context context);
+    void restart(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Restarts a server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for restarting a server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restart(String resourceGroupName, String serverName, ServerRestartParameter parameters);
-
-    /**
-     * Restarts a server.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for restarting a server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void restart(String resourceGroupName, String serverName, ServerRestartParameter parameters, Context context);
-
-    /**
-     * Starts a server.
+     * Starts a stopped server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -161,7 +136,7 @@ public interface Servers {
     void start(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -173,7 +148,7 @@ public interface Servers {
     void start(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Stops a server.
+     * Stops a running server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -184,7 +159,7 @@ public interface Servers {
     void stop(String resourceGroupName, String serverName);
 
     /**
-     * Stops a server.
+     * Stops a running server.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -194,6 +169,31 @@ public interface Servers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void stop(String resourceGroupName, String serverName, Context context);
+
+    /**
+     * Upgrade server version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for updating a server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(String resourceGroupName, String serverName, ServerUpgradeParameters parameters);
+
+    /**
+     * Upgrade server version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for updating a server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(String resourceGroupName, String serverName, ServerUpgradeParameters parameters, Context context);
 
     /**
      * Gets information about a server.

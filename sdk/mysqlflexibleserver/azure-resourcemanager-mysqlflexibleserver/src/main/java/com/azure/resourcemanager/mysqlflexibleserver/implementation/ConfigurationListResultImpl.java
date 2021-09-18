@@ -38,10 +38,6 @@ public final class ConfigurationListResultImpl implements ConfigurationListResul
         }
     }
 
-    public String nextLink() {
-        return this.innerModel().nextLink();
-    }
-
     public ConfigurationListResultInner innerModel() {
         return this.innerObject;
     }

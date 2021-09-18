@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.mysqlflexibleserver.implementation;
 
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
-import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
-import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
+import com.azure.resourcemanager.mysqlflexibleserver.models.InfrastructureEncryption;
+import com.azure.resourcemanager.mysqlflexibleserver.models.MinimalTlsVersionEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.PublicNetworkAccessEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ResourceIdentity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerForUpdate;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParameter;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerForCreate;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerPrivateEndpointConnection;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerPropertiesForCreate;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerUpdateParameters;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ServerUpgradeParameters;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
+import com.azure.resourcemanager.mysqlflexibleserver.models.SslEnforcementEnum;
+import com.azure.resourcemanager.mysqlflexibleserver.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class ServerImpl implements Server, Server.Definition, Server.Update {
@@ -55,76 +57,77 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public Sku sku() {
-        return this.innerModel().sku();
+    public ResourceIdentity identity() {
+        return this.innerModel().identity();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public String administratorLogin() {
         return this.innerModel().administratorLogin();
     }
 
-    public String administratorLoginPassword() {
-        return this.innerModel().administratorLoginPassword();
-    }
-
     public ServerVersion version() {
         return this.innerModel().version();
     }
 
-    public String availabilityZone() {
-        return this.innerModel().availabilityZone();
+    public SslEnforcementEnum sslEnforcement() {
+        return this.innerModel().sslEnforcement();
     }
 
-    public CreateMode createMode() {
-        return this.innerModel().createMode();
+    public MinimalTlsVersionEnum minimalTlsVersion() {
+        return this.innerModel().minimalTlsVersion();
     }
 
-    public String sourceServerResourceId() {
-        return this.innerModel().sourceServerResourceId();
+    public String byokEnforcement() {
+        return this.innerModel().byokEnforcement();
     }
 
-    public OffsetDateTime restorePointInTime() {
-        return this.innerModel().restorePointInTime();
+    public InfrastructureEncryption infrastructureEncryption() {
+        return this.innerModel().infrastructureEncryption();
     }
 
-    public ReplicationRole replicationRole() {
-        return this.innerModel().replicationRole();
-    }
-
-    public Integer replicaCapacity() {
-        return this.innerModel().replicaCapacity();
-    }
-
-    public ServerState state() {
-        return this.innerModel().state();
+    public ServerState userVisibleState() {
+        return this.innerModel().userVisibleState();
     }
 
     public String fullyQualifiedDomainName() {
         return this.innerModel().fullyQualifiedDomainName();
     }
 
-    public Storage storage() {
-        return this.innerModel().storage();
+    public OffsetDateTime earliestRestoreDate() {
+        return this.innerModel().earliestRestoreDate();
     }
 
-    public Backup backup() {
-        return this.innerModel().backup();
+    public StorageProfile storageProfile() {
+        return this.innerModel().storageProfile();
     }
 
-    public HighAvailability highAvailability() {
-        return this.innerModel().highAvailability();
+    public String replicationRole() {
+        return this.innerModel().replicationRole();
     }
 
-    public Network network() {
-        return this.innerModel().network();
+    public String masterServerId() {
+        return this.innerModel().masterServerId();
     }
 
-    public MaintenanceWindow maintenanceWindow() {
-        return this.innerModel().maintenanceWindow();
+    public Integer replicaCapacity() {
+        return this.innerModel().replicaCapacity();
+    }
+
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        List<ServerPrivateEndpointConnection> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -147,7 +150,9 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     private String serverName;
 
-    private ServerForUpdate updateParameters;
+    private ServerForCreate createParameters;
+
+    private ServerUpdateParameters updateParameters;
 
     public ServerImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
@@ -159,7 +164,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             serviceManager
                 .serviceClient()
                 .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
+                .create(resourceGroupName, serverName, createParameters, Context.NONE);
         return this;
     }
 
@@ -168,7 +173,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             serviceManager
                 .serviceClient()
                 .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), context);
+                .create(resourceGroupName, serverName, createParameters, context);
         return this;
     }
 
@@ -176,10 +181,11 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         this.innerObject = new ServerInner();
         this.serviceManager = serviceManager;
         this.serverName = name;
+        this.createParameters = new ServerForCreate();
     }
 
     public ServerImpl update() {
-        this.updateParameters = new ServerForUpdate();
+        this.updateParameters = new ServerUpdateParameters();
         return this;
     }
 
@@ -205,7 +211,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "servers");
     }
 
     public Server refresh() {
@@ -228,20 +234,12 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this;
     }
 
-    public void failover() {
-        serviceManager.servers().failover(resourceGroupName, serverName);
+    public void restart() {
+        serviceManager.servers().restart(resourceGroupName, serverName);
     }
 
-    public void failover(Context context) {
-        serviceManager.servers().failover(resourceGroupName, serverName, context);
-    }
-
-    public void restart(ServerRestartParameter parameters) {
-        serviceManager.servers().restart(resourceGroupName, serverName, parameters);
-    }
-
-    public void restart(ServerRestartParameter parameters, Context context) {
-        serviceManager.servers().restart(resourceGroupName, serverName, parameters, context);
+    public void restart(Context context) {
+        serviceManager.servers().restart(resourceGroupName, serverName, context);
     }
 
     public void start() {
@@ -260,19 +258,32 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         serviceManager.servers().stop(resourceGroupName, serverName, context);
     }
 
+    public void upgrade(ServerUpgradeParameters parameters) {
+        serviceManager.servers().upgrade(resourceGroupName, serverName, parameters);
+    }
+
+    public void upgrade(ServerUpgradeParameters parameters, Context context) {
+        serviceManager.servers().upgrade(resourceGroupName, serverName, parameters, context);
+    }
+
     public ServerImpl withRegion(Region location) {
-        this.innerModel().withLocation(location.toString());
+        this.createParameters.withLocation(location.toString());
         return this;
     }
 
     public ServerImpl withRegion(String location) {
-        this.innerModel().withLocation(location);
+        this.createParameters.withLocation(location);
+        return this;
+    }
+
+    public ServerImpl withProperties(ServerPropertiesForCreate properties) {
+        this.createParameters.withProperties(properties);
         return this;
     }
 
     public ServerImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
+            this.createParameters.withTags(tags);
             return this;
         } else {
             this.updateParameters.withTags(tags);
@@ -280,9 +291,19 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
+    public ServerImpl withIdentity(ResourceIdentity identity) {
+        if (isInCreateMode()) {
+            this.createParameters.withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ServerImpl withSku(Sku sku) {
         if (isInCreateMode()) {
-            this.innerModel().withSku(sku);
+            this.createParameters.withSku(sku);
             return this;
         } else {
             this.updateParameters.withSku(sku);
@@ -290,93 +311,38 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withAdministratorLogin(String administratorLogin) {
-        this.innerModel().withAdministratorLogin(administratorLogin);
+    public ServerImpl withStorageProfile(StorageProfile storageProfile) {
+        this.updateParameters.withStorageProfile(storageProfile);
         return this;
     }
 
     public ServerImpl withAdministratorLoginPassword(String administratorLoginPassword) {
-        if (isInCreateMode()) {
-            this.innerModel().withAdministratorLoginPassword(administratorLoginPassword);
-            return this;
-        } else {
-            this.updateParameters.withAdministratorLoginPassword(administratorLoginPassword);
-            return this;
-        }
+        this.updateParameters.withAdministratorLoginPassword(administratorLoginPassword);
+        return this;
     }
 
     public ServerImpl withVersion(ServerVersion version) {
-        this.innerModel().withVersion(version);
+        this.updateParameters.withVersion(version);
         return this;
     }
 
-    public ServerImpl withAvailabilityZone(String availabilityZone) {
-        this.innerModel().withAvailabilityZone(availabilityZone);
+    public ServerImpl withSslEnforcement(SslEnforcementEnum sslEnforcement) {
+        this.updateParameters.withSslEnforcement(sslEnforcement);
         return this;
     }
 
-    public ServerImpl withCreateMode(CreateMode createMode) {
-        this.innerModel().withCreateMode(createMode);
+    public ServerImpl withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
+        this.updateParameters.withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
-    public ServerImpl withSourceServerResourceId(String sourceServerResourceId) {
-        this.innerModel().withSourceServerResourceId(sourceServerResourceId);
+    public ServerImpl withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
+        this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    public ServerImpl withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.innerModel().withRestorePointInTime(restorePointInTime);
-        return this;
-    }
-
-    public ServerImpl withReplicationRole(ReplicationRole replicationRole) {
-        if (isInCreateMode()) {
-            this.innerModel().withReplicationRole(replicationRole);
-            return this;
-        } else {
-            this.updateParameters.withReplicationRole(replicationRole);
-            return this;
-        }
-    }
-
-    public ServerImpl withStorage(Storage storage) {
-        if (isInCreateMode()) {
-            this.innerModel().withStorage(storage);
-            return this;
-        } else {
-            this.updateParameters.withStorage(storage);
-            return this;
-        }
-    }
-
-    public ServerImpl withBackup(Backup backup) {
-        if (isInCreateMode()) {
-            this.innerModel().withBackup(backup);
-            return this;
-        } else {
-            this.updateParameters.withBackup(backup);
-            return this;
-        }
-    }
-
-    public ServerImpl withHighAvailability(HighAvailability highAvailability) {
-        if (isInCreateMode()) {
-            this.innerModel().withHighAvailability(highAvailability);
-            return this;
-        } else {
-            this.updateParameters.withHighAvailability(highAvailability);
-            return this;
-        }
-    }
-
-    public ServerImpl withNetwork(Network network) {
-        this.innerModel().withNetwork(network);
-        return this;
-    }
-
-    public ServerImpl withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {
-        this.updateParameters.withMaintenanceWindow(maintenanceWindow);
+    public ServerImpl withReplicationRole(String replicationRole) {
+        this.updateParameters.withReplicationRole(replicationRole);
         return this;
     }
 

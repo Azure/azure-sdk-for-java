@@ -21,12 +21,6 @@ public final class ConfigurationListResultInner {
     @JsonProperty(value = "value")
     private List<ConfigurationInner> value;
 
-    /*
-     * The link used to get the next page of operations.
-     */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
-
     /**
      * Get the value property: The list of server configurations.
      *
@@ -44,26 +38,6 @@ public final class ConfigurationListResultInner {
      */
     public ConfigurationListResultInner withValue(List<ConfigurationInner> value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: The link used to get the next page of operations.
-     *
-     * @return the nextLink value.
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link used to get the next page of operations.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the ConfigurationListResultInner object itself.
-     */
-    public ConfigurationListResultInner withNextLink(String nextLink) {
-        this.nextLink = nextLink;
         return this;
     }
 
