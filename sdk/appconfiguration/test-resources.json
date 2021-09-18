@@ -61,6 +61,10 @@
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
         },
+        "AZURE_APPCONFIG_ENDPOINT_SUFFIX": {
+          "type": "string",
+          "value": "[parameters('azConfigEndpointSuffix')]"
+        },
         "roleDefinitionId": {
             "type": "string",
             "value": "[ variables('roleDefinitionId')]"

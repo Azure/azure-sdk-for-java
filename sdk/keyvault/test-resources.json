@@ -497,7 +497,7 @@
     "AZURE_MANAGEDHSM_ENDPOINT": {
       "type": "string",
       "condition": "[parameters('enableHsm')]",
-      "value": "[reference(variables('hsmName')).hsmUri]"
+      "value": "[reference(variables('hsmName'), variables('kvApiVersion')).hsmUri]"
     },
     "AZURE_KEYVAULT_TENANT_ID": {
       "type": "string",

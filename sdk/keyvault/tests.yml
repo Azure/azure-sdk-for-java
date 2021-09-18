@@ -41,3 +41,17 @@ stages:
         - name: azure-security-keyvault-jca
           groupId: com.azure
           safeName: azuresecuritykeyvaultjca
+      EnvVars:
+          AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)
+          AZURE_MANAGEDHSM_ENDPOINT: $(AZURE_MANAGEDHSM_ENDPOINT)
+          AZURE_KEYVAULT_URI: $(AZURE_KEYVAULT_URI)
+          KEYVAULT_SKU: $(KEYVAULT_SKU)
+          CLIENT_OBJECTID: $(CLIENT_OBJECTID)
+          BLOB_STORAGE_ACCOUNT_NAME: $(BLOB_STORAGE_ACCOUNT_NAME)
+          BLOB_PRIMARY_STORAGE_ACCOUNT_KEY: $(BLOB_PRIMARY_STORAGE_ACCOUNT_KEY)
+          BLOB_CONTAINER_NAME: $(BLOB_CONTAINER_NAME)
+          AZURE_KEYVAULT_ATTESTATION_URL: $(AZURE_KEYVAULT_ATTESTATION_URL)
+          AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+          AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+          AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+          AZURE_KEYVAULT_CERTIFICATE_NAME: $(aad-azure-sdk-test-certificate-name)

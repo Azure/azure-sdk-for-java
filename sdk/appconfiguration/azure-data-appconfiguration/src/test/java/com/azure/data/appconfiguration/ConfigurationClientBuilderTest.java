@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
-    private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
+    private static final String DEFAULT_DOMAIN_NAME = System.getenv("AZURE_APPCONFIG_ENDPOINT_SUFFIX");
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private final String key = "newKey";
     private final String value = "newValue";
