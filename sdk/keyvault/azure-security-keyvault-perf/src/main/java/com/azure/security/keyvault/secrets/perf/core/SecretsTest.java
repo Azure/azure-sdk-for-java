@@ -51,7 +51,7 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
             .fromArray(names)
             .flatMap(name -> secretAsyncClient
                 .beginDeleteSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())
-                .then(client.purgeDeletedSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())))
+                .then(secretAsyncClient.purgeDeletedSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())))
             .then();
     }
 }
