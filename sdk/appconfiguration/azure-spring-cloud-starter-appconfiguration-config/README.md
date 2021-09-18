@@ -88,7 +88,7 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secon
 
 Name | Description | Required | Default
 ---|---|---|---
-spring.cloud.azure.appconfiguration.stores[0].feature-flags.enable | Whether feature flags are loaded from the config store.  | No | false
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled | Whether feature flags are loaded from the config store.  | No | false
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.label-filter | The label used to indicate which feature flags will be loaded. | No | \0
 
 ### Advanced usage

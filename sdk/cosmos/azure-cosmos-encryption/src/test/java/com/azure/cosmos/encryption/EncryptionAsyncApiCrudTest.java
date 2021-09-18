@@ -24,6 +24,8 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -32,6 +34,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -78,7 +81,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    @Test(groups = {"encryption"}, priority = 1, timeOut = TIMEOUT)// Doing max of a string in the query_aggregate so has to set the priority for this one as 1.
     public void createItemEncrypt_readItemDecrypt() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
@@ -152,6 +155,59 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
                 validateResponse(pojo, responseItem);
             }
         }
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void queryItemsAggregate() {
+        long startTime = Instant.now().getEpochSecond();
+        List<String> actualIds = new ArrayList<>();
+        EncryptionPojo properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+        properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+        properties = getItem(UUID.randomUUID().toString());
+        cosmosEncryptionAsyncContainer.createItem(properties, new PartitionKey(properties.getMypk()),
+            new CosmosItemRequestOptions()).block();
+        actualIds.add(properties.getId());
+
+        // MAX query
+        String query1 = String.format("Select value max(c._ts) from c");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec1 = new SqlQuerySpec(query1);
+        CosmosPagedFlux<Integer> feedResponseIterator1 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec1, cosmosQueryRequestOptions1, Integer.class);
+        List<Integer> feedResponse1 = feedResponseIterator1.byPage().blockFirst().getResults();
+        int timeStamp = feedResponse1.get(0);
+        long endTime = Instant.now().getEpochSecond();
+
+        assertThat(timeStamp).isGreaterThanOrEqualTo((int)startTime);
+        assertThat(timeStamp).isLessThanOrEqualTo((int)endTime);
+        assertThat(feedResponse1.size()).isEqualTo(1);
+
+        // COUNT query
+        String query2 = String.format("Select top 1 value count(c) from c order by c._ts");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec2 = new SqlQuerySpec(query2);
+        CosmosPagedFlux<Integer> feedResponseIterator2 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec2, cosmosQueryRequestOptions2, Integer.class);
+        List<Integer> feedResponse2 = feedResponseIterator2.byPage().blockFirst().getResults();
+        assertThat(feedResponse2.size()).isEqualTo(1);
+
+        // MAX query for String class type
+        String query3 = String.format("Select value max(c.sensitiveString) from c");
+        CosmosQueryRequestOptions cosmosQueryRequestOptions3 = new CosmosQueryRequestOptions();
+
+        SqlQuerySpec querySpec3 = new SqlQuerySpec(query3);
+        CosmosPagedFlux<String> feedResponseIterator3 =
+            cosmosEncryptionAsyncContainer.queryItems(querySpec3, cosmosQueryRequestOptions3, String.class);
+        List<String> feedResponse3 = feedResponseIterator3.byPage().blockFirst().getResults();
+        assertThat(feedResponse3.size()).isEqualTo(1);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
