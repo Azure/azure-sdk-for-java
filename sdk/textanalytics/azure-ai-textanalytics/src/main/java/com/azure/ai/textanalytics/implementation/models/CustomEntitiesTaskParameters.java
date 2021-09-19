@@ -13,13 +13,13 @@ public final class CustomEntitiesTaskParameters {
     /*
      * The projectName property.
      */
-    @JsonProperty(value = "projectName")
+    @JsonProperty(value = "projectName", required = true)
     private String projectName;
 
     /*
      * The deploymentName property.
      */
-    @JsonProperty(value = "deploymentName")
+    @JsonProperty(value = "deploymentName", required = true)
     private String deploymentName;
 
     /*
