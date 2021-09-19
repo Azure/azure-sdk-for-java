@@ -6,23 +6,23 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * Configurations that allow callers to specify details about how to execute a multi-label classification action
+ * Configurations that allow callers to specify details about how to execute a single-label classification action
  * in a set of documents.
  */
 @Fluent
-public final class ClassifyCustomCategoriesAction {
+public final class CustomClassifyDocumentSingleCategoryAction {
     private final String projectName;
     private final String deploymentName;
     private boolean disableServiceLogs;
 
     /**
-     * Configurations that allow callers to specify details about how to execute a multi-label classification action
+     * Configurations that allow callers to specify details about how to execute a single-label classification action
      * in a set of documents.
      *
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment (model version) being consumed.
      */
-    public ClassifyCustomCategoriesAction(String projectName, String deploymentName) {
+    public CustomClassifyDocumentSingleCategoryAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
     }
@@ -63,9 +63,9 @@ public final class ClassifyCustomCategoriesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ClassifyCustomCategoriesAction} object itself.
+     * @return The {@link CustomClassifyDocumentSingleCategoryAction} object itself.
      */
-    public ClassifyCustomCategoriesAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public CustomClassifyDocumentSingleCategoryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

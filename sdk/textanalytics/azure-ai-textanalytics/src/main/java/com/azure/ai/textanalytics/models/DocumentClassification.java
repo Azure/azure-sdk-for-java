@@ -17,16 +17,16 @@ public final class DocumentClassification {
     static {
         DocumentClassificationPropertiesHelper.setAccessor(
             new DocumentClassificationPropertiesHelper.DocumentClassificationAccessor() {
-            @Override
-            public void setCategory(DocumentClassification documentClassification, String category) {
-                documentClassification.setCategory(category);
-            }
+                @Override
+                public void setCategory(DocumentClassification documentClassification, String category) {
+                    documentClassification.setCategory(category);
+                }
 
-            @Override
-            public void setConfidenceScore(DocumentClassification documentClassification, double confidenceScore) {
-                documentClassification.setConfidenceScore(confidenceScore);
-            }
-        });
+                @Override
+                public void setConfidenceScore(DocumentClassification documentClassification, double confidenceScore) {
+                    documentClassification.setConfidenceScore(confidenceScore);
+                }
+            });
     }
 
     /**

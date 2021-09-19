@@ -8,39 +8,40 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyCustomCategoryResult} model.
+ * The {@link ClassifyDocumentSingleCategoryResult} model.
  */
 @Immutable
-public final class ClassifyCustomCategoryResult extends TextAnalyticsResult {
+public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsResult {
     private DocumentClassification documentClassification;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         ClassifyCustomCategoryResultPropertiesHelper.setAccessor(
             new ClassifyCustomCategoryResultPropertiesHelper.ClassifyCustomCategoryResultAccessor() {
-            @Override
-            public void setDocumentClassification(ClassifyCustomCategoryResult classifyCustomCategoryResult,
-                DocumentClassification documentClassification) {
-                classifyCustomCategoryResult.setDocumentClassification(documentClassification);
-            }
+                @Override
+                public void setDocumentClassification(
+                    ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+                    DocumentClassification documentClassification) {
+                    classifyDocumentSingleCategoryResult.setDocumentClassification(documentClassification);
+                }
 
-            @Override
-            public void setWarnings(ClassifyCustomCategoryResult classifyCustomCategoryResult,
-                IterableStream<TextAnalyticsWarning> warnings) {
-                classifyCustomCategoryResult.setWarnings(warnings);
-            }
-        });
+                @Override
+                public void setWarnings(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+                    IterableStream<TextAnalyticsWarning> warnings) {
+                    classifyDocumentSingleCategoryResult.setWarnings(warnings);
+                }
+            });
 
     }
 
     /**
-     * Creates a {@link ClassifyCustomCategoryResult} model.
+     * Creates a {@link ClassifyDocumentSingleCategoryResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyCustomCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public ClassifyDocumentSingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
@@ -55,7 +56,6 @@ public final class ClassifyCustomCategoryResult extends TextAnalyticsResult {
         return documentClassification;
     }
 
-    // TODO: this is no a recognized pattern.
     /**
      * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *

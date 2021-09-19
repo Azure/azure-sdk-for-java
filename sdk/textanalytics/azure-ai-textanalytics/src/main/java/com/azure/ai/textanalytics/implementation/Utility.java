@@ -51,8 +51,8 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassifyCustomCategoriesResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.DocumentClassificationCollection;
@@ -94,9 +94,9 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
-import com.azure.ai.textanalytics.util.ClassifyCustomCategoriesResultCollection;
-import com.azure.ai.textanalytics.util.ClassifyCustomCategoryResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.CustomClassifyDocumentMultiCategoriesResultCollection;
+import com.azure.ai.textanalytics.util.CustomClassifyDocumentSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.util.CustomRecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -932,13 +932,13 @@ public final class Utility {
     }
 
     /**
-     * Helper method to convert {@link CustomEntitiesResult} to {@link RecognizeCustomEntitiesResultCollection}.
+     * Helper method to convert {@link CustomEntitiesResult} to {@link CustomRecognizeEntitiesResultCollection}.
      *
      * @param customEntitiesResult The {@link CustomEntitiesResult}.
      *
-     * @return A {@link RecognizeCustomEntitiesResultCollection}.
+     * @return A {@link CustomRecognizeEntitiesResultCollection}.
      */
-    public static RecognizeCustomEntitiesResultCollection toRecognizeCustomEntitiesResultCollection(
+    public static CustomRecognizeEntitiesResultCollection toRecognizeCustomEntitiesResultCollection(
         CustomEntitiesResult customEntitiesResult) {
         final List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
         final List<DocumentEntities> customEntitiesResultDocuments = customEntitiesResult.getDocuments();
@@ -952,8 +952,8 @@ public final class Utility {
                 toTextAnalyticsError(documentError.getError()), null));
         }
 
-        final RecognizeCustomEntitiesResultCollection resultCollection =
-            new RecognizeCustomEntitiesResultCollection(recognizeEntitiesResults);
+        final CustomRecognizeEntitiesResultCollection resultCollection =
+            new CustomRecognizeEntitiesResultCollection(recognizeEntitiesResults);
         RecognizeCustomEntitiesResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customEntitiesResult.getProjectName());
         RecognizeCustomEntitiesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
@@ -965,29 +965,29 @@ public final class Utility {
 
     /**
      * Helper method to convert {@link CustomSingleClassificationResult} to
-     * {@link ClassifyCustomCategoryResultCollection}.
+     * {@link CustomClassifyDocumentSingleCategoryResultCollection}.
      *
      * @param customSingleClassificationResult The {@link CustomSingleClassificationResult}.
      *
-     * @return A {@link ClassifyCustomCategoryResultCollection}.
+     * @return A {@link CustomClassifyDocumentSingleCategoryResultCollection}.
      */
-    public static ClassifyCustomCategoryResultCollection toClassifySingleCategoryResultCollection(
+    public static CustomClassifyDocumentSingleCategoryResultCollection toClassifySingleCategoryResultCollection(
         CustomSingleClassificationResult customSingleClassificationResult) {
-        final List<ClassifyCustomCategoryResult> classifyCustomCategoryResults = new ArrayList<>();
+        final List<ClassifyDocumentSingleCategoryResult> classifyDocumentSingleCategoryResults = new ArrayList<>();
         final List<SingleClassificationDocument> singleClassificationDocuments =
             customSingleClassificationResult.getDocuments();
 
         for (SingleClassificationDocument documentSummary : singleClassificationDocuments) {
-            classifyCustomCategoryResults.add(toClassifySingleCategoryResult(documentSummary));
+            classifyDocumentSingleCategoryResults.add(toClassifySingleCategoryResult(documentSummary));
         }
 
         for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
-            classifyCustomCategoryResults.add(new ClassifyCustomCategoryResult(documentError.getId(), null,
+            classifyDocumentSingleCategoryResults.add(new ClassifyDocumentSingleCategoryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
 
-        final ClassifyCustomCategoryResultCollection resultCollection =
-            new ClassifyCustomCategoryResultCollection(classifyCustomCategoryResults);
+        final CustomClassifyDocumentSingleCategoryResultCollection resultCollection =
+            new CustomClassifyDocumentSingleCategoryResultCollection(classifyDocumentSingleCategoryResults);
         ClassifyCustomCategoryResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customSingleClassificationResult.getProjectName());
         ClassifyCustomCategoryResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
@@ -997,23 +997,23 @@ public final class Utility {
         return resultCollection;
     }
 
-    private static ClassifyCustomCategoryResult toClassifySingleCategoryResult(
+    private static ClassifyDocumentSingleCategoryResult toClassifySingleCategoryResult(
         SingleClassificationDocument singleClassificationDocument) {
         final ClassificationResult classificationResult = singleClassificationDocument.getClassification();
         // Warnings
         final List<TextAnalyticsWarning> warnings = singleClassificationDocument.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final ClassifyCustomCategoryResult classifyCustomCategoryResult = new ClassifyCustomCategoryResult(
+        final ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult = new ClassifyDocumentSingleCategoryResult(
             singleClassificationDocument.getId(),
             singleClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
-        ClassifyCustomCategoryResultPropertiesHelper.setDocumentClassification(classifyCustomCategoryResult,
+        ClassifyCustomCategoryResultPropertiesHelper.setDocumentClassification(classifyDocumentSingleCategoryResult,
             toDocumentClassification(classificationResult));
-        ClassifyCustomCategoryResultPropertiesHelper.setWarnings(classifyCustomCategoryResult,
+        ClassifyCustomCategoryResultPropertiesHelper.setWarnings(classifyDocumentSingleCategoryResult,
             new IterableStream<>(warnings));
-        return classifyCustomCategoryResult;
+        return classifyDocumentSingleCategoryResult;
     }
 
     private static DocumentClassification toDocumentClassification(ClassificationResult classificationResult) {
@@ -1026,29 +1026,29 @@ public final class Utility {
 
     /**
      * Helper method to convert {@link CustomMultiClassificationResult} to
-     * {@link ClassifyCustomCategoriesResultCollection}.
+     * {@link CustomClassifyDocumentMultiCategoriesResultCollection}.
      *
      * @param customMultiClassificationResult The {@link CustomMultiClassificationResult}.
      *
-     * @return A {@link ClassifyCustomCategoryResultCollection}.
+     * @return A {@link CustomClassifyDocumentSingleCategoryResultCollection}.
      */
-    public static ClassifyCustomCategoriesResultCollection toClassifyMultiCategoriesResultCollection(
+    public static CustomClassifyDocumentMultiCategoriesResultCollection toClassifyMultiCategoriesResultCollection(
         CustomMultiClassificationResult customMultiClassificationResult) {
-        final List<ClassifyCustomCategoriesResult> classifyCustomCategoriesResults = new ArrayList<>();
+        final List<ClassifyDocumentMultiCategoriesResult> classifyDocumentMultiCategoriesResults = new ArrayList<>();
         final List<MultiClassificationDocument> multiClassificationDocuments =
             customMultiClassificationResult.getDocuments();
 
         for (MultiClassificationDocument multiClassificationDocument : multiClassificationDocuments) {
-            classifyCustomCategoriesResults.add(toClassifyMultiCategoriesResult(multiClassificationDocument));
+            classifyDocumentMultiCategoriesResults.add(toClassifyMultiCategoriesResult(multiClassificationDocument));
         }
 
         for (DocumentError documentError : customMultiClassificationResult.getErrors()) {
-            classifyCustomCategoriesResults.add(new ClassifyCustomCategoriesResult(documentError.getId(), null,
+            classifyDocumentMultiCategoriesResults.add(new ClassifyDocumentMultiCategoriesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
 
-        final ClassifyCustomCategoriesResultCollection resultCollection =
-            new ClassifyCustomCategoriesResultCollection(classifyCustomCategoriesResults);
+        final CustomClassifyDocumentMultiCategoriesResultCollection resultCollection =
+            new CustomClassifyDocumentMultiCategoriesResultCollection(classifyDocumentMultiCategoriesResults);
         ClassifyCustomCategoriesResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customMultiClassificationResult.getProjectName());
         ClassifyCustomCategoriesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
@@ -1058,7 +1058,7 @@ public final class Utility {
         return resultCollection;
     }
 
-    private static ClassifyCustomCategoriesResult toClassifyMultiCategoriesResult(
+    private static ClassifyDocumentMultiCategoriesResult toClassifyMultiCategoriesResult(
         MultiClassificationDocument multiClassificationDocument) {
         final List<DocumentClassification> documentClassifications =
             multiClassificationDocument
@@ -1071,7 +1071,7 @@ public final class Utility {
         final List<TextAnalyticsWarning> warnings = multiClassificationDocument.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final ClassifyCustomCategoriesResult classifySingleCategoryResult = new ClassifyCustomCategoriesResult(
+        final ClassifyDocumentMultiCategoriesResult classifySingleCategoryResult = new ClassifyDocumentMultiCategoriesResult(
             multiClassificationDocument.getId(),
             multiClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(multiClassificationDocument.getStatistics()),
