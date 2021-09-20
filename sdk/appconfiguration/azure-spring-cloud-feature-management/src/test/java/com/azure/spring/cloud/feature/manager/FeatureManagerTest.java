@@ -2,41 +2,37 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutionException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 
-import com.azure.spring.cloud.feature.manager.FeatureFilter;
-import com.azure.spring.cloud.feature.manager.FeatureManagementConfigProperties;
-import com.azure.spring.cloud.feature.manager.FeatureManager;
-import com.azure.spring.cloud.feature.manager.FilterNotFoundException;
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.feature.filters.AlwaysOnFilter;
 
 /**
  * Unit tests for FeatureManager.
  */
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
 public class FeatureManagerTest {
 
     private static final String FEATURE_KEY = "TestFeature";
@@ -46,19 +42,25 @@ public class FeatureManagerTest {
     private static final String PARAM_1_NAME = "param1";
 
     private static final String PARAM_1_VALUE = "testParam";
-    @Rule
-    public ExpectedException expectedEx = ExpectedException.none();
+
     @InjectMocks
     private FeatureManager featureManager;
+
     @Mock
     private ApplicationContext context;
+
     @Mock
     private FeatureManagementConfigProperties properties;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(properties.isFailFast()).thenReturn(true);
+    }
+
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
     }
 
     /**
@@ -127,8 +129,7 @@ public class FeatureManagerTest {
         HashMap<String, Object> features = new HashMap<String, Object>();
         Feature onFeature = new Feature();
         onFeature.setKey("On");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
@@ -136,7 +137,7 @@ public class FeatureManagerTest {
         features.put("On", onFeature);
         featureManager.putAll(features);
 
-        when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOn());
+        when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
 
         assertTrue(featureManager.isEnabledAsync("On").block());
     }
@@ -189,8 +190,7 @@ public class FeatureManagerTest {
         HashMap<String, Object> features = new HashMap<String, Object>();
         features.put("FeatureU", false);
         Feature featureV = new Feature();
-        HashMap<Integer, FeatureFilterEvaluationContext> filterMapper =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filterMapper = new HashMap<Integer, FeatureFilterEvaluationContext>();
 
         FeatureFilterEvaluationContext enabledFor = new FeatureFilterEvaluationContext();
         enabledFor.setName("Random");
@@ -218,14 +218,39 @@ public class FeatureManagerTest {
     }
 
     @Test
+    public void disabledEvaluate() {
+        HashMap<String, Object> features = new HashMap<String, Object>();
+        Feature featureV = new Feature();
+        HashMap<Integer, FeatureFilterEvaluationContext> filterMapper = new HashMap<Integer, FeatureFilterEvaluationContext>();
+
+        FeatureFilterEvaluationContext enabledFor = new FeatureFilterEvaluationContext();
+        enabledFor.setName("AlwaysOn");
+        enabledFor.setParameters(new LinkedHashMap<String, Object>());
+
+        filterMapper.put(0, enabledFor);
+        featureV.setEnabledFor(filterMapper);
+        featureV.setEvaluate(false);
+        features.put("FeatureV", featureV);
+        featureManager.putAll(features);
+
+        assertNotNull(featureManager.getOnOff());
+        assertNotNull(featureManager.getFeatureManagement());
+
+        Feature feature = featureManager.getFeatureManagement().get("FeatureV");
+        assertEquals(feature.getEnabledFor().size(), 1);
+        FeatureFilterEvaluationContext ffec = feature.getEnabledFor().get(0);
+        assertEquals(ffec.getName(), "AlwaysOn");
+        assertEquals(ffec.getParameters().size(), 0);
+        assertEquals(1, featureManager.getAllFeatureNames().size());
+        assertFalse(featureManager.isEnabledAsync("FeatureV").block());
+    }
+
+    @Test
     public void noFilter() throws FilterNotFoundException {
-        expectedEx.expect(FilterNotFoundException.class);
-        expectedEx.expectMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
         HashMap<String, Object> features = new HashMap<String, Object>();
         Feature onFeature = new Feature();
         onFeature.setKey("Off");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters =
-            new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOff");
         filters.put(0, alwaysOn);
@@ -235,18 +260,9 @@ public class FeatureManagerTest {
 
         when(context.getBean(Mockito.matches("AlwaysOff"))).thenThrow(new NoSuchBeanDefinitionException(""));
 
-        featureManager.isEnabledAsync("Off").block();
-        fail();
-    }
-
-    @Component
-    public class AlwaysOn implements FeatureFilter {
-
-        @Override
-        public boolean evaluate(FeatureFilterEvaluationContext context) {
-            return true;
-        }
-
+        FilterNotFoundException e = assertThrows(FilterNotFoundException.class,
+            () -> featureManager.isEnabledAsync("Off").block());
+        assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
 
 }
