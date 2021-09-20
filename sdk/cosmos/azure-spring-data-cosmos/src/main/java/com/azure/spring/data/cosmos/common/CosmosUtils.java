@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
+import java.util.UUID;
+
 /**
  * Util class to fill and process response diagnostics
  */
@@ -65,8 +67,10 @@ public class CosmosUtils {
             return Integer.toString((Integer) idValue);
         } else if (idValue instanceof Long) {
             return Long.toString((Long) idValue);
+        } else if (idValue instanceof UUID) {
+            return idValue.toString();
         } else {
-            throw new IllegalQueryException("Type of id field must be String or Integer or Long");
+            throw new IllegalQueryException("Type of id field must be String or Integer or Long or UUID");
         }
     }
 }
