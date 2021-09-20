@@ -5,6 +5,7 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.avro.generatedtestsources.HandOfCards;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
@@ -35,6 +36,8 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
@@ -128,6 +131,63 @@ public class SchemaRegistryAvroSerializerTest {
 
         // Assert
         assertEquals(expectedSchema, actual);
+    }
+
+    @Test
+    public void getSchemaTypeGenericRecord() {
+        final String json = "{\n" +
+            "   \"type\": \"record\",\n" +
+            "   \"name\": \"Shoe\",\n" +
+            "   \"namespace\": \"org.example.model\",\n" +
+            "   \"fields\": [\n" +
+            "      {\n" +
+            "         \"name\": \"name\",\n" +
+            "         \"type\": \"string\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "         \"name\": \"size\",\n" +
+            "         \"type\": \"double\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "         \"name\": \"quantities\",\n" +
+            "         \"type\": {\n" +
+            "            \"type\": \"array\",\n" +
+            "            \"items\": \"int\",\n" +
+            "            \"java-class\": \"java.util.List\"\n" +
+            "         }\n" +
+            "      }\n" +
+            "   ]\n" +
+            "}";
+        final Schema expectedSchema = new Schema.Parser().parse(json);
+        final GenericRecord record = new GenericData.Record(expectedSchema);
+
+        // Act
+        final Schema actual = SchemaRegistryAvroSerializer.getSchema(record);
+
+        // Assert
+        assertEquals(expectedSchema, actual);
+    }
+
+    @Test
+    public void getSchemaTypeSpecificRecord() {
+        // Arrange
+        final HandOfCards expected = HandOfCards.newBuilder().build();
+
+        // Act
+        final Schema actual = SchemaRegistryAvroSerializer.getSchema(expected);
+
+        assertNotNull(actual);
+        assertEquals(expected.getSchema(), actual);
+        assertEquals(expected.getSchema().getType(), actual.getType());
+    }
+
+    @Test
+    public void getSchemaTypeNotSupported() {
+        // Arrange
+        final Map<String, Object> testMap = new HashMap<>();
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> SchemaRegistryAvroSerializer.getSchema(testMap));
     }
 
     @Test
