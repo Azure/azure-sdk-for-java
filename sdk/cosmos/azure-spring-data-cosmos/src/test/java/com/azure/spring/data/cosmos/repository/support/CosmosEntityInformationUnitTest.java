@@ -431,6 +431,7 @@ public class CosmosEntityInformationUnitTest {
         String upperCase = s.toUpperCase();
         assertThat(uuid).isEqualTo(UUID.fromString(lowerCase));
         assertThat(uuid).isEqualTo(UUID.fromString(upperCase));
+        assertThat(UUID.fromString(upperCase).toString()).isEqualTo(UUID.fromString(lowerCase).toString());
     }
 
     @Test
