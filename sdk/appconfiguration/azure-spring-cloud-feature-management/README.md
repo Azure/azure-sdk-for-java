@@ -46,16 +46,9 @@ feature-management:
         parameters:
           time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
           time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
-  feature-w:
-    evaluate: false
-    enabled-for:
-      -
-        name: AlwaysOnFilter
 ```
 
 The `feature-management` section of the YAML document is used by convention to load feature flags. In the section above, we see that we have provided three different features. Features define their filters using the `enabled-for`  property. We can see that feature `feature-t` is set to false with no filters set. `feature-t` will always return false, this can also be done for true. `feature-u` which has only one feature filter `Random` which does not require any configuration so it only has the name property. `feature-v` it specifies a feature filter named `TimeWindow`. This is an example of a configurable feature filter. We can see in the example that the filter has a parameter's property. This is used to configure the filter. In this case, the start and end times for the feature to be active are configured.
-
-The `AlwaysOnFilter` is a Filter that always evaluates as `true`. This filter can be used to turn this feature flag on, without removing the other feature filters. The `evaluate` field is used to stop the evaluation of the feature filters, and results in the feature flag to always return `false`.
 
 #### Supported properties
 
