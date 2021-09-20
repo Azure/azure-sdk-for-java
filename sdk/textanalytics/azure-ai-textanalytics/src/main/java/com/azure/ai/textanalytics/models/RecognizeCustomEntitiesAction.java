@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * a set of documents.
  */
 @Fluent
-public final class CustomRecognizeEntitiesAction {
+public final class RecognizeCustomEntitiesAction {
     private final String projectName;
     private final String deploymentName;
     private boolean disableServiceLogs;
@@ -22,7 +22,7 @@ public final class CustomRecognizeEntitiesAction {
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment (model version) being consumed.
      */
-    public CustomRecognizeEntitiesAction(String projectName, String deploymentName) {
+    public RecognizeCustomEntitiesAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
     }
@@ -65,9 +65,9 @@ public final class CustomRecognizeEntitiesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link CustomRecognizeEntitiesAction} object itself.
+     * @return The {@link RecognizeCustomEntitiesAction} object itself.
      */
-    public CustomRecognizeEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public RecognizeCustomEntitiesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

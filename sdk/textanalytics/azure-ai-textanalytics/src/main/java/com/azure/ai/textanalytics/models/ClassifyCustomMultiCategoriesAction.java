@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * in a set of documents.
  */
 @Fluent
-public final class CustomClassifyDocumentMultiCategoriesAction {
+public final class ClassifyCustomMultiCategoriesAction {
     private final String projectName;
     private final String deploymentName;
     private boolean disableServiceLogs;
@@ -22,7 +22,7 @@ public final class CustomClassifyDocumentMultiCategoriesAction {
      * @param projectName The name of the project which owns the model being consumed.
      * @param deploymentName The name of the deployment (model version) being consumed.
      */
-    public CustomClassifyDocumentMultiCategoriesAction(String projectName, String deploymentName) {
+    public ClassifyCustomMultiCategoriesAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
     }
@@ -63,9 +63,9 @@ public final class CustomClassifyDocumentMultiCategoriesAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link CustomClassifyDocumentMultiCategoriesAction} object itself.
+     * @return The {@link ClassifyCustomMultiCategoriesAction} object itself.
      */
-    public CustomClassifyDocumentMultiCategoriesAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public ClassifyCustomMultiCategoriesAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }

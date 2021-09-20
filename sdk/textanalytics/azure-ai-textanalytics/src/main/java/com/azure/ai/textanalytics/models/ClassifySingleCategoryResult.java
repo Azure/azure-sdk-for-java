@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyDocumentSingleCategoryResult} model.
+ * The {@link ClassifySingleCategoryResult} model. It classify the text document one single category.
  */
 @Immutable
-public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsResult {
+public final class ClassifySingleCategoryResult extends TextAnalyticsResult {
     private DocumentClassification documentClassification;
     private IterableStream<TextAnalyticsWarning> warnings;
 
@@ -20,28 +20,28 @@ public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsRes
             new ClassifyCustomCategoryResultPropertiesHelper.ClassifyCustomCategoryResultAccessor() {
                 @Override
                 public void setDocumentClassification(
-                    ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+                    ClassifySingleCategoryResult classifySingleCategoryResult,
                     DocumentClassification documentClassification) {
-                    classifyDocumentSingleCategoryResult.setDocumentClassification(documentClassification);
+                    classifySingleCategoryResult.setDocumentClassification(documentClassification);
                 }
 
                 @Override
-                public void setWarnings(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+                public void setWarnings(ClassifySingleCategoryResult classifySingleCategoryResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
-                    classifyDocumentSingleCategoryResult.setWarnings(warnings);
+                    classifySingleCategoryResult.setWarnings(warnings);
                 }
             });
 
     }
 
     /**
-     * Creates a {@link ClassifyDocumentSingleCategoryResult} model.
+     * Creates a {@link ClassifySingleCategoryResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyDocumentSingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public ClassifySingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }

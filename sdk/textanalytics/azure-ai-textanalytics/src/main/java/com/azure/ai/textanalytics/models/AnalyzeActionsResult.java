@@ -18,11 +18,9 @@ public final class AnalyzeActionsResult {
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
     private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
-    private IterableStream<CustomRecognizeEntitiesActionResult> customRecognizeEntitiesResults;
-    private IterableStream<CustomClassifyDocumentSingleCategoryActionResult>
-        customClassifyDocumentSingleCategoryResults;
-    private IterableStream<CustomClassifyDocumentMultiCategoriesActionResult>
-        customClassifyDocumentMultiCategoriesResults;
+    private IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults;
+    private IterableStream<ClassifyCustomSingleCategoryActionResult> classifyCustomSingleCategoryResults;
+    private IterableStream<ClassifyCustomMultiCategoriesActionResult> classifyCustomMultiCategoriesResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -66,20 +64,20 @@ public final class AnalyzeActionsResult {
 
                 @Override
                 public void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<CustomRecognizeEntitiesActionResult> recognizeCustomEntitiesResults) {
-                    analyzeActionsResult.setCustomRecognizeEntitiesResults(recognizeCustomEntitiesResults);
+                    IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults) {
+                    analyzeActionsResult.setRecognizeCustomEntitiesResults(recognizeCustomEntitiesResults);
                 }
 
                 @Override
                 public void setClassifyCustomCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<CustomClassifyDocumentSingleCategoryActionResult> classifyCustomCategoryResults) {
-                    analyzeActionsResult.setCustomClassifyDocumentSingleCategoryResults(classifyCustomCategoryResults);
+                    IterableStream<ClassifyCustomSingleCategoryActionResult> classifyCustomCategoryResults) {
+                    analyzeActionsResult.setClassifyCustomSingleCategoryResults(classifyCustomCategoryResults);
                 }
 
                 @Override
                 public void setClassifyCustomCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<CustomClassifyDocumentMultiCategoriesActionResult> classifyCustomCategoriesResults) {
-                    analyzeActionsResult.setCustomClassifyDocumentMultiCategoriesResults(classifyCustomCategoriesResults);
+                    IterableStream<ClassifyCustomMultiCategoriesActionResult> classifyCustomCategoriesResults) {
+                    analyzeActionsResult.setClassifyCustomMultiCategoriesResults(classifyCustomCategoriesResults);
                 }
             });
     }
@@ -146,8 +144,8 @@ public final class AnalyzeActionsResult {
      *
      * @return the customRecognizeEntitiesResults value.
      */
-    public IterableStream<CustomRecognizeEntitiesActionResult> getCustomRecognizeEntitiesResults() {
-        return customRecognizeEntitiesResults;
+    public IterableStream<RecognizeCustomEntitiesActionResult> getRecognizeCustomEntitiesResults() {
+        return recognizeCustomEntitiesResults;
     }
 
     /**
@@ -156,9 +154,8 @@ public final class AnalyzeActionsResult {
      *
      * @return the customClassifyDocumentSingleCategoryResults value.
      */
-    public IterableStream<CustomClassifyDocumentSingleCategoryActionResult>
-        getCustomClassifyDocumentSingleCategoryResults() {
-        return customClassifyDocumentSingleCategoryResults;
+    public IterableStream<ClassifyCustomSingleCategoryActionResult> getClassifyCustomSingleCategoryResults() {
+        return classifyCustomSingleCategoryResults;
     }
 
     /**
@@ -167,9 +164,8 @@ public final class AnalyzeActionsResult {
      *
      * @return the customClassifyDocumentMultiCategoriesResults value.
      */
-    public IterableStream<CustomClassifyDocumentMultiCategoriesActionResult>
-        getCustomClassifyDocumentMultiCategoriesResults() {
-        return customClassifyDocumentMultiCategoriesResults;
+    public IterableStream<ClassifyCustomMultiCategoriesActionResult> getClassifyCustomMultiCategoriesResults() {
+        return classifyCustomMultiCategoriesResults;
     }
 
     private void setRecognizeEntitiesResults(
@@ -199,18 +195,18 @@ public final class AnalyzeActionsResult {
         this.extractSummaryResults = extractSummaryResults;
     }
 
-    private void setCustomRecognizeEntitiesResults(
-        IterableStream<CustomRecognizeEntitiesActionResult> customRecognizeEntitiesResults) {
-        this.customRecognizeEntitiesResults = customRecognizeEntitiesResults;
+    private void setRecognizeCustomEntitiesResults(
+        IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults) {
+        this.recognizeCustomEntitiesResults = recognizeCustomEntitiesResults;
     }
 
-    private void setCustomClassifyDocumentSingleCategoryResults(
-        IterableStream<CustomClassifyDocumentSingleCategoryActionResult> customClassifyDocumentSingleCategoryResults) {
-        this.customClassifyDocumentSingleCategoryResults = customClassifyDocumentSingleCategoryResults;
+    private void setClassifyCustomSingleCategoryResults(
+        IterableStream<ClassifyCustomSingleCategoryActionResult> classifyCustomSingleCategoryResults) {
+        this.classifyCustomSingleCategoryResults = classifyCustomSingleCategoryResults;
     }
 
-    private void setCustomClassifyDocumentMultiCategoriesResults(
-        IterableStream<CustomClassifyDocumentMultiCategoriesActionResult> customClassifyDocumentMultiCategoriesResults) {
-        this.customClassifyDocumentMultiCategoriesResults = customClassifyDocumentMultiCategoriesResults;
+    private void setClassifyCustomMultiCategoriesResults(
+        IterableStream<ClassifyCustomMultiCategoriesActionResult> classifyCustomMultiCategoriesResults) {
+        this.classifyCustomMultiCategoriesResults = classifyCustomMultiCategoriesResults;
     }
 }

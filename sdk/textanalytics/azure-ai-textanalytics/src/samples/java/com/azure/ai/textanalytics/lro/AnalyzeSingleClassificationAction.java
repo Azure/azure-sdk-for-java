@@ -9,13 +9,13 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.DocumentClassification;
-import com.azure.ai.textanalytics.models.CustomClassifyDocumentSingleCategoryAction;
-import com.azure.ai.textanalytics.models.CustomClassifyDocumentSingleCategoryActionResult;
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryAction;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryActionResult;
+import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
-import com.azure.ai.textanalytics.util.CustomClassifyDocumentSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyCustomSingleCategoryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
@@ -66,8 +66,8 @@ public class AnalyzeSingleClassificationAction {
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                    .setCustomClassifyDocumentSingleCategoryActions(
-                        new CustomClassifyDocumentSingleCategoryAction("myFirstBlackBox", "model1")),
+                    .setClassifyCustomSingleCategoryActions(
+                        new ClassifyCustomSingleCategoryAction("myFirstBlackBox", "model1")),
                 new AnalyzeActionsOptions().setIncludeStatistics(false),
                 Context.NONE);
 
@@ -88,12 +88,12 @@ public class AnalyzeSingleClassificationAction {
             System.out.printf("Response code: %d, Continuation Token: %s.%n", perPage.getStatusCode(),
                 perPage.getContinuationToken());
             for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-                for (CustomClassifyDocumentSingleCategoryActionResult actionResult : actionsResult.getCustomClassifyDocumentSingleCategoryResults()) {
+                for (ClassifyCustomSingleCategoryActionResult actionResult : actionsResult.getClassifyCustomSingleCategoryResults()) {
                     if (!actionResult.isError()) {
-                        final CustomClassifyDocumentSingleCategoryResultCollection documentsResults = actionResult.getDocumentsResults();
+                        final ClassifyCustomSingleCategoryResultCollection documentsResults = actionResult.getDocumentsResults();
                         System.out.printf("Project Name: %s, model name: %s.%n",
                             documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                        for (ClassifyDocumentSingleCategoryResult documentResult : documentsResults) {
+                        for (ClassifySingleCategoryResult documentResult : documentsResults) {
                             if (!documentResult.isError()) {
                                 DocumentClassification documentClassification = documentResult.getDocumentClassification();
                                 System.out.printf("\tCategory: %s, confidence score: %f.%n",

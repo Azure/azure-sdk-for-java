@@ -3,11 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesResult;
 import com.azure.ai.textanalytics.models.DocumentClassificationCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifyDocumentMultiCategoriesResult} instance.
+ * The helper class to set the non-public properties of an {@link ClassifyMultiCategoriesResult} instance.
  */
 public final class ClassifyCustomCategoriesResultPropertiesHelper {
     private static ClassifyCustomCategoriesResultAccessor accessor;
@@ -15,15 +15,15 @@ public final class ClassifyCustomCategoriesResultPropertiesHelper {
     private ClassifyCustomCategoriesResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentMultiCategoriesResult} instance.
+     * Type defining the methods to set the non-public properties of an {@link ClassifyMultiCategoriesResult} instance.
      */
     public interface ClassifyCustomCategoriesResultAccessor {
-        void setDocumentClassifications(ClassifyDocumentMultiCategoriesResult classifyDocumentMultiCategoriesResult,
+        void setDocumentClassifications(ClassifyMultiCategoriesResult classifyMultiCategoriesResult,
             DocumentClassificationCollection documentClassifications);
     }
 
     /**
-     * The method called from {@link ClassifyDocumentMultiCategoriesResult} to set it's accessor.
+     * The method called from {@link ClassifyMultiCategoriesResult} to set it's accessor.
      *
      * @param classifyCustomCategoriesResultAccessor The accessor.
      */
@@ -31,8 +31,8 @@ public final class ClassifyCustomCategoriesResultPropertiesHelper {
         accessor = classifyCustomCategoriesResultAccessor;
     }
 
-    public static void setDocumentClassifications(ClassifyDocumentMultiCategoriesResult classifyDocumentMultiCategoriesResult,
+    public static void setDocumentClassifications(ClassifyMultiCategoriesResult classifyMultiCategoriesResult,
         DocumentClassificationCollection documentClassifications) {
-        accessor.setDocumentClassifications(classifyDocumentMultiCategoriesResult, documentClassifications);
+        accessor.setDocumentClassifications(classifyMultiCategoriesResult, documentClassifications);
     }
 }

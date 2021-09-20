@@ -14,7 +14,7 @@ import com.azure.core.util.IterableStream;
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class CustomRecognizeEntitiesResultCollection extends IterableStream<RecognizeEntitiesResult> {
+public final class RecognizeCustomEntitiesResultCollection extends IterableStream<RecognizeEntitiesResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
@@ -24,19 +24,19 @@ public final class CustomRecognizeEntitiesResultCollection extends IterableStrea
             new RecognizeCustomEntitiesResultCollectionPropertiesHelper
                     .RecognizeCustomEntitiesResultCollectionAccessor() {
                 @Override
-                public void setProjectName(CustomRecognizeEntitiesResultCollection resultCollection,
+                public void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection,
                     String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
                 @Override
-                public void setDeploymentName(CustomRecognizeEntitiesResultCollection resultCollection,
+                public void setDeploymentName(RecognizeCustomEntitiesResultCollection resultCollection,
                     String deploymentName) {
                     resultCollection.setDeploymentName(deploymentName);
                 }
 
                 @Override
-                public void setStatistics(CustomRecognizeEntitiesResultCollection resultCollection,
+                public void setStatistics(RecognizeCustomEntitiesResultCollection resultCollection,
                     TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
@@ -44,12 +44,12 @@ public final class CustomRecognizeEntitiesResultCollection extends IterableStrea
     }
 
     /**
-     * Create a {@link CustomRecognizeEntitiesResultCollection} model that maintains a list of
+     * Create a {@link RecognizeCustomEntitiesResultCollection} model that maintains a list of
      * {@link RecognizeEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizeEntitiesResult}.
      */
-    public CustomRecognizeEntitiesResultCollection(Iterable<RecognizeEntitiesResult> documentResults) {
+    public RecognizeCustomEntitiesResultCollection(Iterable<RecognizeEntitiesResult> documentResults) {
         super(documentResults);
     }
 

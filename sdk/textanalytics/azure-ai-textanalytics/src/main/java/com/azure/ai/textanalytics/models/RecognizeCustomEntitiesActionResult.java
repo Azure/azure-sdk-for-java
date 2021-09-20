@@ -4,15 +4,15 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.CustomRecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link CustomRecognizeEntitiesActionResult} model.
+ * The {@link RecognizeCustomEntitiesActionResult} model.
  */
 @Immutable
-public final class CustomRecognizeEntitiesActionResult extends TextAnalyticsActionResult {
-    private CustomRecognizeEntitiesResultCollection documentsResults;
+public final class RecognizeCustomEntitiesActionResult extends TextAnalyticsActionResult {
+    private RecognizeCustomEntitiesResultCollection documentsResults;
 
     static {
         RecognizeCustomEntitiesActionResultPropertiesHelper.setAccessor(
@@ -27,12 +27,12 @@ public final class CustomRecognizeEntitiesActionResult extends TextAnalyticsActi
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public CustomRecognizeEntitiesResultCollection getDocumentsResults() {
+    public RecognizeCustomEntitiesResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(CustomRecognizeEntitiesResultCollection documentsResults) {
+    private void setDocumentsResults(RecognizeCustomEntitiesResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

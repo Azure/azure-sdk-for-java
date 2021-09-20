@@ -3,11 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.CustomClassifyDocumentSingleCategoryActionResult;
-import com.azure.ai.textanalytics.util.CustomClassifyDocumentSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryActionResult;
+import com.azure.ai.textanalytics.util.ClassifyCustomSingleCategoryResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link CustomClassifyDocumentSingleCategoryActionResult} instance.
+ * The helper class to set the non-public properties of an {@link ClassifyCustomSingleCategoryActionResult} instance.
  */
 public final class ClassifyCustomCategoryActionResultPropertiesHelper {
     private static ClassifyCustomCategoryActionResultAccessor accessor;
@@ -15,16 +15,16 @@ public final class ClassifyCustomCategoryActionResultPropertiesHelper {
     private ClassifyCustomCategoryActionResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link CustomClassifyDocumentSingleCategoryActionResult}
+     * Type defining the methods to set the non-public properties of an {@link ClassifyCustomSingleCategoryActionResult}
      * instance.
      */
     public interface ClassifyCustomCategoryActionResultAccessor {
-        void setDocumentsResults(CustomClassifyDocumentSingleCategoryActionResult actionResult,
-            CustomClassifyDocumentSingleCategoryResultCollection documentsResults);
+        void setDocumentsResults(ClassifyCustomSingleCategoryActionResult actionResult,
+            ClassifyCustomSingleCategoryResultCollection documentsResults);
     }
 
     /**
-     * The method called from {@link CustomClassifyDocumentSingleCategoryActionResult} to set it's accessor.
+     * The method called from {@link ClassifyCustomSingleCategoryActionResult} to set it's accessor.
      *
      * @param classifyCustomCategoryActionResultAccessor The accessor.
      */
@@ -33,8 +33,8 @@ public final class ClassifyCustomCategoryActionResultPropertiesHelper {
         accessor = classifyCustomCategoryActionResultAccessor;
     }
 
-    public static void setDocumentsResults(CustomClassifyDocumentSingleCategoryActionResult actionResult,
-        CustomClassifyDocumentSingleCategoryResultCollection documentsResults) {
+    public static void setDocumentsResults(ClassifyCustomSingleCategoryActionResult actionResult,
+        ClassifyCustomSingleCategoryResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }
