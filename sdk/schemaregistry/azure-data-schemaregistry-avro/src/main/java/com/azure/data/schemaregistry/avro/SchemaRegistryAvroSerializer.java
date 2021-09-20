@@ -9,6 +9,8 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
+import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericContainer;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -18,6 +20,9 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -26,14 +31,30 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Schema Registry-based serializer implementation for Avro data format.
  */
 public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
 
+    private static final Map<Schema.Type, Schema> PRIMITIVE_SCHEMAS;
     static final int SCHEMA_ID_SIZE = 32;
     static final int RECORD_FORMAT_INDICATOR_SIZE = 4;
+
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
     private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSchemaRegistryUtils avroSchemaRegistryUtils;
     private final String schemaGroup;
     private final boolean autoRegisterSchemas;
+
+    static {
+        final HashMap<Schema.Type, Schema> schemas = new HashMap<>();
+        schemas.put(Schema.Type.NULL, Schema.create(Schema.Type.NULL));
+        schemas.put(Schema.Type.BOOLEAN, Schema.create(Schema.Type.BOOLEAN));
+        schemas.put(Schema.Type.INT, Schema.create(Schema.Type.INT));
+        schemas.put(Schema.Type.LONG, Schema.create(Schema.Type.LONG));
+        schemas.put(Schema.Type.FLOAT, Schema.create(Schema.Type.FLOAT));
+        schemas.put(Schema.Type.DOUBLE, Schema.create(Schema.Type.DOUBLE));
+        schemas.put(Schema.Type.BYTES, Schema.create(Schema.Type.BYTES));
+        schemas.put(Schema.Type.STRING, Schema.create(Schema.Type.STRING));
+
+        PRIMITIVE_SCHEMAS = Collections.unmodifiableMap(schemas);
+    }
 
     SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         AvroSchemaRegistryUtils avroSchemaRegistryUtils, String schemaGroup, boolean autoRegisterSchemas) {
@@ -173,6 +194,40 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
             });
+    }
+
+    /**
+     * Returns Avro schema for specified object, including null values
+     *
+     * @param object object for which Avro schema is being returned
+     *
+     * @return Avro schema for object's data structure
+     *
+     * @throws IllegalArgumentException if object type is unsupported
+     */
+    static Schema getSchema(Object object) throws IllegalArgumentException {
+        if (object == null) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.NULL);
+        } else if (object instanceof Boolean) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.BOOLEAN);
+        } else if (object instanceof Integer) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.INT);
+        } else if (object instanceof Long) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.LONG);
+        } else if (object instanceof Float) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.FLOAT);
+        } else if (object instanceof Double) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.DOUBLE);
+        } else if (object instanceof CharSequence) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.STRING);
+        } else if (object instanceof byte[] || object instanceof ByteBuffer || object instanceof Byte[]) {
+            return PRIMITIVE_SCHEMAS.get(Schema.Type.BYTES);
+        } else if (object instanceof GenericContainer) {
+            return ((GenericContainer) object).getSchema();
+        } else {
+            throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, Boolean, Integer,"
+                + " Long, Float, Double, String, byte[], and GenericContainer");
+        }
     }
 
     /**
