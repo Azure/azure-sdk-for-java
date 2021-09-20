@@ -19,6 +19,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -32,6 +35,7 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.stream.Stream;
 
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.SCHEMA_ID_SIZE;
@@ -83,6 +87,47 @@ public class SchemaRegistryAvroSerializerTest {
         if (mocksCloseable != null) {
             mocksCloseable.close();
         }
+    }
+
+    public static Stream<Arguments> getSchemaTypes() {
+        final byte[] byteArray = new byte[] { 10, 3, 5};
+        final ByteBuffer byteBuffer= ByteBuffer.wrap(byteArray);
+        final Byte[] byteObjectArray = new Byte[] { 5, 10, 5, 2};
+
+        return Stream.of(
+            Arguments.of("foo", Schema.create(Schema.Type.STRING)),
+
+            Arguments.of(byteArray, Schema.create(Schema.Type.BYTES)),
+            Arguments.of(byteObjectArray, Schema.create(Schema.Type.BYTES)),
+            Arguments.of(byteBuffer, Schema.create(Schema.Type.BYTES)),
+
+            Arguments.of(Integer.valueOf("50"), Schema.create(Schema.Type.INT)),
+            Arguments.of(51, Schema.create(Schema.Type.INT)),
+
+            Arguments.of(Long.valueOf("10"), Schema.create(Schema.Type.LONG)),
+            Arguments.of(15L, Schema.create(Schema.Type.LONG)),
+
+            Arguments.of(Float.valueOf("24.4"), Schema.create(Schema.Type.FLOAT)),
+            Arguments.of(52.1f, Schema.create(Schema.Type.FLOAT)),
+
+            Arguments.of(Double.valueOf("24.4"), Schema.create(Schema.Type.DOUBLE)),
+            Arguments.of(52.1d, Schema.create(Schema.Type.DOUBLE)),
+
+            Arguments.of(Boolean.TRUE, Schema.create(Schema.Type.BOOLEAN)),
+            Arguments.of(false, Schema.create(Schema.Type.BOOLEAN)),
+
+            Arguments.of(null, Schema.create(Schema.Type.NULL))
+        );
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    public void getSchemaTypes(Object object, Schema expectedSchema) {
+        // Act
+        final Schema actual = SchemaRegistryAvroSerializer.getSchema(object);
+
+        // Assert
+        assertEquals(expectedSchema, actual);
     }
 
     @Test
