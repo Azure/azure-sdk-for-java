@@ -118,7 +118,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.18.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.19.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
 
     <dependency>
@@ -130,7 +130,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     </dependency>
 
     <dependency>
@@ -148,7 +148,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 
     <dependency>

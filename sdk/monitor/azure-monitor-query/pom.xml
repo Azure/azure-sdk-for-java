@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-query</artifactId>
-  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+  <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
 
   <name>Microsoft Azure SDK for Azure Monitor Logs and Metrics Query</name>
   <description>This package contains the Microsoft Azure SDK for querying Azure Monitor's Logs and Metrics data sources.</description>
@@ -31,12 +31,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+      <version>1.21.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

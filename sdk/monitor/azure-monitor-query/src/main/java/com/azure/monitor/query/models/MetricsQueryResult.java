@@ -4,10 +4,11 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.experimental.models.TimeInterval;
+import com.azure.core.util.CoreUtils;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The response to a metrics query.
@@ -16,7 +17,7 @@ import java.util.List;
 public final class MetricsQueryResult {
 
     private final Integer cost;
-    private final TimeInterval timeInterval;
+    private final QueryTimeInterval timeInterval;
     private final Duration granularity;
     private final String namespace;
     private final String resourceRegion;
@@ -31,7 +32,7 @@ public final class MetricsQueryResult {
      * @param resourceRegion the region of the resource been queried for metrics.
      * @param metrics the value of the collection.
      */
-    public MetricsQueryResult(Integer cost, TimeInterval timeInterval, Duration granularity, String namespace,
+    public MetricsQueryResult(Integer cost, QueryTimeInterval timeInterval, Duration granularity, String namespace,
                               String resourceRegion, List<MetricResult> metrics) {
         this.cost = cost;
         this.timeInterval = timeInterval;
@@ -53,7 +54,7 @@ public final class MetricsQueryResult {
      * Returns the time interval for which the data was retrieved.
      * @return the time interval for which the data was retrieved.
      */
-    public TimeInterval getTimeInterval() {
+    public QueryTimeInterval getTimeInterval() {
         return timeInterval;
     }
 
@@ -87,5 +88,23 @@ public final class MetricsQueryResult {
      */
     public List<MetricResult> getMetrics() {
         return metrics;
+    }
+
+    /**
+     * Returns the metric result for the {@code metricName}.
+     *
+     * @param metricName The name of the metric to look up the result for.
+     * @return The {@link MetricResult} for {@code metricName} if found, {@code null} otherwise.
+     */
+    public MetricResult getMetrics(String metricName) {
+        Objects.requireNonNull(metricName, "'metricName' cannot be null");
+        if (CoreUtils.isNullOrEmpty(metrics)) {
+            return null;
+        }
+
+        return metrics.stream()
+                .filter(metricResult -> metricResult.getMetricName().equals(metricName))
+                .findFirst()
+                .orElse(null);
     }
 }

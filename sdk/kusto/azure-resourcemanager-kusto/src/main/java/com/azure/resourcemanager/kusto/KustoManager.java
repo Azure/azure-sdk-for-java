@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,6 +16,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -28,8 +28,11 @@ import com.azure.resourcemanager.kusto.implementation.DataConnectionsImpl;
 import com.azure.resourcemanager.kusto.implementation.DatabasePrincipalAssignmentsImpl;
 import com.azure.resourcemanager.kusto.implementation.DatabasesImpl;
 import com.azure.resourcemanager.kusto.implementation.KustoManagementClientBuilder;
+import com.azure.resourcemanager.kusto.implementation.ManagedPrivateEndpointsImpl;
 import com.azure.resourcemanager.kusto.implementation.OperationsImpl;
 import com.azure.resourcemanager.kusto.implementation.OperationsResultsImpl;
+import com.azure.resourcemanager.kusto.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.kusto.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.kusto.implementation.ScriptsImpl;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalAssignments;
@@ -37,8 +40,11 @@ import com.azure.resourcemanager.kusto.models.Clusters;
 import com.azure.resourcemanager.kusto.models.DataConnections;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignments;
 import com.azure.resourcemanager.kusto.models.Databases;
+import com.azure.resourcemanager.kusto.models.ManagedPrivateEndpoints;
 import com.azure.resourcemanager.kusto.models.Operations;
 import com.azure.resourcemanager.kusto.models.OperationsResults;
+import com.azure.resourcemanager.kusto.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.kusto.models.PrivateLinkResources;
 import com.azure.resourcemanager.kusto.models.Scripts;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -58,11 +64,17 @@ public final class KustoManager {
 
     private Databases databases;
 
+    private AttachedDatabaseConfigurations attachedDatabaseConfigurations;
+
+    private ManagedPrivateEndpoints managedPrivateEndpoints;
+
     private DatabasePrincipalAssignments databasePrincipalAssignments;
 
     private Scripts scripts;
 
-    private AttachedDatabaseConfigurations attachedDatabaseConfigurations;
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private PrivateLinkResources privateLinkResources;
 
     private DataConnections dataConnections;
 
@@ -113,6 +125,7 @@ public final class KustoManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -149,6 +162,17 @@ public final class KustoManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -194,7 +218,7 @@ public final class KustoManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -208,6 +232,9 @@ public final class KustoManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -217,10 +244,7 @@ public final class KustoManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -258,6 +282,24 @@ public final class KustoManager {
         return databases;
     }
 
+    /** @return Resource collection API of AttachedDatabaseConfigurations. */
+    public AttachedDatabaseConfigurations attachedDatabaseConfigurations() {
+        if (this.attachedDatabaseConfigurations == null) {
+            this.attachedDatabaseConfigurations =
+                new AttachedDatabaseConfigurationsImpl(clientObject.getAttachedDatabaseConfigurations(), this);
+        }
+        return attachedDatabaseConfigurations;
+    }
+
+    /** @return Resource collection API of ManagedPrivateEndpoints. */
+    public ManagedPrivateEndpoints managedPrivateEndpoints() {
+        if (this.managedPrivateEndpoints == null) {
+            this.managedPrivateEndpoints =
+                new ManagedPrivateEndpointsImpl(clientObject.getManagedPrivateEndpoints(), this);
+        }
+        return managedPrivateEndpoints;
+    }
+
     /** @return Resource collection API of DatabasePrincipalAssignments. */
     public DatabasePrincipalAssignments databasePrincipalAssignments() {
         if (this.databasePrincipalAssignments == null) {
@@ -275,13 +317,21 @@ public final class KustoManager {
         return scripts;
     }
 
-    /** @return Resource collection API of AttachedDatabaseConfigurations. */
-    public AttachedDatabaseConfigurations attachedDatabaseConfigurations() {
-        if (this.attachedDatabaseConfigurations == null) {
-            this.attachedDatabaseConfigurations =
-                new AttachedDatabaseConfigurationsImpl(clientObject.getAttachedDatabaseConfigurations(), this);
+    /** @return Resource collection API of PrivateEndpointConnections. */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
-        return attachedDatabaseConfigurations;
+        return privateEndpointConnections;
+    }
+
+    /** @return Resource collection API of PrivateLinkResources. */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
     }
 
     /** @return Resource collection API of DataConnections. */

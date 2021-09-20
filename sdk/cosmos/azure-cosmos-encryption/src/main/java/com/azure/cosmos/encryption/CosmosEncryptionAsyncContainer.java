@@ -18,8 +18,13 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.query.Transformer;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -63,6 +68,10 @@ public class CosmosEncryptionAsyncContainer {
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor;
     ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor cosmosChangeFeedRequestOptionsAccessor;
     ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor cosmosAsyncContainerAccessor;
+    ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor cosmosBatchAccessor;
+    ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor;
+    ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.CosmosBatchOperationResultAccessor cosmosBatchOperationResultAccessor;
+    ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -70,11 +79,20 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosEncryptionAsyncClient = cosmosEncryptionAsyncClient;
         this.encryptionProcessor = new EncryptionProcessor(this.container, cosmosEncryptionAsyncClient);
         this.encryptionScheduler = Schedulers.parallel();
-        this.cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
-        this.cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
-        this.cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
-        this.cosmosChangeFeedRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
-        this.cosmosAsyncContainerAccessor = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+        this.cosmosItemResponseBuilderAccessor =
+            ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
+        this.cosmosItemRequestOptionsAccessor =
+            ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
+        this.cosmosQueryRequestOptionsAccessor =
+            ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+        this.cosmosChangeFeedRequestOptionsAccessor =
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+        this.cosmosAsyncContainerAccessor =
+            ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
+        this.cosmosBatchAccessor = ImplementationBridgeHelpers.CosmosBatchHelper.getCosmosBatchAccessor();
+        this.cosmosBatchResponseAccessor = ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
+        this.cosmosBatchOperationResultAccessor = ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.getCosmosBatchOperationResultAccessor();
+        this.cosmosBatchRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -82,13 +100,54 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * create item and encrypts the requested fields
+     * Creates an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * created Cosmos item. In case of failure the {@link Mono} will error.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @return an {@link Mono} containing the single resource response with the
+     * created Cosmos item or an error.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Mono<CosmosItemResponse<T>> createItem(T item) {
+        return createItem(item, new CosmosItemRequestOptions());
+    }
+
+    /**
+     * Creates a Cosmos item.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param requestOptions the item request options.
+     * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Mono<CosmosItemResponse<T>> createItem(T item,
+                                                      CosmosItemRequestOptions requestOptions) {
+        Preconditions.checkNotNull(item, "item");
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
+        }
+        byte[] streamPayload = cosmosSerializerToStream(item);
+        return createItemHelper(streamPayload, null, requestOptions,(Class<T>) item.getClass(), false );
+
+    }
+
+    /**
+     * Creates an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * created Cosmos item. In case of failure the {@link Mono} will error.
+     *
+     * @param <T> the type parameter.
+     * @param item the Cosmos item represented as a POJO or Cosmos item object.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the single resource response with the created Cosmos item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> createItem(T item,
@@ -107,31 +166,123 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Deletes the item.
+     * Deletes an item.
      * <p>
-     * After subscription the operation will be performed. The {@link Mono} upon successful completion will contain a
-     * single Cosmos item response with the deleted item.
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
-     * @param itemId       id of the item.
-     * @param partitionKey partitionKey of the item.
-     * @param options      the request options.
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @return an {@link Mono} containing the Cosmos item resource response.
      */
-    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
-                                                       PartitionKey partitionKey,
-                                                       CosmosItemRequestOptions options) {
-
-        return container.deleteItem(itemId, partitionKey, options);
+    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey) {
+        return deleteItem(itemId, partitionKey, new CosmosItemRequestOptions());
     }
 
     /**
-     * upserts item and encrypts the requested fields
+     * Deletes the item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param itemId id of the item.
+     * @param partitionKey partitionKey of the item.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    public Mono<CosmosItemResponse<Object>> deleteItem(String itemId,
+                                                       PartitionKey partitionKey,
+                                                       CosmosItemRequestOptions requestOptions) {
+
+        return container.deleteItem(itemId, partitionKey, requestOptions);
+    }
+
+    /**
+     * Deletes the item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
+     *
+     * @param <T> the type parameter.
+     * @param item item to be deleted.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    public <T> Mono<CosmosItemResponse<Object>> deleteItem(T item, CosmosItemRequestOptions requestOptions) {
+        return container.deleteItem(item, requestOptions);
+    }
+
+    /**
+     * Deletes all items in the Container with the specified partitionKey value.
+     * Starts an asynchronous Cosmos DB background operation which deletes all items in the Container with the specified value.
+     * The asynchronous Cosmos DB background operation runs using a percentage of user RUs.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for all the deleted items.
+     *
+     * @param partitionKey partitionKey of the item.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
+        }
+        return container.deleteAllItemsByPartitionKey(partitionKey, requestOptions);
+    }
+
+    /**
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
+     *
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item) {
+        return upsertItem(item, new CosmosItemRequestOptions());
+    }
+
+    /**
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
+     *
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
+     */
+    @SuppressWarnings("unchecked")
+    public <T> Mono<CosmosItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions requestOptions) {
+        Preconditions.checkNotNull(item, "item");
+        if (requestOptions == null) {
+            requestOptions = new CosmosItemRequestOptions();
+        }
+
+        byte[] streamPayload = cosmosSerializerToStream(item);
+        return upsertItemHelper(streamPayload, null, requestOptions, (Class<T>) item.getClass(), false);
+    }
+
+    /**
+     * Upserts an item.
+     * <p>
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a single resource response with the
+     * upserted item. In case of failure the {@link Mono} will error.
+     *
+     * @param <T> the type parameter.
+     * @param item the item represented as a POJO or Item object to upsert.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request options.
+     * @return an {@link Mono} containing the single resource response with the upserted item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> upsertItem(T item,
@@ -151,14 +302,33 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * replaces item and encrypts the requested fields
+     * Replaces an item with the passed in item  and encrypts the requested fields.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param itemId         the item id.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item to replace (containing the item id).
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> replaceItem(T item, String itemId, PartitionKey partitionKey) {
+        return replaceItem(item, itemId, partitionKey, new CosmosItemRequestOptions());
+    }
+
+    /**
+     * Replaces an item with the passed in item  and encrypts the requested fields.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the replaced item.
+     *
+     * @param <T> the type parameter.
+     * @param item the item to replace (containing the item id).
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request comosItemRequestOptions.
+     * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     @SuppressWarnings("unchecked")
     public <T> Mono<CosmosItemResponse<T>> replaceItem(T item,
@@ -179,14 +349,33 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Reads item and decrypt the encrypted fields
+     * Reads an item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain an item response with the read item.
      *
-     * @param id             item id
-     * @param partitionKey   the partition key.
-     * @param requestOptions request options
-     * @param classType      deserialization class type
-     * @param <T>            type
-     * @return a {@link Mono} containing the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param id the item id.
+     * @param partitionKey the partition key.
+     * @param classType the item type.
+     * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> readItem(String id, PartitionKey partitionKey, Class<T> classType) {
+        return readItem(id, partitionKey, ModelBridgeInternal.createCosmosItemRequestOptions(partitionKey), classType);
+    }
+
+    /**
+     * Reads an item using a configured {@link CosmosItemRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
+     *
+     * @param <T> the type parameter.
+     * @param id the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the request {@link CosmosItemRequestOptions}.
+     * @param classType the item type.
+     * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> readItem(String id,
                                                     PartitionKey partitionKey,
@@ -204,43 +393,83 @@ public class CosmosEncryptionAsyncContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query for items in the current container.
      * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
-     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query text.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param query the query.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
+        return this.queryItems(new SqlQuerySpec(query), classType);
+    }
+
+    /**
+     * Query for items in the current container using a string.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param query the query.
+     * @param requestOptions the query request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
+     * error.
+     */
+    public <T> CosmosPagedFlux<T> queryItems(String query, CosmosQueryRequestOptions requestOptions,
                                              Class<T> classType) {
-        return this.queryItems(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
+        if (requestOptions == null) {
+            requestOptions = new CosmosQueryRequestOptions();
+        }
+
+        return this.queryItems(new SqlQuerySpec(query), requestOptions, classType);
     }
 
     /**
      * Query for items in the current container using a {@link SqlQuerySpec}.
      * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will contain one or several feed
-     * response of the obtained items. In case of failure the {@link CosmosPagedFlux} will error.
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param querySpec the SQL query specification.
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
      * error.
      */
-    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
+        return queryItemsHelper(querySpec, new CosmosQueryRequestOptions(), classType, false);
+    }
+
+    /**
+     * Query for items in the current container using a {@link SqlQuerySpec} and {@link CosmosQueryRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param query the SQL query specification.
+     * @param requestOptions the query request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained items or an
+     * error.
+     */
+    public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec query, CosmosQueryRequestOptions requestOptions,
                                              Class<T> classType) {
-        if (options == null) {
-            options = new CosmosQueryRequestOptions();
+        if (requestOptions == null) {
+            requestOptions = new CosmosQueryRequestOptions();
         }
 
-        return queryItemsHelper(query, options, classType,false);
+        return queryItemsHelper(query, requestOptions, classType,false);
     }
 
     /**
@@ -279,6 +508,19 @@ public class CosmosEncryptionAsyncContainer {
         }
     }
 
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
+     * items or an error.
+     */
     @Beta(value = Beta.SinceVersion.V1, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
@@ -314,25 +556,14 @@ public class CosmosEncryptionAsyncContainer {
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getItemDeserializer();
     }
 
-    <T> Mono<byte[]> decryptResponse(
-        byte[] input) {
-
-        if (input == null) {
-            return Mono.empty();
-        }
-
-        return this.encryptionProcessor.decrypt(
-            input);
-    }
-
-    <T> Mono<byte[]> decryptResponse(
-        ObjectNode jsonNode) {
+    Mono<JsonNode> decryptResponseNode(
+        JsonNode jsonNode) {
 
         if (jsonNode == null) {
             return Mono.empty();
         }
 
-        return this.encryptionProcessor.decrypt(
+        return this.encryptionProcessor.decryptJsonNode(
             jsonNode);
     }
 
@@ -357,10 +588,10 @@ public class CosmosEncryptionAsyncContainer {
                         boolean isNoChangesResponse = isChangeFeed ?
                             ModelBridgeInternal.getNoCHangesFromFeedResponse(page)
                             : false;
-                        List<Mono<byte[]>> byteArrayMonoList =
-                            page.getResults().stream().map(jsonNode -> decryptResponse((ObjectNode) jsonNode)).collect(Collectors.toList());
-                        return Flux.concat(byteArrayMonoList).map(
-                            item -> getItemDeserializer().parseFrom(classType, item)
+                        List<Mono<JsonNode>> jsonNodeArrayMonoList =
+                            page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
+                        return Flux.concat(jsonNodeArrayMonoList).map(
+                            item -> getItemDeserializer().convert(classType, item)
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                             page.getResponseHeaders(),
                             BridgeInternal.queryMetricsFromFeedResponse(page),
@@ -403,7 +634,7 @@ public class CosmosEncryptionAsyncContainer {
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
         return this.encryptionProcessor.encrypt(streamPayload)
-            .flatMap(encryptedPayload -> this.container.createItem(
+            .flatMap(encryptedPayload -> createItemHelper(
                 encryptedPayload,
                 partitionKey,
                 requestOptions)
@@ -425,6 +656,14 @@ public class CosmosEncryptionAsyncContainer {
                 }));
     }
 
+    private <T> Mono<CosmosItemResponse<byte[]>> createItemHelper(byte[] encryptedPayload,
+                                                                  PartitionKey partitionKey,
+                                                                  CosmosItemRequestOptions requestOptions) {
+        return partitionKey != null
+            ? this.container.createItem(encryptedPayload, partitionKey, requestOptions)
+            : this.container.createItem(encryptedPayload, requestOptions);
+    }
+
     private <T> Mono<CosmosItemResponse<T>> upsertItemHelper(byte[] streamPayload,
                                                              PartitionKey partitionKey,
                                                              CosmosItemRequestOptions requestOptions,
@@ -432,7 +671,7 @@ public class CosmosEncryptionAsyncContainer {
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
         return this.encryptionProcessor.encrypt(streamPayload)
-            .flatMap(encryptedPayload -> this.container.upsertItem(
+            .flatMap(encryptedPayload -> upsertItemHelper(
                 encryptedPayload,
                 partitionKey,
                 requestOptions)
@@ -452,6 +691,14 @@ public class CosmosEncryptionAsyncContainer {
                     }
                     return Mono.error(exception);
                 }));
+    }
+
+    private <T> Mono<CosmosItemResponse<byte[]>> upsertItemHelper(byte[] encryptedPayload,
+                                                             PartitionKey partitionKey,
+                                                             CosmosItemRequestOptions requestOptions) {
+        return partitionKey != null
+            ? this.container.upsertItem(encryptedPayload, partitionKey, requestOptions)
+            : this.container.upsertItem(encryptedPayload, requestOptions);
     }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemHelper(byte[] streamPayload,
@@ -483,21 +730,6 @@ public class CosmosEncryptionAsyncContainer {
                     }
                     return Mono.error(exception);
                 }));
-    }
-
-    private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
-        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-    }
-
-    private void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
-        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-    }
-
-    private void setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
-        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     private <T> CosmosPagedFlux<T> queryItemsHelper(SqlQuerySpec sqlQuerySpec,
@@ -569,7 +801,6 @@ public class CosmosEncryptionAsyncContainer {
         setRequestHeaders(options);
         CosmosQueryRequestOptions finalOptions = options;
 
-
         Flux<FeedResponse<T>>  tFlux = CosmosBridgeInternal.queryItemsInternal(container, sqlQuerySpecMono, options,
             new Transformer<T>() {
                 @Override
@@ -592,6 +823,182 @@ public class CosmosEncryptionAsyncContainer {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, finalOptions);
             return tFlux;
         });
+    }
+
+    /**
+     * Executes the encrypted transactional batch.
+     *
+     * @param cosmosBatch Batch having list of operation and partition key which will be executed by this container.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * CosmosBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * CosmosBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link CosmosBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link CosmosBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then the Mono will return error instead of CosmosBatchResponse.
+     * <p>
+     * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(value = Beta.SinceVersion.V1, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch) {
+        return this.executeCosmosBatch(cosmosBatch, new CosmosBatchRequestOptions());
+    }
+
+    /**
+     * Executes the encrypted transactional batch.
+     *
+     * @param cosmosBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param requestOptions Options that apply specifically to batch request.
+     *
+     * @return A Mono response which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * CosmosBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * CosmosBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link CosmosBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link CosmosBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then the Mono will return error instead of CosmosBatchResponse.
+     * <p>
+     * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(value = Beta.SinceVersion.V1, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch, CosmosBatchRequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new CosmosBatchRequestOptions();
+        }
+
+        List<Mono<ItemBatchOperation<?>>> monoList = new ArrayList<>();
+        for (ItemBatchOperation<?> itemBatchOperation : this.cosmosBatchAccessor.getOperationsInternal(cosmosBatch)) {
+            Mono<ItemBatchOperation<?>> itemBatchOperationMono = null;
+            if (itemBatchOperation.getItem() != null) {
+                ObjectNode objectNode =
+                    EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
+                itemBatchOperationMono =
+                    encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
+                        return new ItemBatchOperation<>(
+                            itemBatchOperation.getOperationType(),
+                            itemBatchOperation.getId(),
+                            itemBatchOperation.getPartitionKeyValue(),
+                            itemBatchOperation.getRequestOptions(),
+                            encryptedItem
+                        );
+                    });
+            } else {
+                itemBatchOperationMono =
+                    Mono.just(
+                        new ItemBatchOperation<>(
+                            itemBatchOperation.getOperationType(),
+                            itemBatchOperation.getId(),
+                            itemBatchOperation.getPartitionKeyValue(),
+                            itemBatchOperation.getRequestOptions(),
+                            null
+                        )
+                    );
+            }
+            monoList.add(itemBatchOperationMono);
+        }
+        Mono<List<ItemBatchOperation<?>>> encryptedOperationListMono =
+            Flux.mergeSequential(monoList).collectList();
+        CosmosBatchRequestOptions finalRequestOptions = requestOptions;
+
+        CosmosBatch encryptedCosmosBatch = CosmosBatch.createCosmosBatch(cosmosBatch.getPartitionKeyValue());
+
+        return encryptedOperationListMono.flatMap(itemBatchOperations -> {
+            this.cosmosBatchAccessor.getOperationsInternal(encryptedCosmosBatch).addAll(itemBatchOperations);
+            return executeCosmosBatchHelper(encryptedCosmosBatch, finalRequestOptions, false);
+        });
+    }
+
+    private Mono<CosmosBatchResponse> executeCosmosBatchHelper(CosmosBatch encryptedCosmosBatch,
+                                                               CosmosBatchRequestOptions requestOptions,
+                                                               boolean isRetry) {
+        setRequestHeaders(requestOptions);
+        return this.container.executeCosmosBatch(encryptedCosmosBatch, requestOptions).flatMap(cosmosBatchResponse -> {
+            // TODO this should check for BadRequest StatusCode too, requires a service fix to return 400 instead of
+            //  -1 which is currently returned inside the body.
+            //  Once fixed from service below if condition can be removed, as this is already covered in onErrorResume.
+            if (!isRetry && cosmosBatchResponse.getSubStatusCode() == 1024) {
+                this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                    (Mono.defer(() -> executeCosmosBatchHelper(encryptedCosmosBatch, requestOptions, true)));
+            }
+
+            List<Mono<Void>> decryptMonoList = new ArrayList<>();
+            for (CosmosBatchOperationResult cosmosBatchOperationResult :
+                this.cosmosBatchResponseAccessor.getResults(cosmosBatchResponse)) {
+                ObjectNode objectNode =
+                    this.cosmosBatchOperationResultAccessor.getResourceObject(cosmosBatchOperationResult);
+                if (objectNode != null) {
+                    decryptMonoList.add(encryptionProcessor.decryptJsonNode(objectNode).flatMap(jsonNode -> {
+                        this.cosmosBatchOperationResultAccessor.setResourceObject(cosmosBatchOperationResult, (ObjectNode) jsonNode);
+                        return Mono.empty();
+                    }));
+                }
+            }
+
+            Mono<List<Void>> listMono = Flux.mergeSequential(decryptMonoList).collectList();
+            return listMono.map(aVoid -> cosmosBatchResponse);
+        }).onErrorResume(exception -> {
+            if (!isRetry && exception instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) exception;
+                if (isIncorrectContainerRid(cosmosException)) {
+                    this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                    return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                        (Mono.defer(() -> executeCosmosBatchHelper(encryptedCosmosBatch, requestOptions, true)));
+                }
+            }
+            return Mono.error(exception);
+        });
+    }
+
+    private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
+        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+    private void setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
+        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+    private void setRequestHeaders(CosmosChangeFeedRequestOptions requestOptions) {
+        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosChangeFeedRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
+    }
+
+    private void setRequestHeaders(CosmosBatchRequestOptions requestOptions) {
+        this.cosmosBatchRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
+        this.cosmosBatchRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     boolean isIncorrectContainerRid(CosmosException cosmosException) {

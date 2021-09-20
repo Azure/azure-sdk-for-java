@@ -484,12 +484,14 @@ public final class ShareServiceClient {
      *
      * {@codesnippet com.azure.storage.file.share.ShareServiceClient.undeleteShare#String-String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
+     *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
      * @return A {@link ShareClient} used
      * to interact with the restored share.
      */
-    // TODO (kasobol-msft) add link to REST API docs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareClient undeleteShare(String deletedShareName, String deletedShareVersion) {
         return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE)
@@ -513,6 +515,9 @@ public final class ShareServiceClient {
      *
      * {@codesnippet com.azure.storage.file.share.ShareServiceClient.undeleteShareWithResponse#String-String-Duration-Context}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
+     *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -521,7 +526,6 @@ public final class ShareServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareClient} used
      * to interact with the restored share.
      */
-    // TODO (kasobol-msft) add link to REST API docs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareClient> undeleteShareWithResponse(
         String deletedShareName, String deletedShareVersion, Duration timeout, Context context) {

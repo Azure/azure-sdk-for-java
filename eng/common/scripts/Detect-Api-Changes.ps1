@@ -12,7 +12,7 @@ Param (
   [array] $ArtifactList,
   [string] $RepoFullName = "",
   [string] $ArtifactName = "packages",
-  [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges1"
+  [string] $APIViewUri = "https://apiview.dev/PullRequest/DetectApiChanges"
 )
 
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
@@ -110,9 +110,10 @@ foreach ($artifact in $ArtifactList)
 
 if ($responses)
 {
-    Write-Warning "API change detection failed for following packages:"
+    # Will update this with a link to wiki on how to resolve
+    Write-Warning "API change detection failed for following packages. Please check above for package level error details."
     foreach($pkg in $responses.keys)
     {
-        Write-Host "$pkg"
+        Write-Host "$pkg failed with $($responses[$pkg]) code"
     }
 }

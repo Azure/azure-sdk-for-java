@@ -178,8 +178,10 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
-            assertEquals(output, clientBuilder.buildClient().extractKeyPhrases(input).iterator().next()));
+        clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) -> {
+            validateKeyPhrases(output,
+                clientBuilder.buildClient().extractKeyPhrases(input).stream().collect(Collectors.toList()));
+        });
     }
 
     /**
@@ -188,8 +190,9 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithNewLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
-            assertEquals(output, clientBuilder.buildClient().extractKeyPhrases(input, "EN").iterator().next()));
+        clientBuilderWithDefaultLanguageRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
+            assertEquals(output,
+                clientBuilder.buildClient().extractKeyPhrases(input, "EN").stream().collect(Collectors.toList())));
     }
 
     /**
@@ -218,7 +221,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithNewLanguageForBatchOperation(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        clientBuilderWithNewLanguageForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input,
+        clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion, clientBuilder -> (input,
             output) -> {
             final List<ExtractKeyPhraseResult> result =
                 clientBuilder.buildClient().extractKeyPhrasesBatch(input, "EN", null).stream()
@@ -363,19 +366,11 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     }
 
     void clientBuilderWithDefaultLanguageRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
-        Function<TextAnalyticsClientBuilder, BiConsumer<String, String>> testRunner) {
+        Function<TextAnalyticsClientBuilder, BiConsumer<String, List<String>>> testRunner) {
         testRunner.apply(
             createClientBuilder(httpClient, serviceVersion,
                 getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
-            .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), "monde");
-    }
-
-    void clientBuilderWithNewLanguageRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
-        Function<TextAnalyticsClientBuilder, BiConsumer<String, String>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
-            .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), "monde");
+            .accept(KEY_PHRASE_FRENCH_INPUTS.get(0), Arrays.asList("Bonjour", "monde"));
     }
 
     void clientBuilderWithDefaultLanguageForBatchOperationRunner(HttpClient httpClient,
@@ -386,18 +381,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion,
                 getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
             .accept(KEY_PHRASE_FRENCH_INPUTS,
-                Arrays.asList(Collections.singletonList("monde"), Collections.emptyList()));
-    }
-
-    void clientBuilderWithNewLanguageForBatchOperationRunner(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion,
-        Function<TextAnalyticsClientBuilder,
-        BiConsumer<List<String>, List<List<String>>>> testRunner) {
-        testRunner.apply(
-            createClientBuilder(httpClient, serviceVersion,
-                getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("EN"))
-            .accept(KEY_PHRASE_FRENCH_INPUTS,
-                Arrays.asList(Collections.singletonList("monde"), Collections.emptyList()));
+                Arrays.asList(Arrays.asList("Bonjour", "monde"), Collections.singletonList("Mondly")));
     }
 
     String getEndpoint() {

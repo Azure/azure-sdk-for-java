@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link NettyToAzureCoreHttpHeadersWrapper}
@@ -232,6 +234,57 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
                 new HttpHeader("test2", "value2"))),
             Arguments.of(multiValueHeaders, Arrays.asList(new HttpHeader("test", Arrays.asList("value", "value2")),
                 new HttpHeader("test2", Arrays.asList("value", "value2"))))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("testToMapSupplier")
+    public void testToMap(HttpHeaders headers, Map<String, String> expectedMap) {
+        Map<String, String> actualMap = new NettyToAzureCoreHttpHeadersWrapper(headers).toMap();
+
+        assertEquals(expectedMap.size(), actualMap.size());
+        for (Map.Entry<String, String> entry : expectedMap.entrySet()) {
+            assertTrue(actualMap.containsKey(entry.getKey()));
+            assertEquals(entry.getValue(), actualMap.get(entry.getKey()));
+        }
+    }
+
+    private static Stream<Arguments> testToMapSupplier() {
+        return Stream.of(
+            // Empty HttpHeaders will return an empty map.
+            Arguments.of(new DefaultHttpHeaders(), Collections.emptyMap()),
+
+            // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
+            Arguments.of(new DefaultHttpHeaders().set("a", "b"), Collections.singletonMap("a", "b")),
+
+            // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
+            Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c"))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("testToMultiMapSupplier")
+    public void testToMultiMap(HttpHeaders headers, Map<String, String[]> expectedMultiMap) {
+        Map<String, String[]> actualMultiMap = new NettyToAzureCoreHttpHeadersWrapper(headers).toMultiMap();
+
+        assertEquals(expectedMultiMap.size(), actualMultiMap.size());
+        for (Map.Entry<String, String[]> entry : expectedMultiMap.entrySet()) {
+            assertTrue(actualMultiMap.containsKey(entry.getKey()));
+            assertArrayEquals(entry.getValue(), actualMultiMap.get(entry.getKey()));
+        }
+    }
+
+    private static Stream<Arguments> testToMultiMapSupplier() {
+        return Stream.of(
+            // Empty HttpHeaders will return an empty map.
+            Arguments.of(new DefaultHttpHeaders(), Collections.emptyMap()),
+
+            // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
+            Arguments.of(new DefaultHttpHeaders().set("a", "b"), Collections.singletonMap("a", new String[] { "b" })),
+
+            // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
+            Arguments.of(new DefaultHttpHeaders().set("a", "b").add("a", "c"),
+                Collections.singletonMap("a", new String[] { "b", "c" }))
         );
     }
 }

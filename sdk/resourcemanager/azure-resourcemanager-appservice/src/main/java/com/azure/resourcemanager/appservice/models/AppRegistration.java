@@ -6,36 +6,25 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.AppRegistrationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the app registration for providers that have app ids and app secrets. */
 @Fluent
-public final class AppRegistration extends ProxyOnlyResource {
+public final class AppRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRegistration.class);
 
     /*
-     * AppRegistration resource specific properties
+     * The App ID of the app used for login.
      */
-    @JsonProperty(value = "properties")
-    private AppRegistrationProperties innerProperties;
+    @JsonProperty(value = "appId")
+    private String appId;
 
-    /**
-     * Get the innerProperties property: AppRegistration resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The app setting name that contains the app secret.
      */
-    private AppRegistrationProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AppRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    @JsonProperty(value = "appSecretSettingName")
+    private String appSecretSettingName;
 
     /**
      * Get the appId property: The App ID of the app used for login.
@@ -43,7 +32,7 @@ public final class AppRegistration extends ProxyOnlyResource {
      * @return the appId value.
      */
     public String appId() {
-        return this.innerProperties() == null ? null : this.innerProperties().appId();
+        return this.appId;
     }
 
     /**
@@ -53,10 +42,7 @@ public final class AppRegistration extends ProxyOnlyResource {
      * @return the AppRegistration object itself.
      */
     public AppRegistration withAppId(String appId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppRegistrationProperties();
-        }
-        this.innerProperties().withAppId(appId);
+        this.appId = appId;
         return this;
     }
 
@@ -66,7 +52,7 @@ public final class AppRegistration extends ProxyOnlyResource {
      * @return the appSecretSettingName value.
      */
     public String appSecretSettingName() {
-        return this.innerProperties() == null ? null : this.innerProperties().appSecretSettingName();
+        return this.appSecretSettingName;
     }
 
     /**
@@ -76,10 +62,7 @@ public final class AppRegistration extends ProxyOnlyResource {
      * @return the AppRegistration object itself.
      */
     public AppRegistration withAppSecretSettingName(String appSecretSettingName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppRegistrationProperties();
-        }
-        this.innerProperties().withAppSecretSettingName(appSecretSettingName);
+        this.appSecretSettingName = appSecretSettingName;
         return this;
     }
 
@@ -88,11 +71,6 @@ public final class AppRegistration extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

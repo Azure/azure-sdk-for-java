@@ -4,6 +4,7 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -14,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -68,7 +68,7 @@ public final class CloudEvent {
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
 
     // May get SERIALIZER's object mapper in the future.
-    private static final ObjectMapper BINARY_DATA_OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapperShim BINARY_DATA_OBJECT_MAPPER = ObjectMapperShim.createDefaultMapper();
     private static final Map<String, Object> EMPTY_ATTRIBUTES_MAP = Collections.emptyMap();
 
     private static final TypeReference<List<CloudEvent>> DESERIALIZER_TYPE_REFERENCE =

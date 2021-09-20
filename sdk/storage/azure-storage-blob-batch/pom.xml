@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.11.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+  <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
 
   <name>Microsoft Azure client library for Blob Storage batching</name>
   <description>This module contains client library for Microsoft Azure Blob Storage batching.</description>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -82,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -224,16 +224,6 @@
               </dependency>
             </dependencies>
           </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
         </plugins>
       </build>
     </profile>
@@ -243,6 +233,21 @@
       <activation>
         <jdk>[9,)</jdk>
       </activation>
+      <properties>
+        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+        <javaModulesSurefireArgLine>
+          --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+          --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
+          --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+          --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
+          --add-opens com.azure.storage.blob.batch/com.azure.storage.blob.batch=ALL-UNNAMED
+          --add-reads com.azure.core=ALL-UNNAMED
+          --add-reads com.azure.core.test=ALL-UNNAMED
+          --add-reads com.azure.core.amqp=ALL-UNNAMED
+          --add-reads com.azure.storage.common=ALL-UNNAMED
+          --add-reads com.azure.storage.blob=ALL-UNNAMED
+        </javaModulesSurefireArgLine>
+      </properties>
       <build>
         <plugins>
           <plugin>
@@ -292,29 +297,6 @@
                 <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
               </dependency>
             </dependencies>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.blob.batch/com.azure.storage.blob.batch=ALL-UNNAMED
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-                --add-reads com.azure.storage.common=ALL-UNNAMED
-                --add-reads com.azure.storage.blob=ALL-UNNAMED
-              </argLine>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
           </plugin>
         </plugins>
       </build>

@@ -135,6 +135,117 @@ class SparkE2EStructuredStreamingITest
     targetContainer.delete()
   }
 
+  "spark change feed micro batch (incremental)" can "be used to copy data to another container with limit" in {
+    val processedRecordCount = new AtomicLong()
+    var spark = this.createSparkSession(processedRecordCount)
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val testId = UUID.randomUUID().toString
+    val targetContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+      "target_" + testId,
+      "/id",
+      ThroughputProperties.createManualThroughput(18000)).block()
+    val targetContainer = cosmosClient
+      .getDatabase(cosmosDatabase)
+      .getContainer(targetContainerResponse.getProperties.getId)
+
+    // Initially ingest 100 records
+    for (i <- 0 until 100) {
+      this.ingestTestDocument(sourceContainer, i)
+    }
+
+    Thread.sleep(5000)
+
+    val changeFeedCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "50"
+    )
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> targetContainer.getId,
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "false",
+      "checkpointLocation" -> ("/tmp/" + testId + "/")
+    )
+
+    val changeFeedDF = spark
+      .readStream
+      .format("cosmos.oltp.changeFeed")
+      .options(changeFeedCfg)
+      .load()
+
+    val microBatchQuery = changeFeedDF
+      .writeStream
+      .format("cosmos.oltp")
+      .queryName(testId)
+      .options(writeCfg)
+      .outputMode("append")
+      .start()
+
+    Thread.sleep(70000)
+    microBatchQuery.stop()
+
+    var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
+    logInfo(s"RecordCount in source container after first execution: $sourceCount")
+    var targetCount: Long = getRecordCountOfContainer(targetContainer)
+    logInfo(s"RecordCount in target container after first execution: $targetCount")
+
+    processedRecordCount.get() shouldEqual 100L
+    sourceCount shouldEqual 100L
+    sourceCount shouldEqual targetCount
+
+    // close and recreate spark session to validate
+    // that it is possible to recover the previous query
+    // from the commit log
+    spark.close()
+
+    processedRecordCount.set(0L)
+    spark = createSparkSession(processedRecordCount)
+
+    // Ingest ten more records
+    for (i <- 100 until 105) {
+      this.ingestTestDocument(sourceContainer, i)
+    }
+
+    Thread.sleep(5000)
+
+    val secondChangeFeedDF = spark
+      .readStream
+      .format("cosmos.oltp.changeFeed")
+      .options(changeFeedCfg)
+      .load()
+
+    // new query reusing the same query name - so continuing where the first one left off
+    val secondMicroBatchQuery = secondChangeFeedDF
+      .writeStream
+      .format("cosmos.oltp")
+      .queryName(testId)
+      .options(writeCfg)
+      .outputMode("append")
+      .start()
+
+    Thread.sleep(20000)
+    secondMicroBatchQuery.stop()
+
+    sourceCount = getRecordCountOfContainer(sourceContainer)
+    logInfo(s"RecordCount in source container after second execution: $sourceCount")
+    targetCount = getRecordCountOfContainer(targetContainer)
+    logInfo(s"RecordCount in target container after second execution: $targetCount")
+
+    sourceCount shouldEqual 105L
+    sourceCount shouldEqual targetCount
+
+    targetContainer.delete()
+  }
+
   private[this] def ingestTestDocument
   (
       container: CosmosAsyncContainer,
