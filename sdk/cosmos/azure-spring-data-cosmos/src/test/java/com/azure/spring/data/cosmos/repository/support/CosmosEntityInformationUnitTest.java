@@ -423,6 +423,17 @@ public class CosmosEntityInformationUnitTest {
     }
 
     @Test
+    public void testUUIDIdTypeSerialization() {
+        final UUID uuid = UUID.randomUUID();
+        String s = uuid.toString();
+        assertThat(uuid).isEqualTo(UUID.fromString(s));
+        String lowerCase = s.toLowerCase();
+        String upperCase = s.toUpperCase();
+        assertThat(uuid).isEqualTo(UUID.fromString(lowerCase));
+        assertThat(uuid).isEqualTo(UUID.fromString(upperCase));
+    }
+
+    @Test
     public void testGetIdFieldWithLongType() {
         final CosmosEntityInformation<LongIdDomain, Long> entityInformation =
             new CosmosEntityInformation<>(LongIdDomain.class);
