@@ -1,5 +1,18 @@
 # Release History
 
+## 12.15.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed a bug when Blob Endpoint is provided as an IP address (fe, https://x.x.x.x:10000) with 
+  empty component path, the parsing fails with StringIndexOutOfBoundsException
+
+### Other Changes
+
 ## 12.14.0 (2021-09-15)
 - GA release
 

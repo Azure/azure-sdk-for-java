@@ -48,12 +48,12 @@
     <azure.eventhubs.version>5.10.0</azure.eventhubs.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     <azure.identity.version>1.3.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     <azure.servicebus.version>7.4.1</azure.servicebus.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
-    <azure.resourcemanager.version>2.7.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+    <azure.resourcemanager.version>2.8.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     <azure.spring.appconfigure.version>2.1.0</azure.spring.appconfigure.version>
     <azure.spring.appconfigure.starter.version>2.1.0</azure.spring.appconfigure.starter.version>
     <azure.spring.appconfigure.feature.management.version>2.0.0</azure.spring.appconfigure.feature.management.version>
     <azure.spring.cloud.version>${project.version}</azure.spring.cloud.version>
-    <azure.storage.queue.version>12.10.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+    <azure.storage.queue.version>12.11.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
   </properties>
 
   <dependencyManagement>

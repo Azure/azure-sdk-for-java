@@ -46,16 +46,26 @@ An authenticated client is required to query Logs or Metrics. The library includ
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L41 -->
 ```java
-LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+public void createLogsClients() {
+    LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
 ```
+
+### Create Logs query async client
+
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
+```java
+
+LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+```
+### Create Metrics query client
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L54 -->
 ```java
-MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
+public void createMetricsClients() {
+    MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+        .credential(new DefaultAzureCredentialBuilder().build())
 ```
 
 #### Asynchronous clients
@@ -69,9 +79,9 @@ LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
 ```java
+
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAsyncClient();
 ```
 
 ### Execute the query
@@ -82,13 +92,7 @@ For examples of Logs and Metrics queries, see the [Examples](#examples) section.
 
 ### Logs query rate limits and throttling
 
-Each Azure Active Directory user is able to make up to 200 requests per 30 seconds, with no cap on the total calls per day. If requests are made at a rate higher than this, these requests will receive HTTP status code 429 (Too Many Requests) along with the `Retry-After: <delta-seconds>` header. The header indicates the number of seconds until requests to this app are likely to be accepted.
-
-In addition to call rate limits and daily quota caps, there are limits on queries themselves. Queries cannot:
-
-- Return more than 500,000 rows.
-- Return more than 64,000,000 bytes (~61 MiB total data).
-- Run longer than 10 minutes by default. See this for details.
+The Log Analytics service applies throttling when the request rate is too high. Limits, such as the maximum number of rows returned, are also applied on the Kusto queries. For more information, see [Rate and query limits](https://dev.loganalytics.io/documentation/Using-the-API/Limits).
 
 ### Metrics data structure
 
@@ -118,48 +122,48 @@ Each set of metric values is a time series with the following characteristics:
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L65-L74 -->
 ```java
+ic void queryLogs() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-        new TimeInterval(Duration.ofDays(2)));
+        new QueryTimeInterval(Duration.ofDays(2)));
 
 for (LogsTableRow row : queryResults.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
-}
 ```
 
 #### Map logs query results to a model
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L80-L91 -->
 ```java
-public class CustomLogModel {
-    private String resourceGroup;
-    private String operationName;
 
-    public String getResourceGroup() {
-        return resourceGroup;
-    }
+ic class CustomLogModel {
+private String resourceGroup;
+private String operationName;
 
-    public String getOperationName() {
-        return operationName;
-    }
+public String getResourceGroup() {
+    return resourceGroup;
+}
+
+public String getOperationName() {
+    return operationName;
 }
 ```
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L106 -->
 ```java
+ic void queryLogsAsModel() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-        new TimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+        new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
-}
 ```
 
 #### Handle logs query response
@@ -187,14 +191,15 @@ LogsQueryResult / LogsBatchQueryResult
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L113-L138 -->
 ```java
+ic void queryBatch() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
-String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
-String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
+String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
 LogsBatchQueryResultCollection batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -210,9 +215,8 @@ for (CustomLogModel customLogModel : customLogModels) {
 }
 
 LogsBatchQueryResult query3Result = batchResults.getResult(query3);
-if (query3Result.hasFailed()) {
+if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
     System.out.println(query3Result.getError().getMessage());
-}
 ```
 
 ### Advanced logs query scenarios
@@ -221,6 +225,7 @@ if (query3Result.hasFailed()) {
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L146-L155 -->
 ```java
+ic void getLogsWithServerTimeout() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -230,7 +235,6 @@ LogsQueryOptions options = new LogsQueryOptions()
     .setServerTimeout(Duration.ofMinutes(10));
 
 Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
-        "{kusto-query}", new TimeInterval(Duration.ofDays(2)), options, Context.NONE);
 ```
 
 #### Query multiple workspaces
@@ -244,15 +248,15 @@ to include this column.
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
 ```java
+ic void getLogsQueryFromMultipleWorkspaces() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
-        new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+        new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                 .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
         Context.NONE);
-LogsQueryResult result = response.getValue();
 ```
 
 ### Metrics query
@@ -265,6 +269,7 @@ A resource ID, as denoted by the `{resource-id}` placeholder in the sample below
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L178-L193 -->
 ```java
+ic void getMetrics() {
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -280,7 +285,6 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
         }
     }
-}
 ```
 
 #### Handle metrics query response
@@ -314,6 +318,7 @@ MetricsQueryResult
 
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L200-L221 -->
 ```java
+ic void getMetricsWithOptions() {
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -335,7 +340,6 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
         }
     }
-}
 ```
 
 ## Troubleshooting
