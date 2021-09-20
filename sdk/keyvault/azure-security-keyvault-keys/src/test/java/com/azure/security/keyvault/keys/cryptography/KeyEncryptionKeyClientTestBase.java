@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
+    protected boolean isManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -69,7 +70,8 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, CryptographyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential,
+                isManagedHsmTest ? CryptographyClientBuilder.MHSM_SCOPE : CryptographyClientBuilder.KEY_VAULT_SCOPE));
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
@@ -98,8 +100,9 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
 
     public String getEndpoint() {
-        final String endpoint =
-            Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+        final String endpoint = isManagedHsmTest
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
         Objects.requireNonNull(endpoint);
         return endpoint;
     }

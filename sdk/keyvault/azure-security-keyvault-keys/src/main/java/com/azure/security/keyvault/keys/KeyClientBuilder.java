@@ -64,6 +64,9 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder {
+    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
+
     private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
@@ -177,7 +180,8 @@ public final class KeyClientBuilder {
         // Add retry policy.
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
-        policies.add(new BearerTokenAuthenticationPolicy(credential));
+        policies.add(new BearerTokenAuthenticationPolicy(credential,
+            vaultUrl.getHost().contains("managedhsm.azure.net") ? MHSM_SCOPE : KEY_VAULT_SCOPE));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);

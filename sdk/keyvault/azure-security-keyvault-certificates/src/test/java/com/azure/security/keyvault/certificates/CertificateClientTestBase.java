@@ -108,7 +108,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, CertificateAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, CertificateClientBuilder.KEY_VAULT_SCOPE));
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));

@@ -63,6 +63,8 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
+    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
+
     private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
@@ -176,7 +178,7 @@ public final class SecretClientBuilder {
         // Add retry policy.
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
-        policies.add(new BearerTokenAuthenticationPolicy(credential));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, KEY_VAULT_SCOPE));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);

@@ -76,7 +76,8 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
     public CertificateAsyncClient createAsyncClientWithPipeline() {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build()), new RetryPolicy())
+            .policies(new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
+                CertificateClientBuilder.KEY_VAULT_SCOPE), new RetryPolicy())
             .build();
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
             .pipeline(pipeline)
