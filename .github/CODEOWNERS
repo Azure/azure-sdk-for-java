@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @anuchandy @conniey @jianghaolu @pallavit @lmolkova
+/sdk/                                               @joshfree @srnagar @anuchandy @conniey @pallavit @lmolkova
 
 # BOM
 # PRLabel: %bom
@@ -37,10 +37,10 @@
 /sdk/communication/azure-communication-identity/    @petrsvihlik @martinbarnas-ms
 
 # PRLabel: %Container Registry
-/sdk/containerregistry/                             @pallavit @alzimmermsft @jianghaolu
+/sdk/containerregistry/                             @pallavit @alzimmermsft
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang
+/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar
@@ -83,7 +83,7 @@
 /sdk/metricsadvisor/                                @samvaity @anuchandy
 
 # PRLabel: %Azure.Identity
-/sdk/identity/                                      @g2vinay @schaabs @jianghaolu
+/sdk/identity/                                      @g2vinay @schaabs @joshfree
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
@@ -133,7 +133,7 @@
 
 # end to end tests
 # PRLabel: %Azure.Identity
-/sdk/e2e/                                           @jianghaolu @g2vinay
+/sdk/e2e/                                           @g2vinay @joshfree @alzimmermsft
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
