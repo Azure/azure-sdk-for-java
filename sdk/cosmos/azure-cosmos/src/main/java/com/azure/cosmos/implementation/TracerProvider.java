@@ -281,10 +281,17 @@ public class TracerProvider {
 
     private void end(int statusCode, Throwable throwable, Context context) {
         if (throwable != null) {
-            if (statusCode == HttpConstants.StatusCodes.NOTFOUND) {
-                tracer.setAttribute(TracerProvider.ERROR_MSG, "Not found exception", context);
-                tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
-                tracer.end(statusCode, null, context);
+            if (throwable instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) throwable;
+                if (statusCode == HttpConstants.StatusCodes.NOTFOUND && cosmosException.getSubStatusCode() == 0) {
+                    tracer.setAttribute(TracerProvider.ERROR_MSG, "not found exception", context);
+                    tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+                    tracer.end(statusCode, null, context);
+                } else {
+                    tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
+                    tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+                    tracer.end(statusCode, throwable, context);
+                }
             } else {
                 tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
                 tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
