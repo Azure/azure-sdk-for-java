@@ -302,6 +302,13 @@
             </goals>
             <configuration>
               <skip>${jacoco.skip.coverage.check}</skip>
+              <excludes>
+                <exclude>**/com/azure/core/implementation/graalvm/**/*</exclude>
+                <exclude>**/com/azure/core/http/netty/implementation/graalvm/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
               <rules>
                 <rule>
                   <element>BUNDLE</element>

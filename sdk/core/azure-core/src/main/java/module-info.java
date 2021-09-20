@@ -5,8 +5,8 @@ module com.azure.core {
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
     requires transitive org.slf4j;
-    requires org.graalvm.sdk;
-    requires svm;
+    requires transitive org.graalvm.sdk;
+    requires transitive svm;
 
 
     requires transitive com.fasterxml.jackson.annotation;

@@ -114,13 +114,11 @@
       <groupId>org.graalvm.sdk</groupId>
       <artifactId>graal-sdk</artifactId>
       <version>21.2.0</version>  <!-- {x-version-update;org.graalvm.sdk:graal-sdk;external_dependency} -->
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.graalvm.nativeimage</groupId>
       <artifactId>svm</artifactId>
       <version>21.2.0</version>  <!-- {x-version-update;org.graalvm.nativeimage:svm;external_dependency} -->
-      <scope>provided</scope>
     </dependency>
 
     <!-- test dependencies -->
