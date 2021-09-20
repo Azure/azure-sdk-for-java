@@ -10,10 +10,13 @@ public class Hello {
      * Sample method.
      * @return message
      */
-    public final String getMessage() {
+    public final String getTestMessage() {
         return "hello";
     }
-    public final String getTestMessage() {
+    public final String getTestMessage1() {
+        return "hello";
+    }
+    public final String getTestMessage2() {
         return "hello";
     }
 }
