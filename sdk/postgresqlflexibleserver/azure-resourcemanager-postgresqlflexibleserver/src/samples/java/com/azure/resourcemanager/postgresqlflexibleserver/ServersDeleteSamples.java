@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Servers Delete. */
 public final class ServersDeleteSamples {
+    /*
+     * operationId: Servers_Delete
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerDelete
+     */
     /**
      * Sample code: ServerDelete.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverDelete(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.servers().delete("testrg", "testserver", Context.NONE);
+    public static void serverDelete(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().delete("testrg", "testserver", Context.NONE);
     }
 }

@@ -13,7 +13,6 @@ import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
-import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsTable;
 import com.azure.monitor.query.models.LogsTableRow;
 
@@ -39,10 +38,10 @@ public class LogsQueryBatchSample {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
 
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null)
-                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null)
-                .addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null,
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        logsBatchQuery.addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null);
+        logsBatchQuery.addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
+        logsBatchQuery.addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null,
                         new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
@@ -51,10 +50,9 @@ public class LogsQueryBatchSample {
         List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
         for (LogsBatchQueryResult response : responses) {
-            LogsQueryResult queryResult = response.getQueryResult();
 
             // Sample to iterate by row
-            for (LogsTable table : queryResult.getLogsTables()) {
+            for (LogsTable table : response.getAllTables()) {
                 for (LogsTableRow row : table.getRows()) {
                     System.out.println("Row index " + row.getRowIndex());
                     row.getRow()

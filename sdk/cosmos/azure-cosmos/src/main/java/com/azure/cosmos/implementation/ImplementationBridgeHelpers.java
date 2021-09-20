@@ -3,29 +3,42 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -221,6 +234,23 @@ public class ImplementationBridgeHelpers {
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
             <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
+
+            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+
+            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
+                CosmosBulkExecutionOptions options,
+                double minRetryRate,
+                double maxRetryRate);
+
+            int getMaxMicroBatchSize(CosmosBulkExecutionOptions options);
+
+            CosmosBulkExecutionOptions setMaxMicroBatchSize(CosmosBulkExecutionOptions options, int maxMicroBatchSize);
+
+            int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
+
+            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
         }
     }
 
@@ -515,6 +545,196 @@ public class ImplementationBridgeHelpers {
 
         public interface FeedResponseAccessor {
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
+        }
+    }
+
+    public static final class CosmosBatchRequestOptionsHelper {
+        private static CosmosBatchRequestOptionsAccessor accessor;
+
+        private CosmosBatchRequestOptionsHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosBatchRequestOptions.class);
+        }
+
+        public static CosmosBatchRequestOptionsAccessor getCosmosBatchRequestOptionsAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosBatchRequestOptionsAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosBatchRequestOptionsAccessor(final CosmosBatchRequestOptionsAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosBatchRequestOptionsAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosBatchRequestOptionsAccessor {
+            ConsistencyLevel getConsistencyLevel(CosmosBatchRequestOptions cosmosBatchRequestOptions);
+            CosmosBatchRequestOptions setConsistencyLevel(CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                                                          ConsistencyLevel consistencyLevel);
+            CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
+            Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
+        }
+    }
+
+    public static final class CosmosBatchOperationResultHelper {
+        private static CosmosBatchOperationResultAccessor accessor;
+
+        private CosmosBatchOperationResultHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosBatchOperationResult.class);
+        }
+
+        public static CosmosBatchOperationResultAccessor getCosmosBatchOperationResultAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosBatchOperationResultAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosBatchOperationResultAccessor(final CosmosBatchOperationResultAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosBatchOperationResultAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosBatchOperationResultAccessor {
+            ObjectNode getResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult);
+            void setResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult, ObjectNode objectNode);
+        }
+    }
+
+    public static final class CosmosPatchOperationsHelper {
+        private static CosmosPatchOperationsAccessor accessor;
+
+        private CosmosPatchOperationsHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosPatchOperations.class);
+        }
+
+        public static CosmosPatchOperationsAccessor getCosmosPatchOperationsAccessor() {
+            return accessor;
+        }
+
+        public static void setCosmosPatchOperationsAccessor(CosmosPatchOperationsAccessor accessor) {
+            CosmosPatchOperationsHelper.accessor = accessor;
+        }
+
+        public interface CosmosPatchOperationsAccessor {
+            List<PatchOperation> getPatchOperations(CosmosPatchOperations cosmosPatchOperations);
+        }
+    }
+
+    public static final class CosmosBatchHelper {
+        private static CosmosBatchAccessor accessor;
+
+        private CosmosBatchHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosBatch.class);
+        }
+
+        public static CosmosBatchAccessor getCosmosBatchAccessor() {
+            return accessor;
+        }
+
+        public static void setCosmosBatchAccessor(CosmosBatchAccessor accessor) {
+            CosmosBatchHelper.accessor = accessor;
+        }
+
+        public interface CosmosBatchAccessor {
+            List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch);
+        }
+    }
+
+    public static final class CosmosBulkItemResponseHelper {
+        private static CosmosBulkItemResponseAccessor accessor;
+
+        private CosmosBulkItemResponseHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosBulkItemResponse.class);
+        }
+
+        public static CosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
+            return accessor;
+        }
+
+        public static void setCosmosBulkItemResponseAccessor(CosmosBulkItemResponseAccessor accessor) {
+            CosmosBulkItemResponseHelper.accessor = accessor;
+        }
+
+        public interface CosmosBulkItemResponseAccessor {
+            ObjectNode getResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse);
+        }
+    }
+
+    public static final class DeprecatedCosmosBulkItemResponseHelper {
+        private static DeprecatedCosmosBulkItemResponseAccessor accessor;
+
+        private DeprecatedCosmosBulkItemResponseHelper() {
+        }
+
+        static {
+            ensureClassLoaded(com.azure.cosmos.CosmosBulkItemResponse.class);
+        }
+
+        public static DeprecatedCosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
+            return accessor;
+        }
+
+        public static void setCosmosBulkItemResponseAccessor(DeprecatedCosmosBulkItemResponseAccessor accessor) {
+            DeprecatedCosmosBulkItemResponseHelper.accessor = accessor;
+        }
+
+        public interface DeprecatedCosmosBulkItemResponseAccessor {
+            ObjectNode getResourceObject(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse);
+        }
+    }
+
+    public static final class CosmosBatchResponseHelper {
+        private static CosmosBatchResponseAccessor accessor;
+
+        private CosmosBatchResponseHelper() {
+        }
+
+        static {
+            ensureClassLoaded(CosmosBatchResponse.class);
+        }
+
+        public static CosmosBatchResponseAccessor getCosmosBatchResponseAccessor() {
+            if (accessor == null) {
+                throw new IllegalStateException("CosmosBatchResponseAccessor is not initialized yet!");
+            }
+
+            return accessor;
+        }
+
+        public static void setCosmosBatchResponseAccessor(final CosmosBatchResponseAccessor newAccessor) {
+            if (accessor != null) {
+                throw new IllegalStateException("CosmosBatchResponseAccessor already initialized!");
+            }
+
+            accessor = newAccessor;
+        }
+
+        public interface CosmosBatchResponseAccessor {
+            List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
         }
     }
 

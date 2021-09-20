@@ -15,6 +15,7 @@
 # 5. BranchName             - The name of the remote branch where the patch changes will be pushed. This is not a required parameter.
 #                             In case the argument is not provided the branch name is release/{ArtifactName}_{ReleaseVersion}.
 #                             The script pushes the branch to remote URL https://github.com/Azure/azure-sdk-for-java.git
+# 6. PushToRemote           - Whether the commited changes should be pushed to the remote branch or not. This is not a required parameter. The default value is false.
 #
 # Example:  .\eng\scripts\Generate-Patch.ps1 -ArtifactName azure-mixedreality-remoterendering -ServiceDirectory remoterendering -ReleaseVersion 1.0.0 -PatchVersion 1.0.1
 # This creates a remote branch "release/azure-mixedreality-remoterendering" with all the necessary changes.
@@ -24,13 +25,14 @@ param(
   [Parameter(Mandatory=$true)][string]$ServiceDirectoryName,
   [Parameter(Mandatory=$true)][string]$ReleaseVersion,
   [Parameter(Mandatory=$false)][string]$PatchVersion,
-  [Parameter(Mandatory=$false)][string]$BranchName
+  [Parameter(Mandatory=$false)][string]$BranchName,
+  [Parameter(Mandatory=$false)][boolean]$PushToRemote
 )
 
 function TestPathThrow($Path) {
   if(!(Test-Path $Path)) {
    LogError "$Path not found. Exiting ..."
-   exit
+   exit 1
   }
 }
 
@@ -46,37 +48,25 @@ $EngCommonScriptsDir = Join-Path $EngDir "common" "scripts"
 $SdkDirPath = Join-Path $RepoRoot "sdk"
 $ServiceDirPath = Join-Path $SdkDirPath $ServiceDirectoryName
 $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
-$ArtifactPomFile = Join-Path $ArtifactDirPath "pom.xml"
-$ReleaseTag = -join($ArtifactName, "_", $ReleaseVersion)
-$TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
 $GroupId = "com.azure"
-$EngVersioningDir = Join-Path $EngDir "versioning"
-$SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
-$UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
-$CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
-$CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
-$SpotBugsFilePath = Join-Path $CodeQualityReports "spotbugs" "spotbugs-exclude.xml"
 
-TestPathThrow -Path $ArtifactDirPath
-TestPathThrow -Path $EngDir
-TestPathThrow -Path $EngCommonScriptsDir
-TestPathThrow -Path $ArtifactDirPath
-TestPathThrow -Path $ArtifactPomFile
-TestPathThrow -Path $SdkDirPath
-TestPathThrow -Path $SetVersionFilePath
-TestPathThrow -Path $UpdateVersionFilePath
+
+TestPathThrow -Path $RepoRoot
 
 . (Join-Path $EngCommonScriptsDir common.ps1)
 
 function GetPatchVersion($ReleaseVersion) {
-  $REGEX_VERSION = '([0-9]+).([0-9]+).([0-9]+)'
-  if(($ReleaseVersion -match $REGEX_VERSION) -and ($Matches.Count -eq 4)) {
-    $MajorVersion = $Matches[1]
-    $MinorVersion = $Matches[2]
-    $PatchVersion = [int]$Matches[3] + 1
-    $PatchVersion = "$MajorVersion.$MinorVersion.$PatchVersion"
-    return $PatchVersion
+  $parsedSemver = [AzureEngSemanticVersion]::ParseVersionString($ReleaseVersion)
+
+  if($parsedSemver) {
+    $MajorVersion = $parsedSemver.Major
+    $MinorVersion = $parsedSemver.Minor
+    $PatchVersion = $parsedSemver.Patch + 1
+    $PatchReleaseVersion = "$MajorVersion.$MinorVersion.$PatchVersion"
+    return $PatchReleaseVersion
   }
+
+  return $null
 }
 
 function GetRemoteName($MainRemoteUrl) {
@@ -90,7 +80,6 @@ function GetRemoteName($MainRemoteUrl) {
 }
 
 function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
-  
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $ChangelogPath = $pkgProperties.ChangeLogPath
   
@@ -105,9 +94,11 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
   LogDebug "Adding new ChangeLog entry for Version [$Version]"
   $Content = @()
   $Content += ""
-  $Content += "### Dependency Updates"
+  $Content += "### Other Changes"
   $Content += ""
-  $Content += "Upgraded ``azure-core`` and other dependencies for the library."
+  $Content += "#### Dependency Updates"
+  $Content += ""
+  $Content += "- Upgraded ``azure-core`` and other dependencies for the library."
   $Content += ""
   $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $ReleaseStatus -Content $Content
   if ($newChangeLogEntry) {
@@ -120,121 +111,152 @@ function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
   Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
 }
 
-if('' -eq $PatchVersion) {
-  $PatchVersion = GetPatchVersion -ReleaseVersion $ReleaseVersion
-  if('' -eq $PatchVersion) {
-    LogError "Could not fetch the patch version. Exitting ..."
-    exit
-  }
-}
-Write-Information "PatchVersion is: $PatchVersion"
+function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
+  $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+  Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
-$RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
-if($null -eq $RemoteName) {
-    LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exitting ..."
-    exit
-}
-Write-Information "RemoteName is: $RemoteName"
+  $SdkDirPath = Join-Path $RepoRoot "sdk"
+  $ServiceDirPath = Join-Path $SdkDirPath $ServiceDirectoryName
 
-if('' -eq $BranchName) {
-  $ArtifactNameToLower = $ArtifactName.ToLower()
-  $BranchName = "release/$ArtifactNameToLower/$PatchVersion"
-}
-Write-Information "BranchName is: $BranchName"
-
-try {
-  Write-Information "Reseting the $ArtifactName sources to the release $ReleaseTag."
-  ## Creating a new branch
-  $CmdOutput = git checkout -b $BranchName $RemoteName/main
-  if($LASTEXITCODE -ne 0) {
-    LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exitting..."
-    exit
+  $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
+  TestPathThrow -Path $ArtifactDirPath
+  
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $currentPackageVersion = $pkgProperties.Version
+  if($currentPackageVersion -eq $ReleaseVersion) {
+     Write-Information "We do not have to reset the sources."
+     return;
   }
   
-  ## Hard reseting it to the contents of the release tag.
-  ## Fetching all the tags from the remote branch
+  $TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
+  $EngDir = Join-Path $RepoRoot "eng"  
+  $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
+  $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
+  $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
+  $SpotBugsFilePath = Join-Path $CodeQualityReports "spotbugs" "spotbugs-exclude.xml"
+
   Write-Information "Fetching all the tags from $RemoteName"
-  $CmdOutput = git fetch $RemoteName --tags
+  $CmdOutput = git fetch $RemoteName $ReleaseTag
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not restore the tags for release tag $ReleaseTag"
+    exit 1
+  }
   
   $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
-    exit
+    exit 1
   }
 
   if(Test-Path $TestResourcesFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $TestResourcesFilePath
   }
-  
- 
+
   if(Test-Path $CheckStyleSuppressionFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
   }
-  
+
+  if(Test-Path $CheckStyleFilePath) {
+    $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleFilePath
+  }
+
   if(Test-Path $SpotBugsFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
   }
 
-  ## Commit these changes.
+   ## Commit these changes.
   $cmdOutput = git commit -a -m "Reset changes to the patch version."
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not commit the changes locally. to branch $BranchName. Exitting..."
-    exit
+    LogError "Could not commit the changes locally.Exiting..."
+    exit 1
   }
+}
 
-  Write-Information "Creating the patch release"
+function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion, $RepoRoot, $GroupId = "com.azure") {
+  $EngDir = Join-Path $RepoRoot "eng"
+  $EngVersioningDir = Join-Path $EngDir "versioning"
+  $SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
+  $UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
+  
+  TestPathThrow -Path $SetVersionFilePath
+  TestPathThrow -Path $UpdateVersionFilePath
+  
   ## Create the patch release
   $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
   if($LASTEXITCODE -ne 0) {
     LogError "Could not set the patch version."
-    exit
+    exit 1
   }
 
   $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
     if($LASTEXITCODE -ne 0) {
-    LogError "Could not update the versions in the pom files.. Exitting..."
-    exit
+    LogError "Could not update the versions in the pom files.. Exiting..."
+    exit 1
   }
   
   $cmdOutput = UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not update the changelog.. Exitting..."
-    exit
+    LogError "Could not update the changelog.. Exiting..."
+    exit 1
   }
   
-  $UpdateBranchName = $BranchName
-  if($RemoteName -eq $UserRemote) {
-    ## Both the remotes are pointing to the same URL, so we need to create a separate branch for this.
-    $UpdateBranchName = "$BranchName_patch"
-    Write-Information "Patch branch: $UpdateBranchName"
-    $cmdOutput = git checkout -b $UpdateBranchName
-    if($LASTEXITCODE -ne 0) {
-      LogError "Could not checkout the branch $UpdateBranchName locally. Exitting..."
-      exit
-    }
+}
+
+if(!$PatchVersion) {
+  $PatchVersion = GetPatchVersion -ReleaseVersion $ReleaseVersion
+  if(!$PatchVersion) {
+    LogError "Could not fetch the patch version. Exiting ..."
+    exit 1
+  }
+}
+Write-Information "PatchVersion is: $PatchVersion"
+
+$RemoteName = GetRemoteName -MainRemoteUrl $MainRemoteUrl
+if(!$RemoteName) {
+    LogError "Could not fetch the remote name for the URL $MainRemoteUrl Exiting ..."
+    exit 1
+}
+Write-Information "RemoteName is: $RemoteName"
+
+if(!$BranchName) {
+  $ArtifactNameToLower = $ArtifactName.ToLower()
+  $BranchName = "release/$ArtifactNameToLower/$PatchVersion"
+}
+
+try {
+  ## Creating a new branch
+  $cmdOutput = git checkout -b $BranchName $RemoteName/main
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
+    exit 1
   }
   
+  ## Hard reseting it to the contents of the release tag.
+  ## Fetching all the tags from the remote branch
+  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
+  CreatePatchRelease -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -PatchVersion $PatchVersion -RepoRoot $RepoRoot
   $cmdOutput = git add $RepoRoot
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not add the changes. Exitting..."
-    exit 
+    LogError "Could not add the changes. Exiting..."
+    exit 1
   }
   
-  $cmdOutput = git commit -m "Updating the SDK dependencies for $ArtifactName"
+  $cmdOutput = git commit -a -m "Updating the SDK dependencies for $ArtifactName"
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not commit changes to $UpdateBranchName locally. Exitting..."
-    exit 
+    LogError "Could not commit changes to $BranchName locally. Exiting..."
+    exit 1
   }
 
-  $cmdOutput = git push -f $RemoteName $BranchName
-  if($LASTEXITCODE -ne 0) {
-    LogError "Could not push the changes to $RemoteName\$UpdateBranchName. Exitting..."
-    exit 
+  if($PushToRemote) {
+    $cmdOutput = git push -f $RemoteName $BranchName
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
+      exit 1
+    }
   }
 }
 catch {
   # TODO: Add rollback in case of failure.
   LogError "Failed to generate release commit."
+  exit 1
 }
-
-

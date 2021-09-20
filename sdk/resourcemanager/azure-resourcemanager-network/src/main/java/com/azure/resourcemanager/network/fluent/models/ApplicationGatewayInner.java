@@ -14,7 +14,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSet
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
+import com.azure.resourcemanager.network.models.ApplicationGatewayGlobalConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
+import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionPolicy;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOperationalState;
 import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRewriteRuleSet;
@@ -857,6 +859,53 @@ public final class ApplicationGatewayInner extends Resource {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
         this.innerProperties().withForceFirewallPolicyAssociation(forceFirewallPolicyAssociation);
+        return this;
+    }
+
+    /**
+     * Get the loadDistributionPolicies property: Load distribution policies of the application gateway resource.
+     *
+     * @return the loadDistributionPolicies value.
+     */
+    public List<ApplicationGatewayLoadDistributionPolicy> loadDistributionPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicies();
+    }
+
+    /**
+     * Set the loadDistributionPolicies property: Load distribution policies of the application gateway resource.
+     *
+     * @param loadDistributionPolicies the loadDistributionPolicies value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withLoadDistributionPolicies(
+        List<ApplicationGatewayLoadDistributionPolicy> loadDistributionPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withLoadDistributionPolicies(loadDistributionPolicies);
+        return this;
+    }
+
+    /**
+     * Get the globalConfiguration property: Global Configuration.
+     *
+     * @return the globalConfiguration value.
+     */
+    public ApplicationGatewayGlobalConfiguration globalConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().globalConfiguration();
+    }
+
+    /**
+     * Set the globalConfiguration property: Global Configuration.
+     *
+     * @param globalConfiguration the globalConfiguration value to set.
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withGlobalConfiguration(ApplicationGatewayGlobalConfiguration globalConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPropertiesFormat();
+        }
+        this.innerProperties().withGlobalConfiguration(globalConfiguration);
         return this;
     }
 

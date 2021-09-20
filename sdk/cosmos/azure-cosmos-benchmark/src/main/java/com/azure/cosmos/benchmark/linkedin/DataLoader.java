@@ -6,12 +6,13 @@ package com.azure.cosmos.benchmark.linkedin;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.EntityConfiguration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -93,10 +94,11 @@ public class DataLoader {
             container.getId());
 
         // We want to wait longer depending on the number of documents in each iteration
-        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(MAX_BATCH_SIZE);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(BULK_OPERATION_CONCURRENCY);
-        container.processBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
+        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions =
+            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), MAX_BATCH_SIZE);
+        container.executeBulkOperations(Flux.fromIterable(cosmosItemOperations), cosmosBulkExecutionOptions)
             .blockLast(BATCH_DATA_LOAD_WAIT_DURATION);
 
         LOGGER.info("Completed loading {} documents into [{}:{}]", cosmosItemOperations.size(),

@@ -10,7 +10,6 @@ import static java.util.stream.Collectors.toMap;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +27,7 @@ import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -55,7 +55,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
-public class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
+public final class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySource.class);
 
@@ -79,7 +79,7 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
     private final AppConfigurationStoreSelects selectedKeys;
-    
+
     private final List<String> profiles;
 
     private final Map<String, Object> properties = new LinkedHashMap<>();
@@ -100,7 +100,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
 
     private final ConfigStore configStore;
 
-    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys, List<String> profiles,
+    AppConfigurationPropertySource(String context, ConfigStore configStore, AppConfigurationStoreSelects selectedKeys,
+        List<String> profiles,
         AppConfigurationProperties appConfigurationProperties, ClientStore clients,
         AppConfigurationProviderProperties appProperties, KeyVaultCredentialProvider keyVaultCredentialProvider,
         SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
@@ -157,8 +158,8 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         String storeName = configStore.getEndpoint();
         Date date = new Date();
         SettingSelector settingSelector = new SettingSelector();
-        
-        List<ConfigurationSetting> features = new ArrayList<>();
+
+        PagedIterable<ConfigurationSetting> features = null;
         // Reading In Features
         if (configStore.getFeatureFlags().getEnabled()) {
             settingSelector.setKeyFilter(configStore.getFeatureFlags().getKeyFilter())
@@ -169,20 +170,21 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
                 throw new IOException("Unable to load properties from App Configuration Store.");
             }
         }
-        
+
         List<String> labels = Arrays.asList(selectedKeys.getLabelFilter(profiles));
         Collections.reverse(labels);
 
-        for (String label: labels) {
-            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*").setLabelFilter(label);
+        for (String label : labels) {
+            settingSelector = new SettingSelector().setKeyFilter(selectedKeys.getKeyFilter() + "*")
+                .setLabelFilter(label);
 
             // * for wildcard match
-            List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
-            
+            PagedIterable<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
+
             if (settings == null) {
                 throw new IOException("Unable to load properties from App Configuration Store.");
             }
-            
+
             for (ConfigurationSetting setting : settings) {
                 String key = setting.getKey().trim().substring(selectedKeys.getKeyFilter().length()).replace('/', '.');
                 if (setting instanceof SecretReferenceConfigurationSetting) {
@@ -258,10 +260,13 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
             featureMapper.convertValue(featureSet.getFeatureManagement(), LinkedHashMap.class));
     }
 
-    private FeatureSet addToFeatureSet(FeatureSet featureSet, List<ConfigurationSetting> settings, Date date)
+    private FeatureSet addToFeatureSet(FeatureSet featureSet, PagedIterable<ConfigurationSetting> features, Date date)
         throws IOException {
+        if (features == null) {
+            return featureSet;
+        }
         // Reading In Features
-        for (ConfigurationSetting setting : settings) {
+        for (ConfigurationSetting setting : features) {
             if (setting instanceof FeatureFlagConfigurationSetting) {
                 Object feature = createFeature((FeatureFlagConfigurationSetting) setting);
                 if (feature != null) {

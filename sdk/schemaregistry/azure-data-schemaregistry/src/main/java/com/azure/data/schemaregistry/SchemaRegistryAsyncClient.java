@@ -30,7 +30,20 @@ import java.util.regex.Pattern;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
- * @see SchemaRegistryClientBuilder Follows builder pattern for object instantiation
+ *
+ * <p><strong>Register a schema</strong></p>
+ * Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
+ * Reactive operations must be subscribed to; this kicks off the operation.
+ *
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema}
+ *
+ * <p><strong>Get a schema</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema}
+ *
+ * <p><strong>Get a schema id</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchemaId}
+ *
+ * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class, isAsync = true)
 public final class SchemaRegistryAsyncClient {
@@ -60,17 +73,17 @@ public final class SchemaRegistryAsyncClient {
      * Registers a new schema in the specified schema group with the given schema name. If the schema name already
      * exists in this schema group, a new version with the updated schema string will be registered.
      *
-     * @param schemaGroup The schema group.
-     * @param schemaName The schema name.
-     * @param schemaString The string representation of the schema.
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
      * @param serializationType The serialization type of this schema.
      *
      * @return The {@link SchemaProperties} of a successfully registered schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaProperties> registerSchema(
-        String schemaGroup, String schemaName, String schemaString, SerializationType serializationType) {
-        return registerSchemaWithResponse(schemaGroup, schemaName, schemaString, serializationType)
+    public Mono<SchemaProperties> registerSchema(String groupName, String name, String content,
+        SerializationType serializationType) {
+        return registerSchemaWithResponse(groupName, name, content, serializationType)
             .map(Response::getValue);
     }
 
@@ -78,39 +91,39 @@ public final class SchemaRegistryAsyncClient {
      * Registers a new schema in the specified schema group with the given schema name. If the schema name already
      * exists in this schema group, a new version with the updated schema string will be registered.
      *
-     * @param schemaGroup The schema group.
-     * @param schemaName The schema name.
-     * @param schemaString The string representation of the schema.
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
      * @param serializationType The serialization type of this schema.
      *
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                    String schemaString, SerializationType serializationType) {
-        return FluxUtil.withContext(context -> registerSchemaWithResponse(schemaGroup, schemaName, schemaString,
+    public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
+        SerializationType serializationType) {
+        return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, content,
             serializationType, context));
     }
 
-    Mono<Response<SchemaProperties>> registerSchemaWithResponse(String schemaGroup, String schemaName,
-                                    String schemaString, SerializationType serializationType, Context context) {
+    Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
+        SerializationType serializationType, Context context) {
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
-            schemaGroup, schemaName, serializationType, schemaString);
+            groupName, name, serializationType, content);
 
-        return this.restService.getSchemas().registerWithResponseAsync(schemaGroup, schemaName,
-            com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
+        return this.restService.getSchemas().registerWithResponseAsync(groupName, name,
+            com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, content)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
                 SchemaProperties registered = new SchemaProperties(schemaId.getId(),
                     serializationType,
-                    schemaName,
-                    schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
+                    name,
+                    content.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
 
-                schemaStringCache.putIfAbsent(getSchemaStringCacheKey(schemaGroup, schemaName, schemaString),
+                schemaStringCache.putIfAbsent(getSchemaStringCacheKey(groupName, name, content),
                     registered);
                 idCache.putIfAbsent(schemaId.getId(), registered);
 
-                logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
+                logger.verbose("Cached schema string. Group: '{}', name: '{}'", groupName, name);
                 SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), registered);
@@ -119,34 +132,35 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Gets the schema properties of the schema associated with the unique schemaId.
-     * @param schemaId The unique identifier of the schema.
+     * Gets the schema properties of the schema associated with the unique schema id.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
+     * @param id The unique identifier of the schema.
+     *
+     * @return The {@link SchemaProperties} associated with the given {@code id}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaProperties> getSchema(String schemaId) {
-        if (idCache.containsKey(schemaId)) {
-            logger.verbose("Cache hit for schema id '{}'", schemaId);
-            return Mono.fromCallable(() -> idCache.get(schemaId));
+    public Mono<SchemaProperties> getSchema(String id) {
+        if (idCache.containsKey(id)) {
+            logger.verbose("Cache hit for schema id '{}'", id);
+            return Mono.fromCallable(() -> idCache.get(id));
         }
-        return getSchemaWithResponse(schemaId).map(Response::getValue);
+        return getSchemaWithResponse(id).map(Response::getValue);
     }
 
     /**
-     * Gets the schema properties of the schema associated with the unique schemaId.
-     * @param schemaId The unique identifier of the schema.
+     * Gets the schema properties of the schema associated with the unique schema id.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP
-     * response.
+     * @param id The unique identifier of the schema.
+     *
+     * @return The {@link SchemaProperties} associated with the given {@code id} along with the HTTP response.
      */
-    Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId) {
-        return FluxUtil.withContext(context -> getSchemaWithResponse(schemaId, context));
+    Mono<Response<SchemaProperties>> getSchemaWithResponse(String id) {
+        return FluxUtil.withContext(context -> getSchemaWithResponse(id, context));
     }
 
-    Mono<Response<SchemaProperties>> getSchemaWithResponse(String schemaId, Context context) {
-        Objects.requireNonNull(schemaId, "'schemaId' should not be null");
-        return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
+    Mono<Response<SchemaProperties>> getSchemaWithResponse(String id, Context context) {
+        Objects.requireNonNull(id, "'id' should not be null");
+        return this.restService.getSchemas().getByIdWithResponseAsync(id)
             .handle((response, sink) -> {
                 final SerializationType serializationType =
                     SerializationType.fromString(response.getDeserializedHeaders().getSchemaType());
@@ -162,17 +176,17 @@ public final class SchemaRegistryAsyncClient {
 
                 final String schemaGroup = matcher.group("schemaGroup");
                 final String schemaName = matcher.group("schemaName");
-                final SchemaProperties schemaObject = new SchemaProperties(schemaId,
+                final SchemaProperties schemaObject = new SchemaProperties(id,
                     serializationType,
                     schemaName,
                     response.getValue());
                 final String schemaCacheKey = getSchemaStringCacheKey(schemaGroup, schemaName,
-                     new String(response.getValue(), SCHEMA_REGISTRY_SERVICE_ENCODING));
+                    new String(response.getValue(), SCHEMA_REGISTRY_SERVICE_ENCODING));
 
                 schemaStringCache.putIfAbsent(schemaCacheKey, schemaObject);
-                idCache.putIfAbsent(schemaId, schemaObject);
+                idCache.putIfAbsent(id, schemaObject);
 
-                logger.verbose("Cached schema object. Path: '{}'", schemaId);
+                logger.verbose("Cached schema object. Path: '{}'", id);
 
                 SimpleResponse<SchemaProperties> schemaResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -186,73 +200,74 @@ public final class SchemaRegistryAsyncClient {
      * Gets the schema identifier associated with the given schema. Gets a cached value if it exists, otherwise makes a
      * call to the service.
      *
-     * @param schemaGroup The schema group.
-     * @param schemaName The schema name.
-     * @param schemaString The string representation of the schema.
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
      * @param serializationType The serialization type of this schema.
      *
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getSchemaId(String schemaGroup, String schemaName, String schemaString,
+    public Mono<String> getSchemaId(String groupName, String name, String content,
         SerializationType serializationType) {
 
-        String schemaStringCacheKey = getSchemaStringCacheKey(schemaGroup, schemaName, schemaString);
+        String schemaStringCacheKey = getSchemaStringCacheKey(groupName, name, content);
 
         if (schemaStringCache.containsKey(schemaStringCacheKey)) {
             return Mono.fromCallable(() -> {
-                logger.verbose("Cache hit schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
+                logger.verbose("Cache hit schema string. Group: '{}', name: '{}'", groupName, name);
                 return schemaStringCache.get(schemaStringCacheKey).getSchemaId();
             });
         }
 
-        return getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType)
+        return getSchemaIdWithResponse(groupName, name, content, serializationType)
             .map(response -> response.getValue());
     }
 
     /**
      * Gets the schema identifier associated with the given schema. Always makes a call to the service.
      *
-     * @param schemaGroup The schema group.
-     * @param schemaName The schema name.
-     * @param schemaString The string representation of the schema.
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
      * @param serializationType The serialization type of this schema.
      *
      * @return The unique identifier for this schema.
      */
-    Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+    Mono<Response<String>> getSchemaIdWithResponse(String groupName, String name, String content,
         SerializationType serializationType) {
 
         return FluxUtil.withContext(context ->
-            getSchemaIdWithResponse(schemaGroup, schemaName, schemaString, serializationType, context));
+            getSchemaIdWithResponse(groupName, name, content, serializationType, context));
     }
 
     /**
      * Gets the schema id associated with the schema name a string representation of the schema.
      *
-     * @param schemaGroup The schema group.
-     * @param schemaName The schema name.
-     * @param schemaString The string representation of the schema.
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
      * @param serializationType The serialization type of this schema.
      * @param context Context to pass along with this request.
+     *
      * @return A mono that completes with the schema id.
      */
-    Mono<Response<String>> getSchemaIdWithResponse(String schemaGroup, String schemaName, String schemaString,
+    Mono<Response<String>> getSchemaIdWithResponse(String groupName, String name, String content,
         SerializationType serializationType, Context context) {
 
         return this.restService.getSchemas()
-            .queryIdByContentWithResponseAsync(schemaGroup, schemaName,
-                com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, schemaString)
+            .queryIdByContentWithResponseAsync(groupName, name,
+                com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, content)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
-                SchemaProperties properties = new SchemaProperties(schemaId.getId(), serializationType, schemaName,
-                    schemaString.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
+                SchemaProperties properties = new SchemaProperties(schemaId.getId(), serializationType, name,
+                    content.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
 
                 schemaStringCache.putIfAbsent(
-                    getSchemaStringCacheKey(schemaGroup, schemaName, schemaString), properties);
+                    getSchemaStringCacheKey(groupName, name, content), properties);
                 idCache.putIfAbsent(schemaId.getId(), properties);
 
-                logger.verbose("Cached schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
+                logger.verbose("Cached schema string. Group: '{}', name: '{}'", groupName, name);
 
                 SimpleResponse<String> schemaIdResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -261,16 +276,7 @@ public final class SchemaRegistryAsyncClient {
             });
     }
 
-    /**
-     * Explicit call to clear all caches.
-     */
-    void clearCache() {
-        idCache.clear();
-        schemaStringCache.clear();
-        typeParserMap.clear();
-    }
-
-    private static String getSchemaStringCacheKey(String schemaGroup, String schemaName, String schemaString) {
-        return schemaGroup + schemaName + schemaString;
+    private static String getSchemaStringCacheKey(String groupName, String name, String content) {
+        return groupName + name + content;
     }
 }

@@ -4,9 +4,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.CosmosItemOperationType;
-import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
@@ -15,7 +12,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 /**
  * Utility for creating bulk operations which can be executed by calling
- * {@link CosmosAsyncContainer#processBulkOperations(Flux, CosmosBulkExecutionOptions)} .
+ * {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)} .
  *
  * Also while creating these operation, if some options which are only for individual operation can be provided by passing
  * a {@link CosmosBulkItemRequestOptions} while creating the bulk operation.

@@ -107,7 +107,7 @@ public class AppendBlobCreateOptions {
     /**
      * @return If a legal hold should be placed on the blob.
      */
-    public Boolean isLegalHold() {
+    public Boolean hasLegalHold() {
         return legalHold;
     }
 

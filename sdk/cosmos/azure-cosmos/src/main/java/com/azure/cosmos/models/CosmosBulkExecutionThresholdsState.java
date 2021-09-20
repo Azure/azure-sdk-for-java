@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Encapsulates internal state used to dynamically determine max micro batch size for bulk operations.
- * It allows passing this state for one `BulkProcessingOptions` to another in case bulk operations are
+ * It allows passing this state for one `{@link CosmosBulkExecutionOptions}` to another in case bulk operations are
  * expected to have similar characteristics and the context for determining the micro batch size should be preserved.
  */
 @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)

@@ -32,6 +32,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Async Client that supports chat operations.
+ *
+ * <p><strong>Instantiating an asynchronous Chat Client</strong></p>
+ *
+ * {@codesnippet com.azure.communication.chat.chatasyncclient.instantiation}
+ *
+ * <p>View {@link ChatClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see ChatClientBuilder
  */
 @ServiceClient(builder = ChatClientBuilder.class, isAsync = true)
 public final class ChatAsyncClient {
@@ -59,6 +67,12 @@ public final class ChatAsyncClient {
 
     /**
      * Creates a chat thread.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a chat thread based on "options".</p>
+     *
+     * {@codesnippet com.azure.communication.chat.chatasyncclient.createchatthread#createchatthreadoptions}
      *
      * @param options Options for creating a chat thread.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.

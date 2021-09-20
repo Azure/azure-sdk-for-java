@@ -35,9 +35,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.Alphanumeric;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -47,6 +47,7 @@ import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -106,6 +107,8 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationProviderProperties appPropertiesMock;
     @Mock
     private AppConfigurationProperties properties;
+    @Mock
+    private PagedIterable<ConfigurationSetting> pagedFluxMock;
     private AppConfigurationPropertySourceLocator locator;
     private AppConfigurationProviderProperties appProperties;
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
@@ -154,6 +157,12 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(iteratorMock.hasNext()).thenReturn(true).thenReturn(false);
         when(iteratorMock.next()).thenReturn(pagedMock);
         when(pagedMock.getItems()).thenReturn(new ArrayList<ConfigurationSetting>());
+        
+        when(pagedFluxMock.iterator()).thenReturn(new ArrayList<ConfigurationSetting>().iterator());
+        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock)
+            .thenReturn(pagedFluxMock);
+        when(clientStoreMock.getFeatureFlagWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(pagedFluxMock);
+
 
         appProperties = new AppConfigurationProviderProperties();
         appProperties.setVersion("1.0");
@@ -201,7 +210,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         selects.add(selectedKeys);
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
+        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString(), Mockito.anyString())).thenReturn(ITEM_1)
         .thenReturn(FEATURE_ITEM);
         
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
@@ -235,8 +244,8 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getSelects()).thenReturn(selects);
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStoreMock);
         when(properties.getDefaultContext()).thenReturn("application");
-        when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
-            .thenReturn(FEATURE_ITEM);
+        //when(clientStoreMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenReturn(ITEM_1)
+        //    .thenReturn(FEATURE_ITEM);
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
             tokenCredentialProvider, null, null);

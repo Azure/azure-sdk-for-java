@@ -34,7 +34,6 @@ import com.azure.resourcemanager.storage.fluent.QueuesClient;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueInner;
 import com.azure.resourcemanager.storage.fluent.models.StorageQueueInner;
 import com.azure.resourcemanager.storage.models.ListQueueResource;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in QueuesClient. */
@@ -168,7 +167,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,7 +175,7 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageQueueInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -199,9 +198,12 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        if (queue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter queue is required and cannot be null."));
+        } else {
+            queue.validate();
+        }
         final String accept = "application/json";
-        StorageQueueInner queue = new StorageQueueInner();
-        queue.withMetadata(metadata);
         return FluxUtil
             .withContext(
                 context ->
@@ -229,7 +231,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -238,7 +240,7 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageQueueInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -261,9 +263,12 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        if (queue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter queue is required and cannot be null."));
+        } else {
+            queue.validate();
+        }
         final String accept = "application/json";
-        StorageQueueInner queue = new StorageQueueInner();
-        queue.withMetadata(metadata);
         context = this.client.mergeContext(context);
         return service
             .create(
@@ -288,7 +293,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -296,8 +301,8 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageQueueInner> createAsync(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
-        return createWithResponseAsync(resourceGroupName, accountName, queueName, metadata)
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
+        return createWithResponseAsync(resourceGroupName, accountName, queueName, queue)
             .flatMap(
                 (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
@@ -318,23 +323,16 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param queue Queue properties and metadata to be created with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StorageQueueInner> createAsync(String resourceGroupName, String accountName, String queueName) {
-        final Map<String, String> metadata = null;
-        return createWithResponseAsync(resourceGroupName, accountName, queueName, metadata)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public StorageQueueInner create(
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
+        return createAsync(resourceGroupName, accountName, queueName, queue).block();
     }
 
     /**
@@ -347,28 +345,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageQueueInner create(String resourceGroupName, String accountName, String queueName) {
-        final Map<String, String> metadata = null;
-        return createAsync(resourceGroupName, accountName, queueName, metadata).block();
-    }
-
-    /**
-     * Creates a new queue with the specified queue name, under the specified account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
-     *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
-     *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,8 +354,8 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageQueueInner> createWithResponse(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
-        return createWithResponseAsync(resourceGroupName, accountName, queueName, metadata, context).block();
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context) {
+        return createWithResponseAsync(resourceGroupName, accountName, queueName, queue, context).block();
     }
 
     /**
@@ -391,7 +368,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -399,7 +376,7 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageQueueInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -422,9 +399,12 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        if (queue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter queue is required and cannot be null."));
+        } else {
+            queue.validate();
+        }
         final String accept = "application/json";
-        StorageQueueInner queue = new StorageQueueInner();
-        queue.withMetadata(metadata);
         return FluxUtil
             .withContext(
                 context ->
@@ -452,7 +432,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -461,7 +441,7 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageQueueInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -484,9 +464,12 @@ public final class QueuesClientImpl implements QueuesClient {
         if (queueName == null) {
             return Mono.error(new IllegalArgumentException("Parameter queueName is required and cannot be null."));
         }
+        if (queue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter queue is required and cannot be null."));
+        } else {
+            queue.validate();
+        }
         final String accept = "application/json";
-        StorageQueueInner queue = new StorageQueueInner();
-        queue.withMetadata(metadata);
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -511,7 +494,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -519,8 +502,8 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageQueueInner> updateAsync(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
-        return updateWithResponseAsync(resourceGroupName, accountName, queueName, metadata)
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
+        return updateWithResponseAsync(resourceGroupName, accountName, queueName, queue)
             .flatMap(
                 (Response<StorageQueueInner> res) -> {
                     if (res.getValue() != null) {
@@ -541,23 +524,16 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param queue Queue properties and metadata to be created with.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StorageQueueInner> updateAsync(String resourceGroupName, String accountName, String queueName) {
-        final Map<String, String> metadata = null;
-        return updateWithResponseAsync(resourceGroupName, accountName, queueName, metadata)
-            .flatMap(
-                (Response<StorageQueueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public StorageQueueInner update(
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue) {
+        return updateAsync(resourceGroupName, accountName, queueName, queue).block();
     }
 
     /**
@@ -570,28 +546,7 @@ public final class QueuesClientImpl implements QueuesClient {
      * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
      *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
      *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageQueueInner update(String resourceGroupName, String accountName, String queueName) {
-        final Map<String, String> metadata = null;
-        return updateAsync(resourceGroupName, accountName, queueName, metadata).block();
-    }
-
-    /**
-     * Creates a new queue with the specified queue name, under the specified account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The
-     *     name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an
-     *     alphanumeric character and it cannot have two consecutive dash(-) characters.
-     * @param metadata A name-value pair that represents queue metadata.
+     * @param queue Queue properties and metadata to be created with.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,8 +555,8 @@ public final class QueuesClientImpl implements QueuesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageQueueInner> updateWithResponse(
-        String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, Context context) {
-        return updateWithResponseAsync(resourceGroupName, accountName, queueName, metadata, context).block();
+        String resourceGroupName, String accountName, String queueName, StorageQueueInner queue, Context context) {
+        return updateWithResponseAsync(resourceGroupName, accountName, queueName, queue, context).block();
     }
 
     /**

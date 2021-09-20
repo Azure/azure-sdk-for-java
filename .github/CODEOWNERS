@@ -56,16 +56,25 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @lmolkova
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                     @conniey @anuchandy @ki1729 @srnagar
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs-eph/       @JamesBirdsall @sjkwak
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs-extensions/  @JamesBirdsall @sjkwak
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/microsoft-azure-eventhubs/           @JamesBirdsall @sjkwak
 
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                @samvaity @mssfang
@@ -102,7 +111,10 @@
 /sdk/search/                                        @alzimmermsft @pallavit @mssfang @samvaity
 
 # PRLabel: %Service Bus
-/sdk/servicebus/                                    @yvgopal @nemakam @anuchandy @ki1729 @conniey
+/sdk/servicebus/                                    @anuchandy @ki1729 @conniey
+
+# PRLabel: %Service Bus
+/sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
 
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @alzimmermsft @kasobol-msft
@@ -125,9 +137,8 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
-/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @qwordy @haolingdong-msft
-/sdk/**/mgmt*/                                      @weidongxu-microsoft @yungezz
+/sdk/resourcemanager/                               @weidongxu-microsoft @qwordy @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @qwordy @haolingdong-msft
 
 # Quantum
 # PRLabel: %Azure Quantum
@@ -140,7 +151,7 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @benbp @weshaggard @danieljurek @ChenTanyi @weidongxu-microsoft @yungezz
+/eng/mgmt/                                          @benbp @weshaggard @danieljurek @weidongxu-microsoft @haolingdong-msft
 /eng/versioning/                                    @benbp @danieljurek @alzimmermsft @samvaity @g2vinay
 /eng/versioning/external_dependencies.txt           @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar

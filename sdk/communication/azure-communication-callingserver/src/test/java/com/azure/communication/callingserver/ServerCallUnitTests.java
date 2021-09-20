@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.azure.communication.callingserver.models.RecordingChannelType;
+import com.azure.communication.callingserver.models.RecordingContentType;
+import com.azure.communication.callingserver.models.RecordingFormatType;
 import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.OperationStatus;
@@ -39,6 +42,20 @@ public class ServerCallUnitTests {
             InvalidParameterException.class,
             () -> serverCall.startRecording("/not/absolute/uri"));
     }
+
+    @Test
+    public void startRecordingWithRecordingParamsRelativeUriFails() {
+        ServerCall serverCall = new CallingServerClientBuilder()
+            .httpClient(new NoOpHttpClient())
+            .connectionString(MOCK_CONNECTION_STRING)
+            .buildClient()
+            .initializeServerCall(serverCallId);
+
+        assertThrows(
+            InvalidParameterException.class,
+            () -> serverCall.startRecording("/not/absolute/uri", RecordingChannelType.MIXED, RecordingContentType.AUDIO_VIDEO, RecordingFormatType.MP4));
+    }
+
 
     @Test
     public void startRecordingWithResponseRelativeUriFails() {
@@ -77,6 +94,20 @@ public class ServerCallUnitTests {
         assertThrows(
             InvalidParameterException.class,
             () -> serverCall.startRecording("/not/absolute/uri")
+                .block());
+    }
+
+    @Test
+    public void startRecordingWithRecordingParamsAsyncFails() {
+        ServerCallAsync serverCall = new CallingServerClientBuilder()
+            .httpClient(new NoOpHttpClient())
+            .connectionString(MOCK_CONNECTION_STRING)
+            .buildAsyncClient()
+            .initializeServerCall(serverCallId);
+
+        assertThrows(
+            InvalidParameterException.class,
+            () -> serverCall.startRecording("/not/absolute/uri", RecordingChannelType.MIXED, RecordingContentType.AUDIO_VIDEO, RecordingFormatType.MP4)
                 .block());
     }
 

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /** The implementation for WebApps. */
 public class WebAppsImpl
@@ -142,8 +143,8 @@ public class WebAppsImpl
         if (inner.kind() == null) {
             ret = true;
         } else {
-            List<String> kinds = Arrays.asList(inner.kind().split(","));
-            if (kinds.contains("app") || kinds.contains("api")) {
+            List<String> kinds = Arrays.asList(inner.kind().split(Pattern.quote(",")));
+            if ((kinds.contains("app") || kinds.contains("api")) && !kinds.contains("kubernetes")) {
                 ret = true;
             }
         }
