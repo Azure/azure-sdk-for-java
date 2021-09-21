@@ -27,7 +27,7 @@ public class DataLakeImplUtils {
     public static Throwable transformBlobStorageException(Throwable ex) {
         if (ex instanceof BlobStorageException) {
             return transformSingleBlobStorageException((BlobStorageException) ex);
-        } else if(Exceptions.isMultiple(ex)) {
+        } else if (Exceptions.isMultiple(ex)) {
             List<Throwable> suppressed = Exceptions.unwrapMultiple(ex);
             suppressed = suppressed.stream().map(e -> {
                 if (e instanceof BlobStorageException) {
