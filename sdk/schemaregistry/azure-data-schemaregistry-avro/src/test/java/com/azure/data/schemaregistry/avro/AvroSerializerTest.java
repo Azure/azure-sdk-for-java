@@ -279,29 +279,29 @@ public class AvroSerializerTest {
 
     @Test
     public void getSchemaTypeGenericRecord() {
-        final String json = "{\n" +
-            "   \"type\": \"record\",\n" +
-            "   \"name\": \"Shoe\",\n" +
-            "   \"namespace\": \"org.example.model\",\n" +
-            "   \"fields\": [\n" +
-            "      {\n" +
-            "         \"name\": \"name\",\n" +
-            "         \"type\": \"string\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "         \"name\": \"size\",\n" +
-            "         \"type\": \"double\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "         \"name\": \"quantities\",\n" +
-            "         \"type\": {\n" +
-            "            \"type\": \"array\",\n" +
-            "            \"items\": \"int\",\n" +
-            "            \"java-class\": \"java.util.List\"\n" +
-            "         }\n" +
-            "      }\n" +
-            "   ]\n" +
-            "}";
+        final String json = "{\n"
+            + "   \"type\": \"record\",\n"
+            + "   \"name\": \"Shoe\",\n"
+            + "   \"namespace\": \"org.example.model\",\n"
+            + "   \"fields\": [\n"
+            + "      {\n"
+            + "         \"name\": \"name\",\n"
+            + "         \"type\": \"string\"\n"
+            + "      },\n"
+            + "      {\n"
+            + "         \"name\": \"size\",\n"
+            + "         \"type\": \"double\"\n"
+            + "      },\n"
+            + "      {\n"
+            + "         \"name\": \"quantities\",\n"
+            + "         \"type\": {\n"
+            + "            \"type\": \"array\",\n"
+            + "            \"items\": \"int\",\n"
+            + "            \"java-class\": \"java.util.List\"\n"
+            + "         }\n"
+            + "      }\n"
+            + "   ]\n"
+            + "}";
         final Schema expectedSchema = new Schema.Parser().parse(json);
         final GenericRecord record = new GenericData.Record(expectedSchema);
 

@@ -10,9 +10,10 @@ import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
-import org.apache.avro.io.BinaryEncoder;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.message.RawMessageEncoder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,6 +32,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
+import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.SCHEMA_ID_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,10 +47,7 @@ import static org.mockito.Mockito.when;
  */
 public class SchemaRegistryAvroSerializerTest {
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
-    private static final String MOCK_AVRO_SCHEMA_STRING =
-        "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
     private static final String MOCK_SCHEMA_GROUP = "mock-group";
-    private static final String CONSTANT_PAYLOAD = "{\"name\": \"arthur\", \"favorite_number\": 23}";
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
@@ -220,14 +219,16 @@ public class SchemaRegistryAvroSerializerTest {
     }
 
     private static byte[] getPayload(PlayingCard card) throws IOException {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            out.write(new byte[]{0x00, 0x00, 0x00, 0x00});
-            out.write(MOCK_GUID.getBytes(StandardCharsets.UTF_8));
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            outputStream.write(RECORD_FORMAT_INDICATOR);
+            outputStream.write(MOCK_GUID.getBytes(StandardCharsets.UTF_8));
 
-            BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out, null);
-            card.customEncode(encoder);
+            final RawMessageEncoder<PlayingCard> encoder = new RawMessageEncoder<>(new GenericData(),
+                PlayingCard.getClassSchema());
 
-            return out.toByteArray();
+            encoder.encode(card, outputStream);
+
+            return outputStream.toByteArray();
         }
     }
 }
