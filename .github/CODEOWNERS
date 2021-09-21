@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @anuchandy @conniey @pallavit @lmolkova
+/sdk/                                               @joshfree @srnagar @anuchandy @conniey @pallavit @lmolkova @jonathangiles
 
 # BOM
 # PRLabel: %bom
@@ -40,10 +40,10 @@
 /sdk/containerregistry/                             @pallavit @alzimmermsft
 
 # PRLabel: %Azure.Core
-/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang
+/sdk/core/                                          @alzimmermsft @srnagar @anuchandy @lmolkova @pallavit @vcolin7 @mssfang @jonathangiles
 
 # PRLabel: %Azure.Core.AMQP
-/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar
+/sdk/core/azure-core-amqp/                          @conniey @anuchandy @ki1729 @srnagar @jonathangiles
 
 # PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft @trask @lmolkova
@@ -153,12 +153,12 @@
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @hallipr @weshaggard
 /eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
-/eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar
+/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793 @jonathangiles
+/eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 
 /**/tests.yml                                       @hallipr
 /**/ci.yml                                          @hallipr
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                @joshfree
+/eng/pipelines/aggregate-reports.yml                @joshfree @jonathangiles
