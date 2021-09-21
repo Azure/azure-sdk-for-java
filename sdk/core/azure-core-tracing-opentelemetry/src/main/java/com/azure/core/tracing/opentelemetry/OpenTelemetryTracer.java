@@ -36,7 +36,15 @@ import java.util.Optional;
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
-    private final Tracer tracer = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
+    private final Tracer tracer;
+
+    public OpenTelemetryTracer() {
+        this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
+    }
+
+    OpenTelemetryTracer(Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     static final String AZ_NAMESPACE_KEY = "az.namespace";
 

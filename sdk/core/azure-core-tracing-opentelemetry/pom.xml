@@ -162,9 +162,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
+          <parallel>all</parallel>
           <systemPropertyVariables>
-            <!-- Parallel runs disabled due to concurrency issues when registering the global tracer. -->
-            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+            <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
           </systemPropertyVariables>
         </configuration>
       </plugin>

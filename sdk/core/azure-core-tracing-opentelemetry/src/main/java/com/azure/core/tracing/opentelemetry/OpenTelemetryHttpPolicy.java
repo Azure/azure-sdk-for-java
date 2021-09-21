@@ -43,12 +43,18 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      * @return a OpenTelemetry HTTP policy.
      */
     @Override
-    public HttpPipelinePolicy create() {
-        return this;
-    }
+    public HttpPipelinePolicy create() {return this;}
 
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
-    private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
+    private final Tracer tracer;
+
+    public OpenTelemetryHttpPolicy() {
+        this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
+    }
+
+    OpenTelemetryHttpPolicy(Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -67,14 +73,15 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             return next.process();
         }
 
+        io.opentelemetry.context.Context currentContext = io.opentelemetry.context.Context.current();
         Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(Span.current());
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
 
-        SpanBuilder spanBuilder = TRACER.spanBuilder(urlBuilder.getPath())
-            .setParent(io.opentelemetry.context.Context.current().with(parentSpan));
+        SpanBuilder spanBuilder = tracer.spanBuilder(urlBuilder.getPath())
+            .setParent(currentContext.with(parentSpan));
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
         spanBuilder.setSpanKind(SpanKind.CLIENT);
@@ -90,7 +97,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
         SpanContext spanContext = span.getSpanContext();
         if (spanContext.isValid()) {
-            traceContextFormat.inject(io.opentelemetry.context.Context.current(), request, contextSetter);
+            traceContextFormat.inject(currentContext.with(span), request, contextSetter);
         }
 
         // run the next policy and handle success and error
