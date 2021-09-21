@@ -179,7 +179,7 @@
 
   <profiles>
     <profile>
-      <id>is.jdk.11</id>
+      <id>java9plus</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>

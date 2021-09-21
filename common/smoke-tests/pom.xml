@@ -53,9 +53,9 @@
     </profile>
 
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -64,8 +64,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <source>11</source>
-              <target>11</target>
+              <source>${java.version}</source>
+              <target>${java.version}</target>
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>

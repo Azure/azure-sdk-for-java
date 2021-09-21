@@ -45,6 +45,12 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
+      --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
+
+      --add-reads com.azure.core.amqp=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -133,21 +139,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <javaModulesSurefireArgLine>
-          --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
-          --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
-
-          --add-reads com.azure.core.amqp=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>
