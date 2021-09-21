@@ -96,8 +96,8 @@ public class Configs {
     private static final boolean DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE = false;
 
     // OpenConnectionsAndInitCaches Constants
-    private static final String OPEN_ASYNC_RETRIES_COUNT_NAME = "COSMOS.OPEN_ASYNC_RETRIES_COUNT";
-    private static final int DEFAULT_OPEN_ASYNC_RETRIES_COUNT = 1;
+    private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
+    private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -266,10 +266,10 @@ public class Configs {
             DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE);
     }
 
-    public static int getOpenAsyncRetriesCount() {
+    public static int getOpenConnectionsRetriesCount() {
         return getJVMConfigAsInt(
-            OPEN_ASYNC_RETRIES_COUNT_NAME,
-            DEFAULT_OPEN_ASYNC_RETRIES_COUNT);
+            OPEN_CONNECTIONS_RETRIES_COUNT_NAME,
+            DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

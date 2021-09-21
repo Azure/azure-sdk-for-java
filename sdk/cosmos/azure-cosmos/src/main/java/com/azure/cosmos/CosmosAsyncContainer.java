@@ -453,7 +453,7 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
-        int retryCount = Configs.getOpenAsyncRetriesCount();
+        int retryCount = Configs.getOpenConnectionsRetriesCount();
 
         if(isInitialized.compareAndSet(false, true)) {
             return this.getFeedRanges().flatMap(feedRanges -> {
