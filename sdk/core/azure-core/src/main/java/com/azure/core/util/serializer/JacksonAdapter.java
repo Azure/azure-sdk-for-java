@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
@@ -57,11 +58,11 @@ public class JacksonAdapter implements SerializerAdapter {
      * additional configuration through {@code configureSerialization} callback.
      *
      * {@code configureSerialization} callback provides outer and inner instances of {@link ObjectMapper}.
-     * Both of them are pre-configured for Azure serialization needs, but only outer is mapper capable of
-     * flattening and populating additionalProperties. Outer module is used by {@code JacksonAdapter} for
+     * Both of them are pre-configured for Azure serialization needs, but only outer mapper capable of
+     * flattening and populating additionalProperties. Outer mapper is used by {@code JacksonAdapter} for
      * all serialization needs.
      *
-     * Register custom modules on the outer instance to add custom (de)serializers similar to
+     * Register modules on the outer instance to add custom (de)serializers similar to
      * {@code new JacksonAdapter((outer, inner) -> outer.registerModule(new MyModule()))}
      *
      * Use inner mapper for chaining serialization logic in your (de)serializers.
@@ -70,6 +71,7 @@ public class JacksonAdapter implements SerializerAdapter {
      *                               mapper using inner mapper for module chaining.
      */
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
+        Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
         this.xmlMapper = ObjectMapperShim.createXmlMapper();
         this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
