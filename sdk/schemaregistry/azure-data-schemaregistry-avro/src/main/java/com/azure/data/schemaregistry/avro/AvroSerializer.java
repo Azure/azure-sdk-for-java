@@ -29,8 +29,8 @@ import java.util.Objects;
 /**
  * Base Codec class for Avro encoder and decoder implementations
  */
-class AvroSchemaRegistryUtils {
-    private final ClientLogger logger = new ClientLogger(AvroSchemaRegistryUtils.class);
+class AvroSerializer {
+    private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
 
     private static final int V1_HEADER_LENGTH = 10;
     private static final byte[] V1_HEADER = new byte[]{-61, 1};
@@ -49,7 +49,7 @@ class AvroSchemaRegistryUtils {
      * @param encoderFactory Encoder factory
      * @param decoderFactory Decoder factory
      */
-    AvroSchemaRegistryUtils(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
+    AvroSerializer(boolean avroSpecificReader, Schema.Parser parser, EncoderFactory encoderFactory,
         DecoderFactory decoderFactory) {
 
         this.avroSpecificReader = avroSpecificReader;
@@ -68,18 +68,6 @@ class AvroSchemaRegistryUtils {
     }
 
     /**
-     * @param object Schema object used to generate schema string
-     *
-     * @return string representation of schema
-     *
-     * @see AvroSchemaUtils for distinction between primitive and Avro schema generation
-     */
-    String getSchemaString(Object object) {
-        Schema schema = AvroSchemaUtils.getSchema(object);
-        return schema.toString();
-    }
-
-    /**
      * Returns schema name for storing schemas in schema registry store.
      *
      * @param object Schema object used to generate schema path
@@ -90,7 +78,7 @@ class AvroSchemaRegistryUtils {
      *     GenericContainer}.
      */
     String getSchemaName(Object object) {
-        return AvroSchemaUtils.getSchema(object).getFullName();
+        return SchemaRegistryAvroSerializer.getSchema(object).getFullName();
     }
 
     /**
@@ -101,7 +89,7 @@ class AvroSchemaRegistryUtils {
      * @return A set of bytes that represent the object.
      */
     <T> byte[] encode(T object) throws IOException {
-        final Schema schema = AvroSchemaUtils.getSchema(object);
+        final Schema schema = SchemaRegistryAvroSerializer.getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             if (object instanceof byte[]) {
@@ -167,8 +155,7 @@ class AvroSchemaRegistryUtils {
      */
     @SuppressWarnings("unchecked")
     private <T> DatumReader<T> getDatumReader(Schema writerSchema, TypeReference<T> typeReference) {
-        boolean writerSchemaIsPrimitive = writerSchema.getType() != null
-            && AvroSchemaUtils.getPrimitiveSchemas().containsKey(writerSchema.getType());
+        boolean writerSchemaIsPrimitive = writerSchema.getType() != null;
 
         if (writerSchemaIsPrimitive) {
             if (avroSpecificReader) {

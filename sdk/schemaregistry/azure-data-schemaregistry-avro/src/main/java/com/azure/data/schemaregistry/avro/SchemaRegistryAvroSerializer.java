@@ -38,7 +38,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
 
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
     private final SchemaRegistryAsyncClient schemaRegistryClient;
-    private final AvroSchemaRegistryUtils avroSchemaRegistryUtils;
+    private final AvroSerializer avroSerializer;
     private final String schemaGroup;
     private final boolean autoRegisterSchemas;
 
@@ -57,10 +57,10 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     }
 
     SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
-        AvroSchemaRegistryUtils avroSchemaRegistryUtils, String schemaGroup, boolean autoRegisterSchemas) {
+        AvroSerializer avroSerializer, String schemaGroup, boolean autoRegisterSchemas) {
         this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
             "'schemaRegistryClient' cannot be null.");
-        this.avroSchemaRegistryUtils = Objects.requireNonNull(avroSchemaRegistryUtils,
+        this.avroSerializer = Objects.requireNonNull(avroSerializer,
             "'avroSchemaRegistryUtils' cannot be null.");
         this.schemaGroup = Objects.requireNonNull(schemaGroup, "'schemaGroup' cannot be null.");
         this.autoRegisterSchemas = autoRegisterSchemas;
@@ -135,7 +135,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                         int length = buffer.limit() - SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
 
-                        sink.next(avroSchemaRegistryUtils.decode(b, payloadSchema, typeReference));
+                        sink.next(avroSerializer.decode(b, payloadSchema, typeReference));
                     });
             });
     }
@@ -174,8 +174,15 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 "Null object, behavior should be defined in concrete serializer implementation."));
         }
 
-        String schemaString = avroSchemaRegistryUtils.getSchemaString(object);
-        String schemaName = avroSchemaRegistryUtils.getSchemaName(object);
+        Schema schema;
+        try {
+            schema = getSchema(object);
+        } catch (IllegalArgumentException exception) {
+            return monoError(logger, exception);
+        }
+
+        String schemaString =
+        String schemaName = avroSerializer.getSchemaName(object);
 
         return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString)
             .handle((id, sink) -> {
@@ -188,7 +195,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 try {
                     outputStream.write(recordFormatIndicatorBuffer.array());
                     outputStream.write(idBuffer.array());
-                    outputStream.write(avroSchemaRegistryUtils.encode(object));
+                    outputStream.write(avroSerializer.encode(object));
                     sink.complete();
                 } catch (IOException e) {
                     sink.error(new UncheckedIOException(e.getMessage(), e));

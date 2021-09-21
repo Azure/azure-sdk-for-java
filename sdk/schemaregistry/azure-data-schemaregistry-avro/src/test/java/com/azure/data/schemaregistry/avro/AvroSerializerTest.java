@@ -35,9 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link AvroSchemaRegistryUtils}.
+ * Tests for {@link AvroSerializer}.
  */
-public class AvroSchemaRegistryUtilsTest {
+public class AvroSerializerTest {
 
     private final Schema.Parser parser = new Schema.Parser();
     private final EncoderFactory encoderFactory = EncoderFactory.get();
@@ -63,11 +63,11 @@ public class AvroSchemaRegistryUtilsTest {
     @Test
     public void constructorNull() {
         assertThrows(NullPointerException.class,
-            () -> new AvroSchemaRegistryUtils(true, null, encoderFactory, decoderFactory));
+            () -> new AvroSerializer(true, null, encoderFactory, decoderFactory));
         assertThrows(NullPointerException.class,
-            () -> new AvroSchemaRegistryUtils(true, parser, null, decoderFactory));
+            () -> new AvroSerializer(true, parser, null, decoderFactory));
         assertThrows(NullPointerException.class,
-            () -> new AvroSchemaRegistryUtils(true, parser, encoderFactory, null));
+            () -> new AvroSerializer(true, parser, encoderFactory, null));
     }
 
     public static Stream<Arguments> getSchemaStringPrimitive() {
@@ -92,7 +92,7 @@ public class AvroSchemaRegistryUtilsTest {
     @ParameterizedTest
     public void getSchemaStringPrimitive(Object value, Schema expected) {
         // Arrange
-        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
             encoderFactory, decoderFactory);
 
         // Act
@@ -110,7 +110,7 @@ public class AvroSchemaRegistryUtilsTest {
     @Test
     public void getSchemaGenericContainer() {
         // Arrange
-        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
             encoderFactory, decoderFactory);
         final Schema arraySchema = Schema.createArray(Schema.create(Schema.Type.STRING));
         final GenericData.Array<String> genericArray = new GenericData.Array<>(10, arraySchema);
@@ -132,7 +132,7 @@ public class AvroSchemaRegistryUtilsTest {
     @Test
     public void encodesObject() throws IOException {
         // Arrange
-        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
             encoderFactory, decoderFactory);
 
         final PlayingCard card = PlayingCard.newBuilder()
@@ -155,15 +155,15 @@ public class AvroSchemaRegistryUtilsTest {
 
 
     /**
-     * Tests that we can encode and decode an object using {@link AvroSchemaRegistryUtils#encode(Object)} and {@link
-     * AvroSchemaRegistryUtils#decode(byte[], byte[], TypeReference)}.
+     * Tests that we can encode and decode an object using {@link AvroSerializer#encode(Object)} and {@link
+     * AvroSerializer#decode(byte[], byte[], TypeReference)}.
      *
      * @throws IOException If card cannot be serialized.
      */
     @Test
     public void encodesAndDecodesObject() throws IOException {
         // Arrange
-        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
             encoderFactory, decoderFactory);
 
         final PlayingCard expected = PlayingCard.newBuilder()
@@ -193,7 +193,7 @@ public class AvroSchemaRegistryUtilsTest {
     @Test
     public void decodeSingleObjectEncodedObject() throws IOException {
         // Arrange
-        final AvroSchemaRegistryUtils registryUtils = new AvroSchemaRegistryUtils(false, parser,
+        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
             encoderFactory, decoderFactory);
 
         final PlayingCard card = PlayingCard.newBuilder()
