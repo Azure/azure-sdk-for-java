@@ -21,6 +21,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.monitor.query.LogsQueryClientBuilder;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,7 @@ public final class AzureLogAnalyticsImplBuilder {
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = CoreUtils.getProperties("azure-monitor-query.properties");
+    private String audience;
 
     /** Create an instance of the AzureLogAnalyticsImplBuilder. */
     public AzureLogAnalyticsImplBuilder() {
@@ -186,21 +189,34 @@ public final class AzureLogAnalyticsImplBuilder {
     }
 
     /**
+     * Sets the audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience will be
+     * used if the property is null.
+     * @param audience audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience
+     * will be used if the property is null.
+     * @return the {@link AzureLogAnalyticsImplBuilder}.
+     */
+    public AzureLogAnalyticsImplBuilder audience(String audience) {
+        this.audience = audience;
+        return this;
+    }
+
+    /**
      * Builds an instance of AzureLogAnalyticsImpl with the provided parameters.
      *
      * @return an instance of AzureLogAnalyticsImpl.
      */
     public AzureLogAnalyticsImpl buildClient() {
         if (host == null) {
-            this.host = "https://api.monitor.azure.com/v1";
+            this.host = "https://api.monitor.azure.com";
         }
+        String hostVersion = this.host + "/v1";
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureLogAnalyticsImpl client = new AzureLogAnalyticsImpl(pipeline, serializerAdapter, host);
+        AzureLogAnalyticsImpl client = new AzureLogAnalyticsImpl(pipeline, serializerAdapter, hostVersion);
         return client;
     }
 
@@ -217,8 +233,12 @@ public final class AzureLogAnalyticsImplBuilder {
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
+        String resolvedAudience = this.audience;
+        if (resolvedAudience == null) {
+            resolvedAudience = "/.default";
+        }
         BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                "https://api.monitor.azure.com/.default");
+                this.host + resolvedAudience);
         policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());

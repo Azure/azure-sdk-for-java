@@ -16,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
+import com.azure.monitor.query.models.MetricsQueryClientAudience;
 
 /**
  * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
@@ -134,6 +135,20 @@ public final class MetricsQueryClientBuilder {
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);
         innerMetricsNamespaceBuilder.credential(tokenCredential);
+        return this;
+    }
+
+    /**
+     * Sets the audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience will be
+     * used if the property is null.
+     * @param audience audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience
+     * will be used if the property is null.
+     * @return the {@link MetricsQueryClientBuilder}.
+     */
+    public MetricsQueryClientBuilder audience(MetricsQueryClientAudience audience) {
+        innerMetricsBuilder.audience(audience == null ? null : audience.toString());
+        innerMetricsDefinitionsBuilder.audience(audience == null ? null : audience.toString());
+        innerMetricsNamespaceBuilder.audience(audience == null ? null : audience.toString());
         return this;
     }
 
