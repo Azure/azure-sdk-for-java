@@ -372,8 +372,7 @@ public final class ObjectMapperShim {
         }
     }
 
-    public <T extends JsonNode> T valueToTree(Object fromValue)
-        throws IllegalArgumentException {
+    public <T extends JsonNode> T valueToTree(Object fromValue) {
         try {
             return mapper.valueToTree(fromValue);
         } catch (LinkageError ex) {

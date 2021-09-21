@@ -53,17 +53,27 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     /**
-     * Creates a new JacksonAdapter instance with default mapper settings and additional
-     * configuration.
+     * Creates a new JacksonAdapter instance with Azure Core mapper settings and applies
+     * additional configuration through {@code configureSerialization} callback.
      *
-     * @param configure Function that applies additional configuration to outer
-     *                  mapper using inner (simple) mapper for module chaining.
+     * {@code configureSerialization} callback provides outer and inner instances of {@link ObjectMapper}.
+     * Both of them are pre-configured for Azure serialization needs, but only outer is mapper capable of
+     * flattening and populating additionalProperties. Outer module is used by {@code JacksonAdapter} for
+     * all serialization needs.
+     *
+     * Register custom modules on the outer instance to add custom (de)serializers similar to
+     * {@code new JacksonAdapter((outer, inner) -> outer.registerModule(new MyModule()))}
+     *
+     * Use inner mapper for chaining serialization logic in your (de)serializers.
+     *
+     * @param configureSerialization Applies additional configuration to outer
+     *                               mapper using inner mapper for module chaining.
      */
-    public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
         this.xmlMapper = ObjectMapperShim.createXmlMapper();
         this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configure));
+            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
     }
 
     /**

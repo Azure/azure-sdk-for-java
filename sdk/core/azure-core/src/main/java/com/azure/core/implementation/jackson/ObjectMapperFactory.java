@@ -91,7 +91,6 @@ final class ObjectMapperFactory {
             .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
             .build();
 
-
         if (useReflectionToSetCoercion) {
             try {
                 Object object = coersionConfigDefaults.invoke(xmlMapper);
