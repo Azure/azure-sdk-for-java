@@ -127,13 +127,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-all</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-all;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
     <dependency>
       <groupId>com.azure</groupId>

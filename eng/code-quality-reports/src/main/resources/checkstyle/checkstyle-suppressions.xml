@@ -84,8 +84,10 @@
 
   <!-- To allow using sysout in GraalVM classes as the output is printed out during the build -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.core.implementation.graalvm.GraalVMFeature.java"/>            
-<suppress checks="."
+            files="com.azure.core.implementation.graalvm.GraalVMFeature.java"/>    
+  <!-- The class is copied from Quarkus and uses the relevant copyright text.
+  Also, this class contains a number of fields that are annotated to be updated in native image. So, these exceptions are needed -->        
+  <suppress checks="StaticVariableName|VisibilityModifier|TypeName|Header"
             files="com.azure.core.http.netty.implementation.graalvm.features.*\.java"/>            
 
   <!-- All fields are not set in constructors. -->
