@@ -668,7 +668,6 @@
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultSurefireArgLine}
-              ${javaModulesSurefireArgLine}
               ${additionalSurefireArgLine}
             </argLine>
           </configuration>
@@ -844,11 +843,11 @@
       </reporting>
     </profile>
 
-    <!-- Setup for Java 11+ -->
+    <!-- Setup for Java 9+ -->
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -857,7 +856,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <testRelease>11</testRelease>
+              <testRelease>${java.vm.specification.version}</testRelease>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -868,7 +867,7 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -895,6 +894,11 @@
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
+              <argLine>
+                ${defaultSurefireArgLine}
+                ${javaModulesSurefireArgLine}
+                ${additionalSurefireArgLine}
+              </argLine>
             </configuration>
           </plugin>
         </plugins>
