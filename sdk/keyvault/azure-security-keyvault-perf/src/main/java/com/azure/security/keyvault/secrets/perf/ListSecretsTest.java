@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
-    private String[] _secretNames;
+    private String[] secretNames;
 
     public ListSecretsTest(PerfStressOptions options) {
         super(options);
@@ -29,20 +29,20 @@ public class ListSecretsTest extends SecretsTest<PerfStressOptions> {
                 "secrets (including soft-deleted) before starting perf test");
         }
 
-        _secretNames = new String[options.getCount()];
-        for (int i=0; i < _secretNames.length; i++) {
-            _secretNames[i] = "listSecretsPerfTest-" + UUID.randomUUID();
+        secretNames = new String[options.getCount()];
+        for (int i=0; i < secretNames.length; i++) {
+            secretNames[i] = "listSecretsPerfTest-" + UUID.randomUUID();
         }
 
-        return Flux.fromArray(_secretNames)
+        return Flux.fromArray(secretNames)
                 .flatMap(secretName -> secretAsyncClient.setSecret(secretName, secretName))
                 .then();
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        if (_secretNames != null) {
-            return deleteAndPurgeSecretsAsync(_secretNames).then(super.globalCleanupAsync());
+        if (secretNames != null) {
+            return deleteAndPurgeSecretsAsync(secretNames).then(super.globalCleanupAsync());
         }
         else {
             return super.globalCleanupAsync();
