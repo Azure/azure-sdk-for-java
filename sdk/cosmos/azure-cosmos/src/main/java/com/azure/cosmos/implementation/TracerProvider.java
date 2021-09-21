@@ -47,8 +47,6 @@ public class TracerProvider {
     public final static String DB_INSTANCE = "db.instance";
     public final static String DB_URL = "db.url";
     public static final String DB_STATEMENT = "db.statement";
-    public static final String ERROR_MSG = "error.msg";
-    public static final String ERROR_TYPE = "error.type";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
@@ -284,22 +282,12 @@ public class TracerProvider {
             if (throwable instanceof CosmosException) {
                 CosmosException cosmosException = (CosmosException) throwable;
                 if (statusCode == HttpConstants.StatusCodes.NOTFOUND && cosmosException.getSubStatusCode() == 0) {
-                    tracer.setAttribute(TracerProvider.ERROR_MSG, "not found exception", context);
-                    tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
                     tracer.end(statusCode, null, context);
-                } else {
-                    tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
-                    tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
-                    tracer.end(statusCode, throwable, context);
+                    return;
                 }
-            } else {
-                tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
-                tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
-                tracer.end(statusCode, throwable, context);
             }
-        } else {
-            tracer.end(statusCode, null, context);
         }
+        tracer.end(statusCode, throwable, context);
     }
 
     private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,

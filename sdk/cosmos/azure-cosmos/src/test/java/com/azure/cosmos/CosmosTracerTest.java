@@ -505,17 +505,6 @@ public class CosmosTracerTest extends TestSuiteBase {
             TestConfigurations.HOST,
             context);
         Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(TracerProvider.DB_STATEMENT, methodName, context);
-        if (errorType == null) {
-            Mockito.verify(mockTracer, Mockito.times(0)).setAttribute(Mockito.eq(TracerProvider.ERROR_MSG)
-                , ArgumentMatchers.any(), Mockito.eq(context));
-            Mockito.verify(mockTracer, Mockito.times(0)).setAttribute(Mockito.eq(TracerProvider.ERROR_TYPE)
-                , ArgumentMatchers.any(), Mockito.eq(context));
-        } else {
-            Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(Mockito.eq(TracerProvider.ERROR_TYPE)
-                , Mockito.eq(errorType), Mockito.eq(context));
-            Mockito.verify(mockTracer, Mockito.times(1)).setAttribute(Mockito.eq(TracerProvider.ERROR_MSG)
-                , ArgumentMatchers.any(), Mockito.eq(context));
-        }
 
         //verifying diagnostics as events
         verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, attributesMap);
