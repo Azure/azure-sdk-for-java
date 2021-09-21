@@ -86,7 +86,7 @@ public class LinkHandlerTest {
 
     @AfterEach
     void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         handler.close();
 

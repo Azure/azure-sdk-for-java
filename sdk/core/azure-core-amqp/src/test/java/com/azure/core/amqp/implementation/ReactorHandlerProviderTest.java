@@ -111,7 +111,7 @@ public class ReactorHandlerProviderTest {
 
     @AfterEach
     public void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         ProxySelector.setDefault(originalProxySelector);
 
         if (mocksCloseable != null) {
