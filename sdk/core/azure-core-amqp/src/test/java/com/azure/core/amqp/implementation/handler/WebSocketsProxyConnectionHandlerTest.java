@@ -58,8 +58,9 @@ public class WebSocketsProxyConnectionHandlerTest {
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2192);
 
     private ProxySelector originalProxySelector;
-    private ProxySelector proxySelector;
 
+    @Mock
+    private ProxySelector proxySelector;
     @Mock
     private TokenCredential tokenCredential;
     @Mock

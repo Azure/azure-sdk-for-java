@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
@@ -44,6 +45,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link AmqpChannelProcessor}.
  */
+@Isolated("StepVerifier.setDefaultTimeout")
 class AmqpChannelProcessorTest {
     private final TestObject connection1 = new TestObject();
     private final TestObject connection2 = new TestObject();
