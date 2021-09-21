@@ -23,22 +23,63 @@ import org.apache.avro.specific.SpecificRecord;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Base Codec class for Avro encoder and decoder implementations
  */
 class AvroSerializer {
-    private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
-
+    private static final Map<Class<?>, Schema> PRIMITIVE_SCHEMAS;
+    private static final Schema NULL_SCHEMA = Schema.create(Schema.Type.NULL);
     private static final int V1_HEADER_LENGTH = 10;
     private static final byte[] V1_HEADER = new byte[]{-61, 1};
 
+    private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
     private final boolean avroSpecificReader;
     private final Schema.Parser parser;
     private final EncoderFactory encoderFactory;
     private final DecoderFactory decoderFactory;
+
+    static {
+        final HashMap<Class<?>, Schema> schemas = new HashMap<>();
+
+        final Schema booleanSchema = Schema.create(Schema.Type.BOOLEAN);
+        schemas.put(Boolean.class, booleanSchema);
+        schemas.put(boolean.class, booleanSchema);
+
+        final Schema intSchema = Schema.create(Schema.Type.INT);
+        schemas.put(Integer.class, intSchema);
+        schemas.put(int.class, intSchema);
+
+        final Schema longSchema = Schema.create(Schema.Type.LONG);
+        schemas.put(Long.class, longSchema);
+        schemas.put(long.class, longSchema);
+
+        final Schema floatSchema = Schema.create(Schema.Type.FLOAT);
+        schemas.put(Float.class, floatSchema);
+        schemas.put(float.class, floatSchema);
+
+        final Schema doubleSchema = Schema.create(Schema.Type.DOUBLE);
+        schemas.put(Double.class, doubleSchema);
+        schemas.put(double.class, doubleSchema);
+
+        final Schema byteSchema = Schema.create(Schema.Type.BYTES);
+        schemas.put(byte.class, byteSchema);
+        schemas.put(Byte.class, byteSchema);
+        schemas.put(ByteBuffer.class, byteSchema);
+        schemas.put(byte[].class, byteSchema);
+        schemas.put(Byte[].class, byteSchema);
+
+        final Schema stringSchema = Schema.create(Schema.Type.STRING);
+        schemas.put(String.class, stringSchema);
+
+        PRIMITIVE_SCHEMAS = Collections.unmodifiableMap(schemas);
+    }
 
     /**
      * Instantiates AvroCodec instance
@@ -68,28 +109,18 @@ class AvroSerializer {
     }
 
     /**
-     * Returns schema name for storing schemas in schema registry store.
-     *
-     * @param object Schema object used to generate schema path
-     *
-     * @return schema name as string
-     *
-     * @throws IllegalArgumentException if {@code object} is not a primitive type and not of type {@link
-     *     GenericContainer}.
-     */
-    String getSchemaName(Object object) {
-        return SchemaRegistryAvroSerializer.getSchema(object).getFullName();
-    }
-
-    /**
      * Returns A byte[] containing Avro encoding of object parameter.
      *
      * @param object Object to be encoded into byte stream
      *
      * @return A set of bytes that represent the object.
+     *
+     * @throws IllegalArgumentException If the object is not a serializable type.
+     * @throws IllegalStateException if the object could not be serialized to an object stream or there was a
+     *     runtime exception during serialization.
      */
-    <T> byte[] encode(T object) throws IOException {
-        final Schema schema = SchemaRegistryAvroSerializer.getSchema(object);
+    <T> byte[] encode(T object) throws IllegalStateException, IllegalArgumentException {
+        final Schema schema = getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             if (object instanceof byte[]) {
@@ -147,6 +178,56 @@ class AvroSerializer {
     }
 
     /**
+     * Returns Avro schema for specified object, including null values
+     *
+     * @param object object for which Avro schema is being returned
+     *
+     * @return Avro schema for object's data structure
+     *
+     * @throws IllegalArgumentException if object type is unsupported.
+     */
+    static Schema getSchema(Object object) throws IllegalArgumentException {
+        if (object instanceof GenericContainer) {
+            return ((GenericContainer) object).getSchema();
+        }
+
+        if (object == null) {
+            return NULL_SCHEMA;
+        }
+
+        final Class<?> objectClass = object.getClass();
+        final Schema schema = PRIMITIVE_SCHEMAS.get(objectClass);
+        if (schema != null) {
+            return schema;
+        } else {
+            throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, GenericContainer,"
+                + " Boolean, Integer, Long, Float, Double, String, Byte[], Byte, ByteBuffer, and their primitive"
+                + " equivalents.");
+        }
+    }
+
+    /**
+     * True if the object has the single object payload header. The header is comprised of:
+     * <ul>
+     *     <li>2 byte marker, C3 01</li>
+     *     <li>8 byte little-endian CRC-64-AVRO fingerprint of the object's schema</li>
+     * </ul>
+     *
+     * @param schemaBytes Bytes to read from.
+     *
+     * @return true if the object has the single object payload header; false otherwise.
+     *
+     * @see <a href="https://avro.apache.org/docs/current/spec.html#single_object_encoding">Single Object Encoding</a>
+     */
+    static boolean isSingleObjectEncoded(byte[] schemaBytes) {
+        if (schemaBytes.length < V1_HEADER_LENGTH) {
+            return false;
+        }
+
+        return V1_HEADER[0] == schemaBytes[0] && V1_HEADER[1] == schemaBytes[1];
+    }
+
+    /**
      * Returns correct reader for decoding payload.
      *
      * @param writerSchema Avro schema fetched from schema registry store
@@ -172,25 +253,5 @@ class AvroSerializer {
         } else {
             return new GenericDatumReader<>(writerSchema);
         }
-    }
-
-    /**
-     * True if the object has the single object payload header. The header is comprised of:
-     * <ul>
-     *     <li>2 byte marker, C3 01</li>
-     *     <li>8 byte little-endian CRC-64-AVRO fingerprint of the object's schema</li>
-     * </ul>
-     *
-     * @param schemaBytes Bytes to read from.
-     * @return true if the object has the single object payload header; false otherwise.
-     *
-     * @see <a href="https://avro.apache.org/docs/current/spec.html#single_object_encoding">Single Object Encoding</a>
-     */
-    private static boolean isSingleObjectEncoded(byte[] schemaBytes) {
-        if (schemaBytes.length < V1_HEADER_LENGTH) {
-            return false;
-        }
-
-        return V1_HEADER[0] == schemaBytes[0] && V1_HEADER[1] == schemaBytes[1];
     }
 }

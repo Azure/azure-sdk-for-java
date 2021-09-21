@@ -10,7 +10,6 @@ import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericContainer;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -176,15 +175,12 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
 
         Schema schema;
         try {
-            schema = getSchema(object);
+            schema = AvroSerializer.getSchema(object);
         } catch (IllegalArgumentException exception) {
             return monoError(logger, exception);
         }
 
-        String schemaString =
-        String schemaName = avroSerializer.getSchemaName(object);
-
-        return this.maybeRegisterSchema(this.schemaGroup, schemaName, schemaString)
+        return this.maybeRegisterSchema(this.schemaGroup, schema.getFullName(), schema.toString())
             .handle((id, sink) -> {
                 ByteBuffer recordFormatIndicatorBuffer = ByteBuffer
                     .allocate(RECORD_FORMAT_INDICATOR_SIZE)
@@ -201,40 +197,6 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                     sink.error(new UncheckedIOException(e.getMessage(), e));
                 }
             });
-    }
-
-    /**
-     * Returns Avro schema for specified object, including null values
-     *
-     * @param object object for which Avro schema is being returned
-     *
-     * @return Avro schema for object's data structure
-     *
-     * @throws IllegalArgumentException if object type is unsupported
-     */
-    static Schema getSchema(Object object) throws IllegalArgumentException {
-        if (object == null) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.NULL);
-        } else if (object instanceof Boolean) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.BOOLEAN);
-        } else if (object instanceof Integer) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.INT);
-        } else if (object instanceof Long) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.LONG);
-        } else if (object instanceof Float) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.FLOAT);
-        } else if (object instanceof Double) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.DOUBLE);
-        } else if (object instanceof CharSequence) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.STRING);
-        } else if (object instanceof byte[] || object instanceof ByteBuffer || object instanceof Byte[]) {
-            return PRIMITIVE_SCHEMAS.get(Schema.Type.BYTES);
-        } else if (object instanceof GenericContainer) {
-            return ((GenericContainer) object).getSchema();
-        } else {
-            throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, Boolean, Integer,"
-                + " Long, Float, Double, String, byte[], and GenericContainer");
-        }
     }
 
     /**

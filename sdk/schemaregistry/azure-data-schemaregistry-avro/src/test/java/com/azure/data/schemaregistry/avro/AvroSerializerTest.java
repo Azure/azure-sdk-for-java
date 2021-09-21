@@ -91,17 +91,11 @@ public class AvroSerializerTest {
     @MethodSource
     @ParameterizedTest
     public void getSchemaStringPrimitive(Object value, Schema expected) {
-        // Arrange
-        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
-            encoderFactory, decoderFactory);
-
         // Act
-        final String schemaString = registryUtils.getSchemaString(value);
-        final String fullName = registryUtils.getSchemaName(value);
+        final Schema actual = AvroSerializer.getSchema(value);
 
         // Assert
-        assertEquals(expected.toString(), schemaString);
-        assertEquals(expected.getFullName(), fullName);
+        assertEquals(expected, actual);
     }
 
     /**
@@ -110,18 +104,14 @@ public class AvroSerializerTest {
     @Test
     public void getSchemaGenericContainer() {
         // Arrange
-        final AvroSerializer registryUtils = new AvroSerializer(false, parser,
-            encoderFactory, decoderFactory);
         final Schema arraySchema = Schema.createArray(Schema.create(Schema.Type.STRING));
         final GenericData.Array<String> genericArray = new GenericData.Array<>(10, arraySchema);
 
         // Act
-        final String schemaString = registryUtils.getSchemaString(genericArray);
-        final String fullName = registryUtils.getSchemaName(genericArray);
+        final Schema actual = AvroSerializer.getSchema(genericArray);
 
         // Assert
-        assertEquals(arraySchema.toString(), schemaString);
-        assertEquals(arraySchema.getFullName(), fullName);
+        assertEquals(arraySchema, actual);
     }
 
     /**
