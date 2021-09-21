@@ -50,8 +50,13 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
         return Flux
             .fromArray(names)
             .flatMap(name -> secretAsyncClient
-                .beginDeleteSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())
-                .then(secretAsyncClient.purgeDeletedSecret(name).onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())))
+                .beginDeleteSecret(name)
+                .doOnError(err -> System.err.println("Secret '" + name + "' not found for delete"))
+                .onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())
+                .then(secretAsyncClient
+                    .purgeDeletedSecret(name)
+                    .doOnError(err -> System.err.println("Secret '" + name + "' not found for purge"))
+                    .onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())))
             .then();
     }
 }
