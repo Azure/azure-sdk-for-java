@@ -13,13 +13,14 @@ public final class CustomEntitiesTaskParameters {
     /*
      * The projectName property.
      */
-    @JsonProperty(value = "projectName", required = true)
+    // TODO: regenerate the swagger after service fixes the hotfix: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/10968353
+    @JsonProperty(value = "project-name", required = true)
     private String projectName;
 
     /*
      * The deploymentName property.
      */
-    @JsonProperty(value = "deploymentName", required = true)
+    @JsonProperty(value = "deployment-name", required = true)
     private String deploymentName;
 
     /*

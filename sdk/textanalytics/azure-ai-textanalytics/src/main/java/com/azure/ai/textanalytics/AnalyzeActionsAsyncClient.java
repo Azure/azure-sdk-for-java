@@ -130,7 +130,7 @@ class AnalyzeActionsAsyncClient {
     private static final String SENTIMENT_ANALYSIS_TASKS = "sentimentAnalysisTasks";
     private static final String EXTRACTIVE_SUMMARIZATION_TASKS = "extractiveSummarizationTasks";
     private static final String CUSTOM_ENTITY_RECOGNITION_TASKS =  "customEntityRecognitionTasks";
-    private static final String CUSTOM_SINGLE_CLASSIFICATION_TASKS = "customSingleClassificationTasks";
+    private static final String CUSTOM_SINGLE_CLASSIFICATION_TASKS = "customClassificationTasks";
     private static final String CUSTOM_MULTI_CLASSIFICATION_TASKS = "customMultiClassificationTasks";
 
     private static final String REGEX_ACTION_ERROR_TARGET =
@@ -354,6 +354,7 @@ class AnalyzeActionsAsyncClient {
 
                         customSingleClassificationTask.setParameters(
                             new CustomSingleClassificationTaskParameters()
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setLoggingOptOut(action.isServiceLogsDisabled())
                                 .setProjectName(action.getProjectName())
                                 .setDeploymentName(action.getDeploymentName())
@@ -633,7 +634,7 @@ class AnalyzeActionsAsyncClient {
         }
 
         if (!CoreUtils.isNullOrEmpty(customMultiClassificationTasksItems)) {
-            for (int i = 0; i < extractiveSummarizationTasksItems.size(); i++) {
+            for (int i = 0; i < customMultiClassificationTasksItems.size(); i++) {
                 final TasksStateTasksCustomMultiClassificationTasksItem taskItem =
                     customMultiClassificationTasksItems.get(i);
                 final ClassifyCustomMultiCategoriesActionResult actionResult =

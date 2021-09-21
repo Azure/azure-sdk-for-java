@@ -7,25 +7,24 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
-import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryAction;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryActionResult;
+import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyCustomSingleCategoryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously execute a "Custom Entities Recognition" action.
+ * Sample demonstrates how to asynchronously execute an "Single-label Classification" action.
  */
-public class AnalyzeCustomEntitiesActionAsync {
+public class ClassifyCustomSingleCategoryAsync {
     /**
-     * Main method to invoke this demo about how to analyze an "Custom Entities Recognition" action.
+     * Main method to invoke this demo about how to analyze an "Single-label Classification" action.
      *
      * @param args Unused arguments to the program.
      */
@@ -45,13 +44,13 @@ public class AnalyzeCustomEntitiesActionAsync {
             "David Schmidt, senior vice president--Food Safety, International Food"
                 + " Information Council (IFIC), Washington, D.C., discussed the physical activity component."
         );
+        documents.add(
+            "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music and add it to my playlist"
+        );
 
-        // Use the language studio, https://language.azure.com/ to create an new custom entity project with a new name.
-        // The deployment name can be generated when you successfully deployed your custom model in Azure.
         client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
-                .setRecognizeCustomEntitiesActions(
-                    new RecognizeCustomEntitiesAction("{project_name}", "{deployment_name}")),
+            new TextAnalyticsActions().setClassifyCustomSingleCategoryActions(
+                new ClassifyCustomSingleCategoryAction("{project_name}", "{deployment_name}")),
             "en",
             null)
             .flatMap(result -> {
@@ -63,9 +62,9 @@ public class AnalyzeCustomEntitiesActionAsync {
                     operationDetail.getTotalCount());
                 return result.getFinalResult();
             })
-            .flatMap(analyzeActionsResultPagedFlux -> analyzeActionsResultPagedFlux.byPage())
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
-                perPage -> processAnalyzeActionsResult(perPage),
+                actionsResult -> processAnalyzeActionsResult(actionsResult),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
 
@@ -79,33 +78,26 @@ public class AnalyzeCustomEntitiesActionAsync {
         }
     }
 
-    private static void processAnalyzeActionsResult(PagedResponse<AnalyzeActionsResult> perPage) {
-        System.out.printf("Response code: %d, Continuation Token: %s.%n",
-            perPage.getStatusCode(), perPage.getContinuationToken());
-
-        for (AnalyzeActionsResult actionsResult : perPage.getElements()) {
-            for (RecognizeCustomEntitiesActionResult actionResult : actionsResult.getRecognizeCustomEntitiesResults()) {
-                if (!actionResult.isError()) {
-                    RecognizeCustomEntitiesResultCollection documentsResults = actionResult.getDocumentsResults();
-                    System.out.printf("Project name: %s, deployment name: %s.%n",
-                        documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                    for (RecognizeEntitiesResult documentResult : documentsResults) {
-                        System.out.println("Document ID: " + documentResult.getId());
-                        if (!documentResult.isError()) {
-                            for (CategorizedEntity entity : documentResult.getEntities()) {
-                                System.out.printf(
-                                    "\tText: %s, category: %s, confidence score: %f.%n",
-                                    entity.getText(), entity.getCategory(), entity.getConfidenceScore());
-                            }
-                        } else {
-                            System.out.printf("\tCannot recognize custom entities. Error: %s%n",
-                                documentResult.getError().getMessage());
-                        }
+    private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
+        for (ClassifyCustomSingleCategoryActionResult actionResult : actionsResult.getClassifyCustomSingleCategoryResults()) {
+            if (!actionResult.isError()) {
+                ClassifyCustomSingleCategoryResultCollection documentsResults = actionResult.getDocumentsResults();
+                System.out.printf("Project name: %s, deployment name: %s.%n",
+                    documentsResults.getProjectName(), documentsResults.getDeploymentName());
+                for (ClassifySingleCategoryResult documentResult : documentsResults) {
+                    System.out.println("Document ID: " + documentResult.getId());
+                    if (!documentResult.isError()) {
+                        DocumentClassification documentClassification = documentResult.getDocumentClassification();
+                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                            documentClassification.getCategory(), documentClassification.getConfidenceScore());
+                    } else {
+                        System.out.printf("\tCannot classify category of document. Error: %s%n",
+                            documentResult.getError().getMessage());
                     }
-                } else {
-                    System.out.printf("\tCannot execute 'RecognizeCustomEntitiesAction'. Error: %s%n",
-                        actionResult.getError().getMessage());
                 }
+            } else {
+                System.out.printf("\tCannot execute 'ClassifyCustomSingleCategoryAction'. Error: %s%n",
+                    actionResult.getError().getMessage());
             }
         }
     }

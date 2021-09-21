@@ -958,8 +958,10 @@ public final class Utility {
             customEntitiesResult.getProjectName());
         RecognizeCustomEntitiesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
             customEntitiesResult.getDeploymentName());
-        RecognizeCustomEntitiesResultCollectionPropertiesHelper.setStatistics(resultCollection,
-            toBatchStatistics(customEntitiesResult.getStatistics()));
+        if (customEntitiesResult.getStatistics() != null) {
+            RecognizeCustomEntitiesResultCollectionPropertiesHelper.setStatistics(resultCollection,
+                toBatchStatistics(customEntitiesResult.getStatistics()));
+        }
         return resultCollection;
     }
 
@@ -992,8 +994,10 @@ public final class Utility {
             customSingleClassificationResult.getProjectName());
         ClassifyCustomCategoryResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
             customSingleClassificationResult.getDeploymentName());
-        ClassifyCustomCategoryResultCollectionPropertiesHelper.setStatistics(resultCollection,
-            toBatchStatistics(customSingleClassificationResult.getStatistics()));
+        if (customSingleClassificationResult.getStatistics() != null) {
+            ClassifyCustomCategoryResultCollectionPropertiesHelper.setStatistics(resultCollection,
+                toBatchStatistics(customSingleClassificationResult.getStatistics()));
+        }
         return resultCollection;
     }
 
@@ -1053,8 +1057,10 @@ public final class Utility {
             customMultiClassificationResult.getProjectName());
         ClassifyCustomCategoriesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
             customMultiClassificationResult.getDeploymentName());
-        ClassifyCustomCategoriesResultCollectionPropertiesHelper.setStatistics(resultCollection,
-            toBatchStatistics(customMultiClassificationResult.getStatistics()));
+        if (customMultiClassificationResult.getStatistics() != null) {
+            ClassifyCustomCategoriesResultCollectionPropertiesHelper.setStatistics(resultCollection,
+                toBatchStatistics(customMultiClassificationResult.getStatistics()));
+        }
         return resultCollection;
     }
 

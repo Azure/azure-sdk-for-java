@@ -80,7 +80,9 @@ public final class TasksStateTasks {
     /*
      * The customSingleClassificationTasks property.
      */
-    @JsonProperty(value = "customSingleClassificationTasks")
+    // TODO: Change back to customSingleClassificationTasks after service fixes the hotfix:
+    //  https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/10968353
+    @JsonProperty(value = "customClassificationTasks")
     private List<TasksStateTasksCustomSingleClassificationTasksItem> customSingleClassificationTasks;
 
     /*
