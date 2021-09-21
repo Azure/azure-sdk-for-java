@@ -181,9 +181,6 @@
                 <includes>
                   <include>**</include>
                 </includes>
-                <excludes>
-                  <exclude>test-classes/session-records/</exclude>
-                </excludes>
               </fileset>
             </filesets>
           </configuration>

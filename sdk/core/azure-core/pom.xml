@@ -181,6 +181,17 @@
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <executions>
           <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <configuration>
+              <archive>
+                <manifestEntries>
+                  <Multi-Release>true</Multi-Release>
+                </manifestEntries>
+              </archive>
+            </configuration>
+          </execution>
+          <execution>
             <id>test-jar</id>
             <phase>test-compile</phase>
             <goals>
@@ -203,8 +214,10 @@
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.12.4]
+                </include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]
+                </include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>
@@ -239,10 +252,58 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <excludes>
+            <exclude>META-INF/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+      </plugin>
     </plugins>
   </build>
 
   <profiles>
+    <profile>
+      <id>java9-plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>java9-plus-mr</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>9</release>
+                  <compileSourceRoots>
+                    <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
+                  </compileSourceRoots>
+                  <multiReleaseOutput>true</multiReleaseOutput>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>java-lts</id>
       <activation>
