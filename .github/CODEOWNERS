@@ -147,18 +147,18 @@
 ###########
 # Eng Sys
 ###########
-/eng/                                               @benbp @weshaggard @danieljurek
+/eng/                                               @hallipr @weshaggard
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @benbp @weshaggard @danieljurek @weidongxu-microsoft @haolingdong-msft
-/eng/versioning/                                    @benbp @danieljurek @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @benbp @danieljurek @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @hallipr @weshaggard
+/eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
+/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar
 /parent/                                            @alzimmermsft
 
-/**/tests.yml                                       @benbp
-/**/ci.yml                                          @benbp
+/**/tests.yml                                       @hallipr
+/**/ci.yml                                          @hallipr
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                @joshfree
