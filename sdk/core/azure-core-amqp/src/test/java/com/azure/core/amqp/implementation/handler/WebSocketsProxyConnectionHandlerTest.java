@@ -93,7 +93,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         }
 
         ProxySelector.setDefault(originalProxySelector);
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();

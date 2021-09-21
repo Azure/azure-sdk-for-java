@@ -144,7 +144,7 @@ class ServiceBusSessionManagerTest {
     void afterEach(TestInfo testInfo) throws Exception {
         logger.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
