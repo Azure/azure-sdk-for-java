@@ -79,12 +79,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
       <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+      <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
