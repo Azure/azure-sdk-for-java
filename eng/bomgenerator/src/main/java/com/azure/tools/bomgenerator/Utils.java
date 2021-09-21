@@ -5,6 +5,8 @@ package com.azure.tools.bomgenerator;
 
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
@@ -17,6 +19,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystemBase;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.PomlessResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,13 +35,16 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
+    public static final String COMMANDLINE_INPUTDIRECTORY = "inputdir";
+    public static final String COMMANDLINE_OUTPUTDIRECTORY = "outputdir";
+    public static final String EMPTY_STRING = "";
     public static final String COMMANDLINE_INPUTFILE = "inputfile";
     public static final String COMMANDLINE_OUTPUTFILE = "outputfile";
     public static final String COMMANDLINE_POMFILE = "pomfile";
@@ -183,6 +189,46 @@ public class Utils {
     }
 
     static List<BomDependency> parsePomFileContent(Reader responseStream) {
+        List<BomDependency> bomDependencies = new ArrayList<>();
+
+        ObjectMapper mapper = new XmlMapper();
+        try {
+            HashMap<String, Object> value = mapper.readValue(responseStream, HashMap.class);
+            Object packagingProp = value.getOrDefault("packaging", null);
+            if(packagingProp != null && packagingProp.toString().equalsIgnoreCase("pom")) {
+                return parsePomFileContent(responseStream);
+            }
+
+            // else we have a traditional POM file so we are responsible for parsing its contents.
+            HashMap<String, Object> dependenciesTag = (HashMap<String, Object>)value.getOrDefault("dependencies", null);
+            if(dependenciesTag == null) {
+                return null;
+            }
+
+            ArrayList<HashMap<String, Object>> dependencies =  (ArrayList<HashMap<String, Object>>) dependenciesTag.getOrDefault("dependency", null);
+            for(HashMap<String, Object> dependency: dependencies) {
+                String groupId = (String) dependency.getOrDefault("groupId", null);
+                String artifactId = (String) dependency.getOrDefault("artifactId", null);
+                String version = (String) dependency.getOrDefault("version", null);
+                String scope = (String) dependency.getOrDefault("scope", ScopeType.COMPILE.toString());
+                ScopeType scopeType = ScopeType.COMPILE;
+                switch(scope) {
+                    case "test" : scopeType = ScopeType.TEST;
+                    break;
+
+                    default: scopeType = ScopeType.COMPILE;
+                }
+
+                bomDependencies.add(new BomDependency(groupId, artifactId, version, scopeType));
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        return bomDependencies.stream().distinct().collect(Collectors.toList());
+    }
+
+    static List<BomDependency> parseBomFileContent(Reader responseStream) {
         MavenXpp3Reader reader = new MavenXpp3Reader();
         try {
             Model model = reader.read(responseStream);

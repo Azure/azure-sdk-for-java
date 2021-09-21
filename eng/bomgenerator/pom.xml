@@ -39,6 +39,11 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.5</version>  <!-- {x-version-update;org.slf4j:slf4j-log4j12;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+    </dependency>
   </dependencies>
   <build>
   <resources>
@@ -69,10 +74,8 @@
           <workingDirectory>${project.basedir}</workingDirectory>
           <mainClass>com.azure.tools.bomgenerator.Main</mainClass>
           <arguments>
-            <argument>-inputFile=${project.basedir}/../versioning/version_client.txt</argument>
-            <argument>-outputFile=${project.basedir}/target/newbom.xml</argument>
-            <argument>-pomFile=${project.basedir}/../../sdk/boms/azure-sdk-bom/pom.xml</argument>
-            <argument>-reportFile=${project.basedir}/target/dependency_conflictlist.html</argument>
+            <argument>-inputdir=${project.basedir}/inputdir</argument>
+            <argument>-outputdir=${project.basedir}/outputdir</argument>
           </arguments>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
