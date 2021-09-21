@@ -52,7 +52,7 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
 public final class KeyVaultAccessControlClientBuilder {
-    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
+    static final String MANAGED_HSM_SCOPE = "https://managedhsm.azure.net/.default";
 
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
@@ -158,7 +158,7 @@ public final class KeyVaultAccessControlClientBuilder {
         // Add retry policy.
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
-        policies.add(new BearerTokenAuthenticationPolicy(credential, MHSM_SCOPE));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, MANAGED_HSM_SCOPE));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);

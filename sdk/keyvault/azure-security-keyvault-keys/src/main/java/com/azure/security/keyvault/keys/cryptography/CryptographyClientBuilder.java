@@ -69,7 +69,7 @@ import java.util.Map;
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
+    static final String MANAGED_HSM_SCOPE = "https://managedhsm.azure.net/.default";
 
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
@@ -206,7 +206,7 @@ public final class CryptographyClientBuilder {
         try {
             URL keyUrl = new URL(keyId);
             policies.add(new BearerTokenAuthenticationPolicy(credential,
-                keyUrl.getHost().contains("managedhsm.azure.net") ? MHSM_SCOPE : KEY_VAULT_SCOPE));
+                keyUrl.getHost().contains("managedhsm.azure.net") ? MANAGED_HSM_SCOPE : KEY_VAULT_SCOPE));
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed.", e));
         }

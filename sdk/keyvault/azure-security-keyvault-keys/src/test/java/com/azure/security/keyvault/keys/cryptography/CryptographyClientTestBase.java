@@ -94,8 +94,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential,
-                isManagedHsmTest ? CryptographyClientBuilder.MHSM_SCOPE : CryptographyClientBuilder.KEY_VAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, isManagedHsmTest
+                ? CryptographyClientBuilder.MANAGED_HSM_SCOPE : CryptographyClientBuilder.KEY_VAULT_SCOPE));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

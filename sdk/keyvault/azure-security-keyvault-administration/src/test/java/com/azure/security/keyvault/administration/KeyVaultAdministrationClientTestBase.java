@@ -75,7 +75,7 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
 
         if (credential != null) {
             policies.add(
-                new BearerTokenAuthenticationPolicy(credential, KeyVaultAccessControlClientBuilder.MHSM_SCOPE));
+                new BearerTokenAuthenticationPolicy(credential, KeyVaultAccessControlClientBuilder.MANAGED_HSM_SCOPE));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

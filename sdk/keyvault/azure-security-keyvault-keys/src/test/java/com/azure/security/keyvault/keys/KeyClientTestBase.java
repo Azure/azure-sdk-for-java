@@ -106,7 +106,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
         if (credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(credential,
-                isManagedHsmTest ? KeyClientBuilder.MHSM_SCOPE : KeyClientBuilder.KEY_VAULT_SCOPE));
+                isManagedHsmTest ? KeyClientBuilder.MANAGED_HSM_SCOPE : KeyClientBuilder.KEY_VAULT_SCOPE));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
