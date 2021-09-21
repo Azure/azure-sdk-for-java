@@ -9,6 +9,7 @@ import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.message.RawMessageEncoder;
@@ -21,10 +22,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -143,15 +147,12 @@ public class AvroSerializerTest {
         assertArrayEquals(expectedData, encoded);
     }
 
-
     /**
      * Tests that we can encode and decode an object using {@link AvroSerializer#encode(Object)} and {@link
      * AvroSerializer#decode(byte[], byte[], TypeReference)}.
-     *
-     * @throws IOException If card cannot be serialized.
      */
     @Test
-    public void encodesAndDecodesObject() throws IOException {
+    public void encodesAndDecodesObject() {
         // Arrange
         final AvroSerializer registryUtils = new AvroSerializer(false, parser,
             encoderFactory, decoderFactory);
@@ -227,6 +228,110 @@ public class AvroSerializerTest {
         });
 
         assertTrue(list.isEmpty());
+    }
+
+    public static Stream<Arguments> getSchemaForType() {
+        final byte[] byteArray = new byte[]{10, 3, 5};
+        final ByteBuffer byteBuffer = ByteBuffer.wrap(byteArray);
+        final Byte[] byteObjectArray = new Byte[]{5, 10, 5, 2};
+
+        return Stream.of(
+            Arguments.of("foo", Schema.create(Schema.Type.STRING)),
+
+            Arguments.of(byteArray, Schema.create(Schema.Type.BYTES)),
+            Arguments.of(byteObjectArray, Schema.create(Schema.Type.BYTES)),
+            Arguments.of(byteBuffer, Schema.create(Schema.Type.BYTES)),
+
+            Arguments.of(Integer.valueOf("50"), Schema.create(Schema.Type.INT)),
+            Arguments.of(51, Schema.create(Schema.Type.INT)),
+
+            Arguments.of(Long.valueOf("10"), Schema.create(Schema.Type.LONG)),
+            Arguments.of(15L, Schema.create(Schema.Type.LONG)),
+
+            Arguments.of(Float.valueOf("24.4"), Schema.create(Schema.Type.FLOAT)),
+            Arguments.of(52.1f, Schema.create(Schema.Type.FLOAT)),
+
+            Arguments.of(Double.valueOf("24.4"), Schema.create(Schema.Type.DOUBLE)),
+            Arguments.of(52.1d, Schema.create(Schema.Type.DOUBLE)),
+
+            Arguments.of(Boolean.TRUE, Schema.create(Schema.Type.BOOLEAN)),
+            Arguments.of(false, Schema.create(Schema.Type.BOOLEAN)),
+
+            Arguments.of(null, Schema.create(Schema.Type.NULL))
+        );
+    }
+
+    /**
+     * Verifies that we can get the correct schema from each type.
+     *
+     * @param object Object to get schema for.
+     * @param expectedSchema Expected schema.
+     */
+    @MethodSource
+    @ParameterizedTest
+    public void getSchemaForType(Object object, Schema expectedSchema) {
+        // Act
+        final Schema actual = AvroSerializer.getSchema(object);
+
+        // Assert
+        assertEquals(expectedSchema, actual);
+    }
+
+    @Test
+    public void getSchemaTypeGenericRecord() {
+        final String json = "{\n" +
+            "   \"type\": \"record\",\n" +
+            "   \"name\": \"Shoe\",\n" +
+            "   \"namespace\": \"org.example.model\",\n" +
+            "   \"fields\": [\n" +
+            "      {\n" +
+            "         \"name\": \"name\",\n" +
+            "         \"type\": \"string\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "         \"name\": \"size\",\n" +
+            "         \"type\": \"double\"\n" +
+            "      },\n" +
+            "      {\n" +
+            "         \"name\": \"quantities\",\n" +
+            "         \"type\": {\n" +
+            "            \"type\": \"array\",\n" +
+            "            \"items\": \"int\",\n" +
+            "            \"java-class\": \"java.util.List\"\n" +
+            "         }\n" +
+            "      }\n" +
+            "   ]\n" +
+            "}";
+        final Schema expectedSchema = new Schema.Parser().parse(json);
+        final GenericRecord record = new GenericData.Record(expectedSchema);
+
+        // Act
+        final Schema actual = AvroSerializer.getSchema(record);
+
+        // Assert
+        assertEquals(expectedSchema, actual);
+    }
+
+    @Test
+    public void getSchemaTypeSpecificRecord() {
+        // Arrange
+        final HandOfCards expected = HandOfCards.newBuilder().setCards(new ArrayList<>()).build();
+
+        // Act
+        final Schema actual = AvroSerializer.getSchema(expected);
+
+        assertNotNull(actual);
+        assertEquals(expected.getSchema(), actual);
+        assertEquals(expected.getSchema().getType(), actual.getType());
+    }
+
+    @Test
+    public void getSchemaTypeNotSupported() {
+        // Arrange
+        final Map<String, Object> testMap = new HashMap<>();
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> AvroSerializer.getSchema(testMap));
     }
 
     private static void assertCardEquals(PlayingCard expected, PlayingCard actual) {

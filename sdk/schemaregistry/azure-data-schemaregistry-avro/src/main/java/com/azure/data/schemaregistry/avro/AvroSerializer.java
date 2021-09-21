@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Base Codec class for Avro encoder and decoder implementations
+ * Class containing implementation of Avro apache serializer
  */
 class AvroSerializer {
     private static final Map<Class<?>, Schema> PRIMITIVE_SCHEMAS;
@@ -71,9 +71,11 @@ class AvroSerializer {
         final Schema byteSchema = Schema.create(Schema.Type.BYTES);
         schemas.put(byte.class, byteSchema);
         schemas.put(Byte.class, byteSchema);
-        schemas.put(ByteBuffer.class, byteSchema);
         schemas.put(byte[].class, byteSchema);
         schemas.put(Byte[].class, byteSchema);
+
+        // This class is abstract but not final.
+        schemas.put(ByteBuffer.class, byteSchema);
 
         final Schema stringSchema = Schema.create(Schema.Type.STRING);
         schemas.put(String.class, stringSchema);
@@ -199,6 +201,10 @@ class AvroSerializer {
         final Schema schema = PRIMITIVE_SCHEMAS.get(objectClass);
         if (schema != null) {
             return schema;
+        } else if (CharSequence.class.isAssignableFrom(objectClass)) {
+            return PRIMITIVE_SCHEMAS.get(String.class);
+        } else if (ByteBuffer.class.isAssignableFrom(objectClass)) {
+            return PRIMITIVE_SCHEMAS.get(Byte[].class);
         } else {
             throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, GenericContainer,"
                 + " Boolean, Integer, Long, Float, Double, String, Byte[], Byte, ByteBuffer, and their primitive"
@@ -236,7 +242,7 @@ class AvroSerializer {
      */
     @SuppressWarnings("unchecked")
     private <T> DatumReader<T> getDatumReader(Schema writerSchema, TypeReference<T> typeReference) {
-        boolean writerSchemaIsPrimitive = writerSchema.getType() != null;
+        boolean writerSchemaIsPrimitive = writerSchema.getType() != null ;
 
         if (writerSchemaIsPrimitive) {
             if (avroSpecificReader) {

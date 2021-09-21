@@ -5,14 +5,11 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.avro.generatedtestsources.HandOfCards;
 import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
-import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
@@ -21,9 +18,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -36,9 +30,6 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.SCHEMA_ID_SIZE;
@@ -47,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -91,115 +81,18 @@ public class SchemaRegistryAvroSerializerTest {
         }
     }
 
-    public static Stream<Arguments> getSchemaTypes() {
-        final byte[] byteArray = new byte[] { 10, 3, 5};
-        final ByteBuffer byteBuffer= ByteBuffer.wrap(byteArray);
-        final Byte[] byteObjectArray = new Byte[] { 5, 10, 5, 2};
-
-        return Stream.of(
-            Arguments.of("foo", Schema.create(Schema.Type.STRING)),
-
-            Arguments.of(byteArray, Schema.create(Schema.Type.BYTES)),
-            Arguments.of(byteObjectArray, Schema.create(Schema.Type.BYTES)),
-            Arguments.of(byteBuffer, Schema.create(Schema.Type.BYTES)),
-
-            Arguments.of(Integer.valueOf("50"), Schema.create(Schema.Type.INT)),
-            Arguments.of(51, Schema.create(Schema.Type.INT)),
-
-            Arguments.of(Long.valueOf("10"), Schema.create(Schema.Type.LONG)),
-            Arguments.of(15L, Schema.create(Schema.Type.LONG)),
-
-            Arguments.of(Float.valueOf("24.4"), Schema.create(Schema.Type.FLOAT)),
-            Arguments.of(52.1f, Schema.create(Schema.Type.FLOAT)),
-
-            Arguments.of(Double.valueOf("24.4"), Schema.create(Schema.Type.DOUBLE)),
-            Arguments.of(52.1d, Schema.create(Schema.Type.DOUBLE)),
-
-            Arguments.of(Boolean.TRUE, Schema.create(Schema.Type.BOOLEAN)),
-            Arguments.of(false, Schema.create(Schema.Type.BOOLEAN)),
-
-            Arguments.of(null, Schema.create(Schema.Type.NULL))
-        );
-    }
-
-    @MethodSource
-    @ParameterizedTest
-    public void getSchemaTypes(Object object, Schema expectedSchema) {
-        // Act
-        final Schema actual = AvroSerializer.getSchema(object);
-
-        // Assert
-        assertEquals(expectedSchema, actual);
-    }
-
-    @Test
-    public void getSchemaTypeGenericRecord() {
-        final String json = "{\n" +
-            "   \"type\": \"record\",\n" +
-            "   \"name\": \"Shoe\",\n" +
-            "   \"namespace\": \"org.example.model\",\n" +
-            "   \"fields\": [\n" +
-            "      {\n" +
-            "         \"name\": \"name\",\n" +
-            "         \"type\": \"string\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "         \"name\": \"size\",\n" +
-            "         \"type\": \"double\"\n" +
-            "      },\n" +
-            "      {\n" +
-            "         \"name\": \"quantities\",\n" +
-            "         \"type\": {\n" +
-            "            \"type\": \"array\",\n" +
-            "            \"items\": \"int\",\n" +
-            "            \"java-class\": \"java.util.List\"\n" +
-            "         }\n" +
-            "      }\n" +
-            "   ]\n" +
-            "}";
-        final Schema expectedSchema = new Schema.Parser().parse(json);
-        final GenericRecord record = new GenericData.Record(expectedSchema);
-
-        // Act
-        final Schema actual = AvroSerializer.getSchema(record);
-
-        // Assert
-        assertEquals(expectedSchema, actual);
-    }
-
-    @Test
-    public void getSchemaTypeSpecificRecord() {
-        // Arrange
-        final HandOfCards expected = HandOfCards.newBuilder().build();
-
-        // Act
-        final Schema actual = AvroSerializer.getSchema(expected);
-
-        assertNotNull(actual);
-        assertEquals(expected.getSchema(), actual);
-        assertEquals(expected.getSchema().getType(), actual.getType());
-    }
-
-    @Test
-    public void getSchemaTypeNotSupported() {
-        // Arrange
-        final Map<String, Object> testMap = new HashMap<>();
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> AvroSerializer.getSchema(testMap));
-    }
-
     @Test
     void testRegistryGuidPrefixedToPayload() throws IOException {
         // manually add SchemaRegistryObject into mock registry client cache
-        final AvroSerializer avroSerializer = new AvroSerializer(false, mock(Schema.Parser.class),
-            mock(EncoderFactory.class), mock(DecoderFactory.class));
+        final AvroSerializer avroSerializer = new AvroSerializer(false, new Schema.Parser(),
+            ENCODER_FACTORY, DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
+        final byte[] schemaBytes = playingClassSchema.toString().getBytes(StandardCharsets.UTF_8);
         final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SerializationType.AVRO,
-            playingClassSchema.getFullName(), playingClassSchema.toString().getBytes(StandardCharsets.UTF_8));
+            playingClassSchema.getFullName(), schemaBytes);
 
-        when(client.getSchemaId(MOCK_SCHEMA_GROUP, registered.getSchemaName(), MOCK_AVRO_SCHEMA_STRING,
+        when(client.getSchemaId(MOCK_SCHEMA_GROUP, registered.getSchemaName(), playingClassSchema.toString(),
             SerializationType.AVRO)).thenReturn(Mono.just(MOCK_GUID));
 
         final SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(client, avroSerializer,
@@ -247,7 +140,7 @@ public class SchemaRegistryAvroSerializerTest {
     }
 
     @Test
-    void testAddUtils() throws IOException {
+    void testGetSchemaAndDeserialize() throws IOException {
         // manually add SchemaRegistryObject to cache
         final AvroSerializer decoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
@@ -260,16 +153,23 @@ public class SchemaRegistryAvroSerializerTest {
 
         assertNotNull(registered.getSchema());
 
-        when(client.getSchema(playingClassSchema.toString())).thenReturn(Mono.just(registered));
+        when(client.getSchema(MOCK_GUID)).thenReturn(Mono.just(registered));
 
         StepVerifier.create(client.getSchema(MOCK_GUID))
             .assertNext(properties -> assertEquals(MOCK_GUID, properties.getSchemaId()))
             .verifyComplete();
 
-        StepVerifier.create(serializer.deserializeAsync(new ByteArrayInputStream(getPayload(playingCard)),
-            TypeReference.createInstance(GenericData.Record.class)))
-            .assertNext(record -> assertEquals(CONSTANT_PAYLOAD, record.toString()))
-            .verifyComplete();
+        final byte[] serializedPayload = getPayload(playingCard);
+
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedPayload)) {
+            StepVerifier.create(serializer.deserializeAsync(inputStream, TypeReference.createInstance(PlayingCard.class)))
+                .assertNext(actual -> {
+                    assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
+                    assertEquals(playingCard.getCardValue(), actual.getCardValue());
+                    assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
+                })
+                .verifyComplete();
+        }
     }
 
     @Test
@@ -322,9 +222,7 @@ public class SchemaRegistryAvroSerializerTest {
     private static byte[] getPayload(PlayingCard card) throws IOException {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             out.write(new byte[]{0x00, 0x00, 0x00, 0x00});
-            out.write(ByteBuffer.allocate(SCHEMA_ID_SIZE)
-                .put(MOCK_GUID.getBytes(StandardCharsets.UTF_8))
-                .array());
+            out.write(MOCK_GUID.getBytes(StandardCharsets.UTF_8));
 
             BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(out, null);
             card.customEncode(encoder);
