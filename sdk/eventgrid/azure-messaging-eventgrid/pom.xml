@@ -141,6 +141,7 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
+                --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid=ALL-UNNAMED
                 --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid.implementation=ALL-UNNAMED
               </argLine>

@@ -313,6 +313,7 @@
         <javaModulesSurefireArgLine>
           --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
           --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+          --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
 
           --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
           --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
