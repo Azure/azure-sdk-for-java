@@ -198,13 +198,9 @@ class AvroSerializer {
         }
 
         final Class<?> objectClass = object.getClass();
-        final Schema schema = PRIMITIVE_SCHEMAS.get(objectClass);
-        if (schema != null) {
-            return schema;
-        } else if (CharSequence.class.isAssignableFrom(objectClass)) {
-            return PRIMITIVE_SCHEMAS.get(String.class);
-        } else if (ByteBuffer.class.isAssignableFrom(objectClass)) {
-            return PRIMITIVE_SCHEMAS.get(Byte[].class);
+        final Schema primitiveSchema = getPrimitiveSchema(objectClass);
+        if (primitiveSchema != null) {
+            return primitiveSchema;
         } else {
             throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, GenericContainer,"
                 + " Boolean, Integer, Long, Float, Double, String, Byte[], Byte, ByteBuffer, and their primitive"
@@ -234,6 +230,26 @@ class AvroSerializer {
     }
 
     /**
+     * Gets a schema for the given class if it is an Avro primitive type.
+     *
+     * @param clazz Object class
+     *
+     * @return Matching primitive schema, otherwise {@code null} if it is not.
+     */
+    private static Schema getPrimitiveSchema(Class<?> clazz) {
+        final Schema schema = PRIMITIVE_SCHEMAS.get(clazz);
+        if (schema != null) {
+            return schema;
+        } else if (CharSequence.class.isAssignableFrom(clazz)) {
+            return PRIMITIVE_SCHEMAS.get(String.class);
+        } else if (ByteBuffer.class.isAssignableFrom(clazz)) {
+            return PRIMITIVE_SCHEMAS.get(Byte[].class);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Returns correct reader for decoding payload.
      *
      * @param writerSchema Avro schema fetched from schema registry store
@@ -242,9 +258,13 @@ class AvroSerializer {
      */
     @SuppressWarnings("unchecked")
     private <T> DatumReader<T> getDatumReader(Schema writerSchema, TypeReference<T> typeReference) {
-        boolean writerSchemaIsPrimitive = writerSchema.getType() != null ;
+        // Suppressing this warning because we know that the Type is a representation of the Class<T>
+        final Class<T> clazz = (Class<T>) typeReference.getJavaType();
+        final Schema primitiveSchema = getPrimitiveSchema(clazz);
 
-        if (writerSchemaIsPrimitive) {
+        if (primitiveSchema != null) {
+            assert primitiveSchema.getType().equals(writerSchema.getType());
+
             if (avroSpecificReader) {
                 return new SpecificDatumReader<>(writerSchema);
             } else {
@@ -252,8 +272,6 @@ class AvroSerializer {
             }
         }
 
-        // Suppressing this warning because we know that the Type is a representation of the Class<T>
-        final Class<T> clazz = (Class<T>) typeReference.getJavaType();
         if (SpecificRecord.class.isAssignableFrom(clazz)) {
             return new SpecificDatumReader<>(writerSchema);
         } else {
