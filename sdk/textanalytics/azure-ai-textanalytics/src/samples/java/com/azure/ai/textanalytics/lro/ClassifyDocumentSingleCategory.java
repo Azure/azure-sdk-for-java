@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentSingleCategoryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.ArrayList;
@@ -55,16 +54,6 @@ public class ClassifyDocumentSingleCategory {
                     new ClassifyDocumentSingleCategoryAction("{project_name}", "{deployment_name}")),
                 "en",
                 null);
-
-        // Task operation statistics details
-        while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            final AnalyzeActionsOperationDetail operationDetail = syncPoller.poll().getValue();
-            System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
-                                  + " failed actions: %d, total actions: %d%n",
-                operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
-                operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
-                operationDetail.getTotalCount());
-        }
 
         syncPoller.waitForCompletion();
 
