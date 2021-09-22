@@ -1,14 +1,8 @@
 ## Release History
 
-### 4.20.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+### 4.20.0-beta.1 (2021-09-22)
+#### Key Bug Fixes
+* Added support to config retry count for `openConnectionsAndInitCaches`.
 
 ### 4.19.0 (2021-09-09)
 #### New Features
