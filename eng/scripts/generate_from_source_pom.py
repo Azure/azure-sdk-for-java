@@ -160,7 +160,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
     project_identifier = create_artifact_identifier(tree_root)
 
     # If the project isn't a track 2 POM skip it and not one of the project list identifiers.
-    if not project_identifier in project_list_identifiers and not is_track_two_pom(tree_root):
+    if not project_identifier in project_list_identifiers and not is_spring_child_pom(tree_root) and not is_track_two_pom(tree_root): # Spring pom's parent can be empty.
         return
 
     module_path_mapping[project_identifier] = os.path.dirname(file_path).replace(root_path, '').replace('\\', '/')
@@ -217,10 +217,16 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: list, 
 
     return dependency_modules
 
+# Determines if the passed POM XML is a Spring library.
+def is_spring_child_pom(tree_root: ET.Element):
+    group_id_node = element_find(tree_root, 'groupId')
+    artifact_id_node = element_find(tree_root, 'artifactId')
+    return not group_id_node is None and group_id_node.text == 'com.azure.spring' \
+       and not artifact_id_node is None and artifact_id_node.text != 'azure-spring-boot-service' # Exclude parent pom to fix this error: "Project is duplicated in the reactor"
+
 # Determines if the passed POM XML is a track 2 library.
 def is_track_two_pom(tree_root: ET.Element):
     parent_node = element_find(tree_root, 'parent')
-
     return not parent_node is None and element_find(parent_node, 'artifactId').text in valid_parents
 
 # Creates an artifacts identifier.
