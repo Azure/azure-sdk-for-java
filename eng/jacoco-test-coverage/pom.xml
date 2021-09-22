@@ -59,7 +59,7 @@
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-chat</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -224,7 +224,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -279,52 +279,52 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-batch</artifactId>
-      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-changefeed</artifactId>
-      <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
+      <version>12.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-storage-blob-changefeed;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-nio</artifactId>
-      <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+      <version>12.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.7.0</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.1.0</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
+      <version>12.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -570,7 +570,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-remoterendering</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-mixedreality-remoterendering;current} -->
     </dependency>
   </dependencies>
   <build>

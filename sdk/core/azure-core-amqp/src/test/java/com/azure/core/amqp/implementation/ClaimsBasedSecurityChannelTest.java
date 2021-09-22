@@ -98,7 +98,7 @@ class ClaimsBasedSecurityChannelTest {
 
     @AfterEach
     public void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         requestResponseChannel = null;
         tokenCredential = null;
 

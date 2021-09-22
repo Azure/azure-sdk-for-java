@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.

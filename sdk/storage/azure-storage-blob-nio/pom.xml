@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-nio</artifactId>
-  <version>12.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
+  <version>12.0.0-beta.10</version> <!-- {x-version-update;com.azure:azure-storage-blob-nio;current} -->
   <name>Microsoft Azure implementation of NIO on top of Azure Blob Storage</name>
   <description>This module contains an implementation of Java's NIO interface on top of Azure Blob Storage.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -65,13 +65,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>

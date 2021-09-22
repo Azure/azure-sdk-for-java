@@ -131,7 +131,7 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [maven-central-repository]: https://search.maven.org/
 [spring-cloud]: https://spring.io/projects/spring-cloud
 [spring-cloud-stream]: https://cloud.spring.io/spring-cloud-stream/
-[spring-boot-dependency-mapping]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Boot-Dependency-Mapping
+[spring-boot-dependency-mapping]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping
 
 [spring-integration-guides]: https://docs.microsoft.com/java/azure/spring-framework
 [connect-to-feed-link]: https://dev.azure.com/azure-sdk/public/_packaging?_a=connect&feed=azure-sdk-for-java

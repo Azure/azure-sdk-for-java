@@ -27,6 +27,11 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

@@ -107,7 +107,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.13.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -147,9 +147,9 @@
       </dependencies>
     </profile>
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>

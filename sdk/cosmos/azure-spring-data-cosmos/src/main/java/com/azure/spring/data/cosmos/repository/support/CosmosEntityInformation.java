@@ -28,6 +28,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
 import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpression;
@@ -312,8 +313,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                 && idField.getType() != Integer.class
                 && idField.getType() != int.class
                 && idField.getType() != Long.class
-                && idField.getType() != long.class) {
-            throw new IllegalArgumentException("type of id field must be String, Integer or Long");
+                && idField.getType() != long.class
+                && idField.getType() != UUID.class) {
+            throw new IllegalArgumentException("type of id field must be String, Integer, Long or UUID");
         }
 
         return idField;

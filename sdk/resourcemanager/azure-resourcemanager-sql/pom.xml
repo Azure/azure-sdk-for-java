@@ -102,9 +102,9 @@
       </dependencies>
     </profile>
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>

@@ -79,7 +79,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
     @Override
     protected void afterTest() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
 

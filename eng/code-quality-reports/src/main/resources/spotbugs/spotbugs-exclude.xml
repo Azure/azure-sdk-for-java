@@ -153,6 +153,13 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+ <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
+  <Match>
+    <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+    <Method name="createJsonMapper"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>

@@ -80,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -129,9 +129,9 @@
 
   <profiles>
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -141,6 +141,7 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
+                --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid=ALL-UNNAMED
                 --add-opens com.azure.messaging.eventgrid/com.azure.messaging.eventgrid.implementation=ALL-UNNAMED
               </argLine>

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@Isolated("StepVerifier.setDefaultTimeout")
 class ActiveClientTokenManagerTest {
     private static final String AUDIENCE = "an-audience-test";
     private static final String SCOPES = "scopes-test";
@@ -55,7 +57,7 @@ class ActiveClientTokenManagerTest {
 
     @AfterEach
     void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
