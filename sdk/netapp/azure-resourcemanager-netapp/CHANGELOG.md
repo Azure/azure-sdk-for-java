@@ -1,14 +1,48 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2021-09-22)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2021-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.VolumeStorageToNetworkProximity` was added
 
-### Bugs Fixed
+* `models.LogSpecification` was added
 
-### Other Changes
+* `models.NetAppResourceQuotaLimits` was added
+
+* `models.NetworkFeatures` was added
+
+* `models.SubscriptionQuotaItemList` was added
+
+* `models.SubscriptionQuotaItem` was added
+
+#### `models.ServiceSpecification` was modified
+
+* `withLogSpecifications(java.util.List)` was added
+* `logSpecifications()` was added
+
+#### `models.MetricSpecification` was modified
+
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was added
+* `isInternal()` was added
+* `withIsInternal(java.lang.Boolean)` was added
+* `enableRegionalMdmAccount()` was added
+
+#### `models.Volume` was modified
+
+* `networkSiblingSetId()` was added
+* `storageToNetworkProximity()` was added
+* `networkFeatures()` was added
+
+#### `NetAppFilesManager` was modified
+
+* `netAppResourceQuotaLimits()` was added
+
+#### `models.Volume$Definition` was modified
+
+* `withNetworkFeatures(models.NetworkFeatures)` was added
 
 ## 1.0.0-beta.5 (2021-08-25)
 
