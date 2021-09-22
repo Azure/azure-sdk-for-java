@@ -38,10 +38,21 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     private final Tracer tracer;
 
+    /**
+     * Creates new {@code OpenTelemetryTracer} using default global tracer -
+     * {@code GlobalOpenTelemetry.getTracer()}
+     *
+     */
     public OpenTelemetryTracer() {
         this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
     }
 
+    /**
+     * Creates new {@code OpenTelemetryTracer} that wraps {@code io.opentelemetry.api.trace.Tracer}.
+     * Use it for tests.
+     *
+     * @param tracer {@code io.opentelemetry.api.trace.Tracer} implementation.
+     */
     OpenTelemetryTracer(Tracer tracer) {
         this.tracer = tracer;
     }

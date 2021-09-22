@@ -92,7 +92,7 @@ public class OpenTelemetryHttpPolicyTests {
         SpanData httpSpan = exportedSpans.get(0);
 
         assertEquals(request.getHeaders().getValue("Traceparent"), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
-        assertEquals(((ReadableSpan)parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
+        assertEquals(((ReadableSpan) parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
         assertEquals("/hello", httpSpan.getName());
 
         Map<String, Object> httpAttributes = getAttributes(httpSpan);
@@ -102,7 +102,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("GET", httpAttributes.get("http.method"));
         assertEquals("user-agent", httpAttributes.get("http.user_agent"));
         assertEquals("foo", httpAttributes.get(AZ_TRACING_NAMESPACE_KEY));
-        assertEquals( 201l, httpAttributes.get("http.status_code"));
+        assertEquals(201L, httpAttributes.get("http.status_code"));
         assertEquals(X_MS_REQUEST_ID, httpAttributes.get("x-ms-request-id"));
     }
 

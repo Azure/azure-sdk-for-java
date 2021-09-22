@@ -43,11 +43,17 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      * @return a OpenTelemetry HTTP policy.
      */
     @Override
-    public HttpPipelinePolicy create() {return this;}
+    public HttpPipelinePolicy create() {
+        return this;
+    }
 
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private final Tracer tracer;
 
+    /**
+     * Creates new OpenTelemetry {@code HttpPipelinePolicy} with default global tracer
+     * {@code GlobalOpenTelemetry.getTracer}
+     */
     public OpenTelemetryHttpPolicy() {
         this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
     }
