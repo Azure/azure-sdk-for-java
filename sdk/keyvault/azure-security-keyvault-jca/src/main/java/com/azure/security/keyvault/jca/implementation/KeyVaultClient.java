@@ -120,7 +120,7 @@ public class KeyVaultClient {
     /**
      * Stores the token.
      */
-    private AccessToken cacheToken;
+    private AccessToken accessToken;
 
     /**
      * Constructor for authentication with user-assigned managed identity.
@@ -189,11 +189,11 @@ public class KeyVaultClient {
      * @return the access token.
      */
     private String getAccessToken() {
-        if (cacheToken != null && !cacheToken.isExpired()) {
-            return cacheToken.getAccessToken();
+        if (accessToken != null && !accessToken.isExpired()) {
+            return accessToken.getAccessToken();
         }
-        cacheToken = getAccessTokenByHttpRequest();
-        return cacheToken.getAccessToken();
+        accessToken = getAccessTokenByHttpRequest();
+        return accessToken.getAccessToken();
     }
 
     /**
