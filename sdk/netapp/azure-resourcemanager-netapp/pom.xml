@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-netapp</artifactId>
-  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for NetAppFiles Management</name>

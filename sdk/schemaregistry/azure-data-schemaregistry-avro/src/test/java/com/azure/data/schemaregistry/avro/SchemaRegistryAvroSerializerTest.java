@@ -5,22 +5,21 @@ package com.azure.data.schemaregistry.avro;
 
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
+import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SerializationType;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
-import org.apache.avro.generic.GenericDatumWriter;
-import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
+import org.apache.avro.message.RawMessageEncoder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -33,6 +32,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
+import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
 import static com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer.SCHEMA_ID_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,19 +40,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link SchemaRegistryAvroSerializer}.
  */
 public class SchemaRegistryAvroSerializerTest {
     private static final String MOCK_GUID = new String(new char[SCHEMA_ID_SIZE]).replace("\0", "a");
-    private static final String MOCK_AVRO_SCHEMA_STRING =
-        "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
-    private static final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
     private static final String MOCK_SCHEMA_GROUP = "mock-group";
-    private static final String CONSTANT_PAYLOAD = "{\"name\": \"arthur\", \"favorite_number\": 23}";
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
@@ -88,46 +83,41 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testRegistryGuidPrefixedToPayload() throws IOException {
         // manually add SchemaRegistryObject into mock registry client cache
-        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
-            DECODER_FACTORY);
+        final AvroSerializer avroSerializer = new AvroSerializer(false, new Schema.Parser(),
+            ENCODER_FACTORY, DECODER_FACTORY);
+        final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
+        final Schema playingClassSchema = PlayingCard.getClassSchema();
+        final byte[] schemaBytes = playingClassSchema.toString().getBytes(StandardCharsets.UTF_8);
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SerializationType.AVRO,
+            playingClassSchema.getFullName(), schemaBytes);
 
-        SchemaProperties registered = new SchemaProperties(MOCK_GUID,
-            SerializationType.AVRO,
-            encoder.getSchemaName(null),
-            encoder.getSchemaString(null).getBytes());
+        when(client.getSchemaId(MOCK_SCHEMA_GROUP, registered.getSchemaName(), playingClassSchema.toString(),
+            SerializationType.AVRO)).thenReturn(Mono.just(MOCK_GUID));
 
-        assertEquals(encoder.getSchemaString(null), new String(registered.getSchema()));
-
-        Mockito.when(client.getSchemaId(anyString(), anyString(), anyString(),
-            any(SerializationType.class)))
-            .thenReturn(Mono.just(MOCK_GUID));
-
-        SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
-            client, encoder, MOCK_SCHEMA_GROUP, false);
+        final SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(client, avroSerializer,
+            MOCK_SCHEMA_GROUP, false);
 
         try (ByteArrayOutputStream payload = new ByteArrayOutputStream()) {
-
-            StepVerifier.create(serializer.serializeAsync(payload, 1))
+            StepVerifier.create(serializer.serializeAsync(payload, playingCard))
                 .verifyComplete();
 
-            ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
+            final ByteBuffer buffer = ByteBuffer.wrap(payload.toByteArray());
             buffer.get(new byte[RECORD_FORMAT_INDICATOR_SIZE]);
-            byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
+
+            final byte[] schemaGuidByteArray = new byte[SCHEMA_ID_SIZE];
             buffer.get(schemaGuidByteArray);
 
-            System.out.println(new String(schemaGuidByteArray));
             // guid should match preloaded SchemaRegistryObject guid
             assertEquals(MOCK_GUID, new String(schemaGuidByteArray));
         } catch (RuntimeException e) {
-            e.printStackTrace();
-            fail();
+            fail("Exception occurred", e);
         }
     }
 
     @Test
     void testNullPayloadThrowsSerializationException() {
         // Arrange
-        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
+        AvroSerializer encoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
         SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
             client, encoder, MOCK_SCHEMA_GROUP, false);
@@ -140,7 +130,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testIfRegistryNullThenThrow() {
         // Arrange
-        AvroSchemaRegistryUtils encoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
+        AvroSerializer encoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
 
         // Act & Assert
@@ -149,38 +139,42 @@ public class SchemaRegistryAvroSerializerTest {
     }
 
     @Test
-    void testAddUtils() throws IOException {
+    void testGetSchemaAndDeserialize() throws IOException {
         // manually add SchemaRegistryObject to cache
-        AvroSchemaRegistryUtils decoder = new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY,
+        final AvroSerializer decoder = new AvroSerializer(false, parser, ENCODER_FACTORY,
             DECODER_FACTORY);
-
-        SchemaProperties registered = new SchemaProperties(MOCK_GUID,
-            SerializationType.AVRO,
-            decoder.getSchemaName(null),
-            MOCK_AVRO_SCHEMA_STRING.getBytes());
+        final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
+        final Schema playingClassSchema = PlayingCard.getClassSchema();
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SerializationType.AVRO,
+            playingClassSchema.getFullName(), playingClassSchema.toString().getBytes(StandardCharsets.UTF_8));
+        final SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(client, decoder,
+            MOCK_SCHEMA_GROUP, true);
 
         assertNotNull(registered.getSchema());
 
-        Mockito.when(client.getSchema(anyString()))
-            .thenReturn(Mono.just(registered));
-
-        SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(
-            client, decoder, MOCK_SCHEMA_GROUP, true);
+        when(client.getSchema(MOCK_GUID)).thenReturn(Mono.just(registered));
 
         StepVerifier.create(client.getSchema(MOCK_GUID))
             .assertNext(properties -> assertEquals(MOCK_GUID, properties.getSchemaId()))
             .verifyComplete();
 
-        StepVerifier.create(serializer.deserializeAsync(new ByteArrayInputStream(getPayload()),
-            TypeReference.createInstance(GenericData.Record.class)))
-            .assertNext(record -> assertEquals(CONSTANT_PAYLOAD, record.toString()))
-            .verifyComplete();
+        final byte[] serializedPayload = getPayload(playingCard);
+
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(serializedPayload)) {
+            StepVerifier.create(serializer.deserializeAsync(inputStream, TypeReference.createInstance(PlayingCard.class)))
+                .assertNext(actual -> {
+                    assertEquals(playingCard.getPlayingCardSuit(), actual.getPlayingCardSuit());
+                    assertEquals(playingCard.getCardValue(), actual.getCardValue());
+                    assertEquals(playingCard.getIsFaceCard(), actual.getIsFaceCard());
+                })
+                .verifyComplete();
+        }
     }
 
     @Test
     void testNullPayload() {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
-            client, new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
+            client, new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
             MOCK_SCHEMA_GROUP, true);
 
         // Null payload should just complete the mono.
@@ -191,7 +185,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testNullPayloadSync() {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
-            client, new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
+            client, new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
             MOCK_SCHEMA_GROUP, true);
 
         // Null payload should return null.
@@ -204,7 +198,7 @@ public class SchemaRegistryAvroSerializerTest {
     @Test
     void testIfTooShortPayloadThrow() throws IOException {
         SchemaRegistryAvroSerializer deserializer = new SchemaRegistryAvroSerializer(
-            client, new AvroSchemaRegistryUtils(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
+            client, new AvroSerializer(false, parser, ENCODER_FACTORY, DECODER_FACTORY),
             MOCK_SCHEMA_GROUP, true);
 
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream("aaa".getBytes())) {
@@ -224,27 +218,17 @@ public class SchemaRegistryAvroSerializerTest {
         }
     }
 
-    private static byte[] getPayload() throws IOException {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            out.write(new byte[]{0x00, 0x00, 0x00, 0x00});
-            out.write(ByteBuffer.allocate(SCHEMA_ID_SIZE)
-                .put(MOCK_GUID.getBytes(StandardCharsets.UTF_8))
-                .array());
+    private static byte[] getPayload(PlayingCard card) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            outputStream.write(RECORD_FORMAT_INDICATOR);
+            outputStream.write(MOCK_GUID.getBytes(StandardCharsets.UTF_8));
 
-            GenericRecord record = getAvroRecord();
-            BinaryEncoder encoder = ENCODER_FACTORY.directBinaryEncoder(out, null);
-            GenericDatumWriter<GenericRecord> writer = new GenericDatumWriter<>(MOCK_AVRO_SCHEMA);
-            writer.write(record, encoder);
-            encoder.flush();
+            final RawMessageEncoder<PlayingCard> encoder = new RawMessageEncoder<>(new GenericData(),
+                PlayingCard.getClassSchema());
 
-            return out.toByteArray();
+            encoder.encode(card, outputStream);
+
+            return outputStream.toByteArray();
         }
-    }
-
-    private static GenericRecord getAvroRecord() {
-        GenericRecord avroRecord = new GenericData.Record(MOCK_AVRO_SCHEMA);
-        avroRecord.put("name", "arthur");
-        avroRecord.put("favorite_number", 23);
-        return avroRecord;
     }
 }
