@@ -33,7 +33,13 @@
       <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
     </dependency>
-
+    <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>

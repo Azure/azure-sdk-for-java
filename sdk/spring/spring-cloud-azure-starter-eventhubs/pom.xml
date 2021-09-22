@@ -26,6 +26,13 @@
       <artifactId>azure-spring-integration-eventhubs</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
     </dependency>
+    <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-messaging</artifactId>

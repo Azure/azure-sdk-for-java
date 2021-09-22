@@ -7,11 +7,11 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsume
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelProvisioner;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.eventhubs.support.StartPosition;
-import com.azure.spring.integration.handler.reactor.DefaultMessageHandler;
 import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.eventhubs.support.StartPosition;
 import com.azure.spring.integration.eventhubs.inbound.EventHubInboundChannelAdapter;
+import com.azure.spring.integration.handler.reactor.DefaultMessageHandler;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
