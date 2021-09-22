@@ -120,42 +120,7 @@ public final class ServerCall {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartCallRecordingResult startRecording(String recordingStateCallbackUri) {
-        return startRecording(recordingStateCallbackUri, null, null, null);
-    }
-
-    /**
-     * Start recording of the call.
-     *
-     * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param recordingChannelType recordingChannelType to send custom options
-     * @param recordingContentType recordingContentType to send custom options
-     * @param recordingFormatType recordingFormatType to send custom options
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result for a successful start recording request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResult startRecording(String recordingStateCallbackUri, 
-        RecordingChannelType recordingChannelType, 
-        RecordingContentType recordingContentType, 
-        RecordingFormatType recordingFormatType) {
-        return serverCallAsync.startRecording(recordingStateCallbackUri, recordingChannelType, recordingContentType, recordingFormatType).block();
-    }
-
-    /**
-     * Start recording of the call.
-     *
-     * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result for a successful start recording request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResult> startRecordingWithResponse(
-        String recordingStateCallbackUri,
-        final Context context) {
-        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, null, null, null, context).block();
+        return serverCallAsync.startRecording(recordingStateCallbackUri).block();
     }
 
     /**
