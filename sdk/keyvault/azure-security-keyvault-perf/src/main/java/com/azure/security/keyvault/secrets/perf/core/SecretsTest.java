@@ -49,14 +49,17 @@ public abstract class SecretsTest<TOptions extends PerfStressOptions> extends Pe
     protected Mono<Void> deleteAndPurgeSecretsAsync(String ... names) {
         return Flux
             .fromArray(names)
-            .flatMap(name -> secretAsyncClient
-                .beginDeleteSecret(name)
-                .doOnError(err -> System.err.println("Secret '" + name + "' not found for delete"))
-                .onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())
-                .then(secretAsyncClient
-                    .purgeDeletedSecret(name)
-                    .doOnError(err -> System.err.println("Secret '" + name + "' not found for purge"))
-                    .onErrorResume(ResourceNotFoundException.class, e -> Mono.empty())))
+            .flatMap(name -> secretAsyncClient.beginDeleteSecret(name).last())
+            .map(asyncPollResponse -> asyncPollResponse.getValue())
+            .flatMap(deletedSecret -> {
+                String recoveryId = deletedSecret.getRecoveryId();
+                if (recoveryId != null && !recoveryId.isEmpty()) {
+                    return secretAsyncClient.purgeDeletedSecret(deletedSecret.getName());
+                }
+                else {
+                    return Mono.empty();
+                }
+            })
             .then();
     }
 }
