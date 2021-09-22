@@ -31,6 +31,16 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+
+      --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
+      --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.models=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -107,32 +117,5 @@
       <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
-                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.models=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
