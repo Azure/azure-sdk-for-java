@@ -109,22 +109,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>java9-plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <testResources>
-          <testResource>
-            <directory>src/samples/resources</directory>
-          </testResource>
-          <testResource>
-            <directory>src/test/resources</directory>
-          </testResource>
-        </testResources>
-      </build>
-    </profile>
-  </profiles>
 </project>

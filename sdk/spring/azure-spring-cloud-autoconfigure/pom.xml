@@ -20,6 +20,9 @@
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+
+    <!-- Turn on annotation processing -->
+    <compilerAnnotationProcessing>only</compilerAnnotationProcessing>
   </properties>
 
   <dependencies>
@@ -205,64 +208,4 @@
       </resource>
     </resources>
   </build>
-  <profiles>
-    <!-- Generate "spring-configuration-metadata.json" by annotation process -->
-    <profile>
-      <id>annotation-process-for-java-8</id>
-      <activation>
-        <jdk>[1.8,9)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>annotation-process-for-java-8</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <compilerArgs>
-                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
-                  </compilerArgs>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>annotation-process-for-java-11</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>annotation-process-for-java-11</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <compilerArgs>
-                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
-                  </compilerArgs>
-                  <release>11</release>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

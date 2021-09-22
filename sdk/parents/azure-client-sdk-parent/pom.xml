@@ -138,6 +138,9 @@
 
     <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
     <parallelizeTests>true</parallelizeTests>
+
+    <!-- This property configures the annotation processing done by the compiler. Defaults to 'none'. -->
+    <compilerAnnotationProcessing>none</compilerAnnotationProcessing>
   </properties>
 
   <build>
@@ -443,7 +446,7 @@
             <failOnWarning>true</failOnWarning>
             <compilerArgs combine.children="append" combine.self="append">
               <!-- Turn off annotation processing -->
-              <arg>-proc:none</arg>
+              <arg>-proc:${compilerAnnotationProcessing}</arg>
 
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>

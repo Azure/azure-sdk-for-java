@@ -64,8 +64,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <source>${java.version}</source>
-              <target>${java.version}</target>
+              <release>${java.vm.specification.version}</release>
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>

@@ -145,32 +145,6 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>java8</id>
-      <activation>
-        <jdk>[1.8,9)</jdk>
-      </activation>
-      <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-          </resource>
-        </resources>
-      </build>
-    </profile>
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <resources>
-          <resource>
-            <directory>src/main/resources</directory>
-          </resource>
-        </resources>
-      </build>
-    </profile>
-    <profile>
       <id>azure-mgmt-sdk-test-jar</id>
       <activation>
         <property>
@@ -188,6 +162,11 @@
     </profile>
   </profiles>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
