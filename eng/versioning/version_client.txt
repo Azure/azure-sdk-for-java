@@ -315,7 +315,7 @@ com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-baremetalinfrastructure;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-quota;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-extendedlocation;1.0.0-beta.1;1.0.0-beta.1
 
