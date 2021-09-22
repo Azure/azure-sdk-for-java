@@ -121,7 +121,7 @@ class AvroSerializer {
      * @throws IllegalStateException if the object could not be serialized to an object stream or there was a
      *     runtime exception during serialization.
      */
-    <T> byte[] encode(T object) throws IllegalStateException, IllegalArgumentException {
+    <T> byte[] encode(T object) {
         final Schema schema = getSchema(object);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -188,7 +188,7 @@ class AvroSerializer {
      *
      * @throws IllegalArgumentException if object type is unsupported.
      */
-    static Schema getSchema(Object object) throws IllegalArgumentException {
+    static Schema getSchema(Object object) {
         if (object instanceof GenericContainer) {
             return ((GenericContainer) object).getSchema();
         }
@@ -204,7 +204,7 @@ class AvroSerializer {
         } else {
             throw new IllegalArgumentException("Unsupported Avro type. Supported types are null, GenericContainer,"
                 + " Boolean, Integer, Long, Float, Double, String, Byte[], Byte, ByteBuffer, and their primitive"
-                + " equivalents.");
+                + " equivalents. Actual: " + objectClass);
         }
     }
 
@@ -263,8 +263,6 @@ class AvroSerializer {
         final Schema primitiveSchema = getPrimitiveSchema(clazz);
 
         if (primitiveSchema != null) {
-            assert primitiveSchema.getType().equals(writerSchema.getType());
-
             if (avroSpecificReader) {
                 return new SpecificDatumReader<>(writerSchema);
             } else {
