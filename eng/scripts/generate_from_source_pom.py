@@ -219,8 +219,8 @@ def resolve_project_dependencies(pom_identifier: str, dependency_modules: list, 
 
 # Determines if the passed POM XML is a Spring library.
 def is_spring_pom(tree_root: ET.Element):
-    parent_node = element_find(tree_root, 'groupId')
-    return not parent_node is None and element_find(parent_node, 'groupId').text == 'com.azure.spring'
+    group_id_node = element_find(tree_root, 'groupId')
+    return not group_id_node is None and group_id_node.text == 'com.azure.spring'
 
 # Determines if the passed POM XML is a track 2 library.
 def is_track_two_pom(tree_root: ET.Element):
