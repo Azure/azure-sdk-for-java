@@ -155,7 +155,7 @@ public final class ServerCall {
     public Response<StartCallRecordingResult> startRecordingWithResponse(
         String recordingStateCallbackUri,
         final Context context) {
-        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context, null, null, null).block();
+        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, null, null, null, context).block();
     }
 
     /**
@@ -173,11 +173,11 @@ public final class ServerCall {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResult> startRecordingWithResponse(
         String recordingStateCallbackUri,
-        final Context context, 
         RecordingChannelType recordingChannelType, 
         RecordingContentType recordingContentType, 
-        RecordingFormatType recordingFormatType) {
-        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, context, recordingChannelType, recordingContentType, recordingFormatType).block();
+        RecordingFormatType recordingFormatType,
+        final Context context) {
+        return serverCallAsync.startRecordingWithResponse(recordingStateCallbackUri, recordingChannelType, recordingContentType, recordingFormatType, context).block();
     }
 
     /**

@@ -255,10 +255,10 @@ public final class ServerCallAsync {
 
     Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
         String recordingStateCallbackUri,
-        Context context, 
         RecordingChannelType recordingChannelType, 
         RecordingContentType recordingContentType, 
-        RecordingFormatType recordingFormatType) {
+        RecordingFormatType recordingFormatType,
+        Context context) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(new URI(recordingStateCallbackUri).isAbsolute())) {
