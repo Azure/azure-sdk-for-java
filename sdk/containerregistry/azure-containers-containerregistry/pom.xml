@@ -111,7 +111,7 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>java9plus</id>
+      <id>java9-plus</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>
