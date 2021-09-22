@@ -27,6 +27,21 @@
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
 
+  <properties>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry=ALL-UNNAMED
+      --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.models=ALL-UNNAMED
+      --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation=ALL-UNNAMED
+      --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation.models=ALL-UNNAMED
+      --add-reads com.azure.core=ALL-UNNAMED
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-reads com.azure.core.http.netty=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -96,24 +111,10 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>is.jdk.11</id>
+      <id>java9plus</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>
-      <properties>
-        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-        <javaModulesSurefireArgLine>
-          --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-          --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry=ALL-UNNAMED
-          --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.models=ALL-UNNAMED
-          --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation=ALL-UNNAMED
-          --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation.models=ALL-UNNAMED
-          --add-reads com.azure.core=ALL-UNNAMED
-          --add-reads com.azure.core.test=ALL-UNNAMED
-          --add-reads com.azure.core.http.netty=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
       <build>
         <testResources>
           <testResource>

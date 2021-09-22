@@ -35,6 +35,13 @@
   <properties>
     <jacoco.min.linecoverage>0.30</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.18</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus=ALL-UNNAMED
+      --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.implementation=ALL-UNNAMED
+      --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration=ALL-UNNAMED
+      --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -104,38 +111,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-        <configuration>
-          <systemPropertyVariables>
-            <!-- Parallel runs disabled due to concurrency issues causing failures in mocked tests. -->
-            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-        <javaModulesSurefireArgLine>
-          --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus=ALL-UNNAMED
-          --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.implementation=ALL-UNNAMED
-          --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration=ALL-UNNAMED
-          --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>

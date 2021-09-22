@@ -52,6 +52,10 @@
     <jacoco.min.linecoverage>0.88</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.communication.identity/com.azure.communication.identity=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -175,19 +179,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>is.jdk.11</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <properties>
-        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-        <javaModulesSurefireArgLine>
-          --add-opens com.azure.communication.identity/com.azure.communication.identity=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>

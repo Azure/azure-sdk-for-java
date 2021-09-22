@@ -46,6 +46,9 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.branchcoverage>0.21</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.core.management/com.azure.core.management.implementation.polling=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -116,19 +119,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <properties>
-        <javaModulesSurefireArgLine>
-          --add-opens com.azure.core.management/com.azure.core.management.implementation.polling=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
-
 </project>

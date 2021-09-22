@@ -24,6 +24,22 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=com.fasterxml.jackson.databind
+      --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=ALL-UNNAMED
+      --add-reads com.azure.core=ALL-UNNAMED
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-reads com.azure.core.http.netty=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -91,30 +107,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>is.jdk.11</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <properties>
-        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-        <javaModulesSurefireArgLine>
-          --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-          --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
-          --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
-          --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
-          --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
-          --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED
-          --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=com.fasterxml.jackson.databind
-          --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=ALL-UNNAMED
-          --add-reads com.azure.core=ALL-UNNAMED
-          --add-reads com.azure.core.test=ALL-UNNAMED
-          --add-reads com.azure.core.http.netty=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>

@@ -14,6 +14,10 @@
 
   <properties>
     <jacoco.min.branchcoverage>0.28</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <parent>
@@ -132,19 +136,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-        <javaModulesSurefireArgLine>
-          --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>
