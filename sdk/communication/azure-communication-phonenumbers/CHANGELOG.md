@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.4 (2021-09-21)
+## 1.0.4 (2021-09-22)
 
 ### Other Changes
 
