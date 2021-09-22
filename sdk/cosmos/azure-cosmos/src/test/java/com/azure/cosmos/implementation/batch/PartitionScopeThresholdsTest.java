@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.batch;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.testng.annotations.Test;
 
@@ -17,10 +18,13 @@ public class PartitionScopeThresholdsTest {
     @Test(groups = { "unit" })
     public void neverThrottledShouldResultInMaxBatchSize() {
         String pkRangeId = UUID.randomUUID().toString();
-        int maxBatchSize = rnd.nextInt(1_000);
-        maxBatchSize = 1_000;
+        int maxBatchSize = 1_000;
         PartitionScopeThresholds thresholds =
-            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptions().setMaxMicroBatchSize(maxBatchSize));
+            new PartitionScopeThresholds(
+                pkRangeId,
+                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                    .getCosmosBulkExecutionOptionsAccessor()
+                    .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), maxBatchSize));
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(maxBatchSize);

@@ -8,7 +8,7 @@ To build the SDK for Chat Client, simply Install AutoRest and in this folder, ru
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -31,9 +31,9 @@ To update generated files for chat service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-chat-2021-04-05-preview6
+tag: package-chat-2021-09-07
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/29e0c9624a8e60138127457f2e863bb4a9ba1419/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8dbeba81f3a838cd4b7efd70234f29cc1cdc7374/specification/communication/data-plane/Chat/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL

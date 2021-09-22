@@ -95,8 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
-    <legal>
-      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
     <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
@@ -107,7 +106,35 @@
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+
+    <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+
+    <!-- This property determines the max heap size of the Surefire JVM. By default 3GB, or 3096MB, is used. -->
+    <surefireXmx>3096m</surefireXmx>
+
+    <!-- This property configures the max heap size of the Surefire JVM. -->
+    <surefireJvmXmx>-Xmx${surefireXmx}</surefireJvmXmx>
+
+    <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
+    <heapDumpOnOom>
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
+    </heapDumpOnOom>
+
+    <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
+    <defaultSurefireArgLine>
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultSurefireArgLine>
+
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
+    <javaModulesSurefireArgLine>
+    </javaModulesSurefireArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <additionalSurefireArgLine>
+    </additionalSurefireArgLine>
   </properties>
 
   <build>
@@ -627,6 +654,11 @@
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultSurefireArgLine}
+              ${javaModulesSurefireArgLine}
+              ${additionalSurefireArgLine}
+            </argLine>
           </configuration>
         </plugin>
 

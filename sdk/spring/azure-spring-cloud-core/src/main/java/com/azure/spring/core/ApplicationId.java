@@ -36,12 +36,14 @@ public class ApplicationId {
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
+    public static final String AZURE_SPRING_COSMOS = "az-sp-cosmos";
     public static final String AZURE_SPRING_EVENT_HUB = "az-sc-eh/;";
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/";
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/";
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/";
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/";
-    public static final String AZURE_SPRING_STORAGE_QUEUE = "az-si-sq/";
+    public static final String AZURE_SPRING_STORAGE_QUEUE = "az-sp-sq/";
+    public static final String AZURE_SPRING_INTEGRATION_STORAGE_QUEUE = "az-si-sq/";
 
     //TODO: version should contains each starter library's version
     public static final String VERSION = Optional.of(ApplicationId.class)

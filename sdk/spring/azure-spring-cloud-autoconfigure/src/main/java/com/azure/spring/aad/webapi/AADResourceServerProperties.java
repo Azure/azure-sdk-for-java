@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Configuration properties for Azure Active Directory B2C.
+ * Configuration properties for Azure Active Directory.
  */
 @ConfigurationProperties("azure.activedirectory.resource-server")
 public class AADResourceServerProperties implements InitializingBean {

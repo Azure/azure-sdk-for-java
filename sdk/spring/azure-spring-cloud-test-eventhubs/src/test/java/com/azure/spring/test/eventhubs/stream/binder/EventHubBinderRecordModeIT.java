@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         "spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=RECORD",
         "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-record",
         "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-record",
-        "spring.cloud.azure.eventhub.checkpoint-container=test-eventhub-record"
+        "spring.cloud.azure.eventhub.processor.checkpoint-store.container-name=test-eventhub-record"
     })
 public class EventHubBinderRecordModeIT {
 

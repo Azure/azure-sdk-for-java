@@ -3,8 +3,7 @@
 
 package com.azure.spring.core.properties.client;
 
-import com.azure.spring.core.properties.HeaderProperties;
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +13,7 @@ public class ClientProperties {
 
     private String applicationId;
 
-    private List<HeaderProperties> headers;
+    private final List<HeaderProperties> headers = new ArrayList<>();
 
     public String getApplicationId() {
         return applicationId;
@@ -28,7 +27,4 @@ public class ClientProperties {
         this.applicationId = applicationId;
     }
 
-    public void setHeaders(List<HeaderProperties> headers) {
-        this.headers = headers;
-    }
 }

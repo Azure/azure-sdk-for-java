@@ -7,6 +7,8 @@ import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.spring.core.credential.provider.AzureTokenCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.credential.TokenCredentialProperties;
@@ -19,27 +21,36 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Azu
 
     @Override
     public AzureTokenCredentialProvider resolve(AzureProperties properties) {
+        // TODO (xiada): the token credential logic
         final TokenCredentialProperties credential = properties.getCredential();
+        final String tenantId = properties.getProfile().getTenantId();
         if (credential == null) {
             return null;
         }
-        if (StringUtils.hasText(credential.getTenantId()) && StringUtils.hasText(
-            credential.getClientId()) && StringUtils.hasText(credential.getClientSecret())) {
+        if (StringUtils.hasText(tenantId) && StringUtils.hasText(credential.getClientId())
+                && StringUtils.hasText(credential.getClientSecret())) {
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(credential.getClientId())
                 .clientSecret(credential.getClientSecret())
-                .tenantId(credential.getTenantId())
+                .tenantId(tenantId)
                 .build();
             return new AzureTokenCredentialProvider(clientSecretCredential);
         }
 
-        if (StringUtils.hasText(credential.getTenantId()) && StringUtils.hasText(credential.getCertificatePath())) {
+        if (StringUtils.hasText(tenantId) && StringUtils.hasText(credential.getClientCertificatePath())) {
             final ClientCertificateCredential clientCertificateCredential = new ClientCertificateCredentialBuilder()
                 .clientId(credential.getClientId())
-                .pemCertificate(credential.getCertificatePath())
-                .tenantId(credential.getTenantId())
+                .pemCertificate(credential.getClientCertificatePath())
+                .tenantId(tenantId)
                 .build();
             return new AzureTokenCredentialProvider(clientCertificateCredential);
+        }
+
+        if (credential.getManagedIdentityClientId() != null) {
+            final ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+                .clientId(credential.getManagedIdentityClientId())
+                .build();
+            return new AzureTokenCredentialProvider(managedIdentityCredential);
         }
         return null;
     }

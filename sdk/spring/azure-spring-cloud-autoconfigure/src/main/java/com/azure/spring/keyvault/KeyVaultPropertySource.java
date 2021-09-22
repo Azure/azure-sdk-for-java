@@ -5,7 +5,6 @@ package com.azure.spring.keyvault;
 
 import org.springframework.core.env.EnumerablePropertySource;
 
-import static com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessorHelper.AZURE_KEYVAULT_PROPERTYSOURCE_NAME;
 
 /**
  * A key vault implementation of {@link EnumerablePropertySource} to enumerate all property pairs in Key Vault.
@@ -13,6 +12,7 @@ import static com.azure.spring.keyvault.KeyVaultEnvironmentPostProcessorHelper.A
 public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOperation> {
 
     private final KeyVaultOperation operations;
+    public static final String DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
 
     public KeyVaultPropertySource(String keyVaultName, KeyVaultOperation operation) {
         super(keyVaultName, operation);
@@ -20,7 +20,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
     }
 
     public KeyVaultPropertySource(KeyVaultOperation operation) {
-        super(AZURE_KEYVAULT_PROPERTYSOURCE_NAME, operation);
+        super(DEFAULT_AZURE_KEYVAULT_PROPERTYSOURCE_NAME, operation);
         this.operations = operation;
     }
 

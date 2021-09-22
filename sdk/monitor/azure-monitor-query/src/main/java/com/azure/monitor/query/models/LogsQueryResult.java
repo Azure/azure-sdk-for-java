@@ -4,8 +4,9 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.models.HttpResponseError;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
@@ -18,8 +19,9 @@ import java.util.stream.Collectors;
 public class LogsQueryResult {
     private final List<LogsTable> logsTables;
     private final BinaryData statistics;
-    private final HttpResponseError error;
+    private final ResponseError error;
     private final BinaryData visualization;
+    private final LogsQueryResultStatus queryResultStatus;
     private final ClientLogger logger = new ClientLogger(LogsQueryResult.class);
 
     /**
@@ -30,11 +32,19 @@ public class LogsQueryResult {
      * @param error The error details if there was an error executing the query.
      */
     public LogsQueryResult(List<LogsTable> logsTables, BinaryData statistics,
-                           BinaryData visualization, HttpResponseError error) {
+                           BinaryData visualization, ResponseError error) {
         this.logsTables = logsTables;
         this.statistics = statistics;
         this.error = error;
         this.visualization = visualization;
+
+        if (CoreUtils.isNullOrEmpty(logsTables) && error != null) {
+            queryResultStatus = LogsQueryResultStatus.FAILURE;
+        } else if (!CoreUtils.isNullOrEmpty(logsTables) && error != null) {
+            queryResultStatus = LogsQueryResultStatus.PARTIAL_FAILURE;
+        } else {
+            queryResultStatus = LogsQueryResultStatus.SUCCESS;
+        }
     }
 
     /**
@@ -96,7 +106,7 @@ public class LogsQueryResult {
      * Returns the error details if there was an error executing the query.
      * @return the error details if there was an error executing the query.
      */
-    public HttpResponseError getError() {
+    public ResponseError getError() {
         return error;
     }
 
@@ -106,5 +116,13 @@ public class LogsQueryResult {
      */
     public BinaryData getVisualization() {
         return visualization;
+    }
+
+    /**
+     * Returns the status of the query result.
+     * @return the status of the query result.
+     */
+    public LogsQueryResultStatus getQueryResultStatus() {
+        return queryResultStatus;
     }
 }

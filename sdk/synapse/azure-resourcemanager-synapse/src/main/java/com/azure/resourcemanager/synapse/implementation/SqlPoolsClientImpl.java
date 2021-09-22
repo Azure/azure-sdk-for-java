@@ -246,6 +246,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -253,7 +254,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -300,12 +301,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -382,7 +384,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolInner>> updateWithResponseAsync(
@@ -414,6 +416,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         } else {
             sqlPoolInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -421,7 +424,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .update(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -443,7 +446,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SqlPoolInner>> updateWithResponseAsync(
@@ -479,12 +482,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         } else {
             sqlPoolInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -504,7 +508,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> updateAsync(
@@ -530,7 +534,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlPoolInner update(
@@ -549,7 +553,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolInner> updateWithResponse(
@@ -571,7 +575,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -603,6 +607,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         } else {
             sqlPoolInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -610,7 +615,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .create(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -632,7 +637,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -664,12 +669,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         } else {
             sqlPoolInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .create(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -689,7 +695,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(
@@ -713,7 +719,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(
@@ -737,7 +743,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
@@ -756,7 +762,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
@@ -774,7 +780,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> createAsync(
@@ -795,7 +801,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> createAsync(
@@ -815,7 +821,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlPoolInner create(
@@ -834,7 +840,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SqlPoolInner create(
@@ -878,6 +884,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -885,7 +892,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -932,12 +939,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1104,7 +1112,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceSinglePageAsync(
@@ -1128,6 +1136,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1135,7 +1144,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .listByWorkspace(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1162,7 +1171,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceSinglePageAsync(
@@ -1186,12 +1195,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByWorkspace(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1216,7 +1226,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
@@ -1234,7 +1244,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolInner> listByWorkspaceAsync(
@@ -1252,7 +1262,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -1268,7 +1278,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlPoolInner> listByWorkspace(
@@ -1312,6 +1322,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1319,7 +1330,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .pause(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1366,12 +1377,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .pause(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1566,6 +1578,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1573,7 +1586,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
                     service
                         .resume(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1620,12 +1633,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         if (sqlPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .resume(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1826,13 +1840,14 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .rename(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -1889,11 +1904,12 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
         return service
             .rename(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -1968,7 +1984,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -2004,7 +2020,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceNextSinglePageAsync(String nextLink, Context context) {

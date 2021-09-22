@@ -96,10 +96,10 @@ public class AzureStorageResourcePatternResolver implements ResourcePatternResol
         Resource resource = null;
 
         if (AzureStorageUtils.isAzureStorageResource(location, StorageType.BLOB) && blobServiceClient.isPresent()) {
-            resource = new BlobStorageResource(blobServiceClient.get(), location, true);
+            resource = new StorageBlobResource(blobServiceClient.get(), location, true);
         } else if (AzureStorageUtils.isAzureStorageResource(location, StorageType.FILE)
                 && shareServiceClient.isPresent()) {
-            resource = new FileStorageResource(shareServiceClient.get(), location, true);
+            resource = new StorageFileResource(shareServiceClient.get(), location, true);
         }
         if (null == resource) {
             throw new IllegalArgumentException("Resource not found at " + location);
@@ -137,7 +137,7 @@ public class AzureStorageResourcePatternResolver implements ResourcePatternResol
                     String blobName = blobItem.getName();
                     String location = "azure-blob://" + containerName + "/" + blobName;
                     if (matcher.match(pattern, location)) {
-                        resources.add(new BlobStorageResource(client, location));
+                        resources.add(new StorageBlobResource(client, location));
                     }
                 }
             }
@@ -169,7 +169,7 @@ public class AzureStorageResourcePatternResolver implements ResourcePatternResol
                     if (!fileItem.isDirectory()) {
                         String location = "azure-file://" + shareName + "/" + filename;
                         if (matcher.match(pattern, location)) {
-                            resources.add(new FileStorageResource(client, location));
+                            resources.add(new StorageFileResource(client, location));
                         }
                     }
                 }

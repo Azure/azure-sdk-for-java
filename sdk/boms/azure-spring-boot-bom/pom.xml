@@ -38,14 +38,14 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.version>${project.version}</azure.spring.boot.version>
-    <azure.core.version>1.19.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    <azure.identity.version>1.3.5</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    <azure.keyvault.secret.version>4.3.2</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+    <azure.core.version>1.20.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    <azure.identity.version>1.3.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    <azure.keyvault.secret.version>4.3.3</azure.keyvault.secret.version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     <azure.keyvault.jca.version>2.0.0</azure.keyvault.jca.version>
     <azure.msal.version>1.10.1</azure.msal.version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     <azure.servicebus.jms.version>0.0.7</azure.servicebus.jms.version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
     <azure.spring.boot.starter.keyvault.certificates.version>3.1.0</azure.spring.boot.starter.keyvault.certificates.version>
-    <azure.spring.data.cosmos.version>3.10.0</azure.spring.data.cosmos.version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+    <azure.spring.data.cosmos.version>3.11.0</azure.spring.data.cosmos.version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
     <azure.storage.blob.version>12.13.0</azure.storage.blob.version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     <azure.storage.fileshare.version>12.10.0</azure.storage.fileshare.version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
   </properties>
@@ -72,11 +72,6 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>${azure.spring.boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
         <version>${azure.spring.boot.version}</version>
       </dependency>
       <dependency>

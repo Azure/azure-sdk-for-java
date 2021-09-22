@@ -4,7 +4,6 @@ package com.azure.spring.cloud.config.stores;
 
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -12,11 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -27,6 +25,7 @@ import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy
 import com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.config.resource.Connection;
 import com.azure.spring.cloud.config.resource.ConnectionPool;
+import com.azure.spring.cloud.config.NormalizeNull;
 
 /**
  * Client for connecting to and getting keys from an Azure App Configuration Instance
@@ -43,7 +42,7 @@ public final class ClientStore {
 
     private final ConfigurationClientBuilderSetup clientProvider;
 
-    private final HashMap<String, ConfigurationAsyncClient> clients;
+    private final HashMap<String, ConfigurationClient> clients;
 
     public ClientStore(AppConfigurationProviderProperties appProperties, ConnectionPool pool,
         AppConfigurationCredentialProvider tokenCredentialProvider,
@@ -52,10 +51,10 @@ public final class ClientStore {
         this.pool = pool;
         this.tokenCredentialProvider = tokenCredentialProvider;
         this.clientProvider = clientProvider;
-        this.clients = new HashMap<String, ConfigurationAsyncClient>();
+        this.clients = new HashMap<String, ConfigurationClient>();
     }
 
-    private ConfigurationAsyncClient getClient(String store) throws IllegalArgumentException {
+    private ConfigurationClient getClient(String store) throws IllegalArgumentException {
         if (clients.containsKey(store)) {
             return clients.get(store);
         }
@@ -128,49 +127,32 @@ public final class ClientStore {
             clientProvider.setup(builder, endpoint);
         }
 
-        clients.put(store, builder.buildAsyncClient());
+        clients.put(store, builder.buildClient());
         return clients.get(store);
     }
 
     /**
-     * Gets the Configuration Setting for the given config store that match the Setting Selector
-     * criteria. Follows retry-after-ms heards.
+     * Gets the Configuration Setting for the given config store that match the Setting Selector criteria. Follows
+     * retry-after-ms heards.
      *
-     * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
+     * @param key String value of the watch key
+     * @param label String value of the watch key, use \0 for null.
      * @param storeName Name of the App Configuration store to query against.
      * @return The first returned configuration.
      */
-    public ConfigurationSetting getWatchKey(SettingSelector settingSelector, String storeName) {
-        PagedResponse<ConfigurationSetting> watchedKey = null;
-        int retryCount = 0;
+    public ConfigurationSetting getWatchKey(String key, String label, String storeName) {
+        return NormalizeNull.normalizeNullLabel(getClient(storeName).getConfigurationSetting(key, label));
+    }
 
-        ConfigurationAsyncClient client = getClient(storeName);
-        while (retryCount <= appProperties.getMaxRetries()) {
-            watchedKey =  client.listConfigurationSettings(settingSelector).byPage(100).blockFirst();
-            if (watchedKey != null
-                && watchedKey.getStatusCode() == 429) {
-                HttpHeader retryAfterHeader = watchedKey.getHeaders().get("retry-after-ms");
-
-                if (retryAfterHeader != null) {
-                    try {
-                        Integer retryAfter = Integer.valueOf(retryAfterHeader.getValue());
-
-                        Thread.sleep(retryAfter);
-                    } catch (NumberFormatException e) {
-                        LOGGER.warn("Unable to parse Retry After value.", e);
-                    } catch (InterruptedException e) {
-                        LOGGER.warn("Failed to wait after getting 429.", e);
-                    }
-                }
-                watchedKey = null;
-            } else if (watchedKey != null && watchedKey.getValue().size() > 0) {
-                return watchedKey.getValue().get(0);
-            } else {
-                return null;
-            }
-            retryCount++;
-        }
-        return null;
+    /**
+     * Used to load all feature flags to track changes for reload.
+     * 
+     * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
+     * @param storeName Name of the App Configuration store to query against.
+     * @return List of Configuration Settings.
+     */
+    public PagedIterable<ConfigurationSetting> getFeatureFlagWatchKey(SettingSelector settingSelector, String storeName) {
+        return getClient(storeName).listConfigurationSettings(settingSelector);
     }
 
     /**
@@ -180,10 +162,8 @@ public final class ClientStore {
      * @param storeName Name of the App Configuration store to query against.
      * @return List of Configuration Settings.
      */
-    public List<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
-        ConfigurationAsyncClient client = getClient(storeName);
-
-        return client.listConfigurationSettings(settingSelector).collectList().block();
+    public PagedIterable<ConfigurationSetting> listSettings(SettingSelector settingSelector, String storeName) {
+        return getClient(storeName).listConfigurationSettings(settingSelector);
     }
 
     ConfigurationClientBuilder getBuilder() {

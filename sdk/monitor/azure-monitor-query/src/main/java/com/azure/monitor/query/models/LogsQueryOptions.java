@@ -16,6 +16,7 @@ import java.util.List;
 public final class LogsQueryOptions {
     private boolean includeVisualization;
     private boolean includeStatistics;
+    private boolean allowPartialErrors;
     private Duration serverTimeout;
     private List<String> additionalWorkspaces;
 
@@ -70,6 +71,27 @@ public final class LogsQueryOptions {
      */
     public LogsQueryOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;
+        return this;
+    }
+
+    /**
+     * If a query has partial errors, the result is returned instead of throwing an exception if this is set to true.
+     * The partial error information is available as part of the query result.
+     *
+     * @return Returns true if partial errors should not throw exception.
+     */
+    public boolean isAllowPartialErrors() {
+        return allowPartialErrors;
+    }
+
+    /**
+     * If set to {@code true}, exception is not thrown if query returns partial errors. The partial error information
+     * is available as part of the query result.
+     * @param allowPartialErrors set this to {@code true} to not throw exception if a query returns partial errors.
+     * @return The updated options instance.
+     */
+    public LogsQueryOptions setAllowPartialErrors(boolean allowPartialErrors) {
+        this.allowPartialErrors = allowPartialErrors;
         return this;
     }
 

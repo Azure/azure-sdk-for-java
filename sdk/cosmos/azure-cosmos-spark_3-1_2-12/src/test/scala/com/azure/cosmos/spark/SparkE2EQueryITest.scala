@@ -22,6 +22,8 @@ class SparkE2EQueryITest
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
+  //scalastyle:off file.size.limit
+  //scalastyle:off null
 
   // NOTE: due to some bug in the emulator, sub-range feed range doesn't work
   // "spark.cosmos.read.partitioning.strategy" -> "Restrictive" is added to the query tests
@@ -200,6 +202,80 @@ class SparkE2EQueryITest
 
     val item = rowsArray(0)
     item.getAs[String]("id") shouldEqual id
+  }
+
+  "spark query" can "override maxItemCount" in  {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    // assert that there is more than one range to ensure the test really is testing the parallelization of work
+    container.getFeedRanges.block().size() should be > 1
+
+    for (age <- 1 to 20) {
+      for (state <- Array(true, false)) {
+        val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("type", "cat")
+        objectNode.put("age", age)
+        objectNode.put("isAlive", state)
+        objectNode.put("id", UUID.randomUUID().toString)
+        container.createItem(objectNode).block()
+      }
+    }
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.read.maxItemCount" -> "2",
+      "spark.cosmos.diagnostics" -> SimpleFileDiagnosticsProvider.getClass.getName.replace("$", "")
+    )
+
+    SimpleFileDiagnosticsProvider.reset()
+
+    // scalastyle:off underscore.import
+    // scalastyle:off import.grouping
+    import org.apache.spark.sql.types._
+    // scalastyle:on underscore.import
+    // scalastyle:on import.grouping
+
+    val customSchema = StructType(Array(
+      StructField("id", StringType),
+      StructField("name", StringType),
+      StructField("type", StringType),
+      StructField("age", IntegerType),
+      StructField("isAlive", BooleanType)
+    ))
+
+    val df = spark.read.schema(customSchema).format("cosmos.oltp").options(cfg).load()
+    val rowsArray = df.where("isAlive = 'true' and type = 'cat'").orderBy("age").collect()
+    rowsArray should have size 20
+
+    for (index <- 0 until rowsArray.length) {
+      val row = rowsArray(index)
+      row.getAs[String]("name") shouldEqual "Shrodigner's cat"
+      row.getAs[String]("type") shouldEqual "cat"
+      row.getAs[Integer]("age") shouldEqual index + 1
+      row.getAs[Boolean]("isAlive") shouldEqual true
+    }
+
+    // validate from diagnostics that all responses had at most 2 records (instead of the default of up to 100)
+    val logger = SimpleFileDiagnosticsProvider.getOrCreateSingletonLoggerInstance(ItemsPartitionReader.getClass)
+    val messages = logger.getMessages()
+    SimpleFileDiagnosticsProvider.reset()
+    messages should not be null
+    messages.size should not be 0
+    for ((msg, throwable) <- messages) {
+      val itemCountPos = msg.indexOf("itemCount:")
+      if (itemCountPos > 0) {
+        val startPos = itemCountPos + "itemCount:".length
+        val itemCount = msg.substring(startPos, msg.indexOf(",", startPos)).toInt
+        itemCount should be <= 2
+      }
+    }
   }
 
   "spark query" can "use user provided schema" in  {
@@ -495,6 +571,8 @@ class SparkE2EQueryITest
       container.createItem(objectNode).block()
     }
 
+    Thread.sleep(2000)
+
     for( _ <- 1 to samplingSize) {
       val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
       val arr = objectNode2.putArray("object_array")
@@ -543,6 +621,8 @@ class SparkE2EQueryITest
       objectNode.put("id", UUID.randomUUID().toString)
       container.createItem(objectNode).block()
     }
+
+    Thread.sleep(2000)
 
     for( _ <- 1 to samplingSize) {
       val objectNode2 = Utils.getSimpleObjectMapper.createObjectNode()
@@ -778,4 +858,6 @@ class SparkE2EQueryITest
 
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
+  //scalastyle:on file.size.limit
+  //scalastyle:on null
 }
