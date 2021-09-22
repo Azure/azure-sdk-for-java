@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryAction;
 import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryActionResult;
-import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.util.ClassifyCustomSingleCategoryResultCollection;
@@ -84,7 +84,7 @@ public class ClassifyCustomSingleCategoryAsync {
                 ClassifyCustomSingleCategoryResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (ClassifySingleCategoryResult documentResult : documentsResults) {
+                for (ClassifyCustomSingleCategoryResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
                         DocumentClassification documentClassification = documentResult.getDocumentClassification();

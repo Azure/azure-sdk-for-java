@@ -3,13 +3,13 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifySingleCategoryResult} instance.
+ * The helper class to set the non-public properties of an {@link ClassifyCustomSingleCategoryResult} instance.
  */
 public final class ClassifyCustomCategoryResultPropertiesHelper {
     private static ClassifyCustomCategoryResultAccessor accessor;
@@ -17,17 +17,17 @@ public final class ClassifyCustomCategoryResultPropertiesHelper {
     private ClassifyCustomCategoryResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifySingleCategoryResult} instance.
+     * Type defining the methods to set the non-public properties of an {@link ClassifyCustomSingleCategoryResult} instance.
      */
     public interface ClassifyCustomCategoryResultAccessor {
-        void setDocumentClassification(ClassifySingleCategoryResult classifySingleCategoryResult,
+        void setDocumentClassification(ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
             DocumentClassification documentClassification);
-        void setWarnings(ClassifySingleCategoryResult classifySingleCategoryResult,
+        void setWarnings(ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
             IterableStream<TextAnalyticsWarning> warnings);
     }
 
     /**
-     * The method called from {@link ClassifySingleCategoryResult} to set it's accessor.
+     * The method called from {@link ClassifyCustomSingleCategoryResult} to set it's accessor.
      *
      * @param classifyCustomCategoryResultAccessor The accessor.
      */
@@ -35,13 +35,13 @@ public final class ClassifyCustomCategoryResultPropertiesHelper {
         accessor = classifyCustomCategoryResultAccessor;
     }
 
-    public static void setDocumentClassification(ClassifySingleCategoryResult classifySingleCategoryResult,
+    public static void setDocumentClassification(ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
         DocumentClassification documentClassification) {
-        accessor.setDocumentClassification(classifySingleCategoryResult, documentClassification);
+        accessor.setDocumentClassification(classifyCustomSingleCategoryResult, documentClassification);
     }
 
-    public static void setWarnings(ClassifySingleCategoryResult classifySingleCategoryResult,
+    public static void setWarnings(ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
         IterableStream<TextAnalyticsWarning> warnings) {
-        accessor.setWarnings(classifySingleCategoryResult, warnings);
+        accessor.setWarnings(classifyCustomSingleCategoryResult, warnings);
     }
 }

@@ -51,8 +51,8 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesResult;
-import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.DocumentClassificationCollection;
@@ -975,21 +975,21 @@ public final class Utility {
      */
     public static ClassifyCustomSingleCategoryResultCollection toClassifySingleCategoryResultCollection(
         CustomSingleClassificationResult customSingleClassificationResult) {
-        final List<ClassifySingleCategoryResult> classifySingleCategoryResults = new ArrayList<>();
+        final List<ClassifyCustomSingleCategoryResult> classifyCustomSingleCategoryResults = new ArrayList<>();
         final List<SingleClassificationDocument> singleClassificationDocuments =
             customSingleClassificationResult.getDocuments();
 
         for (SingleClassificationDocument documentSummary : singleClassificationDocuments) {
-            classifySingleCategoryResults.add(toClassifySingleCategoryResult(documentSummary));
+            classifyCustomSingleCategoryResults.add(toClassifySingleCategoryResult(documentSummary));
         }
 
         for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
-            classifySingleCategoryResults.add(new ClassifySingleCategoryResult(documentError.getId(), null,
+            classifyCustomSingleCategoryResults.add(new ClassifyCustomSingleCategoryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
 
         final ClassifyCustomSingleCategoryResultCollection resultCollection =
-            new ClassifyCustomSingleCategoryResultCollection(classifySingleCategoryResults);
+            new ClassifyCustomSingleCategoryResultCollection(classifyCustomSingleCategoryResults);
         ClassifyCustomCategoryResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customSingleClassificationResult.getProjectName());
         ClassifyCustomCategoryResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
@@ -1001,23 +1001,23 @@ public final class Utility {
         return resultCollection;
     }
 
-    private static ClassifySingleCategoryResult toClassifySingleCategoryResult(
+    private static ClassifyCustomSingleCategoryResult toClassifySingleCategoryResult(
         SingleClassificationDocument singleClassificationDocument) {
         final ClassificationResult classificationResult = singleClassificationDocument.getClassification();
         // Warnings
         final List<TextAnalyticsWarning> warnings = singleClassificationDocument.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final ClassifySingleCategoryResult classifySingleCategoryResult = new ClassifySingleCategoryResult(
+        final ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult = new ClassifyCustomSingleCategoryResult(
             singleClassificationDocument.getId(),
             singleClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
-        ClassifyCustomCategoryResultPropertiesHelper.setDocumentClassification(classifySingleCategoryResult,
+        ClassifyCustomCategoryResultPropertiesHelper.setDocumentClassification(classifyCustomSingleCategoryResult,
             toDocumentClassification(classificationResult));
-        ClassifyCustomCategoryResultPropertiesHelper.setWarnings(classifySingleCategoryResult,
+        ClassifyCustomCategoryResultPropertiesHelper.setWarnings(classifyCustomSingleCategoryResult,
             new IterableStream<>(warnings));
-        return classifySingleCategoryResult;
+        return classifyCustomSingleCategoryResult;
     }
 
     private static DocumentClassification toDocumentClassification(ClassificationResult classificationResult) {
@@ -1038,21 +1038,21 @@ public final class Utility {
      */
     public static ClassifyCustomMultiCategoriesResultCollection toClassifyMultiCategoriesResultCollection(
         CustomMultiClassificationResult customMultiClassificationResult) {
-        final List<ClassifyMultiCategoriesResult> classifyMultiCategoriesResults = new ArrayList<>();
+        final List<ClassifyCustomMultiCategoriesResult> classifyCustomMultiCategoriesResults = new ArrayList<>();
         final List<MultiClassificationDocument> multiClassificationDocuments =
             customMultiClassificationResult.getDocuments();
 
         for (MultiClassificationDocument multiClassificationDocument : multiClassificationDocuments) {
-            classifyMultiCategoriesResults.add(toClassifyMultiCategoriesResult(multiClassificationDocument));
+            classifyCustomMultiCategoriesResults.add(toClassifyMultiCategoriesResult(multiClassificationDocument));
         }
 
         for (DocumentError documentError : customMultiClassificationResult.getErrors()) {
-            classifyMultiCategoriesResults.add(new ClassifyMultiCategoriesResult(documentError.getId(), null,
+            classifyCustomMultiCategoriesResults.add(new ClassifyCustomMultiCategoriesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
 
         final ClassifyCustomMultiCategoriesResultCollection resultCollection =
-            new ClassifyCustomMultiCategoriesResultCollection(classifyMultiCategoriesResults);
+            new ClassifyCustomMultiCategoriesResultCollection(classifyCustomMultiCategoriesResults);
         ClassifyCustomCategoriesResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customMultiClassificationResult.getProjectName());
         ClassifyCustomCategoriesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
@@ -1064,7 +1064,7 @@ public final class Utility {
         return resultCollection;
     }
 
-    private static ClassifyMultiCategoriesResult toClassifyMultiCategoriesResult(
+    private static ClassifyCustomMultiCategoriesResult toClassifyMultiCategoriesResult(
         MultiClassificationDocument multiClassificationDocument) {
         final List<DocumentClassification> documentClassifications =
             multiClassificationDocument
@@ -1077,7 +1077,7 @@ public final class Utility {
         final List<TextAnalyticsWarning> warnings = multiClassificationDocument.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final ClassifyMultiCategoriesResult classifySingleCategoryResult = new ClassifyMultiCategoriesResult(
+        final ClassifyCustomMultiCategoriesResult classifySingleCategoryResult = new ClassifyCustomMultiCategoriesResult(
             multiClassificationDocument.getId(),
             multiClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(multiClassificationDocument.getStatistics()),

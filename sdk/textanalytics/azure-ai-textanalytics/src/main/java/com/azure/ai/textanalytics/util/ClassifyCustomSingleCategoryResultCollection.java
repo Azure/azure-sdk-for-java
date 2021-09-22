@@ -4,18 +4,18 @@
 package com.azure.ai.textanalytics.util;
 
 import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link ClassifySingleCategoryResult} along with project name,
+ * A collection model that contains a list of {@link ClassifyCustomSingleCategoryResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
 public final class ClassifyCustomSingleCategoryResultCollection
-    extends IterableStream<ClassifySingleCategoryResult> {
+    extends IterableStream<ClassifyCustomSingleCategoryResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
@@ -45,12 +45,12 @@ public final class ClassifyCustomSingleCategoryResultCollection
 
     /**
      * Create a {@link ClassifyCustomSingleCategoryResultCollection} model that maintains a list of
-     * {@link ClassifySingleCategoryResult} along with model version and batch's statistics.
+     * {@link ClassifyCustomSingleCategoryResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link ClassifySingleCategoryResult}.
+     * @param documentResults A list of {@link ClassifyCustomSingleCategoryResult}.
      */
     public ClassifyCustomSingleCategoryResultCollection(
-        Iterable<ClassifySingleCategoryResult> documentResults) {
+        Iterable<ClassifyCustomSingleCategoryResult> documentResults) {
         super(documentResults);
     }
 

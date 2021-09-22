@@ -4,18 +4,18 @@
 package com.azure.ai.textanalytics.util;
 
 import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link ClassifyMultiCategoriesResult} along with project name,
+ * A collection model that contains a list of {@link ClassifyCustomMultiCategoriesResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
 public final class ClassifyCustomMultiCategoriesResultCollection
-    extends IterableStream<ClassifyMultiCategoriesResult> {
+    extends IterableStream<ClassifyCustomMultiCategoriesResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
@@ -45,12 +45,12 @@ public final class ClassifyCustomMultiCategoriesResultCollection
 
     /**
      * Create a {@link ClassifyCustomMultiCategoriesResultCollection} model that maintains a list of
-     * {@link ClassifyMultiCategoriesResult} along with model version and batch's statistics.
+     * {@link ClassifyCustomMultiCategoriesResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link ClassifyMultiCategoriesResult}.
+     * @param documentResults A list of {@link ClassifyCustomMultiCategoriesResult}.
      */
     public ClassifyCustomMultiCategoriesResultCollection(
-        Iterable<ClassifyMultiCategoriesResult> documentResults) {
+        Iterable<ClassifyCustomMultiCategoriesResult> documentResults) {
         super(documentResults);
     }
 

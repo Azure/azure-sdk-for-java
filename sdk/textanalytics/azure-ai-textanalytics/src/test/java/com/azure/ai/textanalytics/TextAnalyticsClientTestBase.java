@@ -13,8 +13,8 @@ import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesAction;
 import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryAction;
-import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesResult;
-import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentClassification;
@@ -1578,7 +1578,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     }
 
-    static void validateCustomSingleCategory(ClassifySingleCategoryResult documentResult) {
+    static void validateCustomSingleCategory(ClassifyCustomSingleCategoryResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());
@@ -1588,7 +1588,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
     }
 
-    static void validateCustomMultiCategories(ClassifyMultiCategoriesResult documentResult) {
+    static void validateCustomMultiCategories(ClassifyCustomMultiCategoriesResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());

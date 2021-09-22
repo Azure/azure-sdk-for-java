@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifySingleCategoryResult} model. It classify the text document one single category.
+ * The {@link ClassifyCustomSingleCategoryResult} model. It classify the text document one single category.
  */
 @Immutable
-public final class ClassifySingleCategoryResult extends TextAnalyticsResult {
+public final class ClassifyCustomSingleCategoryResult extends TextAnalyticsResult {
     private DocumentClassification documentClassification;
     private IterableStream<TextAnalyticsWarning> warnings;
 
@@ -20,28 +20,28 @@ public final class ClassifySingleCategoryResult extends TextAnalyticsResult {
             new ClassifyCustomCategoryResultPropertiesHelper.ClassifyCustomCategoryResultAccessor() {
                 @Override
                 public void setDocumentClassification(
-                    ClassifySingleCategoryResult classifySingleCategoryResult,
+                    ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
                     DocumentClassification documentClassification) {
-                    classifySingleCategoryResult.setDocumentClassification(documentClassification);
+                    classifyCustomSingleCategoryResult.setDocumentClassification(documentClassification);
                 }
 
                 @Override
-                public void setWarnings(ClassifySingleCategoryResult classifySingleCategoryResult,
+                public void setWarnings(ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
-                    classifySingleCategoryResult.setWarnings(warnings);
+                    classifyCustomSingleCategoryResult.setWarnings(warnings);
                 }
             });
 
     }
 
     /**
-     * Creates a {@link ClassifySingleCategoryResult} model.
+     * Creates a {@link ClassifyCustomSingleCategoryResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifySingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public ClassifyCustomSingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }

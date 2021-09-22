@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesAction;
 import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesActionResult;
-import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesResult;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
@@ -55,7 +55,7 @@ public class ClassifyCustomMultiCategories {
                     final ClassifyCustomMultiCategoriesResultCollection documentsResults = actionResult.getDocumentsResults();
                     System.out.printf("Project name: %s, deployment name: %s.%n",
                         documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                    for (ClassifyMultiCategoriesResult documentResult : documentsResults) {
+                    for (ClassifyCustomMultiCategoriesResult documentResult : documentsResults) {
                         System.out.println("Document ID: " + documentResult.getId());
                         if (!documentResult.isError()) {
                             for (DocumentClassification documentClassification : documentResult.getDocumentClassifications()) {
