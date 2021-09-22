@@ -79,7 +79,7 @@ public class FeatureManager extends HashMap<String, Object> {
         }
 
         Feature featureItem = featureManagement.get(feature);
-        if (featureItem == null || !featureItem.getEvaluate()) {
+        if (featureItem == null) {
             return false;
         }
 

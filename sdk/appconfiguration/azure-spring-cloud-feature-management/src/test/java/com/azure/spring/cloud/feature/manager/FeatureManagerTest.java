@@ -27,7 +27,6 @@ import org.springframework.context.ApplicationContext;
 
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.feature.filters.AlwaysOnFilter;
 
 /**
  * Unit tests for FeatureManager.
@@ -218,34 +217,6 @@ public class FeatureManagerTest {
     }
 
     @Test
-    public void disabledEvaluate() {
-        HashMap<String, Object> features = new HashMap<String, Object>();
-        Feature featureV = new Feature();
-        HashMap<Integer, FeatureFilterEvaluationContext> filterMapper = new HashMap<Integer, FeatureFilterEvaluationContext>();
-
-        FeatureFilterEvaluationContext enabledFor = new FeatureFilterEvaluationContext();
-        enabledFor.setName("AlwaysOn");
-        enabledFor.setParameters(new LinkedHashMap<String, Object>());
-
-        filterMapper.put(0, enabledFor);
-        featureV.setEnabledFor(filterMapper);
-        featureV.setEvaluate(false);
-        features.put("FeatureV", featureV);
-        featureManager.putAll(features);
-
-        assertNotNull(featureManager.getOnOff());
-        assertNotNull(featureManager.getFeatureManagement());
-
-        Feature feature = featureManager.getFeatureManagement().get("FeatureV");
-        assertEquals(feature.getEnabledFor().size(), 1);
-        FeatureFilterEvaluationContext ffec = feature.getEnabledFor().get(0);
-        assertEquals(ffec.getName(), "AlwaysOn");
-        assertEquals(ffec.getParameters().size(), 0);
-        assertEquals(1, featureManager.getAllFeatureNames().size());
-        assertFalse(featureManager.isEnabledAsync("FeatureV").block());
-    }
-
-    @Test
     public void noFilter() throws FilterNotFoundException {
         HashMap<String, Object> features = new HashMap<String, Object>();
         Feature onFeature = new Feature();
@@ -263,6 +234,15 @@ public class FeatureManagerTest {
         FilterNotFoundException e = assertThrows(FilterNotFoundException.class,
             () -> featureManager.isEnabledAsync("Off").block());
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
+    }
+
+    class AlwaysOnFilter implements FeatureFilter {
+
+        @Override
+        public boolean evaluate(FeatureFilterEvaluationContext context) {
+            return true;
+        }
+
     }
 
 }
