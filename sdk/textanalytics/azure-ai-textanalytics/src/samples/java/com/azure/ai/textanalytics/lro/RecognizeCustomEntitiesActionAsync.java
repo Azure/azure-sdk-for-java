@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously execute a "Custom Entities Recognition" action.
  */
-public class AnalyzeCustomEntitiesActionAsync {
+public class RecognizeCustomEntitiesActionAsync {
     /**
      * Main method to invoke this demo about how to analyze an "Custom Entities Recognition" action.
      *

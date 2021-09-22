@@ -4,10 +4,10 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.ai.textanalytics.util.ClassifyCustomSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentSingleCategoryResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifyCustomSingleCategoryResultCollection} instance.
+ * The helper class to set the non-public properties of an {@link ClassifyDocumentSingleCategoryResultCollection} instance.
  */
 public final class ClassifyCustomCategoryResultCollectionPropertiesHelper {
     private static ClassifyCustomCategoryResultCollectionAccessor accessor;
@@ -15,18 +15,18 @@ public final class ClassifyCustomCategoryResultCollectionPropertiesHelper {
     private ClassifyCustomCategoryResultCollectionPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifyCustomSingleCategoryResultCollection}
+     * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentSingleCategoryResultCollection}
      * instance.
      */
     public interface ClassifyCustomCategoryResultCollectionAccessor {
-        void setProjectName(ClassifyCustomSingleCategoryResultCollection resultCollection, String projectName);
-        void setDeploymentName(ClassifyCustomSingleCategoryResultCollection resultCollection, String deploymentName);
-        void setStatistics(ClassifyCustomSingleCategoryResultCollection resultCollection,
+        void setProjectName(ClassifyDocumentSingleCategoryResultCollection resultCollection, String projectName);
+        void setDeploymentName(ClassifyDocumentSingleCategoryResultCollection resultCollection, String deploymentName);
+        void setStatistics(ClassifyDocumentSingleCategoryResultCollection resultCollection,
             TextDocumentBatchStatistics statistics);
     }
 
     /**
-     * The method called from {@link ClassifyCustomSingleCategoryResultCollection} to set it's accessor.
+     * The method called from {@link ClassifyDocumentSingleCategoryResultCollection} to set it's accessor.
      *
      * @param classifyCustomCategoryResultCollectionAccessor The accessor.
      */
@@ -35,16 +35,16 @@ public final class ClassifyCustomCategoryResultCollectionPropertiesHelper {
         accessor = classifyCustomCategoryResultCollectionAccessor;
     }
 
-    public static void setProjectName(ClassifyCustomSingleCategoryResultCollection resultCollection, String projectName) {
+    public static void setProjectName(ClassifyDocumentSingleCategoryResultCollection resultCollection, String projectName) {
         accessor.setProjectName(resultCollection, projectName);
     }
 
-    public static void setDeploymentName(ClassifyCustomSingleCategoryResultCollection resultCollection,
+    public static void setDeploymentName(ClassifyDocumentSingleCategoryResultCollection resultCollection,
         String deploymentName) {
         accessor.setDeploymentName(resultCollection, deploymentName);
     }
 
-    public static void setStatistics(ClassifyCustomSingleCategoryResultCollection resultCollection,
+    public static void setStatistics(ClassifyDocumentSingleCategoryResultCollection resultCollection,
         TextDocumentBatchStatistics statistics) {
         accessor.setStatistics(resultCollection, statistics);
     }

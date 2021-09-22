@@ -7,8 +7,8 @@ import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryActionResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesActionResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryActionResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
@@ -42,9 +42,9 @@ public final class AnalyzeActionsResultPropertiesHelper {
         void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults);
         void setClassifyCustomCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<ClassifyCustomSingleCategoryActionResult> classifyCustomCategoryResults);
+            IterableStream<ClassifyDocumentSingleCategoryActionResult> classifyCustomCategoryResults);
         void setClassifyCustomCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<ClassifyCustomMultiCategoriesActionResult> classifyCustomCategoriesResults);
+            IterableStream<ClassifyDocumentMultiCategoriesActionResult> classifyCustomCategoriesResults);
     }
 
     /**
@@ -93,12 +93,12 @@ public final class AnalyzeActionsResultPropertiesHelper {
     }
 
     public static void setClassifySingleCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<ClassifyCustomSingleCategoryActionResult> classifyCustomCategoryResults) {
+        IterableStream<ClassifyDocumentSingleCategoryActionResult> classifyCustomCategoryResults) {
         accessor.setClassifyCustomCategoryResults(analyzeActionsResult, classifyCustomCategoryResults);
     }
 
     public static void setClassifyMultiCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-        IterableStream<ClassifyCustomMultiCategoriesActionResult> classifyCustomCategoriesResults) {
+        IterableStream<ClassifyDocumentMultiCategoriesActionResult> classifyCustomCategoriesResults) {
         accessor.setClassifyCustomCategoriesResults(analyzeActionsResult, classifyCustomCategoriesResults);
     }
 }

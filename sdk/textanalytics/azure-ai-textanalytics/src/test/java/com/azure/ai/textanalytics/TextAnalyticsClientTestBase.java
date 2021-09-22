@@ -11,10 +11,10 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesAction;
-import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryAction;
-import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesAction;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryAction;
+import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentClassification;
@@ -1177,16 +1177,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setClassifyCustomSingleCategoryActions(
-                    new ClassifyCustomSingleCategoryAction("659c1851-be0b-4142-b12a-087da9785926",
+                .setClassifyDocumentSingleCategoryActions(
+                    new ClassifyDocumentSingleCategoryAction("659c1851-be0b-4142-b12a-087da9785926",
                         "659c1851-be0b-4142-b12a-087da9785926")));
     }
 
     void classifyCustomMultiCategoriesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setClassifyCustomMultiCategoriesActions(
-                    new ClassifyCustomMultiCategoriesAction("7cdace98-537b-494a-b69a-c19754718025",
+                .setClassifyDocumentMultiCategoriesActions(
+                    new ClassifyDocumentMultiCategoriesAction("7cdace98-537b-494a-b69a-c19754718025",
                         "7cdace98-537b-494a-b69a-c19754718025")));
     }
 
@@ -1578,7 +1578,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     }
 
-    static void validateCustomSingleCategory(ClassifyCustomSingleCategoryResult documentResult) {
+    static void validateCustomSingleCategory(ClassifyDocumentSingleCategoryResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());
@@ -1588,7 +1588,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
     }
 
-    static void validateCustomMultiCategories(ClassifyCustomMultiCategoriesResult documentResult) {
+    static void validateCustomMultiCategories(ClassifyDocumentMultiCategoriesResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());

@@ -4,16 +4,16 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.ClassifyCustomSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentSingleCategoryResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ClassifyCustomSingleCategoryActionResult} model.
+ * The {@link ClassifyDocumentSingleCategoryActionResult} model.
  */
 @Immutable
-public final class ClassifyCustomSingleCategoryActionResult extends TextAnalyticsActionResult {
+public final class ClassifyDocumentSingleCategoryActionResult extends TextAnalyticsActionResult {
 
-    private ClassifyCustomSingleCategoryResultCollection documentsResults;
+    private ClassifyDocumentSingleCategoryResultCollection documentsResults;
 
     static {
         ClassifyCustomCategoryActionResultPropertiesHelper.setAccessor(
@@ -28,12 +28,12 @@ public final class ClassifyCustomSingleCategoryActionResult extends TextAnalytic
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ClassifyCustomSingleCategoryResultCollection getDocumentsResults() {
+    public ClassifyDocumentSingleCategoryResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(ClassifyCustomSingleCategoryResultCollection documentsResults) {
+    private void setDocumentsResults(ClassifyDocumentSingleCategoryResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

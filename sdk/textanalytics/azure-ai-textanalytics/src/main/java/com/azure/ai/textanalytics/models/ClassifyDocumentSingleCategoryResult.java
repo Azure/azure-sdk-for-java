@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyCustomSingleCategoryResult} model. It classify the text document one single category.
+ * The {@link ClassifyDocumentSingleCategoryResult} model. It classify the text document one single category.
  */
 @Immutable
-public final class ClassifyCustomSingleCategoryResult extends TextAnalyticsResult {
+public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsResult {
     private DocumentClassification documentClassification;
     private IterableStream<TextAnalyticsWarning> warnings;
 
@@ -20,28 +20,28 @@ public final class ClassifyCustomSingleCategoryResult extends TextAnalyticsResul
             new ClassifyCustomCategoryResultPropertiesHelper.ClassifyCustomCategoryResultAccessor() {
                 @Override
                 public void setDocumentClassification(
-                    ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
+                    ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
                     DocumentClassification documentClassification) {
-                    classifyCustomSingleCategoryResult.setDocumentClassification(documentClassification);
+                    classifyDocumentSingleCategoryResult.setDocumentClassification(documentClassification);
                 }
 
                 @Override
-                public void setWarnings(ClassifyCustomSingleCategoryResult classifyCustomSingleCategoryResult,
+                public void setWarnings(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
-                    classifyCustomSingleCategoryResult.setWarnings(warnings);
+                    classifyDocumentSingleCategoryResult.setWarnings(warnings);
                 }
             });
 
     }
 
     /**
-     * Creates a {@link ClassifyCustomSingleCategoryResult} model.
+     * Creates a {@link ClassifyDocumentSingleCategoryResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyCustomSingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public ClassifyDocumentSingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }

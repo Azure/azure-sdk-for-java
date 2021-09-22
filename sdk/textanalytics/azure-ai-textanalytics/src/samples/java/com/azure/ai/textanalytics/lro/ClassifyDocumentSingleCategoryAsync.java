@@ -7,12 +7,12 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesAction;
-import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesActionResult;
-import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryAction;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryActionResult;
+import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
 import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.ClassifyCustomMultiCategoriesResultCollection;
+import com.azure.ai.textanalytics.util.ClassifyDocumentSingleCategoryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously execute a "Multi-label Classification" action.
+ * Sample demonstrates how to asynchronously execute an "Single-label Classification" action.
  */
-public class ClassifyCustomMultiCategoriesAsync {
+public class ClassifyDocumentSingleCategoryAsync {
     /**
-     * Main method to invoke this demo about how to analyze an "Multi-label Classification" action.
+     * Main method to invoke this demo about how to analyze an "Single-label Classification" action.
      *
      * @param args Unused arguments to the program.
      */
@@ -36,13 +36,21 @@ public class ClassifyCustomMultiCategoriesAsync {
 
         List<String> documents = new ArrayList<>();
         documents.add(
-            "I need a reservation for an indoor restaurant in China. Please don't stop the music."
-                + " Play music and add it to my playlist"
+            "A recent report by the Government Accountability Office (GAO) found that the dramatic increase "
+                + "in oil and natural gas development on federal lands over the past six years has stretched the"
+                + " staff of the BLM to a point that it has been unable to meet its environmental protection "
+                + "responsibilities.");
+        documents.add(
+            "David Schmidt, senior vice president--Food Safety, International Food"
+                + " Information Council (IFIC), Washington, D.C., discussed the physical activity component."
+        );
+        documents.add(
+            "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music and add it to my playlist"
         );
 
         client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setClassifyCustomMultiCategoriesActions(
-                new ClassifyCustomMultiCategoriesAction("{project_name}", "{deployment_name}")),
+            new TextAnalyticsActions().setClassifyDocumentSingleCategoryActions(
+                new ClassifyDocumentSingleCategoryAction("{project_name}", "{deployment_name}")),
             "en",
             null)
             .flatMap(result -> {
@@ -71,25 +79,24 @@ public class ClassifyCustomMultiCategoriesAsync {
     }
 
     private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
-        for (ClassifyCustomMultiCategoriesActionResult actionResult : actionsResult.getClassifyCustomMultiCategoriesResults()) {
+        for (ClassifyDocumentSingleCategoryActionResult actionResult : actionsResult.getClassifyDocumentSingleCategoryResults()) {
             if (!actionResult.isError()) {
-                final ClassifyCustomMultiCategoriesResultCollection documentsResults = actionResult.getDocumentsResults();
+                ClassifyDocumentSingleCategoryResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (ClassifyCustomMultiCategoriesResult documentResult : documentsResults) {
+                for (ClassifyDocumentSingleCategoryResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
-                        for (DocumentClassification documentClassification : documentResult.getDocumentClassifications()) {
-                            System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                                documentClassification.getCategory(), documentClassification.getConfidenceScore());
-                        }
+                        DocumentClassification documentClassification = documentResult.getDocumentClassification();
+                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
+                            documentClassification.getCategory(), documentClassification.getConfidenceScore());
                     } else {
-                        System.out.printf("\tCannot classify multi categories of document. Error: %s%n",
+                        System.out.printf("\tCannot classify category of document. Error: %s%n",
                             documentResult.getError().getMessage());
                     }
                 }
             } else {
-                System.out.printf("\tCannot execute 'ClassifyCustomMultiCategoriesAction'. Error: %s%n",
+                System.out.printf("\tCannot execute 'ClassifyCustomSingleCategoryAction'. Error: %s%n",
                     actionResult.getError().getMessage());
             }
         }

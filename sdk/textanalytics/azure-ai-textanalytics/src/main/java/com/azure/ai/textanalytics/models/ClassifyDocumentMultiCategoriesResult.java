@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyCustomMultiCategoriesResult} model. It classify the text document the multiple categories.
+ * The {@link ClassifyDocumentMultiCategoriesResult} model. It classify the text document the multiple categories.
  */
 @Immutable
-public final class ClassifyCustomMultiCategoriesResult extends TextAnalyticsResult {
+public final class ClassifyDocumentMultiCategoriesResult extends TextAnalyticsResult {
     private DocumentClassificationCollection documentClassifications;
 
     static {
@@ -22,14 +22,14 @@ public final class ClassifyCustomMultiCategoriesResult extends TextAnalyticsResu
     }
 
     /**
-     * Creates a {@link ClassifyCustomMultiCategoriesResult} model that describes recognized document classification
+     * Creates a {@link ClassifyDocumentMultiCategoriesResult} model that describes recognized document classification
      * result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyCustomMultiCategoriesResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public ClassifyDocumentMultiCategoriesResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
