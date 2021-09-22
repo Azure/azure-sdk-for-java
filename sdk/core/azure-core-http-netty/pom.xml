@@ -47,6 +47,10 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.http.netty/com.azure.core.http.netty=ALL-UNNAMED
+      --add-opens com.azure.http.netty/com.azure.core.http.netty.implementation=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -211,19 +215,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <javaModulesSurefireArgLine>
-          --add-opens com.azure.http.netty/com.azure.core.http.netty=ALL-UNNAMED
-          --add-opens com.azure.http.netty/com.azure.core.http.netty.implementation=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>

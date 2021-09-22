@@ -469,7 +469,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             checkNotNull(options, "expected non-null options");
             checkNotNull(sslContext, "expected non-null sslContext");
 
-            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
+            final DefaultThreadFactory threadFactory =
+                new DefaultThreadFactory(
+                    "cosmos-rntbd-nio",
+                    true,
+                    options.ioThreadPriority());
             final LogLevel wireLogLevel;
 
             if (logger.isDebugEnabled()) {

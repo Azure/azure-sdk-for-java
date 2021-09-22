@@ -78,7 +78,7 @@ public class HttpResponseBodyDecoderTests {
     @AfterEach
     public void clearMocks() throws Exception {
         openMocks.close();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @ParameterizedTest

@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 5.10.1 (2021-09-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.20.0`.
+- Update `azure-core-amqp` dependency to `2.3.2`.
+
 ## 5.10.0 (2021-08-19)
 
 ### Features Added

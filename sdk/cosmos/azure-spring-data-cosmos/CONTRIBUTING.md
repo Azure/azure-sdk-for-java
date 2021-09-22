@@ -10,8 +10,8 @@ To build the project, run maven commands.
 
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git 
-cd sdk/cosmos/azure-spring-data-cosmos-core
-mvnw clean install
+cd sdk/cosmos/azure-spring-data-cosmos
+mvn clean install
 ```
 
 ## Test
