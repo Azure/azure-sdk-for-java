@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class containing implementation of Avro apache serializer
+ * Class containing implementation of Apache Avro serializer
  */
 class AvroSerializer {
     private static final Map<Class<?>, Schema> PRIMITIVE_SCHEMAS;
