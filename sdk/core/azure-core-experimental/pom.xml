@@ -47,6 +47,10 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
+      --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -109,19 +113,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <javaModulesSurefireArgLine>
-          --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
-          --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>

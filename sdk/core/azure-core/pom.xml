@@ -48,6 +48,30 @@
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
     <boring-ssl-classifier></boring-ssl-classifier>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+
+      --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
+      --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
+
+      --add-reads com.azure.core=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -302,38 +326,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <javaModulesSurefireArgLine>
-          --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-          --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-
-          --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.credential=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=com.fasterxml.jackson.databind
-          --add-opens com.azure.core/com.azure.core.implementation.models.jsonflatten=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.models=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
-          --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
-
-          --add-reads com.azure.core=ALL-UNNAMED
-        </javaModulesSurefireArgLine>
-      </properties>
     </profile>
 
     <profile>

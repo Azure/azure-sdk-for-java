@@ -63,7 +63,7 @@ public class PollerTests {
     @AfterEach
     public void afterTest() throws Exception {
         openMocks.close();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test

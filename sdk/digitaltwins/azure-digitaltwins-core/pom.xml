@@ -133,9 +133,9 @@
   </build>
   <profiles>
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -146,6 +146,7 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.digitaltwins.core/com.azure.digitaltwins.core=ALL-UNNAMED
               </argLine>
             </configuration>
