@@ -354,7 +354,6 @@ class AnalyzeActionsAsyncClient {
 
                         customSingleClassificationTask.setParameters(
                             new CustomSingleClassificationTaskParameters()
-                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setLoggingOptOut(action.isServiceLogsDisabled())
                                 .setProjectName(action.getProjectName())
                                 .setDeploymentName(action.getDeploymentName())

@@ -62,7 +62,6 @@ import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
-import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeActionsResultListForMultiplePages;
@@ -282,7 +281,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCategorizedEntitiesForSingleTextInputRunner(input -> {
             final List<CategorizedEntity> entities = client.recognizeEntities(input).stream().collect(Collectors.toList());
-            validateCategorizedEntities(getCategorizedEntitiesList1(), entities);
+            validateCategorizedEntities(entities);
         });
     }
 
@@ -2538,5 +2537,70 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         ((TextAnalyticsError) exception.getValue()).getErrorCode());
                 }, invalidCount, null);
         }
+    }
+
+    @Disabled("Service issue: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/10968334/")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeCustomEntitiesAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeCustomEntitiesActionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getRecognizeCustomEntitiesResults().forEach(
+                    customEntitiesActionResult -> customEntitiesActionResult.getDocumentsResults().forEach(
+                        documentResult -> validateCategorizedEntities(
+                            documentResult.getEntities().stream().collect(Collectors.toList())))));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void classifyCustomSingleCategoryAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getClassifyCustomSingleCategoryResults().forEach(
+                    customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
+                        documentResult -> validateCustomSingleCategory(documentResult))));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void classifyCustomMultiCategoriesAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        classifyCustomMultiCategoriesActionRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, "en", null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
+
+            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
+
+            actionsResults.forEach(
+                actionsResult -> actionsResult.getClassifyCustomMultiCategoriesResults().forEach(
+                    customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
+                        documentResult -> validateCustomMultiCategories(documentResult))));
+        });
     }
 }

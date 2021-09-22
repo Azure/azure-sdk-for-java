@@ -11,8 +11,13 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.ClassifyCustomMultiCategoriesAction;
+import com.azure.ai.textanalytics.models.ClassifyCustomSingleCategoryAction;
+import com.azure.ai.textanalytics.models.ClassifyMultiCategoriesResult;
+import com.azure.ai.textanalytics.models.ClassifySingleCategoryResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.DocumentClassification;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
@@ -30,6 +35,7 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomain;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
@@ -68,6 +74,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -81,6 +88,9 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
@@ -679,6 +689,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    @Disabled("Service issue: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/10968334/")
+    abstract void recognizeCustomEntitiesAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void classifyCustomSingleCategoryAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void classifyCustomMultiCategoriesAction(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -1143,6 +1166,30 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         .setOrderBy(summarySentencesOrder)));
     }
 
+    void recognizeCustomEntitiesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(CUSTOM_ENTITIES_INPUT,
+            new TextAnalyticsActions()
+                .setRecognizeCustomEntitiesActions(
+                    new RecognizeCustomEntitiesAction("88ee0f78-fbca-444d-98e2-7c4c8631e494",
+                        "88ee0f78-fbca-444d-98e2-7c4c8631e494")));
+    }
+
+    void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
+            new TextAnalyticsActions()
+                .setClassifyCustomSingleCategoryActions(
+                    new ClassifyCustomSingleCategoryAction("659c1851-be0b-4142-b12a-087da9785926",
+                        "659c1851-be0b-4142-b12a-087da9785926")));
+    }
+
+    void classifyCustomMultiCategoriesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
+            new TextAnalyticsActions()
+                .setClassifyCustomMultiCategoriesActions(
+                    new ClassifyCustomMultiCategoriesAction("7cdace98-537b-494a-b69a-c19754718025",
+                        "7cdace98-537b-494a-b69a-c19754718025")));
+    }
+
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
@@ -1193,9 +1240,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateCategorizedEntitiesResultCollection(boolean showStatistics,
         RecognizeEntitiesResultCollection expected, RecognizeEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateCategorizedEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+            validateCategorizedEntities(actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
     static void validatePiiEntitiesResultCollectionWithResponse(boolean showStatistics,
@@ -1293,15 +1338,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     /**
      * Helper method to validate a single categorized entity.
      *
-     * @param expectedCategorizedEntity CategorizedEntity returned by the service.
      * @param actualCategorizedEntity CategorizedEntity returned by the API.
      */
-    static void validateCategorizedEntity(
-        CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
-        assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
-        assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
-        assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
-        assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
+    static void validateCategorizedEntity(CategorizedEntity actualCategorizedEntity) {
+        assertNotNull(actualCategorizedEntity.getText());
+        assertNotNull(actualCategorizedEntity.getOffset());
+        assertNotNull(actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
 
@@ -1359,19 +1401,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     /**
      * Helper method to validate the list of categorized entities.
      *
-     *  @param expectedCategorizedEntityList categorizedEntities returned by the service.
      * @param actualCategorizedEntityList categorizedEntities returned by the API.
      */
-    static void validateCategorizedEntities(List<CategorizedEntity> expectedCategorizedEntityList,
-        List<CategorizedEntity> actualCategorizedEntityList) {
-        assertEquals(expectedCategorizedEntityList.size(), actualCategorizedEntityList.size());
-        expectedCategorizedEntityList.sort(Comparator.comparing(CategorizedEntity::getText));
-        actualCategorizedEntityList.sort(Comparator.comparing(CategorizedEntity::getText));
-
-        for (int i = 0; i < expectedCategorizedEntityList.size(); i++) {
-            CategorizedEntity expectedCategorizedEntity = expectedCategorizedEntityList.get(i);
-            CategorizedEntity actualCategorizedEntity = actualCategorizedEntityList.get(i);
-            validateCategorizedEntity(expectedCategorizedEntity, actualCategorizedEntity);
+    static void validateCategorizedEntities(List<CategorizedEntity> actualCategorizedEntityList) {
+        for (int i = 0; i < actualCategorizedEntityList.size(); i++) {
+            validateCategorizedEntity(actualCategorizedEntityList.get(i));
         }
     }
 
@@ -1544,6 +1578,33 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     }
 
+    static void validateCustomSingleCategory(ClassifySingleCategoryResult documentResult) {
+        assertNotNull(documentResult.getId());
+        if (documentResult.isError()) {
+            assertNotNull(documentResult.getError());
+        } else {
+            assertNull(documentResult.getError());
+            validateDocumentClassification(documentResult.getDocumentClassification());
+        }
+    }
+
+    static void validateCustomMultiCategories(ClassifyMultiCategoriesResult documentResult) {
+        assertNotNull(documentResult.getId());
+        if (documentResult.isError()) {
+            assertNotNull(documentResult.getError());
+        } else {
+            assertNull(documentResult.getError());
+            for (DocumentClassification documentClassification : documentResult.getDocumentClassifications()) {
+                validateDocumentClassification(documentClassification);
+            }
+        }
+    }
+
+    static void validateDocumentClassification(DocumentClassification documentClassification) {
+        assertNotNull(documentClassification.getCategory());
+        assertNotNull(documentClassification.getConfidenceScore());
+    }
+
     // Healthcare task
     static void validateHealthcareEntity(HealthcareEntity expected, HealthcareEntity actual) {
         assertEquals(expected.getCategory(), actual.getCategory());
@@ -1671,7 +1732,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Action results validation
     static void validateRecognizeEntitiesActionResults(boolean showStatistics,
         List<RecognizeEntitiesActionResult> expected, List<RecognizeEntitiesActionResult> actual) {
-        assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             validateRecognizeEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }

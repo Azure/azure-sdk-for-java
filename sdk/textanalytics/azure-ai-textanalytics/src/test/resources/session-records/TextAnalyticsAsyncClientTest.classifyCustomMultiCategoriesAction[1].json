@@ -1,0 +1,64 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.2-preview.2/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b1bcce6-fe98-4449-aea4-e2ede923e94f",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "863",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://cognitiveweppe.azure-api.net/text/analytics/v3.2-preview.2/analyze/jobs/b2dae4ef-08c4-46bf-bd90-b421bc452369",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "53ce5509-c0b7-43ea-ae6c-b7fee132d6e7",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Wed, 22 Sep 2021 01:46:06 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.2-preview.2/analyze/jobs/b2dae4ef-08c4-46bf-bd90-b421bc452369?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "69702242-6010-4968-a1e9-7ec4b04281e3"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "135",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "c7997d50-6ef2-437b-8bac-38a1974da1f8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b2dae4ef-08c4-46bf-bd90-b421bc452369\",\"lastUpdateDateTime\":\"2021-09-22T01:46:07Z\",\"createdDateTime\":\"2021-09-22T01:46:06Z\",\"expirationDateTime\":\"2021-09-23T01:46:06Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"customMultiClassificationTasks\":[{\"lastUpdateDateTime\":\"2021-09-22T01:46:07.5680383Z\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"classifications\":[{\"category\":\"BookRestaurant\",\"confidenceScore\":0.97}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"7cdace98-537b-494a-b69a-c19754718025\",\"deploymentName\":\"7cdace98-537b-494a-b69a-c19754718025\"}}]}}",
+      "Date" : "Wed, 22 Sep 2021 01:46:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.2-preview.2/analyze/jobs/b2dae4ef-08c4-46bf-bd90-b421bc452369?showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.2 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1b269500-b235-41b2-9f14-0e69ec0055cd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "242",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "3242f2f5-f19a-4b89-b423-3de0c8903acb",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"b2dae4ef-08c4-46bf-bd90-b421bc452369\",\"lastUpdateDateTime\":\"2021-09-22T01:46:07Z\",\"createdDateTime\":\"2021-09-22T01:46:06Z\",\"expirationDateTime\":\"2021-09-23T01:46:06Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"NA\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"customMultiClassificationTasks\":[{\"lastUpdateDateTime\":\"2021-09-22T01:46:07.5680383Z\",\"state\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"classifications\":[{\"category\":\"BookRestaurant\",\"confidenceScore\":0.97}],\"warnings\":[]}],\"errors\":[],\"projectName\":\"7cdace98-537b-494a-b69a-c19754718025\",\"deploymentName\":\"7cdace98-537b-494a-b69a-c19754718025\"}}]}}",
+      "Date" : "Wed, 22 Sep 2021 01:46:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -112,6 +112,19 @@ final class TestUtils {
     static final String FAKE_API_KEY = "1234567890";
     static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
 
+    static final List<String> CUSTOM_ENTITIES_INPUT = asList(
+        "David Schmidt, senior vice president--Food Safety, International Food Information Council (IFIC), Washington,"
+            + " D.C., discussed the physical activity component.");
+
+    static final List<String> CUSTOM_SINGLE_CLASSIFICATION = asList(
+        "A recent report by the Government Accountability Office (GAO) found that the dramatic increase in oil"
+            + " and natural gas development on federal lands over the past six years has stretched the staff of "
+            + "the BLM to a point that it has been unable to meet its environmental protection responsibilities.");
+
+    static final List<String> CUSTOM_MULTI_CLASSIFICATION = asList(
+        "I need a reservation for an indoor restaurant in China. Please don't stop the music. Play music and add"
+            + " it to my playlist");
+
     static final List<String> SUMMARY_INPUTS = asList(
         "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
             + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI "
