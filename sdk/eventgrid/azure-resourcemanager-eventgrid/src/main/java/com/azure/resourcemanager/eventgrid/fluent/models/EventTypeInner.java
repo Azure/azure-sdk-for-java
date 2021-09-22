@@ -5,41 +5,30 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Event Type for a subject under a topic. */
-@JsonFlatten
 @Fluent
-public class EventTypeInner extends ProxyResource {
+public final class EventTypeInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventTypeInner.class);
 
     /*
-     * Display name of the event type.
+     * Properties of the event type.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private EventTypeProperties innerProperties;
 
-    /*
-     * Description of the event type.
+    /**
+     * Get the innerProperties property: Properties of the event type.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Url of the schema for this event type.
-     */
-    @JsonProperty(value = "properties.schemaUrl")
-    private String schemaUrl;
-
-    /*
-     * IsInDefaultSet flag of the event type.
-     */
-    @JsonProperty(value = "properties.isInDefaultSet")
-    private Boolean isInDefaultSet;
+    private EventTypeProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the event type.
@@ -47,7 +36,7 @@ public class EventTypeInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -57,7 +46,10 @@ public class EventTypeInner extends ProxyResource {
      * @return the EventTypeInner object itself.
      */
     public EventTypeInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventTypeProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -67,7 +59,7 @@ public class EventTypeInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -77,7 +69,10 @@ public class EventTypeInner extends ProxyResource {
      * @return the EventTypeInner object itself.
      */
     public EventTypeInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventTypeProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -87,7 +82,7 @@ public class EventTypeInner extends ProxyResource {
      * @return the schemaUrl value.
      */
     public String schemaUrl() {
-        return this.schemaUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().schemaUrl();
     }
 
     /**
@@ -97,7 +92,10 @@ public class EventTypeInner extends ProxyResource {
      * @return the EventTypeInner object itself.
      */
     public EventTypeInner withSchemaUrl(String schemaUrl) {
-        this.schemaUrl = schemaUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventTypeProperties();
+        }
+        this.innerProperties().withSchemaUrl(schemaUrl);
         return this;
     }
 
@@ -107,7 +105,7 @@ public class EventTypeInner extends ProxyResource {
      * @return the isInDefaultSet value.
      */
     public Boolean isInDefaultSet() {
-        return this.isInDefaultSet;
+        return this.innerProperties() == null ? null : this.innerProperties().isInDefaultSet();
     }
 
     /**
@@ -117,7 +115,10 @@ public class EventTypeInner extends ProxyResource {
      * @return the EventTypeInner object itself.
      */
     public EventTypeInner withIsInDefaultSet(Boolean isInDefaultSet) {
-        this.isInDefaultSet = isInDefaultSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventTypeProperties();
+        }
+        this.innerProperties().withIsInDefaultSet(isInDefaultSet);
         return this;
     }
 
@@ -127,5 +128,8 @@ public class EventTypeInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

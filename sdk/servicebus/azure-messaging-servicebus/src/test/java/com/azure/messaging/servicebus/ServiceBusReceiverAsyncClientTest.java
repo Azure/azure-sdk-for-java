@@ -202,7 +202,7 @@ class ServiceBusReceiverAsyncClientTest {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
         receiver.close();
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

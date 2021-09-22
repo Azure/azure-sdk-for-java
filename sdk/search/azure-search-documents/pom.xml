@@ -107,6 +107,7 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
                 --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
