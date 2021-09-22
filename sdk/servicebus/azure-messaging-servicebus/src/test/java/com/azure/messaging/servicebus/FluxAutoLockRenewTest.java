@@ -98,7 +98,7 @@ public class FluxAutoLockRenewTest {
 
     @AfterEach
     void teardown() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

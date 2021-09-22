@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
@@ -452,6 +453,7 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
+        int retryCount = Configs.getOpenConnectionsRetriesCount();
 
         if(isInitialized.compareAndSet(false, true)) {
             return this.getFeedRanges().flatMap(feedRanges -> {
@@ -460,13 +462,17 @@ public class CosmosAsyncContainer {
                 querySpec.setQueryText("select * from c where c.id = @id");
                 querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
                     UUID.randomUUID().toString())));
-                for (FeedRange feedRange : feedRanges) {
-                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                    options.setFeedRange(feedRange);
-                    CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                        ObjectNode.class);
-                    fluxList.add(cosmosPagedFlux.byPage());
+
+                for (int i = 0; i < retryCount; i++) {
+                    for (FeedRange feedRange : feedRanges) {
+                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                        options.setFeedRange(feedRange);
+                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+                            ObjectNode.class);
+                        fluxList.add(cosmosPagedFlux.byPage());
+                    }
                 }
+
                 Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
                 return listMono.flatMap(objects -> Mono.empty());
             });
