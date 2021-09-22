@@ -32,6 +32,16 @@
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
 
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
+    </javaModulesSurefireArgLine>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -136,23 +146,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <properties>
-        <javaModulesSurefireArgLine>
-          --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
-          --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
-
-          --add-reads com.azure.core.test=ALL-UNNAMED
-          --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
-          --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
-        </javaModulesSurefireArgLine>
-      </properties>
-    </profile>
-  </profiles>
 </project>

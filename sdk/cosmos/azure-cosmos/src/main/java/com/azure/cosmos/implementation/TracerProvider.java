@@ -47,8 +47,6 @@ public class TracerProvider {
     public final static String DB_INSTANCE = "db.instance";
     public final static String DB_URL = "db.url";
     public static final String DB_STATEMENT = "db.statement";
-    public static final String ERROR_MSG = "error.msg";
-    public static final String ERROR_TYPE = "error.type";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
@@ -230,16 +228,8 @@ public class TracerProvider {
                 }
             }).doOnError(throwable -> {
                 if (isEnabled() && !isNestedCall) {
-                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-                    if (unwrappedException instanceof CosmosException) {
-                        CosmosException dce = (CosmosException) unwrappedException;
-                        try {
-                            addDiagnosticsOnTracerEvent(dce.getDiagnostics(), parentContext.get());
-                        } catch (JsonProcessingException ex) {
-                            LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                        }
-                    }
-
+                    // not adding diagnostics on trace event for exception as this information is already there as
+                    // part of exception message
                     this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });
@@ -289,8 +279,13 @@ public class TracerProvider {
 
     private void end(int statusCode, Throwable throwable, Context context) {
         if (throwable != null) {
-            tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
-            tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+            if (throwable instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) throwable;
+                if (statusCode == HttpConstants.StatusCodes.NOTFOUND && cosmosException.getSubStatusCode() == 0) {
+                    tracer.end(statusCode, null, context);
+                    return;
+                }
+            }
         }
         tracer.end(statusCode, throwable, context);
     }

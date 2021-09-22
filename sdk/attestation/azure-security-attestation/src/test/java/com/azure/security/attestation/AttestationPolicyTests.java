@@ -42,7 +42,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
 
         PolicyResponse policyResponse = attestationBuilder.buildPolicyClient().get(attestationType);
 
@@ -54,7 +54,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildPolicyAsyncClient().get(attestationType))
             .assertNext(response -> assertDoesNotThrow(() -> verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, response)))
@@ -85,7 +85,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyClient client = attestationBuilder.buildPolicyClient();
 
         String signingCertificateBase64 = getIsolatedSigningCertificate();
@@ -133,7 +133,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyAsyncClient client = attestationBuilder.buildPolicyAsyncClient();
 
         String signingCertificateBase64 = getIsolatedSigningCertificate();

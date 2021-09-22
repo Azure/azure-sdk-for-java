@@ -16,14 +16,7 @@ import java.io.IOException;
  * Tests for {@link Option} that can represent tri-sate (non-null-value, null-value, or no-value).
  */
 public class OptionSerializerTests {
-    private static final JacksonAdapter ADAPTER;
-
-    static {
-        JacksonAdapter adapter = new JacksonAdapter();
-        adapter.serializer().registerModule(new OptionModule());
-
-        ADAPTER = adapter;
-    }
+    private static final JacksonAdapter ADAPTER = new JacksonAdapter((outerMapper, innerMapper) -> outerMapper.registerModule(new OptionModule()));
 
     @Test
     public void canSerializeExplicitNull() throws IOException {
