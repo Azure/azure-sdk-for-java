@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.util.Assert;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.EMPTY_LABEL;
 
 /**
  * Properties on what Triggers are checked before a refresh is triggered.
@@ -16,8 +17,6 @@ public final class AppConfigurationStoreTrigger {
     private String key;
 
     private String label;
-    
-    private static final String EMPTY_LABEL = "\0";
 
     /**
      * @return the key
@@ -59,7 +58,7 @@ public final class AppConfigurationStoreTrigger {
         }
         return key + "/" + label;
     }
-    
+
     private String mapLabel(String label) {
         if (label == null || label.equals("")) {
             return EMPTY_LABEL;

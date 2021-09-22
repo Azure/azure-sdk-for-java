@@ -5,7 +5,7 @@ package com.azure.spring.cloud.config;
 /**
  * Constants used for processing Azure App Configuration Config info.
  */
-public class Constants {
+public class AppConfigurationConstants {
 
     public static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
 
@@ -19,4 +19,14 @@ public class Constants {
     public static final String FEATURE_STORE_SUFFIX = ".appconfig";
 
     public static final String FEATURE_STORE_WATCH_KEY = FEATURE_STORE_SUFFIX + "*";
+    
+    public static final String DEV_ENV_TRACING = "Dev";
+    
+    public static final String KEY_VAULT_CONFIGURED_TRACING = "UsesKeyVault";
+    
+    public static final String USER_AGENT_TYPE = "User-Agent";
+    
+    public static final String CORRELATION_CONTEXT = "Correlation-Context";
+    
+    public static final String EMPTY_LABEL = "\0";
 }
