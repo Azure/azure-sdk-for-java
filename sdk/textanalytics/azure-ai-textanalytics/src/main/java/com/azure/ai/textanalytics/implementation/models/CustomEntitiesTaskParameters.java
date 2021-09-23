@@ -11,15 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomEntitiesTaskParameters {
     /*
-     * The projectName property.
+     * The project-name property.
      */
-    @JsonProperty(value = "projectName", required = true)
+    @JsonProperty(value = "project-name", required = true)
     private String projectName;
 
     /*
-     * The deploymentName property.
+     * The deployment-name property.
      */
-    @JsonProperty(value = "deploymentName", required = true)
+    @JsonProperty(value = "deployment-name", required = true)
     private String deploymentName;
 
     /*
@@ -35,7 +35,7 @@ public final class CustomEntitiesTaskParameters {
     private StringIndexType stringIndexType;
 
     /**
-     * Get the projectName property: The projectName property.
+     * Get the projectName property: The project-name property.
      *
      * @return the projectName value.
      */
@@ -44,7 +44,7 @@ public final class CustomEntitiesTaskParameters {
     }
 
     /**
-     * Set the projectName property: The projectName property.
+     * Set the projectName property: The project-name property.
      *
      * @param projectName the projectName value to set.
      * @return the CustomEntitiesTaskParameters object itself.
@@ -55,7 +55,7 @@ public final class CustomEntitiesTaskParameters {
     }
 
     /**
-     * Get the deploymentName property: The deploymentName property.
+     * Get the deploymentName property: The deployment-name property.
      *
      * @return the deploymentName value.
      */
@@ -64,7 +64,7 @@ public final class CustomEntitiesTaskParameters {
     }
 
     /**
-     * Set the deploymentName property: The deploymentName property.
+     * Set the deploymentName property: The deployment-name property.
      *
      * @param deploymentName the deploymentName value to set.
      * @return the CustomEntitiesTaskParameters object itself.
