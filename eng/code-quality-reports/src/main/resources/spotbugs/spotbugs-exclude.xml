@@ -1883,13 +1883,19 @@
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
+  <!-- Exception in AutoCloseable.close is ignored -->
+  <Match>
+    <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy$ScalarPropagatingMono"/>
+    <Method name="subscribe"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
     <Method name="verify"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
-
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9104 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.StringPartitionKeyComponent"/>
