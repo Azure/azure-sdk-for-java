@@ -261,7 +261,6 @@ public class AttestationTest extends AttestationClientTestBase {
                 })
                 // Only validate time based properties when not in PLAYBACK mode. PLAYBACK mode has these values
                 // hard-coded into the session record.
-                .setValidateNotBefore(getTestMode() != TestMode.PLAYBACK)
                 .setValidateExpiresOn(getTestMode() != TestMode.PLAYBACK));
 
         StepVerifier.create(client.attestSgxEnclave(request))
