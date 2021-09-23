@@ -258,7 +258,11 @@ public class AttestationTest extends AttestationClientTestBase {
                         }
                         logger.info(String.format("Issuer of signing certificate is: %s", signer.getCertificates().get(0).getIssuerDN().getName()));
                     }
-                }));
+                })
+                // Only validate time based properties when not in PLAYBACK mode. PLAYBACK mode has these values
+                // hard-coded into the session record.
+                .setValidateNotBefore(getTestMode() != TestMode.PLAYBACK)
+                .setValidateExpiresOn(getTestMode() != TestMode.PLAYBACK));
 
         StepVerifier.create(client.attestSgxEnclave(request))
             .assertNext(result -> {
