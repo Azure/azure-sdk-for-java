@@ -138,11 +138,8 @@
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
 
-<<<<<<< HEAD
-=======
     <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
     <parallelizeTests>true</parallelizeTests>
->>>>>>> upstream/main
   </properties>
 
   <build>
