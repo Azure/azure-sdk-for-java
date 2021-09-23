@@ -51,8 +51,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private final Tracer tracer;
 
     /**
-     * Creates new OpenTelemetry {@code HttpPipelinePolicy} with default global tracer
-     * {@code GlobalOpenTelemetry.getTracer}
+     * Creates new OpenTelemetry {@linkHttpPipelinePolicy} with default 
+     * {@link GlobalOpenTelemetry#getTracer(String) global tracer}
      */
     public OpenTelemetryHttpPolicy() {
         this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
