@@ -47,7 +47,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         return this;
     }
 
-    // Singleton OpenTelemetry tracer capable of starting and exporting spans.
+    // OpenTelemetry tracer capable of starting and exporting spans.
     private final Tracer tracer;
 
     /**
