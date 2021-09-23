@@ -64,7 +64,7 @@ public class HttpProxyHandlerTests {
 
     @AfterEach
     public void cleanupInlineMocks() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

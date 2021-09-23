@@ -634,4 +634,8 @@ the main ServiceBusClientBuilder. -->
   <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
+            
+  <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
+  <suppress checks="VisibilityModifier"
+            files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>
 </suppressions>

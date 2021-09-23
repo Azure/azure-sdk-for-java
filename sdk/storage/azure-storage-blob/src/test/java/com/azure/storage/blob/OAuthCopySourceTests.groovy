@@ -1,6 +1,7 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.HttpAuthorization
+import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.storage.blob.models.BlobStorageException
@@ -13,6 +14,7 @@ import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.blob.specialized.PageBlobClient
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
+import spock.lang.Retry
 
 @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
 class OAuthCopySourceTests extends APISpec {
@@ -38,6 +40,8 @@ class OAuthCopySourceTests extends APISpec {
         pageBlobClient.create(PageBlobClient.PAGE_BYTES)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "Append blob append block from URL source oauth"() {
         setup:
         def sourceBlob = cc.getBlobClient(generateBlobName())
@@ -70,6 +74,8 @@ class OAuthCopySourceTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "Block blob upload from URL source oauth"() {
         setup:
         def oauthHeader = getAuthToken()
@@ -100,6 +106,8 @@ class OAuthCopySourceTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "Block blob stage block from URL source oauth"() {
         setup:
         def oauthHeader = getAuthToken()
@@ -133,6 +141,8 @@ class OAuthCopySourceTests extends APISpec {
         thrown(BlobStorageException)
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "Upload pages from URL source oauth"() {
         setup:
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)

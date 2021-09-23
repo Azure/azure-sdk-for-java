@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug where composite BlobServiceException wasn't translated into DataLakeServiceException.
 
 ### Other Changes
 
