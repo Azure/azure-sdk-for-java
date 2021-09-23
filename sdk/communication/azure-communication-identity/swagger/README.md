@@ -8,7 +8,7 @@ To build the SDK for Communication Identity library, simply Install AutoRest and
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout main
+git checkout v4
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install

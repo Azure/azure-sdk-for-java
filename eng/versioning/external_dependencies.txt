@@ -267,6 +267,10 @@ org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 
+## Bom generator
+org.slf4j:slf4j-log4j12;1.7.5
+org.apache.maven:maven-core;3.5.4
+
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
 # what was defined in the parent pom.

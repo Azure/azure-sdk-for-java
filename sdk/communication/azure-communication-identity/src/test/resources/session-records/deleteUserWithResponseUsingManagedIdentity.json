@@ -11,33 +11,33 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 10 Mar 2021 19:01:37 GMT",
+      "Date" : "Wed, 10 Mar 2021 18:52:53 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "166ms",
-      "MS-CV" : "GErjZfdFEE2bKcIzmp0mcA.0",
-      "X-Azure-Ref" : "0kRdJYAAAAACDlXqyhR9ZQpbCJDK6Wv5mWVZSMzBFREdFMDQwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000008-bd65-b42e-71bf-a43a0d000d25\"}}",
-      "x-ms-client-request-id" : "053b45c6-837a-4d50-96fb-1e39900aac5d",
+      "X-Processing-Time" : "210ms",
+      "MS-CV" : "4gsvP+2yrk+xWdVrQH8vBA.0",
+      "X-Azure-Ref" : "0hRVJYAAAAABVagWnumKoSKkHZzL13uubWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000008-bd5d-b737-740a-113a0d00a9c9\"}}",
+      "x-ms-client-request-id" : "12213a2e-af68-4e50-b3b1-0d14d0902d63",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000008-bd65-b42e-71bf-a43a0d000d25?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000008-bd5d-b737-740a-113a0d00a9c9?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.0.0-beta.7 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "570ms",
-      "MS-CV" : "G3pJhmrQ5Eyko/7WHMEZEg.0",
+      "X-Processing-Time" : "889ms",
+      "MS-CV" : "rE/gMYNM7kil25Idr1/dxg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0kRdJYAAAAAB96Mmi1itGQrhO1zPJ18uzWVZSMzBFREdFMDQwOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0hhVJYAAAAACD1BMj10y2RLFEz5CRXnnjWVZSMzBFREdFMDQxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "e970ba17-4973-4bf9-b4af-e2217b1795fb",
-      "Date" : "Wed, 10 Mar 2021 19:01:38 GMT",
+      "x-ms-client-request-id" : "eb5d6514-8367-4ffa-86d1-2a07de16dcb3",
+      "Date" : "Wed, 10 Mar 2021 18:52:55 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null
