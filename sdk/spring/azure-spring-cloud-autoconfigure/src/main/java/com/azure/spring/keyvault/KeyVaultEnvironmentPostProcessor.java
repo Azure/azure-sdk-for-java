@@ -125,7 +125,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         secretProperties.setServiceVersion(propertySource.getServiceVersion());
         secretProperties.setVaultUrl(propertySource.getVaultUrl());
 
-        final SecretClient secretClient = new SecretClientBuilderFactory(secretProperties, null).build().buildClient();
+        final SecretClient secretClient = new SecretClientBuilderFactory(secretProperties).build().buildClient();
         try {
             final MutablePropertySources sources = environment.getPropertySources();
             final boolean caseSensitive = Boolean.TRUE.equals(propertySource.getCaseSensitive());

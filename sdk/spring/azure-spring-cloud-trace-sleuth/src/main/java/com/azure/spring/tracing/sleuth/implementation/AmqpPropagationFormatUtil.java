@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.spring.tracing.sleuth.implementation;
 
 import com.azure.core.util.Context;
@@ -42,16 +43,16 @@ public final class AmqpPropagationFormatUtil {
     }
 
     /**
-     * The trace-parent HTTP header field identifies the incoming request in a tracing system with four fields:
-     * version, trace-id, parent-id, trace-flags.
+     * The trace-parent HTTP header field identifies the incoming request in a tracing system with four fields: version,
+     * trace-id, parent-id, trace-flags.
      * <p>
-     * Please refer to the <a href=https://www.w3.org/TR/trace-context/#traceparent-header>Trace-parent Header</a>
-     * for more information on the conversion of these fields to Span Context format.
+     * Please refer to the <a href=https://www.w3.org/TR/trace-context/#traceparent-header>Trace-parent Header</a> for
+     * more information on the conversion of these fields to Span Context format.
      *
-     * @param traceContext is a specification defines an agreed-upon format for the exchange of trace context propagation
-     * data.
-     * @return The diagnostic Id providing an unique identifier for individual traces and requests,
-     * allowing trace data of multiple providers to be linked together.
+     * @param traceContext is a specification defines an agreed-upon format for the exchange of trace context
+     * propagation data.
+     * @return The diagnostic Id providing an unique identifier for individual traces and requests, allowing trace data
+     * of multiple providers to be linked together.
      * @throws NullPointerException if {@code traceContext} is {@code null}.
      */
     public static String getDiagnosticId(TraceContext traceContext) {
@@ -79,19 +80,20 @@ public final class AmqpPropagationFormatUtil {
 
         chars[TRACE_OPTION_OFFSET - 1] = TRACEPARENT_DELIMITER;
 
-        // TODO DiagnosticId, is required for Sleuth? No getTraceFlags method in TraceContext. Or it can come from tags
-//        String traceFlagsHex = traceContext.getTraceFlags().asHex();
-//        chars[TRACE_OPTION_OFFSET] = traceFlagsHex.charAt(0);
-//        chars[TRACE_OPTION_OFFSET + 1] = traceFlagsHex.charAt(1);
+        // TODO(moaryc): DiagnosticId, is required for Sleuth? No getTraceFlags method in TraceContext. Or it can
+        //  come from tags
+        //        String traceFlagsHex = traceContext.getTraceFlags().asHex();
+        //        chars[TRACE_OPTION_OFFSET] = traceFlagsHex.charAt(0);
+        //        chars[TRACE_OPTION_OFFSET + 1] = traceFlagsHex.charAt(1);
         return new String(chars, 0, TRACEPARENT_HEADER_SIZE);
     }
 
     /**
-     * The trace-parent HTTP header field identifies the incoming request in a tracing system with four fields:
-     * version, trace-id, parent-id, trace-flags.
+     * The trace-parent HTTP header field identifies the incoming request in a tracing system with four fields: version,
+     * trace-id, parent-id, trace-flags.
      * <p>
-     * Please refer to the <a href=https://www.w3.org/TR/trace-context/#traceparent-header>Trace-parent Header</a>
-     * for more information on the conversion of these fields to Span Context format.
+     * Please refer to the <a href=https://www.w3.org/TR/trace-context/#traceparent-header>Trace-parent Header</a> for
+     * more information on the conversion of these fields to Span Context format.
      *
      * @param traceparent provides a unique identifier for individual traces and requests,
      * @return SpanContext is a specification defines an agreed-upon format for the exchange of trace context

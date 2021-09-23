@@ -19,7 +19,7 @@
 
   <properties>
     <jacoco.min.linecoverage>0.09</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.14</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -43,6 +43,12 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.13.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
 

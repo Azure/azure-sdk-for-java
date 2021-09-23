@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -14,7 +13,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -91,9 +89,8 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(AzureStorageBlobProperties properties,
-                                                                           ObjectProvider<HttpPipelinePolicy> policies) {
-        return new BlobServiceClientBuilderFactory(properties, policies);
+    public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(AzureStorageBlobProperties properties) {
+        return new BlobServiceClientBuilderFactory(properties);
     }
 
     @Bean

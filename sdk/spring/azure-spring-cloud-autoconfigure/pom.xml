@@ -260,6 +260,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-sleuth-autoconfigure</artifactId>
+      <version>3.0.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-sleuth-autoconfigure;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
       <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
@@ -359,6 +366,7 @@
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-test:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-sleuth-autoconfigure:[3.0.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-sleuth-autoconfigure;external_dependency} -->
                 <include>org.springframework.data:spring-data-mongodb:[3.2.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[2.5.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.7.6]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->

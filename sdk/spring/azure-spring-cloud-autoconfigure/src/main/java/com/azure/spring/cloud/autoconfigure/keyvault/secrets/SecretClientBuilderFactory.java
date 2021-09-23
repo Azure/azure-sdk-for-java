@@ -5,18 +5,15 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Collections;
@@ -31,12 +28,9 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     private static final Logger LOGGER = LoggerFactory.getLogger(SecretClientBuilderFactory.class);
 
     private final AzureKeyVaultSecretProperties secretProperties;
-    private final ObjectProvider<HttpPipelinePolicy> policies;
 
-    public SecretClientBuilderFactory(AzureKeyVaultSecretProperties keyVaultProperties,
-                                      ObjectProvider<HttpPipelinePolicy> policies) {
+    public SecretClientBuilderFactory(AzureKeyVaultSecretProperties keyVaultProperties) {
         this.secretProperties = keyVaultProperties;
-        this.policies = policies;
     }
 
     @Override
@@ -88,15 +82,4 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
         return (a, b) -> { };
     }
 
-    @Override
-    protected List<AzureServiceClientBuilderCustomizer<SecretClientBuilder>> getBuilderCustomizers() {
-        if (policies == null) {
-            return super.getBuilderCustomizers();
-        }
-        return Collections.singletonList(
-            builder -> policies.orderedStream()
-                               .filter(p -> p instanceof AfterRetryPolicyProvider)
-                               .findFirst()
-                               .ifPresent(builder::addPolicy));
-    }
 }

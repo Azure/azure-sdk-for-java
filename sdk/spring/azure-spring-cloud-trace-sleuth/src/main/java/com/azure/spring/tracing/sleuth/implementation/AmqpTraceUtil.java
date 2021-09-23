@@ -8,7 +8,8 @@ import org.springframework.util.StringUtils;
 
 public final class AmqpTraceUtil {
 
-    private AmqpTraceUtil() { }
+    private AmqpTraceUtil() {
+    }
 
     /**
      * Parses a Sleuth Status from AMQP Error Condition.

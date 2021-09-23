@@ -14,8 +14,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.spring.tracing.sleuth.implementation.HttpTraceUtil;
 import org.springframework.cloud.sleuth.Span;
+import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.propagation.Propagator;
 import org.springframework.core.Ordered;
+import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
@@ -26,6 +29,7 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.isValid;
 
 /**
  * Pipeline policy that creates a Sleuth span which traces the service request.
@@ -47,6 +51,7 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
 
     // Singleton Sleuth tracer capable of starting and exporting spans.
     private final Tracer tracer;
+    private final Propagator propagator;
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -55,8 +60,11 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
     private static final String HTTP_STATUS_CODE = "http.status_code";
     private static final String REQUEST_ID = "x-ms-request-id";
 
-    public SleuthHttpPolicy(Tracer tracer) {
+    public SleuthHttpPolicy(Tracer tracer, Propagator propagator) {
+        Assert.notNull(tracer, "tracer must not be null!");
+        Assert.notNull(propagator, "propagator must not be null!");
         this.tracer = tracer;
+        this.propagator = propagator;
     }
 
     @Override
@@ -64,7 +72,7 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
         if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
             return next.process();
         }
-
+        //        tracer.getBaggage()
         Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(tracer.currentSpan());
         HttpRequest request = context.getHttpRequest();
 
@@ -72,7 +80,7 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
 
         Span.Builder spanBuilder = tracer.spanBuilder().name(urlBuilder.getPath())
-                                        .setParent(parentSpan.context());
+                                         .setParent(parentSpan.context());
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
         spanBuilder.kind(Span.Kind.CLIENT);
@@ -85,14 +93,20 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
             addSpanRequestAttributes(span, request, context); // Adds HTTP method, URL, & user-agent
         }
 
+        // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
+        TraceContext traceContext = span.context();
+        if (isValid(traceContext)) {
+            propagator.inject(traceContext, request, contextSetter);
+        }
+
         // run the next policy and handle success and error
         return next.process()
-            .doOnEach(SleuthHttpPolicy::handleResponse)
-            .contextWrite(Context.of("TRACING_SPAN", span, "REQUEST", request));
+                   .doOnEach(SleuthHttpPolicy::handleResponse)
+                   .contextWrite(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request,
-        HttpPipelineCallContext context) {
+                                                 HttpPipelineCallContext context) {
         putTagIfNotEmptyOrNull(span, HTTP_USER_AGENT,
             request.getHeaders().getValue("User-Agent"));
         putTagIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
@@ -146,6 +160,7 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
 
     /**
      * Sets status information and ends the span.
+     *
      * @param span Span to end.
      * @param response Response from the service.
      * @param error Potential error returned from the service.
@@ -167,4 +182,8 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
         // Ending the span schedules it for export if sampled in or just ignores it if sampled out.
         span.end();
     }
+
+    // lambda that actually injects arbitrary header into the request
+    private final Propagator.Setter<HttpRequest> contextSetter =
+        (request, key, value) -> request.getHeaders().set(key, value);
 }

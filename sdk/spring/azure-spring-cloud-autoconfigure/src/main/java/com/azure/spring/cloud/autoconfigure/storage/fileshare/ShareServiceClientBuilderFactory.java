@@ -5,23 +5,19 @@ package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.autoconfigure.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -37,12 +33,9 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBui
     private static final Logger LOGGER = LoggerFactory.getLogger(ShareServiceClientBuilderFactory.class);
 
     private final AzureStorageFileShareProperties fileShareProperties;
-    private final ObjectProvider<HttpPipelinePolicy> policies;
 
-    public ShareServiceClientBuilderFactory(AzureStorageFileShareProperties fileShareProperties,
-                                            ObjectProvider<HttpPipelinePolicy> policies) {
+    public ShareServiceClientBuilderFactory(AzureStorageFileShareProperties fileShareProperties) {
         this.fileShareProperties = fileShareProperties;
-        this.policies = policies;
     }
 
     @Override
@@ -99,17 +92,5 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBui
     @Override
     protected String getApplicationId() {
         return AZURE_SPRING_STORAGE_FILES + VERSION;
-    }
-
-    @Override
-    protected List<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>> getBuilderCustomizers() {
-        if (policies == null) {
-            return super.getBuilderCustomizers();
-        }
-        return Collections.singletonList(
-            builder -> policies.orderedStream()
-                               .filter(p -> p instanceof AfterRetryPolicyProvider)
-                               .findFirst()
-                               .ifPresent(builder::addPolicy));
     }
 }

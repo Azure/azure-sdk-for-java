@@ -16,6 +16,8 @@ import org.springframework.cloud.sleuth.CurrentTraceContext;
 import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.cloud.sleuth.propagation.Propagator;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.time.Instant;
@@ -30,17 +32,22 @@ import java.util.Optional;
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
  * context propagation. Accepted Sleuth tracer capable of starting and exporting spans.
  * <p>
- * This helper class will not support W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP and AMQP
- * requests.
+ * This helper class will not support W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP
+ * and AMQP requests.
  */
 public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
 
     private final Tracer tracer;
     private final CurrentTraceContext currentTraceContext;
+    private final Propagator propagator;
 
-    public SleuthTracer(Tracer tracer, CurrentTraceContext currentTraceContext) {
+    public SleuthTracer(Tracer tracer, CurrentTraceContext currentTraceContext, Propagator propagator) {
+        Assert.notNull(tracer, "tracer must not be null!");
+        Assert.notNull(currentTraceContext, "currentTraceContext must not be null!");
+        Assert.notNull(propagator, "propagator must not be null!");
         this.tracer = tracer;
         this.currentTraceContext = currentTraceContext;
+        this.propagator = propagator;
     }
 
     static final String AZ_NAMESPACE_KEY = "az.namespace";
@@ -50,7 +57,8 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
     static final String PEER_ENDPOINT = "peer.address";
 
     private final ClientLogger logger = new ClientLogger(SleuthTracer.class);
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
+    };
 
     /**
      * {@inheritDoc}
@@ -102,7 +110,8 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
                 spanBuilder = createSpanBuilder(spanName, remoteParentContext, SpanKind.CONSUMER, null, context);
                 context = startSpanInternal(spanBuilder, this::addMessagingTags, context);
 
-                // TODO Refer to opentelemetry implementation. We should do this in the EventHub/ServiceBus SDK instead to make sure scope is
+                // TODO(moary): Refer to opentelemetry implementation. We should do this in the EventHub/ServiceBus SDK
+                //  instead to make sure scope is
                 //  closed in the same thread where it was started to prevent leaking the context.
                 return context.addData(SCOPE_KEY, makeSpanCurrent(context));
             default:
@@ -122,7 +131,7 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (!span.isNoop()) {
-             span = HttpTraceUtil.setSpanStatus(span, responseCode, throwable);
+            span = HttpTraceUtil.setSpanStatus(span, responseCode, throwable);
         }
         span.end();
     }
@@ -166,12 +175,13 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (!span.isNoop()) {
-             span = AmqpTraceUtil.parseStatusMessage(span, statusMessage, throwable);
+            span = AmqpTraceUtil.parseStatusMessage(span, statusMessage, throwable);
         }
 
         span.end();
 
-        // TODO (limolkova) TODO Refer to opentelemetry implementation. Remove once ServiceBus/EventHub start making span current explicitly.
+        // TODO (limolkova): Refer to opentelemetry implementation. Remove once ServiceBus/EventHub start making
+        //  span current explicitly.
         endScope(context);
     }
 
@@ -224,7 +234,7 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp,
-        Context context) {
+                         Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
 
         Span currentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
@@ -252,7 +262,7 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
                                  Map<String, Object> traceEventAttributes,
                                  Instant timestamp) {
         currentSpan.event(eventName);
-        Map<String, String> attributes = convertToSleuthAttributes(traceEventAttributes);
+        Map<String, String> attributes = convertToSleuthTags(traceEventAttributes);
         attributes.entrySet().forEach(
             (entry) -> currentSpan.tag(entry.getKey(), entry.getValue()));
         if (timestamp != null) {
@@ -269,8 +279,8 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
      * @return A {@link Context} with created {@link Span}.
      */
     private Context startSpanInternal(Span.Builder spanBuilder,
-        java.util.function.BiConsumer<Span, Context> setAttributes,
-        Context context) {
+                                      java.util.function.BiConsumer<Span, Context> setAttributes,
+                                      Context context) {
         Objects.requireNonNull(spanBuilder, "'spanBuilder' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
@@ -327,12 +337,16 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
             if (parentSpan == null) {
                 parentSpan = tracer.currentSpan();
             }
-            spanBuilder.setParent(parentSpan.context());
+            if (parentSpan != null) {
+                spanBuilder.setParent(parentSpan.context());
+            } else {
+                spanBuilder.setNoParent();
+            }
         }
 
         // if some attributes are provided, set them
         if (!CoreUtils.isNullOrEmpty(beforeSaplingAttributes)) {
-            Map<String, String> attributes = convertToSleuthAttributes(beforeSaplingAttributes);
+            Map<String, String> attributes = convertToSleuthTags(beforeSaplingAttributes);
             attributes.entrySet().forEach(
                 (entry) -> spanBuilder.tag(entry.getKey(), entry.getValue()));
         }
@@ -373,14 +387,14 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Maps span/event properties to Sleuth attributes tagging.
+     * Maps span/event properties to Sleuth tags tagging.
      *
-     * @param attributes the attributes provided by the client SDK's.
+     * @param tags the tags provided by the client SDK's.
      * @return Key value for Brave tagging.
      */
-    private Map<String, String> convertToSleuthAttributes(Map<String, Object> attributes) {
+    private Map<String, String> convertToSleuthTags(Map<String, Object> tags) {
         Map<String, String> attrs = new HashMap<>();
-        attributes.forEach((key, value) -> {
+        tags.forEach((key, value) -> {
             if (value instanceof Boolean
                 || value instanceof String
                 || value instanceof Double
@@ -391,7 +405,7 @@ public class SleuthTracer implements com.azure.core.util.tracing.Tracer {
                 || value instanceof boolean[]) {
                 attrs.put(key, StringUtils.arrayToCommaDelimitedString((Object[]) value));
             } else {
-                logger.warning("Could not populate attribute with key '{}', type is not supported.");
+                logger.warning("Could not populate tags with key '{}', type is not supported.", key);
             }
         });
         return attrs;

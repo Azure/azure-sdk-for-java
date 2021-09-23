@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.queue;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.ConnectionStringProvider;
@@ -59,9 +58,8 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     @Bean
     @ConditionalOnMissingBean
     public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(AzureStorageQueueProperties properties,
-                                                                             ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
-                                                                             ObjectProvider<HttpPipelinePolicy> policies) {
-        final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties, policies);
+                                                                             ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders) {
+        final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
         factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
         return factory;
     }
