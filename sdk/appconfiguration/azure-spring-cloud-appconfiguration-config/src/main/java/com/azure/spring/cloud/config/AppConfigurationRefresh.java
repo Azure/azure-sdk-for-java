@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.health.AppConfigurationStoreHealth;
+import com.azure.spring.cloud.config.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.config.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.config.properties.ConfigStore;
@@ -111,6 +112,7 @@ public class AppConfigurationRefresh implements ApplicationEventPublisherAware {
     private boolean refreshStores() {
         boolean didRefresh = false;
         if (running.compareAndSet(false, true)) {
+            BaseAppConfigurationPolicy.setWatchRequests(true);
             Map<String, AppConfigurationStoreHealth> clientHealthUpdate = new HashMap<>();
             configStores.stream().forEach(store -> {
                 if (getStoreHealthState(store)) {
