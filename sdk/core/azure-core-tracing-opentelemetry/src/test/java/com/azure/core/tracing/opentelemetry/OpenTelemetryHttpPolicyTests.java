@@ -14,7 +14,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;

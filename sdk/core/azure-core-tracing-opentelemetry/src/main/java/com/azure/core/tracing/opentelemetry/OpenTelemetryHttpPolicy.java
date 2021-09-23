@@ -51,7 +51,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private final Tracer tracer;
 
     /**
-     * Creates new OpenTelemetry {@linkHttpPipelinePolicy} with default 
+     * Creates new OpenTelemetry {@link HttpPipelinePolicy} with default
      * {@link GlobalOpenTelemetry#getTracer(String) global tracer}
      */
     public OpenTelemetryHttpPolicy() {

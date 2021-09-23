@@ -39,8 +39,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private final Tracer tracer;
 
     /**
-     * Creates new {@code OpenTelemetryTracer} using default global tracer -
-     * {@code GlobalOpenTelemetry.getTracer()}
+     * Creates new {@link OpenTelemetryTracer} using default global tracer -
+     * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
     public OpenTelemetryTracer() {
@@ -48,10 +48,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Creates new {@code OpenTelemetryTracer} that wraps {@code io.opentelemetry.api.trace.Tracer}.
+     * Creates new {@link OpenTelemetryTracer} that wraps {@link io.opentelemetry.api.trace.Tracer}.
      * Use it for tests.
      *
-     * @param tracer {@code io.opentelemetry.api.trace.Tracer} instance.
+     * @param tracer {@link io.opentelemetry.api.trace.Tracer} instance.
      */
     OpenTelemetryTracer(Tracer tracer) {
         this.tracer = tracer;
@@ -304,14 +304,14 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     /**
      * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent being the designated
-     * {@code Span}.
+     * {@link Span}.
      *
      * @param spanName The name of the returned Span.
      * @param remoteParentContext Remote parent context if any, or {@code null} otherwise.
      * @param spanKind Kind of the span to create.
      * @param beforeSaplingAttributes Optional attributes available when span starts and important for sampling.
      * @param context The context containing the span and the span name.
-     * @return A {@code Span.SpanBuilder} to create and start a new {@code Span}.
+     * @return A {@link SpanBuilder} to create and start a new {@link Span}.
      */
     @SuppressWarnings("unchecked")
     private SpanBuilder createSpanBuilder(String spanName,
@@ -438,7 +438,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts request attributes from the given {@code context} and adds it to the started span.
+     * Extracts request attributes from the given {@link Context} and adds it to the started span.
      *
      * @param span The span to which request attributes are to be added.
      * @param context The context containing the request attributes.
@@ -464,7 +464,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Returns the value of the specified key from the context.
      *
-     * @param key The name of the attribute that needs to be extracted from the {@code Context}.
+     * @param key The name of the attribute that needs to be extracted from the {@link Context}.
      * @param defaultValue the value to return in data not found.
      * @param clazz clazz the type of raw class to find data for.
      * @param context The context containing the specified key.
