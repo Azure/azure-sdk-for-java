@@ -42,14 +42,15 @@ stages:
           groupId: com.azure
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
-      Location: canadacentral
-      CloudConfig:
-        Preview:
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-        PrivatePreview:
-          SubscriptionConfiguration: $(sub-config-storage-test-resources)
-      Clouds: Preview
-      SupportedClouds: Preview
+      SupportedClouds: 'Public,UsGov,China'
+#       Location: canadacentral
+#       CloudConfig:
+#         Preview:
+#           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+#         PrivatePreview:
+#           SubscriptionConfiguration: $(sub-config-storage-test-resources)
+#       Clouds: Preview
+#       SupportedClouds: Preview
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
         mavenOptions: '$(DefaultTestMavenOptions)'
