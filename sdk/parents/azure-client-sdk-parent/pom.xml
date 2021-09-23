@@ -138,9 +138,6 @@
 
     <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
     <parallelizeTests>true</parallelizeTests>
-
-    <!-- This property configures the annotation processing done by the compiler. Defaults to 'none'. -->
-    <compilerAnnotationProcessing>none</compilerAnnotationProcessing>
   </properties>
 
   <build>
@@ -445,9 +442,6 @@
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
             <compilerArgs combine.children="append" combine.self="append">
-              <!-- Turn off annotation processing -->
-              <arg>-proc:${compilerAnnotationProcessing}</arg>
-
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
@@ -859,6 +853,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
+              <release>${java.vm.specification.version}</release>
               <testRelease>${java.vm.specification.version}</testRelease>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -869,9 +864,6 @@
               <!-- compile first with module-info for Java 9+ -->
               <execution>
                 <id>default-compile</id>
-                <configuration>
-                  <release>${java.vm.specification.version}</release>
-                </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
               <execution>

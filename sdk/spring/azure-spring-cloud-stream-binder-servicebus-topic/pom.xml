@@ -21,9 +21,6 @@
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
-
-    <!-- Turn on annotation processing -->
-    <compilerAnnotationProcessing>only</compilerAnnotationProcessing>
   </properties>
 
   <dependencies>
