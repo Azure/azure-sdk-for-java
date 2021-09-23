@@ -64,6 +64,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.8.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
@@ -163,9 +169,6 @@
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <parallel>all</parallel>
-          <systemPropertyVariables>
-            <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-          </systemPropertyVariables>
         </configuration>
       </plugin>
     </plugins>

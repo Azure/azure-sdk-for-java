@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import io.opentelemetry.api.trace.Span;
@@ -25,12 +26,9 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
+import org.junit.jupiter.api.TestInfo;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,16 +45,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OpenTelemetryHttpPolicyTests {
 
     private static final String X_MS_REQUEST_ID = "response id";
+    private static final int RESPONSE_STATUS_CODE = 201;
     private TestExporter exporter;
     private Tracer tracer;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) {
         exporter = new TestExporter();
         SdkTracerProvider otelProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        tracer = OpenTelemetrySdk.builder().setTracerProvider(otelProvider).build().getTracer("TracerSdkTest");
+        tracer = OpenTelemetrySdk.builder().setTracerProvider(otelProvider).build().getTracer(testInfo.getDisplayName());
     }
 
     @Test
@@ -102,7 +101,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("GET", httpAttributes.get("http.method"));
         assertEquals("user-agent", httpAttributes.get("http.user_agent"));
         assertEquals("foo", httpAttributes.get(AZ_TRACING_NAMESPACE_KEY));
-        assertEquals(201L, httpAttributes.get("http.status_code"));
+        assertEquals(Long.valueOf(RESPONSE_STATUS_CODE), httpAttributes.get("http.status_code"));
         assertEquals(X_MS_REQUEST_ID, httpAttributes.get("x-ms-request-id"));
     }
 
@@ -126,56 +125,9 @@ public class OpenTelemetryHttpPolicyTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             HttpHeaders headers = new HttpHeaders()
-                .set("Content-Type", "application/json")
                 .set("x-ms-request-id", X_MS_REQUEST_ID);
 
-            HttpResponse response = new MockHttpResponse(request, headers);
-            return Mono.just(response);
-        }
-    }
-
-    private static class MockHttpResponse extends HttpResponse {
-        private final HttpHeaders headers;
-        private final Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(new byte[0]));
-
-        MockHttpResponse(HttpRequest request, HttpHeaders headers) {
-            super(request);
-            this.headers = headers;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return 201;
-        }
-
-        @Override
-        public String getHeaderValue(String name) {
-            return headers.getValue(name);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return headers;
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return body;
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return FluxUtil.collectBytesInByteBufferStream(body);
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return getBodyAsString(StandardCharsets.UTF_8);
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
+            return Mono.just(new MockHttpResponse(request, RESPONSE_STATUS_CODE, headers));
         }
     }
 

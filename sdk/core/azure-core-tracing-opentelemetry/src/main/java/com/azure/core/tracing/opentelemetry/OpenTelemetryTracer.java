@@ -51,7 +51,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * Creates new {@code OpenTelemetryTracer} that wraps {@code io.opentelemetry.api.trace.Tracer}.
      * Use it for tests.
      *
-     * @param tracer {@code io.opentelemetry.api.trace.Tracer} implementation.
+     * @param tracer {@code io.opentelemetry.api.trace.Tracer} instance.
      */
     OpenTelemetryTracer(Tracer tracer) {
         this.tracer = tracer;
