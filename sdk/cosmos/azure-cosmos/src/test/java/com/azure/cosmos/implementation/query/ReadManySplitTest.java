@@ -111,7 +111,7 @@ public class ReadManySplitTest {
                                                           TriFunction createRequestFunc, Function executeFunc,
                                                           Callable createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
             return new DocumentProducer(client, collectionRid, cosmosQueryRequestOptions, createRequestFunc,
-                executeFunc, targetRange, "testCollectionRid", createRetryPolicyFunc, resourceType,
+                executeFunc, targetRange, "testCollectionLink", createRetryPolicyFunc, resourceType,
                 correlatedActivityId, -1, initialContinuationToken, -1, feedRange);
         }
 
