@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CustomSingleClassificationTaskParameters {
     /*
-     * The projectName property.
+     * The project-name property.
      */
     @JsonProperty(value = "project-name", required = true)
     private String projectName;
 
     /*
-     * The deploymentName property.
+     * The deployment-name property.
      */
     @JsonProperty(value = "deployment-name", required = true)
     private String deploymentName;
@@ -29,7 +29,7 @@ public final class CustomSingleClassificationTaskParameters {
     private Boolean loggingOptOut;
 
     /**
-     * Get the projectName property: The projectName property.
+     * Get the projectName property: The project-name property.
      *
      * @return the projectName value.
      */
@@ -38,7 +38,7 @@ public final class CustomSingleClassificationTaskParameters {
     }
 
     /**
-     * Set the projectName property: The projectName property.
+     * Set the projectName property: The project-name property.
      *
      * @param projectName the projectName value to set.
      * @return the CustomSingleClassificationTaskParameters object itself.
@@ -49,7 +49,7 @@ public final class CustomSingleClassificationTaskParameters {
     }
 
     /**
-     * Get the deploymentName property: The deploymentName property.
+     * Get the deploymentName property: The deployment-name property.
      *
      * @return the deploymentName value.
      */
@@ -58,7 +58,7 @@ public final class CustomSingleClassificationTaskParameters {
     }
 
     /**
-     * Set the deploymentName property: The deploymentName property.
+     * Set the deploymentName property: The deployment-name property.
      *
      * @param deploymentName the deploymentName value to set.
      * @return the CustomSingleClassificationTaskParameters object itself.
