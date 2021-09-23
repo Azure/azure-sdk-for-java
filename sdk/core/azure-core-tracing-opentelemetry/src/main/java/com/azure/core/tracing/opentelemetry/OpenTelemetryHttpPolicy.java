@@ -62,7 +62,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      * Creates new {@code OpenTelemetryHttpPolicy} that uses custom tracer.
      * Use it for tests.
      *
-     * @param tracer {@code io.opentelemetry.api.trace.Tracer} instance.
+     * @param tracer {@link io.opentelemetry.api.trace.Tracer} instance.
      */
     OpenTelemetryHttpPolicy(Tracer tracer) {
         this.tracer = tracer;
