@@ -4,6 +4,8 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.core.experimental.http.DynamicResponse;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import javax.json.Json;
@@ -11,6 +13,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Sample for listing all system scan rulesets using the SystemScanRulesetsBaseClient.
@@ -22,24 +26,21 @@ public class ListAllSystemScanRulesets {
      * @param args Unused arguments to the program.
      */
     public static void main(final String[] args) {
-        SystemScanRulesetsBaseClient client = new PurviewScanningClientBuilder()
+        SystemScanRulesetsClient client = new PurviewScanningClientBuilder()
             .endpoint(System.getenv("SCANNING_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildSystemScanRulesetsBaseClient();
+            .buildSystemScanRulesetsClient();
 
-        DynamicResponse res = client.listAll().send();
-        if (res.getStatusCode() / 100 != 2) {
-            System.out.println("Error code" + res.getStatusCode() + ": " + res.getBody());
-        } else {
-            JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
-            JsonObject result = jsonReader.readObject();
-            if (result.containsKey("value")) {
-                JsonArray values = result.getJsonArray("value");
-                values.forEach(value -> {
-                    JsonObject ruleset = value.asJsonObject();
-                    System.out.println(ruleset.getString("name") + ": " + ruleset.getString("status"));
-                });
-            }
+        PagedIterable<BinaryData> response = client.listAll(null);
+        List<BinaryData> list = response.stream().collect(Collectors.toList());
+
+        System.out.println(list.size());
+
+        for(BinaryData systemScanRuleSet : list) {
+            JsonReader jsonReader = Json.createReader(new StringReader(systemScanRuleSet.toString()));
+            JsonObject ruleset = jsonReader.readObject();
+            System.out.println(ruleset.getString("name") + ": " + ruleset.getString("status"));
         }
+
     }
 }

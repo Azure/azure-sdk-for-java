@@ -57,12 +57,12 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
-<!-- embedme ./src/samples/java/com/azure/analytics/purview/scanning/ReadmeSamples.java#L22-L25 -->
+<!-- embedme ./src/samples/java/com/azure/analytics/purview/scanning/ReadmeSamples.java#L20-L23 -->
 ```java
-SystemScanRulesetsBaseClient client = new PurviewScanningClientBuilder()
+SystemScanRulesetsClient client = new PurviewScanningClientBuilder()
     .endpoint("<account-name>.scan.purview.azure.com")
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildSystemScanRulesetsBaseClient();
+    .buildSystemScanRulesetsClient();
 ```
 
 ## Key concepts

@@ -4,11 +4,14 @@
 
 package com.azure.analytics.purview.scanning;
 
+import com.azure.analytics.purview.scanning.implementation.PurviewScanningClientImpl;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -17,9 +20,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,15 +32,24 @@ import java.util.Map;
 /** A builder for creating a new instance of the PurviewScanningClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            KeyVaultConnectionsBaseClient.class,
-            ClassificationRulesBaseClient.class,
-            DataSourcesBaseClient.class,
-            FiltersBaseClient.class,
-            ScansBaseClient.class,
-            ScanResultBaseClient.class,
-            ScanRulesetsBaseClient.class,
-            SystemScanRulesetsBaseClient.class,
-            TriggersBaseClient.class
+            KeyVaultConnectionsClient.class,
+            ClassificationRulesClient.class,
+            DataSourcesClient.class,
+            FiltersClient.class,
+            ScansClient.class,
+            ScanResultClient.class,
+            ScanRulesetsClient.class,
+            SystemScanRulesetsClient.class,
+            TriggersClient.class,
+            KeyVaultConnectionsAsyncClient.class,
+            ClassificationRulesAsyncClient.class,
+            DataSourcesAsyncClient.class,
+            FiltersAsyncClient.class,
+            ScansAsyncClient.class,
+            ScanResultAsyncClient.class,
+            ScanRulesetsAsyncClient.class,
+            SystemScanRulesetsAsyncClient.class,
+            TriggersAsyncClient.class
         })
 public final class PurviewScanningClientBuilder {
     private static final String SDK_NAME = "name";
@@ -70,18 +83,18 @@ public final class PurviewScanningClientBuilder {
     }
 
     /*
-     * Api Version
+     * Service version
      */
-    private String apiVersion;
+    private PurviewScanningServiceVersion serviceVersion;
 
     /**
-     * Sets Api Version.
+     * Sets Service version.
      *
-     * @param apiVersion the apiVersion value.
+     * @param serviceVersion the serviceVersion value.
      * @return the PurviewScanningClientBuilder.
      */
-    public PurviewScanningClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public PurviewScanningClientBuilder serviceVersion(PurviewScanningServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -98,22 +111,6 @@ public final class PurviewScanningClientBuilder {
      */
     public PurviewScanningClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
-     * The serializer to serialize an object into a string
-     */
-    private ObjectSerializer serializer;
-
-    /**
-     * Sets The serializer to serialize an object into a string.
-     *
-     * @param serializer the serializer value.
-     * @return the PurviewScanningClientBuilder.
-     */
-    public PurviewScanningClientBuilder serializer(ObjectSerializer serializer) {
-        this.serializer = serializer;
         return this;
     }
 
@@ -204,6 +201,23 @@ public final class PurviewScanningClientBuilder {
      */
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    private ClientOptions clientOptions;
+
+    /**
+     * Sets The client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions the clientOptions value.
+     * @return the PurviewScanningClientBuilder.
+     */
+    public PurviewScanningClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
     /**
      * Adds a custom Http pipeline policy.
      *
@@ -215,23 +229,49 @@ public final class PurviewScanningClientBuilder {
         return this;
     }
 
+    /**
+     * Builds an instance of PurviewScanningClientImpl with the provided parameters.
+     *
+     * @return an instance of PurviewScanningClientImpl.
+     */
+    private PurviewScanningClientImpl buildInnerClient() {
+        if (serviceVersion == null) {
+            this.serviceVersion = PurviewScanningServiceVersion.getLatest();
+        }
+        if (pipeline == null) {
+            this.pipeline = createHttpPipeline();
+        }
+        PurviewScanningClientImpl client =
+                new PurviewScanningClientImpl(
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+        return client;
+    }
+
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
         }
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -244,176 +284,164 @@ public final class PurviewScanningClientBuilder {
     }
 
     /**
-     * Builds an instance of KeyVaultConnectionsBaseClient low level client.
+     * Builds an instance of KeyVaultConnectionsAsyncClient async client.
      *
-     * @return an instance of KeyVaultConnectionsBaseClient.
+     * @return an instance of KeyVaultConnectionsAsyncClient.
      */
-    public KeyVaultConnectionsBaseClient buildKeyVaultConnectionsBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        KeyVaultConnectionsBaseClient client =
-                new KeyVaultConnectionsBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public KeyVaultConnectionsAsyncClient buildKeyVaultConnectionsAsyncClient() {
+        return new KeyVaultConnectionsAsyncClient(buildInnerClient().getKeyVaultConnections());
     }
 
     /**
-     * Builds an instance of ClassificationRulesBaseClient low level client.
+     * Builds an instance of ClassificationRulesAsyncClient async client.
      *
-     * @return an instance of ClassificationRulesBaseClient.
+     * @return an instance of ClassificationRulesAsyncClient.
      */
-    public ClassificationRulesBaseClient buildClassificationRulesBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        ClassificationRulesBaseClient client =
-                new ClassificationRulesBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public ClassificationRulesAsyncClient buildClassificationRulesAsyncClient() {
+        return new ClassificationRulesAsyncClient(buildInnerClient().getClassificationRules());
     }
 
     /**
-     * Builds an instance of DataSourcesBaseClient low level client.
+     * Builds an instance of DataSourcesAsyncClient async client.
      *
-     * @return an instance of DataSourcesBaseClient.
+     * @return an instance of DataSourcesAsyncClient.
      */
-    public DataSourcesBaseClient buildDataSourcesBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        DataSourcesBaseClient client = new DataSourcesBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public DataSourcesAsyncClient buildDataSourcesAsyncClient() {
+        return new DataSourcesAsyncClient(buildInnerClient().getDataSources());
     }
 
     /**
-     * Builds an instance of FiltersBaseClient low level client.
+     * Builds an instance of FiltersAsyncClient async client.
      *
-     * @return an instance of FiltersBaseClient.
+     * @return an instance of FiltersAsyncClient.
      */
-    public FiltersBaseClient buildFiltersBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        FiltersBaseClient client = new FiltersBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public FiltersAsyncClient buildFiltersAsyncClient() {
+        return new FiltersAsyncClient(buildInnerClient().getFilters());
     }
 
     /**
-     * Builds an instance of ScansBaseClient low level client.
+     * Builds an instance of ScansAsyncClient async client.
      *
-     * @return an instance of ScansBaseClient.
+     * @return an instance of ScansAsyncClient.
      */
-    public ScansBaseClient buildScansBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        ScansBaseClient client = new ScansBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public ScansAsyncClient buildScansAsyncClient() {
+        return new ScansAsyncClient(buildInnerClient().getScans());
     }
 
     /**
-     * Builds an instance of ScanResultBaseClient low level client.
+     * Builds an instance of ScanResultAsyncClient async client.
      *
-     * @return an instance of ScanResultBaseClient.
+     * @return an instance of ScanResultAsyncClient.
      */
-    public ScanResultBaseClient buildScanResultBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        ScanResultBaseClient client = new ScanResultBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public ScanResultAsyncClient buildScanResultAsyncClient() {
+        return new ScanResultAsyncClient(buildInnerClient().getScanResults());
     }
 
     /**
-     * Builds an instance of ScanRulesetsBaseClient low level client.
+     * Builds an instance of ScanRulesetsAsyncClient async client.
      *
-     * @return an instance of ScanRulesetsBaseClient.
+     * @return an instance of ScanRulesetsAsyncClient.
      */
-    public ScanRulesetsBaseClient buildScanRulesetsBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        ScanRulesetsBaseClient client = new ScanRulesetsBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public ScanRulesetsAsyncClient buildScanRulesetsAsyncClient() {
+        return new ScanRulesetsAsyncClient(buildInnerClient().getScanRulesets());
     }
 
     /**
-     * Builds an instance of SystemScanRulesetsBaseClient low level client.
+     * Builds an instance of SystemScanRulesetsAsyncClient async client.
      *
-     * @return an instance of SystemScanRulesetsBaseClient.
+     * @return an instance of SystemScanRulesetsAsyncClient.
      */
-    public SystemScanRulesetsBaseClient buildSystemScanRulesetsBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        SystemScanRulesetsBaseClient client =
-                new SystemScanRulesetsBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public SystemScanRulesetsAsyncClient buildSystemScanRulesetsAsyncClient() {
+        return new SystemScanRulesetsAsyncClient(buildInnerClient().getSystemScanRulesets());
     }
 
     /**
-     * Builds an instance of TriggersBaseClient low level client.
+     * Builds an instance of TriggersAsyncClient async client.
      *
-     * @return an instance of TriggersBaseClient.
+     * @return an instance of TriggersAsyncClient.
      */
-    public TriggersBaseClient buildTriggersBaseClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2018-12-01-preview";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializer == null) {
-            this.serializer = JsonSerializerProviders.createInstance();
-        }
-        TriggersBaseClient client = new TriggersBaseClient(endpoint, apiVersion, pipeline, serializer);
-        return client;
+    public TriggersAsyncClient buildTriggersAsyncClient() {
+        return new TriggersAsyncClient(buildInnerClient().getTriggers());
+    }
+
+    /**
+     * Builds an instance of KeyVaultConnectionsClient sync client.
+     *
+     * @return an instance of KeyVaultConnectionsClient.
+     */
+    public KeyVaultConnectionsClient buildKeyVaultConnectionsClient() {
+        return new KeyVaultConnectionsClient(buildInnerClient().getKeyVaultConnections());
+    }
+
+    /**
+     * Builds an instance of ClassificationRulesClient sync client.
+     *
+     * @return an instance of ClassificationRulesClient.
+     */
+    public ClassificationRulesClient buildClassificationRulesClient() {
+        return new ClassificationRulesClient(buildInnerClient().getClassificationRules());
+    }
+
+    /**
+     * Builds an instance of DataSourcesClient sync client.
+     *
+     * @return an instance of DataSourcesClient.
+     */
+    public DataSourcesClient buildDataSourcesClient() {
+        return new DataSourcesClient(buildInnerClient().getDataSources());
+    }
+
+    /**
+     * Builds an instance of FiltersClient sync client.
+     *
+     * @return an instance of FiltersClient.
+     */
+    public FiltersClient buildFiltersClient() {
+        return new FiltersClient(buildInnerClient().getFilters());
+    }
+
+    /**
+     * Builds an instance of ScansClient sync client.
+     *
+     * @return an instance of ScansClient.
+     */
+    public ScansClient buildScansClient() {
+        return new ScansClient(buildInnerClient().getScans());
+    }
+
+    /**
+     * Builds an instance of ScanResultClient sync client.
+     *
+     * @return an instance of ScanResultClient.
+     */
+    public ScanResultClient buildScanResultClient() {
+        return new ScanResultClient(buildInnerClient().getScanResults());
+    }
+
+    /**
+     * Builds an instance of ScanRulesetsClient sync client.
+     *
+     * @return an instance of ScanRulesetsClient.
+     */
+    public ScanRulesetsClient buildScanRulesetsClient() {
+        return new ScanRulesetsClient(buildInnerClient().getScanRulesets());
+    }
+
+    /**
+     * Builds an instance of SystemScanRulesetsClient sync client.
+     *
+     * @return an instance of SystemScanRulesetsClient.
+     */
+    public SystemScanRulesetsClient buildSystemScanRulesetsClient() {
+        return new SystemScanRulesetsClient(buildInnerClient().getSystemScanRulesets());
+    }
+
+    /**
+     * Builds an instance of TriggersClient sync client.
+     *
+     * @return an instance of TriggersClient.
+     */
+    public TriggersClient buildTriggersClient() {
+        return new TriggersClient(buildInnerClient().getTriggers());
     }
 }

@@ -4,6 +4,8 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.core.experimental.http.DynamicResponse;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import javax.json.Json;
@@ -11,31 +13,35 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import java.io.StringReader;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SystemScanRulesetsBaseClientTests extends PurviewScanningClientTestBase {
-    private SystemScanRulesetsBaseClient client;
+    private SystemScanRulesetsClient client;
 
     @Override
     protected void beforeTest() {
         client = clientSetup(httpPipeline -> new PurviewScanningClientBuilder()
                 .endpoint(getEndpoint())
                 .pipeline(httpPipeline)
-                .buildSystemScanRulesetsBaseClient());
+                .buildSystemScanRulesetsClient());
     }
 
     @Test
     public void testListAll() {
-        DynamicResponse res = client.listAll().send();
-        assertEquals(200, res.getStatusCode());
+        PagedIterable<BinaryData> response = client.listAll(null);
+        List<BinaryData> list = response.stream().collect(Collectors.toList());
 
-        JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
-        JsonObject result = jsonReader.readObject();
-        assertTrue(result.containsKey("value"));
+        assertTrue(list.size() > 0);
 
-        JsonArray value = result.getJsonArray("value");
-        assertTrue(value.size() > 0);
+//        JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
+//        JsonObject result = jsonReader.readObject();
+//        assertTrue(result.containsKey("value"));
+//
+//        JsonArray value = result.getJsonArray("value");
+//        assertTrue(value.size() > 0);
     }
 }

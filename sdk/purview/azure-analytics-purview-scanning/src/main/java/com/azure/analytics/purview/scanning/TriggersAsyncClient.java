@@ -4,43 +4,40 @@
 
 package com.azure.analytics.purview.scanning;
 
+import com.azure.analytics.purview.scanning.implementation.TriggersImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the TriggersBaseClient type. */
-@ServiceClient(builder = PurviewScanningClientBuilder.class)
-public final class TriggersBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
+@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
+public final class TriggersAsyncClient {
+    private final TriggersImpl serviceClient;
 
     /**
-     * Initializes an instance of TriggersBaseClient client.
+     * Initializes an instance of Triggers client.
      *
-     * @param endpoint The scanning endpoint of your purview account. Example:
-     *     https://{accountName}.scan.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    TriggersBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    TriggersAsyncClient(TriggersImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Gets trigger information.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -52,8 +49,8 @@ public final class TriggersBaseClient {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -83,34 +80,38 @@ public final class TriggersBaseClient {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return trigger information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getTrigger(String dataSourceName, String scanName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .setPathParam("scanName", scanName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getTriggerWithResponse(
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.getTriggerWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 
     /**
      * Creates an instance of a trigger.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -122,8 +123,8 @@ public final class TriggersBaseClient {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -153,11 +154,11 @@ public final class TriggersBaseClient {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
@@ -170,23 +171,28 @@ public final class TriggersBaseClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param body The body parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createTrigger(String dataSourceName, String scanName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .setPathParam("scanName", scanName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> createTriggerWithResponse(
+            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createTriggerWithResponseAsync(dataSourceName, scanName, body, requestOptions);
     }
 
     /**
      * Deletes the trigger associated with the scan.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -198,8 +204,8 @@ public final class TriggersBaseClient {
      *         recurrence: {
      *             frequency: String(Week/Month)
      *             interval: Integer
-     *             startTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             endTime: String
      *             schedule: {
      *                 additionalProperties: {
      *                     String: Object
@@ -229,39 +235,25 @@ public final class TriggersBaseClient {
      *             timeZone: String
      *         }
      *         recurrenceInterval: String
-     *         createdAt: OffsetDateTime
-     *         lastModifiedAt: OffsetDateTime
-     *         lastScheduled: OffsetDateTime
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
      *         scanLevel: String(Full/Incremental)
-     *         incrementalScanStartTime: OffsetDateTime
+     *         incrementalScanStartTime: String
      *     }
      * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteTrigger(String dataSourceName, String scanName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .setPathParam("scanName", scanName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.DELETE);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    public Mono<Response<BinaryData>> deleteTriggerWithResponse(
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTriggerWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }
