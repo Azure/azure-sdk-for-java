@@ -10,10 +10,8 @@ import com.azure.communication.callingserver.implementation.converters.PlayAudio
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.models.RecordingChannelType;
-import com.azure.communication.callingserver.models.RecordingContentType;
-import com.azure.communication.callingserver.models.RecordingFormatType;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
@@ -220,9 +218,7 @@ public final class ServerCallAsync {
      * Start recording of the call.
      *
      * @param recordingStateCallbackUri Uri to send state change callbacks.
-     * @param recordingChannelType Recording channel type.
-     * @param recordingContentType Recording content type.
-     * @param recordingFormatType Recording format type.
+     * @param startRecordingOptions StartRecordingOptions custom options.
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -232,9 +228,7 @@ public final class ServerCallAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
         String recordingStateCallbackUri,
-        RecordingChannelType recordingChannelType, 
-        RecordingContentType recordingContentType, 
-        RecordingFormatType recordingFormatType,
+        StartRecordingOptions startRecordingOptions,
         Context context) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
@@ -243,9 +237,13 @@ public final class ServerCallAsync {
             }
             StartCallRecordingRequest request = new StartCallRecordingRequest();
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
-            request.setRecordingChannelType(recordingChannelType);
-            request.setRecordingContentType(recordingContentType);
-            request.setRecordingFormatType(recordingFormatType);
+
+            if (startRecordingOptions != null) {
+                request.setRecordingChannelType(startRecordingOptions.getRecordingChannelType());
+                request.setRecordingContentType(startRecordingOptions.getRecordingContentType());
+                request.setRecordingFormatType(startRecordingOptions.getRecordingFormatType());
+            }
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal

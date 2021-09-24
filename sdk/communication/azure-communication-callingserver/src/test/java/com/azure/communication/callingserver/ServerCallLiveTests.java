@@ -107,7 +107,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             serverCall = callingServerClient.initializeServerCall(groupId);
 
             Response<StartCallRecordingResult> startRecordingResponse =
-                serverCall.startRecordingWithResponse(CALLBACK_URI, null, null, null, null);
+                serverCall.startRecordingWithResponse(CALLBACK_URI, null, null);
             assertEquals(startRecordingResponse.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
             recordingId = startCallRecordingResult.getRecordingId();
@@ -211,7 +211,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response =
-                serverCall.startRecordingWithResponse(CALLBACK_URI, null, null, null, Context.NONE);
+                serverCall.startRecordingWithResponse(CALLBACK_URI, null, Context.NONE);
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
