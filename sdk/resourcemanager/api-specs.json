@@ -28,7 +28,7 @@
     "dir": "azure-resourcemanager-authorization",
     "source": "specification/authorization/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=package-2018-01-01-preview --payload-flattening-threshold=1"
+    "args": "--tag=profile-hybrid-2020-09-01 --payload-flattening-threshold=1"
   },
   "automation": {
     "dir": "azure-resourcemanager-automation",
