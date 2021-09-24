@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.administration;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
@@ -127,5 +129,29 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
         assertNotNull(permissions2);
 
         assertEquals(permissions1.size(), permissions2.size());
+    }
+
+    static void cleanUpResources(KeyVaultAccessControlClient cleanupClient, String roleDefinitionName,
+                                 String roleAssignmentName) {
+
+        if (roleDefinitionName != null) {
+            try {
+                cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+            } catch (HttpResponseException e) {
+                if (e.getResponse().getStatusCode() == 404) {
+                    // Do nothing.
+                }
+            }
+        }
+
+        if (roleAssignmentName != null) {
+            try {
+                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+            } catch (HttpResponseException e) {
+                if (e.getResponse().getStatusCode() == 404) {
+                    // Do nothing.
+                }
+            }
+        }
     }
 }

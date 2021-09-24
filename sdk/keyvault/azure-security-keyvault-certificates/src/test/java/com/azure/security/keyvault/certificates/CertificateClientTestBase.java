@@ -571,7 +571,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         try {
             exceptionThrower.run();
             fail();
-        } catch (Throwable ex) {
+        } catch (HttpResponseException ex) {
             assertRestException(ex, expectedExceptionType, expectedStatusCode);
         }
     }
@@ -590,13 +590,15 @@ public abstract class CertificateClientTestBase extends TestBase {
      * @param exception Expected error thrown during the test
      * @param expectedStatusCode Expected HTTP status code contained in the error response
      */
-    static void assertRestException(Throwable exception, int expectedStatusCode) {
+    static void assertRestException(HttpResponseException exception, int expectedStatusCode) {
         assertRestException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(HttpResponseException exception,
+                                    Class<? extends HttpResponseException> expectedExceptionType,
+                                    int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
+        assertEquals(expectedStatusCode, exception.getResponse().getStatusCode());
     }
 
     /**

@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,8 +38,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 assertNotNull(roleDefinition.getRoleName());
                 assertNotNull(roleDefinition.getDescription());
                 assertNotNull(roleDefinition.getRoleType());
-                assertFalse(roleDefinition.getAssignableScopes().isEmpty());
-                assertFalse(roleDefinition.getPermissions().isEmpty());
+                assertNotNull(roleDefinition.getAssignableScopes());
+                assertNotNull(roleDefinition.getPermissions());
 
                 return true;
             })
@@ -73,11 +72,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .verify();
         } finally {
             if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName).block();
+                cleanUpResources(getClientBuilder(httpClient, true).buildClient(), roleDefinitionName, null);
             }
         }
     }
@@ -107,11 +102,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .verify();
         } finally {
             if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName).block();
+                cleanUpResources(getClientBuilder(httpClient, true).buildClient(), roleDefinitionName, null);
             }
         }
     }
@@ -125,24 +116,14 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
         asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
         String roleDefinitionName = testResourceNamer.randomUuid();
 
-        try {
-            // Create a role definition to delete, then delete the role definition.
-            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
-                .flatMap(createdRoleDefinition ->
-                    asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL,
-                        createdRoleDefinition.getName())))
-                .assertNext(deleteResponse -> assertEquals(200, deleteResponse.getStatusCode()))
-                .expectComplete()
-                .verify();
-        } finally {
-            if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionName).block();
-            }
-        }
+        // Create a role definition to delete, then delete the role definition.
+        StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
+            .flatMap(createdRoleDefinition ->
+                asyncClient.deleteRoleDefinitionWithResponse(KeyVaultRoleScope.GLOBAL,
+                    createdRoleDefinition.getName())))
+            .assertNext(deleteResponse -> assertEquals(200, deleteResponse.getStatusCode()))
+            .expectComplete()
+            .verify();
     }
 
     /**
@@ -196,13 +177,12 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void createRoleAssignment(HttpClient httpClient) {
         asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
-                .filter(roleDefinition -> roleDefinition.getRoleName().equals(ROLE_NAME))
-                .take(1)
+            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                 .flatMap(roleDefinition -> Mono.zip(Mono.just(roleDefinition),
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
                         roleAssignmentName))))
@@ -228,11 +208,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .verify();
         } finally {
             if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
+                cleanUpResources(getClientBuilder(httpClient, true).buildClient(), roleDefinitionName,
+                    roleAssignmentName);
             }
         }
     }
@@ -245,13 +222,12 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void createExistingRoleAssignmentThrows(HttpClient httpClient) {
         asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
-                .filter(roleDefinition -> roleDefinition.getRoleName().equals(ROLE_NAME))
-                .take(1)
+            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                 .flatMap(roleDefinition ->
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
                         servicePrincipalId, roleAssignmentName))
@@ -262,11 +238,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .verify();
         } finally {
             if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
+                cleanUpResources(getClientBuilder(httpClient, true).buildClient(), roleDefinitionName,
+                    roleAssignmentName);
             }
         }
     }
@@ -278,13 +251,12 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void getRoleAssignment(HttpClient httpClient) {
         asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
-                .filter(roleDefinition -> roleDefinition.getRoleName().equals(ROLE_NAME))
-                .take(1)
+            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                 .flatMap(roleDefinition ->
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(),
                         servicePrincipalId, roleAssignmentName))
@@ -301,11 +273,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .verify();
         } finally {
             if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
+                cleanUpResources(getClientBuilder(httpClient, true).buildClient(), roleDefinitionName,
+                    roleAssignmentName);
             }
         }
     }
@@ -317,13 +286,12 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void deleteRoleAssignment(HttpClient httpClient) {
         asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
+        String roleDefinitionName = testResourceNamer.randomUuid();
         String roleAssignmentName = testResourceNamer.randomUuid();
 
         try {
             // Create a role assignment to delete.
-            StepVerifier.create(asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
-                .filter(roleDefinition -> roleDefinition.getRoleName().equals(ROLE_NAME))
-                .take(1)
+            StepVerifier.create(asyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName)
                 .flatMap(roleDefinition ->
                     asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinition.getId(), servicePrincipalId,
                         roleAssignmentName))
@@ -334,11 +302,8 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                 .verify();
         } finally {
             if (!interceptorManager.isPlaybackMode()) {
-                // Clean up the role assignment.
-                KeyVaultAccessControlAsyncClient cleanupClient =
-                    getClientBuilder(httpClient, true).buildAsyncClient();
-
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
+                cleanUpResources(getClientBuilder(httpClient, true).buildClient(), roleDefinitionName,
+                    roleAssignmentName);
             }
         }
     }
