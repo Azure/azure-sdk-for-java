@@ -99,9 +99,8 @@ public interface SqlManagedInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String sqlManagedInstanceName, Context context);
+    void delete(String resourceGroupName, String sqlManagedInstanceName, Context context);
 
     /**
      * Retrieves a SQL Managed Instance resource.
@@ -144,9 +143,8 @@ public interface SqlManagedInstances {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new SqlManagedInstance resource.
