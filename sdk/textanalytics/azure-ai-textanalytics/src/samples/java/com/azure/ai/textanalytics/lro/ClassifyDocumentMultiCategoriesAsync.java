@@ -7,12 +7,12 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesAction;
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesActionResult;
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
-import com.azure.ai.textanalytics.models.DocumentClassification;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyActionResult;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.ClassifyDocumentMultiCategoriesResultCollection;
+import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ public class ClassifyDocumentMultiCategoriesAsync {
         );
 
         client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setClassifyDocumentMultiCategoriesActions(
-                new ClassifyDocumentMultiCategoriesAction("{project_name}", "{deployment_name}")),
+            new TextAnalyticsActions().setMultiCategoryClassifyActions(
+                new MultiCategoryClassifyAction("{project_name}", "{deployment_name}")),
             "en",
             null)
             .flatMap(result -> {
@@ -71,17 +71,17 @@ public class ClassifyDocumentMultiCategoriesAsync {
     }
 
     private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
-        for (ClassifyDocumentMultiCategoriesActionResult actionResult : actionsResult.getClassifyDocumentMultiCategoriesResults()) {
+        for (MultiCategoryClassifyActionResult actionResult : actionsResult.getMultiCategoryClassifyResults()) {
             if (!actionResult.isError()) {
-                final ClassifyDocumentMultiCategoriesResultCollection documentsResults = actionResult.getDocumentsResults();
+                final MultiCategoryClassifyResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (ClassifyDocumentMultiCategoriesResult documentResult : documentsResults) {
+                for (MultiCategoryClassifyResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
-                        for (DocumentClassification documentClassification : documentResult.getDocumentClassifications()) {
+                        for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
                             System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                                documentClassification.getCategory(), documentClassification.getConfidenceScore());
+                                classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
                         }
                     } else {
                         System.out.printf("\tCannot classify multi categories of document. Error: %s%n",

@@ -3,40 +3,39 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
+import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link ClassifyDocumentMultiCategoriesResult} along with project name,
+ * A collection model that contains a list of {@link SingleCategoryClassifyResult} along with project name,
  * deployment name and batch's statistics.
  */
 @Immutable
-public final class ClassifyDocumentMultiCategoriesResultCollection
-    extends IterableStream<ClassifyDocumentMultiCategoriesResult> {
+public final class SingleCategoryClassifyResultCollection extends IterableStream<SingleCategoryClassifyResult> {
     private String projectName;
     private String deploymentName;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        ClassifyCustomCategoriesResultCollectionPropertiesHelper.setAccessor(
-            new ClassifyCustomCategoriesResultCollectionPropertiesHelper.ClassifyCustomCategoriesResultCollectionAccessor() {
+        ClassifyCustomCategoryResultCollectionPropertiesHelper.setAccessor(
+            new ClassifyCustomCategoryResultCollectionPropertiesHelper.ClassifyCustomCategoryResultCollectionAccessor() {
                 @Override
-                public void setProjectName(ClassifyDocumentMultiCategoriesResultCollection resultCollection,
+                public void setProjectName(SingleCategoryClassifyResultCollection resultCollection,
                     String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
                 @Override
-                public void setDeploymentName(ClassifyDocumentMultiCategoriesResultCollection resultCollection,
+                public void setDeploymentName(SingleCategoryClassifyResultCollection resultCollection,
                     String deploymentName) {
                     resultCollection.setDeploymentName(deploymentName);
                 }
 
                 @Override
-                public void setStatistics(ClassifyDocumentMultiCategoriesResultCollection resultCollection,
+                public void setStatistics(SingleCategoryClassifyResultCollection resultCollection,
                     TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
@@ -44,13 +43,13 @@ public final class ClassifyDocumentMultiCategoriesResultCollection
     }
 
     /**
-     * Create a {@link ClassifyDocumentMultiCategoriesResultCollection} model that maintains a list of
-     * {@link ClassifyDocumentMultiCategoriesResult} along with model version and batch's statistics.
+     * Create a {@link SingleCategoryClassifyResultCollection} model that maintains a list of
+     * {@link SingleCategoryClassifyResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link ClassifyDocumentMultiCategoriesResult}.
+     * @param documentResults A list of {@link SingleCategoryClassifyResult}.
      */
-    public ClassifyDocumentMultiCategoriesResultCollection(
-        Iterable<ClassifyDocumentMultiCategoriesResult> documentResults) {
+    public SingleCategoryClassifyResultCollection(
+        Iterable<SingleCategoryClassifyResult> documentResults) {
         super(documentResults);
     }
 

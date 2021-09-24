@@ -4,10 +4,10 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.ai.textanalytics.util.ClassifyDocumentMultiCategoriesResultCollection;
+import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifyDocumentMultiCategoriesResultCollection} instance.
+ * The helper class to set the non-public properties of an {@link MultiCategoryClassifyResultCollection} instance.
  */
 public final class ClassifyCustomCategoriesResultCollectionPropertiesHelper {
     private static ClassifyCustomCategoriesResultCollectionAccessor accessor;
@@ -15,18 +15,18 @@ public final class ClassifyCustomCategoriesResultCollectionPropertiesHelper {
     private ClassifyCustomCategoriesResultCollectionPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentMultiCategoriesResultCollection}
+     * Type defining the methods to set the non-public properties of an {@link MultiCategoryClassifyResultCollection}
      * instance.
      */
     public interface ClassifyCustomCategoriesResultCollectionAccessor {
-        void setProjectName(ClassifyDocumentMultiCategoriesResultCollection resultCollection, String projectName);
-        void setDeploymentName(ClassifyDocumentMultiCategoriesResultCollection resultCollection, String deploymentName);
-        void setStatistics(ClassifyDocumentMultiCategoriesResultCollection resultCollection,
+        void setProjectName(MultiCategoryClassifyResultCollection resultCollection, String projectName);
+        void setDeploymentName(MultiCategoryClassifyResultCollection resultCollection, String deploymentName);
+        void setStatistics(MultiCategoryClassifyResultCollection resultCollection,
             TextDocumentBatchStatistics statistics);
     }
 
     /**
-     * The method called from {@link ClassifyDocumentMultiCategoriesResultCollection} to set it's accessor.
+     * The method called from {@link MultiCategoryClassifyResultCollection} to set it's accessor.
      *
      * @param classifyCustomCategoriesResultCollectionAccessor The accessor.
      */
@@ -35,16 +35,16 @@ public final class ClassifyCustomCategoriesResultCollectionPropertiesHelper {
         accessor = classifyCustomCategoriesResultCollectionAccessor;
     }
 
-    public static void setProjectName(ClassifyDocumentMultiCategoriesResultCollection resultCollection, String projectName) {
+    public static void setProjectName(MultiCategoryClassifyResultCollection resultCollection, String projectName) {
         accessor.setProjectName(resultCollection, projectName);
     }
 
-    public static void setDeploymentName(ClassifyDocumentMultiCategoriesResultCollection resultCollection,
+    public static void setDeploymentName(MultiCategoryClassifyResultCollection resultCollection,
         String deploymentName) {
         accessor.setDeploymentName(resultCollection, deploymentName);
     }
 
-    public static void setStatistics(ClassifyDocumentMultiCategoriesResultCollection resultCollection,
+    public static void setStatistics(MultiCategoryClassifyResultCollection resultCollection,
         TextDocumentBatchStatistics statistics) {
         accessor.setStatistics(resultCollection, statistics);
     }

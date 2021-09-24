@@ -3,10 +3,10 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.DocumentClassification;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 
 /**
- * The helper class to set the non-public properties of an {@link DocumentClassification} instance.
+ * The helper class to set the non-public properties of an {@link ClassificationCategory} instance.
  */
 public final class DocumentClassificationPropertiesHelper {
     private static DocumentClassificationAccessor accessor;
@@ -14,15 +14,15 @@ public final class DocumentClassificationPropertiesHelper {
     private DocumentClassificationPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link DocumentClassification} instance.
+     * Type defining the methods to set the non-public properties of an {@link ClassificationCategory} instance.
      */
     public interface DocumentClassificationAccessor {
-        void setCategory(DocumentClassification documentClassification, String category);
-        void setConfidenceScore(DocumentClassification documentClassification, double confidenceScore);
+        void setCategory(ClassificationCategory classificationCategory, String category);
+        void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore);
     }
 
     /**
-     * The method called from {@link DocumentClassification} to set it's accessor.
+     * The method called from {@link ClassificationCategory} to set it's accessor.
      *
      * @param documentClassificationAccessor The accessor.
      */
@@ -30,11 +30,11 @@ public final class DocumentClassificationPropertiesHelper {
         accessor = documentClassificationAccessor;
     }
 
-    public static void setCategory(DocumentClassification documentClassification, String category) {
-        accessor.setCategory(documentClassification, category);
+    public static void setCategory(ClassificationCategory classificationCategory, String category) {
+        accessor.setCategory(classificationCategory, category);
     }
 
-    public static void setConfidenceScore(DocumentClassification documentClassification, double confidenceScore) {
-        accessor.setConfidenceScore(documentClassification, confidenceScore);
+    public static void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore) {
+        accessor.setConfidenceScore(classificationCategory, confidenceScore);
     }
 }

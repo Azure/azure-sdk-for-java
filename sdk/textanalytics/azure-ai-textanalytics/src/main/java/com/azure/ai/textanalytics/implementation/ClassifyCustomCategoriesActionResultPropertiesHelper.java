@@ -3,11 +3,11 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesActionResult;
-import com.azure.ai.textanalytics.util.ClassifyDocumentMultiCategoriesResultCollection;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyActionResult;
+import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifyDocumentMultiCategoriesActionResult} instance.
+ * The helper class to set the non-public properties of an {@link MultiCategoryClassifyActionResult} instance.
  */
 public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
 
@@ -16,16 +16,16 @@ public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
     private ClassifyCustomCategoriesActionResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentMultiCategoriesActionResult}
+     * Type defining the methods to set the non-public properties of an {@link MultiCategoryClassifyActionResult}
      * instance.
      */
     public interface ClassifyCustomCategoriesActionResultAccessor {
-        void setDocumentsResults(ClassifyDocumentMultiCategoriesActionResult actionResult,
-            ClassifyDocumentMultiCategoriesResultCollection documentsResults);
+        void setDocumentsResults(MultiCategoryClassifyActionResult actionResult,
+            MultiCategoryClassifyResultCollection documentsResults);
     }
 
     /**
-     * The method called from {@link ClassifyDocumentMultiCategoriesActionResult} to set it's accessor.
+     * The method called from {@link MultiCategoryClassifyActionResult} to set it's accessor.
      *
      * @param classifyCustomCategoriesActionResultAccessor The accessor.
      */
@@ -34,8 +34,8 @@ public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
         accessor = classifyCustomCategoriesActionResultAccessor;
     }
 
-    public static void setDocumentsResults(ClassifyDocumentMultiCategoriesActionResult actionResult,
-        ClassifyDocumentMultiCategoriesResultCollection documentsResults) {
+    public static void setDocumentsResults(MultiCategoryClassifyActionResult actionResult,
+        MultiCategoryClassifyResultCollection documentsResults) {
         accessor.setDocumentsResults(actionResult, documentsResults);
     }
 }

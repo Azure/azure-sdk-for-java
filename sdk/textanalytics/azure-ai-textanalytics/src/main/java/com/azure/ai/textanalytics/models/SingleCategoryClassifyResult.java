@@ -8,40 +8,40 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassifyDocumentSingleCategoryResult} model. It classify the text document one single category.
+ * The {@link SingleCategoryClassifyResult} model. It classify the text document one single category.
  */
 @Immutable
-public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsResult {
-    private DocumentClassification documentClassification;
+public final class SingleCategoryClassifyResult extends TextAnalyticsResult {
+    private ClassificationCategory classification;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         ClassifyCustomCategoryResultPropertiesHelper.setAccessor(
             new ClassifyCustomCategoryResultPropertiesHelper.ClassifyCustomCategoryResultAccessor() {
                 @Override
-                public void setDocumentClassification(
-                    ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
-                    DocumentClassification documentClassification) {
-                    classifyDocumentSingleCategoryResult.setDocumentClassification(documentClassification);
+                public void setClassification(
+                    SingleCategoryClassifyResult singleCategoryClassifyResult,
+                    ClassificationCategory classification) {
+                    singleCategoryClassifyResult.setClassification(classification);
                 }
 
                 @Override
-                public void setWarnings(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+                public void setWarnings(SingleCategoryClassifyResult singleCategoryClassifyResult,
                     IterableStream<TextAnalyticsWarning> warnings) {
-                    classifyDocumentSingleCategoryResult.setWarnings(warnings);
+                    singleCategoryClassifyResult.setWarnings(warnings);
                 }
             });
 
     }
 
     /**
-     * Creates a {@link ClassifyDocumentSingleCategoryResult} model.
+     * Creates a {@link SingleCategoryClassifyResult} model.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public ClassifyDocumentSingleCategoryResult(String id, TextDocumentStatistics textDocumentStatistics,
+    public SingleCategoryClassifyResult(String id, TextDocumentStatistics textDocumentStatistics,
         TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
@@ -49,11 +49,11 @@ public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsRes
     /**
      * The document classification result which contains the classified category and the confidence score on it.
      *
-     * @return The {@link DocumentClassification}.
+     * @return The {@link ClassificationCategory}.
      */
-    public DocumentClassification getDocumentClassification() {
+    public ClassificationCategory getClassification() {
         throwExceptionIfError();
-        return documentClassification;
+        return classification;
     }
 
     /**
@@ -65,8 +65,8 @@ public final class ClassifyDocumentSingleCategoryResult extends TextAnalyticsRes
         return this.warnings;
     }
 
-    private void setDocumentClassification(DocumentClassification documentClassification) {
-        this.documentClassification = documentClassification;
+    private void setClassification(ClassificationCategory classification) {
+        this.classification = classification;
     }
 
     private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {

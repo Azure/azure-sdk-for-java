@@ -3,13 +3,13 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
-import com.azure.ai.textanalytics.models.DocumentClassification;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
 /**
- * The helper class to set the non-public properties of an {@link ClassifyDocumentSingleCategoryResult} instance.
+ * The helper class to set the non-public properties of an {@link SingleCategoryClassifyResult} instance.
  */
 public final class ClassifyCustomCategoryResultPropertiesHelper {
     private static ClassifyCustomCategoryResultAccessor accessor;
@@ -17,17 +17,17 @@ public final class ClassifyCustomCategoryResultPropertiesHelper {
     private ClassifyCustomCategoryResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentSingleCategoryResult} instance.
+     * Type defining the methods to set the non-public properties of an {@link SingleCategoryClassifyResult} instance.
      */
     public interface ClassifyCustomCategoryResultAccessor {
-        void setDocumentClassification(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
-            DocumentClassification documentClassification);
-        void setWarnings(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+        void setClassification(SingleCategoryClassifyResult singleCategoryClassifyResult,
+            ClassificationCategory classification);
+        void setWarnings(SingleCategoryClassifyResult singleCategoryClassifyResult,
             IterableStream<TextAnalyticsWarning> warnings);
     }
 
     /**
-     * The method called from {@link ClassifyDocumentSingleCategoryResult} to set it's accessor.
+     * The method called from {@link SingleCategoryClassifyResult} to set it's accessor.
      *
      * @param classifyCustomCategoryResultAccessor The accessor.
      */
@@ -35,13 +35,13 @@ public final class ClassifyCustomCategoryResultPropertiesHelper {
         accessor = classifyCustomCategoryResultAccessor;
     }
 
-    public static void setDocumentClassification(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
-        DocumentClassification documentClassification) {
-        accessor.setDocumentClassification(classifyDocumentSingleCategoryResult, documentClassification);
+    public static void setDocumentClassification(SingleCategoryClassifyResult singleCategoryClassifyResult,
+        ClassificationCategory classificationCategory) {
+        accessor.setClassification(singleCategoryClassifyResult, classificationCategory);
     }
 
-    public static void setWarnings(ClassifyDocumentSingleCategoryResult classifyDocumentSingleCategoryResult,
+    public static void setWarnings(SingleCategoryClassifyResult singleCategoryClassifyResult,
         IterableStream<TextAnalyticsWarning> warnings) {
-        accessor.setWarnings(classifyDocumentSingleCategoryResult, warnings);
+        accessor.setWarnings(singleCategoryClassifyResult, warnings);
     }
 }

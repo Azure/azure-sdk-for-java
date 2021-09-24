@@ -3,12 +3,12 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.DocumentClassificationCollection;
+import com.azure.ai.textanalytics.models.ClassificationCategoryCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
 /**
- * The helper class to set the non-public properties of an {@link DocumentClassificationCollection} instance.
+ * The helper class to set the non-public properties of an {@link ClassificationCategoryCollection} instance.
  */
 public final class DocumentClassificationCollectionPropertiesHelper {
     private static DocumentClassificationCollectionAccessor accessor;
@@ -16,16 +16,16 @@ public final class DocumentClassificationCollectionPropertiesHelper {
     private DocumentClassificationCollectionPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link DocumentClassificationCollection}
+     * Type defining the methods to set the non-public properties of an {@link ClassificationCategoryCollection}
      * instance.
      */
     public interface DocumentClassificationCollectionAccessor {
-        void setWarnings(DocumentClassificationCollection documentClassifications,
+        void setWarnings(ClassificationCategoryCollection documentClassifications,
             IterableStream<TextAnalyticsWarning> warnings);
     }
 
     /**
-     * The method called from {@link DocumentClassificationCollection} to set it's accessor.
+     * The method called from {@link ClassificationCategoryCollection} to set it's accessor.
      *
      * @param documentClassificationCollectionAccessor The accessor.
      */
@@ -34,8 +34,8 @@ public final class DocumentClassificationCollectionPropertiesHelper {
         accessor = documentClassificationCollectionAccessor;
     }
 
-    public static void setWarnings(DocumentClassificationCollection documentClassificationCollection,
+    public static void setWarnings(ClassificationCategoryCollection classificationCategoryCollection,
         IterableStream<TextAnalyticsWarning> warnings) {
-        accessor.setWarnings(documentClassificationCollection, warnings);
+        accessor.setWarnings(classificationCategoryCollection, warnings);
     }
 }

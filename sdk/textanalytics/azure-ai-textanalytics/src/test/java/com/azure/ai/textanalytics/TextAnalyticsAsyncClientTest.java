@@ -2660,7 +2660,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getClassifyDocumentSingleCategoryResults().forEach(
+                actionsResult -> actionsResult.getSingleCategoryClassifyResults().forEach(
                     customSingleCategoryActionResult -> customSingleCategoryActionResult.getDocumentsResults().forEach(
                         documentResult -> validateCustomSingleCategory(documentResult))));
         });
@@ -2681,7 +2681,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getClassifyDocumentMultiCategoriesResults().forEach(
+                actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
                         documentResult -> validateCustomMultiCategories(documentResult))));
         });

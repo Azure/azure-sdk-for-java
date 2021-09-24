@@ -4,16 +4,16 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.ClassifyDocumentSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ClassifyDocumentSingleCategoryActionResult} model.
+ * The {@link SingleCategoryClassifyActionResult} model.
  */
 @Immutable
-public final class ClassifyDocumentSingleCategoryActionResult extends TextAnalyticsActionResult {
+public final class SingleCategoryClassifyActionResult extends TextAnalyticsActionResult {
 
-    private ClassifyDocumentSingleCategoryResultCollection documentsResults;
+    private SingleCategoryClassifyResultCollection documentsResults;
 
     static {
         ClassifyCustomCategoryActionResultPropertiesHelper.setAccessor(
@@ -28,12 +28,12 @@ public final class ClassifyDocumentSingleCategoryActionResult extends TextAnalyt
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ClassifyDocumentSingleCategoryResultCollection getDocumentsResults() {
+    public SingleCategoryClassifyResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(ClassifyDocumentSingleCategoryResultCollection documentsResults) {
+    private void setDocumentsResults(SingleCategoryClassifyResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
  * The document classification result which contains the classified category and the confidence score on it.
  */
 @Immutable
-public final class DocumentClassification {
+public final class ClassificationCategory {
     private String category;
     private double confidenceScore;
 
@@ -18,13 +18,13 @@ public final class DocumentClassification {
         DocumentClassificationPropertiesHelper.setAccessor(
             new DocumentClassificationPropertiesHelper.DocumentClassificationAccessor() {
                 @Override
-                public void setCategory(DocumentClassification documentClassification, String category) {
-                    documentClassification.setCategory(category);
+                public void setCategory(ClassificationCategory classificationCategory, String category) {
+                    classificationCategory.setCategory(category);
                 }
 
                 @Override
-                public void setConfidenceScore(DocumentClassification documentClassification, double confidenceScore) {
-                    documentClassification.setConfidenceScore(confidenceScore);
+                public void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore) {
+                    classificationCategory.setConfidenceScore(confidenceScore);
                 }
             });
     }

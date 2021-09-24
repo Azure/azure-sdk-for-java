@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link DocumentClassificationCollection} model.
+ * The {@link ClassificationCategoryCollection} model.
  */
 @Immutable
-public final class DocumentClassificationCollection extends IterableStream<DocumentClassification> {
+public final class ClassificationCategoryCollection extends IterableStream<ClassificationCategory> {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
@@ -20,13 +20,13 @@ public final class DocumentClassificationCollection extends IterableStream<Docum
     }
 
     /**
-     * Creates a {@link DocumentClassificationCollection} model that describes a document classification
+     * Creates a {@link ClassificationCategoryCollection} model that describes a document classification
      * collection including warnings.
      *
-     * @param documentClassifications An {@link IterableStream} of {@link DocumentClassification}.
+     * @param classifications An {@link IterableStream} of {@link ClassificationCategory}.
      */
-    public DocumentClassificationCollection(IterableStream<DocumentClassification> documentClassifications) {
-        super(documentClassifications);
+    public ClassificationCategoryCollection(IterableStream<ClassificationCategory> classifications) {
+        super(classifications);
     }
 
     /**

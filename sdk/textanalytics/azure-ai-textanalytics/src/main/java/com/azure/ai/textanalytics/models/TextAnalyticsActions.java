@@ -23,8 +23,8 @@ public final class TextAnalyticsActions {
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
     private Iterable<ExtractSummaryAction> extractSummaryActions;
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
-    private Iterable<ClassifyDocumentSingleCategoryAction> classifyDocumentSingleCategoryActions;
-    private Iterable<ClassifyDocumentMultiCategoriesAction> classifyDocumentMultiCategoriesActions;
+    private Iterable<SingleCategoryClassifyAction> singleCategoryClassifyActions;
+    private Iterable<MultiCategoryClassifyAction> multiCategoryClassifyActions;
 
     /**
      * Gets the custom name for the actions.
@@ -231,61 +231,61 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link ClassifyDocumentSingleCategoryAction} to be executed.
+     * Gets the list of {@link SingleCategoryClassifyAction} to be executed.
      *
-     * @return the list of {@link ClassifyDocumentSingleCategoryAction} to be executed.
+     * @return the list of {@link SingleCategoryClassifyAction} to be executed.
      */
-    public Iterable<ClassifyDocumentSingleCategoryAction> getClassifyDocumentSingleCategoryActions() {
-        return classifyDocumentSingleCategoryActions;
+    public Iterable<SingleCategoryClassifyAction> getSingleCategoryClassifyActions() {
+        return singleCategoryClassifyActions;
     }
 
     /**
-     * Sets the list of {@link ClassifyDocumentSingleCategoryAction} to be executed.
+     * Sets the list of {@link SingleCategoryClassifyAction} to be executed.
      *
-     * @param classifyDocumentSingleCategoryActions The list of
-     * {@link ClassifyDocumentSingleCategoryAction} to be executed.
+     * @param singleCategoryClassifyActions The list of
+     * {@link SingleCategoryClassifyAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link ClassifyDocumentSingleCategoryAction}
+     * @throws IllegalArgumentException if more than one {@link SingleCategoryClassifyAction}
      * action are passed in.
      * Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setClassifyDocumentSingleCategoryActions(
-        ClassifyDocumentSingleCategoryAction... classifyDocumentSingleCategoryActions) {
-        validateActionsNumber(classifyDocumentSingleCategoryActions,
-            ClassifyDocumentSingleCategoryAction.class.getName());
-        this.classifyDocumentSingleCategoryActions = classifyDocumentSingleCategoryActions == null
-            ? null : Arrays.asList(classifyDocumentSingleCategoryActions);
+    public TextAnalyticsActions setSingleCategoryClassifyActions(
+        SingleCategoryClassifyAction... singleCategoryClassifyActions) {
+        validateActionsNumber(singleCategoryClassifyActions,
+            SingleCategoryClassifyAction.class.getName());
+        this.singleCategoryClassifyActions = singleCategoryClassifyActions == null
+            ? null : Arrays.asList(singleCategoryClassifyActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link ClassifyDocumentMultiCategoriesAction} to be executed.
+     * Gets the list of {@link MultiCategoryClassifyAction} to be executed.
      *
-     * @return the list of {@link ClassifyDocumentMultiCategoriesAction} to be executed.
+     * @return the list of {@link MultiCategoryClassifyAction} to be executed.
      */
-    public Iterable<ClassifyDocumentMultiCategoriesAction> getClassifyDocumentMultiCategoriesActions() {
-        return classifyDocumentMultiCategoriesActions;
+    public Iterable<MultiCategoryClassifyAction> getMultiCategoryClassifyActions() {
+        return multiCategoryClassifyActions;
     }
 
     /**
-     * Sets the list of {@link ClassifyDocumentMultiCategoriesAction} to be executed.
+     * Sets the list of {@link MultiCategoryClassifyAction} to be executed.
      *
-     * @param classifyDocumentMultiCategoriesActions The list of {@link ClassifyDocumentMultiCategoriesAction} to
+     * @param multiCategoryClassifyActions The list of {@link MultiCategoryClassifyAction} to
      * be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      *
-     * @throws IllegalArgumentException if more than one {@link ClassifyDocumentMultiCategoriesAction} action are
+     * @throws IllegalArgumentException if more than one {@link MultiCategoryClassifyAction} action are
      * passed in. Currently service v3.1 and up only accepts up to one action per type.
      */
-    public TextAnalyticsActions setClassifyDocumentMultiCategoriesActions(
-        ClassifyDocumentMultiCategoriesAction... classifyDocumentMultiCategoriesActions) {
-        validateActionsNumber(classifyDocumentMultiCategoriesActions,
-            ClassifyDocumentMultiCategoriesAction.class.getName());
-        this.classifyDocumentMultiCategoriesActions = classifyDocumentMultiCategoriesActions == null
-            ? null : Arrays.asList(classifyDocumentMultiCategoriesActions);
+    public TextAnalyticsActions setMultiCategoryClassifyActions(
+        MultiCategoryClassifyAction... multiCategoryClassifyActions) {
+        validateActionsNumber(multiCategoryClassifyActions,
+            MultiCategoryClassifyAction.class.getName());
+        this.multiCategoryClassifyActions = multiCategoryClassifyActions == null
+            ? null : Arrays.asList(multiCategoryClassifyActions);
         return this;
     }
 

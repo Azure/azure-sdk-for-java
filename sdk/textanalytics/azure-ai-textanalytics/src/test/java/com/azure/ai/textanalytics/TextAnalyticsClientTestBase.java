@@ -11,13 +11,13 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesAction;
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryAction;
-import com.azure.ai.textanalytics.models.ClassifyDocumentMultiCategoriesResult;
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.DocumentClassification;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
@@ -1177,16 +1177,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void classifyCustomSingleCategoryActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_SINGLE_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setClassifyDocumentSingleCategoryActions(
-                    new ClassifyDocumentSingleCategoryAction("659c1851-be0b-4142-b12a-087da9785926",
+                .setSingleCategoryClassifyActions(
+                    new SingleCategoryClassifyAction("659c1851-be0b-4142-b12a-087da9785926",
                         "659c1851-be0b-4142-b12a-087da9785926")));
     }
 
     void classifyCustomMultiCategoriesActionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
         testRunner.accept(CUSTOM_MULTI_CLASSIFICATION,
             new TextAnalyticsActions()
-                .setClassifyDocumentMultiCategoriesActions(
-                    new ClassifyDocumentMultiCategoriesAction("7cdace98-537b-494a-b69a-c19754718025",
+                .setMultiCategoryClassifyActions(
+                    new MultiCategoryClassifyAction("7cdace98-537b-494a-b69a-c19754718025",
                         "7cdace98-537b-494a-b69a-c19754718025")));
     }
 
@@ -1578,31 +1578,31 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     }
 
-    static void validateCustomSingleCategory(ClassifyDocumentSingleCategoryResult documentResult) {
+    static void validateCustomSingleCategory(SingleCategoryClassifyResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());
         } else {
             assertNull(documentResult.getError());
-            validateDocumentClassification(documentResult.getDocumentClassification());
+            validateDocumentClassification(documentResult.getClassification());
         }
     }
 
-    static void validateCustomMultiCategories(ClassifyDocumentMultiCategoriesResult documentResult) {
+    static void validateCustomMultiCategories(MultiCategoryClassifyResult documentResult) {
         assertNotNull(documentResult.getId());
         if (documentResult.isError()) {
             assertNotNull(documentResult.getError());
         } else {
             assertNull(documentResult.getError());
-            for (DocumentClassification documentClassification : documentResult.getDocumentClassifications()) {
-                validateDocumentClassification(documentClassification);
+            for (ClassificationCategory classificationCategory : documentResult.getClassifications()) {
+                validateDocumentClassification(classificationCategory);
             }
         }
     }
 
-    static void validateDocumentClassification(DocumentClassification documentClassification) {
-        assertNotNull(documentClassification.getCategory());
-        assertNotNull(documentClassification.getConfidenceScore());
+    static void validateDocumentClassification(ClassificationCategory classificationCategory) {
+        assertNotNull(classificationCategory.getCategory());
+        assertNotNull(classificationCategory.getConfidenceScore());
     }
 
     // Healthcare task

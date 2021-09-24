@@ -4,15 +4,15 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.ClassifyDocumentMultiCategoriesResultCollection;
+import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ClassifyDocumentMultiCategoriesActionResult} model.
+ * The {@link MultiCategoryClassifyActionResult} model.
  */
 @Immutable
-public final class ClassifyDocumentMultiCategoriesActionResult extends TextAnalyticsActionResult {
-    private ClassifyDocumentMultiCategoriesResultCollection documentsResults;
+public final class MultiCategoryClassifyActionResult extends TextAnalyticsActionResult {
+    private MultiCategoryClassifyResultCollection documentsResults;
 
     static {
         ClassifyCustomCategoriesActionResultPropertiesHelper.setAccessor(
@@ -27,12 +27,12 @@ public final class ClassifyDocumentMultiCategoriesActionResult extends TextAnaly
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ClassifyDocumentMultiCategoriesResultCollection getDocumentsResults() {
+    public MultiCategoryClassifyResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(ClassifyDocumentMultiCategoriesResultCollection documentsResults) {
+    private void setDocumentsResults(MultiCategoryClassifyResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

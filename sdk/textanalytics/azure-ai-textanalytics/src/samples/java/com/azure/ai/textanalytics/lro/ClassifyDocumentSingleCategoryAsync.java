@@ -7,12 +7,12 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryAction;
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryActionResult;
-import com.azure.ai.textanalytics.models.ClassifyDocumentSingleCategoryResult;
-import com.azure.ai.textanalytics.models.DocumentClassification;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyActionResult;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
-import com.azure.ai.textanalytics.util.ClassifyDocumentSingleCategoryResultCollection;
+import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -49,8 +49,8 @@ public class ClassifyDocumentSingleCategoryAsync {
         );
 
         client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions().setClassifyDocumentSingleCategoryActions(
-                new ClassifyDocumentSingleCategoryAction("{project_name}", "{deployment_name}")),
+            new TextAnalyticsActions().setSingleCategoryClassifyActions(
+                new SingleCategoryClassifyAction("{project_name}", "{deployment_name}")),
             "en",
             null)
             .flatMap(result -> {
@@ -79,17 +79,17 @@ public class ClassifyDocumentSingleCategoryAsync {
     }
 
     private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
-        for (ClassifyDocumentSingleCategoryActionResult actionResult : actionsResult.getClassifyDocumentSingleCategoryResults()) {
+        for (SingleCategoryClassifyActionResult actionResult : actionsResult.getSingleCategoryClassifyResults()) {
             if (!actionResult.isError()) {
-                ClassifyDocumentSingleCategoryResultCollection documentsResults = actionResult.getDocumentsResults();
+                SingleCategoryClassifyResultCollection documentsResults = actionResult.getDocumentsResults();
                 System.out.printf("Project name: %s, deployment name: %s.%n",
                     documentsResults.getProjectName(), documentsResults.getDeploymentName());
-                for (ClassifyDocumentSingleCategoryResult documentResult : documentsResults) {
+                for (SingleCategoryClassifyResult documentResult : documentsResults) {
                     System.out.println("Document ID: " + documentResult.getId());
                     if (!documentResult.isError()) {
-                        DocumentClassification documentClassification = documentResult.getDocumentClassification();
+                        ClassificationCategory classificationCategory = documentResult.getClassification();
                         System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                            documentClassification.getCategory(), documentClassification.getConfidenceScore());
+                            classificationCategory.getCategory(), classificationCategory.getConfidenceScore());
                     } else {
                         System.out.printf("\tCannot classify category of document. Error: %s%n",
                             documentResult.getError().getMessage());
