@@ -2,6 +2,17 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.4 (2021-09-09)
+### Dependency updates
+- Added `azure-communication-networktraversal` package
 
 ## 1.0.3 (2021-06-28)
 Updated `azure-communication-common` version

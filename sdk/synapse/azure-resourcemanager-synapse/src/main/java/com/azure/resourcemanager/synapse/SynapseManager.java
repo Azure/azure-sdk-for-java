@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,10 +16,12 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SynapseManagementClient;
+import com.azure.resourcemanager.synapse.implementation.AzureADOnlyAuthenticationsImpl;
 import com.azure.resourcemanager.synapse.implementation.BigDataPoolsImpl;
 import com.azure.resourcemanager.synapse.implementation.DataMaskingPoliciesImpl;
 import com.azure.resourcemanager.synapse.implementation.DataMaskingRulesImpl;
@@ -45,6 +46,8 @@ import com.azure.resourcemanager.synapse.implementation.PrivateLinkHubPrivateLin
 import com.azure.resourcemanager.synapse.implementation.PrivateLinkHubsImpl;
 import com.azure.resourcemanager.synapse.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.synapse.implementation.RestorableDroppedSqlPoolsImpl;
+import com.azure.resourcemanager.synapse.implementation.SparkConfigurationsImpl;
+import com.azure.resourcemanager.synapse.implementation.SparkConfigurationsOperationsImpl;
 import com.azure.resourcemanager.synapse.implementation.SqlPoolBlobAuditingPoliciesImpl;
 import com.azure.resourcemanager.synapse.implementation.SqlPoolColumnsImpl;
 import com.azure.resourcemanager.synapse.implementation.SqlPoolConnectionPoliciesImpl;
@@ -83,6 +86,7 @@ import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServe
 import com.azure.resourcemanager.synapse.implementation.WorkspaceManagedSqlServerVulnerabilityAssessmentsImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspaceSqlAadAdminsImpl;
 import com.azure.resourcemanager.synapse.implementation.WorkspacesImpl;
+import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthentications;
 import com.azure.resourcemanager.synapse.models.BigDataPools;
 import com.azure.resourcemanager.synapse.models.DataMaskingPolicies;
 import com.azure.resourcemanager.synapse.models.DataMaskingRules;
@@ -107,6 +111,8 @@ import com.azure.resourcemanager.synapse.models.PrivateLinkHubPrivateLinkResourc
 import com.azure.resourcemanager.synapse.models.PrivateLinkHubs;
 import com.azure.resourcemanager.synapse.models.PrivateLinkResources;
 import com.azure.resourcemanager.synapse.models.RestorableDroppedSqlPools;
+import com.azure.resourcemanager.synapse.models.SparkConfigurations;
+import com.azure.resourcemanager.synapse.models.SparkConfigurationsOperations;
 import com.azure.resourcemanager.synapse.models.SqlPoolBlobAuditingPolicies;
 import com.azure.resourcemanager.synapse.models.SqlPoolColumns;
 import com.azure.resourcemanager.synapse.models.SqlPoolConnectionPolicies;
@@ -152,35 +158,13 @@ import java.util.Objects;
 
 /** Entry point to SynapseManager. Azure Synapse Analytics Management Client. */
 public final class SynapseManager {
-    private BigDataPools bigDataPools;
+    private AzureADOnlyAuthentications azureADOnlyAuthentications;
 
     private Operations operations;
 
     private IpFirewallRules ipFirewallRules;
 
-    private IntegrationRuntimes integrationRuntimes;
-
-    private IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations;
-
-    private IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas;
-
-    private IntegrationRuntimeNodes integrationRuntimeNodes;
-
-    private IntegrationRuntimeCredentials integrationRuntimeCredentials;
-
-    private IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos;
-
-    private IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations;
-
-    private IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas;
-
-    private IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations;
-
     private Keys keys;
-
-    private Libraries libraries;
-
-    private LibrariesOperations librariesOperations;
 
     private PrivateEndpointConnections privateEndpointConnections;
 
@@ -274,6 +258,34 @@ public final class SynapseManager {
 
     private RestorableDroppedSqlPools restorableDroppedSqlPools;
 
+    private BigDataPools bigDataPools;
+
+    private Libraries libraries;
+
+    private LibrariesOperations librariesOperations;
+
+    private IntegrationRuntimes integrationRuntimes;
+
+    private IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations;
+
+    private IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas;
+
+    private IntegrationRuntimeNodes integrationRuntimeNodes;
+
+    private IntegrationRuntimeCredentials integrationRuntimeCredentials;
+
+    private IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos;
+
+    private IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations;
+
+    private IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas;
+
+    private IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations;
+
+    private SparkConfigurations sparkConfigurations;
+
+    private SparkConfigurationsOperations sparkConfigurationsOperations;
+
     private final SynapseManagementClient clientObject;
 
     private SynapseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
@@ -317,6 +329,7 @@ public final class SynapseManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -353,6 +366,17 @@ public final class SynapseManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -398,7 +422,7 @@ public final class SynapseManager {
                 .append("-")
                 .append("com.azure.resourcemanager.synapse")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -412,6 +436,9 @@ public final class SynapseManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -421,10 +448,7 @@ public final class SynapseManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -437,12 +461,13 @@ public final class SynapseManager {
         }
     }
 
-    /** @return Resource collection API of BigDataPools. */
-    public BigDataPools bigDataPools() {
-        if (this.bigDataPools == null) {
-            this.bigDataPools = new BigDataPoolsImpl(clientObject.getBigDataPools(), this);
+    /** @return Resource collection API of AzureADOnlyAuthentications. */
+    public AzureADOnlyAuthentications azureADOnlyAuthentications() {
+        if (this.azureADOnlyAuthentications == null) {
+            this.azureADOnlyAuthentications =
+                new AzureADOnlyAuthenticationsImpl(clientObject.getAzureADOnlyAuthentications(), this);
         }
-        return bigDataPools;
+        return azureADOnlyAuthentications;
     }
 
     /** @return Resource collection API of Operations. */
@@ -461,110 +486,12 @@ public final class SynapseManager {
         return ipFirewallRules;
     }
 
-    /** @return Resource collection API of IntegrationRuntimes. */
-    public IntegrationRuntimes integrationRuntimes() {
-        if (this.integrationRuntimes == null) {
-            this.integrationRuntimes = new IntegrationRuntimesImpl(clientObject.getIntegrationRuntimes(), this);
-        }
-        return integrationRuntimes;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeNodeIpAddressOperations. */
-    public IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations() {
-        if (this.integrationRuntimeNodeIpAddressOperations == null) {
-            this.integrationRuntimeNodeIpAddressOperations =
-                new IntegrationRuntimeNodeIpAddressOperationsImpl(
-                    clientObject.getIntegrationRuntimeNodeIpAddressOperations(), this);
-        }
-        return integrationRuntimeNodeIpAddressOperations;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeObjectMetadatas. */
-    public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
-        if (this.integrationRuntimeObjectMetadatas == null) {
-            this.integrationRuntimeObjectMetadatas =
-                new IntegrationRuntimeObjectMetadatasImpl(clientObject.getIntegrationRuntimeObjectMetadatas(), this);
-        }
-        return integrationRuntimeObjectMetadatas;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeNodes. */
-    public IntegrationRuntimeNodes integrationRuntimeNodes() {
-        if (this.integrationRuntimeNodes == null) {
-            this.integrationRuntimeNodes =
-                new IntegrationRuntimeNodesImpl(clientObject.getIntegrationRuntimeNodes(), this);
-        }
-        return integrationRuntimeNodes;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeCredentials. */
-    public IntegrationRuntimeCredentials integrationRuntimeCredentials() {
-        if (this.integrationRuntimeCredentials == null) {
-            this.integrationRuntimeCredentials =
-                new IntegrationRuntimeCredentialsImpl(clientObject.getIntegrationRuntimeCredentials(), this);
-        }
-        return integrationRuntimeCredentials;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeConnectionInfos. */
-    public IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos() {
-        if (this.integrationRuntimeConnectionInfos == null) {
-            this.integrationRuntimeConnectionInfos =
-                new IntegrationRuntimeConnectionInfosImpl(clientObject.getIntegrationRuntimeConnectionInfos(), this);
-        }
-        return integrationRuntimeConnectionInfos;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeAuthKeysOperations. */
-    public IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations() {
-        if (this.integrationRuntimeAuthKeysOperations == null) {
-            this.integrationRuntimeAuthKeysOperations =
-                new IntegrationRuntimeAuthKeysOperationsImpl(
-                    clientObject.getIntegrationRuntimeAuthKeysOperations(), this);
-        }
-        return integrationRuntimeAuthKeysOperations;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeMonitoringDatas. */
-    public IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas() {
-        if (this.integrationRuntimeMonitoringDatas == null) {
-            this.integrationRuntimeMonitoringDatas =
-                new IntegrationRuntimeMonitoringDatasImpl(clientObject.getIntegrationRuntimeMonitoringDatas(), this);
-        }
-        return integrationRuntimeMonitoringDatas;
-    }
-
-    /** @return Resource collection API of IntegrationRuntimeStatusOperations. */
-    public IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations() {
-        if (this.integrationRuntimeStatusOperations == null) {
-            this.integrationRuntimeStatusOperations =
-                new IntegrationRuntimeStatusOperationsImpl(clientObject.getIntegrationRuntimeStatusOperations(), this);
-        }
-        return integrationRuntimeStatusOperations;
-    }
-
     /** @return Resource collection API of Keys. */
     public Keys keys() {
         if (this.keys == null) {
             this.keys = new KeysImpl(clientObject.getKeys(), this);
         }
         return keys;
-    }
-
-    /** @return Resource collection API of Libraries. */
-    public Libraries libraries() {
-        if (this.libraries == null) {
-            this.libraries = new LibrariesImpl(clientObject.getLibraries(), this);
-        }
-        return libraries;
-    }
-
-    /** @return Resource collection API of LibrariesOperations. */
-    public LibrariesOperations librariesOperations() {
-        if (this.librariesOperations == null) {
-            this.librariesOperations = new LibrariesOperationsImpl(clientObject.getLibrariesOperations(), this);
-        }
-        return librariesOperations;
     }
 
     /** @return Resource collection API of PrivateEndpointConnections. */
@@ -976,6 +903,129 @@ public final class SynapseManager {
                 new RestorableDroppedSqlPoolsImpl(clientObject.getRestorableDroppedSqlPools(), this);
         }
         return restorableDroppedSqlPools;
+    }
+
+    /** @return Resource collection API of BigDataPools. */
+    public BigDataPools bigDataPools() {
+        if (this.bigDataPools == null) {
+            this.bigDataPools = new BigDataPoolsImpl(clientObject.getBigDataPools(), this);
+        }
+        return bigDataPools;
+    }
+
+    /** @return Resource collection API of Libraries. */
+    public Libraries libraries() {
+        if (this.libraries == null) {
+            this.libraries = new LibrariesImpl(clientObject.getLibraries(), this);
+        }
+        return libraries;
+    }
+
+    /** @return Resource collection API of LibrariesOperations. */
+    public LibrariesOperations librariesOperations() {
+        if (this.librariesOperations == null) {
+            this.librariesOperations = new LibrariesOperationsImpl(clientObject.getLibrariesOperations(), this);
+        }
+        return librariesOperations;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimes. */
+    public IntegrationRuntimes integrationRuntimes() {
+        if (this.integrationRuntimes == null) {
+            this.integrationRuntimes = new IntegrationRuntimesImpl(clientObject.getIntegrationRuntimes(), this);
+        }
+        return integrationRuntimes;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeNodeIpAddressOperations. */
+    public IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations() {
+        if (this.integrationRuntimeNodeIpAddressOperations == null) {
+            this.integrationRuntimeNodeIpAddressOperations =
+                new IntegrationRuntimeNodeIpAddressOperationsImpl(
+                    clientObject.getIntegrationRuntimeNodeIpAddressOperations(), this);
+        }
+        return integrationRuntimeNodeIpAddressOperations;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeObjectMetadatas. */
+    public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
+        if (this.integrationRuntimeObjectMetadatas == null) {
+            this.integrationRuntimeObjectMetadatas =
+                new IntegrationRuntimeObjectMetadatasImpl(clientObject.getIntegrationRuntimeObjectMetadatas(), this);
+        }
+        return integrationRuntimeObjectMetadatas;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeNodes. */
+    public IntegrationRuntimeNodes integrationRuntimeNodes() {
+        if (this.integrationRuntimeNodes == null) {
+            this.integrationRuntimeNodes =
+                new IntegrationRuntimeNodesImpl(clientObject.getIntegrationRuntimeNodes(), this);
+        }
+        return integrationRuntimeNodes;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeCredentials. */
+    public IntegrationRuntimeCredentials integrationRuntimeCredentials() {
+        if (this.integrationRuntimeCredentials == null) {
+            this.integrationRuntimeCredentials =
+                new IntegrationRuntimeCredentialsImpl(clientObject.getIntegrationRuntimeCredentials(), this);
+        }
+        return integrationRuntimeCredentials;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeConnectionInfos. */
+    public IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos() {
+        if (this.integrationRuntimeConnectionInfos == null) {
+            this.integrationRuntimeConnectionInfos =
+                new IntegrationRuntimeConnectionInfosImpl(clientObject.getIntegrationRuntimeConnectionInfos(), this);
+        }
+        return integrationRuntimeConnectionInfos;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeAuthKeysOperations. */
+    public IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations() {
+        if (this.integrationRuntimeAuthKeysOperations == null) {
+            this.integrationRuntimeAuthKeysOperations =
+                new IntegrationRuntimeAuthKeysOperationsImpl(
+                    clientObject.getIntegrationRuntimeAuthKeysOperations(), this);
+        }
+        return integrationRuntimeAuthKeysOperations;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeMonitoringDatas. */
+    public IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas() {
+        if (this.integrationRuntimeMonitoringDatas == null) {
+            this.integrationRuntimeMonitoringDatas =
+                new IntegrationRuntimeMonitoringDatasImpl(clientObject.getIntegrationRuntimeMonitoringDatas(), this);
+        }
+        return integrationRuntimeMonitoringDatas;
+    }
+
+    /** @return Resource collection API of IntegrationRuntimeStatusOperations. */
+    public IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations() {
+        if (this.integrationRuntimeStatusOperations == null) {
+            this.integrationRuntimeStatusOperations =
+                new IntegrationRuntimeStatusOperationsImpl(clientObject.getIntegrationRuntimeStatusOperations(), this);
+        }
+        return integrationRuntimeStatusOperations;
+    }
+
+    /** @return Resource collection API of SparkConfigurations. */
+    public SparkConfigurations sparkConfigurations() {
+        if (this.sparkConfigurations == null) {
+            this.sparkConfigurations = new SparkConfigurationsImpl(clientObject.getSparkConfigurations(), this);
+        }
+        return sparkConfigurations;
+    }
+
+    /** @return Resource collection API of SparkConfigurationsOperations. */
+    public SparkConfigurationsOperations sparkConfigurationsOperations() {
+        if (this.sparkConfigurationsOperations == null) {
+            this.sparkConfigurationsOperations =
+                new SparkConfigurationsOperationsImpl(clientObject.getSparkConfigurationsOperations(), this);
+        }
+        return sparkConfigurationsOperations;
     }
 
     /**

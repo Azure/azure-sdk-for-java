@@ -88,6 +88,15 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     }
 
     @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        if (responseBody == null) {
+            return Mono.empty();
+        }
+
+        return Mono.using(responseBody::byteStream, Mono::just, ignored -> this.close());
+    }
+
+    @Override
     public void close() {
         if (this.responseBody != null) {
             // It's safe to invoke close() multiple times, additional calls will be ignored.

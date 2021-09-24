@@ -4,6 +4,7 @@ package com.azure.spring.cloud.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
@@ -24,6 +24,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.config.feature.management.entity.FeatureSet;
@@ -37,7 +38,7 @@ import com.azure.spring.cloud.config.stores.ClientStore;
 /**
  * Locates Azure App Configuration Property Sources.
  */
-public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
+public final class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
 
@@ -62,7 +63,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
 
     private final SecretClientBuilderSetup keyVaultClientProvider;
-    
+
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private static AtomicBoolean configloaded = new AtomicBoolean(false);
@@ -71,7 +72,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, ClientStore clients,
-        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider, KeyVaultSecretProvider keyVaultSecretProvider) {
+        KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider,
+        KeyVaultSecretProvider keyVaultSecretProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
         this.configStores = properties.getStores();
@@ -211,7 +213,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             for (AppConfigurationStoreSelects selectedKeys : selects) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
-                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider, keyVaultSecretProvider);
+                    selectedKeys, profiles, properties, clients, appProperties, keyVaultCredentialProvider,
+                    keyVaultClientProvider, keyVaultSecretProvider);
 
                 propertySource.initProperties(featureSet);
                 if (initFeatures) {
@@ -225,15 +228,13 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
             List<ConfigurationSetting> watchKeysFeatures = new ArrayList<ConfigurationSetting>();
 
             for (AppConfigurationStoreTrigger trigger : store.getMonitoring().getTriggers()) {
-                SettingSelector settingSelector = new SettingSelector().setKeyFilter(trigger.getKey())
-                    .setLabelFilter(trigger.getLabel());
-
-                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
+                ConfigurationSetting watchKey = clients.getWatchKey(trigger.getKey(), trigger.getLabel(),
                     store.getEndpoint());
                 if (watchKey != null) {
                     watchKeysSettings.add(watchKey);
                 } else {
-                    watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
+                    watchKeysSettings
+                        .add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
                 }
             }
             if (store.getFeatureFlags().getEnabled()) {
@@ -241,10 +242,13 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
                     .setKeyFilter(store.getFeatureFlags().getKeyFilter())
                     .setLabelFilter(store.getFeatureFlags().getLabelFilter());
 
-                ConfigurationSetting watchKey = clients.getWatchKey(settingSelector,
+                PagedIterable<ConfigurationSetting> watchKeys = clients.getFeatureFlagWatchKey(settingSelector,
                     store.getEndpoint());
-                watchKey.setKey(store.getFeatureFlags().getKeyFilter());
-                watchKeysFeatures.add(watchKey);
+
+                watchKeys.forEach(watchKey -> {
+                    watchKeysFeatures.add(NormalizeNull.normalizeNullLabel(watchKey));
+                });
+
                 StateHolder.setStateFeatureFlag(store.getEndpoint(), watchKeysFeatures,
                     store.getMonitoring().getFeatureFlagRefreshInterval());
                 StateHolder.setLoadStateFeatureFlag(store.getEndpoint(), true);
@@ -287,8 +291,10 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
     private void delayException() {
         Date currentDate = new Date();
-        Date maxRetryDate = DateUtils.addSeconds(appProperties.getStartDate(),
-            appProperties.getPrekillTime());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(appProperties.getStartDate());
+        calendar.add(Calendar.SECOND, appProperties.getPrekillTime());
+        Date maxRetryDate = calendar.getTime();
         if (currentDate.before(maxRetryDate)) {
             long diffInMillies = Math.abs(maxRetryDate.getTime() - currentDate.getTime());
             try {

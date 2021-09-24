@@ -95,8 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
-    <legal>
-      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
     <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
@@ -107,7 +106,38 @@
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+
+    <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
+
+    <!-- This property determines the max heap size of the Surefire JVM. By default 3GB, or 3096MB, is used. -->
+    <surefireXmx>3096m</surefireXmx>
+
+    <!-- This property configures the max heap size of the Surefire JVM. -->
+    <surefireJvmXmx>-Xmx${surefireXmx}</surefireJvmXmx>
+
+    <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError. -->
+    <heapDumpOnOom>
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:HeapDumpPath=${packageOutputDirectory}${file.separator}${project.artifactId}-oom.hprof
+    </heapDumpOnOom>
+
+    <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
+    <defaultSurefireArgLine>
+      ${surefireJvmXmx}
+      ${heapDumpOnOom}
+    </defaultSurefireArgLine>
+
+    <!-- Reserved for SDK specific JVM arguments to export, open, or read modules in testing. -->
+    <javaModulesSurefireArgLine>
+    </javaModulesSurefireArgLine>
+
+    <!-- Reserved for either general or SDK specific JVM arguments that are optional. -->
+    <additionalSurefireArgLine>
+    </additionalSurefireArgLine>
+
+    <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
+    <parallelizeTests>true</parallelizeTests>
   </properties>
 
   <build>
@@ -163,6 +193,11 @@
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <outputDirectory>${packageOutputDirectory}</outputDirectory>
+          <archive combine.children="append">
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
 
@@ -224,6 +259,14 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <configuration>
+          <dataFileIncludes>
+            <dataFileInclude>${project.build.directory}/jacoco.exec</dataFileInclude>
+          </dataFileIncludes>
+          <excludes combine.children="append">
+            <exclude>META-INF/**</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>prepare-agent</id>
@@ -251,7 +294,7 @@
             </goals>
             <configuration>
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-              <excludes>
+              <excludes combine.children="append">
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
                 <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
@@ -619,9 +662,14 @@
             <systemPropertyVariables combine.children="append">
               <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
               <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              <junit.jupiter.execution.parallel.enabled>${parallelizeTests}</junit.jupiter.execution.parallel.enabled>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
+            <argLine>
+              ${defaultSurefireArgLine}
+              ${additionalSurefireArgLine}
+            </argLine>
           </configuration>
         </plugin>
 
@@ -795,11 +843,11 @@
       </reporting>
     </profile>
 
-    <!-- Setup for Java 11+ -->
+    <!-- Setup for Java 9+ -->
     <profile>
-      <id>java-lts</id>
+      <id>java9plus</id>
       <activation>
-        <jdk>[11,)</jdk>
+        <jdk>[9,)</jdk>
       </activation>
       <build>
         <plugins>
@@ -808,7 +856,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <testRelease>11</testRelease>
+              <testRelease>${java.vm.specification.version}</testRelease>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
                 <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -819,7 +867,7 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>${java.vm.specification.version}</release>
                 </configuration>
               </execution>
               <!-- then compile without module-info for Java 8 -->
@@ -846,6 +894,11 @@
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
+              <argLine>
+                ${defaultSurefireArgLine}
+                ${javaModulesSurefireArgLine}
+                ${additionalSurefireArgLine}
+              </argLine>
             </configuration>
           </plugin>
         </plugins>
@@ -1121,29 +1174,6 @@
     </profile>
 
     <profile>
-      <id>parallel-test-playback</id>
-      <activation>
-        <property>
-          <name>parallel-test-playback</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
       <id>parallel-test-playback-no-azure-test-mode-env</id>
       <activation>
         <property>
@@ -1157,9 +1187,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
@@ -1182,9 +1209,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
@@ -1206,9 +1230,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
@@ -1231,9 +1252,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
           </plugin>
@@ -1249,20 +1267,9 @@
           <value>LIVE</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1273,20 +1280,9 @@
           <value>RECORD</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1297,20 +1293,9 @@
           <value>LIVE</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>
@@ -1321,20 +1306,9 @@
           <value>RECORD</value>
         </property>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <properties>
+        <parallelizeTests>false</parallelizeTests>
+      </properties>
     </profile>
 
     <profile>

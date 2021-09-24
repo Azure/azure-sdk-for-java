@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos._
+import com.azure.cosmos.{models, _}
 import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosBulkExecutionThresholdsState, CosmosBulkItemRequestOptions, CosmosBulkOperations}
 
 import scala.collection.mutable
@@ -56,11 +56,11 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val pendingTasksCompleted = lock.newCondition
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
-  private val bulkInputEmitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+  private val bulkInputEmitter: Sinks.Many[models.CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
   // TODO: fabianm - remove this later
   // Leaving activeOperations here primarily for debugging purposes (for example in case of hangs)
-  private val activeOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[CosmosItemOperation]().asScala
+  private val activeOperations = java.util.concurrent.ConcurrentHashMap.newKeySet[models.CosmosItemOperation]().asScala
   private val semaphore = new Semaphore(maxPendingOperations)
 
   private val totalScheduledMetrics = new AtomicLong(0)
@@ -100,9 +100,9 @@ class BulkWriter(container: CosmosAsyncContainer,
   }
 
   private val subscriptionDisposable: Disposable = {
-    val bulkOperationResponseFlux: SFlux[CosmosBulkOperationResponse[Object]] =
+    val bulkOperationResponseFlux: SFlux[models.CosmosBulkOperationResponse[Object]] =
       container
-          .processBulkOperations[Object](
+          .executeBulkOperations[Object](
             bulkInputEmitter.asFlux(),
             cosmosBulkExecutionOptions)
           .asScala
@@ -215,7 +215,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     // this means if the semaphore can't be acquired within 1 minute
     // the first attempt will always assume it wasn't stale - so effectively we
     // allow staleness for one additional minute - which is perfectly fine
-    var activeOperationsSnapshot = mutable.Set.empty[CosmosItemOperation]
+    var activeOperationsSnapshot = mutable.Set.empty[models.CosmosItemOperation]
     while (!semaphore.tryAcquire(1, TimeUnit.MINUTES)) {
       if (subscriptionDisposable.isDisposed) {
         captureIfFirstFailure(
@@ -277,7 +277,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
 
-  private[this] def getActiveOperationsLog(activeOperationsSnapshot: mutable.Set[CosmosItemOperation]): String = {
+  private[this] def getActiveOperationsLog(activeOperationsSnapshot: mutable.Set[models.CosmosItemOperation]): String = {
     val sb = new StringBuilder()
 
     activeOperationsSnapshot
@@ -299,7 +299,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private[this] def throwIfProgressStaled
   (
     operationName: String,
-    activeOperationsSnapshot: mutable.Set[CosmosItemOperation],
+    activeOperationsSnapshot: mutable.Set[models.CosmosItemOperation],
     numberOfIntervalsWithIdenticalActiveOperationSnapshots: AtomicLong
   ) = {
 
@@ -508,10 +508,14 @@ private object BulkWriter {
   // let's say we have a cosmos container with 1M RU which is 167 partitions
   // let's say we are ingesting items of size 1KB
   // let's say max request size is 1MB
-  // hence we want 2MB/ 1KB items per partition to be buffered
-  // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
-  // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
-  val DefaultMaxPendingOperationPerCore: Int = 2 * 1024 * 167 / 16
+  // hence we want 1MB/ 1KB items per partition to be buffered
+  // 1024 * 167 items should get buffered on a 16 CPU core VM
+  // so per CPU core we want (1024 * 167 / 16) max items to be buffered
+  // Reduced the targeted buffer from 2MB per partition and core to 1 MB because
+  // we had a few customers seeing to high CPU usage with the previous setting
+  // Reason is that several customers use larger than 1 KB documents so we need
+  // to be less aggressive with the buffering
+  val DefaultMaxPendingOperationPerCore: Int = 1024 * 167 / 16
 
   val emitFailureHandler: EmitFailureHandler =
         (_, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false

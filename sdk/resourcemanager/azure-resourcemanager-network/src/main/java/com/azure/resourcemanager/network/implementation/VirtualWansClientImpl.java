@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -217,7 +216,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +266,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -374,7 +373,7 @@ public final class VirtualWansClientImpl
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -431,7 +430,7 @@ public final class VirtualWansClientImpl
         } else {
             wanParameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -606,7 +605,7 @@ public final class VirtualWansClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
-     * @param tags Resource tags.
+     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -614,7 +613,7 @@ public final class VirtualWansClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualWanInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualWanName, Map<String, String> tags) {
+        String resourceGroupName, String virtualWanName, TagsObject wanParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -634,10 +633,13 @@ public final class VirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (wanParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter wanParameters is required and cannot be null."));
+        } else {
+            wanParameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject wanParameters = new TagsObject();
-        wanParameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -659,7 +661,7 @@ public final class VirtualWansClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
-     * @param tags Resource tags.
+     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -668,7 +670,7 @@ public final class VirtualWansClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualWanInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualWanName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String virtualWanName, TagsObject wanParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -688,10 +690,13 @@ public final class VirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (wanParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter wanParameters is required and cannot be null."));
+        } else {
+            wanParameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject wanParameters = new TagsObject();
-        wanParameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -710,7 +715,7 @@ public final class VirtualWansClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
-     * @param tags Resource tags.
+     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -718,8 +723,8 @@ public final class VirtualWansClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualWanInner> updateTagsAsync(
-        String resourceGroupName, String virtualWanName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, virtualWanName, tags)
+        String resourceGroupName, String virtualWanName, TagsObject wanParameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, virtualWanName, wanParameters)
             .flatMap(
                 (Response<VirtualWanInner> res) -> {
                     if (res.getValue() != null) {
@@ -735,23 +740,15 @@ public final class VirtualWansClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
+     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualWAN Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualWanInner> updateTagsAsync(String resourceGroupName, String virtualWanName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, virtualWanName, tags)
-            .flatMap(
-                (Response<VirtualWanInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public VirtualWanInner updateTags(String resourceGroupName, String virtualWanName, TagsObject wanParameters) {
+        return updateTagsAsync(resourceGroupName, virtualWanName, wanParameters).block();
     }
 
     /**
@@ -759,23 +756,7 @@ public final class VirtualWansClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWAN being updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtualWAN Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualWanInner updateTags(String resourceGroupName, String virtualWanName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, virtualWanName, tags).block();
-    }
-
-    /**
-     * Updates a VirtualWAN tags.
-     *
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWAN being updated.
-     * @param tags Resource tags.
+     * @param wanParameters Parameters supplied to Update VirtualWAN tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -784,8 +765,8 @@ public final class VirtualWansClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualWanInner> updateTagsWithResponse(
-        String resourceGroupName, String virtualWanName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, virtualWanName, tags, context).block();
+        String resourceGroupName, String virtualWanName, TagsObject wanParameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, virtualWanName, wanParameters, context).block();
     }
 
     /**
@@ -819,7 +800,7 @@ public final class VirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -869,7 +850,7 @@ public final class VirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1045,7 +1026,7 @@ public final class VirtualWansClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1099,7 +1080,7 @@ public final class VirtualWansClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1204,7 +1185,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1246,7 +1227,7 @@ public final class VirtualWansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

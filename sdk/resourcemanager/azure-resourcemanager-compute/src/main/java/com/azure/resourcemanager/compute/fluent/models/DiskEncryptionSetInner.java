@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
@@ -176,6 +177,16 @@ public final class DiskEncryptionSetInner extends Resource {
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
         return this.innerProperties() == null ? null : this.innerProperties().lastKeyRotationTimestamp();
+    }
+
+    /**
+     * Get the autoKeyRotationError property: The error that was encountered during auto-key rotation. If an error is
+     * present, then auto-key rotation will not be attempted until the error on this disk encryption set is fixed.
+     *
+     * @return the autoKeyRotationError value.
+     */
+    public ApiError autoKeyRotationError() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoKeyRotationError();
     }
 
     /**

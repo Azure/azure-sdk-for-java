@@ -3,7 +3,6 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -13,17 +12,18 @@ import com.azure.monitor.query.models.LogsBatchQueryResult;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
-import com.azure.monitor.query.models.LogsTable;
-import com.azure.monitor.query.models.LogsTableCell;
+import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTableRow;
-import com.azure.monitor.query.models.Metric;
+import com.azure.monitor.query.models.MetricResult;
+import com.azure.monitor.query.models.MetricValue;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import com.azure.monitor.query.models.QueryTimeInterval;
+import com.azure.monitor.query.models.TimeSeriesElement;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -60,38 +60,87 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample to demonstrate executing a batch of Kusto queries for logs.
+     * Sample to query logs using a single Kusto query.
      */
-    public void getLogsQueryBatch() {
+    public void queryLogs() {
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
 
-        LogsBatchQuery logsBatchQuery = new LogsBatchQuery()
-            .addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)))
-            .addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
+        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+                new QueryTimeInterval(Duration.ofDays(2)));
 
-        LogsBatchQueryResultCollection batchResultCollection = logsQueryClient
-            .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
-
-        List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
-
-        for (LogsBatchQueryResult response : responses) {
-            LogsQueryResult queryResult = response.getQueryResult();
-
-            // Sample to iterate by row
-            for (LogsTable table : queryResult.getLogsTables()) {
-                for (LogsTableRow row : table.getRows()) {
-                    System.out.println("Row index " + row.getRowIndex());
-                    row.getRow()
-                        .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
-                }
-            }
+        for (LogsTableRow row : queryResults.getTable().getRows()) {
+            System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
         }
     }
 
     /**
-     * Sample to demonstrate executing a complex Kusto query for logs that requires a long time to complete and
+     * A custom model type to map logs query result to an object.
+     */
+    public class CustomLogModel {
+        private String resourceGroup;
+        private String operationName;
+
+        public String getResourceGroup() {
+            return resourceGroup;
+        }
+
+        public String getOperationName() {
+            return operationName;
+        }
+    }
+
+    /**
+     * Sample to query logs and convert the response to a strongly-typed list of objects.
+     */
+    public void queryLogsAsModel() {
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+                new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+
+        for (CustomLogModel customLogModel : customLogModels) {
+            System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
+        }
+    }
+
+    /**
+     * Sample to execute a batch of logs queries.
+     */
+    public void queryBatch() {
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
+        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
+
+        LogsBatchQueryResultCollection batchResults = logsQueryClient
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
+
+        LogsBatchQueryResult query1Result = batchResults.getResult(query1);
+        for (LogsTableRow row : query1Result.getTable().getRows()) {
+            System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
+        }
+
+        List<CustomLogModel> customLogModels = batchResults.getResult(query2, CustomLogModel.class);
+        for (CustomLogModel customLogModel : customLogModels) {
+            System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
+        }
+
+        LogsBatchQueryResult query3Result = batchResults.getResult(query3);
+        if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
+            System.out.println(query3Result.getError().getMessage());
+        }
+    }
+
+    /**
+     * Sample to demonstrate executing an advanced Kusto query for logs that requires a long time to complete and
      * requires extending server timeout.
      */
     public void getLogsWithServerTimeout() {
@@ -99,120 +148,12 @@ public class ReadmeSamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
-        // set request options: server timeout, rendering, statistics
+        // set request options: server timeout
         LogsQueryOptions options = new LogsQueryOptions()
             .setServerTimeout(Duration.ofMinutes(10));
 
-        // make service call with these request options set as filter header
         Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
-                "{query}", new TimeInterval(Duration.ofDays(2)), options, Context.NONE);
-        LogsQueryResult logsQueryResult = response.getValue();
-
-        // Sample to iterate by row
-        for (LogsTable table : logsQueryResult.getLogsTables()) {
-            for (LogsTableRow row : table.getRows()) {
-                System.out.println("Row index " + row.getRowIndex());
-                row.getRow()
-                    .forEach(cell -> System.out.println("Column = " + cell.getColumnName() + "; value = " + cell.getValueAsString()));
-            }
-        }
-    }
-
-    /**
-     * Sample to demonstrate querying Azure Monitor for metrics.
-     */
-    public void getMetrics() {
-        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
-        Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-            .queryWithResponse(
-                "{resource-id}",
-                Arrays.asList("SuccessfulCalls"),
-                new MetricsQueryOptions()
-                    .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeSpan(new TimeInterval(Duration.ofDays(30)))
-                    .setInterval(Duration.ofHours(1))
-                    .setTop(100)
-                    .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
-                Context.NONE);
-
-        MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-        List<Metric> metrics = metricsQueryResult.getMetrics();
-        metrics.stream()
-            .forEach(metric -> {
-                System.out.println(metric.getMetricsName());
-                System.out.println(metric.getId());
-                System.out.println(metric.getType());
-                System.out.println(metric.getUnit());
-                System.out.println(metric.getTimeSeries().size());
-                System.out.println(metric.getTimeSeries().get(0).getData().size());
-                metric.getTimeSeries()
-                    .stream()
-                    .flatMap(ts -> ts.getData().stream())
-                    .forEach(mv -> System.out.println(mv.getTimeStamp().toString() + "; Count = " + mv.getCount()
-                        + "; Average = " + mv.getAverage()));
-            });
-    }
-
-    /**
-     * Sample to demonstrate accessing query results.
-     */
-    public void getLogsQueryWithColumnNameAccess() {
-        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
-        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-            new TimeInterval(Duration.ofDays(2)));
-        System.out.println("Number of tables = " + queryResults.getLogsTables().size());
-
-        // Sample to iterate over all cells in the table
-        for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableCell tableCell : table.getAllTableCells()) {
-                System.out.println("Column = " + tableCell.getColumnName() + "; value = " + tableCell.getValueAsString());
-            }
-        }
-
-        // Sample to iterate over each row
-        for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow tableRow : table.getRows()) {
-                for (LogsTableCell tableCell : tableRow.getRow()) {
-                    System.out.println("Column = " + tableCell.getColumnName()
-                        + "; value = " + tableCell.getValueAsString());
-                }
-            }
-        }
-
-        // Sample to get a specific column by name
-        for (LogsTable table : queryResults.getLogsTables()) {
-            for (LogsTableRow tableRow : table.getRows()) {
-                Optional<LogsTableCell> tableCell = tableRow.getColumnValue("DurationMs");
-                tableCell
-                    .ifPresent(logsTableCell ->
-                        System.out.println("Column = " + logsTableCell.getColumnName()
-                            + "; value = " + logsTableCell.getValueAsString()));
-            }
-        }
-    }
-
-    /**
-     * Sample to demonstrate reading the response as a strongly-typed object.
-     */
-    public void getLogsQueryResultAsModel() {
-        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
-
-        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-                new TimeInterval(Duration.ofDays(2)));
-
-        List<CustomModel> results = queryResults.toObject(CustomModel.class);
-        results.forEach(model -> {
-            System.out.println("Time generated " + model.getTimeGenerated() + "; success = " + model.getSuccess()
-                    + "; operation name = " + model.getOperationName());
-        });
+                "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
     }
 
     /**
@@ -224,10 +165,60 @@ public class ReadmeSamples {
                 .buildClient();
 
         Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
-                new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+                new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
                 Context.NONE);
         LogsQueryResult result = response.getValue();
+    }
 
+
+    /**
+     * Sample to demonstrate querying Azure Monitor for metrics.
+     */
+    public void getMetrics() {
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildClient();
+
+        MetricsQueryResult metricsQueryResult = metricsQueryClient.query("{resource-uri}",
+                Arrays.asList("SuccessfulCalls", "TotalCalls"));
+
+        for (MetricResult metric : metricsQueryResult.getMetrics()) {
+            System.out.println("Metric name " + metric.getMetricName());
+            for (TimeSeriesElement timeSeriesElement : metric.getTimeSeries()) {
+                System.out.println("Dimensions " + timeSeriesElement.getMetadata());
+                for (MetricValue metricValue : timeSeriesElement.getValues()) {
+                    System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
+                }
+            }
+        }
+    }
+
+    /**
+     * Sample to demonstrate querying Azure Monitor for metrics with advanced options.
+     */
+    public void getMetricsWithOptions() {
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        Response<MetricsQueryResult> metricsResponse = metricsQueryClient
+            .queryWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
+                new MetricsQueryOptions()
+                    .setGranularity(Duration.ofHours(1))
+                    .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
+                Context.NONE);
+
+        MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
+
+        for (MetricResult metric : metricsQueryResult.getMetrics()) {
+            System.out.println("Metric name " + metric.getMetricName());
+            for (TimeSeriesElement timeSeriesElement : metric.getTimeSeries()) {
+                System.out.println("Dimensions " + timeSeriesElement.getMetadata());
+                for (MetricValue metricValue : timeSeriesElement.getValues()) {
+                    System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
+                }
+            }
+        }
     }
 }

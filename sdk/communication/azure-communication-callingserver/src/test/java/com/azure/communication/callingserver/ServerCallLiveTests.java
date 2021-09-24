@@ -39,12 +39,26 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     private final String fromUser = getRandomUserId();
     private final String toUser = getRandomUserId();
 
+    
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void runAllClientFunctions(HttpClient httpClient) {
-        String groupId = getGroupId("runAllClientFunctions");
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
-        CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctions");
+    public void runAllClientFunctionsForConnectionStringClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForConnectionStringClient");
+        String groupId = getGroupId("runAllClientFunctionsForConnectionStringClient");
+        runAllClientFunctions(groupId, connectionStringClient);
+    }    
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void runAllClientFunctionsForTokenCredentialClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerClient connectionStringClient = setupClient(builder, "runAllClientFunctionsForTokenCredentialClient");
+        String groupId = getGroupId("runAllClientFunctionsForTokenCredentialClient");
+        runAllClientFunctions(groupId, connectionStringClient);
+    }
+
+    private void runAllClientFunctions(String groupId, CallingServerClient callingServerClient) {
         String recordingId = "";
         List<CallConnection> callConnections = new ArrayList<>();
         ServerCall serverCall = null;
@@ -82,7 +96,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runAllClientFunctionsWithResponse(HttpClient httpClient) {
         String groupId = getGroupId("runAllClientFunctionsWithResponse");
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAllClientFunctionsWithResponse");
         String recordingId = "";
         List<CallConnection> callConnections = new ArrayList<>();
@@ -127,7 +141,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunction(HttpClient httpClient) {
         String groupId = getGroupId("runPlayAudioFunction");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunction");
         ServerCall serverCall;
 
@@ -158,7 +172,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void runPlayAudioFunctionWithResponse(HttpClient httpClient) {
         String groupId = getGroupId("runPlayAudioFunctionWithResponse");
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runPlayAudioFunctionWithResponse");
         ServerCall serverCall;
 
@@ -190,7 +204,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void startRecordingFails(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "startRecordingFails");
         String invalidServerCallId = "aHR0cHM6Ly9jb252LXVzd2UtMDkuY29udi5za3lwZS5jb20vY29udi9EZVF2WEJGVVlFV1NNZkFXYno2azN3P2k9MTEmZT02Mzc1NzIyMjk0Mjc0NTI4Nzk=";
         ServerCall serverCall = callingServerClient.initializeServerCall(invalidServerCallId);
@@ -211,7 +225,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runAddRemoveScenario(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenario");
         try {
             // Establish a call
@@ -264,7 +278,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runAddRemoveScenarioWithResponse(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
 
         try {

@@ -243,6 +243,10 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> encrypt(ObjectNode itemJObj) {
+        return encryptObjectNode(itemJObj).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
+    }
+
+    public Mono<ObjectNode> encryptObjectNode(ObjectNode itemJObj) {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
@@ -270,7 +274,7 @@ public class EncryptionProcessor {
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-            return listMono.flatMap(ignoreVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), itemJObj)));
+            return listMono.map(ignoreVoid -> itemJObj);
         }));
     }
 
@@ -356,8 +360,15 @@ public class EncryptionProcessor {
         return decrypt(itemJObj);
     }
 
-    public Mono<byte[]> decrypt(ObjectNode itemJObj) {
+    public Mono<byte[]> decrypt(JsonNode itemJObj) {
+        return decryptJsonNode(itemJObj).map(decryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode));
+    }
+
+    public Mono<JsonNode> decryptJsonNode(JsonNode itemJObj) {
         assert (itemJObj != null);
+        if (itemJObj.isValueNode()) {
+            return Mono.just(itemJObj);
+        }
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 if (StringUtils.isEmpty(includedPath.getPath()) || includedPath.getPath().charAt(0) != '/' || includedPath.getPath().lastIndexOf('/') != 0) {
@@ -387,11 +398,11 @@ public class EncryptionProcessor {
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();
-            return listMono.flatMap(aVoid -> Mono.just(EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), itemJObj)));
+            return listMono.map(aVoid -> itemJObj);
         }));
     }
 
-    public void decryptAndSerializeProperty(EncryptionSettings encryptionSettings, ObjectNode objectNode,
+    public void decryptAndSerializeProperty(EncryptionSettings encryptionSettings, JsonNode objectNode,
                                             JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
 
         if (propertyValueHolder.isObject()) {
@@ -439,7 +450,7 @@ public class EncryptionProcessor {
             }
 
         } else {
-            decryptAndSerializeValue(encryptionSettings, objectNode, propertyValueHolder, propertyName);
+            decryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }
     }
 

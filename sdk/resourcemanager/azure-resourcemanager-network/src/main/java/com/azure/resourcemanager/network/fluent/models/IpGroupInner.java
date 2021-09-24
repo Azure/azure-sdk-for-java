@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,10 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 /** The IpGroups resource information. */
-@JsonFlatten
 @Fluent
-public class IpGroupInner extends Resource {
+public final class IpGroupInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpGroupInner.class);
+
+    /*
+     * Properties of the IpGroups.
+     */
+    @JsonProperty(value = "properties")
+    private IpGroupPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -28,36 +32,19 @@ public class IpGroupInner extends Resource {
     private String etag;
 
     /*
-     * The provisioning state of the IpGroups resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     */
-    @JsonProperty(value = "properties.ipAddresses")
-    private List<String> ipAddresses;
-
-    /*
-     * List of references to Firewall resources that this IpGroups is
-     * associated with.
-     */
-    @JsonProperty(value = "properties.firewalls", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> firewalls;
-
-    /*
-     * List of references to Firewall Policies resources that this IpGroups is
-     * associated with.
-     */
-    @JsonProperty(value = "properties.firewallPolicies", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> firewallPolicies;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the IpGroups.
+     *
+     * @return the innerProperties value.
+     */
+    private IpGroupPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -66,54 +53,6 @@ public class IpGroupInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the IpGroups resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     *
-     * @return the ipAddresses value.
-     */
-    public List<String> ipAddresses() {
-        return this.ipAddresses;
-    }
-
-    /**
-     * Set the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
-     *
-     * @param ipAddresses the ipAddresses value to set.
-     * @return the IpGroupInner object itself.
-     */
-    public IpGroupInner withIpAddresses(List<String> ipAddresses) {
-        this.ipAddresses = ipAddresses;
-        return this;
-    }
-
-    /**
-     * Get the firewalls property: List of references to Firewall resources that this IpGroups is associated with.
-     *
-     * @return the firewalls value.
-     */
-    public List<SubResource> firewalls() {
-        return this.firewalls;
-    }
-
-    /**
-     * Get the firewallPolicies property: List of references to Firewall Policies resources that this IpGroups is
-     * associated with.
-     *
-     * @return the firewallPolicies value.
-     */
-    public List<SubResource> firewallPolicies() {
-        return this.firewallPolicies;
     }
 
     /**
@@ -151,10 +90,64 @@ public class IpGroupInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the IpGroups resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
+     *
+     * @return the ipAddresses value.
+     */
+    public List<String> ipAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddresses();
+    }
+
+    /**
+     * Set the ipAddresses property: IpAddresses/IpAddressPrefixes in the IpGroups resource.
+     *
+     * @param ipAddresses the ipAddresses value to set.
+     * @return the IpGroupInner object itself.
+     */
+    public IpGroupInner withIpAddresses(List<String> ipAddresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IpGroupPropertiesFormat();
+        }
+        this.innerProperties().withIpAddresses(ipAddresses);
+        return this;
+    }
+
+    /**
+     * Get the firewalls property: List of references to Firewall resources that this IpGroups is associated with.
+     *
+     * @return the firewalls value.
+     */
+    public List<SubResource> firewalls() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewalls();
+    }
+
+    /**
+     * Get the firewallPolicies property: List of references to Firewall Policies resources that this IpGroups is
+     * associated with.
+     *
+     * @return the firewallPolicies value.
+     */
+    public List<SubResource> firewallPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().firewallPolicies();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

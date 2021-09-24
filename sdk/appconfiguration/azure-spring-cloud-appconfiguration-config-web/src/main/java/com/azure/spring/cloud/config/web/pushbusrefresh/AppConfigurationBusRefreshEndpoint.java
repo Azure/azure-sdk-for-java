@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.web.pushbusrefresh;
 
-import static com.azure.spring.cloud.config.web.Constants.APPCONFIGURATION_REFRESH_BUS;
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_FORMAT_START;
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_KEY;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH_BUS;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
  */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH_BUS)
-public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
+public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
 
@@ -42,6 +42,14 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private final AppConfigurationProperties appConfiguration;
 
+    /**
+     * Endpoint for triggering a refresh check for a single config store, across all registered instances.
+     * 
+     * @param context Service Bus event publisher
+     * @param appId Service Bus app id
+     * @param destinationFactory service bus destination factory
+     * @param appConfiguration properties set for client library.
+     */
     public AppConfigurationBusRefreshEndpoint(ApplicationEventPublisher context, String appId,
         Destination.Factory destinationFactory,
         AppConfigurationProperties appConfiguration) {

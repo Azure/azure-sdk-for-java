@@ -16,11 +16,9 @@ import com.azure.spring.cloud.config.resource.Connection;
 /**
  * Config Store Properties for Requests to an Azure App Configuration Store.
  */
-public class ConfigStore {
+public  final class ConfigStore {
 
     private static final String DEFAULT_KEYS = "/application/";
-
-    private static final String EMPTY_LABEL = "\0";
 
     private String endpoint; // Config store endpoint
 

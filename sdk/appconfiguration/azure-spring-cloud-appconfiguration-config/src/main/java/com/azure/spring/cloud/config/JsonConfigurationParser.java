@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.http.entity.ContentType;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -16,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-class JsonConfigurationParser {
+final class JsonConfigurationParser {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static boolean isJsonContentType(String contentType) {
@@ -27,12 +26,9 @@ class JsonConfigurationParser {
             return false;
         }
 
-        ContentType ct = ContentType.parse(contentType);
-        String type = ct.getMimeType();
-
-        if (type.contains("/")) {
-            String mainType = type.split("/")[0];
-            String subType = type.split("/")[1];
+        if (contentType.contains("/")) {
+            String mainType = contentType.split("/")[0];
+            String subType = contentType.split("/")[1];
 
             if (mainType.equalsIgnoreCase(acceptedMainType)) {
                 if (subType.contains("+")) {

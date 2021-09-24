@@ -28,8 +28,11 @@ import com.azure.resourcemanager.kusto.fluent.DataConnectionsClient;
 import com.azure.resourcemanager.kusto.fluent.DatabasePrincipalAssignmentsClient;
 import com.azure.resourcemanager.kusto.fluent.DatabasesClient;
 import com.azure.resourcemanager.kusto.fluent.KustoManagementClient;
+import com.azure.resourcemanager.kusto.fluent.ManagedPrivateEndpointsClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsClient;
 import com.azure.resourcemanager.kusto.fluent.OperationsResultsClient;
+import com.azure.resourcemanager.kusto.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.kusto.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -158,6 +161,30 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.databases;
     }
 
+    /** The AttachedDatabaseConfigurationsClient object to access its operations. */
+    private final AttachedDatabaseConfigurationsClient attachedDatabaseConfigurations;
+
+    /**
+     * Gets the AttachedDatabaseConfigurationsClient object to access its operations.
+     *
+     * @return the AttachedDatabaseConfigurationsClient object.
+     */
+    public AttachedDatabaseConfigurationsClient getAttachedDatabaseConfigurations() {
+        return this.attachedDatabaseConfigurations;
+    }
+
+    /** The ManagedPrivateEndpointsClient object to access its operations. */
+    private final ManagedPrivateEndpointsClient managedPrivateEndpoints;
+
+    /**
+     * Gets the ManagedPrivateEndpointsClient object to access its operations.
+     *
+     * @return the ManagedPrivateEndpointsClient object.
+     */
+    public ManagedPrivateEndpointsClient getManagedPrivateEndpoints() {
+        return this.managedPrivateEndpoints;
+    }
+
     /** The DatabasePrincipalAssignmentsClient object to access its operations. */
     private final DatabasePrincipalAssignmentsClient databasePrincipalAssignments;
 
@@ -182,16 +209,28 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         return this.scripts;
     }
 
-    /** The AttachedDatabaseConfigurationsClient object to access its operations. */
-    private final AttachedDatabaseConfigurationsClient attachedDatabaseConfigurations;
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
-     * Gets the AttachedDatabaseConfigurationsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
-     * @return the AttachedDatabaseConfigurationsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    public AttachedDatabaseConfigurationsClient getAttachedDatabaseConfigurations() {
-        return this.attachedDatabaseConfigurations;
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
     }
 
     /** The DataConnectionsClient object to access its operations. */
@@ -253,13 +292,16 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2021-08-27";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
+        this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsClientImpl(this);
+        this.managedPrivateEndpoints = new ManagedPrivateEndpointsClientImpl(this);
         this.databasePrincipalAssignments = new DatabasePrincipalAssignmentsClientImpl(this);
         this.scripts = new ScriptsClientImpl(this);
-        this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.dataConnections = new DataConnectionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.operationsResults = new OperationsResultsClientImpl(this);

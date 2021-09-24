@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.PrivateDnsZonePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateDnsZoneConfig resource. */
-@JsonFlatten
 @Fluent
-public class PrivateDnsZoneConfig {
+public final class PrivateDnsZoneConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateDnsZoneConfig.class);
 
     /*
@@ -25,17 +24,10 @@ public class PrivateDnsZoneConfig {
     private String name;
 
     /*
-     * The resource id of the private dns zone.
+     * Properties of the private dns zone configuration.
      */
-    @JsonProperty(value = "properties.privateDnsZoneId")
-    private String privateDnsZoneId;
-
-    /*
-     * A collection of information regarding a recordSet, holding information
-     * to identify private resources.
-     */
-    @JsonProperty(value = "properties.recordSets", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RecordSet> recordSets;
+    @JsonProperty(value = "properties")
+    private PrivateDnsZonePropertiesFormat innerProperties;
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
@@ -60,12 +52,21 @@ public class PrivateDnsZoneConfig {
     }
 
     /**
+     * Get the innerProperties property: Properties of the private dns zone configuration.
+     *
+     * @return the innerProperties value.
+     */
+    private PrivateDnsZonePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the privateDnsZoneId property: The resource id of the private dns zone.
      *
      * @return the privateDnsZoneId value.
      */
     public String privateDnsZoneId() {
-        return this.privateDnsZoneId;
+        return this.innerProperties() == null ? null : this.innerProperties().privateDnsZoneId();
     }
 
     /**
@@ -75,7 +76,10 @@ public class PrivateDnsZoneConfig {
      * @return the PrivateDnsZoneConfig object itself.
      */
     public PrivateDnsZoneConfig withPrivateDnsZoneId(String privateDnsZoneId) {
-        this.privateDnsZoneId = privateDnsZoneId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateDnsZonePropertiesFormat();
+        }
+        this.innerProperties().withPrivateDnsZoneId(privateDnsZoneId);
         return this;
     }
 
@@ -86,7 +90,7 @@ public class PrivateDnsZoneConfig {
      * @return the recordSets value.
      */
     public List<RecordSet> recordSets() {
-        return this.recordSets;
+        return this.innerProperties() == null ? null : this.innerProperties().recordSets();
     }
 
     /**
@@ -95,8 +99,8 @@ public class PrivateDnsZoneConfig {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (recordSets() != null) {
-            recordSets().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
