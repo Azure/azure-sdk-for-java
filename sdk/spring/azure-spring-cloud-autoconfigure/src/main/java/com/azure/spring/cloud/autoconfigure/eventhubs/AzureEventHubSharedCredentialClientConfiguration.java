@@ -8,9 +8,9 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubSharedAuth
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventProcessorSharedAuthenticationClientBuilderFactory;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.EventHubSharedAuthenticationClientBuilder;
-import com.azure.spring.integration.eventhub.factory.EventProcessorSharedAuthenticationClientBuilder;
+import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.eventhubs.core.EventProcessorSharedAuthenticationClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

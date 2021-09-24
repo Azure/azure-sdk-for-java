@@ -19,7 +19,7 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.integration.eventhub.api.EventProcessorListener;
+import com.azure.spring.eventhubs.core.EventProcessorListener;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;

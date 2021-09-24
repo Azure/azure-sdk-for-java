@@ -10,7 +10,7 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventProcessorClie
 import com.azure.spring.cloud.resourcemanager.connectionstring.AbstractArmConnectionStringProvider;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.integration.eventhub.api.EventProcessorListener;
+import com.azure.spring.eventhubs.core.EventProcessorListener;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

@@ -5,7 +5,12 @@ omitted_paths:
   - sdk/*/azure-*/samples/*
   - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
-  - sdk/spring/azure-spring-boot-samples/*
+  - sdk/boms/azure-spring-boot-bom/*
+  - sdk/boms/azure-spring-cloud-dependencies/*
+  - sdk/spring/azure-spring-boot-starter/*
+  - sdk/spring/azure-spring-boot-starter-*/*
+  - sdk/spring/azure-spring-cloud-starter/*
+  - sdk/spring/azure-spring-cloud-starter-*/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"

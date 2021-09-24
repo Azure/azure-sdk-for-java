@@ -247,11 +247,12 @@ jobs:
 
       - ${{if ne(parameters.SDKType, 'data')}}:
         - ${{ each artifact in parameters.Artifacts }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-            parameters:
-              PackageName: ${{artifact.name}}
-              ServiceName: ${{parameters.ServiceDirectory}}
-              ForRelease: false
+          - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+            - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+              parameters:
+                PackageName: ${{artifact.name}}
+                ServiceName: ${{parameters.ServiceDirectory}}
+                ForRelease: false
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.

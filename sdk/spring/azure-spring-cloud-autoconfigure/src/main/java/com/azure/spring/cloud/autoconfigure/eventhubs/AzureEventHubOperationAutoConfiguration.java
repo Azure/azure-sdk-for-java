@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
-import com.azure.spring.integration.eventhub.factory.EventHubSharedAuthenticationClientBuilder;
-import com.azure.spring.integration.eventhub.factory.EventProcessorSharedAuthenticationClientBuilder;
-import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
+import com.azure.spring.eventhubs.core.DefaultEventHubClientFactory;
+import com.azure.spring.eventhubs.core.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.eventhubs.core.EventHubTemplate;
+import com.azure.spring.eventhubs.core.EventProcessorSharedAuthenticationClientBuilder;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

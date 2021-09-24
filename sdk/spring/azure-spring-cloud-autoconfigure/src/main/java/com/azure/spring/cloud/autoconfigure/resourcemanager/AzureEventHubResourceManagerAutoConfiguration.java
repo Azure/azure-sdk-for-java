@@ -7,7 +7,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.eventhubs.resourcemanager.DefaultEventHubProvisioner;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubArmConnectionStringProvider;
-import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
+import com.azure.spring.eventhubs.core.EventHubProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

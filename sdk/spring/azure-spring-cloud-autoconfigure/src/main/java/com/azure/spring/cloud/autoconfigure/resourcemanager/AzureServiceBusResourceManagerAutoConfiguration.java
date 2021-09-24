@@ -8,8 +8,8 @@ import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties
 import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusQueueProvisioner;
 import com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager.DefaultServiceBusTopicProvisioner;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
-import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.core.ServiceBusTopicProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
