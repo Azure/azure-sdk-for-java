@@ -7,11 +7,13 @@ package com.azure.resourcemanager.authorization.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with GraphError information. */
+/**
+ * Exception thrown for an invalid response with GraphError information.
+ */
 public final class GraphErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the GraphErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class GraphErrorException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the GraphErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.

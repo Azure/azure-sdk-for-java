@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -29,227 +30,202 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
+import com.azure.resourcemanager.authorization.fluent.models.AppRoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
+import com.azure.resourcemanager.authorization.models.AppRoleAssignmentListResult;
 import com.azure.resourcemanager.authorization.models.DirectoryObjectListResult;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.models.KeyCredentialListResult;
 import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
 import com.azure.resourcemanager.authorization.models.PasswordCredentialListResult;
 import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
-import com.azure.resourcemanager.authorization.models.ServicePrincipalBase;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalListResult;
-import java.util.List;
+import com.azure.resourcemanager.authorization.models.ServicePrincipalUpdateParameters;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicePrincipalsClient. */
-public final class ServicePrincipalsClientImpl implements ServicePrincipalsClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ServicePrincipalsClient.
+ */
+public final class ServicePrincipalsClientImpl implements InnerSupportsDelete<Void>, ServicePrincipalsClient {
     private final ClientLogger logger = new ClientLogger(ServicePrincipalsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicePrincipalsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of ServicePrincipalsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicePrincipalsClientImpl(GraphRbacManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ServicePrincipalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServicePrincipalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for GraphRbacManagementClientServicePrincipals to be used by the proxy
+     * The interface defining all the services for
+     * GraphRbacManagementClientServicePrincipals to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface ServicePrincipalsService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{tenantID}/servicePrincipals")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") ServicePrincipalCreateParameters parameters,
-            Context context);
+        Mono<Response<ServicePrincipalInner>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") ServicePrincipalCreateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipals")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<ServicePrincipalListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{tenantID}/servicePrincipals/{objectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") ServicePrincipalBase parameters,
-            Context context);
+        Mono<Response<Void>> update(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") ServicePrincipalUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{tenantID}/servicePrincipals/{objectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipals/{objectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<ServicePrincipalInner>> get(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{tenantID}/servicePrincipals/{objectId}/appRoleAssignedTo")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(GraphErrorException.class)
+        Mono<Response<AppRoleAssignmentListResult>> listAppRoleAssignedTo(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{tenantID}/servicePrincipals/{objectId}/appRoleAssignments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(GraphErrorException.class)
+        Mono<Response<AppRoleAssignmentListResult>> listAppRoleAssignments(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipals/{objectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwners(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwners(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{tenantID}/servicePrincipals/{objectId}/$links/owners")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(GraphErrorException.class)
+        Mono<Response<Void>> addOwner(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") AddOwnerParameters parameters, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/{tenantID}/servicePrincipals/{objectId}/$links/owners/{ownerObjectId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(GraphErrorException.class)
+        Mono<Response<Void>> removeOwner(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @PathParam("ownerObjectId") String ownerObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipals/{objectId}/keyCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<KeyCredentialListResult>> listKeyCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<KeyCredentialListResult>> listKeyCredentials(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{tenantID}/servicePrincipals/{objectId}/keyCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updateKeyCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") KeyCredentialsUpdateParameters parameters,
-            Context context);
+        Mono<Response<Void>> updateKeyCredentials(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") KeyCredentialsUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updatePasswordCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters,
-            Context context);
+        Mono<Response<Void>> updatePasswordCredentials(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalListResult>> listNext(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<ServicePrincipalListResult>> listNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwnersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<AppRoleAssignmentListResult>> listAppRoleAssignedToNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(GraphErrorException.class)
+        Mono<Response<AppRoleAssignmentListResult>> listAppRoleAssignmentsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(GraphErrorException.class)
+        Mono<Response<DirectoryObjectListResult>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalInner>> createWithResponseAsync(ServicePrincipalCreateParameters parameters) {
+    public Mono<Response<ServicePrincipalInner>> createWithResponseAsync(String tenantId, ServicePrincipalCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -257,71 +233,65 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServicePrincipalInner>> createWithResponseAsync(
-        ServicePrincipalCreateParameters parameters, Context context) {
+    private Mono<Response<ServicePrincipalInner>> createWithResponseAsync(String tenantId, ServicePrincipalCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalInner> createAsync(ServicePrincipalCreateParameters parameters) {
-        return createWithResponseAsync(parameters)
-            .flatMap(
-                (Response<ServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<ServicePrincipalInner> createAsync(String tenantId, ServicePrincipalCreateParameters parameters) {
+        return createWithResponseAsync(tenantId, parameters)
+            .flatMap((Response<ServicePrincipalInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalInner create(ServicePrincipalCreateParameters parameters) {
-        return createAsync(parameters).block();
+    public ServicePrincipalInner create(String tenantId, ServicePrincipalCreateParameters parameters) {
+        return createAsync(tenantId, parameters).block();
     }
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -329,14 +299,14 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServicePrincipalInner> createWithResponse(
-        ServicePrincipalCreateParameters parameters, Context context) {
-        return createWithResponseAsync(parameters, context).block();
+    public Response<ServicePrincipalInner> createWithResponse(String tenantId, ServicePrincipalCreateParameters parameters, Context context) {
+        return createWithResponseAsync(tenantId, parameters, context).block();
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -344,44 +314,29 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String filter) {
+    private Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String tenantId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<ServicePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<ServicePrincipalInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,36 +345,29 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String filter, Context context) {
+    private Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String tenantId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -427,42 +375,33 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServicePrincipalInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServicePrincipalInner> listAsync() {
-        final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServicePrincipalInner> listAsync(String filter, Context context) {
+    public PagedFlux<ServicePrincipalInner> listAsync(String tenantId, String filter) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(tenantId, filter),
+            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ServicePrincipalInner> listAsync(String tenantId) {
+        final String filter = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter),
+            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
+    }
+
+    /**
+     * Gets a list of service principals from the current tenant.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -471,74 +410,81 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServicePrincipalInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
+    private PagedFlux<ServicePrincipalInner> listAsync(String tenantId, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, tenantId, context));
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServicePrincipalInner> list() {
+    public PagedIterable<ServicePrincipalInner> list(String tenantId) {
         final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
+        return new PagedIterable<>(listAsync(tenantId, filter));
+    }
+
+    /**
+     * Gets a list of service principals from the current tenant.
+     * 
+     * @param tenantId The tenant ID.
+     * @param filter The filter to apply to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ServicePrincipalInner> list(String tenantId, String filter, Context context) {
+        return new PagedIterable<>(listAsync(tenantId, filter, context));
     }
 
     /**
      * Updates a service principal in the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String objectId, ServicePrincipalBase parameters) {
+    public Mono<Response<Void>> updateWithResponseAsync(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a service principal in the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -546,73 +492,64 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateWithResponseAsync(
-        String objectId, ServicePrincipalBase parameters, Context context) {
+    private Mono<Response<Void>> updateWithResponseAsync(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.update(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Updates a service principal in the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String objectId, ServicePrincipalBase parameters) {
-        return updateWithResponseAsync(objectId, parameters).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> updateAsync(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters) {
+        return updateWithResponseAsync(objectId, tenantId, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Updates a service principal in the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String objectId, ServicePrincipalBase parameters) {
-        updateAsync(objectId, parameters).block();
+    public void update(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters) {
+        updateAsync(objectId, tenantId, parameters).block();
     }
 
     /**
      * Updates a service principal in the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -620,53 +557,41 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(String objectId, ServicePrincipalBase parameters, Context context) {
-        return updateWithResponseAsync(objectId, parameters, context).block();
+    public Response<Void> updateWithResponse(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters, Context context) {
+        return updateWithResponseAsync(objectId, tenantId, parameters, context).block();
     }
 
     /**
      * Deletes a service principal from the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a service principal from the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -674,59 +599,56 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String objectId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
+        return service.delete(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Deletes a service principal from the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String objectId) {
-        return deleteWithResponseAsync(objectId).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> deleteAsync(String objectId, String tenantId) {
+        return deleteWithResponseAsync(objectId, tenantId)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a service principal from the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String objectId) {
-        deleteAsync(objectId).block();
+    public void delete(String objectId, String tenantId) {
+        deleteAsync(objectId, tenantId).block();
     }
 
     /**
      * Deletes a service principal from the directory.
-     *
+     * 
      * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -734,53 +656,41 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String objectId, Context context) {
-        return deleteWithResponseAsync(objectId, context).block();
+    public Response<Void> deleteWithResponse(String objectId, String tenantId, Context context) {
+        return deleteWithResponseAsync(objectId, tenantId, context).block();
     }
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
+     * 
      * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId) {
+    public Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
+     * 
      * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -788,67 +698,63 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId, Context context) {
+    private Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
+        return service.get(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
+     * 
      * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalInner> getAsync(String objectId) {
-        return getWithResponseAsync(objectId)
-            .flatMap(
-                (Response<ServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<ServicePrincipalInner> getAsync(String objectId, String tenantId) {
+        return getWithResponseAsync(objectId, tenantId)
+            .flatMap((Response<ServicePrincipalInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
+     * 
      * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalInner get(String objectId) {
-        return getAsync(objectId).block();
+    public ServicePrincipalInner get(String objectId, String tenantId) {
+        return getAsync(objectId, tenantId).block();
     }
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
+     * 
      * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -856,62 +762,314 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServicePrincipalInner> getWithResponse(String objectId, Context context) {
-        return getWithResponseAsync(objectId, context).block();
+    public Response<ServicePrincipalInner> getWithResponse(String objectId, String tenantId, Context context) {
+        return getWithResponseAsync(objectId, tenantId, context).block();
+    }
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignedToSinglePageAsync(String objectId, String tenantId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listAppRoleAssignedTo(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<AppRoleAssignmentInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignedToSinglePageAsync(String objectId, String tenantId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.listAppRoleAssignedTo(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
+    }
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AppRoleAssignmentInner> listAppRoleAssignedToAsync(String objectId, String tenantId) {
+        return new PagedFlux<>(
+            () -> listAppRoleAssignedToSinglePageAsync(objectId, tenantId),
+            nextLink -> listAppRoleAssignedToNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<AppRoleAssignmentInner> listAppRoleAssignedToAsync(String objectId, String tenantId, Context context) {
+        return new PagedFlux<>(
+            () -> listAppRoleAssignedToSinglePageAsync(objectId, tenantId, context),
+            nextLink -> listAppRoleAssignedToNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppRoleAssignmentInner> listAppRoleAssignedTo(String objectId, String tenantId) {
+        return new PagedIterable<>(listAppRoleAssignedToAsync(objectId, tenantId));
+    }
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppRoleAssignmentInner> listAppRoleAssignedTo(String objectId, String tenantId, Context context) {
+        return new PagedIterable<>(listAppRoleAssignedToAsync(objectId, tenantId, context));
+    }
+
+    /**
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignmentsSinglePageAsync(String objectId, String tenantId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listAppRoleAssignments(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<AppRoleAssignmentInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignmentsSinglePageAsync(String objectId, String tenantId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.listAppRoleAssignments(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
+    }
+
+    /**
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AppRoleAssignmentInner> listAppRoleAssignmentsAsync(String objectId, String tenantId) {
+        return new PagedFlux<>(
+            () -> listAppRoleAssignmentsSinglePageAsync(objectId, tenantId),
+            nextLink -> listAppRoleAssignmentsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<AppRoleAssignmentInner> listAppRoleAssignmentsAsync(String objectId, String tenantId, Context context) {
+        return new PagedFlux<>(
+            () -> listAppRoleAssignmentsSinglePageAsync(objectId, tenantId, context),
+            nextLink -> listAppRoleAssignmentsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppRoleAssignmentInner> listAppRoleAssignments(String objectId, String tenantId) {
+        return new PagedIterable<>(listAppRoleAssignmentsAsync(objectId, tenantId));
+    }
+
+    /**
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppRoleAssignmentInner> listAppRoleAssignments(String objectId, String tenantId, Context context) {
+        return new PagedIterable<>(listAppRoleAssignmentsAsync(objectId, tenantId, context));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOwners(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<DirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listOwners(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -919,56 +1077,50 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOwners(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listOwners(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId) {
+    public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, String tenantId) {
         return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(objectId), nextLink -> listOwnersNextSinglePageAsync(nextLink));
+            () -> listOwnersSinglePageAsync(objectId, tenantId),
+            nextLink -> listOwnersNextSinglePageAsync(nextLink));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -976,30 +1128,32 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, Context context) {
+    private PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, String tenantId, Context context) {
         return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(objectId, context),
+            () -> listOwnersSinglePageAsync(objectId, tenantId, context),
             nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String objectId) {
-        return new PagedIterable<>(listOwnersAsync(objectId));
+    public PagedIterable<DirectoryObjectInner> listOwners(String objectId, String tenantId) {
+        return new PagedIterable<>(listOwnersAsync(objectId, tenantId));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1007,202 +1161,48 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String objectId, Context context) {
-        return new PagedIterable<>(listOwnersAsync(objectId, context));
+    public PagedIterable<DirectoryObjectInner> listOwners(String objectId, String tenantId, Context context) {
+        return new PagedIterable<>(listOwnersAsync(objectId, tenantId, context));
     }
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String objectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeyCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<KeyCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(
-        String objectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listKeyCredentials(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId) {
-        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(objectId));
-    }
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId, Context context) {
-        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(objectId, context));
-    }
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId) {
-        return new PagedIterable<>(listKeyCredentialsAsync(objectId));
-    }
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, Context context) {
-        return new PagedIterable<>(listKeyCredentialsAsync(objectId, context));
-    }
-
-    /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, List<KeyCredentialInner> value) {
+    public Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String tenantId, AddOwnerParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            value.forEach(e -> e.validate());
+            parameters.validate();
         }
-        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
-        parameters.withValue(value);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateKeyCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.addOwner(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1210,75 +1210,64 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
-        String objectId, List<KeyCredentialInner> value, Context context) {
+    private Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String tenantId, AddOwnerParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            value.forEach(e -> e.validate());
+            parameters.validate();
         }
-        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
-        parameters.withValue(value);
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateKeyCredentials(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.addOwner(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value) {
-        return updateKeyCredentialsWithResponseAsync(objectId, value).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> addOwnerAsync(String objectId, String tenantId, AddOwnerParameters parameters) {
+        return addOwnerWithResponseAsync(objectId, tenantId, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateKeyCredentials(String objectId, List<KeyCredentialInner> value) {
-        updateKeyCredentialsAsync(objectId, value).block();
+    public void addOwner(String objectId, String tenantId, AddOwnerParameters parameters) {
+        addOwnerAsync(objectId, tenantId, parameters).block();
     }
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1286,281 +1275,599 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateKeyCredentialsWithResponse(
-        String objectId, List<KeyCredentialInner> value, Context context) {
-        return updateKeyCredentialsWithResponseAsync(objectId, value, context).block();
+    public Response<Void> addOwnerWithResponse(String objectId, String tenantId, AddOwnerParameters parameters, Context context) {
+        return addOwnerWithResponseAsync(objectId, tenantId, parameters, context).block();
     }
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String objectId) {
+    public Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (ownerObjectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPasswordCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<PasswordCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.removeOwner(this.client.getEndpoint(), objectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
-        String objectId, Context context) {
+    private Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (ownerObjectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null."));
         }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listPasswordCredentials(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.removeOwner(this.client.getEndpoint(), objectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId) {
-        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(objectId));
-    }
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId, Context context) {
-        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(objectId, context));
-    }
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId) {
-        return new PagedIterable<>(listPasswordCredentialsAsync(objectId));
-    }
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, Context context) {
-        return new PagedIterable<>(listPasswordCredentialsAsync(objectId, context));
-    }
-
-    /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String objectId, List<PasswordCredentialInner> value) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
-        } else {
-            value.forEach(e -> e.validate());
-        }
-        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
-        parameters.withValue(value);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePasswordCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    public Mono<Void> removeOwnerAsync(String objectId, String ownerObjectId, String tenantId) {
+        return removeOwnerWithResponseAsync(objectId, ownerObjectId, tenantId)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeOwner(String objectId, String ownerObjectId, String tenantId) {
+        removeOwnerAsync(objectId, ownerObjectId, tenantId).block();
+    }
+
+    /**
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String objectId, List<PasswordCredentialInner> value, Context context) {
+    public Response<Void> removeOwnerWithResponse(String objectId, String ownerObjectId, String tenantId, Context context) {
+        return removeOwnerWithResponseAsync(objectId, ownerObjectId, tenantId, context).block();
+    }
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
-        } else {
-            value.forEach(e -> e.validate());
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listKeyCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<KeyCredentialInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String objectId, String tenantId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
-        parameters.withValue(value);
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .updatePasswordCredentials(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.listKeyCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId, String tenantId) {
+        return new PagedFlux<>(
+            () -> listKeyCredentialsSinglePageAsync(objectId, tenantId));
+    }
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId, String tenantId, Context context) {
+        return new PagedFlux<>(
+            () -> listKeyCredentialsSinglePageAsync(objectId, tenantId, context));
+    }
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, String tenantId) {
+        return new PagedIterable<>(listKeyCredentialsAsync(objectId, tenantId));
+    }
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, String tenantId, Context context) {
+        return new PagedIterable<>(listKeyCredentialsAsync(objectId, tenantId, context));
+    }
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value) {
-        return updatePasswordCredentialsWithResponseAsync(objectId, value)
+    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.updateKeyCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.updateKeyCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+    }
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateKeyCredentialsAsync(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+        return updateKeyCredentialsWithResponseAsync(objectId, tenantId, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateKeyCredentials(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+        updateKeyCredentialsAsync(objectId, tenantId, parameters).block();
+    }
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateKeyCredentialsWithResponse(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
+        return updateKeyCredentialsWithResponseAsync(objectId, tenantId, parameters, context).block();
+    }
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String objectId, String tenantId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listPasswordCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<PasswordCredentialInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String objectId, String tenantId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.listPasswordCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
+    }
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId, String tenantId) {
+        return new PagedFlux<>(
+            () -> listPasswordCredentialsSinglePageAsync(objectId, tenantId));
+    }
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId, String tenantId, Context context) {
+        return new PagedFlux<>(
+            () -> listPasswordCredentialsSinglePageAsync(objectId, tenantId, context));
+    }
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, String tenantId) {
+        return new PagedIterable<>(listPasswordCredentialsAsync(objectId, tenantId));
+    }
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, String tenantId, Context context) {
+        return new PagedIterable<>(listPasswordCredentialsAsync(objectId, tenantId, context));
+    }
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.updatePasswordCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.updatePasswordCredentials(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+    }
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updatePasswordCredentialsAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+        return updatePasswordCredentialsWithResponseAsync(objectId, tenantId, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Updates the passwordCredentials associated with a service principal.
-     *
+     * 
      * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value) {
-        updatePasswordCredentialsAsync(objectId, value).block();
+    public void updatePasswordCredentials(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+        updatePasswordCredentialsAsync(objectId, tenantId, parameters).block();
     }
 
     /**
      * Updates the passwordCredentials associated with a service principal.
-     *
+     * 
      * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1568,63 +1875,48 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updatePasswordCredentialsWithResponse(
-        String objectId, List<PasswordCredentialInner> value, Context context) {
-        return updatePasswordCredentialsWithResponseAsync(objectId, value, context).block();
+    public Response<Void> updatePasswordCredentialsWithResponse(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
+        return updatePasswordCredentialsWithResponseAsync(objectId, tenantId, parameters, context).block();
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
      * @param nextLink Next link for the list operation.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listNext(
-                            this.client.getEndpoint(),
-                            nextLink,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<ServicePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<ServicePrincipalInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
      * @param nextLink Next link for the list operation.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1632,40 +1924,149 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(
-                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignedToNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listAppRoleAssignedToNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AppRoleAssignmentInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignedToNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.listAppRoleAssignedToNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignmentsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listAppRoleAssignmentsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AppRoleAssignmentInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<AppRoleAssignmentInner>> listAppRoleAssignmentsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        context = this.client.mergeContext(context);
+        return service.listAppRoleAssignmentsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1677,23 +2078,24 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(context -> service.listOwnersNext(nextLink, context))
-            .<PagedResponse<DirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1706,17 +2108,18 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOwnersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 }

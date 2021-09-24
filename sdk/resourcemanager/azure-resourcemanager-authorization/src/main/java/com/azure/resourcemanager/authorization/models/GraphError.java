@@ -5,74 +5,90 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.OdataError;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Active Directory error information. */
-@JsonFlatten
+/**
+ * Active Directory error information.
+ */
 @Fluent
-public class GraphError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GraphError.class);
+public final class GraphError {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GraphError.class);
 
     /*
-     * Error code.
+     * A Graph API error.
      */
-    @JsonProperty(value = "odata\\.error.code")
-    private String code;
+    @JsonProperty(value = "odata.error")
+    private OdataError innerOdataError;
 
-    /*
-     * Error message value.
+    /**
+     * Get the innerOdataError property: A Graph API error.
+     * 
+     * @return the innerOdataError value.
      */
-    @JsonProperty(value = "odata\\.error.message.value")
-    private String message;
+    private OdataError innerOdataError() {
+        return this.innerOdataError;
+    }
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
-        return this.code;
+        return this.innerOdataError() == null ? null : this.innerOdataError().code();
     }
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the GraphError object itself.
      */
     public GraphError withCode(String code) {
-        this.code = code;
+        if (this.innerOdataError() == null) {
+            this.innerOdataError = new OdataError();
+        }
+        this.innerOdataError().withCode(code);
         return this;
     }
 
     /**
      * Get the message property: Error message value.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
-        return this.message;
+        return this.innerOdataError() == null ? null : this.innerOdataError().message();
     }
 
     /**
      * Set the message property: Error message value.
-     *
+     * 
      * @param message the message value to set.
      * @return the GraphError object itself.
      */
     public GraphError withMessage(String message) {
-        this.message = message;
+        if (this.innerOdataError() == null) {
+            this.innerOdataError = new OdataError();
+        }
+        this.innerOdataError().withMessage(message);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerOdataError() != null) {
+            innerOdataError().validate();
+        }
     }
 }

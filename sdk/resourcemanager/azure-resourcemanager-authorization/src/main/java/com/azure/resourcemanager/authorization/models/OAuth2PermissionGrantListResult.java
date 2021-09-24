@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.OAuth2PermissionGrantInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Server response for get oauth2 permissions grants. */
+/**
+ * Server response for get oauth2 permissions grants.
+ */
 @Fluent
 public final class OAuth2PermissionGrantListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantListResult.class);
 
     /*
      * the list of oauth2 permissions grants
@@ -30,7 +35,7 @@ public final class OAuth2PermissionGrantListResult {
 
     /**
      * Get the value property: the list of oauth2 permissions grants.
-     *
+     * 
      * @return the value value.
      */
     public List<OAuth2PermissionGrantInner> value() {
@@ -39,7 +44,7 @@ public final class OAuth2PermissionGrantListResult {
 
     /**
      * Set the value property: the list of oauth2 permissions grants.
-     *
+     * 
      * @param value the value value to set.
      * @return the OAuth2PermissionGrantListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class OAuth2PermissionGrantListResult {
 
     /**
      * Get the odataNextLink property: the URL to get the next set of results.
-     *
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -59,7 +64,7 @@ public final class OAuth2PermissionGrantListResult {
 
     /**
      * Set the odataNextLink property: the URL to get the next set of results.
-     *
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the OAuth2PermissionGrantListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class OAuth2PermissionGrantListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

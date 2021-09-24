@@ -5,15 +5,22 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request parameters for creating a new application. */
+/**
+ * Request parameters for creating a new application.
+ */
 @Fluent
 public final class ApplicationCreateParameters extends ApplicationBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationCreateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationCreateParameters.class);
 
     /*
      * The display name of the application.
@@ -29,7 +36,7 @@ public final class ApplicationCreateParameters extends ApplicationBase {
 
     /**
      * Get the displayName property: The display name of the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +45,7 @@ public final class ApplicationCreateParameters extends ApplicationBase {
 
     /**
      * Set the displayName property: The display name of the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApplicationCreateParameters object itself.
      */
@@ -48,8 +55,9 @@ public final class ApplicationCreateParameters extends ApplicationBase {
     }
 
     /**
-     * Get the identifierUris property: A collection of URIs for the application.
-     *
+     * Get the identifierUris property: A collection of URIs for the
+     * application.
+     * 
      * @return the identifierUris value.
      */
     public List<String> identifierUris() {
@@ -57,8 +65,9 @@ public final class ApplicationCreateParameters extends ApplicationBase {
     }
 
     /**
-     * Set the identifierUris property: A collection of URIs for the application.
-     *
+     * Set the identifierUris property: A collection of URIs for the
+     * application.
+     * 
      * @param identifierUris the identifierUris value to set.
      * @return the ApplicationCreateParameters object itself.
      */
@@ -68,18 +77,276 @@ public final class ApplicationCreateParameters extends ApplicationBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withAllowGuestsSignIn(Boolean allowGuestsSignIn) {
+        super.withAllowGuestsSignIn(allowGuestsSignIn);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withAllowPassthroughUsers(Boolean allowPassthroughUsers) {
+        super.withAllowPassthroughUsers(allowPassthroughUsers);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withAppLogoUrl(String appLogoUrl) {
+        super.withAppLogoUrl(appLogoUrl);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withAppRoles(List<AppRole> appRoles) {
+        super.withAppRoles(appRoles);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withAppPermissions(List<String> appPermissions) {
+        super.withAppPermissions(appPermissions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withAvailableToOtherTenants(Boolean availableToOtherTenants) {
+        super.withAvailableToOtherTenants(availableToOtherTenants);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withErrorUrl(String errorUrl) {
+        super.withErrorUrl(errorUrl);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withGroupMembershipClaims(GroupMembershipClaimTypes groupMembershipClaims) {
+        super.withGroupMembershipClaims(groupMembershipClaims);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withHomepage(String homepage) {
+        super.withHomepage(homepage);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withInformationalUrls(InformationalUrl informationalUrls) {
+        super.withInformationalUrls(informationalUrls);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
+        super.withIsDeviceOnlyAuthSupported(isDeviceOnlyAuthSupported);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        super.withKeyCredentials(keyCredentials);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withKnownClientApplications(List<String> knownClientApplications) {
+        super.withKnownClientApplications(knownClientApplications);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withLogoutUrl(String logoutUrl) {
+        super.withLogoutUrl(logoutUrl);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
+        super.withOauth2AllowImplicitFlow(oauth2AllowImplicitFlow);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
+        super.withOauth2AllowUrlPathMatching(oauth2AllowUrlPathMatching);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withOauth2Permissions(List<OAuth2Permission> oauth2Permissions) {
+        super.withOauth2Permissions(oauth2Permissions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
+        super.withOauth2RequirePostResponse(oauth2RequirePostResponse);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withOrgRestrictions(List<String> orgRestrictions) {
+        super.withOrgRestrictions(orgRestrictions);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withOptionalClaims(OptionalClaims optionalClaims) {
+        super.withOptionalClaims(optionalClaims);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        super.withPasswordCredentials(passwordCredentials);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withPreAuthorizedApplications(List<PreAuthorizedApplication> preAuthorizedApplications) {
+        super.withPreAuthorizedApplications(preAuthorizedApplications);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withPublicClient(Boolean publicClient) {
+        super.withPublicClient(publicClient);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withPublisherDomain(String publisherDomain) {
+        super.withPublisherDomain(publisherDomain);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withReplyUrls(List<String> replyUrls) {
+        super.withReplyUrls(replyUrls);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
+        super.withRequiredResourceAccess(requiredResourceAccess);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withSamlMetadataUrl(String samlMetadataUrl) {
+        super.withSamlMetadataUrl(samlMetadataUrl);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withSignInAudience(String signInAudience) {
+        super.withSignInAudience(signInAudience);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ApplicationCreateParameters withWwwHomepage(String wwwHomepage) {
+        super.withWwwHomepage(wwwHomepage);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model ApplicationCreateParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property displayName in model ApplicationCreateParameters"));
         }
     }
 }

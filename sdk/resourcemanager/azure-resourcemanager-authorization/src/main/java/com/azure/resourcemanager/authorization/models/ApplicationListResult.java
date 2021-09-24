@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Application list operation result. */
+/**
+ * Application list operation result.
+ */
 @Fluent
 public final class ApplicationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationListResult.class);
 
     /*
      * A collection of applications.
@@ -30,7 +35,7 @@ public final class ApplicationListResult {
 
     /**
      * Get the value property: A collection of applications.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationInner> value() {
@@ -39,7 +44,7 @@ public final class ApplicationListResult {
 
     /**
      * Set the value property: A collection of applications.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class ApplicationListResult {
 
     /**
      * Get the odataNextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -59,7 +64,7 @@ public final class ApplicationListResult {
 
     /**
      * Set the odataNextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the ApplicationListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class ApplicationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

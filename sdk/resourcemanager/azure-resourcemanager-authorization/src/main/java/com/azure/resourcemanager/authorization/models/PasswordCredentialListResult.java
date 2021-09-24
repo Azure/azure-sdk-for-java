@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** PasswordCredential list operation result. */
+/**
+ * PasswordCredential list operation result.
+ */
 @Fluent
 public final class PasswordCredentialListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PasswordCredentialListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PasswordCredentialListResult.class);
 
     /*
      * A collection of PasswordCredentials.
@@ -24,7 +29,7 @@ public final class PasswordCredentialListResult {
 
     /**
      * Get the value property: A collection of PasswordCredentials.
-     *
+     * 
      * @return the value value.
      */
     public List<PasswordCredentialInner> value() {
@@ -33,7 +38,7 @@ public final class PasswordCredentialListResult {
 
     /**
      * Set the value property: A collection of PasswordCredentials.
-     *
+     * 
      * @param value the value value to set.
      * @return the PasswordCredentialListResult object itself.
      */
@@ -44,7 +49,7 @@ public final class PasswordCredentialListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

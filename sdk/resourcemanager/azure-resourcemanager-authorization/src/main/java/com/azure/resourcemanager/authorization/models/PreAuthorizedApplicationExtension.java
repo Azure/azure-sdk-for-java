@@ -5,15 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Representation of an app PreAuthorizedApplicationExtension required by a pre authorized client app. */
+/**
+ * Representation of an app PreAuthorizedApplicationExtension required by a pre
+ * authorized client app.
+ */
 @Fluent
 public final class PreAuthorizedApplicationExtension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationExtension.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationExtension.class);
 
     /*
      * The extension's conditions.
@@ -23,7 +29,7 @@ public final class PreAuthorizedApplicationExtension {
 
     /**
      * Get the conditions property: The extension's conditions.
-     *
+     * 
      * @return the conditions value.
      */
     public List<String> conditions() {
@@ -32,7 +38,7 @@ public final class PreAuthorizedApplicationExtension {
 
     /**
      * Set the conditions property: The extension's conditions.
-     *
+     * 
      * @param conditions the conditions value to set.
      * @return the PreAuthorizedApplicationExtension object itself.
      */
@@ -43,7 +49,7 @@ public final class PreAuthorizedApplicationExtension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

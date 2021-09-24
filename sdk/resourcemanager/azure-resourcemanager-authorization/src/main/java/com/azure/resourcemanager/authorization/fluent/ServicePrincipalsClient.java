@@ -8,513 +8,714 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.authorization.fluent.models.AppRoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
-import com.azure.resourcemanager.authorization.models.ServicePrincipalBase;
+import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
+import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
+import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
-import java.util.List;
+import com.azure.resourcemanager.authorization.models.ServicePrincipalUpdateParameters;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicePrincipalsClient. */
-public interface ServicePrincipalsClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ServicePrincipalsClient.
+ */
+public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServicePrincipalInner>> createWithResponseAsync(ServicePrincipalCreateParameters parameters);
+    Mono<Response<ServicePrincipalInner>> createWithResponseAsync(String tenantId, ServicePrincipalCreateParameters parameters);
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServicePrincipalInner> createAsync(ServicePrincipalCreateParameters parameters);
+    Mono<ServicePrincipalInner> createAsync(String tenantId, ServicePrincipalCreateParameters parameters);
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServicePrincipalInner create(ServicePrincipalCreateParameters parameters);
+    ServicePrincipalInner create(String tenantId, ServicePrincipalCreateParameters parameters);
 
     /**
      * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServicePrincipalInner> createWithResponse(ServicePrincipalCreateParameters parameters, Context context);
+    Response<ServicePrincipalInner> createWithResponse(String tenantId, ServicePrincipalCreateParameters parameters, Context context);
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServicePrincipalInner> listAsync(String filter);
+    PagedFlux<ServicePrincipalInner> listAsync(String tenantId, String filter);
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ServicePrincipalInner> listAsync();
+    PagedFlux<ServicePrincipalInner> listAsync(String tenantId);
 
     /**
      * Gets a list of service principals from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServicePrincipalInner> list(String tenantId);
+
+    /**
+     * Gets a list of service principals from the current tenant.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServicePrincipalInner> list(String filter, Context context);
+    PagedIterable<ServicePrincipalInner> list(String tenantId, String filter, Context context);
 
     /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * Updates a service principal in the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateWithResponseAsync(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters);
+
+    /**
+     * Updates a service principal in the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateAsync(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters);
+
+    /**
+     * Updates a service principal in the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void update(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters);
+
+    /**
+     * Updates a service principal in the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update a service principal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateWithResponse(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters, Context context);
+
+    /**
+     * Deletes a service principal from the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteWithResponseAsync(String objectId, String tenantId);
+
+    /**
+     * Deletes a service principal from the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String objectId, String tenantId);
+
+    /**
+     * Deletes a service principal from the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String objectId, String tenantId);
+
+    /**
+     * Deletes a service principal from the directory.
+     * 
+     * @param objectId The object ID of the service principal to delete.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String objectId, String tenantId, Context context);
+
+    /**
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
+     * 
+     * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId, String tenantId);
+
+    /**
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
+     * 
+     * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ServicePrincipalInner> getAsync(String objectId, String tenantId);
+
+    /**
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
+     * 
+     * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServicePrincipalInner get(String objectId, String tenantId);
+
+    /**
+     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
+     * 
+     * @param objectId The object ID of the service principal to get.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServicePrincipalInner> getWithResponse(String objectId, String tenantId, Context context);
+
+    /**
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServicePrincipalInner> list();
+    PagedFlux<AppRoleAssignmentInner> listAppRoleAssignedToAsync(String objectId, String tenantId);
 
     /**
-     * Updates a service principal in the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return appRoleAssignment list operation result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateWithResponseAsync(String objectId, ServicePrincipalBase parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppRoleAssignmentInner> listAppRoleAssignedTo(String objectId, String tenantId);
 
     /**
-     * Updates a service principal in the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAsync(String objectId, ServicePrincipalBase parameters);
-
-    /**
-     * Updates a service principal in the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String objectId, ServicePrincipalBase parameters);
-
-    /**
-     * Updates a service principal in the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * Principals (users, groups, and service principals) that are assigned to this service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return appRoleAssignment list operation result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(String objectId, ServicePrincipalBase parameters, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppRoleAssignmentInner> listAppRoleAssignedTo(String objectId, String tenantId, Context context);
 
     /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return appRoleAssignment list operation result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String objectId);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<AppRoleAssignmentInner> listAppRoleAssignmentsAsync(String objectId, String tenantId);
 
     /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return appRoleAssignment list operation result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String objectId);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppRoleAssignmentInner> listAppRoleAssignments(String objectId, String tenantId);
 
     /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String objectId);
-
-    /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
+     * Applications that the service principal is assigned to.
+     * 
+     * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return appRoleAssignment list operation result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String objectId, Context context);
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId);
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServicePrincipalInner> getAsync(String objectId);
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServicePrincipalInner get(String objectId);
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServicePrincipalInner> getWithResponse(String objectId, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AppRoleAssignmentInner> listAppRoleAssignments(String objectId, String tenantId, Context context);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId);
+    PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, String tenantId);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwners(String objectId);
+    PagedIterable<DirectoryObjectInner> listOwners(String objectId, String tenantId);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the service principal for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwners(String objectId, Context context);
+    PagedIterable<DirectoryObjectInner> listOwners(String objectId, String tenantId, Context context);
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId);
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId);
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, Context context);
-
-    /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, List<KeyCredentialInner> value);
+    Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String tenantId, AddOwnerParameters parameters);
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value);
+    Mono<Void> addOwnerAsync(String objectId, String tenantId, AddOwnerParameters parameters);
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateKeyCredentials(String objectId, List<KeyCredentialInner> value);
+    void addOwner(String objectId, String tenantId, AddOwnerParameters parameters);
 
     /**
-     * Update the keyCredentials associated with a service principal.
-     *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * Add an owner to a service principal.
+     * 
+     * @param objectId The object ID of the service principal to which to add the owner.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateKeyCredentialsWithResponse(String objectId, List<KeyCredentialInner> value, Context context);
+    Response<Void> addOwnerWithResponse(String objectId, String tenantId, AddOwnerParameters parameters, Context context);
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId);
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId);
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, Context context);
-
-    /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String objectId, List<PasswordCredentialInner> value);
+    Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId, String tenantId);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value);
+    Mono<Void> removeOwnerAsync(String objectId, String ownerObjectId, String tenantId);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value);
+    void removeOwner(String objectId, String ownerObjectId, String tenantId);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * Remove a member from owners.
+     * 
+     * @param objectId The object ID of the service principal from which to remove the owner.
+     * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePasswordCredentialsWithResponse(
-        String objectId, List<PasswordCredentialInner> value, Context context);
+    Response<Void> removeOwnerWithResponse(String objectId, String ownerObjectId, String tenantId, Context context);
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId, String tenantId);
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, String tenantId);
+
+    /**
+     * Get the keyCredentials associated with the specified service principal.
+     * 
+     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, String tenantId, Context context);
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters);
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateKeyCredentialsAsync(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters);
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateKeyCredentials(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters);
+
+    /**
+     * Update the keyCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID for which to get service principal information.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing service principal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateKeyCredentialsWithResponse(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context);
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId, String tenantId);
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, String tenantId);
+
+    /**
+     * Gets the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, String tenantId, Context context);
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updatePasswordCredentialsAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updatePasswordCredentials(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
+
+    /**
+     * Updates the passwordCredentials associated with a service principal.
+     * 
+     * @param objectId The object ID of the service principal.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the passwordCredentials of an existing service principal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updatePasswordCredentialsWithResponse(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context);
 }

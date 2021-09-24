@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Specifies an OAuth 2.0 permission scope or an app role that an application requires. The resourceAccess property of
- * the RequiredResourceAccess type is a collection of ResourceAccess.
+ * Specifies an OAuth 2.0 permission scope or an app role that an application
+ * requires. The resourceAccess property of the RequiredResourceAccess type is
+ * a collection of ResourceAccess.
  */
 @Fluent
 public final class ResourceAccess {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceAccess.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceAccess.class);
 
     /*
      * The unique identifier for one of the OAuth2Permission or AppRole
@@ -40,12 +44,14 @@ public final class ResourceAccess {
      * application requires. The resourceAccess property of the
      * RequiredResourceAccess type is a collection of ResourceAccess.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /**
-     * Get the id property: The unique identifier for one of the OAuth2Permission or AppRole instances that the resource
-     * application exposes.
-     *
+     * Get the id property: The unique identifier for one of the
+     * OAuth2Permission or AppRole instances that the resource application
+     * exposes.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -53,9 +59,10 @@ public final class ResourceAccess {
     }
 
     /**
-     * Set the id property: The unique identifier for one of the OAuth2Permission or AppRole instances that the resource
-     * application exposes.
-     *
+     * Set the id property: The unique identifier for one of the
+     * OAuth2Permission or AppRole instances that the resource application
+     * exposes.
+     * 
      * @param id the id value to set.
      * @return the ResourceAccess object itself.
      */
@@ -65,9 +72,9 @@ public final class ResourceAccess {
     }
 
     /**
-     * Get the type property: Specifies whether the id property references an OAuth2Permission or an AppRole. Possible
-     * values are "scope" or "role".
-     *
+     * Get the type property: Specifies whether the id property references an
+     * OAuth2Permission or an AppRole. Possible values are "scope" or "role".
+     * 
      * @return the type value.
      */
     public String type() {
@@ -75,9 +82,9 @@ public final class ResourceAccess {
     }
 
     /**
-     * Set the type property: Specifies whether the id property references an OAuth2Permission or an AppRole. Possible
-     * values are "scope" or "role".
-     *
+     * Set the type property: Specifies whether the id property references an
+     * OAuth2Permission or an AppRole. Possible values are "scope" or "role".
+     * 
      * @param type the type value to set.
      * @return the ResourceAccess object itself.
      */
@@ -87,9 +94,11 @@ public final class ResourceAccess {
     }
 
     /**
-     * Get the additionalProperties property: Specifies an OAuth 2.0 permission scope or an app role that an application
-     * requires. The resourceAccess property of the RequiredResourceAccess type is a collection of ResourceAccess.
-     *
+     * Get the additionalProperties property: Specifies an OAuth 2.0 permission
+     * scope or an app role that an application requires. The resourceAccess
+     * property of the RequiredResourceAccess type is a collection of
+     * ResourceAccess.
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -98,9 +107,11 @@ public final class ResourceAccess {
     }
 
     /**
-     * Set the additionalProperties property: Specifies an OAuth 2.0 permission scope or an app role that an application
-     * requires. The resourceAccess property of the RequiredResourceAccess type is a collection of ResourceAccess.
-     *
+     * Set the additionalProperties property: Specifies an OAuth 2.0 permission
+     * scope or an app role that an application requires. The resourceAccess
+     * property of the RequiredResourceAccess type is a collection of
+     * ResourceAccess.
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ResourceAccess object itself.
      */
@@ -119,14 +130,12 @@ public final class ResourceAccess {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ResourceAccess"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property id in model ResourceAccess"));
         }
     }
 }

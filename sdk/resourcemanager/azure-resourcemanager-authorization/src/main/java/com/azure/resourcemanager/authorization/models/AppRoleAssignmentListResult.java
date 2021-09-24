@@ -7,25 +7,25 @@ package com.azure.resourcemanager.authorization.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
+import com.azure.resourcemanager.authorization.fluent.models.AppRoleAssignmentInner;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * DirectoryObject list operation result.
+ * AppRoleAssignment list operation result.
  */
 @Fluent
-public final class DirectoryObjectListResult {
+public final class AppRoleAssignmentListResult {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DirectoryObjectListResult.class);
+    private final ClientLogger logger = new ClientLogger(AppRoleAssignmentListResult.class);
 
     /*
-     * A collection of DirectoryObject.
+     * A collection of AppRoleAssignment.
      */
     @JsonProperty(value = "value")
-    private List<DirectoryObjectInner> value;
+    private List<AppRoleAssignmentInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -34,21 +34,21 @@ public final class DirectoryObjectListResult {
     private String odataNextLink;
 
     /**
-     * Get the value property: A collection of DirectoryObject.
+     * Get the value property: A collection of AppRoleAssignment.
      * 
      * @return the value value.
      */
-    public List<DirectoryObjectInner> value() {
+    public List<AppRoleAssignmentInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: A collection of DirectoryObject.
+     * Set the value property: A collection of AppRoleAssignment.
      * 
      * @param value the value value to set.
-     * @return the DirectoryObjectListResult object itself.
+     * @return the AppRoleAssignmentListResult object itself.
      */
-    public DirectoryObjectListResult withValue(List<DirectoryObjectInner> value) {
+    public AppRoleAssignmentListResult withValue(List<AppRoleAssignmentInner> value) {
         this.value = value;
         return this;
     }
@@ -66,9 +66,9 @@ public final class DirectoryObjectListResult {
      * Set the odataNextLink property: The URL to get the next set of results.
      * 
      * @param odataNextLink the odataNextLink value to set.
-     * @return the DirectoryObjectListResult object itself.
+     * @return the AppRoleAssignmentListResult object itself.
      */
-    public DirectoryObjectListResult withOdataNextLink(String odataNextLink) {
+    public AppRoleAssignmentListResult withOdataNextLink(String odataNextLink) {
         this.odataNextLink = odataNextLink;
         return this;
     }

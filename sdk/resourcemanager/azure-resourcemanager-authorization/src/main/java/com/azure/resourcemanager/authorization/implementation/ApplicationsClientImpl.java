@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -44,249 +45,168 @@ import com.azure.resourcemanager.authorization.models.KeyCredentialListResult;
 import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
 import com.azure.resourcemanager.authorization.models.PasswordCredentialListResult;
 import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
-import java.util.List;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
-public final class ApplicationsClientImpl implements ApplicationsClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ApplicationsClient.
+ */
+public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, ApplicationsClient {
     private final ClientLogger logger = new ClientLogger(ApplicationsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of ApplicationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationsClientImpl(GraphRbacManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for GraphRbacManagementClientApplications to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for
+     * GraphRbacManagementClientApplications to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface ApplicationsService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{tenantID}/applications")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") ApplicationCreateParameters parameters,
-            Context context);
+        Mono<Response<ApplicationInner>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") ApplicationCreateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<ApplicationListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<ApplicationInner>> get(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> patch(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") ApplicationUpdateParameters parameters,
-            Context context);
+        Mono<Response<Void>> patch(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") ApplicationUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwners(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwners(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{tenantID}/applications/{applicationObjectId}/$links/owners")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addOwner(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") AddOwnerParameters parameters,
-            Context context);
+        Mono<Response<Void>> addOwner(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") AddOwnerParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{tenantID}/applications/{applicationObjectId}/$links/owners/{ownerObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeOwner(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @PathParam("ownerObjectId") String ownerObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<Void>> removeOwner(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("ownerObjectId") String ownerObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<KeyCredentialListResult>> listKeyCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<KeyCredentialListResult>> listKeyCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updateKeyCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") KeyCredentialsUpdateParameters parameters,
-            Context context);
+        Mono<Response<Void>> updateKeyCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") KeyCredentialsUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updatePasswordCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("applicationObjectId") String applicationObjectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters,
-            Context context);
+        Mono<Response<Void>> updatePasswordCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipalsByAppId/{applicationID}/objectId")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @PathParam("applicationID") String applicationId,
-            Context context);
+        Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @PathParam("applicationID") String applicationId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationListResult>> listNext(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<ApplicationListResult>> listNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwnersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationInner>> createWithResponseAsync(ApplicationCreateParameters parameters) {
+    public Mono<Response<ApplicationInner>> createWithResponseAsync(String tenantId, ApplicationCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -294,71 +214,65 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> createWithResponseAsync(
-        ApplicationCreateParameters parameters, Context context) {
+    private Mono<Response<ApplicationInner>> createWithResponseAsync(String tenantId, ApplicationCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationInner> createAsync(ApplicationCreateParameters parameters) {
-        return createWithResponseAsync(parameters)
-            .flatMap(
-                (Response<ApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<ApplicationInner> createAsync(String tenantId, ApplicationCreateParameters parameters) {
+        return createWithResponseAsync(tenantId, parameters)
+            .flatMap((Response<ApplicationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner create(ApplicationCreateParameters parameters) {
-        return createAsync(parameters).block();
+    public ApplicationInner create(String tenantId, ApplicationCreateParameters parameters) {
+        return createAsync(tenantId, parameters).block();
     }
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -366,13 +280,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> createWithResponse(ApplicationCreateParameters parameters, Context context) {
-        return createWithResponseAsync(parameters, context).block();
+    public Response<ApplicationInner> createWithResponse(String tenantId, ApplicationCreateParameters parameters, Context context) {
+        return createWithResponseAsync(tenantId, parameters, context).block();
     }
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -380,44 +295,29 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter) {
+    private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String tenantId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<ApplicationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -426,36 +326,29 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter, Context context) {
+    private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String tenantId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -463,42 +356,33 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ApplicationInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists applications by filter parameters.
-     *
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ApplicationInner> listAsync() {
-        final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists applications by filter parameters.
-     *
-     * @param filter The filters to apply to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApplicationInner> listAsync(String filter, Context context) {
+    public PagedFlux<ApplicationInner> listAsync(String tenantId, String filter) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(tenantId, filter),
+            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ApplicationInner> listAsync(String tenantId) {
+        final String filter = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter),
+            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
+    }
+
+    /**
+     * Lists applications by filter parameters.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,67 +391,74 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApplicationInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
+    private PagedFlux<ApplicationInner> listAsync(String tenantId, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, tenantId, context));
     }
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApplicationInner> list() {
+    public PagedIterable<ApplicationInner> list(String tenantId) {
         final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
+        return new PagedIterable<>(listAsync(tenantId, filter));
+    }
+
+    /**
+     * Lists applications by filter parameters.
+     * 
+     * @param tenantId The tenant ID.
+     * @param filter The filters to apply to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationInner> list(String tenantId, String filter, Context context) {
+        return new PagedIterable<>(listAsync(tenantId, filter, context));
     }
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -575,64 +466,56 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context);
+        return service.delete(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String applicationObjectId) {
-        return deleteWithResponseAsync(applicationObjectId).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> deleteAsync(String applicationObjectId, String tenantId) {
+        return deleteWithResponseAsync(applicationObjectId, tenantId)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String applicationObjectId) {
-        deleteAsync(applicationObjectId).block();
+    public void delete(String applicationObjectId, String tenantId) {
+        deleteAsync(applicationObjectId, tenantId).block();
     }
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -640,54 +523,41 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String applicationObjectId, Context context) {
-        return deleteWithResponseAsync(applicationObjectId, context).block();
+    public Response<Void> deleteWithResponse(String applicationObjectId, String tenantId, Context context) {
+        return deleteWithResponseAsync(applicationObjectId, tenantId, context).block();
     }
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId) {
+    public Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -695,73 +565,63 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, Context context) {
+    private Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context);
+        return service.get(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationInner> getAsync(String applicationObjectId) {
-        return getWithResponseAsync(applicationObjectId)
-            .flatMap(
-                (Response<ApplicationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<ApplicationInner> getAsync(String applicationObjectId, String tenantId) {
+        return getWithResponseAsync(applicationObjectId, tenantId)
+            .flatMap((Response<ApplicationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner get(String applicationObjectId) {
-        return getAsync(applicationObjectId).block();
+    public ApplicationInner get(String applicationObjectId, String tenantId) {
+        return getAsync(applicationObjectId, tenantId).block();
     }
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -769,63 +629,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> getWithResponse(String applicationObjectId, Context context) {
-        return getWithResponseAsync(applicationObjectId, context).block();
+    public Response<ApplicationInner> getWithResponse(String applicationObjectId, String tenantId, Context context) {
+        return getWithResponseAsync(applicationObjectId, tenantId, context).block();
     }
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> patchWithResponseAsync(
-        String applicationObjectId, ApplicationUpdateParameters parameters) {
+    public Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .patch(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.patch(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -833,74 +678,64 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> patchWithResponseAsync(
-        String applicationObjectId, ApplicationUpdateParameters parameters, Context context) {
+    private Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .patch(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.patch(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> patchAsync(String applicationObjectId, ApplicationUpdateParameters parameters) {
-        return patchWithResponseAsync(applicationObjectId, parameters).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> patchAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters) {
+        return patchWithResponseAsync(applicationObjectId, tenantId, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void patch(String applicationObjectId, ApplicationUpdateParameters parameters) {
-        patchAsync(applicationObjectId, parameters).block();
+    public void patch(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters) {
+        patchAsync(applicationObjectId, tenantId, parameters).block();
     }
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -908,64 +743,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(
-        String applicationObjectId, ApplicationUpdateParameters parameters, Context context) {
-        return patchWithResponseAsync(applicationObjectId, parameters, context).block();
+    public Response<Void> patchWithResponse(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context) {
+        return patchWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOwners(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<DirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listOwners(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -973,62 +792,50 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(
-        String applicationObjectId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOwners(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listOwners(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId) {
+    public PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId, String tenantId) {
         return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(applicationObjectId), nextLink -> listOwnersNextSinglePageAsync(nextLink));
+            () -> listOwnersSinglePageAsync(applicationObjectId, tenantId),
+            nextLink -> listOwnersNextSinglePageAsync(nextLink));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1036,30 +843,32 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId, Context context) {
+    private PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId, String tenantId, Context context) {
         return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(applicationObjectId, context),
+            () -> listOwnersSinglePageAsync(applicationObjectId, tenantId, context),
             nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId) {
-        return new PagedIterable<>(listOwnersAsync(applicationObjectId));
+    public PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, String tenantId) {
+        return new PagedIterable<>(listOwnersAsync(applicationObjectId, tenantId));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1067,70 +876,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, Context context) {
-        return new PagedIterable<>(listOwnersAsync(applicationObjectId, context));
+    public PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, String tenantId, Context context) {
+        return new PagedIterable<>(listOwnersAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String url) {
+    public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (url == null) {
-            return Mono.error(new IllegalArgumentException("Parameter url is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
-        AddOwnerParameters parameters = new AddOwnerParameters();
-        parameters.withUrl(url);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .addOwner(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.addOwner(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1138,85 +925,64 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String url, Context context) {
+    private Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (url == null) {
-            return Mono.error(new IllegalArgumentException("Parameter url is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
-        AddOwnerParameters parameters = new AddOwnerParameters();
-        parameters.withUrl(url);
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .addOwner(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.addOwner(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOwnerAsync(String applicationObjectId, String url) {
-        return addOwnerWithResponseAsync(applicationObjectId, url).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> addOwnerAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters) {
+        return addOwnerWithResponseAsync(applicationObjectId, tenantId, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOwner(String applicationObjectId, String url) {
-        addOwnerAsync(applicationObjectId, url).block();
+    public void addOwner(String applicationObjectId, String tenantId, AddOwnerParameters parameters) {
+        addOwnerAsync(applicationObjectId, tenantId, parameters).block();
     }
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1224,60 +990,46 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addOwnerWithResponse(String applicationObjectId, String url, Context context) {
-        return addOwnerWithResponseAsync(applicationObjectId, url, context).block();
+    public Response<Void> addOwnerWithResponse(String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context) {
+        return addOwnerWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId) {
+    public Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (ownerObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .removeOwner(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            ownerObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.removeOwner(this.client.getEndpoint(), applicationObjectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1285,73 +1037,62 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> removeOwnerWithResponseAsync(
-        String applicationObjectId, String ownerObjectId, Context context) {
+    private Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (ownerObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .removeOwner(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                ownerObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context);
+        return service.removeOwner(this.client.getEndpoint(), applicationObjectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId) {
-        return removeOwnerWithResponseAsync(applicationObjectId, ownerObjectId)
+    public Mono<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId, String tenantId) {
+        return removeOwnerWithResponseAsync(applicationObjectId, ownerObjectId, tenantId)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeOwner(String applicationObjectId, String ownerObjectId) {
-        removeOwnerAsync(applicationObjectId, ownerObjectId).block();
+    public void removeOwner(String applicationObjectId, String ownerObjectId, String tenantId) {
+        removeOwnerAsync(applicationObjectId, ownerObjectId, tenantId).block();
     }
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1359,58 +1100,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeOwnerWithResponse(String applicationObjectId, String ownerObjectId, Context context) {
-        return removeOwnerWithResponseAsync(applicationObjectId, ownerObjectId, context).block();
+    public Response<Void> removeOwnerWithResponse(String applicationObjectId, String ownerObjectId, String tenantId, Context context) {
+        return removeOwnerWithResponseAsync(applicationObjectId, ownerObjectId, tenantId, context).block();
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId) {
+    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeyCredentials(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<KeyCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<KeyCredentialInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1418,56 +1149,49 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(
-        String applicationObjectId, Context context) {
+    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeyCredentials(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.listKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId) {
-        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(applicationObjectId));
+    public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId, String tenantId) {
+        return new PagedFlux<>(
+            () -> listKeyCredentialsSinglePageAsync(applicationObjectId, tenantId));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1475,28 +1199,31 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId, Context context) {
-        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(applicationObjectId, context));
+    private PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId, String tenantId, Context context) {
+        return new PagedFlux<>(
+            () -> listKeyCredentialsSinglePageAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId) {
-        return new PagedIterable<>(listKeyCredentialsAsync(applicationObjectId));
+    public PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, String tenantId) {
+        return new PagedIterable<>(listKeyCredentialsAsync(applicationObjectId, tenantId));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1504,65 +1231,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, Context context) {
-        return new PagedIterable<>(listKeyCredentialsAsync(applicationObjectId, context));
+    public PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, String tenantId, Context context) {
+        return new PagedIterable<>(listKeyCredentialsAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
-        String applicationObjectId, List<KeyCredentialInner> value) {
+    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            value.forEach(e -> e.validate());
+            parameters.validate();
         }
-        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
-        parameters.withValue(value);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateKeyCredentials(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.updateKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1570,77 +1280,64 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
-        String applicationObjectId, List<KeyCredentialInner> value, Context context) {
+    private Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            value.forEach(e -> e.validate());
+            parameters.validate();
         }
-        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
-        parameters.withValue(value);
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateKeyCredentials(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.updateKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value) {
-        return updateKeyCredentialsWithResponseAsync(applicationObjectId, value)
+    public Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+        return updateKeyCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value) {
-        updateKeyCredentialsAsync(applicationObjectId, value).block();
+    public void updateKeyCredentials(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+        updateKeyCredentialsAsync(applicationObjectId, tenantId, parameters).block();
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1648,60 +1345,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateKeyCredentialsWithResponse(
-        String applicationObjectId, List<KeyCredentialInner> value, Context context) {
-        return updateKeyCredentialsWithResponseAsync(applicationObjectId, value, context).block();
+    public Response<Void> updateKeyCredentialsWithResponse(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
+        return updateKeyCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
-        String applicationObjectId) {
+    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPasswordCredentials(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<PasswordCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listPasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<PasswordCredentialInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1709,56 +1394,49 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
-        String applicationObjectId, Context context) {
+    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listPasswordCredentials(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.listPasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId) {
-        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(applicationObjectId));
+    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId, String tenantId) {
+        return new PagedFlux<>(
+            () -> listPasswordCredentialsSinglePageAsync(applicationObjectId, tenantId));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1766,29 +1444,31 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(
-        String applicationObjectId, Context context) {
-        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(applicationObjectId, context));
+    private PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId, String tenantId, Context context) {
+        return new PagedFlux<>(
+            () -> listPasswordCredentialsSinglePageAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId) {
-        return new PagedIterable<>(listPasswordCredentialsAsync(applicationObjectId));
+    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, String tenantId) {
+        return new PagedIterable<>(listPasswordCredentialsAsync(applicationObjectId, tenantId));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1796,65 +1476,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, Context context) {
-        return new PagedIterable<>(listPasswordCredentialsAsync(applicationObjectId, context));
+    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, String tenantId, Context context) {
+        return new PagedIterable<>(listPasswordCredentialsAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String applicationObjectId, List<PasswordCredentialInner> value) {
+    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            value.forEach(e -> e.validate());
+            parameters.validate();
         }
-        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
-        parameters.withValue(value);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePasswordCredentials(
-                            this.client.getEndpoint(),
-                            applicationObjectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.updatePasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1862,77 +1525,64 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String applicationObjectId, List<PasswordCredentialInner> value, Context context) {
+    private Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            value.forEach(e -> e.validate());
+            parameters.validate();
         }
-        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
-        parameters.withValue(value);
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .updatePasswordCredentials(
-                this.client.getEndpoint(),
-                applicationObjectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
+        return service.updatePasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value) {
-        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, value)
+    public Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value) {
-        updatePasswordCredentialsAsync(applicationObjectId, value).block();
+    public void updatePasswordCredentials(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+        updatePasswordCredentialsAsync(applicationObjectId, tenantId, parameters).block();
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1940,14 +1590,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updatePasswordCredentialsWithResponse(
-        String applicationObjectId, List<PasswordCredentialInner> value, Context context) {
-        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, value, context).block();
+    public Response<Void> updatePasswordCredentialsWithResponse(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
+        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1955,39 +1605,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
-        String applicationId) {
+    public Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(String tenantId, String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getServicePrincipalsIdByAppId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            applicationId,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.getServicePrincipalsIdByAppId(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, applicationId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1996,36 +1632,25 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
-        String applicationId, Context context) {
+    private Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(String tenantId, String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (applicationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .getServicePrincipalsIdByAppId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                applicationId,
-                context);
+        return service.getServicePrincipalsIdByAppId(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, applicationId, accept, context);
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -2033,21 +1658,21 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String applicationId) {
-        return getServicePrincipalsIdByAppIdWithResponseAsync(applicationId)
-            .flatMap(
-                (Response<ServicePrincipalObjectResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String tenantId, String applicationId) {
+        return getServicePrincipalsIdByAppIdWithResponseAsync(tenantId, applicationId)
+            .flatMap((Response<ServicePrincipalObjectResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -2055,13 +1680,14 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalObjectResultInner getServicePrincipalsIdByAppId(String applicationId) {
-        return getServicePrincipalsIdByAppIdAsync(applicationId).block();
+    public ServicePrincipalObjectResultInner getServicePrincipalsIdByAppId(String tenantId, String applicationId) {
+        return getServicePrincipalsIdByAppIdAsync(tenantId, applicationId).block();
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2070,63 +1696,48 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdWithResponse(
-        String applicationId, Context context) {
-        return getServicePrincipalsIdByAppIdWithResponseAsync(applicationId, context).block();
+    public Response<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdWithResponse(String tenantId, String applicationId, Context context) {
+        return getServicePrincipalsIdByAppIdWithResponseAsync(tenantId, applicationId, context).block();
     }
 
     /**
      * Gets a list of applications from the current tenant.
-     *
+     * 
      * @param nextLink Next link for the list operation.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of applications from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listNext(
-                            this.client.getEndpoint(),
-                            nextLink,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<ApplicationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of applications from the current tenant.
-     *
+     * 
      * @param nextLink Next link for the list operation.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -2134,40 +1745,31 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @return a list of applications from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(
-                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -2179,23 +1781,24 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(context -> service.listOwnersNext(nextLink, context))
-            .<PagedResponse<DirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2208,17 +1811,18 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listOwnersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null));
     }
 }

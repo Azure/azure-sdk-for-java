@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Server response for IsMemberOf API call. */
+/**
+ * Server response for IsMemberOf API call.
+ */
 @Fluent
 public final class CheckGroupMembershipResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckGroupMembershipResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CheckGroupMembershipResultInner.class);
 
     /*
      * True if the specified user, group, contact, or service principal has
@@ -29,12 +34,14 @@ public final class CheckGroupMembershipResultInner {
     /*
      * Server response for IsMemberOf API call
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /**
-     * Get the value property: True if the specified user, group, contact, or service principal has either direct or
-     * transitive membership in the specified group; otherwise, false.
-     *
+     * Get the value property: True if the specified user, group, contact, or
+     * service principal has either direct or transitive membership in the
+     * specified group; otherwise, false.
+     * 
      * @return the value value.
      */
     public Boolean value() {
@@ -42,9 +49,10 @@ public final class CheckGroupMembershipResultInner {
     }
 
     /**
-     * Set the value property: True if the specified user, group, contact, or service principal has either direct or
-     * transitive membership in the specified group; otherwise, false.
-     *
+     * Set the value property: True if the specified user, group, contact, or
+     * service principal has either direct or transitive membership in the
+     * specified group; otherwise, false.
+     * 
      * @param value the value value to set.
      * @return the CheckGroupMembershipResultInner object itself.
      */
@@ -54,8 +62,9 @@ public final class CheckGroupMembershipResultInner {
     }
 
     /**
-     * Get the additionalProperties property: Server response for IsMemberOf API call.
-     *
+     * Get the additionalProperties property: Server response for IsMemberOf
+     * API call.
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -64,8 +73,9 @@ public final class CheckGroupMembershipResultInner {
     }
 
     /**
-     * Set the additionalProperties property: Server response for IsMemberOf API call.
-     *
+     * Set the additionalProperties property: Server response for IsMemberOf
+     * API call.
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CheckGroupMembershipResultInner object itself.
      */
@@ -84,7 +94,7 @@ public final class CheckGroupMembershipResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

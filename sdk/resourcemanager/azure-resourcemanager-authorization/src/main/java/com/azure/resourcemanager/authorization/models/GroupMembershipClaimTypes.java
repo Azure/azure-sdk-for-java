@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GroupMembershipClaimTypes. */
+/**
+ * Defines values for GroupMembershipClaimTypes.
+ */
 public final class GroupMembershipClaimTypes extends ExpandableStringEnum<GroupMembershipClaimTypes> {
-    /** Static value None for GroupMembershipClaimTypes. */
+    /**
+     * Static value None for GroupMembershipClaimTypes.
+     */
     public static final GroupMembershipClaimTypes NONE = fromString("None");
 
-    /** Static value SecurityGroup for GroupMembershipClaimTypes. */
+    /**
+     * Static value SecurityGroup for GroupMembershipClaimTypes.
+     */
     public static final GroupMembershipClaimTypes SECURITY_GROUP = fromString("SecurityGroup");
 
-    /** Static value All for GroupMembershipClaimTypes. */
+    /**
+     * Static value All for GroupMembershipClaimTypes.
+     */
     public static final GroupMembershipClaimTypes ALL = fromString("All");
 
     /**
      * Creates or finds a GroupMembershipClaimTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GroupMembershipClaimTypes.
      */
@@ -30,7 +38,9 @@ public final class GroupMembershipClaimTypes extends ExpandableStringEnum<GroupM
         return fromString(name, GroupMembershipClaimTypes.class);
     }
 
-    /** @return known GroupMembershipClaimTypes values. */
+    /**
+     * @return known GroupMembershipClaimTypes values.
+     */
     public static Collection<GroupMembershipClaimTypes> values() {
         return values(GroupMembershipClaimTypes.class);
     }

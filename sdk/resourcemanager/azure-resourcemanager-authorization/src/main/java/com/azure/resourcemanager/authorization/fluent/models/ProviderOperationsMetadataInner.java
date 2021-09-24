@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.ProviderOperation;
 import com.azure.resourcemanager.authorization.models.ResourceType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Provider Operations metadata. */
+/**
+ * Provider Operations metadata.
+ */
 @Fluent
 public final class ProviderOperationsMetadataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationsMetadataInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ProviderOperationsMetadataInner.class);
 
     /*
      * The provider id.
@@ -55,7 +60,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the id property: The provider id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +69,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the id property: The provider id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -75,7 +80,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the name property: The provider name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +89,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the name property: The provider name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -95,7 +100,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the type property: The provider type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -104,7 +109,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the type property: The provider type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -115,7 +120,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the displayName property: The provider display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -124,7 +129,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the displayName property: The provider display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -135,7 +140,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the resourceTypes property: The provider resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<ResourceType> resourceTypes() {
@@ -144,7 +149,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the resourceTypes property: The provider resource types.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -155,7 +160,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Get the operations property: The provider operations.
-     *
+     * 
      * @return the operations value.
      */
     public List<ProviderOperation> operations() {
@@ -164,7 +169,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Set the operations property: The provider operations.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the ProviderOperationsMetadataInner object itself.
      */
@@ -175,7 +180,7 @@ public final class ProviderOperationsMetadataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

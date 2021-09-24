@@ -5,77 +5,87 @@
 package com.azure.resourcemanager.authorization.fluent;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** The interface for AuthorizationManagementClient class. */
+/**
+ * The interface for AuthorizationManagementClient class.
+ */
 public interface AuthorizationManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the ClassicAdministratorsClient object to access its operations.
-     *
-     * @return the ClassicAdministratorsClient object.
-     */
-    ClassicAdministratorsClient getClassicAdministrators();
-
-    /**
-     * Gets the GlobalAdministratorsClient object to access its operations.
-     *
-     * @return the GlobalAdministratorsClient object.
-     */
-    GlobalAdministratorsClient getGlobalAdministrators();
-
-    /**
-     * Gets the ProviderOperationsMetadatasClient object to access its operations.
-     *
-     * @return the ProviderOperationsMetadatasClient object.
-     */
-    ProviderOperationsMetadatasClient getProviderOperationsMetadatas();
-
-    /**
-     * Gets the RoleAssignmentsClient object to access its operations.
-     *
-     * @return the RoleAssignmentsClient object.
-     */
-    RoleAssignmentsClient getRoleAssignments();
-
-    /**
      * Gets the PermissionsClient object to access its operations.
-     *
+     * 
      * @return the PermissionsClient object.
      */
     PermissionsClient getPermissions();
 
     /**
      * Gets the RoleDefinitionsClient object to access its operations.
-     *
+     * 
      * @return the RoleDefinitionsClient object.
      */
     RoleDefinitionsClient getRoleDefinitions();
+
+    /**
+     * Gets the ProviderOperationsMetadatasClient object to access its operations.
+     * 
+     * @return the ProviderOperationsMetadatasClient object.
+     */
+    ProviderOperationsMetadatasClient getProviderOperationsMetadatas();
+
+    /**
+     * Gets the GlobalAdministratorsClient object to access its operations.
+     * 
+     * @return the GlobalAdministratorsClient object.
+     */
+    GlobalAdministratorsClient getGlobalAdministrators();
+
+    /**
+     * Gets the RoleAssignmentsClient object to access its operations.
+     * 
+     * @return the RoleAssignmentsClient object.
+     */
+    RoleAssignmentsClient getRoleAssignments();
+
+    /**
+     * Gets the ClassicAdministratorsClient object to access its operations.
+     * 
+     * @return the ClassicAdministratorsClient object.
+     */
+    ClassicAdministratorsClient getClassicAdministrators();
 }

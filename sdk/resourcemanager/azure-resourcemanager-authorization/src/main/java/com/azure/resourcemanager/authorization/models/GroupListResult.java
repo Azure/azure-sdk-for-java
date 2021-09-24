@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Server response for Get tenant groups API call. */
+/**
+ * Server response for Get tenant groups API call.
+ */
 @Fluent
 public final class GroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GroupListResult.class);
 
     /*
      * A collection of Active Directory groups.
@@ -30,7 +35,7 @@ public final class GroupListResult {
 
     /**
      * Get the value property: A collection of Active Directory groups.
-     *
+     * 
      * @return the value value.
      */
     public List<ADGroupInner> value() {
@@ -39,7 +44,7 @@ public final class GroupListResult {
 
     /**
      * Set the value property: A collection of Active Directory groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the GroupListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class GroupListResult {
 
     /**
      * Get the odataNextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -59,7 +64,7 @@ public final class GroupListResult {
 
     /**
      * Set the odataNextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the GroupListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class GroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

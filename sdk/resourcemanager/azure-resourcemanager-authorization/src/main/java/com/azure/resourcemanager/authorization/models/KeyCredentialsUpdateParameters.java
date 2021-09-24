@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request parameters for a KeyCredentials update operation. */
+/**
+ * Request parameters for a KeyCredentials update operation.
+ */
 @Fluent
 public final class KeyCredentialsUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyCredentialsUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyCredentialsUpdateParameters.class);
 
     /*
      * A collection of KeyCredentials.
@@ -24,7 +29,7 @@ public final class KeyCredentialsUpdateParameters {
 
     /**
      * Get the value property: A collection of KeyCredentials.
-     *
+     * 
      * @return the value value.
      */
     public List<KeyCredentialInner> value() {
@@ -33,7 +38,7 @@ public final class KeyCredentialsUpdateParameters {
 
     /**
      * Set the value property: A collection of KeyCredentials.
-     *
+     * 
      * @param value the value value to set.
      * @return the KeyCredentialsUpdateParameters object itself.
      */
@@ -44,15 +49,12 @@ public final class KeyCredentialsUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model KeyCredentialsUpdateParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model KeyCredentialsUpdateParameters"));
         } else {
             value().forEach(e -> e.validate());
         }

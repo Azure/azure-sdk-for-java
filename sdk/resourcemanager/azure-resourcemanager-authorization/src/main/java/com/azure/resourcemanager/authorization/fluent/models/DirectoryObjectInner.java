@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -17,22 +19,22 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Represents an Azure Active Directory object. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = DirectoryObjectInner.class)
+/**
+ * Represents an Azure Active Directory object.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType", defaultImpl = DirectoryObjectInner.class)
 @JsonTypeName("DirectoryObject")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "User", value = UserInner.class),
     @JsonSubTypes.Type(name = "Application", value = ApplicationInner.class),
     @JsonSubTypes.Type(name = "Group", value = ADGroupInner.class),
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalInner.class)
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalInner.class),
+    @JsonSubTypes.Type(name = "AppRoleAssignment", value = AppRoleAssignmentInner.class)
 })
 @Fluent
 public class DirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectoryObjectInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DirectoryObjectInner.class);
 
     /*
      * The object ID.
@@ -49,11 +51,12 @@ public class DirectoryObjectInner {
     /*
      * Represents an Azure Active Directory object.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /**
      * Get the objectId property: The object ID.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -61,8 +64,9 @@ public class DirectoryObjectInner {
     }
 
     /**
-     * Get the deletionTimestamp property: The time at which the directory object was deleted.
-     *
+     * Get the deletionTimestamp property: The time at which the directory
+     * object was deleted.
+     * 
      * @return the deletionTimestamp value.
      */
     public OffsetDateTime deletionTimestamp() {
@@ -70,8 +74,9 @@ public class DirectoryObjectInner {
     }
 
     /**
-     * Get the additionalProperties property: Represents an Azure Active Directory object.
-     *
+     * Get the additionalProperties property: Represents an Azure Active
+     * Directory object.
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -80,8 +85,9 @@ public class DirectoryObjectInner {
     }
 
     /**
-     * Set the additionalProperties property: Represents an Azure Active Directory object.
-     *
+     * Set the additionalProperties property: Represents an Azure Active
+     * Directory object.
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DirectoryObjectInner object itself.
      */
@@ -100,7 +106,7 @@ public class DirectoryObjectInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

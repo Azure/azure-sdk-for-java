@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request parameters for updating an existing work or school account user. */
+/**
+ * Request parameters for updating an existing work or school account user.
+ */
 @Fluent
 public final class UserUpdateParameters extends UserBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UserUpdateParameters.class);
 
     /*
      * Whether the account is enabled.
@@ -45,9 +50,15 @@ public final class UserUpdateParameters extends UserBase {
     @JsonProperty(value = "mailNickname")
     private String mailNickname;
 
+    /*
+     * The primary email address of the user.
+     */
+    @JsonProperty(value = "mail")
+    private String mail;
+
     /**
      * Get the accountEnabled property: Whether the account is enabled.
-     *
+     * 
      * @return the accountEnabled value.
      */
     public Boolean accountEnabled() {
@@ -56,7 +67,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Set the accountEnabled property: Whether the account is enabled.
-     *
+     * 
      * @param accountEnabled the accountEnabled value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -67,7 +78,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Get the displayName property: The display name of the user.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -76,7 +87,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Set the displayName property: The display name of the user.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -87,7 +98,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Get the passwordProfile property: The password profile of the user.
-     *
+     * 
      * @return the passwordProfile value.
      */
     public PasswordProfile passwordProfile() {
@@ -96,7 +107,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Set the passwordProfile property: The password profile of the user.
-     *
+     * 
      * @param passwordProfile the passwordProfile value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -106,9 +117,10 @@ public final class UserUpdateParameters extends UserBase {
     }
 
     /**
-     * Get the userPrincipalName property: The user principal name (someuser@contoso.com). It must contain one of the
-     * verified domains for the tenant.
-     *
+     * Get the userPrincipalName property: The user principal name
+     * (someuser@contoso.com). It must contain one of the verified domains for
+     * the tenant.
+     * 
      * @return the userPrincipalName value.
      */
     public String userPrincipalName() {
@@ -116,9 +128,10 @@ public final class UserUpdateParameters extends UserBase {
     }
 
     /**
-     * Set the userPrincipalName property: The user principal name (someuser@contoso.com). It must contain one of the
-     * verified domains for the tenant.
-     *
+     * Set the userPrincipalName property: The user principal name
+     * (someuser@contoso.com). It must contain one of the verified domains for
+     * the tenant.
+     * 
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -129,7 +142,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Get the mailNickname property: The mail alias for the user.
-     *
+     * 
      * @return the mailNickname value.
      */
     public String mailNickname() {
@@ -138,7 +151,7 @@ public final class UserUpdateParameters extends UserBase {
 
     /**
      * Set the mailNickname property: The mail alias for the user.
-     *
+     * 
      * @param mailNickname the mailNickname value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -148,8 +161,73 @@ public final class UserUpdateParameters extends UserBase {
     }
 
     /**
+     * Get the mail property: The primary email address of the user.
+     * 
+     * @return the mail value.
+     */
+    public String mail() {
+        return this.mail;
+    }
+
+    /**
+     * Set the mail property: The primary email address of the user.
+     * 
+     * @param mail the mail value to set.
+     * @return the UserUpdateParameters object itself.
+     */
+    public UserUpdateParameters withMail(String mail) {
+        this.mail = mail;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdateParameters withImmutableId(String immutableId) {
+        super.withImmutableId(immutableId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdateParameters withUsageLocation(String usageLocation) {
+        super.withUsageLocation(usageLocation);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdateParameters withGivenName(String givenName) {
+        super.withGivenName(givenName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdateParameters withSurname(String surname) {
+        super.withSurname(surname);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserUpdateParameters withUserType(UserType userType) {
+        super.withUserType(userType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

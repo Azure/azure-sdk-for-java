@@ -5,18 +5,24 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 
-/** Active Directory group information. */
+/**
+ * Active Directory group information.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("Group")
 @Fluent
 public final class ADGroupInner extends DirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ADGroupInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ADGroupInner.class);
 
     /*
      * The display name of the group.
@@ -51,7 +57,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Get the displayName property: The display name of the group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -60,7 +66,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Set the displayName property: The display name of the group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ADGroupInner object itself.
      */
@@ -70,9 +76,10 @@ public final class ADGroupInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the mailEnabled property: Whether the group is mail-enabled. Must be false. This is because only pure
-     * security groups can be created using the Graph API.
-     *
+     * Get the mailEnabled property: Whether the group is mail-enabled. Must be
+     * false. This is because only pure security groups can be created using
+     * the Graph API.
+     * 
      * @return the mailEnabled value.
      */
     public Boolean mailEnabled() {
@@ -80,9 +87,10 @@ public final class ADGroupInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the mailEnabled property: Whether the group is mail-enabled. Must be false. This is because only pure
-     * security groups can be created using the Graph API.
-     *
+     * Set the mailEnabled property: Whether the group is mail-enabled. Must be
+     * false. This is because only pure security groups can be created using
+     * the Graph API.
+     * 
      * @param mailEnabled the mailEnabled value to set.
      * @return the ADGroupInner object itself.
      */
@@ -93,7 +101,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Get the mailNickname property: The mail alias for the group.
-     *
+     * 
      * @return the mailNickname value.
      */
     public String mailNickname() {
@@ -102,7 +110,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Set the mailNickname property: The mail alias for the group.
-     *
+     * 
      * @param mailNickname the mailNickname value to set.
      * @return the ADGroupInner object itself.
      */
@@ -113,7 +121,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Get the securityEnabled property: Whether the group is security-enable.
-     *
+     * 
      * @return the securityEnabled value.
      */
     public Boolean securityEnabled() {
@@ -122,7 +130,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Set the securityEnabled property: Whether the group is security-enable.
-     *
+     * 
      * @param securityEnabled the securityEnabled value to set.
      * @return the ADGroupInner object itself.
      */
@@ -133,7 +141,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Get the mail property: The primary email address of the group.
-     *
+     * 
      * @return the mail value.
      */
     public String mail() {
@@ -142,7 +150,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Set the mail property: The primary email address of the group.
-     *
+     * 
      * @param mail the mail value to set.
      * @return the ADGroupInner object itself.
      */
@@ -153,7 +161,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

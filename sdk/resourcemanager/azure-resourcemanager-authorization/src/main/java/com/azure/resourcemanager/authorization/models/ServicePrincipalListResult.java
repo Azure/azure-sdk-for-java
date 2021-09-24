@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Server response for get tenant service principals API call. */
+/**
+ * Server response for get tenant service principals API call.
+ */
 @Fluent
 public final class ServicePrincipalListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServicePrincipalListResult.class);
 
     /*
      * the list of service principals.
@@ -30,7 +35,7 @@ public final class ServicePrincipalListResult {
 
     /**
      * Get the value property: the list of service principals.
-     *
+     * 
      * @return the value value.
      */
     public List<ServicePrincipalInner> value() {
@@ -39,7 +44,7 @@ public final class ServicePrincipalListResult {
 
     /**
      * Set the value property: the list of service principals.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServicePrincipalListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class ServicePrincipalListResult {
 
     /**
      * Get the odataNextLink property: the URL to get the next set of results.
-     *
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -59,7 +64,7 @@ public final class ServicePrincipalListResult {
 
     /**
      * Set the odataNextLink property: the URL to get the next set of results.
-     *
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the ServicePrincipalListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class ServicePrincipalListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
