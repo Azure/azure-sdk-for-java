@@ -1,6 +1,6 @@
 # Azure Key Vault Secrets Spring Boot starter client library for Java
 
-Azure Key Vault Secrets Spring Boot Starter is Spring starter for [Azure Key Vault Secrets]. With
+Azure Key Vault Secrets Spring Boot Starter is a Spring starter for [Azure Key Vault Secrets]. With
 this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure
 Key Vault could be easily used and conveniently accessed like other externalized configuration
 property, e.g. properties in files.
@@ -15,48 +15,48 @@ property, e.g. properties in files.
 ### Include the package
 1. [Add azure-spring-boot-bom].
 1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
-    ```xml
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-    </dependency>
-    ```
+```xml
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+</dependency>
+```
 
 ### Save secrets in Azure Key Vault
-  Save secrets in Azure Key Vault through Azure Portal or Azure CLI:
-    - [Set and retrieve a secret from Azure Key Vault using Azure CLI].
-    - [Set and retrieve a secret from Azure Key Vault using the Azure portal]
+Save secrets in Azure Key Vault through Azure Portal or Azure CLI:
+- [Set and retrieve a secret from Azure Key Vault using Azure CLI].
+- [Set and retrieve a secret from Azure Key Vault using the Azure portal]
 
 ### Configure necessary properties.
-    Configure these properties:
-    ```
-    azure.keyvault.enabled=true
-    azure.keyvault.uri=put-your-azure-keyvault-uri-here
-    azure.keyvault.client-id=put-your-azure-client-id-here
-    azure.keyvault.client-key=put-your-azure-client-key-here
-    ``` 
+Configure these properties:
+```
+azure.keyvault.enabled=true
+azure.keyvault.uri=put-your-azure-keyvault-uri-here
+azure.keyvault.client-id=put-your-azure-client-id-here
+azure.keyvault.client-key=put-your-azure-client-key-here
+``` 
 
 ###  Get Key Vault secret value as property
-  Now, you can get Azure Key Vault secret value as a configuration property.
+Now, you can get Azure Key Vault secret value as a configuration property.
 
-    <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultSample.java#L18-L32 -->
-    ```
-    @SpringBootApplication
-    public class KeyVaultSample implements CommandLineRunner {
-    
-        @Value("${your-property-name}")
-        private String mySecretProperty;
-    
-        public static void main(String[] args) {
-            SpringApplication.run(KeyVaultSample.class, args);
-        }
-    
-        @Override
-        public void run(String... args) {
-            System.out.println("property your-property-name value is: " + mySecretProperty);
-        }
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/keyvault/KeyVaultSample.java#L18-L32 -->
+```
+@SpringBootApplication
+public class KeyVaultSample implements CommandLineRunner {
+
+    @Value("${your-property-name}")
+    private String mySecretProperty;
+
+    public static void main(String[] args) {
+        SpringApplication.run(KeyVaultSample.class, args);
     }
-    ```
+
+    @Override
+    public void run(String... args) {
+        System.out.println("property your-property-name value is: " + mySecretProperty);
+    }
+}
+```
 
 You can refer to [Key Vault Secrets Sample project] to get more information.
 
