@@ -110,8 +110,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
         if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
             context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
-            request.setHeader("Content-Length", "0");
-            request.setBody((Flux<ByteBuffer>) null);
+            request.setBody("");
         }
 
         return Mono.empty();
