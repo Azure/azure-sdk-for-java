@@ -27,7 +27,7 @@ For more information about creating the account see [here][create_azure_purview_
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-scanning</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,7 +50,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.5</version>
+    <version>1.3.6</version>
 </dependency>
 ```
 
