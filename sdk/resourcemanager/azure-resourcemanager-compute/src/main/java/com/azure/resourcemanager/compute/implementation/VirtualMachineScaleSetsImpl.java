@@ -172,18 +172,17 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public void deleteInstances(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion) {
-        this.deleteInstancesAsync(groupName, scaleSetName, instanceIds, forceDeletion).block();
+    public void deleteInstances(String groupName, String scaleSetName, Collection<String> instanceIds) {
+        this.deleteInstancesAsync(groupName, scaleSetName, instanceIds).block();
     }
 
     @Override
-    public Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName, Collection<String> instanceIds, boolean forceDeletion) {
+    public Mono<Void> deleteInstancesAsync(String groupName, String scaleSetName, Collection<String> instanceIds) {
         if (instanceIds == null || instanceIds.isEmpty()) {
             return Mono.empty();
         }
         return this.manager().serviceClient().getVirtualMachineScaleSets().deleteInstancesAsync(groupName, scaleSetName,
-            new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(new ArrayList<>(instanceIds)),
-            forceDeletion);
+            new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
     @Override
@@ -236,26 +235,5 @@ public class VirtualMachineScaleSetsImpl
         }
         return new VirtualMachineScaleSetImpl(
             inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
-    }
-
-    @Override
-    public void deleteById(String id, boolean forceDeletion) {
-        deleteByIdAsync(id, forceDeletion).block();
-    }
-
-    @Override
-    public Mono<Void> deleteByIdAsync(String id, boolean forceDeletion) {
-        return deleteByResourceGroupAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
-    }
-
-    @Override
-    public void deleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
-        deleteByResourceGroupAsync(resourceGroupName, name, forceDeletion).block();
-    }
-
-    @Override
-    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name, boolean forceDeletion) {
-        return this.inner().deleteAsync(resourceGroupName, name, forceDeletion);
     }
 }

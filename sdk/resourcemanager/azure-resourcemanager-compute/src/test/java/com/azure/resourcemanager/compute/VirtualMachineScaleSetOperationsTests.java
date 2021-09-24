@@ -1383,21 +1383,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Assertions.assertEquals(4, vmss.virtualMachines().list().stream().count());
 
-        // force delete first 2 instances
+        // delete first 2 instances
         List<String> firstTwoIds = vmss.virtualMachines().list().stream()
             .limit(2)
             .map(VirtualMachineScaleSetVM::instanceId)
             .collect(Collectors.toList());
-        vmss.virtualMachines().deleteInstances(firstTwoIds, true);
+        vmss.virtualMachines().deleteInstances(firstTwoIds);
 
         Assertions.assertEquals(2, vmss.virtualMachines().list().stream().count());
 
         // delete next 1 instance
-        vmss.virtualMachines().deleteInstances(Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+        vmss.virtualMachines().deleteInstances(Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()));
 
         Assertions.assertEquals(1, vmss.virtualMachines().list().stream().count());
 
-        // force delete next 1 instance
-        computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+        // delete next 1 instance
+        computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()));
     }
 }
