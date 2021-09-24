@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-scanning</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-purview-scanning;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-analytics-purview-scanning;current} -->
 
   <name>Microsoft Azure client library for Purview Scanning</name>
   <description>This package contains Microsoft Azure Purview Scanning client library.</description>
