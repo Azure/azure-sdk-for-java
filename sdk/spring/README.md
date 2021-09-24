@@ -253,7 +253,7 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-cloud-starter-servicebus-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-servicebus.svg
 [azure-spring-cloud-starter-servicebus-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-servicebus%22
 
-[azure-spring-cloud-starter-storage-queue-readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-azure-cloud-starter-storage-queue
+[azure-spring-cloud-starter-storage-queue-readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-storage-queue
 [azure-spring-cloud-starter-storage-queue-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-storage-queue/2.2.svg
 [azure-spring-cloud-starter-storage-queue-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-storage-queue%22AND%20v:2.2.*
 [azure-spring-cloud-starter-storage-queue-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-storage-queue.svg
