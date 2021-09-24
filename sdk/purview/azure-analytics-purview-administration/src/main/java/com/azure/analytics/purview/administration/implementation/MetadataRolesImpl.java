@@ -21,6 +21,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -56,13 +58,15 @@ public final class MetadataRolesImpl {
         Mono<Response<BinaryData>> list(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
         Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -125,7 +129,90 @@ public final class MetadataRolesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
-        return service.list(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions)
+        return FluxUtil.withContext(
+                        context ->
+                                service.list(
+                                        this.client.getEndpoint(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "values"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Lists roles for Purview Account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     values: [
+     *         {
+     *             id: String
+     *             name: String
+     *             type: String
+     *             properties: {
+     *                 provisioningState: String
+     *                 roleType: String
+     *                 friendlyName: String
+     *                 description: String
+     *                 cnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *                 version: Long
+     *             }
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return list of Metadata roles.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
+        return service.list(
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -255,6 +342,72 @@ public final class MetadataRolesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return list of Metadata roles.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listSinglePageAsync(requestOptions, context),
+                nextLink -> listNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Lists roles for Purview Account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     values: [
+     *         {
+     *             id: String
+     *             name: String
+     *             type: String
+     *             properties: {
+     *                 provisioningState: String
+     *                 roleType: String
+     *                 friendlyName: String
+     *                 description: String
+     *                 cnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *                 version: Long
+     *             }
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return list of Metadata roles.
@@ -262,6 +415,70 @@ public final class MetadataRolesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
         return new PagedIterable<>(listAsync(requestOptions));
+    }
+
+    /**
+     * Lists roles for Purview Account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     values: [
+     *         {
+     *             id: String
+     *             name: String
+     *             type: String
+     *             properties: {
+     *                 provisioningState: String
+     *                 roleType: String
+     *                 friendlyName: String
+     *                 description: String
+     *                 cnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *                 version: Long
+     *             }
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return list of Metadata roles.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(listAsync(requestOptions, context));
     }
 
     /**
@@ -317,7 +534,75 @@ public final class MetadataRolesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
-        return service.listNext(nextLink, this.client.getEndpoint(), requestOptions)
+        return FluxUtil.withContext(
+                        context -> service.listNext(nextLink, this.client.getEndpoint(), requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "values"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     values: [
+     *         {
+     *             id: String
+     *             name: String
+     *             type: String
+     *             properties: {
+     *                 provisioningState: String
+     *                 roleType: String
+     *                 friendlyName: String
+     *                 description: String
+     *                 cnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *                 version: Long
+     *             }
+     *         }
+     *     ]
+     *     nextLink: String
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return list of Metadata roles.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

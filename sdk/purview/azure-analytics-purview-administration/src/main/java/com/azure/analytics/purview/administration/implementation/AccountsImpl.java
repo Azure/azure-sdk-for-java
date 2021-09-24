@@ -19,6 +19,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Accounts. */
@@ -50,27 +52,31 @@ public final class AccountsImpl {
         Mono<Response<BinaryData>> getAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Patch("/")
         Mono<Response<BinaryData>> updateAccountProperties(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData accountUpdateParameters,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/listkeys")
         Mono<Response<BinaryData>> getAccessKeys(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/regeneratekeys")
         Mono<Response<BinaryData>> regenerateAccessKey(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData keyOptions,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -162,8 +168,201 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getAccountProperties(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Get an account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     identity: {
+     *         principalId: String
+     *         tenantId: String
+     *         type: String(SystemAssigned)
+     *     }
+     *     location: String
+     *     name: String
+     *     properties: {
+     *         cloudConnectors: {
+     *             awsExternalId: String
+     *         }
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByObjectId: String
+     *         endpoints: {
+     *             catalog: String
+     *             guardian: String
+     *             scan: String
+     *         }
+     *         friendlyName: String
+     *         managedResourceGroupName: String
+     *         managedResources: {
+     *             eventHubNamespace: String
+     *             resourceGroup: String
+     *             storageAccount: String
+     *         }
+     *         privateEndpointConnections: [
+     *             {
+     *                 id: String
+     *                 name: String
+     *                 properties: {
+     *                     privateEndpoint: {
+     *                         id: String
+     *                     }
+     *                     privateLinkServiceConnectionState: {
+     *                         actionsRequired: String
+     *                         description: String
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     }
+     *                     provisioningState: String
+     *                 }
+     *                 type: String
+     *             }
+     *         ]
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *     }
+     *     sku: {
+     *         capacity: Integer
+     *         name: String(Standard)
+     *     }
+     *     systemData: {
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByType: String(User/Application/ManagedIdentity/Key)
+     *         lastModifiedAt: String
+     *         lastModifiedBy: String
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     }
+     *     tags: {
+     *         String: String
+     *     }
+     *     type: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return an account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAccountPropertiesWithResponseAsync(
+            RequestOptions requestOptions, Context context) {
         return service.getAccountProperties(
-                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions);
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+    }
+
+    /**
+     * Get an account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     identity: {
+     *         principalId: String
+     *         tenantId: String
+     *         type: String(SystemAssigned)
+     *     }
+     *     location: String
+     *     name: String
+     *     properties: {
+     *         cloudConnectors: {
+     *             awsExternalId: String
+     *         }
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByObjectId: String
+     *         endpoints: {
+     *             catalog: String
+     *             guardian: String
+     *             scan: String
+     *         }
+     *         friendlyName: String
+     *         managedResourceGroupName: String
+     *         managedResources: {
+     *             eventHubNamespace: String
+     *             resourceGroup: String
+     *             storageAccount: String
+     *         }
+     *         privateEndpointConnections: [
+     *             {
+     *                 id: String
+     *                 name: String
+     *                 properties: {
+     *                     privateEndpoint: {
+     *                         id: String
+     *                     }
+     *                     privateLinkServiceConnectionState: {
+     *                         actionsRequired: String
+     *                         description: String
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     }
+     *                     provisioningState: String
+     *                 }
+     *                 type: String
+     *             }
+     *         ]
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *     }
+     *     sku: {
+     *         capacity: Integer
+     *         name: String(Standard)
+     *     }
+     *     systemData: {
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByType: String(User/Application/ManagedIdentity/Key)
+     *         lastModifiedAt: String
+     *         lastModifiedBy: String
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     }
+     *     tags: {
+     *         String: String
+     *     }
+     *     type: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return an account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions, Context context) {
+        return getAccountPropertiesWithResponseAsync(requestOptions, context).block();
     }
 
     /**
@@ -265,11 +464,225 @@ public final class AccountsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.updateAccountProperties(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                accountUpdateParameters,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Updates an account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     friendlyName: String
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     identity: {
+     *         principalId: String
+     *         tenantId: String
+     *         type: String(SystemAssigned)
+     *     }
+     *     location: String
+     *     name: String
+     *     properties: {
+     *         cloudConnectors: {
+     *             awsExternalId: String
+     *         }
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByObjectId: String
+     *         endpoints: {
+     *             catalog: String
+     *             guardian: String
+     *             scan: String
+     *         }
+     *         friendlyName: String
+     *         managedResourceGroupName: String
+     *         managedResources: {
+     *             eventHubNamespace: String
+     *             resourceGroup: String
+     *             storageAccount: String
+     *         }
+     *         privateEndpointConnections: [
+     *             {
+     *                 id: String
+     *                 name: String
+     *                 properties: {
+     *                     privateEndpoint: {
+     *                         id: String
+     *                     }
+     *                     privateLinkServiceConnectionState: {
+     *                         actionsRequired: String
+     *                         description: String
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     }
+     *                     provisioningState: String
+     *                 }
+     *                 type: String
+     *             }
+     *         ]
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *     }
+     *     sku: {
+     *         capacity: Integer
+     *         name: String(Standard)
+     *     }
+     *     systemData: {
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByType: String(User/Application/ManagedIdentity/Key)
+     *         lastModifiedAt: String
+     *         lastModifiedBy: String
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     }
+     *     tags: {
+     *         String: String
+     *     }
+     *     type: String
+     * }
+     * }</pre>
+     *
+     * @param accountUpdateParameters The account properties that can be updated through data plane.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return account resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> updateAccountPropertiesWithResponseAsync(
+            BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
         return service.updateAccountProperties(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 accountUpdateParameters,
-                requestOptions);
+                requestOptions,
+                context);
+    }
+
+    /**
+     * Updates an account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     friendlyName: String
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     identity: {
+     *         principalId: String
+     *         tenantId: String
+     *         type: String(SystemAssigned)
+     *     }
+     *     location: String
+     *     name: String
+     *     properties: {
+     *         cloudConnectors: {
+     *             awsExternalId: String
+     *         }
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByObjectId: String
+     *         endpoints: {
+     *             catalog: String
+     *             guardian: String
+     *             scan: String
+     *         }
+     *         friendlyName: String
+     *         managedResourceGroupName: String
+     *         managedResources: {
+     *             eventHubNamespace: String
+     *             resourceGroup: String
+     *             storageAccount: String
+     *         }
+     *         privateEndpointConnections: [
+     *             {
+     *                 id: String
+     *                 name: String
+     *                 properties: {
+     *                     privateEndpoint: {
+     *                         id: String
+     *                     }
+     *                     privateLinkServiceConnectionState: {
+     *                         actionsRequired: String
+     *                         description: String
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     }
+     *                     provisioningState: String
+     *                 }
+     *                 type: String
+     *             }
+     *         ]
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *     }
+     *     sku: {
+     *         capacity: Integer
+     *         name: String(Standard)
+     *     }
+     *     systemData: {
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByType: String(User/Application/ManagedIdentity/Key)
+     *         lastModifiedAt: String
+     *         lastModifiedBy: String
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     }
+     *     tags: {
+     *         String: String
+     *     }
+     *     type: String
+     * }
+     * }</pre>
+     *
+     * @param accountUpdateParameters The account properties that can be updated through data plane.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return account resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> updateAccountPropertiesWithResponse(
+            BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
+        return updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions, context).block();
     }
 
     /**
@@ -299,8 +712,76 @@ public final class AccountsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getAccessKeys(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * List the authorization keys associated with this account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     atlasKafkaPrimaryEndpoint: String
+     *     atlasKafkaSecondaryEndpoint: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the Account access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getAccessKeysWithResponseAsync(RequestOptions requestOptions, Context context) {
         return service.getAccessKeys(
-                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions);
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+    }
+
+    /**
+     * List the authorization keys associated with this account.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     atlasKafkaPrimaryEndpoint: String
+     *     atlasKafkaSecondaryEndpoint: String
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the Account access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions, Context context) {
+        return getAccessKeysWithResponseAsync(requestOptions, context).block();
     }
 
     /**
@@ -340,7 +821,100 @@ public final class AccountsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
             BinaryData keyOptions, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.regenerateAccessKey(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                keyOptions,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Regenerate the authorization keys associated with this data catalog.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     atlasKafkaPrimaryEndpoint: String
+     *     atlasKafkaSecondaryEndpoint: String
+     * }
+     * }</pre>
+     *
+     * @param keyOptions A access key options used for regeneration.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the Account access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> regenerateAccessKeyWithResponseAsync(
+            BinaryData keyOptions, RequestOptions requestOptions, Context context) {
         return service.regenerateAccessKey(
-                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), keyOptions, requestOptions);
+                this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(),
+                keyOptions,
+                requestOptions,
+                context);
+    }
+
+    /**
+     * Regenerate the authorization keys associated with this data catalog.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     atlasKafkaPrimaryEndpoint: String
+     *     atlasKafkaSecondaryEndpoint: String
+     * }
+     * }</pre>
+     *
+     * @param keyOptions A access key options used for regeneration.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the Account access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> regenerateAccessKeyWithResponse(
+            BinaryData keyOptions, RequestOptions requestOptions, Context context) {
+        return regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions, context).block();
     }
 }

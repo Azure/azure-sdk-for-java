@@ -7,7 +7,6 @@ java: true
 output-folder: ../
 namespace: com.azure.analytics.purview.administration
 generate-client-interfaces: false
-sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 low-level-client: true
 credential-types: tokencredential
@@ -16,11 +15,4 @@ title: PurviewAccountClient
 service-name: PurviewAccount
 service-versions:
   - 2019-11-01-preview
-
-pipeline:
-  modelerfour:
-    flatten-models: false
-    flatten-payloads: false
-    group-parameters: false
-    lenient-model-deduplication: true
 ```

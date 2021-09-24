@@ -24,6 +24,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -60,32 +62,37 @@ public final class ResourceSetRulesImpl {
         Mono<Response<BinaryData>> getResourceSetRule(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
         Mono<Response<BinaryData>> createOrUpdateResourceSetRule(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") BinaryData resourceSetRuleConfig,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Delete("/resourceSetRuleConfigs/defaultResourceSetRuleConfig")
         Mono<Response<Void>> deleteResourceSetRule(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/resourceSetRuleConfigs")
         Mono<Response<BinaryData>> listResourceSetRules(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("{nextLink}")
         Mono<Response<BinaryData>> listResourceSetRulesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
-                RequestOptions requestOptions);
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -207,8 +214,261 @@ public final class ResourceSetRulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceSetRuleWithResponseAsync(RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getResourceSetRule(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Get a resource set config service model.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     advancedResourceSet: {
+     *         modifiedAt: String
+     *         resourceSetProcessing: String(Default/Advanced)
+     *     }
+     *     name: String
+     *     pathPatternConfig: {
+     *         acceptedPatterns: [
+     *             {
+     *                 createdBy: String
+     *                 filterType: String(Pattern/Regex)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 path: String
+     *             }
+     *         ]
+     *         complexReplacers: [
+     *             {
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: Boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 typeName: String
+     *             }
+     *         ]
+     *         createdBy: String
+     *         enableDefaultPatterns: boolean
+     *         lastUpdatedTimestamp: Long
+     *         modifiedBy: String
+     *         normalizationRules: [
+     *             {
+     *                 description: String
+     *                 disabled: Boolean
+     *                 dynamicReplacement: Boolean
+     *                 entityTypes: [
+     *                     String
+     *                 ]
+     *                 lastUpdatedTimestamp: Long
+     *                 name: String
+     *                 regex: {
+     *                     maxDigits: Integer
+     *                     maxLetters: Integer
+     *                     minDashes: Integer
+     *                     minDigits: Integer
+     *                     minDigitsOrLetters: Integer
+     *                     minDots: Integer
+     *                     minHex: Integer
+     *                     minLetters: Integer
+     *                     minUnderscores: Integer
+     *                     options: Integer
+     *                     regexStr: String
+     *                 }
+     *                 replaceWith: String
+     *                 version: Double
+     *             }
+     *         ]
+     *         regexReplacers: [
+     *             {
+     *                 condition: String
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 regex: (recursive schema, see regex above)
+     *                 replaceWith: String
+     *             }
+     *         ]
+     *         rejectedPatterns: [
+     *             (recursive schema, see above)
+     *         ]
+     *         scopedRules: [
+     *             {
+     *                 bindingUrl: String
+     *                 rules: [
+     *                     {
+     *                         displayName: String
+     *                         isResourceSet: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         qualifiedName: String
+     *                     }
+     *                 ]
+     *                 storeType: String
+     *             }
+     *         ]
+     *         version: Integer
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a resource set config service model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getResourceSetRuleWithResponseAsync(
+            RequestOptions requestOptions, Context context) {
         return service.getResourceSetRule(
-                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions);
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+    }
+
+    /**
+     * Get a resource set config service model.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     advancedResourceSet: {
+     *         modifiedAt: String
+     *         resourceSetProcessing: String(Default/Advanced)
+     *     }
+     *     name: String
+     *     pathPatternConfig: {
+     *         acceptedPatterns: [
+     *             {
+     *                 createdBy: String
+     *                 filterType: String(Pattern/Regex)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 path: String
+     *             }
+     *         ]
+     *         complexReplacers: [
+     *             {
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: Boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 typeName: String
+     *             }
+     *         ]
+     *         createdBy: String
+     *         enableDefaultPatterns: boolean
+     *         lastUpdatedTimestamp: Long
+     *         modifiedBy: String
+     *         normalizationRules: [
+     *             {
+     *                 description: String
+     *                 disabled: Boolean
+     *                 dynamicReplacement: Boolean
+     *                 entityTypes: [
+     *                     String
+     *                 ]
+     *                 lastUpdatedTimestamp: Long
+     *                 name: String
+     *                 regex: {
+     *                     maxDigits: Integer
+     *                     maxLetters: Integer
+     *                     minDashes: Integer
+     *                     minDigits: Integer
+     *                     minDigitsOrLetters: Integer
+     *                     minDots: Integer
+     *                     minHex: Integer
+     *                     minLetters: Integer
+     *                     minUnderscores: Integer
+     *                     options: Integer
+     *                     regexStr: String
+     *                 }
+     *                 replaceWith: String
+     *                 version: Double
+     *             }
+     *         ]
+     *         regexReplacers: [
+     *             {
+     *                 condition: String
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 regex: (recursive schema, see regex above)
+     *                 replaceWith: String
+     *             }
+     *         ]
+     *         rejectedPatterns: [
+     *             (recursive schema, see above)
+     *         ]
+     *         scopedRules: [
+     *             {
+     *                 bindingUrl: String
+     *                 rules: [
+     *                     {
+     *                         displayName: String
+     *                         isResourceSet: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         qualifiedName: String
+     *                     }
+     *                 ]
+     *                 storeType: String
+     *             }
+     *         ]
+     *         version: Integer
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a resource set config service model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
+        return getResourceSetRuleWithResponseAsync(requestOptions, context).block();
     }
 
     /**
@@ -338,11 +598,281 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdateResourceSetRule(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                resourceSetRuleConfig,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Creates or updates an resource set config.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     advancedResourceSet: {
+     *         modifiedAt: String
+     *         resourceSetProcessing: String(Default/Advanced)
+     *     }
+     *     name: String
+     *     pathPatternConfig: {
+     *         acceptedPatterns: [
+     *             {
+     *                 createdBy: String
+     *                 filterType: String(Pattern/Regex)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 path: String
+     *             }
+     *         ]
+     *         complexReplacers: [
+     *             {
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: Boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 typeName: String
+     *             }
+     *         ]
+     *         createdBy: String
+     *         enableDefaultPatterns: boolean
+     *         lastUpdatedTimestamp: Long
+     *         modifiedBy: String
+     *         normalizationRules: [
+     *             {
+     *                 description: String
+     *                 disabled: Boolean
+     *                 dynamicReplacement: Boolean
+     *                 entityTypes: [
+     *                     String
+     *                 ]
+     *                 lastUpdatedTimestamp: Long
+     *                 name: String
+     *                 regex: {
+     *                     maxDigits: Integer
+     *                     maxLetters: Integer
+     *                     minDashes: Integer
+     *                     minDigits: Integer
+     *                     minDigitsOrLetters: Integer
+     *                     minDots: Integer
+     *                     minHex: Integer
+     *                     minLetters: Integer
+     *                     minUnderscores: Integer
+     *                     options: Integer
+     *                     regexStr: String
+     *                 }
+     *                 replaceWith: String
+     *                 version: Double
+     *             }
+     *         ]
+     *         regexReplacers: [
+     *             {
+     *                 condition: String
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 regex: (recursive schema, see regex above)
+     *                 replaceWith: String
+     *             }
+     *         ]
+     *         rejectedPatterns: [
+     *             (recursive schema, see above)
+     *         ]
+     *         scopedRules: [
+     *             {
+     *                 bindingUrl: String
+     *                 rules: [
+     *                     {
+     *                         displayName: String
+     *                         isResourceSet: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         qualifiedName: String
+     *                     }
+     *                 ]
+     *                 storeType: String
+     *             }
+     *         ]
+     *         version: Integer
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * (recursive schema, see above)
+     * }</pre>
+     *
+     * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return resourceSetRuleConfig implementation class.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
+            BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateResourceSetRule(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
                 resourceSetRuleConfig,
-                requestOptions);
+                requestOptions,
+                context);
+    }
+
+    /**
+     * Creates or updates an resource set config.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     advancedResourceSet: {
+     *         modifiedAt: String
+     *         resourceSetProcessing: String(Default/Advanced)
+     *     }
+     *     name: String
+     *     pathPatternConfig: {
+     *         acceptedPatterns: [
+     *             {
+     *                 createdBy: String
+     *                 filterType: String(Pattern/Regex)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 path: String
+     *             }
+     *         ]
+     *         complexReplacers: [
+     *             {
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: Boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 typeName: String
+     *             }
+     *         ]
+     *         createdBy: String
+     *         enableDefaultPatterns: boolean
+     *         lastUpdatedTimestamp: Long
+     *         modifiedBy: String
+     *         normalizationRules: [
+     *             {
+     *                 description: String
+     *                 disabled: Boolean
+     *                 dynamicReplacement: Boolean
+     *                 entityTypes: [
+     *                     String
+     *                 ]
+     *                 lastUpdatedTimestamp: Long
+     *                 name: String
+     *                 regex: {
+     *                     maxDigits: Integer
+     *                     maxLetters: Integer
+     *                     minDashes: Integer
+     *                     minDigits: Integer
+     *                     minDigitsOrLetters: Integer
+     *                     minDots: Integer
+     *                     minHex: Integer
+     *                     minLetters: Integer
+     *                     minUnderscores: Integer
+     *                     options: Integer
+     *                     regexStr: String
+     *                 }
+     *                 replaceWith: String
+     *                 version: Double
+     *             }
+     *         ]
+     *         regexReplacers: [
+     *             {
+     *                 condition: String
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 regex: (recursive schema, see regex above)
+     *                 replaceWith: String
+     *             }
+     *         ]
+     *         rejectedPatterns: [
+     *             (recursive schema, see above)
+     *         ]
+     *         scopedRules: [
+     *             {
+     *                 bindingUrl: String
+     *                 rules: [
+     *                     {
+     *                         displayName: String
+     *                         isResourceSet: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         qualifiedName: String
+     *                     }
+     *                 ]
+     *                 storeType: String
+     *             }
+     *         ]
+     *         version: Integer
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * (recursive schema, see above)
+     * }</pre>
+     *
+     * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return resourceSetRuleConfig implementation class.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
+            BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
+        return createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions, context).block();
     }
 
     /**
@@ -363,8 +893,58 @@ public final class ResourceSetRulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResourceSetRuleWithResponseAsync(RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteResourceSetRule(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Deletes a ResourceSetRuleConfig resource.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteResourceSetRuleWithResponseAsync(RequestOptions requestOptions, Context context) {
         return service.deleteResourceSetRule(
-                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions);
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
+    }
+
+    /**
+     * Deletes a ResourceSetRuleConfig resource.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
+        return deleteResourceSetRuleWithResponseAsync(requestOptions, context).block();
     }
 
     /**
@@ -493,8 +1073,157 @@ public final class ResourceSetRulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listResourceSetRulesSinglePageAsync(RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                        context ->
+                                service.listResourceSetRules(
+                                        this.client.getEndpoint(),
+                                        this.client.getServiceVersion().getVersion(),
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get a resource set config service model.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             advancedResourceSet: {
+     *                 modifiedAt: String
+     *                 resourceSetProcessing: String(Default/Advanced)
+     *             }
+     *             name: String
+     *             pathPatternConfig: {
+     *                 acceptedPatterns: [
+     *                     {
+     *                         createdBy: String
+     *                         filterType: String(Pattern/Regex)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         path: String
+     *                     }
+     *                 ]
+     *                 complexReplacers: [
+     *                     {
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: Boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         typeName: String
+     *                     }
+     *                 ]
+     *                 createdBy: String
+     *                 enableDefaultPatterns: boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 normalizationRules: [
+     *                     {
+     *                         description: String
+     *                         disabled: Boolean
+     *                         dynamicReplacement: Boolean
+     *                         entityTypes: [
+     *                             String
+     *                         ]
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         regex: {
+     *                             maxDigits: Integer
+     *                             maxLetters: Integer
+     *                             minDashes: Integer
+     *                             minDigits: Integer
+     *                             minDigitsOrLetters: Integer
+     *                             minDots: Integer
+     *                             minHex: Integer
+     *                             minLetters: Integer
+     *                             minUnderscores: Integer
+     *                             options: Integer
+     *                             regexStr: String
+     *                         }
+     *                         replaceWith: String
+     *                         version: Double
+     *                     }
+     *                 ]
+     *                 regexReplacers: [
+     *                     {
+     *                         condition: String
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         regex: (recursive schema, see regex above)
+     *                         replaceWith: String
+     *                     }
+     *                 ]
+     *                 rejectedPatterns: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 scopedRules: [
+     *                     {
+     *                         bindingUrl: String
+     *                         rules: [
+     *                             {
+     *                                 displayName: String
+     *                                 isResourceSet: Boolean
+     *                                 lastUpdatedTimestamp: Long
+     *                                 name: String
+     *                                 qualifiedName: String
+     *                             }
+     *                         ]
+     *                         storeType: String
+     *                     }
+     *                 ]
+     *                 version: Integer
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a resource set config service model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listResourceSetRulesSinglePageAsync(
+            RequestOptions requestOptions, Context context) {
         return service.listResourceSetRules(
-                        this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions)
+                        this.client.getEndpoint(),
+                        this.client.getServiceVersion().getVersion(),
+                        requestOptions,
+                        context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -757,6 +1486,138 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a resource set config service model.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listResourceSetRulesAsync(RequestOptions requestOptions, Context context) {
+        return new PagedFlux<>(
+                () -> listResourceSetRulesSinglePageAsync(requestOptions, context),
+                nextLink -> listResourceSetRulesNextSinglePageAsync(nextLink, null, context));
+    }
+
+    /**
+     * Get a resource set config service model.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             advancedResourceSet: {
+     *                 modifiedAt: String
+     *                 resourceSetProcessing: String(Default/Advanced)
+     *             }
+     *             name: String
+     *             pathPatternConfig: {
+     *                 acceptedPatterns: [
+     *                     {
+     *                         createdBy: String
+     *                         filterType: String(Pattern/Regex)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         path: String
+     *                     }
+     *                 ]
+     *                 complexReplacers: [
+     *                     {
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: Boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         typeName: String
+     *                     }
+     *                 ]
+     *                 createdBy: String
+     *                 enableDefaultPatterns: boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 normalizationRules: [
+     *                     {
+     *                         description: String
+     *                         disabled: Boolean
+     *                         dynamicReplacement: Boolean
+     *                         entityTypes: [
+     *                             String
+     *                         ]
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         regex: {
+     *                             maxDigits: Integer
+     *                             maxLetters: Integer
+     *                             minDashes: Integer
+     *                             minDigits: Integer
+     *                             minDigitsOrLetters: Integer
+     *                             minDots: Integer
+     *                             minHex: Integer
+     *                             minLetters: Integer
+     *                             minUnderscores: Integer
+     *                             options: Integer
+     *                             regexStr: String
+     *                         }
+     *                         replaceWith: String
+     *                         version: Double
+     *                     }
+     *                 ]
+     *                 regexReplacers: [
+     *                     {
+     *                         condition: String
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         regex: (recursive schema, see regex above)
+     *                         replaceWith: String
+     *                     }
+     *                 ]
+     *                 rejectedPatterns: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 scopedRules: [
+     *                     {
+     *                         bindingUrl: String
+     *                         rules: [
+     *                             {
+     *                                 displayName: String
+     *                                 isResourceSet: Boolean
+     *                                 lastUpdatedTimestamp: Long
+     *                                 name: String
+     *                                 qualifiedName: String
+     *                             }
+     *                         ]
+     *                         storeType: String
+     *                     }
+     *                 ]
+     *                 version: Integer
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a resource set config service model.
@@ -764,6 +1625,136 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
         return new PagedIterable<>(listResourceSetRulesAsync(requestOptions));
+    }
+
+    /**
+     * Get a resource set config service model.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             advancedResourceSet: {
+     *                 modifiedAt: String
+     *                 resourceSetProcessing: String(Default/Advanced)
+     *             }
+     *             name: String
+     *             pathPatternConfig: {
+     *                 acceptedPatterns: [
+     *                     {
+     *                         createdBy: String
+     *                         filterType: String(Pattern/Regex)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         path: String
+     *                     }
+     *                 ]
+     *                 complexReplacers: [
+     *                     {
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: Boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         typeName: String
+     *                     }
+     *                 ]
+     *                 createdBy: String
+     *                 enableDefaultPatterns: boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 normalizationRules: [
+     *                     {
+     *                         description: String
+     *                         disabled: Boolean
+     *                         dynamicReplacement: Boolean
+     *                         entityTypes: [
+     *                             String
+     *                         ]
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         regex: {
+     *                             maxDigits: Integer
+     *                             maxLetters: Integer
+     *                             minDashes: Integer
+     *                             minDigits: Integer
+     *                             minDigitsOrLetters: Integer
+     *                             minDots: Integer
+     *                             minHex: Integer
+     *                             minLetters: Integer
+     *                             minUnderscores: Integer
+     *                             options: Integer
+     *                             regexStr: String
+     *                         }
+     *                         replaceWith: String
+     *                         version: Double
+     *                     }
+     *                 ]
+     *                 regexReplacers: [
+     *                     {
+     *                         condition: String
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         regex: (recursive schema, see regex above)
+     *                         replaceWith: String
+     *                     }
+     *                 ]
+     *                 rejectedPatterns: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 scopedRules: [
+     *                     {
+     *                         bindingUrl: String
+     *                         rules: [
+     *                             {
+     *                                 displayName: String
+     *                                 isResourceSet: Boolean
+     *                                 lastUpdatedTimestamp: Long
+     *                                 name: String
+     *                                 qualifiedName: String
+     *                             }
+     *                         ]
+     *                         storeType: String
+     *                     }
+     *                 ]
+     *                 version: Integer
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a resource set config service model.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(listResourceSetRulesAsync(requestOptions, context));
     }
 
     /**
@@ -885,7 +1876,142 @@ public final class ResourceSetRulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
-        return service.listResourceSetRulesNext(nextLink, this.client.getEndpoint(), requestOptions)
+        return FluxUtil.withContext(
+                        context ->
+                                service.listResourceSetRulesNext(
+                                        nextLink, this.client.getEndpoint(), requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     count: Long
+     *     nextLink: String
+     *     value: [
+     *         {
+     *             advancedResourceSet: {
+     *                 modifiedAt: String
+     *                 resourceSetProcessing: String(Default/Advanced)
+     *             }
+     *             name: String
+     *             pathPatternConfig: {
+     *                 acceptedPatterns: [
+     *                     {
+     *                         createdBy: String
+     *                         filterType: String(Pattern/Regex)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         path: String
+     *                     }
+     *                 ]
+     *                 complexReplacers: [
+     *                     {
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: Boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         typeName: String
+     *                     }
+     *                 ]
+     *                 createdBy: String
+     *                 enableDefaultPatterns: boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 normalizationRules: [
+     *                     {
+     *                         description: String
+     *                         disabled: Boolean
+     *                         dynamicReplacement: Boolean
+     *                         entityTypes: [
+     *                             String
+     *                         ]
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         regex: {
+     *                             maxDigits: Integer
+     *                             maxLetters: Integer
+     *                             minDashes: Integer
+     *                             minDigits: Integer
+     *                             minDigitsOrLetters: Integer
+     *                             minDots: Integer
+     *                             minHex: Integer
+     *                             minLetters: Integer
+     *                             minUnderscores: Integer
+     *                             options: Integer
+     *                             regexStr: String
+     *                         }
+     *                         replaceWith: String
+     *                         version: Double
+     *                     }
+     *                 ]
+     *                 regexReplacers: [
+     *                     {
+     *                         condition: String
+     *                         createdBy: String
+     *                         description: String
+     *                         disabled: boolean
+     *                         disableRecursiveReplacerApplication: Boolean
+     *                         doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                         lastUpdatedTimestamp: Long
+     *                         modifiedBy: String
+     *                         name: String
+     *                         regex: (recursive schema, see regex above)
+     *                         replaceWith: String
+     *                     }
+     *                 ]
+     *                 rejectedPatterns: [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 scopedRules: [
+     *                     {
+     *                         bindingUrl: String
+     *                         rules: [
+     *                             {
+     *                                 displayName: String
+     *                                 isResourceSet: Boolean
+     *                                 lastUpdatedTimestamp: Long
+     *                                 name: String
+     *                                 qualifiedName: String
+     *                             }
+     *                         ]
+     *                         storeType: String
+     *                     }
+     *                 ]
+     *                 version: Integer
+     *             }
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param nextLink The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return paged list of account resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listResourceSetRulesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions, Context context) {
+        return service.listResourceSetRulesNext(nextLink, this.client.getEndpoint(), requestOptions, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
