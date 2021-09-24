@@ -126,6 +126,11 @@
                 <include>org.mockito:mockito-core:[3.9.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
                 <include>org.powermock:powermock-api-mockito2:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
                 <include>org.powermock:powermock-module-junit4:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-tx:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework.retry:spring-retry:[1.3.1]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.5.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.7.3]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
