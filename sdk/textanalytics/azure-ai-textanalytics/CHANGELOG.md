@@ -4,6 +4,13 @@
 - Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`, in the
   option bag, `ExtractSummaryAction`.
 
+## 5.1.2 (2021-09-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.19.0` to `1.20.0`.
+- Updated `azure-core-http-netty` from `1.10.2` to `1.11.0`.
+
 ## 5.2.0-beta.1 (2021-08-11)
 ### Feature Added
 - We are now targeting the service's v3.2-preview.1 API as the default instead of v3.1.

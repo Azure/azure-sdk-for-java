@@ -102,6 +102,10 @@
               <includes>
                 <include>io.reactivex:rxjava:[1.3.8]</include> <!-- {x-include-update;io.reactivex:rxjava;external_dependency} -->
                 <include>org.springframework:spring-messaging:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-tx:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework.retry:spring-retry:[1.3.1]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.5.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.7.3]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
