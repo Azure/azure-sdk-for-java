@@ -36,12 +36,5 @@ public class SystemScanRulesetsBaseClientTests extends PurviewScanningClientTest
         List<BinaryData> list = response.stream().collect(Collectors.toList());
 
         assertTrue(list.size() > 0);
-
-//        JsonReader jsonReader = Json.createReader(new StringReader(res.getBody().toString()));
-//        JsonObject result = jsonReader.readObject();
-//        assertTrue(result.containsKey("value"));
-//
-//        JsonArray value = result.getJsonArray("value");
-//        assertTrue(value.size() > 0);
     }
 }
