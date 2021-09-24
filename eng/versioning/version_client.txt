@@ -311,7 +311,7 @@ com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-b
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-azurearcdata;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-hybridnetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-purview;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-mysqlflexibleserver;1.0.0-beta.1;1.0.0-beta.2
