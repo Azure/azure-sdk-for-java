@@ -51,8 +51,6 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = {KeyVaultBackupClient.class, KeyVaultBackupAsyncClient.class})
 public final class KeyVaultBackupClientBuilder {
-    static final String MANAGED_HSM_SCOPE = "https://managedhsm.azure.net/.default";
-
     // This is the properties file name.
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";

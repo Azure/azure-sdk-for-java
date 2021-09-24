@@ -68,8 +68,6 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
 public final class CertificateClientBuilder {
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-
     private final ClientLogger logger = new ClientLogger(CertificateClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_CERTIFICATES_PROPERTIES = "azure-key-vault-certificates.properties";

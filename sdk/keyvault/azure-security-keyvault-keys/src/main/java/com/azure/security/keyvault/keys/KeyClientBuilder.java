@@ -64,9 +64,6 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder {
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    static final String MANAGED_HSM_SCOPE = "https://managedhsm.azure.net/.default";
-
     private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
