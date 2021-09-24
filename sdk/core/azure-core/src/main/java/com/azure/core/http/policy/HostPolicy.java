@@ -31,17 +31,14 @@ public class HostPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        logger.info("Setting host to {}", host);
+        logger.verbose("Setting host to {}", host);
 
-        Mono<HttpResponse> result;
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         try {
             context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
-            result = next.process();
+            return next.process();
         } catch (MalformedURLException e) {
-            result = Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.",
-                host), e));
+            return Mono.error(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
         }
-        return result;
     }
 }

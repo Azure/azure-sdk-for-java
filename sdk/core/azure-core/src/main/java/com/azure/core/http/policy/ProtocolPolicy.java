@@ -24,7 +24,7 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
      * Creates a new ProtocolPolicy.
      *
      * @param protocol The protocol to set.
-     * @param overwrite Whether or not to overwrite a HttpRequest's protocol if it already has one.
+     * @param overwrite Whether to overwrite a HttpRequest's protocol if it already has one.
      */
     public ProtocolPolicy(String protocol, boolean overwrite) {
         this.protocol = protocol;
@@ -35,7 +35,7 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getScheme() == null) {
-            logger.info("Setting protocol to {}", protocol);
+            logger.verbose("Setting protocol to {}", protocol);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());

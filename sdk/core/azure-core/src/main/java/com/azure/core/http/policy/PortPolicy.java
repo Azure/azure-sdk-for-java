@@ -25,7 +25,7 @@ public class PortPolicy implements HttpPipelinePolicy {
      * Creates a new PortPolicy object.
      *
      * @param port The port to set.
-     * @param overwrite Whether or not to overwrite a {@link HttpRequest HttpRequest's} port if it already has one.
+     * @param overwrite Whether to overwrite a {@link HttpRequest HttpRequest's} port if it already has one.
      */
     public PortPolicy(int port, boolean overwrite) {
         this.port = port;
@@ -36,7 +36,7 @@ public class PortPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
         if (overwrite || urlBuilder.getPort() == null) {
-            logger.info("Changing port to {}", port);
+            logger.verbose("Changing port to {}", port);
 
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
