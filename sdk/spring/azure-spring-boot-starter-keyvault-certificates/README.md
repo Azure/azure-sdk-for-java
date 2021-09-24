@@ -67,7 +67,7 @@ Store the values returned, which will be used later.
 
 #### Make sure the client-id can access target Key Vault. Here are steps to configure access policy:
 
-To grant access use the command line below:
+To grant access, use the command line below:
 
 ```shell
   az keyvault set-policy --name ${KEY_VAULT} \
@@ -104,15 +104,15 @@ Firstly, you need have an Azure Spring Cloud instance. If you don't have one, yo
 Secondly, you need create an Apps instance in the Azure Spring Cloud instance via the command line below:
 ```shell
   export CLOUD_APP_INSTANCE=myappinstance
-  az spring-cloud app create --name ${CLOUD_APP_INSTANCE} --resource-group ${RESOURCE_GROUP}  --service ${AZURE_SPRING_CLOUD_INSTANCE} 
+  az spring-cloud app create --name ${CLOUD_APP_INSTANCE} --resource-group ${RESOURCE_GROUP}  --service ${AZURE_SPRING_CLOUD_INSTANCE} --assign-endpoint true
 ```
 
 Thirdly, assign a managed identity to Apps instance, use the command line below and store the value returned for later use:
 
 ```shell
-  az spring-cloud app identity assign --name ${CLOUD_APP_INSTANCE}
+  az spring-cloud app identity assign --name ${CLOUD_APP_INSTANCE} -g ${RESOURCE_GROUP} -s ${AZURE_SPRING_CLOUD_INSTANCE}
   export MANAGED_IDENTITY=$(az spring-cloud app show \
-    --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv -g ${RESOURCE_GROUP} -s ${CLOUD_APP_INSTANCE})
+    --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv -g ${RESOURCE_GROUP} -s ${AZURE_SPRING_CLOUD_INSTANCE})
   echo ${MANAGED_IDENTITY}
 ```
 
