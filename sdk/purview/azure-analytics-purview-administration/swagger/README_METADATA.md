@@ -15,7 +15,7 @@ credential-scopes: https://purview.azure.net/.default
 title: PurviewMetadataClient
 service-name: PurviewMetadata
 service-versions:
-  - 2019-11-01-preview
+  - '2021-07-01'
 
 pipeline:
   modelerfour:

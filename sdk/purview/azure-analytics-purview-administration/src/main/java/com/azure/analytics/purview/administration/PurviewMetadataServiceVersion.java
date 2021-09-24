@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of PurviewMetadata. */
 public enum PurviewMetadataServiceVersion implements ServiceVersion {
-    /** Enum value 2019-11-01-preview. */
-    V2019_11_01_PREVIEW("2019-11-01-preview");
+    /** Enum value 2021-07-01. */
+    V2021_07_01("2021-07-01");
 
     private final String version;
 
@@ -28,6 +28,6 @@ public enum PurviewMetadataServiceVersion implements ServiceVersion {
      * @return The latest {@link PurviewMetadataServiceVersion}.
      */
     public static PurviewMetadataServiceVersion getLatest() {
-        return V2019_11_01_PREVIEW;
+        return V2021_07_01;
     }
 }
