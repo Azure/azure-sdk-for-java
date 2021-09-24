@@ -21,6 +21,10 @@ public class AzureProfile {
     private String cloud = "Azure"; // TODO (xiada) this name
     private AzureEnvironment environment = AzureEnvironment.AZURE;
 
+    public AzureProfile() {
+
+    }
+
     public String getTenantId() {
         return tenantId;
     }
@@ -61,7 +65,6 @@ public class AzureProfile {
         public static final AzureEnvironment AZURE = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
         public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_GERMANY);
         public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT);
-
 
         private String portal;
         private String publishingProfile;

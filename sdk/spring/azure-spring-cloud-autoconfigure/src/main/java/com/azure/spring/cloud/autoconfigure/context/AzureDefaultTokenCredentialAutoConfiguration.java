@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,12 +19,24 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
 
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springDefaultAzureCredential";
 
+    private final AzureGlobalProperties azureGlobalProperties;
+
+    public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        this.azureGlobalProperties = azureGlobalProperties;
+    }
+
     @SuppressWarnings("rawtypes")
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    public TokenCredential azureTokenCredential() {
-        return new DefaultAzureCredentialBuilder().build();
+    public TokenCredential azureTokenCredential(AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
+        return factory.build().build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
+    public AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory() {
+        return new AzureCredentialBuilderFactory<>(azureGlobalProperties, new DefaultAzureCredentialBuilder());
     }
 
 }

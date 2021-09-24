@@ -4,6 +4,8 @@
 package com.azure.spring.autoconfigure.storage.resource;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.spring.core.resource.AzureStorageBlobProtocolResolver;
+import com.azure.spring.core.resource.AzureStorageResourcePatternResolver;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;

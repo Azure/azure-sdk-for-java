@@ -14,6 +14,10 @@ public class RetryProperties {
     private Integer maxAttempts;
     private Duration timeout;
 
+    public RetryProperties() {
+
+    }
+
     public BackoffProperties getBackoff() {
         return backoff;
     }
@@ -41,6 +45,11 @@ public class RetryProperties {
 
         private Duration delay;
         private Duration maxDelay;
+
+        public BackoffProperties() {
+
+        }
+
         /**
          * If positive, then used as a multiplier for generating the next delay for backoff.
          *

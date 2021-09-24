@@ -16,6 +16,7 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
+import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +27,9 @@ import java.util.function.BiConsumer;
  */
 public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
 
-    private final AzureServiceBusProperties serviceBusProperties;
+    private final AzureServiceBusCommonProperties serviceBusProperties;
 
-    public ServiceBusClientBuilderFactory(AzureServiceBusProperties serviceBusProperties) {
+    public ServiceBusClientBuilderFactory(AzureServiceBusCommonProperties serviceBusProperties) {
         this.serviceBusProperties = serviceBusProperties;
     }
 
@@ -76,8 +77,11 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
 
     @Override
     protected void configureService(ServiceBusClientBuilder builder) {
-        if (this.serviceBusProperties.isCrossEntityTransactions()) {
-            builder.enableCrossEntityTransactions();
+        PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+
+        if (this.serviceBusProperties instanceof AzureServiceBusProperties) {
+            mapper.from(((AzureServiceBusProperties) this.serviceBusProperties))
+                  .whenTrue().to(t -> builder.enableCrossEntityTransactions());
         }
     }
 

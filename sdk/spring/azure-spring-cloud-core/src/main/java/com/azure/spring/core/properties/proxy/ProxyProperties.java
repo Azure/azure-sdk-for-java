@@ -15,6 +15,10 @@ public class ProxyProperties {
     private String username;
     private String password;
 
+    public ProxyProperties() {
+
+    }
+
     public String getType() {
         return type;
     }

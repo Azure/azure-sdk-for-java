@@ -21,8 +21,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * An auto-configuration for Service Bus Queue.
- *
- * @author Warren Zhu
  */
 @Configuration
 @ConditionalOnClass(ServiceBusQueueClientFactory.class)

@@ -18,8 +18,9 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ CosmosTemplate.class })
-@ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true} and"
-                             + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}')")
+@ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true} "
+                             + "and !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}') "
+                             + "and !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.database:}')")
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
     private final AzureCosmosProperties cosmosProperties;
@@ -31,7 +32,6 @@ public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
         this.cosmosProperties = cosmosProperties;
     }
 
-    // TODO (xiada) require database name
     @Override
     protected String getDatabaseName() {
         return cosmosProperties.getDatabase();

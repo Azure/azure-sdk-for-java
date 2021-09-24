@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageFileProtocolResolver;
+import com.azure.spring.core.resource.AzureStorageFileProtocolResolver;
 import com.azure.storage.file.share.ShareServiceClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

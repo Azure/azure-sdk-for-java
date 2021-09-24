@@ -8,9 +8,8 @@ com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironment
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
-com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJMSAutoConfiguration,\
-com.azure.spring.autoconfigure.jms.PremiumServiceBusJMSAutoConfiguration,\
-com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
+com.azure.spring.autoconfigure.jms.NonPremiumServiceBusJmsAutoConfiguration,\
+com.azure.spring.autoconfigure.jms.PremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\
@@ -19,9 +18,9 @@ com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosRepositoriesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhub.kafka.AzureEventHubKafkaAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubKafkaAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
@@ -33,11 +32,6 @@ com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAuto
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
-com.azure.spring.cloud.actuate.autoconfigure.cosmos.CosmosHealthConfiguration,\
-com.azure.spring.cloud.actuate.autoconfigure.eventhub.EventHubHealthConfiguration,\
-com.azure.spring.cloud.actuate.autoconfigure.storage.StorageBlobHealthConfiguration,\
-com.azure.spring.cloud.actuate.autoconfigure.storage.StorageFileHealthConfiguration,\
-com.azure.spring.cloud.actuate.autoconfigure.storage.StorageQueueHealthConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\

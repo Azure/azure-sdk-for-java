@@ -22,7 +22,7 @@ public class AzurePropertiesUtils {
      * @param target The target AzureProperties object.
      * @param <T> The type of AzureProperties.
      */
-    public static <T extends AzureProperties> void copyAzureProperties(AzureProperties source, T target) {
+    public static <T extends AzureProperties> void copyAzureCommonProperties(AzureProperties source, T target) {
         // call explicitly for these fields could be defined as final
         BeanUtils.copyProperties(source.getClient(), target.getClient());
         BeanUtils.copyProperties(source.getProxy(), target.getProxy());
@@ -33,7 +33,7 @@ public class AzurePropertiesUtils {
     }
 
     // TODO (xiada): add tests for this
-    public static <T extends AzureProperties> void copyAzurePropertiesIgnoreNull(AzureProperties source, T target) {
+    public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
         copyPropertiesIgnoreNull(source.getClient(), target.getClient());
         copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
         copyPropertiesIgnoreNull(source.getRetry(), target.getRetry());

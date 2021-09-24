@@ -15,6 +15,8 @@
       <modules>
         <module>azure-spring-cloud-core</module>
         <module>azure-spring-cloud-autoconfigure</module>
+        <module>azure-spring-cloud-actuator</module>
+        <module>azure-spring-cloud-actuator-autoconfigure</module>
         <module>azure-spring-cloud-resourcemanager</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
@@ -119,6 +121,8 @@
       <modules>
         <module>azure-spring-cloud-core</module>
         <module>azure-spring-cloud-autoconfigure</module>
+        <module>azure-spring-cloud-actuator</module>
+        <module>azure-spring-cloud-actuator-autoconfigure</module>
         <module>azure-spring-cloud-starter</module>
         <module>azure-spring-boot-starter-active-directory</module>
         <module>azure-spring-boot-starter-cosmos</module>

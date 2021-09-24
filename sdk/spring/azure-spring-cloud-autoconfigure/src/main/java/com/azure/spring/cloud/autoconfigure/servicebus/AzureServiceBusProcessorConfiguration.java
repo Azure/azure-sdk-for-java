@@ -7,13 +7,13 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.StaticConnectionStringProvider;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -22,12 +22,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME;
+
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(ServiceBusMessageProcessor.class)
-@ServiceBusConditions.ConditionalOnServiceBusProcessor
+@ConditionalOnExpression(
+    "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.processor.queue-name:}') or "
+        + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.processor.topic-name:}')"
+)
 @Import({
     AzureServiceBusProcessorConfiguration.SessionProcessorClientConfiguration.class,
     AzureServiceBusProcessorConfiguration.NoneSessionProcessorClientConfiguration.class
@@ -36,48 +42,34 @@ class AzureServiceBusProcessorConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProcessorConfiguration.class);
 
-    public static final String PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProcessorConfiguration.PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME";
-    public static final String PROCESSOR_CLIENT_BUILDER_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProcessorConfiguration.PROCESSOR_CLIENT_BUILDER_BEAN_NAME";
-
     private final PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-    private final AzureServiceBusProperties serviceBusProperties;
+    private final AzureServiceBusProperties.Processor processorProperties;
 
     AzureServiceBusProcessorConfiguration(AzureServiceBusProperties serviceBusProperties) {
-        this.serviceBusProperties = buildProducerServiceBusProperties(serviceBusProperties);
+        this.processorProperties = serviceBusProperties.buildProcessorProperties();
     }
 
-    // TODO (xiada): this logic seems weird
-    private AzureServiceBusProperties buildProducerServiceBusProperties(AzureServiceBusProperties source) {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        AzureServiceBusProperties target = new AzureServiceBusProperties();
-
-        AzurePropertiesUtils.copyAzureProperties(source, target);
-        propertyMapper.from(source.getConsumer().getDomainName()).to(target::setDomainName);
-        propertyMapper.from(source.getConsumer().getNamespace()).to(target::setNamespace);
-        propertyMapper.from(source.getConsumer().getConnectionString()).to(target::setConnectionString);
-
-        return target;
-    }
-
-    @Bean(PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ServiceBusConditions.ConditionalOnDedicatedServiceBusProcessor
+    @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+    @ConditionalOnMissingBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+    @ConditionalOnExpression(
+        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.processor.connection-string:}') or "
+            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.processor.producer.namespace:}')"
+    )
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProcessor() {
 
-        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
+        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.processorProperties);
         builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
-                                                                                        this.serviceBusProperties.getConnectionString()));
+                                                                                        this.processorProperties.getConnectionString()));
         builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
 
         return builderFactory;
     }
 
-    @Bean(PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
-    @ConditionalOnBean(name = PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
+    @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
+    @ConditionalOnBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+    @ConditionalOnMissingBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
     public ServiceBusClientBuilder serviceBusClientBuilderForProcessor(
-        @Qualifier(PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
+        @Qualifier(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
 
         return clientBuilderFactory.build();
     }
@@ -90,7 +82,7 @@ class AzureServiceBusProcessorConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(
-            name = PROCESSOR_CLIENT_BUILDER_BEAN_NAME,
+            name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME,
             value = ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class)
         public ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
             AzureServiceBusProperties serviceBusProperties,
@@ -100,10 +92,10 @@ class AzureServiceBusProcessorConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(name = PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
+        @ConditionalOnBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
         public ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilderForProcessor(
             AzureServiceBusProperties serviceBusProperties,
-            @Qualifier(PROCESSOR_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+            @Qualifier(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
             return buildProcessorClientBuilder(serviceBusProperties, serviceBusClientBuilder);
         }
 
@@ -122,7 +114,7 @@ class AzureServiceBusProcessorConfiguration {
         private ServiceBusClientBuilder.ServiceBusProcessorClientBuilder buildProcessorClientBuilder(
             AzureServiceBusProperties serviceBusProperties,
             ServiceBusClientBuilder serviceBusClientBuilder) {
-            final AzureServiceBusProperties.ServiceBusProcessor processorProperties = serviceBusProperties.getProcessor();
+            final AzureServiceBusProperties.Processor processorProperties = serviceBusProperties.getProcessor();
             final ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder = serviceBusClientBuilder.processor();
 
             PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
@@ -134,7 +126,7 @@ class AzureServiceBusProcessorConfiguration {
             propertyMapper.from(processorProperties.getSubQueue()).to(processorClientBuilder::subQueue);
             propertyMapper.from(processorProperties.getPrefetchCount()).to(processorClientBuilder::prefetchCount);
             propertyMapper.from(processorProperties.getMaxAutoLockRenewDuration()).to(processorClientBuilder::maxAutoLockRenewDuration);
-            propertyMapper.from(processorProperties.isAutoComplete()).whenFalse().to(t -> processorClientBuilder.disableAutoComplete());
+            propertyMapper.from(processorProperties.getAutoComplete()).whenFalse().to(t -> processorClientBuilder.disableAutoComplete());
             propertyMapper.from(processorProperties.getMaxConcurrentCalls()).to(processorClientBuilder::maxConcurrentCalls);
 
             if (StringUtils.hasText(processorProperties.getQueueName())
@@ -155,7 +147,7 @@ class AzureServiceBusProcessorConfiguration {
 
         @Bean
         @ConditionalOnMissingBean(
-            name = PROCESSOR_CLIENT_BUILDER_BEAN_NAME,
+            name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME,
             value = ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class)
         public ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
             AzureServiceBusProperties serviceBusProperties,
@@ -166,10 +158,10 @@ class AzureServiceBusProcessorConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(name = PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
+        @ConditionalOnBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
         public ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilderForProcessor(
             AzureServiceBusProperties serviceBusProperties,
-            @Qualifier(PROCESSOR_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+            @Qualifier(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
 
             return buildSessionProcessorClientBuilder(serviceBusProperties, serviceBusClientBuilder);
         }
@@ -190,7 +182,7 @@ class AzureServiceBusProcessorConfiguration {
         private ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder buildSessionProcessorClientBuilder(
             AzureServiceBusProperties serviceBusProperties,
             ServiceBusClientBuilder serviceBusClientBuilder) {
-            final AzureServiceBusProperties.ServiceBusProcessor processorProperties = serviceBusProperties.getProcessor();
+            final AzureServiceBusProperties.Processor processorProperties = serviceBusProperties.getProcessor();
             final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder sessionProcessorClientBuilder = serviceBusClientBuilder.sessionProcessor();
 
             PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
@@ -201,7 +193,7 @@ class AzureServiceBusProcessorConfiguration {
             propertyMapper.from(processorProperties.getSubQueue()).to(sessionProcessorClientBuilder::subQueue);
             propertyMapper.from(processorProperties.getPrefetchCount()).to(sessionProcessorClientBuilder::prefetchCount);
             propertyMapper.from(processorProperties.getMaxAutoLockRenewDuration()).to(sessionProcessorClientBuilder::maxAutoLockRenewDuration);
-            propertyMapper.from(processorProperties.isAutoComplete()).whenFalse().to(t -> sessionProcessorClientBuilder.disableAutoComplete());
+            propertyMapper.from(processorProperties.getAutoComplete()).whenFalse().to(t -> sessionProcessorClientBuilder.disableAutoComplete());
             propertyMapper.from(processorProperties.getMaxConcurrentCalls()).to(sessionProcessorClientBuilder::maxConcurrentCalls);
             propertyMapper.from(processorProperties.getMaxConcurrentSessions()).to(sessionProcessorClientBuilder::maxConcurrentSessions);
 

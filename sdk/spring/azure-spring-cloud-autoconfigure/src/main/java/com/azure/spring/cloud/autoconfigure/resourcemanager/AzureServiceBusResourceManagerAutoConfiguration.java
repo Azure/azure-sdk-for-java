@@ -50,6 +50,7 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "namespace")
+    @ConditionalOnExpression("T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.connection-string:}')")
     @Order
     public ServiceBusArmConnectionStringProvider serviceBusArmConnectionStringProvider() {
         return new ServiceBusArmConnectionStringProvider(this.azureResourceManager,

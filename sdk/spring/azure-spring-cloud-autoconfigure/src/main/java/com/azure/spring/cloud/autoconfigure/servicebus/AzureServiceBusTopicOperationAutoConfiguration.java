@@ -21,8 +21,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * An auto-configuration for Service Bus topic
- *
- * @author Warren Zhu
  */
 @Configuration
 @ConditionalOnClass(ServiceBusTopicClientFactory.class)

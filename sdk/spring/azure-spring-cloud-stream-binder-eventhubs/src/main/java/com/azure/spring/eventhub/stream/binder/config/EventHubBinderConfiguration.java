@@ -4,9 +4,9 @@
 package com.azure.spring.eventhub.stream.binder.config;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubOperationAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;

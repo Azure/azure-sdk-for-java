@@ -35,6 +35,10 @@ public class TokenCredentialProperties {
 
     private String managedIdentityClientId;
 
+    public TokenCredentialProperties() {
+
+    }
+
     public String getClientId() {
         return clientId;
     }

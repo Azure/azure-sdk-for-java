@@ -5,119 +5,129 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
-import com.azure.spring.core.properties.client.AmqpClientProperties;
+import com.azure.spring.core.properties.AzurePropertiesUtils;
+import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
 
 /**
  *
  */
-public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationProperties {
+public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
-    // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
-    // https://docs.microsoft.com/en-us/rest/api/servicebus/addressing-and-protocol
-    private String domainName = "servicebus.windows.net";
+    private Boolean crossEntityTransactions;
+    private final Producer producer = new Producer();
+    private final Consumer consumer = new Consumer();
+    private final Processor processor = new Processor();
 
-    private String namespace;
-
-    private String connectionString;
-
-    private boolean crossEntityTransactions;
-
-    private AmqpClientProperties client = new AmqpClientProperties();
-
-    private final ServiceBusProducer producer = new ServiceBusProducer();
-    private final ServiceBusConsumer consumer = new ServiceBusConsumer();
-    private final ServiceBusProcessor processor = new ServiceBusProcessor();
-
-    public String getFQDN() {
-        return this.namespace + "." + this.domainName;
-    }
-
-    public String getDomainName() {
-        return domainName;
-    }
-
-    public void setDomainName(String domainName) {
-        this.domainName = domainName;
-    }
-
-    public String getNamespace() {
-        return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
-    }
-
-    public String getConnectionString() {
-        return connectionString;
-    }
-
-    public void setConnectionString(String connectionString) {
-        this.connectionString = connectionString;
-    }
-
-    public boolean isCrossEntityTransactions() {
+    public Boolean getCrossEntityTransactions() {
         return crossEntityTransactions;
     }
 
-    public void setCrossEntityTransactions(boolean crossEntityTransactions) {
+    public void setCrossEntityTransactions(Boolean crossEntityTransactions) {
         this.crossEntityTransactions = crossEntityTransactions;
     }
 
-    @Override
-    public AmqpClientProperties getClient() {
-        return client;
-    }
-
-    public void setClient(AmqpClientProperties client) {
-        this.client = client;
-    }
-
-    public ServiceBusProducer getProducer() {
+    public Producer getProducer() {
         return producer;
     }
 
-    public ServiceBusConsumer getConsumer() {
+    public Consumer getConsumer() {
         return consumer;
     }
 
-    static class ServiceBusProducer extends AbstractAzureAmqpConfigurationProperties {
+    public Processor getProcessor() {
+        return processor;
+    }
 
-        private String domainName = "servicebus.windows.net";
-        private String namespace;
-        private String connectionString;
+    public Producer buildProducerProperties() {
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+
+        Producer properties = new Producer();
+
+        AzurePropertiesUtils.copyAzureCommonProperties(this.producer, properties);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+
+        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
+
+        propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
+        propertyMapper.from(this.producer.getTopicName()).to(properties::setTopicName);
+        propertyMapper.from(this.producer.getQueueName()).to(properties::setQueueName);
+
+        return properties;
+    }
+
+    public Consumer buildConsumerProperties() {
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+
+        Consumer properties = new Consumer();
+
+        AzurePropertiesUtils.copyAzureCommonProperties(this.consumer, properties);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+
+        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
+
+        propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
+
+        propertyMapper.from(this.consumer.getTopicName()).to(properties::setTopicName);
+        propertyMapper.from(this.consumer.getQueueName()).to(properties::setQueueName);
+        propertyMapper.from(this.consumer.getSessionAware()).to(properties::setSessionAware);
+        propertyMapper.from(this.consumer.getAutoComplete()).to(properties::setAutoComplete);
+        propertyMapper.from(this.consumer.getPrefetchCount()).to(properties::setPrefetchCount);
+        propertyMapper.from(this.consumer.getSubQueue()).to(properties::setSubQueue);
+        propertyMapper.from(this.consumer.getReceiveMode()).to(properties::setReceiveMode);
+        propertyMapper.from(this.consumer.getSubscriptionName()).to(properties::setSubscriptionName);
+        propertyMapper.from(this.consumer.getMaxAutoLockRenewDuration()).to(properties::setMaxAutoLockRenewDuration);
+
+        return properties;
+    }
+
+    public Processor buildProcessorProperties() {
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+
+        Processor properties = new Processor();
+
+        AzurePropertiesUtils.copyAzureCommonProperties(this.processor, properties);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+
+        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
+
+        propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
+        propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
+
+        propertyMapper.from(this.processor.getTopicName()).to(properties::setTopicName);
+        propertyMapper.from(this.processor.getQueueName()).to(properties::setQueueName);
+        propertyMapper.from(this.processor.getSessionAware()).to(properties::setSessionAware);
+        propertyMapper.from(this.processor.getAutoComplete()).to(properties::setAutoComplete);
+        propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
+        propertyMapper.from(this.processor.getSubQueue()).to(properties::setSubQueue);
+        propertyMapper.from(this.processor.getReceiveMode()).to(properties::setReceiveMode);
+        propertyMapper.from(this.processor.getSubscriptionName()).to(properties::setSubscriptionName);
+        propertyMapper.from(this.processor.getMaxAutoLockRenewDuration()).to(properties::setMaxAutoLockRenewDuration);
+        propertyMapper.from(this.processor.getMaxConcurrentCalls()).to(properties::setMaxConcurrentCalls);
+        propertyMapper.from(this.processor.getMaxConcurrentSessions()).to(properties::setMaxConcurrentSessions);
+
+        return properties;
+    }
+
+
+    static class Producer extends AzureServiceBusCommonProperties {
 
         private String queueName;
         private String topicName;
-
-        public String getDomainName() {
-            return domainName;
-        }
-
-        public void setDomainName(String domainName) {
-            this.domainName = domainName;
-        }
-
-        public String getNamespace() {
-            return namespace;
-        }
-
-        public void setNamespace(String namespace) {
-            this.namespace = namespace;
-        }
-
-        public String getConnectionString() {
-            return connectionString;
-        }
-
-        public void setConnectionString(String connectionString) {
-            this.connectionString = connectionString;
-        }
 
         public String getQueueName() {
             return queueName;
@@ -136,15 +146,11 @@ public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationPro
         }
     }
 
-    static class ServiceBusConsumer extends AbstractAzureAmqpConfigurationProperties {
-
-        private String domainName = "servicebus.windows.net";
-        private String namespace;
-        private String connectionString;
+    static class Consumer extends AzureServiceBusCommonProperties {
 
         // TODO (xiada): name for session
-        private boolean sessionAware = false;
-        private boolean autoComplete = true;
+        private Boolean sessionAware;
+        private Boolean autoComplete;
         private Integer prefetchCount;
         private String queueName;
         private SubQueue subQueue;
@@ -153,43 +159,19 @@ public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationPro
         private String topicName;
         private Duration maxAutoLockRenewDuration;
 
-        public String getDomainName() {
-            return domainName;
-        }
-
-        public void setDomainName(String domainName) {
-            this.domainName = domainName;
-        }
-
-        public String getNamespace() {
-            return namespace;
-        }
-
-        public void setNamespace(String namespace) {
-            this.namespace = namespace;
-        }
-
-        public String getConnectionString() {
-            return connectionString;
-        }
-
-        public void setConnectionString(String connectionString) {
-            this.connectionString = connectionString;
-        }
-
-        public boolean isSessionAware() {
+        public Boolean getSessionAware() {
             return sessionAware;
         }
 
-        public void setSessionAware(boolean sessionAware) {
+        public void setSessionAware(Boolean sessionAware) {
             this.sessionAware = sessionAware;
         }
 
-        public boolean isAutoComplete() {
+        public Boolean getAutoComplete() {
             return autoComplete;
         }
 
-        public void setAutoComplete(boolean autoComplete) {
+        public void setAutoComplete(Boolean autoComplete) {
             this.autoComplete = autoComplete;
         }
 
@@ -250,7 +232,7 @@ public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationPro
         }
     }
 
-    static class ServiceBusProcessor extends ServiceBusConsumer {
+    static class Processor extends Consumer {
         private Integer maxConcurrentCalls;
         private Integer maxConcurrentSessions;
 
@@ -269,10 +251,6 @@ public class AzureServiceBusProperties extends AbstractAzureAmqpConfigurationPro
         public void setMaxConcurrentSessions(Integer maxConcurrentSessions) {
             this.maxConcurrentSessions = maxConcurrentSessions;
         }
-    }
-
-    public ServiceBusProcessor getProcessor() {
-        return processor;
     }
 
     // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?

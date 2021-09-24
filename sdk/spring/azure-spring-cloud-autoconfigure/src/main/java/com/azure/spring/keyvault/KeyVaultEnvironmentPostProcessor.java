@@ -85,8 +85,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private AzureKeyVaultPropertySourceProperties getMergeProperties(AzureKeyVaultSecretProperties secretProperties,
                                                                      AzureKeyVaultPropertySourceProperties propertySource) {
         AzureKeyVaultPropertySourceProperties mergedResult = new AzureKeyVaultPropertySourceProperties();
-        AzurePropertiesUtils.copyAzureProperties(secretProperties, mergedResult);
-        AzurePropertiesUtils.copyAzurePropertiesIgnoreNull(propertySource, mergedResult);
+        AzurePropertiesUtils.copyAzureCommonProperties(secretProperties, mergedResult);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(propertySource, mergedResult);
 
         mergedResult.setVaultUrl(secretProperties.getVaultUrl());
         mergedResult.setServiceVersion(secretProperties.getServiceVersion());
@@ -121,7 +121,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         Assert.notNull(propertySource.getVaultUrl(), "vaultUri must not be null!");
 
         AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
-        AzurePropertiesUtils.copyAzureProperties(propertySource, secretProperties);
+        AzurePropertiesUtils.copyAzureCommonProperties(propertySource, secretProperties);
         secretProperties.setServiceVersion(propertySource.getServiceVersion());
         secretProperties.setVaultUrl(propertySource.getVaultUrl());
 
@@ -155,7 +155,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             .orElseGet(AzureGlobalProperties::new);
 
         AzureKeyVaultSecretProperties existingValue = new AzureKeyVaultSecretProperties();
-        AzurePropertiesUtils.copyAzureProperties(azureProperties, existingValue);
+        AzurePropertiesUtils.copyAzureCommonProperties(azureProperties, existingValue);
 
 
         return binder

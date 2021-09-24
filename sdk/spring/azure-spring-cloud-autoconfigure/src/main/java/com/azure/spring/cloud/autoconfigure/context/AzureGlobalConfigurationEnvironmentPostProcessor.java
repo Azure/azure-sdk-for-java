@@ -11,6 +11,7 @@ import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_AUTHORITY_HOST;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
@@ -24,6 +25,7 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_USERNAME;
 public class AzureGlobalConfigurationEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     public static final String CREDENTIAL_PREFIX = AzureGlobalProperties.PREFIX + ".credential.";
+    public static final String PROFILE_PREFIX = AzureGlobalProperties.PREFIX + ".profile.";
 
     @Override
     public int getOrder() {
@@ -39,14 +41,18 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
                       .to(p -> globalConfiguration.put(PROPERTY_AZURE_CLIENT_ID, p));
         propertyMapper.from(environment.getProperty(CREDENTIAL_PREFIX + "client-secret"))
                       .to(p -> globalConfiguration.put(PROPERTY_AZURE_CLIENT_SECRET, p));
-        propertyMapper.from(environment.getProperty(CREDENTIAL_PREFIX + "tenant-id"))
-                      .to(p -> globalConfiguration.put(PROPERTY_AZURE_TENANT_ID, p));
         propertyMapper.from(environment.getProperty(CREDENTIAL_PREFIX + "client-certificate-path"))
                       .to(p -> globalConfiguration.put(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, p));
         propertyMapper.from(environment.getProperty(CREDENTIAL_PREFIX + "username"))
                       .to(p -> globalConfiguration.put(PROPERTY_AZURE_USERNAME, p));
         propertyMapper.from(environment.getProperty(CREDENTIAL_PREFIX + "password"))
                       .to(p -> globalConfiguration.put(PROPERTY_AZURE_PASSWORD, p));
+        propertyMapper.from(environment.getProperty(CREDENTIAL_PREFIX + "managed-identity-client-id"))
+                      .to(p -> globalConfiguration.put(PROPERTY_AZURE_CLIENT_ID, p));
 
+        propertyMapper.from(environment.getProperty(PROFILE_PREFIX + "tenant-id"))
+                      .to(p -> globalConfiguration.put(PROPERTY_AZURE_TENANT_ID, p));
+        propertyMapper.from(environment.getProperty(PROFILE_PREFIX + "environment.active-directory-endpoint"))
+                      .to(p -> globalConfiguration.put(PROPERTY_AZURE_AUTHORITY_HOST, p));
     }
 }

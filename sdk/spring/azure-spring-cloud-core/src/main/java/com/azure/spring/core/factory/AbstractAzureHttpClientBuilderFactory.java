@@ -5,6 +5,7 @@ package com.azure.spring.core.factory;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
@@ -30,11 +31,14 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
+    private HttpPipeline httpPipeline;
     private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
 
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
     protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
+
+    protected abstract BiConsumer<T, HttpPipeline> consumeHttpPipeline();
 
     @Override
     protected void configureCore(T builder) {
@@ -43,11 +47,15 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureHttpClient(T builder) {
-        configureHttpHeaders(builder);
-        configureHttpTransportProperties(builder);
-        configureHttpPipelinePolicies(builder);
-        final HttpClient httpClient = getHttpClientProvider().createInstance(this.httpClientOptions);
-        consumeHttpClient().accept(builder, httpClient);
+        if (this.httpPipeline != null) {
+            consumeHttpPipeline().accept(builder, this.httpPipeline);
+        } else {
+            configureHttpHeaders(builder);
+            configureHttpTransportProperties(builder);
+            configureHttpPipelinePolicies(builder);
+            final HttpClient httpClient = getHttpClientProvider().createInstance(this.httpClientOptions);
+            consumeHttpClient().accept(builder, httpClient);
+        }
     }
 
     @Override
@@ -114,6 +122,10 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     public void addHttpPipelinePolicy(HttpPipelinePolicy policy) {
         this.httpPipelinePolicies.add(policy);
+    }
+
+    public void setHttpPipeline(HttpPipeline httpPipeline) {
+        this.httpPipeline = httpPipeline;
     }
 
     protected HttpClientProvider getHttpClientProvider() {

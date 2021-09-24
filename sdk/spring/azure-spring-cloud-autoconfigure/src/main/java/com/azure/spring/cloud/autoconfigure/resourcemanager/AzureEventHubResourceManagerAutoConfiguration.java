@@ -4,12 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.azure.spring.cloud.autoconfigure.eventhub.resourcemanager.DefaultEventHubProvisioner;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.resourcemanager.DefaultEventHubProvisioner;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubArmConnectionStringProvider;
 import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ public class AzureEventHubResourceManagerAutoConfiguration extends AzureServiceR
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty("spring.cloud.azure.eventhub.namespace")
-    // TODO(xiada) conditional on missing connection-string property
+    @ConditionalOnExpression("T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhub.connection-string:}')")
     @Order
     public EventHubArmConnectionStringProvider eventHubArmConnectionStringProvider() {
 

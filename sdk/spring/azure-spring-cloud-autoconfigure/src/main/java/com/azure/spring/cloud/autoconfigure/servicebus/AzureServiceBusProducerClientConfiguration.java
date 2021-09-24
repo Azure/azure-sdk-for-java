@@ -10,87 +10,75 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.StaticConnectionStringProvider;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
+
 /**
  * Configuration for a {@link ServiceBusReceiverClient} or a {@link ServiceBusReceiverAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ServiceBusConditions.ConditionalOnServiceBusProducer
+@ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.queue-name:}') or "
+                             + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.topic-name:}')")
 class AzureServiceBusProducerClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProducerClientConfiguration.class);
 
-    public static final String PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME";
-    public static final String PRODUCER_CLIENT_BUILDER_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.PRODUCER_CLIENT_BUILDER_BEAN_NAME";
-
     private final PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-    private final AzureServiceBusProperties serviceBusProperties;
+    private final AzureServiceBusProperties.Producer producerProperties;
 
     AzureServiceBusProducerClientConfiguration(AzureServiceBusProperties serviceBusProperties) {
-        this.serviceBusProperties = buildProducerServiceBusProperties(serviceBusProperties);
+        this.producerProperties = serviceBusProperties.buildProducerProperties();
     }
 
-    // TODO (xiada): this logic seems weird
-    private AzureServiceBusProperties buildProducerServiceBusProperties(AzureServiceBusProperties source) {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        AzureServiceBusProperties target = new AzureServiceBusProperties();
-
-        AzurePropertiesUtils.copyAzureProperties(source, target);
-        propertyMapper.from(source.getProducer().getDomainName()).to(target::setDomainName);
-        propertyMapper.from(source.getProducer().getNamespace()).to(target::setNamespace);
-        propertyMapper.from(source.getProducer().getConnectionString()).to(target::setConnectionString);
-        propertyMapper.from(source.getProducer().getTopicName()).to(t -> target.getProducer().setTopicName(t));
-        propertyMapper.from(source.getProducer().getQueueName()).to(t -> target.getProducer().setQueueName(t));
-
-        return target;
-    }
-
-    @Bean(PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ServiceBusConditions.ConditionalOnDedicatedServiceBusProducer
+    @Bean(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+    @ConditionalOnMissingBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+    @ConditionalOnExpression(
+        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.connection-string:}') or "
+            + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.producer.namespace:}')"
+    )
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProducer() {
 
-        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
+        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.producerProperties);
 
         builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
-                                                                                        this.serviceBusProperties.getConnectionString()));
+                                                                                        this.producerProperties.getConnectionString()));
         builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
 
         return builderFactory;
     }
 
-    @Bean(PRODUCER_CLIENT_BUILDER_BEAN_NAME)
-    @ConditionalOnBean(name = PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = PRODUCER_CLIENT_BUILDER_BEAN_NAME)
+    @Bean(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
+    @ConditionalOnBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+    @ConditionalOnMissingBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
     public ServiceBusClientBuilder serviceBusClientBuilderForProducer(
-        @Qualifier(PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
+        @Qualifier(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
 
         return clientBuilderFactory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(name = PRODUCER_CLIENT_BUILDER_BEAN_NAME)
+    @ConditionalOnBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
     public ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilderForProducer(
-        @Qualifier(PRODUCER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+        @Qualifier(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
 
         return buildServiceBusSenderClientBuilder(serviceBusClientBuilder);
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = PRODUCER_CLIENT_BUILDER_BEAN_NAME)
+    @ConditionalOnMissingBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
     @ConditionalOnBean(ServiceBusClientBuilder.class)
     public ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder(ServiceBusClientBuilder serviceBusClientBuilder) {
         return buildServiceBusSenderClientBuilder(serviceBusClientBuilder);
@@ -113,11 +101,11 @@ class AzureServiceBusProducerClientConfiguration {
     private ServiceBusClientBuilder.ServiceBusSenderClientBuilder buildServiceBusSenderClientBuilder(ServiceBusClientBuilder builder) {
 
         final ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder = builder.sender();
-        propertyMapper.from(this.serviceBusProperties.getProducer().getQueueName()).to(senderClientBuilder::queueName);
-        propertyMapper.from(this.serviceBusProperties.getProducer().getTopicName()).to(senderClientBuilder::topicName);
+        propertyMapper.from(this.producerProperties.getQueueName()).to(senderClientBuilder::queueName);
+        propertyMapper.from(this.producerProperties.getTopicName()).to(senderClientBuilder::topicName);
 
-        if (StringUtils.hasText(this.serviceBusProperties.getProducer().getQueueName())
-                && StringUtils.hasText(this.serviceBusProperties.getProducer().getTopicName())) {
+        if (StringUtils.hasText(this.producerProperties.getQueueName())
+                && StringUtils.hasText(this.producerProperties.getTopicName())) {
             LOGGER.warn(
                 "Both queue and topic name configured for a service bus sender, but only the queue name will take effective");
         }

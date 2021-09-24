@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.storage.resource;
 
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration;
+import com.azure.spring.core.resource.StorageBlobResource;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
@@ -56,7 +57,7 @@ public class AzureStorageBlobResourceTests {
     @Test
     void testEmptyPath() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new StorageBlobResource(this.blobServiceClient,
-            "azure-blob://"));
+                                                                                              "azure-blob://"));
     }
 
     @Test

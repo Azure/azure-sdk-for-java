@@ -23,7 +23,7 @@ public abstract class AzureServiceConfigurationBase {
     }
 
     protected <T extends AzureProperties> T loadProperties(AzureGlobalProperties source, T target) {
-        AzurePropertiesUtils.copyAzureProperties(source, target);
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
         return target;
     }
 }

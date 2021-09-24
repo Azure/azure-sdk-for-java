@@ -34,7 +34,7 @@ class AzurePropertiesUtilsTest {
         source.credential.setClientId("client-id-A");
 
         final AzurePropertiesB target = new AzurePropertiesB();
-        AzurePropertiesUtils.copyAzureProperties(source, target);
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         Assertions.assertEquals("application-id-A", target.client.getApplicationId());
         Assertions.assertEquals("AZURE_CHINA", target.profile.getCloud());
@@ -71,7 +71,7 @@ class AzurePropertiesUtilsTest {
         Assertions.assertEquals("client-id-B", target.credential.getClientId());
         Assertions.assertEquals(AZURE.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
 
-        AzurePropertiesUtils.copyAzureProperties(source, target);
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         Assertions.assertEquals("application-id-A", target.client.getApplicationId());
         Assertions.assertEquals("AZURE_CHINA", target.profile.getCloud());
@@ -92,7 +92,7 @@ class AzurePropertiesUtilsTest {
         AzurePropertiesB target = new AzurePropertiesB();
         target.credential.setClientSecret("client-secret-B");
 
-        AzurePropertiesUtils.copyAzureProperties(source, target);
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         // target properties should be the same as source
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
@@ -113,7 +113,7 @@ class AzurePropertiesUtilsTest {
         Assertions.assertEquals("client-secret-B", target.credential.getClientSecret());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getMaxDelay());
 
-        AzurePropertiesUtils.copyAzurePropertiesIgnoreNull(source, target);
+        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(source, target);
 
         // target properties should be merged properties from source + target
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
@@ -134,7 +134,7 @@ class AzurePropertiesUtilsTest {
 
         AzurePropertiesB target = new AzurePropertiesB();
 
-        AzurePropertiesUtils.copyAzureProperties(source, target);
+        AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
 

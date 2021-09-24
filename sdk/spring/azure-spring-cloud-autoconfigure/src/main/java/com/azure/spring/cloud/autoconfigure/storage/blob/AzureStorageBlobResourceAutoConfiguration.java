@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageBlobProtocolResolver;
+import com.azure.spring.core.resource.AzureStorageBlobProtocolResolver;
 import com.azure.storage.blob.BlobServiceClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

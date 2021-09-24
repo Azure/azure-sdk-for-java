@@ -2353,7 +2353,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.autoconfigure.jms.AzureServiceBusJMSProperties"/>
+    <Class name="com.azure.spring.autoconfigure.jms.AzureServiceBusJmsProperties"/>
     <Field name="pricingTier"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
