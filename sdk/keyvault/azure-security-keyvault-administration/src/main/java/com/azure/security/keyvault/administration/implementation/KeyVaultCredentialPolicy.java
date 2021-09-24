@@ -32,7 +32,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultBody";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private static final ConcurrentMap<String, String> scopeCache = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, String> SCOPE_CACHE = new ConcurrentHashMap<>();
     private String scope;
 
     /**
@@ -52,7 +52,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      *
      * @return A challenge attributes map.
      */
-    private static Map<String, String> extractChallengeAttributes(String authenticateHeader, String authChallengePrefix) {
+    private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
+                                                                  String authChallengePrefix) {
         if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
             return Collections.emptyMap();
         }
@@ -91,7 +92,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         // If this policy doesn't have an authorityScope cached try to get it from the static challenge cache.
         if (this.scope == null) {
             String authority = getRequestAuthority(request);
-            this.scope = scopeCache.get(authority);
+            this.scope = SCOPE_CACHE.get(authority);
         }
 
         if (this.scope != null) {
@@ -138,7 +139,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         if (scope == null) {
-            this.scope = scopeCache.get(authority);
+            this.scope = SCOPE_CACHE.get(authority);
 
             if (this.scope == null) {
                 return Mono.just(false);
@@ -146,7 +147,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         } else {
             this.scope = scope;
 
-            scopeCache.put(authority, this.scope);
+            SCOPE_CACHE.put(authority, this.scope);
         }
 
         TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(this.scope);
@@ -156,7 +157,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     }
 
     static void clearCache() {
-        scopeCache.clear();
+        SCOPE_CACHE.clear();
     }
 
     private static String getRequestAuthority(HttpRequest request) {
