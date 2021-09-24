@@ -9,7 +9,11 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
+import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
@@ -22,7 +26,7 @@ import java.util.function.Consumer;
  */
 public class EventHubTemplate extends AbstractEventHubTemplate implements EventHubOperation {
     private static final Logger LOG = LoggerFactory.getLogger(EventHubTemplate.class);
-
+    private final List<Listener> listeners = new ArrayList<>();
     // Use this concurrent map as set since no concurrent set which has putIfAbsent
     private final ConcurrentMap<Tuple<String, String>, Boolean> subscribedNameAndGroup = new ConcurrentHashMap<>();
 
@@ -60,5 +64,14 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
 
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
         return new EventHubProcessor(consumer, messagePayloadType, getCheckpointConfig(), getMessageConverter());
+    }
+
+    public void addListener(Listener listener) {
+        Assert.notNull(listener, "'listener' cannot be null");
+        this.listeners.add(listener);
+    }
+
+    public List<Listener> getListeners() {
+        return Collections.unmodifiableList(this.listeners);
     }
 }

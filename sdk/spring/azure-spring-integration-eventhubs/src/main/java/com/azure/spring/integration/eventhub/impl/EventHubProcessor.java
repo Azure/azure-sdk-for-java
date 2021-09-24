@@ -59,6 +59,7 @@ public class EventHubProcessor {
     }
 
     public void onEvent(EventContext context) {
+        //TODO 添加计数器，去计算消费次数
         PartitionContext partition = context.getPartitionContext();
 
         Map<String, Object> headers = new HashMap<>();
