@@ -33,13 +33,6 @@ import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHea
 import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.SESSION_ID;
 import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
 import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.TO;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.MESSAGE_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
-import static com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TO;
 import static java.time.ZoneId.systemDefault;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
