@@ -79,8 +79,9 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
 
             ServicePrincipal servicePrincipal = azure.accessManagement().servicePrincipals()
                     .define(appName)
-                    .withNewApplication()
+                    .withNewApplication("http://" + appName + ".azurewebsites.net")
                     .definePasswordCredential("password")
+                        .withPasswordValue(password)
                         .attach()
                     .create();
 

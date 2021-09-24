@@ -86,8 +86,9 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             // ============================================================
             // Create a managed service identity #1 and create a service principal. Configure the service principal to have 2 permissions, to update the scale set and assign the managed service identity #1 to the scale set
             servicePrincipal = authenticated.servicePrincipals().define(spName1)
-                    .withNewApplication()
+                    .withNewApplication("http://lenala.azure.com/ansp/" + spName1)
                     .definePasswordCredential("sppass")
+                    .withPasswordValue("StrongPass!12")
                     .attach()
                     .withNewRole(BuiltInRole.CONTRIBUTOR, resourceGroupId(virtualMachineScaleSet1.id()))
                     .create();

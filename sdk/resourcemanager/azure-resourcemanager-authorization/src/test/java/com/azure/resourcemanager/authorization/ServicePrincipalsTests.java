@@ -3,26 +3,20 @@
 
 package com.azure.resourcemanager.authorization;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.Region;
-import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.ResourceManager;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
@@ -36,8 +30,9 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 authorizationManager
                     .servicePrincipals()
                     .define(name)
-                    .withNewApplication()
+                    .withNewApplication("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("sppass")
+                    .withPasswordValue("StrongPass!12")
                     .attach()
                     .create();
             System
@@ -45,7 +40,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
             Assertions.assertNotNull(servicePrincipal.id());
             Assertions.assertNotNull(servicePrincipal.applicationId());
-            Assertions.assertEquals(1, servicePrincipal.servicePrincipalNames().size());
+            Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
             Assertions.assertEquals(1, servicePrincipal.passwordCredentials().size());
             Assertions.assertEquals(0, servicePrincipal.certificateCredentials().size());
 
@@ -53,7 +48,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             servicePrincipal = authorizationManager.servicePrincipals().getByName(name);
             Assertions.assertNotNull(servicePrincipal);
             Assertions.assertNotNull(servicePrincipal.applicationId());
-            Assertions.assertEquals(1, servicePrincipal.servicePrincipalNames().size());
+            Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
             Assertions.assertEquals(1, servicePrincipal.passwordCredentials().size());
             Assertions.assertEquals(0, servicePrincipal.certificateCredentials().size());
 
@@ -69,7 +64,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .apply();
             Assertions.assertNotNull(servicePrincipal);
             Assertions.assertNotNull(servicePrincipal.applicationId());
-            Assertions.assertEquals(1, servicePrincipal.servicePrincipalNames().size());
+            Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
             Assertions.assertEquals(0, servicePrincipal.passwordCredentials().size());
             Assertions.assertEquals(1, servicePrincipal.certificateCredentials().size());
         } finally {
@@ -78,63 +73,6 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 authorizationManager
                     .applications()
                     .deleteById(authorizationManager.applications().getByName(servicePrincipal.applicationId()).id());
-            }
-        }
-    }
-
-    @Test
-    @DoNotRecord
-    public void canConsumeServicePrincipalPassword() {
-        if (skipInPlayback()) {
-            return;
-        }
-
-        String name = generateRandomResourceName("ssp", 16);
-        String passwordName = generateRandomResourceName("ps", 16);
-        String rgName = generateRandomResourceName("rg", 16);
-        List<String> clientSecret = new ArrayList<>();
-        ServicePrincipal servicePrincipal = null;
-
-        try {
-            ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_EAST)
-                .create();
-
-            servicePrincipal = authorizationManager.servicePrincipals().define(name)
-                .withNewApplication()
-                .definePasswordCredential(passwordName)
-                    .withPasswordConsumer(password -> clientSecret.add(password.value()))
-                    .attach()
-                .withNewRoleInResourceGroup(BuiltInRole.READER, resourceGroup)
-                .create();
-
-            Assertions.assertEquals(1, clientSecret.size());
-
-            TokenCredential credential = new ClientSecretCredentialBuilder()
-                .clientId(servicePrincipal.applicationId())
-                .clientSecret(clientSecret.get(0))
-                .tenantId(profile().getTenantId())
-                .authorityHost(profile().getEnvironment().getActiveDirectoryEndpoint())
-                .httpClient(generateHttpClientWithProxy(null, null))
-                .build();
-
-            ResourceManager resourceManager1 = ResourceManager.authenticate(credential, profile())
-                .withDefaultSubscription();
-
-            Assertions.assertEquals(resourceGroup.id(), resourceManager1.resourceGroups().getByName(resourceGroup.name()).id());
-        } finally {
-            try {
-                if (servicePrincipal != null) {
-                    try {
-                        authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
-                    } finally {
-                        authorizationManager.applications().deleteById(
-                            authorizationManager.applications().getByName(servicePrincipal.applicationId()).id()
-                        );
-                    }
-                }
-            } finally {
-                resourceManager.resourceGroups().beginDeleteByName(rgName);
             }
         }
     }
@@ -153,8 +91,9 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 authorizationManager
                     .servicePrincipals()
                     .define(name)
-                    .withNewApplication()
+                    .withNewApplication("http://easycreate.azure.com/ansp/" + name)
                     .definePasswordCredential("sppass")
+                    .withPasswordValue("StrongPass!12")
                     .attach()
                     .defineCertificateCredential("spcert")
                     .withAsymmetricX509Certificate()

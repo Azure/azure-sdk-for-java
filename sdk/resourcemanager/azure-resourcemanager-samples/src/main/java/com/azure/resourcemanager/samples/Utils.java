@@ -2571,6 +2571,7 @@ public final class Utils {
                 .append("\n\tName: ").append(user.name())
                 .append("\n\tMail: ").append(user.mail())
                 .append("\n\tMail Nickname: ").append(user.mailNickname())
+                .append("\n\tSign In Name: ").append(user.signInName())
                 .append("\n\tUser Principal Name: ").append(user.userPrincipalName());
 
         System.out.println(builder.toString());

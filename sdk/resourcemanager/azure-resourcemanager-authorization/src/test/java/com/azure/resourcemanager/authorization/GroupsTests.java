@@ -36,7 +36,7 @@ public class GroupsTests extends GraphRbacManagementTest {
                     .withPassword(password())
                     .create();
             servicePrincipal =
-                authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
+                authorizationManager.servicePrincipals().define(spName).withNewApplication("https://" + spName).create();
             group1 = authorizationManager.groups().define(group1Name).withEmailAlias(group1Name).create();
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             group2 =
@@ -48,42 +48,26 @@ public class GroupsTests extends GraphRbacManagementTest {
                     .withMember(servicePrincipal.id())
                     .withMember(group1.id())
                     .create();
+
             Assertions.assertNotNull(group2);
             Assertions.assertNotNull(group2.id());
-
             List<ActiveDirectoryObject> members = group2.listMembers();
-            Assertions.assertEquals(2, members.size()); // Group list will not show service principal anymore.
+            Assertions.assertEquals(3, members.size());
             Iterator<ActiveDirectoryObject> iterator = members.iterator();
             Assertions.assertNotNull(iterator.next().id());
             Assertions.assertNotNull(iterator.next().id());
+            Assertions.assertNotNull(iterator.next().id());
         } finally {
-            try {
-                if (servicePrincipal != null) {
-                    try {
-                        authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
-                    } finally {
-                        authorizationManager.applications().deleteById(
-                            authorizationManager.applications().getByName(servicePrincipal.applicationId()).id()
-                        );
-                    }
-                }
-            } finally {
-                try {
-                    if (user != null) {
-                        authorizationManager.users().deleteById(user.id());
-                    }
-                } finally {
-                    try {
-                        if (group1 != null) {
-                            authorizationManager.groups().deleteById(group1.id());
-                        }
-                    } finally {
-                        if (group2 != null) {
-                            authorizationManager.groups().deleteById(group2.id());
-                        }
-                    }
-                }
+            if (servicePrincipal != null) {
+                authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             }
+            // cannot delete users or groups from service principal
+            //            if (user != null) {
+            //                graphRbacManager.users().deleteById(user.id());
+            //            }
+            //            if (group != null) {
+            //                graphRbacManager.groups().deleteById(group.id());
+            //            }
         }
     }
 }

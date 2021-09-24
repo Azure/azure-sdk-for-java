@@ -108,7 +108,7 @@ public final class AuthFile {
             authSettings.put(AuthFile.CredentialSettings.MANAGEMENT_URI.toString(),
                 AzureEnvironment.AZURE.getManagementEndpoint());
             authSettings.put(AuthFile.CredentialSettings.GRAPH_URL.toString(),
-                AzureEnvironment.AZURE.getMicrosoftGraphEndpoint());
+                AzureEnvironment.AZURE.getGraphEndpoint());
             authSettings.put(AuthFile.CredentialSettings.VAULT_SUFFIX.toString(),
                 AzureEnvironment.AZURE.getKeyVaultDnsSuffix());
 

@@ -168,11 +168,10 @@
     "args": "--tag=package-features-2021-07"
   },
   "graphrbac": {
-    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
-    "source": "azure-resourcemanager-authorization/swagger/swagger.md",
+    "source": "specification/graphrbac/data-plane/readme.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--tag=v1.0 --title=MicrosoftGraphClient --models-subpackage=fluent.models"
+    "args": "--payload-flattening-threshold=1 --tag=1.6"
   },
   "iothub": {
     "dir": "azure-resourcemanager-devices",

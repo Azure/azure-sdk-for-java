@@ -42,6 +42,7 @@ public final class ManageServicePrincipalCredentials {
     public static boolean runSample(AzureResourceManager azureResourceManager, AzureProfile profile) throws IOException {
         final String spName         = Utils.randomResourceName(azureResourceManager, "sp", 20);
         final String appName        = Utils.randomResourceName(azureResourceManager, "app", 20);
+        final String appUrl         = "https://" + appName;
         final String passwordName1  = Utils.randomResourceName(azureResourceManager, "password", 20);
         final String password1      = "P@ssw0rd";
         final String passwordName2  = Utils.randomResourceName(azureResourceManager, "password", 20);
@@ -57,10 +58,12 @@ public final class ManageServicePrincipalCredentials {
 
             ServicePrincipal servicePrincipal = azureResourceManager.accessManagement().servicePrincipals()
                     .define(spName)
-                    .withNewApplication()
+                    .withNewApplication(appUrl)
                     .definePasswordCredential(passwordName1)
+                        .withPasswordValue(password1)
                         .attach()
                     .definePasswordCredential(passwordName2)
+                        .withPasswordValue(password2)
                         .attach()
                     .defineCertificateCredential(certName1)
                         .withAsymmetricX509Certificate()

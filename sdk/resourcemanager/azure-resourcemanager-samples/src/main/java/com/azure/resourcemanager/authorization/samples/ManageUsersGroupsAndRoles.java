@@ -94,7 +94,7 @@ public final class ManageUsersGroupsAndRoles {
             // Create Service Principal
 
             ServicePrincipal sp = azureResourceManager.accessManagement().servicePrincipals().define(spName)
-                    .withNewApplication()
+                    .withNewApplication("http://" + spName)
                     .create();
             // wait till service principal created and propagated
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
