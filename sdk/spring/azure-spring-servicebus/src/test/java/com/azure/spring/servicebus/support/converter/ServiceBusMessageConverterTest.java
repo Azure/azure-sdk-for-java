@@ -25,7 +25,6 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.messaging.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE;
 import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.CORRELATION_ID;
 import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.MESSAGE_ID;
 import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
