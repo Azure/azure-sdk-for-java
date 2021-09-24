@@ -12,7 +12,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -24,10 +23,9 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,9 +66,6 @@ import java.util.Map;
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    static final String MANAGED_HSM_SCOPE = "https://managedhsm.azure.net/.default";
-
     private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     // This is properties file's name.
@@ -203,13 +198,7 @@ public final class CryptographyClientBuilder {
         // Add retry policy.
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
-        try {
-            URL keyUrl = new URL(keyId);
-            policies.add(new BearerTokenAuthenticationPolicy(credential,
-                keyUrl.getHost().contains("managedhsm.azure.net") ? MANAGED_HSM_SCOPE : KEY_VAULT_SCOPE));
-        } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed.", e));
-        }
+        policies.add(new KeyVaultCredentialPolicy(credential));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
