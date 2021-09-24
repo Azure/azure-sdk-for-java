@@ -3,7 +3,7 @@
 
 package com.azure.spring.integration.storage.queue.inbound;
 
-import com.azure.spring.integration.storage.queue.StorageQueueOperation;
+import com.azure.spring.storage.queue.core.StorageQueueOperation;
 import org.springframework.integration.endpoint.AbstractMessageSource;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;

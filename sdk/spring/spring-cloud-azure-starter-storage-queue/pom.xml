@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ~ Copyright (c) Microsoft Corporation. All rights reserved. ~ Licensed
+    under the MIT License. See LICENSE in the project root for ~ license information. -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
+
+  <name>Azure Spring Cloud Starter Storage Queue</name>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-core</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-integration-storage-queue</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-resourcemanager</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+    </dependency>
+  </dependencies>
+
+</project>

@@ -10,7 +10,7 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubNamesp
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.util.Triple;
 import com.azure.spring.core.util.Tuple;
-import com.azure.spring.integration.eventhub.factory.EventHubProvisioner;
+import com.azure.spring.eventhubs.core.EventHubProvisioner;
 
 /**
  * Default implementation to provision an Event Hub.

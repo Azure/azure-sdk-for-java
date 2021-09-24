@@ -12,7 +12,7 @@ import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventHubClientBuild
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubOperation;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;

@@ -9,7 +9,7 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopi
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.util.Triple;
 import com.azure.spring.core.util.Tuple;
-import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.core.ServiceBusTopicProvisioner;
 
 /**
  * A default implementation to provision Service Bus Topic.

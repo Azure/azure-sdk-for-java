@@ -29,9 +29,9 @@
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-messaging</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-messaging</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.integration</groupId>
@@ -52,6 +52,32 @@
       <artifactId>rxjava</artifactId>
       <version>1.3.8</version> <!-- {x-version-update;io.reactivex:rxjava;external_dependency} -->
     </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito2</artifactId>
+      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -66,11 +92,25 @@
               <includes>
                 <include>io.reactivex:rxjava:[1.3.8]</include> <!-- {x-include-update;io.reactivex:rxjava;external_dependency} -->
                 <include>org.springframework.integration:spring-integration-core:[5.5.3]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
-                <include>org.springframework:spring-messaging:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.mockito:mockito-core:[3.9.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
+                <include>org.powermock:powermock-api-mockito2:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+                <include>org.powermock:powermock-module-junit4:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

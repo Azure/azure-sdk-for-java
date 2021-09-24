@@ -487,15 +487,15 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.servicebus.stream.binder.config.ServiceBusTopicBinderConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.servicebus.stream.binder.config.ServiceBusQueueBinderConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="ServiceBusTopicBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="ServiceBusQueueBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubBinderConfiguration.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.keyvault.KeyVaultOperation.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration.java"/>
 
-  <suppress checks="MethodName" files="com.azure.spring.integration.core.api.CheckpointConfig.java"/>
-  <suppress checks="MethodName" files="com.azure.spring.integration.servicebus.ServiceBusClientConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.messaging.checkpoint.CheckpointConfig.java"/>
+  <suppress checks="MethodName" files="com.azure.spring.servicebus.support.ServiceBusClientConfig.java"/>
 
   <!-- Suppress warnings for EventProcessorSharedAuthenticationClientBuilder and EventHubSharedAuthenticationClientBuilder. They are used by Azure Spring. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubSharedAuthenticationClientBuilder.java"/>

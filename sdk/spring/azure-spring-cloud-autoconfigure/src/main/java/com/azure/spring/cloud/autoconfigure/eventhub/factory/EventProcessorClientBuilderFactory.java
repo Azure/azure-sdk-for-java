@@ -13,13 +13,13 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.azure.spring.integration.eventhub.api.EventProcessorListener;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.eventhubs.core.EventProcessorListener;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.util.Arrays;
