@@ -9,7 +9,7 @@ import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.integration.servicebus.ServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

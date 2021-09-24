@@ -1,1 +1,0 @@
-eventhub=com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration

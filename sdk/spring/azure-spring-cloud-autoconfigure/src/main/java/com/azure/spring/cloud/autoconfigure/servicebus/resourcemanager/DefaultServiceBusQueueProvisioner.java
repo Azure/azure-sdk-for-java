@@ -7,7 +7,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.util.Tuple;
-import com.azure.spring.integration.servicebus.factory.ServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
 
 /**
  * A default implementation to provision Service Bus Queue.

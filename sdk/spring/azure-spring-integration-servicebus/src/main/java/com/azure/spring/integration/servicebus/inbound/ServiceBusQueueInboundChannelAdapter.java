@@ -3,8 +3,8 @@
 
 package com.azure.spring.integration.servicebus.inbound;
 
-import com.azure.spring.integration.core.AbstractInboundChannelAdapter;
-import com.azure.spring.integration.core.api.SubscribeOperation;
+import com.azure.spring.integration.endpoint.AbstractInboundChannelAdapter;
+import com.azure.spring.messaging.core.SubscribeOperation;
 import org.springframework.lang.NonNull;
 
 /**

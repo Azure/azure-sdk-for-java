@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.eventhub.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.integration.eventhub.api.EventProcessorListener;
+import com.azure.spring.eventhubs.core.EventProcessorListener;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

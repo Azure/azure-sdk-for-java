@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
-import com.azure.spring.integration.storage.queue.StorageQueueOperation;
-import com.azure.spring.integration.storage.queue.StorageQueueTemplate;
-import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
-import com.azure.spring.integration.storage.queue.factory.StorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.DefaultStorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.StorageQueueClientFactory;
+import com.azure.spring.storage.queue.core.StorageQueueOperation;
+import com.azure.spring.storage.queue.core.StorageQueueTemplate;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

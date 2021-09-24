@@ -8,9 +8,9 @@ parameters:
     - spring/azure-spring-boot-test-keyvault-certificate
     - spring/azure-spring-boot-test-servicebus-jms
     - spring/azure-spring-boot-test-storage
-    - spring/azure-spring-cloud-test-eventhubs
-    - spring/azure-spring-cloud-test-eventhubs-kafka
-    - spring/azure-spring-cloud-test-servicebus-binder
+    - spring/spring-cloud-azure-stream-binder-eventhubs
+    - spring/spring-cloud-azure-test-eventhubs-kafka
+    - spring/spring-cloud-azure-test-servicebus-binder
   Artifacts:
     - name: azure-spring-boot-test-application
       groupId: com.azure.spring
@@ -45,18 +45,15 @@ parameters:
     - name: azure-spring-boot-test-servicebus-jms
       groupId: com.azure.spring
       safeName: azurespringboottestservicebusjms
-    - name: azure-spring-cloud-test-eventhubs
+    - name: spring-cloud-azure-test-eventhubs-kafka
       groupId: com.azure.spring
-      safeName: azurespringcloudtesteventhubs
-    - name: azure-spring-cloud-test-eventhubs-kafka
-      groupId: com.azure.spring
-      safeName: azurespringcloudtesteventhubskafka
+      safeName: springcloudazuretesteventhubskafka
     - name: azure-spring-boot-test-storage
       groupId: com.azure.spring
       safeName: azurespringbootteststorage
-    - name: azure-spring-cloud-test-servicebus-binder
+    - name: spring-cloud-azure-test-servicebus-binder
       groupId: com.azure.spring
-      safeName: azurespringcloudtestservicebusbinder
+      safeName: springcloudazuretestservicebusbinder
   EnvVars:
     AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1)
     AAD_USER_NAME_1: $(java-spring-aad-user-name-1)

@@ -2334,8 +2334,17 @@
   </Match>
 
   <Match>
+    <Or>
+      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+    </Or>
+    <Method name="OnCloseSessionAsync"/>
+    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
+
+  <Match>
     <Bug pattern="UWF_NULL_FIELD"/>
-    <Class name="com.azure.spring.integration.core.AbstractInboundChannelAdapter"/>
+    <Class name="com.azure.spring.integration.endpoint.AbstractInboundChannelAdapter"/>
     <Or>
       <Field name="subscribeByGroupOperation"/>
       <Field name="subscribeOperation"/>
@@ -2348,7 +2357,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter"/>
+    <Class name="com.azure.spring.integration.servicebus.com.azure.spring.eventhubs.support.converter.converter.ServiceBusMessageConverter"/>
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
