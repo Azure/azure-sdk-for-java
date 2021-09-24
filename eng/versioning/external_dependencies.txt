@@ -7,18 +7,18 @@
 
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.12.4
-com.fasterxml.jackson.core:jackson-core;2.12.4
-com.fasterxml.jackson.core:jackson-databind;2.12.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.4
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.4
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.4
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.4
+com.fasterxml.jackson.core:jackson-annotations;2.12.5
+com.fasterxml.jackson.core:jackson-core;2.12.5
+com.fasterxml.jackson.core:jackson-databind;2.12.5
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.5
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.5
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.5
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.5
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.5
 com.github.spotbugs:spotbugs;4.2.0
 com.github.spotbugs:spotbugs-annotations;4.2.0
 com.github.spotbugs:spotbugs-maven-plugin;4.2.0
-com.google.code.gson:gson;2.8.7
+com.google.code.gson:gson;2.8.8
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
@@ -46,20 +46,20 @@ io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.7.3
 io.micrometer:micrometer-registry-azure-monitor;1.7.3
 io.micrometer:micrometer-registry-graphite;1.7.3
-io.netty:netty-buffer;4.1.67.Final
-io.netty:netty-common;4.1.67.Final
-io.netty:netty-codec-http;4.1.67.Final
-io.netty:netty-codec-http2;4.1.67.Final
-io.netty:netty-transport;4.1.67.Final
-io.netty:netty-handler;4.1.67.Final
-io.netty:netty-handler-proxy;4.1.67.Final
-io.netty:netty-tcnative;2.0.40.Final
-io.netty:netty-tcnative-boringssl-static;2.0.40.Final
-io.netty:netty-transport-native-epoll;4.1.67.Final
-io.netty:netty-transport-native-unix-common;4.1.67.Final
-io.netty:netty-transport-native-kqueue;4.1.67.Final
-io.projectreactor.netty:reactor-netty;1.0.10
-io.projectreactor:reactor-core;3.4.9
+io.netty:netty-buffer;4.1.68.Final
+io.netty:netty-common;4.1.68.Final
+io.netty:netty-codec-http;4.1.68.Final
+io.netty:netty-codec-http2;4.1.68.Final
+io.netty:netty-transport;4.1.68.Final
+io.netty:netty-handler;4.1.68.Final
+io.netty:netty-handler-proxy;4.1.68.Final
+io.netty:netty-tcnative;2.0.43.Final
+io.netty:netty-tcnative-boringssl-static;2.0.43.Final
+io.netty:netty-transport-native-epoll;4.1.68.Final
+io.netty:netty-transport-native-unix-common;4.1.68.Final
+io.netty:netty-transport-native-kqueue;4.1.68.Final
+io.projectreactor.netty:reactor-netty;1.0.11
+io.projectreactor:reactor-core;3.4.10
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -175,7 +175,7 @@ io.opentelemetry:opentelemetry-api;1.0.0
 io.opentelemetry:opentelemetry-sdk;1.0.0
 io.opentelemetry:opentelemetry-exporter-logging;1.0.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.0.0
-io.projectreactor:reactor-test;3.4.9
+io.projectreactor:reactor-test;3.4.10
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
@@ -284,7 +284,7 @@ org.moditect:moditect-maven-plugin;1.0.0.RC1
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.12.2
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.12.5
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
