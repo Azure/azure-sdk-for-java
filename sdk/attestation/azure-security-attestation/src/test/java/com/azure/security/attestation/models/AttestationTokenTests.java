@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.security.attestation.models;
 
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
@@ -22,8 +21,10 @@ import java.security.Security;
 import java.security.SignatureException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -63,6 +64,46 @@ final class TestObject {
         return integer;
     }
 
+    @JsonProperty(value = "exp")
+    private long expiration;
+    public TestObject setExpiresOn(LocalDateTime expirationTime) {
+        long exp1 = expirationTime.toEpochSecond(ZoneOffset.UTC);
+        Instant instant = expirationTime.atZone(ZoneId.systemDefault()).toInstant();
+        this.expiration = instant.toEpochMilli() / 1000;
+        return this;
+    }
+    public LocalDateTime getExpiresOn() {
+        return Instant.EPOCH.plusSeconds(expiration)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime();
+    }
+
+    @JsonProperty(value = "iat")
+    private long issuedOn;
+    public TestObject setIssuedOn(LocalDateTime issuedOn) {
+        Instant instant = issuedOn.atZone(ZoneId.systemDefault()).toInstant();
+        this.issuedOn = instant.toEpochMilli() / 1000;
+        return this;
+    }
+    public LocalDateTime getIssuedOn() {
+        return Instant.EPOCH.plusSeconds(issuedOn)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime();
+    }
+
+    @JsonProperty(value = "nbf")
+    private long notBefore;
+    public TestObject setNotBefore(LocalDateTime notBefore) {
+        Instant instant = notBefore.atZone(ZoneId.systemDefault()).toInstant();
+        this.notBefore = instant.toEpochMilli() / 1000;
+        return this;
+    }
+    public LocalDateTime getNotBefore() {
+        return Instant.EPOCH.plusSeconds(notBefore)
+            .atZone(ZoneId.systemDefault())
+            .toLocalDateTime();
+    }
+
 
     @JsonProperty(value = "intArray")
     private int[] integerArray;
@@ -72,6 +113,16 @@ final class TestObject {
     }
     public int[] getIntegerArray() {
         return integerArray;
+    }
+
+    @JsonProperty(value = "iss")
+    String issuer;
+    public TestObject setIssuer(String iss) {
+        issuer = iss;
+        return this;
+    }
+    public String getIssuer() {
+        return issuer;
     }
 
     TestObject() {
@@ -166,13 +217,12 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     @Test
     void testCreateUnsecuredAttestationTokenFromObject() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        JacksonAdapter adapter = new JacksonAdapter();
         TestObject testObject = new TestObject()
             .setAlg("Test Algorithm")
             .setInteger(31415926)
             .setIntegerArray(new int[]{123, 456, 789});
-        String objectString = assertDoesNotThrow(() -> mapper.writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -235,14 +285,20 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setAllowWeakKey(true);
 
 
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        JacksonAdapter adapter = new JacksonAdapter();
+        LocalDateTime timeNow = LocalDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
         TestObject testObject = new TestObject()
             .setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789});
+            .setIntegerArray(new int[]{123, 456, 789})
+            .setIssuedOn(timeNow)
+            .setNotBefore(timeNow)
+            .setExpiresOn(timeNow.plusSeconds(30))
+            .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> mapper.writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(objectString, signingKey);
 
@@ -252,7 +308,136 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
         assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
+        assertEquals(timeNow.atZone(ZoneId.systemDefault()), newToken.getIssuedAt().atZone(ZoneId.systemDefault()));
+        assertEquals(timeNow.atZone(ZoneId.systemDefault()), newToken.getNotBefore().atZone(ZoneId.systemDefault()));
+        assertEquals(timeNow.atZone(ZoneId.systemDefault()).plusSeconds(30), newToken.getExpiresOn().atZone(ZoneId.systemDefault()));
+        assertEquals("Fred", newToken.getIssuer());
+
+        assertDoesNotThrow(() -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
     }
+
+    @Test
+    void verifyAttestationTokenIssuer() {
+        JacksonAdapter adapter = new JacksonAdapter();
+        LocalDateTime timeNow = LocalDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
+        TestObject testObject = new TestObject()
+            .setAlg("Test Algorithm")
+            .setInteger(31415926)
+            .setIntegerArray(new int[]{123, 456, 789})
+            .setIssuedOn(timeNow)
+            .setNotBefore(timeNow)
+            .setExpiresOn(timeNow.plusSeconds(30))
+            .setIssuer("Fred");
+
+        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
+
+        assertEquals("none", newToken.getAlgorithm());
+        TestObject object = newToken.getBody(TestObject.class);
+
+        assertEquals("Test Algorithm", object.getAlg());
+        assertEquals(31415926, object.getInteger());
+        assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
+        assertEquals("Fred", newToken.getIssuer());
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            ((AttestationTokenImpl) newToken).validate(null,
+                new AttestationTokenValidationOptions()
+                    .setExpectedIssuer("Joe")));
+        // Both the actual and expected issuers should be in the exception message.
+        assertTrue(ex.getMessage().contains("Fred"));
+        assertTrue(ex.getMessage().contains("Joe"));
+    }
+
+    @Test
+    void verifyAttestationTokenExpireTimeout() {
+        JacksonAdapter adapter = new JacksonAdapter();
+        LocalDateTime timeNow = LocalDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
+        TestObject testObjectExpired30SecondsAgo = new TestObject()
+            .setAlg("Test Algorithm")
+            .setInteger(31415926)
+            .setIntegerArray(new int[]{123, 456, 789})
+            .setIssuedOn(timeNow.minusSeconds(60))
+            .setNotBefore(timeNow.minusSeconds(60))
+            .setExpiresOn(timeNow.minusSeconds(30))
+            .setIssuer("Fred");
+
+        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            ((AttestationTokenImpl) newToken).validate(null,
+                new AttestationTokenValidationOptions()));
+        // Both the current time and the expiration time should be in the exception message.
+        assertTrue(ex.getMessage().contains("expiration"));
+        assertTrue(ex.getMessage().contains(timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+        assertTrue(ex.getMessage().contains(timeNow.minusSeconds(30).atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+    }
+
+    @Test
+    void verifyAttestationTokenNotBeforeTimeout() {
+        JacksonAdapter adapter = new JacksonAdapter();
+        LocalDateTime timeNow = LocalDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
+        TestObject testObjectExpired30SecondsAgo = new TestObject()
+            .setAlg("Test Algorithm")
+            .setInteger(31415926)
+            .setIntegerArray(new int[]{123, 456, 789})
+            .setIssuedOn(timeNow.plusSeconds(30))
+            .setNotBefore(timeNow.plusSeconds(30))
+            .setExpiresOn(timeNow.plusSeconds(60))
+            .setIssuer("Fred");
+
+        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            ((AttestationTokenImpl) newToken).validate(null,
+                new AttestationTokenValidationOptions()));
+        // Both the current time and the expiration time should be in the exception message.
+        assertTrue(ex.getMessage().contains("NotBefore"));
+        String timeNowS = timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString();
+        assertTrue(ex.getMessage().contains(timeNow.atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+        assertTrue(ex.getMessage().contains(timeNow.plusSeconds(30).atZone(ZoneOffset.systemDefault()).toInstant().toString()));
+    }
+
+    @Test
+    void verifyAttestationTokenVerifyCallback() {
+        JacksonAdapter adapter = new JacksonAdapter();
+        LocalDateTime timeNow = LocalDateTime.now();
+        timeNow = timeNow.minusNanos(timeNow.getNano());
+
+        TestObject testObjectExpired30SecondsAgo = new TestObject()
+            .setAlg("Test Algorithm")
+            .setInteger(31415926)
+            .setIntegerArray(new int[]{123, 456, 789})
+            .setIssuedOn(timeNow)
+            .setNotBefore(timeNow)
+            .setExpiresOn(timeNow.plusSeconds(60))
+            .setIssuer("Fred");
+
+        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+
+        AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
+
+        RuntimeException ex = assertThrows(RuntimeException.class, () ->
+            ((AttestationTokenImpl) newToken).validate(null,
+                new AttestationTokenValidationOptions()
+                    .setValidationCallback((token, signer) -> {
+                        throw new RuntimeException("I was interrupted");
+                    })));
+        // Both the current time and the expiration time should be in the exception message.
+        assertTrue(ex.getMessage().contains("I was interrupted"));
+    }
+
 
     @Test
     void testCreateSecuredEmptyAttestationToken() {
@@ -351,9 +536,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         String iat = token.getIssuedAt().toString();
         String exp = token.getExpiresOn().toString();
         // Because this is a pre-canned token, we know exactly when the token was issued and expires.
-        assertEquals("2021-07-21T21:08:16", token.getNotBefore().toString());
-        assertEquals("2021-07-21T21:08:16", token.getIssuedAt().toString());
-        assertEquals("2021-07-22T05:08:16", token.getExpiresOn().toString());
+        assertEquals("2021-07-21T21:08:16Z", token.getNotBefore().toString());
+        assertEquals("2021-07-21T21:08:16Z", token.getIssuedAt().toString());
+        assertEquals("2021-07-22T05:08:16Z", token.getExpiresOn().toString());
 
         com.azure.security.attestation.implementation.models.AttestationResult generatedAttestResult;
 

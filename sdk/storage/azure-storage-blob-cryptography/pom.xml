@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+  <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
 
   <name>Microsoft Azure client library for Blob Storage cryptography</name>
   <description>This module contains client library for Microsoft Azure Blob Storage cryptography.</description>
@@ -36,6 +36,16 @@
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.09</jacoco.min.branchcoverage>
     <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
+      --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
+      --add-opens com.azure.storage.blob.cryptography/com.azure.storage.blob.specialized.cryptography=ALL-UNNAMED
+      --add-reads com.azure.core=ALL-UNNAMED
+      --add-reads com.azure.storage.common=ALL-UNNAMED
+      --add-reads com.azure.storage.blob=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -52,12 +62,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.15.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.13.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -153,162 +163,40 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>java8</id>
-      <activation>
-        <jdk>[1.8,9)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-testCompile</id>
+            <phase>process-test-sources</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
             <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
-              <showWarnings>true</showWarnings>
-              <failOnWarning>true</failOnWarning>
+              <compilerId>groovy-eclipse-compiler</compilerId>
               <compilerArgs>
-                <arg>-Xlint:all</arg>
-                <arg>-Xlint:-serial</arg>
-                <arg>-Xlint:-deprecation</arg>
-                <arg>-Xlint:-processing</arg>
+                <arg>-warn:-unused</arg>
               </compilerArgs>
-              <excludes>
-                <exclude>module-info.java</exclude>
-              </excludes>
             </configuration>
-
-            <executions>
-              <execution>
-                <id>test-compile</id>
-                <phase>process-test-sources</phase>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
-                </configuration>
-              </execution>
-              <execution>
-                <id>default-testCompile</id>
-                <phase>process-test-sources</phase>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-batch</artifactId>
-                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <!-- Skip maven compiler and use gmavenplus plugin instead -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <configuration>
-              <source>9</source>
-              <target>9</target>
-            </configuration>
-            <executions>
-              <execution>
-                <id>test-compile</id>
-                <phase>process-test-sources</phase>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
-                  <release>8</release>
-                </configuration>
-              </execution>
-              <execution>
-                <id>default-testCompile</id>
-                <phase>process-test-sources</phase>
-                <goals>
-                  <goal>testCompile</goal>
-                </goals>
-                <configuration>
-                  <compilerId>groovy-eclipse-compiler</compilerId>
-                  <compilerArgs>-warn:-unused</compilerArgs>
-                  <release>8</release>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-compiler</artifactId>
-                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
-              </dependency>
-              <dependency>
-                <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy-eclipse-batch</artifactId>
-                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
-                --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
-                --add-opens com.azure.storage.blob.cryptography/com.azure.storage.blob.specialized.cryptography=ALL-UNNAMED
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.storage.common=ALL-UNNAMED
-                --add-reads com.azure.storage.blob=ALL-UNNAMED
-              </argLine>
-              <systemPropertyVariables>
-                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
+          </dependency>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-batch</artifactId>
+            <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
 </project>

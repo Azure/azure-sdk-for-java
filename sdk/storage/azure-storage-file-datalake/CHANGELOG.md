@@ -1,7 +1,18 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.8.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed bug where composite BlobServiceException wasn't translated into DataLakeServiceException.
+
+### Other Changes
+
+## 12.7.0 (2021-09-15)
+- GA release
 
 ## 12.7.0-beta.1 (2021-07-28)
 - Added support for openInputStream to sync data lake file clients

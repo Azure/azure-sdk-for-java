@@ -125,7 +125,7 @@ public class ManagementChannelTest {
             autoCloseable.close();
         }
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

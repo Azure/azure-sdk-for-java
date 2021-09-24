@@ -45,13 +45,13 @@ public class FeatureManager extends HashMap<String, Object> {
 
     private Map<String, Boolean> onOff;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+        .setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
 
     public FeatureManager(FeatureManagementConfigProperties properties) {
         this.properties = properties;
         featureManagement = new HashMap<>();
         onOff = new HashMap<>();
-        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.KEBAB_CASE);
     }
 
     /**
@@ -116,7 +116,7 @@ public class FeatureManager extends HashMap<String, Object> {
         } else {
             Feature feature = null;
             try {
-                feature = mapper.convertValue(featureKey, Feature.class);
+                feature = MAPPER.convertValue(featureKey, Feature.class);
             } catch (IllegalArgumentException e) {
                 LOGGER.error("Found invalid feature {} with value {}.", combined + key, featureKey.toString());
             }

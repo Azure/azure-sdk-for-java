@@ -34,13 +34,13 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
     private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)",
         Pattern.MULTILINE);
     private static final String RULE_VALUE_ATTRIBUTE_XML = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
-    private final JacksonAdapter jacksonAdapter = new JacksonAdapter();
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementSerializer.class);
 
     @Override
     public String serialize(Object object, SerializerEncoding encoding) throws IOException {
-        final String contents = jacksonAdapter.serialize(object, encoding);
+        final String contents = SERIALIZER_ADAPTER.serialize(object, encoding);
 
         final Class<?> clazz = object.getClass();
         if (!CreateQueueBody.class.equals(clazz) && !CreateRuleBody.class.equals(clazz)
@@ -91,12 +91,12 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
 
     @Override
     public String serializeRaw(Object object) {
-        return jacksonAdapter.serializeRaw(object);
+        return SERIALIZER_ADAPTER.serializeRaw(object);
     }
 
     @Override
     public String serializeList(List<?> list, CollectionFormat format) {
-        return jacksonAdapter.serializeList(list, format);
+        return SERIALIZER_ADAPTER.serializeList(list, format);
     }
 
     public <T> T deserialize(String value, Type type) throws IOException {
@@ -112,14 +112,14 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
             serializedString = value;
         }
 
-        return jacksonAdapter.deserialize(serializedString, type, SerializerEncoding.XML);
+        return SERIALIZER_ADAPTER.deserialize(serializedString, type, SerializerEncoding.XML);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
         if (encoding != SerializerEncoding.XML) {
-            return jacksonAdapter.deserialize(value, type, encoding);
+            return SERIALIZER_ADAPTER.deserialize(value, type, encoding);
         }
 
         if (Object.class == type) {
@@ -131,6 +131,6 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
 
     @Override
     public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
-        return jacksonAdapter.deserialize(headers, type);
+        return SERIALIZER_ADAPTER.deserialize(headers, type);
     }
 }
