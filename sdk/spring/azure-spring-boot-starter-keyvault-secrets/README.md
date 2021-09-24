@@ -1,9 +1,8 @@
 # Azure Key Vault Secrets Spring Boot starter client library for Java
 
-Azure Key Vault Secrets Spring Boot Starter is a Spring starter for [Azure Key Vault Secrets]. With
-this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure
-Key Vault could be easily used and conveniently accessed like other externalized configuration
-property, e.g. properties in files.
+Azure Key Vault Secrets Spring Boot Starter for Azure Key Vault adds Azure Key Vault as one of the
+Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently
+accessed like other externalized configuration property, e.g. properties in files.
 
 [Package (Maven)] | [API reference documentation] | [Product documentation] | [Samples]
 
