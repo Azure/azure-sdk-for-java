@@ -7,9 +7,15 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for playing audio. */
+/** The request payload for playing audio to participant. */
 @Fluent
-public final class PlayAudioRequest {
+public final class PlayAudioToParticipantRequest {
+    /*
+     * The identifier of the participant to play audio to.
+     */
+    @JsonProperty(value = "identifier", required = true)
+    private CommunicationIdentifierModel identifier;
+
     /*
      * The media resource uri of the play audio request.
      * Currently only Wave file (.wav) format audio prompts are supported.
@@ -47,6 +53,26 @@ public final class PlayAudioRequest {
     private String callbackUri;
 
     /**
+     * Get the identifier property: The identifier of the participant to play audio to.
+     *
+     * @return the identifier value.
+     */
+    public CommunicationIdentifierModel getIdentifier() {
+        return this.identifier;
+    }
+
+    /**
+     * Set the identifier property: The identifier of the participant to play audio to.
+     *
+     * @param identifier the identifier value to set.
+     * @return the PlayAudioToParticipantRequest object itself.
+     */
+    public PlayAudioToParticipantRequest setIdentifier(CommunicationIdentifierModel identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    /**
      * Get the audioFileUri property: The media resource uri of the play audio request. Currently only Wave file (.wav)
      * format audio prompts are supported. More specifically, the audio content in the wave file must be mono
      * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -63,9 +89,9 @@ public final class PlayAudioRequest {
      * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
      * @param audioFileUri the audioFileUri value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioToParticipantRequest object itself.
      */
-    public PlayAudioRequest setAudioFileUri(String audioFileUri) {
+    public PlayAudioToParticipantRequest setAudioFileUri(String audioFileUri) {
         this.audioFileUri = audioFileUri;
         return this;
     }
@@ -83,9 +109,9 @@ public final class PlayAudioRequest {
      * Set the loop property: The flag indicating whether audio file needs to be played in loop or not.
      *
      * @param loop the loop value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioToParticipantRequest object itself.
      */
-    public PlayAudioRequest setLoop(boolean loop) {
+    public PlayAudioToParticipantRequest setLoop(boolean loop) {
         this.loop = loop;
         return this;
     }
@@ -103,9 +129,9 @@ public final class PlayAudioRequest {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioToParticipantRequest object itself.
      */
-    public PlayAudioRequest setOperationContext(String operationContext) {
+    public PlayAudioToParticipantRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -123,9 +149,9 @@ public final class PlayAudioRequest {
      * Set the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
      *
      * @param audioFileId the audioFileId value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioToParticipantRequest object itself.
      */
-    public PlayAudioRequest setAudioFileId(String audioFileId) {
+    public PlayAudioToParticipantRequest setAudioFileId(String audioFileId) {
         this.audioFileId = audioFileId;
         return this;
     }
@@ -143,9 +169,9 @@ public final class PlayAudioRequest {
      * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
      *
      * @param callbackUri the callbackUri value to set.
-     * @return the PlayAudioRequest object itself.
+     * @return the PlayAudioToParticipantRequest object itself.
      */
-    public PlayAudioRequest setCallbackUri(String callbackUri) {
+    public PlayAudioToParticipantRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

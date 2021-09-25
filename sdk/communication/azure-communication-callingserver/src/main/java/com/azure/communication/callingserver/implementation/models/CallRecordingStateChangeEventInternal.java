@@ -31,10 +31,10 @@ public final class CallRecordingStateChangeEventInternal {
     private OffsetDateTime startDateTime;
 
     /*
-     * The server call.id.
+     * The locator used for joining or taking action on a call.
      */
-    @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    @JsonProperty(value = "callLocator")
+    private CallLocatorModel callLocator;
 
     /**
      * Get the recordingId property: The call recording id.
@@ -97,22 +97,22 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Get the serverCallId property: The server call.id.
+     * Get the callLocator property: The locator used for joining or taking action on a call.
      *
-     * @return the serverCallId value.
+     * @return the callLocator value.
      */
-    public String getServerCallId() {
-        return this.serverCallId;
+    public CallLocatorModel getCallLocator() {
+        return this.callLocator;
     }
 
     /**
-     * Set the serverCallId property: The server call.id.
+     * Set the callLocator property: The locator used for joining or taking action on a call.
      *
-     * @param serverCallId the serverCallId value to set.
+     * @param callLocator the callLocator value to set.
      * @return the CallRecordingStateChangeEventInternal object itself.
      */
-    public CallRecordingStateChangeEventInternal setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
+    public CallRecordingStateChangeEventInternal setCallLocator(CallLocatorModel callLocator) {
+        this.callLocator = callLocator;
         return this;
     }
 }

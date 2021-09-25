@@ -4,16 +4,29 @@
 
 package com.azure.communication.callingserver.implementation;
 
-import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.AddParticipantResultInternal;
+import com.azure.communication.callingserver.implementation.models.AddParticipantWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.CallRecordingPropertiesInternal;
+import com.azure.communication.callingserver.implementation.models.CancelMediaOperationWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.implementation.models.GetAllParticipantsWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.GetParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
 import com.azure.communication.callingserver.implementation.models.JoinCallResultInternal;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.implementation.models.MuteParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioResultInternal;
-import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingResultInternal;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.UnmuteParticipantWithCallLocatorRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -32,6 +45,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerCalls. */
@@ -60,111 +74,323 @@ public final class ServerCallsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
     private interface ServerCallsService {
-        @Post("/calling/serverCalls/{serverCallId}/participants")
+        @Post("/calling/participants/:getAll")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<List<CallParticipantInternal>>> getParticipants(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<AddParticipantResultInternal>> addParticipant(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AddParticipantRequest addParticipantRequest,
+                @BodyParam("application/json")
+                        AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/calling/serverCalls/{serverCallId}/participants/{participantId}")
+        @Post("/calling/participants/:remove")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> removeParticipant(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
-                @PathParam("participantId") String participantId,
                 @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/serverCalls/{serverCallId}/recordings")
+        @Post("/calling/participants/:get")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<List<CallParticipantInternal>>> getParticipant(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants/:startHoldMusic")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<StartHoldMusicResult>> startHoldMusic(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StartHoldMusicWithCallLocatorRequest startHoldMusicRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants/:stopHoldMusic")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<StopHoldMusicResult>> stopHoldMusic(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants/:playAudio")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<PlayAudioResultInternal>> participantPlayAudio(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants/:cancelMediaOperation")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> cancelParticipantMediaOperation(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants/:mute")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> muteParticipant(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/participants/:unmute")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> unmuteParticipant(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json")
+                        UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/recordings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<StartCallRecordingResultInternal>> startRecording(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartCallRecordingRequest request,
+                @BodyParam("application/json")
+                        StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/calling/serverCalls/{serverCallId}/recordings/{recordingId}")
+        @Get("/calling/recordings/{recordingId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CallRecordingPropertiesInternal>> getRecordingProperties(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/calling/serverCalls/{serverCallId}/recordings/{recordingId}")
+        @Delete("/calling/recordings/{recordingId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopRecording(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/serverCalls/{serverCallId}/recordings/{recordingId}/:pause")
+        @Post("/calling/recordings/{recordingId}/:pause")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> pauseRecording(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/serverCalls/{serverCallId}/recordings/{recordingId}/:resume")
+        @Post("/calling/recordings/{recordingId}/:resume")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> resumeRecording(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/serverCalls/{serverCallId}/:join")
+        @Post("/calling/:join")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<JoinCallResultInternal>> joinCall(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") JoinCallRequest callRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/calling/serverCalls/{serverCallId}/:playAudio")
+        @Post("/calling/:playAudio")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<PlayAudioResultInternal>> playAudio(
                 @HostParam("endpoint") String endpoint,
-                @PathParam("serverCallId") String serverCallId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") PlayAudioRequest request,
+                @BodyParam("application/json") PlayAudioWithCallLocatorRequest playAudioRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/:cancelMediaOperation")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> cancelMediaOperation(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
+     * Get participants from a server call.
+     *
+     * @param getAllParticipantsWithCallLocatorRequest The request payload for getting all the participants.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a server call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<CallParticipantInternal>>> getParticipantsWithResponseAsync(
+            GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getParticipants(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                getAllParticipantsWithCallLocatorRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Get participants from a server call.
+     *
+     * @param getAllParticipantsWithCallLocatorRequest The request payload for getting all the participants.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a server call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<CallParticipantInternal>>> getParticipantsWithResponseAsync(
+            GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest, Context context) {
+        final String accept = "application/json";
+        return service.getParticipants(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                getAllParticipantsWithCallLocatorRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Get participants from a server call.
+     *
+     * @param getAllParticipantsWithCallLocatorRequest The request payload for getting all the participants.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a server call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<CallParticipantInternal>> getParticipantsAsync(
+            GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest) {
+        return getParticipantsWithResponseAsync(getAllParticipantsWithCallLocatorRequest)
+                .flatMap(
+                        (Response<List<CallParticipantInternal>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Get participants from a server call.
+     *
+     * @param getAllParticipantsWithCallLocatorRequest The request payload for getting all the participants.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a server call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<CallParticipantInternal>> getParticipantsAsync(
+            GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest, Context context) {
+        return getParticipantsWithResponseAsync(getAllParticipantsWithCallLocatorRequest, context)
+                .flatMap(
+                        (Response<List<CallParticipantInternal>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Get participants from a server call.
+     *
+     * @param getAllParticipantsWithCallLocatorRequest The request payload for getting all the participants.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a server call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<CallParticipantInternal> getParticipants(
+            GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest) {
+        return getParticipantsAsync(getAllParticipantsWithCallLocatorRequest).block();
+    }
+
+    /**
+     * Get participants from a server call.
+     *
+     * @param getAllParticipantsWithCallLocatorRequest The request payload for getting all the participants.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participants from a server call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<CallParticipantInternal>> getParticipantsWithResponse(
+            GetAllParticipantsWithCallLocatorRequest getAllParticipantsWithCallLocatorRequest, Context context) {
+        return getParticipantsWithResponseAsync(getAllParticipantsWithCallLocatorRequest, context).block();
+    }
+
+    /**
      * Add a participant to the call.
      *
-     * @param serverCallId The server call id.
-     * @param addParticipantRequest The add participant request.
+     * @param addParticipantWithCallLocatorRequest The add participant request using call locator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,15 +398,14 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResultInternal>> addParticipantWithResponseAsync(
-            String serverCallId, AddParticipantRequest addParticipantRequest) {
+            AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.addParticipant(
                                 this.client.getEndpoint(),
-                                serverCallId,
                                 this.client.getApiVersion(),
-                                addParticipantRequest,
+                                addParticipantWithCallLocatorRequest,
                                 accept,
                                 context));
     }
@@ -188,8 +413,7 @@ public final class ServerCallsImpl {
     /**
      * Add a participant to the call.
      *
-     * @param serverCallId The server call id.
-     * @param addParticipantRequest The add participant request.
+     * @param addParticipantWithCallLocatorRequest The add participant request using call locator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -198,13 +422,12 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResultInternal>> addParticipantWithResponseAsync(
-            String serverCallId, AddParticipantRequest addParticipantRequest, Context context) {
+            AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest, Context context) {
         final String accept = "application/json";
         return service.addParticipant(
                 this.client.getEndpoint(),
-                serverCallId,
                 this.client.getApiVersion(),
-                addParticipantRequest,
+                addParticipantWithCallLocatorRequest,
                 accept,
                 context);
     }
@@ -212,8 +435,7 @@ public final class ServerCallsImpl {
     /**
      * Add a participant to the call.
      *
-     * @param serverCallId The server call id.
-     * @param addParticipantRequest The add participant request.
+     * @param addParticipantWithCallLocatorRequest The add participant request using call locator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -221,8 +443,8 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResultInternal> addParticipantAsync(
-            String serverCallId, AddParticipantRequest addParticipantRequest) {
-        return addParticipantWithResponseAsync(serverCallId, addParticipantRequest)
+            AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest) {
+        return addParticipantWithResponseAsync(addParticipantWithCallLocatorRequest)
                 .flatMap(
                         (Response<AddParticipantResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -236,8 +458,7 @@ public final class ServerCallsImpl {
     /**
      * Add a participant to the call.
      *
-     * @param serverCallId The server call id.
-     * @param addParticipantRequest The add participant request.
+     * @param addParticipantWithCallLocatorRequest The add participant request using call locator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -246,8 +467,8 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResultInternal> addParticipantAsync(
-            String serverCallId, AddParticipantRequest addParticipantRequest, Context context) {
-        return addParticipantWithResponseAsync(serverCallId, addParticipantRequest, context)
+            AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest, Context context) {
+        return addParticipantWithResponseAsync(addParticipantWithCallLocatorRequest, context)
                 .flatMap(
                         (Response<AddParticipantResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -261,8 +482,7 @@ public final class ServerCallsImpl {
     /**
      * Add a participant to the call.
      *
-     * @param serverCallId The server call id.
-     * @param addParticipantRequest The add participant request.
+     * @param addParticipantWithCallLocatorRequest The add participant request using call locator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,15 +490,14 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AddParticipantResultInternal addParticipant(
-            String serverCallId, AddParticipantRequest addParticipantRequest) {
-        return addParticipantAsync(serverCallId, addParticipantRequest).block();
+            AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest) {
+        return addParticipantAsync(addParticipantWithCallLocatorRequest).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param serverCallId The server call id.
-     * @param addParticipantRequest The add participant request.
+     * @param addParticipantWithCallLocatorRequest The add participant request using call locator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -287,39 +506,37 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AddParticipantResultInternal> addParticipantWithResponse(
-            String serverCallId, AddParticipantRequest addParticipantRequest, Context context) {
-        return addParticipantWithResponseAsync(serverCallId, addParticipantRequest, context).block();
+            AddParticipantWithCallLocatorRequest addParticipantWithCallLocatorRequest, Context context) {
+        return addParticipantWithResponseAsync(addParticipantWithCallLocatorRequest, context).block();
     }
 
     /**
-     * Remove participant from the call.
+     * Remove participant from the call using identifier.
      *
-     * @param serverCallId Server call id.
-     * @param participantId Participant id.
+     * @param removeParticipantWithCallLocatorRequest The identifier of the participant to be removed from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeParticipantWithResponseAsync(String serverCallId, String participantId) {
+    public Mono<Response<Void>> removeParticipantWithResponseAsync(
+            RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.removeParticipant(
                                 this.client.getEndpoint(),
-                                serverCallId,
-                                participantId,
                                 this.client.getApiVersion(),
+                                removeParticipantWithCallLocatorRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Remove participant from the call.
+     * Remove participant from the call using identifier.
      *
-     * @param serverCallId Server call id.
-     * @param participantId Participant id.
+     * @param removeParticipantWithCallLocatorRequest The identifier of the participant to be removed from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -328,33 +545,36 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeParticipantWithResponseAsync(
-            String serverCallId, String participantId, Context context) {
+            RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest, Context context) {
         final String accept = "application/json";
         return service.removeParticipant(
-                this.client.getEndpoint(), serverCallId, participantId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                removeParticipantWithCallLocatorRequest,
+                accept,
+                context);
     }
 
     /**
-     * Remove participant from the call.
+     * Remove participant from the call using identifier.
      *
-     * @param serverCallId Server call id.
-     * @param participantId Participant id.
+     * @param removeParticipantWithCallLocatorRequest The identifier of the participant to be removed from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeParticipantAsync(String serverCallId, String participantId) {
-        return removeParticipantWithResponseAsync(serverCallId, participantId)
+    public Mono<Void> removeParticipantAsync(
+            RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest) {
+        return removeParticipantWithResponseAsync(removeParticipantWithCallLocatorRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Remove participant from the call.
+     * Remove participant from the call using identifier.
      *
-     * @param serverCallId Server call id.
-     * @param participantId Participant id.
+     * @param removeParticipantWithCallLocatorRequest The identifier of the participant to be removed from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -362,30 +582,29 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeParticipantAsync(String serverCallId, String participantId, Context context) {
-        return removeParticipantWithResponseAsync(serverCallId, participantId, context)
+    public Mono<Void> removeParticipantAsync(
+            RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest, Context context) {
+        return removeParticipantWithResponseAsync(removeParticipantWithCallLocatorRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Remove participant from the call.
+     * Remove participant from the call using identifier.
      *
-     * @param serverCallId Server call id.
-     * @param participantId Participant id.
+     * @param removeParticipantWithCallLocatorRequest The identifier of the participant to be removed from the call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeParticipant(String serverCallId, String participantId) {
-        removeParticipantAsync(serverCallId, participantId).block();
+    public void removeParticipant(RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest) {
+        removeParticipantAsync(removeParticipantWithCallLocatorRequest).block();
     }
 
     /**
-     * Remove participant from the call.
+     * Remove participant from the call using identifier.
      *
-     * @param serverCallId Server call id.
-     * @param participantId Participant id.
+     * @param removeParticipantWithCallLocatorRequest The identifier of the participant to be removed from the call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -393,40 +612,840 @@ public final class ServerCallsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String serverCallId, String participantId, Context context) {
-        return removeParticipantWithResponseAsync(serverCallId, participantId, context).block();
+    public Response<Void> removeParticipantWithResponse(
+            RemoveParticipantWithCallLocatorRequest removeParticipantWithCallLocatorRequest, Context context) {
+        return removeParticipantWithResponseAsync(removeParticipantWithCallLocatorRequest, context).block();
     }
 
     /**
-     * Start recording of the call.
+     * Get participant from the call using identifier.
      *
-     * @param serverCallId The server call id.
-     * @param request The request body of start call recording request.
+     * @param getParticipantWithCallLocatorRequest The get participant request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of start call recording operation.
+     * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResultInternal>> startRecordingWithResponseAsync(
-            String serverCallId, StartCallRecordingRequest request) {
+    public Mono<Response<List<CallParticipantInternal>>> getParticipantWithResponseAsync(
+            GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.startRecording(
+                        service.getParticipant(
                                 this.client.getEndpoint(),
-                                serverCallId,
                                 this.client.getApiVersion(),
-                                request,
+                                getParticipantWithCallLocatorRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Start recording of the call.
+     * Get participant from the call using identifier.
      *
-     * @param serverCallId The server call id.
-     * @param request The request body of start call recording request.
+     * @param getParticipantWithCallLocatorRequest The get participant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participant from the call using identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<CallParticipantInternal>>> getParticipantWithResponseAsync(
+            GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest, Context context) {
+        final String accept = "application/json";
+        return service.getParticipant(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                getParticipantWithCallLocatorRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param getParticipantWithCallLocatorRequest The get participant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participant from the call using identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<CallParticipantInternal>> getParticipantAsync(
+            GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest) {
+        return getParticipantWithResponseAsync(getParticipantWithCallLocatorRequest)
+                .flatMap(
+                        (Response<List<CallParticipantInternal>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param getParticipantWithCallLocatorRequest The get participant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participant from the call using identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<CallParticipantInternal>> getParticipantAsync(
+            GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest, Context context) {
+        return getParticipantWithResponseAsync(getParticipantWithCallLocatorRequest, context)
+                .flatMap(
+                        (Response<List<CallParticipantInternal>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param getParticipantWithCallLocatorRequest The get participant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participant from the call using identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<CallParticipantInternal> getParticipant(
+            GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest) {
+        return getParticipantAsync(getParticipantWithCallLocatorRequest).block();
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param getParticipantWithCallLocatorRequest The get participant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return participant from the call using identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<CallParticipantInternal>> getParticipantWithResponse(
+            GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest, Context context) {
+        return getParticipantWithResponseAsync(getParticipantWithCallLocatorRequest, context).block();
+    }
+
+    /**
+     * Play hold music to a participant.
+     *
+     * @param startHoldMusicRequest The start hold music request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponseAsync(
+            StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.startHoldMusic(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                startHoldMusicRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Play hold music to a participant.
+     *
+     * @param startHoldMusicRequest The start hold music request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponseAsync(
+            StartHoldMusicWithCallLocatorRequest startHoldMusicRequest, Context context) {
+        final String accept = "application/json";
+        return service.startHoldMusic(
+                this.client.getEndpoint(), this.client.getApiVersion(), startHoldMusicRequest, accept, context);
+    }
+
+    /**
+     * Play hold music to a participant.
+     *
+     * @param startHoldMusicRequest The start hold music request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartHoldMusicResult> startHoldMusicAsync(StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
+        return startHoldMusicWithResponseAsync(startHoldMusicRequest)
+                .flatMap(
+                        (Response<StartHoldMusicResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Play hold music to a participant.
+     *
+     * @param startHoldMusicRequest The start hold music request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartHoldMusicResult> startHoldMusicAsync(
+            StartHoldMusicWithCallLocatorRequest startHoldMusicRequest, Context context) {
+        return startHoldMusicWithResponseAsync(startHoldMusicRequest, context)
+                .flatMap(
+                        (Response<StartHoldMusicResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Play hold music to a participant.
+     *
+     * @param startHoldMusicRequest The start hold music request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StartHoldMusicResult startHoldMusic(StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
+        return startHoldMusicAsync(startHoldMusicRequest).block();
+    }
+
+    /**
+     * Play hold music to a participant.
+     *
+     * @param startHoldMusicRequest The start hold music request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StartHoldMusicResult> startHoldMusicWithResponse(
+            StartHoldMusicWithCallLocatorRequest startHoldMusicRequest, Context context) {
+        return startHoldMusicWithResponseAsync(startHoldMusicRequest, context).block();
+    }
+
+    /**
+     * Stop hold music to a participant.
+     *
+     * @param stopHoldMusicRequest The stop hold music request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponseAsync(
+            StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.stopHoldMusic(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                stopHoldMusicRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Stop hold music to a participant.
+     *
+     * @param stopHoldMusicRequest The stop hold music request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponseAsync(
+            StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest, Context context) {
+        final String accept = "application/json";
+        return service.stopHoldMusic(
+                this.client.getEndpoint(), this.client.getApiVersion(), stopHoldMusicRequest, accept, context);
+    }
+
+    /**
+     * Stop hold music to a participant.
+     *
+     * @param stopHoldMusicRequest The stop hold music request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StopHoldMusicResult> stopHoldMusicAsync(StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
+        return stopHoldMusicWithResponseAsync(stopHoldMusicRequest)
+                .flatMap(
+                        (Response<StopHoldMusicResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Stop hold music to a participant.
+     *
+     * @param stopHoldMusicRequest The stop hold music request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StopHoldMusicResult> stopHoldMusicAsync(
+            StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest, Context context) {
+        return stopHoldMusicWithResponseAsync(stopHoldMusicRequest, context)
+                .flatMap(
+                        (Response<StopHoldMusicResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Stop hold music to a participant.
+     *
+     * @param stopHoldMusicRequest The stop hold music request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StopHoldMusicResult stopHoldMusic(StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
+        return stopHoldMusicAsync(stopHoldMusicRequest).block();
+    }
+
+    /**
+     * Stop hold music to a participant.
+     *
+     * @param stopHoldMusicRequest The stop hold music request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(
+            StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest, Context context) {
+        return stopHoldMusicWithResponseAsync(stopHoldMusicRequest, context).block();
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param playAudioToParticipantRequest The play audio to participant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResultInternal>> participantPlayAudioWithResponseAsync(
+            PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.participantPlayAudio(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                playAudioToParticipantRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param playAudioToParticipantRequest The play audio to participant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PlayAudioResultInternal>> participantPlayAudioWithResponseAsync(
+            PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest, Context context) {
+        final String accept = "application/json";
+        return service.participantPlayAudio(
+                this.client.getEndpoint(), this.client.getApiVersion(), playAudioToParticipantRequest, accept, context);
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param playAudioToParticipantRequest The play audio to participant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResultInternal> participantPlayAudioAsync(
+            PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest) {
+        return participantPlayAudioWithResponseAsync(playAudioToParticipantRequest)
+                .flatMap(
+                        (Response<PlayAudioResultInternal> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param playAudioToParticipantRequest The play audio to participant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PlayAudioResultInternal> participantPlayAudioAsync(
+            PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest, Context context) {
+        return participantPlayAudioWithResponseAsync(playAudioToParticipantRequest, context)
+                .flatMap(
+                        (Response<PlayAudioResultInternal> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param playAudioToParticipantRequest The play audio to participant request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PlayAudioResultInternal participantPlayAudio(
+            PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest) {
+        return participantPlayAudioAsync(playAudioToParticipantRequest).block();
+    }
+
+    /**
+     * Play audio to a participant.
+     *
+     * @param playAudioToParticipantRequest The play audio to participant request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlayAudioResultInternal> participantPlayAudioWithResponse(
+            PlayAudioToParticipantWithCallLocatorRequest playAudioToParticipantRequest, Context context) {
+        return participantPlayAudioWithResponseAsync(playAudioToParticipantRequest, context).block();
+    }
+
+    /**
+     * cancel media operation for a participant.
+     *
+     * @param cancelParticipantMediaOperationRequest The cancel participant media operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelParticipantMediaOperationWithResponseAsync(
+            CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.cancelParticipantMediaOperation(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                cancelParticipantMediaOperationRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * cancel media operation for a participant.
+     *
+     * @param cancelParticipantMediaOperationRequest The cancel participant media operation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelParticipantMediaOperationWithResponseAsync(
+            CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest,
+            Context context) {
+        final String accept = "application/json";
+        return service.cancelParticipantMediaOperation(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                cancelParticipantMediaOperationRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * cancel media operation for a participant.
+     *
+     * @param cancelParticipantMediaOperationRequest The cancel participant media operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelParticipantMediaOperationAsync(
+            CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest) {
+        return cancelParticipantMediaOperationWithResponseAsync(cancelParticipantMediaOperationRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * cancel media operation for a participant.
+     *
+     * @param cancelParticipantMediaOperationRequest The cancel participant media operation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelParticipantMediaOperationAsync(
+            CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest,
+            Context context) {
+        return cancelParticipantMediaOperationWithResponseAsync(cancelParticipantMediaOperationRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * cancel media operation for a participant.
+     *
+     * @param cancelParticipantMediaOperationRequest The cancel participant media operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelParticipantMediaOperation(
+            CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest) {
+        cancelParticipantMediaOperationAsync(cancelParticipantMediaOperationRequest).block();
+    }
+
+    /**
+     * cancel media operation for a participant.
+     *
+     * @param cancelParticipantMediaOperationRequest The cancel participant media operation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelParticipantMediaOperationWithResponse(
+            CancelParticipantMediaOperationWithCallLocatorRequest cancelParticipantMediaOperationRequest,
+            Context context) {
+        return cancelParticipantMediaOperationWithResponseAsync(cancelParticipantMediaOperationRequest, context)
+                .block();
+    }
+
+    /**
+     * Mute participant in the call.
+     *
+     * @param muteParticipantWithCallLocatorRequest The identifier of the participant to mute in the call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> muteParticipantWithResponseAsync(
+            MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.muteParticipant(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                muteParticipantWithCallLocatorRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Mute participant in the call.
+     *
+     * @param muteParticipantWithCallLocatorRequest The identifier of the participant to mute in the call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> muteParticipantWithResponseAsync(
+            MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest, Context context) {
+        final String accept = "application/json";
+        return service.muteParticipant(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                muteParticipantWithCallLocatorRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Mute participant in the call.
+     *
+     * @param muteParticipantWithCallLocatorRequest The identifier of the participant to mute in the call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> muteParticipantAsync(
+            MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest) {
+        return muteParticipantWithResponseAsync(muteParticipantWithCallLocatorRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Mute participant in the call.
+     *
+     * @param muteParticipantWithCallLocatorRequest The identifier of the participant to mute in the call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> muteParticipantAsync(
+            MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest, Context context) {
+        return muteParticipantWithResponseAsync(muteParticipantWithCallLocatorRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Mute participant in the call.
+     *
+     * @param muteParticipantWithCallLocatorRequest The identifier of the participant to mute in the call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void muteParticipant(MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest) {
+        muteParticipantAsync(muteParticipantWithCallLocatorRequest).block();
+    }
+
+    /**
+     * Mute participant in the call.
+     *
+     * @param muteParticipantWithCallLocatorRequest The identifier of the participant to mute in the call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> muteParticipantWithResponse(
+            MuteParticipantWithCallLocatorRequest muteParticipantWithCallLocatorRequest, Context context) {
+        return muteParticipantWithResponseAsync(muteParticipantWithCallLocatorRequest, context).block();
+    }
+
+    /**
+     * Unmute participant in the call.
+     *
+     * @param unmuteParticipantWithCallLocatorRequest The identifier of the participant to unmute in the call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> unmuteParticipantWithResponseAsync(
+            UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.unmuteParticipant(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                unmuteParticipantWithCallLocatorRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Unmute participant in the call.
+     *
+     * @param unmuteParticipantWithCallLocatorRequest The identifier of the participant to unmute in the call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> unmuteParticipantWithResponseAsync(
+            UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest, Context context) {
+        final String accept = "application/json";
+        return service.unmuteParticipant(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                unmuteParticipantWithCallLocatorRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Unmute participant in the call.
+     *
+     * @param unmuteParticipantWithCallLocatorRequest The identifier of the participant to unmute in the call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unmuteParticipantAsync(
+            UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest) {
+        return unmuteParticipantWithResponseAsync(unmuteParticipantWithCallLocatorRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Unmute participant in the call.
+     *
+     * @param unmuteParticipantWithCallLocatorRequest The identifier of the participant to unmute in the call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unmuteParticipantAsync(
+            UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest, Context context) {
+        return unmuteParticipantWithResponseAsync(unmuteParticipantWithCallLocatorRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Unmute participant in the call.
+     *
+     * @param unmuteParticipantWithCallLocatorRequest The identifier of the participant to unmute in the call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unmuteParticipant(UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest) {
+        unmuteParticipantAsync(unmuteParticipantWithCallLocatorRequest).block();
+    }
+
+    /**
+     * Unmute participant in the call.
+     *
+     * @param unmuteParticipantWithCallLocatorRequest The identifier of the participant to unmute in the call.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> unmuteParticipantWithResponse(
+            UnmuteParticipantWithCallLocatorRequest unmuteParticipantWithCallLocatorRequest, Context context) {
+        return unmuteParticipantWithResponseAsync(unmuteParticipantWithCallLocatorRequest, context).block();
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecordingWithCallLocatorRequest The request body of start call recording request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of start call recording operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartCallRecordingResultInternal>> startRecordingWithResponseAsync(
+            StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.startRecording(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                startCallRecordingWithCallLocatorRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecordingWithCallLocatorRequest The request body of start call recording request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -435,17 +1454,20 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StartCallRecordingResultInternal>> startRecordingWithResponseAsync(
-            String serverCallId, StartCallRecordingRequest request, Context context) {
+            StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest, Context context) {
         final String accept = "application/json";
         return service.startRecording(
-                this.client.getEndpoint(), serverCallId, this.client.getApiVersion(), request, accept, context);
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                startCallRecordingWithCallLocatorRequest,
+                accept,
+                context);
     }
 
     /**
-     * Start recording of the call.
+     * Start recording the call.
      *
-     * @param serverCallId The server call id.
-     * @param request The request body of start call recording request.
+     * @param startCallRecordingWithCallLocatorRequest The request body of start call recording request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -453,8 +1475,8 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResultInternal> startRecordingAsync(
-            String serverCallId, StartCallRecordingRequest request) {
-        return startRecordingWithResponseAsync(serverCallId, request)
+            StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest) {
+        return startRecordingWithResponseAsync(startCallRecordingWithCallLocatorRequest)
                 .flatMap(
                         (Response<StartCallRecordingResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -466,10 +1488,9 @@ public final class ServerCallsImpl {
     }
 
     /**
-     * Start recording of the call.
+     * Start recording the call.
      *
-     * @param serverCallId The server call id.
-     * @param request The request body of start call recording request.
+     * @param startCallRecordingWithCallLocatorRequest The request body of start call recording request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -478,8 +1499,8 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResultInternal> startRecordingAsync(
-            String serverCallId, StartCallRecordingRequest request, Context context) {
-        return startRecordingWithResponseAsync(serverCallId, request, context)
+            StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest, Context context) {
+        return startRecordingWithResponseAsync(startCallRecordingWithCallLocatorRequest, context)
                 .flatMap(
                         (Response<StartCallRecordingResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -491,25 +1512,24 @@ public final class ServerCallsImpl {
     }
 
     /**
-     * Start recording of the call.
+     * Start recording the call.
      *
-     * @param serverCallId The server call id.
-     * @param request The request body of start call recording request.
+     * @param startCallRecordingWithCallLocatorRequest The request body of start call recording request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload of start call recording operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartCallRecordingResultInternal startRecording(String serverCallId, StartCallRecordingRequest request) {
-        return startRecordingAsync(serverCallId, request).block();
+    public StartCallRecordingResultInternal startRecording(
+            StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest) {
+        return startRecordingAsync(startCallRecordingWithCallLocatorRequest).block();
     }
 
     /**
-     * Start recording of the call.
+     * Start recording the call.
      *
-     * @param serverCallId The server call id.
-     * @param request The request body of start call recording request.
+     * @param startCallRecordingWithCallLocatorRequest The request body of start call recording request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -518,14 +1538,13 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StartCallRecordingResultInternal> startRecordingWithResponse(
-            String serverCallId, StartCallRecordingRequest request, Context context) {
-        return startRecordingWithResponseAsync(serverCallId, request, context).block();
+            StartCallRecordingWithCallLocatorRequest startCallRecordingWithCallLocatorRequest, Context context) {
+        return startRecordingWithResponseAsync(startCallRecordingWithCallLocatorRequest, context).block();
     }
 
     /**
      * Get call recording properties.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -533,24 +1552,17 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallRecordingPropertiesInternal>> getRecordingPropertiesWithResponseAsync(
-            String serverCallId, String recordingId) {
+    public Mono<Response<CallRecordingPropertiesInternal>> getRecordingPropertiesWithResponseAsync(String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getRecordingProperties(
-                                this.client.getEndpoint(),
-                                serverCallId,
-                                recordingId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+                                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Get call recording properties.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,16 +1572,15 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallRecordingPropertiesInternal>> getRecordingPropertiesWithResponseAsync(
-            String serverCallId, String recordingId, Context context) {
+            String recordingId, Context context) {
         final String accept = "application/json";
         return service.getRecordingProperties(
-                this.client.getEndpoint(), serverCallId, recordingId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get call recording properties.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -577,8 +1588,8 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallRecordingPropertiesInternal> getRecordingPropertiesAsync(String serverCallId, String recordingId) {
-        return getRecordingPropertiesWithResponseAsync(serverCallId, recordingId)
+    public Mono<CallRecordingPropertiesInternal> getRecordingPropertiesAsync(String recordingId) {
+        return getRecordingPropertiesWithResponseAsync(recordingId)
                 .flatMap(
                         (Response<CallRecordingPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
@@ -592,7 +1603,6 @@ public final class ServerCallsImpl {
     /**
      * Get call recording properties.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,9 +1611,8 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallRecordingPropertiesInternal> getRecordingPropertiesAsync(
-            String serverCallId, String recordingId, Context context) {
-        return getRecordingPropertiesWithResponseAsync(serverCallId, recordingId, context)
+    public Mono<CallRecordingPropertiesInternal> getRecordingPropertiesAsync(String recordingId, Context context) {
+        return getRecordingPropertiesWithResponseAsync(recordingId, context)
                 .flatMap(
                         (Response<CallRecordingPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
@@ -617,7 +1626,6 @@ public final class ServerCallsImpl {
     /**
      * Get call recording properties.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -625,14 +1633,13 @@ public final class ServerCallsImpl {
      * @return call recording properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallRecordingPropertiesInternal getRecordingProperties(String serverCallId, String recordingId) {
-        return getRecordingPropertiesAsync(serverCallId, recordingId).block();
+    public CallRecordingPropertiesInternal getRecordingProperties(String recordingId) {
+        return getRecordingPropertiesAsync(recordingId).block();
     }
 
     /**
      * Get call recording properties.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,14 +1649,13 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallRecordingPropertiesInternal> getRecordingPropertiesWithResponse(
-            String serverCallId, String recordingId, Context context) {
-        return getRecordingPropertiesWithResponseAsync(serverCallId, recordingId, context).block();
+            String recordingId, Context context) {
+        return getRecordingPropertiesWithResponseAsync(recordingId, context).block();
     }
 
     /**
      * Stop recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -657,23 +1663,17 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopRecordingWithResponseAsync(String serverCallId, String recordingId) {
+    public Mono<Response<Void>> stopRecordingWithResponseAsync(String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.stopRecording(
-                                this.client.getEndpoint(),
-                                serverCallId,
-                                recordingId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+                                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Stop recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -682,17 +1682,15 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopRecordingWithResponseAsync(
-            String serverCallId, String recordingId, Context context) {
+    public Mono<Response<Void>> stopRecordingWithResponseAsync(String recordingId, Context context) {
         final String accept = "application/json";
         return service.stopRecording(
-                this.client.getEndpoint(), serverCallId, recordingId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Stop recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -700,14 +1698,13 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopRecordingAsync(String serverCallId, String recordingId) {
-        return stopRecordingWithResponseAsync(serverCallId, recordingId).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> stopRecordingAsync(String recordingId) {
+        return stopRecordingWithResponseAsync(recordingId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Stop recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -716,29 +1713,26 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopRecordingAsync(String serverCallId, String recordingId, Context context) {
-        return stopRecordingWithResponseAsync(serverCallId, recordingId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> stopRecordingAsync(String recordingId, Context context) {
+        return stopRecordingWithResponseAsync(recordingId, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Stop recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopRecording(String serverCallId, String recordingId) {
-        stopRecordingAsync(serverCallId, recordingId).block();
+    public void stopRecording(String recordingId) {
+        stopRecordingAsync(recordingId).block();
     }
 
     /**
      * Stop recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -747,14 +1741,13 @@ public final class ServerCallsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String serverCallId, String recordingId, Context context) {
-        return stopRecordingWithResponseAsync(serverCallId, recordingId, context).block();
+    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
+        return stopRecordingWithResponseAsync(recordingId, context).block();
     }
 
     /**
      * Pause recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -762,23 +1755,17 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> pauseRecordingWithResponseAsync(String serverCallId, String recordingId) {
+    public Mono<Response<Void>> pauseRecordingWithResponseAsync(String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.pauseRecording(
-                                this.client.getEndpoint(),
-                                serverCallId,
-                                recordingId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+                                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Pause recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -787,17 +1774,15 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> pauseRecordingWithResponseAsync(
-            String serverCallId, String recordingId, Context context) {
+    public Mono<Response<Void>> pauseRecordingWithResponseAsync(String recordingId, Context context) {
         final String accept = "application/json";
         return service.pauseRecording(
-                this.client.getEndpoint(), serverCallId, recordingId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Pause recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -805,14 +1790,13 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> pauseRecordingAsync(String serverCallId, String recordingId) {
-        return pauseRecordingWithResponseAsync(serverCallId, recordingId).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> pauseRecordingAsync(String recordingId) {
+        return pauseRecordingWithResponseAsync(recordingId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Pause recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -821,29 +1805,26 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> pauseRecordingAsync(String serverCallId, String recordingId, Context context) {
-        return pauseRecordingWithResponseAsync(serverCallId, recordingId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> pauseRecordingAsync(String recordingId, Context context) {
+        return pauseRecordingWithResponseAsync(recordingId, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Pause recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void pauseRecording(String serverCallId, String recordingId) {
-        pauseRecordingAsync(serverCallId, recordingId).block();
+    public void pauseRecording(String recordingId) {
+        pauseRecordingAsync(recordingId).block();
     }
 
     /**
      * Pause recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -852,14 +1833,13 @@ public final class ServerCallsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String serverCallId, String recordingId, Context context) {
-        return pauseRecordingWithResponseAsync(serverCallId, recordingId, context).block();
+    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
+        return pauseRecordingWithResponseAsync(recordingId, context).block();
     }
 
     /**
      * Resume recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -867,23 +1847,17 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resumeRecordingWithResponseAsync(String serverCallId, String recordingId) {
+    public Mono<Response<Void>> resumeRecordingWithResponseAsync(String recordingId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.resumeRecording(
-                                this.client.getEndpoint(),
-                                serverCallId,
-                                recordingId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+                                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Resume recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -892,17 +1866,15 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resumeRecordingWithResponseAsync(
-            String serverCallId, String recordingId, Context context) {
+    public Mono<Response<Void>> resumeRecordingWithResponseAsync(String recordingId, Context context) {
         final String accept = "application/json";
         return service.resumeRecording(
-                this.client.getEndpoint(), serverCallId, recordingId, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), recordingId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Resume recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -910,15 +1882,13 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resumeRecordingAsync(String serverCallId, String recordingId) {
-        return resumeRecordingWithResponseAsync(serverCallId, recordingId)
-                .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> resumeRecordingAsync(String recordingId) {
+        return resumeRecordingWithResponseAsync(recordingId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Resume recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,29 +1897,26 @@ public final class ServerCallsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resumeRecordingAsync(String serverCallId, String recordingId, Context context) {
-        return resumeRecordingWithResponseAsync(serverCallId, recordingId, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> resumeRecordingAsync(String recordingId, Context context) {
+        return resumeRecordingWithResponseAsync(recordingId, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Resume recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resumeRecording(String serverCallId, String recordingId) {
-        resumeRecordingAsync(serverCallId, recordingId).block();
+    public void resumeRecording(String recordingId) {
+        resumeRecordingAsync(recordingId).block();
     }
 
     /**
      * Resume recording the call.
      *
-     * @param serverCallId The server call id.
      * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -958,14 +1925,13 @@ public final class ServerCallsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String serverCallId, String recordingId, Context context) {
-        return resumeRecordingWithResponseAsync(serverCallId, recordingId, context).block();
+    public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
+        return resumeRecordingWithResponseAsync(recordingId, context).block();
     }
 
     /**
      * Join a call.
      *
-     * @param serverCallId The server call id.
      * @param callRequest The join call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -973,24 +1939,17 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JoinCallResultInternal>> joinCallWithResponseAsync(
-            String serverCallId, JoinCallRequest callRequest) {
+    public Mono<Response<JoinCallResultInternal>> joinCallWithResponseAsync(JoinCallRequest callRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.joinCall(
-                                this.client.getEndpoint(),
-                                serverCallId,
-                                this.client.getApiVersion(),
-                                callRequest,
-                                accept,
-                                context));
+                                this.client.getEndpoint(), this.client.getApiVersion(), callRequest, accept, context));
     }
 
     /**
      * Join a call.
      *
-     * @param serverCallId The server call id.
      * @param callRequest The join call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1000,16 +1959,14 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JoinCallResultInternal>> joinCallWithResponseAsync(
-            String serverCallId, JoinCallRequest callRequest, Context context) {
+            JoinCallRequest callRequest, Context context) {
         final String accept = "application/json";
-        return service.joinCall(
-                this.client.getEndpoint(), serverCallId, this.client.getApiVersion(), callRequest, accept, context);
+        return service.joinCall(this.client.getEndpoint(), this.client.getApiVersion(), callRequest, accept, context);
     }
 
     /**
      * Join a call.
      *
-     * @param serverCallId The server call id.
      * @param callRequest The join call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1017,8 +1974,8 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResultInternal> joinCallAsync(String serverCallId, JoinCallRequest callRequest) {
-        return joinCallWithResponseAsync(serverCallId, callRequest)
+    public Mono<JoinCallResultInternal> joinCallAsync(JoinCallRequest callRequest) {
+        return joinCallWithResponseAsync(callRequest)
                 .flatMap(
                         (Response<JoinCallResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1032,7 +1989,6 @@ public final class ServerCallsImpl {
     /**
      * Join a call.
      *
-     * @param serverCallId The server call id.
      * @param callRequest The join call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1041,9 +1997,8 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JoinCallResultInternal> joinCallAsync(
-            String serverCallId, JoinCallRequest callRequest, Context context) {
-        return joinCallWithResponseAsync(serverCallId, callRequest, context)
+    public Mono<JoinCallResultInternal> joinCallAsync(JoinCallRequest callRequest, Context context) {
+        return joinCallWithResponseAsync(callRequest, context)
                 .flatMap(
                         (Response<JoinCallResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1057,7 +2012,6 @@ public final class ServerCallsImpl {
     /**
      * Join a call.
      *
-     * @param serverCallId The server call id.
      * @param callRequest The join call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1065,14 +2019,13 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JoinCallResultInternal joinCall(String serverCallId, JoinCallRequest callRequest) {
-        return joinCallAsync(serverCallId, callRequest).block();
+    public JoinCallResultInternal joinCall(JoinCallRequest callRequest) {
+        return joinCallAsync(callRequest).block();
     }
 
     /**
      * Join a call.
      *
-     * @param serverCallId The server call id.
      * @param callRequest The join call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1081,16 +2034,14 @@ public final class ServerCallsImpl {
      * @return the response payload of the join call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JoinCallResultInternal> joinCallWithResponse(
-            String serverCallId, JoinCallRequest callRequest, Context context) {
-        return joinCallWithResponseAsync(serverCallId, callRequest, context).block();
+    public Response<JoinCallResultInternal> joinCallWithResponse(JoinCallRequest callRequest, Context context) {
+        return joinCallWithResponseAsync(callRequest, context).block();
     }
 
     /**
      * Play audio in the call.
      *
-     * @param serverCallId The server call id.
-     * @param request Play audio request.
+     * @param playAudioRequest Play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1098,15 +2049,14 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResultInternal>> playAudioWithResponseAsync(
-            String serverCallId, PlayAudioRequest request) {
+            PlayAudioWithCallLocatorRequest playAudioRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.playAudio(
                                 this.client.getEndpoint(),
-                                serverCallId,
                                 this.client.getApiVersion(),
-                                request,
+                                playAudioRequest,
                                 accept,
                                 context));
     }
@@ -1114,8 +2064,7 @@ public final class ServerCallsImpl {
     /**
      * Play audio in the call.
      *
-     * @param serverCallId The server call id.
-     * @param request Play audio request.
+     * @param playAudioRequest Play audio request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1124,25 +2073,24 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResultInternal>> playAudioWithResponseAsync(
-            String serverCallId, PlayAudioRequest request, Context context) {
+            PlayAudioWithCallLocatorRequest playAudioRequest, Context context) {
         final String accept = "application/json";
         return service.playAudio(
-                this.client.getEndpoint(), serverCallId, this.client.getApiVersion(), request, accept, context);
+                this.client.getEndpoint(), this.client.getApiVersion(), playAudioRequest, accept, context);
     }
 
     /**
      * Play audio in the call.
      *
-     * @param serverCallId The server call id.
-     * @param request Play audio request.
+     * @param playAudioRequest Play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResultInternal> playAudioAsync(String serverCallId, PlayAudioRequest request) {
-        return playAudioWithResponseAsync(serverCallId, request)
+    public Mono<PlayAudioResultInternal> playAudioAsync(PlayAudioWithCallLocatorRequest playAudioRequest) {
+        return playAudioWithResponseAsync(playAudioRequest)
                 .flatMap(
                         (Response<PlayAudioResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1156,8 +2104,7 @@ public final class ServerCallsImpl {
     /**
      * Play audio in the call.
      *
-     * @param serverCallId The server call id.
-     * @param request Play audio request.
+     * @param playAudioRequest Play audio request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1166,8 +2113,8 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PlayAudioResultInternal> playAudioAsync(
-            String serverCallId, PlayAudioRequest request, Context context) {
-        return playAudioWithResponseAsync(serverCallId, request, context)
+            PlayAudioWithCallLocatorRequest playAudioRequest, Context context) {
+        return playAudioWithResponseAsync(playAudioRequest, context)
                 .flatMap(
                         (Response<PlayAudioResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1181,23 +2128,21 @@ public final class ServerCallsImpl {
     /**
      * Play audio in the call.
      *
-     * @param serverCallId The server call id.
-     * @param request Play audio request.
+     * @param playAudioRequest Play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResultInternal playAudio(String serverCallId, PlayAudioRequest request) {
-        return playAudioAsync(serverCallId, request).block();
+    public PlayAudioResultInternal playAudio(PlayAudioWithCallLocatorRequest playAudioRequest) {
+        return playAudioAsync(playAudioRequest).block();
     }
 
     /**
      * Play audio in the call.
      *
-     * @param serverCallId The server call id.
-     * @param request Play audio request.
+     * @param playAudioRequest Play audio request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1206,7 +2151,110 @@ public final class ServerCallsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResultInternal> playAudioWithResponse(
-            String serverCallId, PlayAudioRequest request, Context context) {
-        return playAudioWithResponseAsync(serverCallId, request, context).block();
+            PlayAudioWithCallLocatorRequest playAudioRequest, Context context) {
+        return playAudioWithResponseAsync(playAudioRequest, context).block();
+    }
+
+    /**
+     * cancel media operation.
+     *
+     * @param cancelMediaOperationRequest The cancel media operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelMediaOperationWithResponseAsync(
+            CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.cancelMediaOperation(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                cancelMediaOperationRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * cancel media operation.
+     *
+     * @param cancelMediaOperationRequest The cancel media operation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> cancelMediaOperationWithResponseAsync(
+            CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest, Context context) {
+        final String accept = "application/json";
+        return service.cancelMediaOperation(
+                this.client.getEndpoint(), this.client.getApiVersion(), cancelMediaOperationRequest, accept, context);
+    }
+
+    /**
+     * cancel media operation.
+     *
+     * @param cancelMediaOperationRequest The cancel media operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelMediaOperationAsync(
+            CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest) {
+        return cancelMediaOperationWithResponseAsync(cancelMediaOperationRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * cancel media operation.
+     *
+     * @param cancelMediaOperationRequest The cancel media operation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelMediaOperationAsync(
+            CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest, Context context) {
+        return cancelMediaOperationWithResponseAsync(cancelMediaOperationRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * cancel media operation.
+     *
+     * @param cancelMediaOperationRequest The cancel media operation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelMediaOperation(CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest) {
+        cancelMediaOperationAsync(cancelMediaOperationRequest).block();
+    }
+
+    /**
+     * cancel media operation.
+     *
+     * @param cancelMediaOperationRequest The cancel media operation request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelMediaOperationWithResponse(
+            CancelMediaOperationWithCallLocatorRequest cancelMediaOperationRequest, Context context) {
+        return cancelMediaOperationWithResponseAsync(cancelMediaOperationRequest, context).block();
     }
 }
