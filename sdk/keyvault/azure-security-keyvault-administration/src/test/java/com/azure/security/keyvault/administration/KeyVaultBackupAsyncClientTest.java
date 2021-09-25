@@ -92,9 +92,7 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             .pipeline(getPipeline(httpClient, false))
             .buildAsyncClient();
 
-        String keyName = interceptorManager.isPlaybackMode()
-            ? "testKey"
-            : testResourceNamer.randomName("backupKey", 20);
+        String keyName = testResourceNamer.randomName("backupKey", 20);
         CreateRsaKeyOptions rsaKeyOptions = new CreateRsaKeyOptions(keyName)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
