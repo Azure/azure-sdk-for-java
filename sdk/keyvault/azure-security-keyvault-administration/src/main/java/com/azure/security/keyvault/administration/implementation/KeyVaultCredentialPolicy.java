@@ -30,7 +30,9 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String CONTENT_LENGTH_HEADER = "Content-Length";
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultBody";
+    private static final String KEY_VAULT_STASHED_CONTENT_LENGTH_KEY = "KeyVaultBodyContentLength";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final ConcurrentMap<String, String> SCOPE_CACHE = new ConcurrentHashMap<>();
     private String scope;
@@ -108,9 +110,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         // still don't want to send any unprotected data to vaults which require it.
 
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
-        if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent()) {
+        if (!context.getData(KEY_VAULT_STASHED_CONTENT_KEY).isPresent() && request.getBody() != null) {
             context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
-            request.setBody("");
+            context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY, request.getHeaders().getValue(CONTENT_LENGTH_HEADER));
+            request.setHeader(CONTENT_LENGTH_HEADER, "0");
+            request.setBody((Flux<ByteBuffer>) null);
         }
 
         return Mono.empty();
@@ -121,9 +125,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         HttpRequest request = context.getHttpRequest();
         Optional<Object> contentOptional = context.getData(KEY_VAULT_STASHED_CONTENT_KEY);
+        Optional<Object> contentLengthOptional = context.getData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY);
 
-        if (request.getBody() == null && contentOptional.isPresent()) {
+        if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
             request.setBody((Flux<ByteBuffer>) contentOptional.get());
+            request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
         }
 
         String authority = getRequestAuthority(request);
