@@ -7,9 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdministrationClientTestBase {
     protected final String servicePrincipalId =
         Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "49acc88b-8f9e-4619-9856-16691db66767");
+    private static final ClientLogger logger = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
     protected KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         List<HttpPipelinePolicy> policies = getPolicies();
@@ -134,13 +135,12 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
 
     static void cleanUpResources(KeyVaultAccessControlClient cleanupClient, String roleDefinitionName,
                                  String roleAssignmentName) {
-
         if (roleDefinitionName != null) {
             try {
                 cleanupClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
             } catch (HttpResponseException e) {
                 if (e.getResponse().getStatusCode() == 404) {
-                    // Do nothing.
+                    logger.info("Ignored 404 produced when trying to delete role definition.");
                 }
             }
         }
@@ -150,7 +150,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
                 cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
             } catch (HttpResponseException e) {
                 if (e.getResponse().getStatusCode() == 404) {
-                    // Do nothing.
+                    logger.info("Ignored 404 produced when trying to delete role assignment.");
                 }
             }
         }
