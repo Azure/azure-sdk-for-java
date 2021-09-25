@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.AddParticipantResultInternal;
 import com.azure.communication.callingserver.implementation.models.AnswerCallRequest;
-import com.azure.communication.callingserver.implementation.models.AnswerCallResult;
+import com.azure.communication.callingserver.implementation.models.AnswerCallResultInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionProperties;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
@@ -25,9 +25,9 @@ import com.azure.communication.callingserver.implementation.models.RedirectCallR
 import com.azure.communication.callingserver.implementation.models.RejectCallRequest;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.StartHoldMusicRequest;
-import com.azure.communication.callingserver.implementation.models.StartHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicResultInternal;
 import com.azure.communication.callingserver.implementation.models.StopHoldMusicRequest;
-import com.azure.communication.callingserver.implementation.models.StopHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicResultInternal;
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.core.annotation.BodyParam;
@@ -163,7 +163,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/:answer")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AnswerCallResult>> answer(
+        Mono<Response<AnswerCallResultInternal>> answer(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -239,7 +239,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants/:startHoldMusic")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<StartHoldMusicResult>> startHoldMusic(
+        Mono<Response<StartHoldMusicResultInternal>> startHoldMusic(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -250,7 +250,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants/:stopHoldMusic")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<StopHoldMusicResult>> stopHoldMusic(
+        Mono<Response<StopHoldMusicResultInternal>> stopHoldMusic(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -1193,7 +1193,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResult>> answerWithResponseAsync(
+    public Mono<Response<AnswerCallResultInternal>> answerWithResponseAsync(
             String callConnectionId, AnswerCallRequest answerCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1219,7 +1219,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnswerCallResult>> answerWithResponseAsync(
+    public Mono<Response<AnswerCallResultInternal>> answerWithResponseAsync(
             String callConnectionId, AnswerCallRequest answerCallRequest, Context context) {
         final String accept = "application/json";
         return service.answer(
@@ -1242,10 +1242,10 @@ public final class CallConnectionsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResult> answerAsync(String callConnectionId, AnswerCallRequest answerCallRequest) {
+    public Mono<AnswerCallResultInternal> answerAsync(String callConnectionId, AnswerCallRequest answerCallRequest) {
         return answerWithResponseAsync(callConnectionId, answerCallRequest)
                 .flatMap(
-                        (Response<AnswerCallResult> res) -> {
+                        (Response<AnswerCallResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1266,11 +1266,11 @@ public final class CallConnectionsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnswerCallResult> answerAsync(
+    public Mono<AnswerCallResultInternal> answerAsync(
             String callConnectionId, AnswerCallRequest answerCallRequest, Context context) {
         return answerWithResponseAsync(callConnectionId, answerCallRequest, context)
                 .flatMap(
-                        (Response<AnswerCallResult> res) -> {
+                        (Response<AnswerCallResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1290,7 +1290,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnswerCallResult answer(String callConnectionId, AnswerCallRequest answerCallRequest) {
+    public AnswerCallResultInternal answer(String callConnectionId, AnswerCallRequest answerCallRequest) {
         return answerAsync(callConnectionId, answerCallRequest).block();
     }
 
@@ -1306,7 +1306,7 @@ public final class CallConnectionsImpl {
      * @return the response payload of the answer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnswerCallResult> answerWithResponse(
+    public Response<AnswerCallResultInternal> answerWithResponse(
             String callConnectionId, AnswerCallRequest answerCallRequest, Context context) {
         return answerWithResponseAsync(callConnectionId, answerCallRequest, context).block();
     }
@@ -2039,7 +2039,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponseAsync(
+    public Mono<Response<StartHoldMusicResultInternal>> startHoldMusicWithResponseAsync(
             String callConnectionId, StartHoldMusicRequest request) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2065,7 +2065,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponseAsync(
+    public Mono<Response<StartHoldMusicResultInternal>> startHoldMusicWithResponseAsync(
             String callConnectionId, StartHoldMusicRequest request, Context context) {
         final String accept = "application/json";
         return service.startHoldMusic(
@@ -2083,10 +2083,11 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartHoldMusicResult> startHoldMusicAsync(String callConnectionId, StartHoldMusicRequest request) {
+    public Mono<StartHoldMusicResultInternal> startHoldMusicAsync(
+            String callConnectionId, StartHoldMusicRequest request) {
         return startHoldMusicWithResponseAsync(callConnectionId, request)
                 .flatMap(
-                        (Response<StartHoldMusicResult> res) -> {
+                        (Response<StartHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2107,11 +2108,11 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartHoldMusicResult> startHoldMusicAsync(
+    public Mono<StartHoldMusicResultInternal> startHoldMusicAsync(
             String callConnectionId, StartHoldMusicRequest request, Context context) {
         return startHoldMusicWithResponseAsync(callConnectionId, request, context)
                 .flatMap(
-                        (Response<StartHoldMusicResult> res) -> {
+                        (Response<StartHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2131,7 +2132,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResult startHoldMusic(String callConnectionId, StartHoldMusicRequest request) {
+    public StartHoldMusicResultInternal startHoldMusic(String callConnectionId, StartHoldMusicRequest request) {
         return startHoldMusicAsync(callConnectionId, request).block();
     }
 
@@ -2147,7 +2148,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(
+    public Response<StartHoldMusicResultInternal> startHoldMusicWithResponse(
             String callConnectionId, StartHoldMusicRequest request, Context context) {
         return startHoldMusicWithResponseAsync(callConnectionId, request, context).block();
     }
@@ -2163,7 +2164,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponseAsync(
+    public Mono<Response<StopHoldMusicResultInternal>> stopHoldMusicWithResponseAsync(
             String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2189,7 +2190,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponseAsync(
+    public Mono<Response<StopHoldMusicResultInternal>> stopHoldMusicWithResponseAsync(
             String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest, Context context) {
         final String accept = "application/json";
         return service.stopHoldMusic(
@@ -2212,11 +2213,11 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopHoldMusicResult> stopHoldMusicAsync(
+    public Mono<StopHoldMusicResultInternal> stopHoldMusicAsync(
             String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
         return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest)
                 .flatMap(
-                        (Response<StopHoldMusicResult> res) -> {
+                        (Response<StopHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2237,11 +2238,11 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopHoldMusicResult> stopHoldMusicAsync(
+    public Mono<StopHoldMusicResultInternal> stopHoldMusicAsync(
             String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest, Context context) {
         return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context)
                 .flatMap(
-                        (Response<StopHoldMusicResult> res) -> {
+                        (Response<StopHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2261,7 +2262,8 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopHoldMusicResult stopHoldMusic(String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
+    public StopHoldMusicResultInternal stopHoldMusic(
+            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
         return stopHoldMusicAsync(callConnectionId, stopHoldMusicRequest).block();
     }
 
@@ -2277,7 +2279,7 @@ public final class CallConnectionsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(
+    public Response<StopHoldMusicResultInternal> stopHoldMusicWithResponse(
             String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest, Context context) {
         return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context).block();
     }

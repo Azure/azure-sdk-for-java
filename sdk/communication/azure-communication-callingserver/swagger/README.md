@@ -94,5 +94,14 @@ directive:
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                        
+    to: ToneInfoInternal
+- rename-model:
+    from: StartHoldMusicResult
+    to: StartHoldMusicResultInternal
+- rename-model:
+    from: StopHoldMusicResult
+    to: StopHoldMusicResultInternal
+- rename-model:
+    from: AnswerCallResult
+    to: AnswerCallResultInternal
 ```

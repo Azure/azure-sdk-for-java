@@ -22,9 +22,9 @@ import com.azure.communication.callingserver.implementation.models.PlayAudioWith
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingResultInternal;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingWithCallLocatorRequest;
-import com.azure.communication.callingserver.implementation.models.StartHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicResultInternal;
 import com.azure.communication.callingserver.implementation.models.StartHoldMusicWithCallLocatorRequest;
-import com.azure.communication.callingserver.implementation.models.StopHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicResultInternal;
 import com.azure.communication.callingserver.implementation.models.StopHoldMusicWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantWithCallLocatorRequest;
 import com.azure.core.annotation.BodyParam;
@@ -121,7 +121,7 @@ public final class ServerCallsImpl {
         @Post("/calling/participants/:startHoldMusic")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<StartHoldMusicResult>> startHoldMusic(
+        Mono<Response<StartHoldMusicResultInternal>> startHoldMusic(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StartHoldMusicWithCallLocatorRequest startHoldMusicRequest,
@@ -131,7 +131,7 @@ public final class ServerCallsImpl {
         @Post("/calling/participants/:stopHoldMusic")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<StopHoldMusicResult>> stopHoldMusic(
+        Mono<Response<StopHoldMusicResultInternal>> stopHoldMusic(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest,
@@ -750,7 +750,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponseAsync(
+    public Mono<Response<StartHoldMusicResultInternal>> startHoldMusicWithResponseAsync(
             StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -774,7 +774,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponseAsync(
+    public Mono<Response<StartHoldMusicResultInternal>> startHoldMusicWithResponseAsync(
             StartHoldMusicWithCallLocatorRequest startHoldMusicRequest, Context context) {
         final String accept = "application/json";
         return service.startHoldMusic(
@@ -791,10 +791,11 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartHoldMusicResult> startHoldMusicAsync(StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
+    public Mono<StartHoldMusicResultInternal> startHoldMusicAsync(
+            StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
         return startHoldMusicWithResponseAsync(startHoldMusicRequest)
                 .flatMap(
-                        (Response<StartHoldMusicResult> res) -> {
+                        (Response<StartHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -814,11 +815,11 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartHoldMusicResult> startHoldMusicAsync(
+    public Mono<StartHoldMusicResultInternal> startHoldMusicAsync(
             StartHoldMusicWithCallLocatorRequest startHoldMusicRequest, Context context) {
         return startHoldMusicWithResponseAsync(startHoldMusicRequest, context)
                 .flatMap(
-                        (Response<StartHoldMusicResult> res) -> {
+                        (Response<StartHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -837,7 +838,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResult startHoldMusic(StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
+    public StartHoldMusicResultInternal startHoldMusic(StartHoldMusicWithCallLocatorRequest startHoldMusicRequest) {
         return startHoldMusicAsync(startHoldMusicRequest).block();
     }
 
@@ -852,7 +853,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(
+    public Response<StartHoldMusicResultInternal> startHoldMusicWithResponse(
             StartHoldMusicWithCallLocatorRequest startHoldMusicRequest, Context context) {
         return startHoldMusicWithResponseAsync(startHoldMusicRequest, context).block();
     }
@@ -867,7 +868,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponseAsync(
+    public Mono<Response<StopHoldMusicResultInternal>> stopHoldMusicWithResponseAsync(
             StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -891,7 +892,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponseAsync(
+    public Mono<Response<StopHoldMusicResultInternal>> stopHoldMusicWithResponseAsync(
             StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest, Context context) {
         final String accept = "application/json";
         return service.stopHoldMusic(
@@ -908,10 +909,11 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopHoldMusicResult> stopHoldMusicAsync(StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
+    public Mono<StopHoldMusicResultInternal> stopHoldMusicAsync(
+            StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
         return stopHoldMusicWithResponseAsync(stopHoldMusicRequest)
                 .flatMap(
-                        (Response<StopHoldMusicResult> res) -> {
+                        (Response<StopHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -931,11 +933,11 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopHoldMusicResult> stopHoldMusicAsync(
+    public Mono<StopHoldMusicResultInternal> stopHoldMusicAsync(
             StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest, Context context) {
         return stopHoldMusicWithResponseAsync(stopHoldMusicRequest, context)
                 .flatMap(
-                        (Response<StopHoldMusicResult> res) -> {
+                        (Response<StopHoldMusicResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -954,7 +956,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopHoldMusicResult stopHoldMusic(StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
+    public StopHoldMusicResultInternal stopHoldMusic(StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest) {
         return stopHoldMusicAsync(stopHoldMusicRequest).block();
     }
 
@@ -969,7 +971,7 @@ public final class ServerCallsImpl {
      * @return the response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(
+    public Response<StopHoldMusicResultInternal> stopHoldMusicWithResponse(
             StopHoldMusicWithCallLocatorRequest stopHoldMusicRequest, Context context) {
         return stopHoldMusicWithResponseAsync(stopHoldMusicRequest, context).block();
     }
