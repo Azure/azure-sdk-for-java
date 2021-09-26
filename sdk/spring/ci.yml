@@ -12,9 +12,6 @@ trigger:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-identity-spring/pom.xml
-      - sdk/spring/azure-spring-boot/pom.xml
-      - sdk/spring/azure-spring-boot-starter/pom.xml
       - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
       - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
@@ -33,19 +30,22 @@ trigger:
       - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-actuator/pom.xml
+      - sdk/spring/azure-spring-cloud-actuator-autoconfigure/pom.xml
       - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
-      - sdk/spring/azure-spring-cloud-context/pom.xml
-      - sdk/spring/spring-cloud-azure-messaging/pom.xml
+      - sdk/spring/azure-spring-cloud-core/pom.xml
+      - sdk/spring/azure-spring-cloud-resourcemanager/pom.xml
+      - sdk/spring/azure-spring-cloud-starter/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
       - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
       - sdk/spring/azure-spring-servicebus/pom.xml
       - sdk/spring/azure-spring-storage-queue/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
+      - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/azure-spring-cloud-storage/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
@@ -70,9 +70,6 @@ pr:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-identity-spring/pom.xml
-      - sdk/spring/azure-spring-boot/pom.xml
-      - sdk/spring/azure-spring-boot-starter/pom.xml
       - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
       - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
@@ -91,19 +88,22 @@ pr:
       - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
+      - sdk/spring/azure-spring-cloud-actuator/pom.xml
+      - sdk/spring/azure-spring-cloud-actuator-autoconfigure/pom.xml
       - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
-      - sdk/spring/azure-spring-cloud-context/pom.xml
-      - sdk/spring/spring-cloud-azure-messaging/pom.xml
+      - sdk/spring/azure-spring-cloud-core/pom.xml
+      - sdk/spring/azure-spring-cloud-resourcemanager/pom.xml
+      - sdk/spring/azure-spring-cloud-starter/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
       - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
       - sdk/spring/azure-spring-servicebus/pom.xml
       - sdk/spring/azure-spring-storage-queue/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
+      - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/azure-spring-cloud-storage/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
@@ -144,6 +144,14 @@ extends:
       - name: azure-spring-cloud-autoconfigure
         groupId: com.azure.spring
         safeName: azurespringcloudautoconfigure
+        skipPublishDocMs: true
+      - name: azure-spring-cloud-actuator
+        groupId: com.azure.spring
+        safeName: azurespringcloudactuator
+        skipPublishDocMs: true
+      - name: azure-spring-cloud-actuator-autoconfigure
+        groupId: com.azure.spring
+        safeName: azurespringcloudactuatorautoconfigure
         skipPublishDocMs: true
       - name: azure-spring-cloud-resourcemanager
         groupId: com.azure.spring
