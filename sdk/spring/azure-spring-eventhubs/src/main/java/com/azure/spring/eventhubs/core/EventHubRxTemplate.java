@@ -3,10 +3,11 @@
 
 package com.azure.spring.eventhubs.core;
 
-import com.azure.spring.core.util.Tuple;
 import com.azure.spring.messaging.PartitionSupplier;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 import rx.Observable;
 import rx.subscriptions.Subscriptions;
 
@@ -20,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class EventHubRxTemplate extends AbstractEventHubTemplate implements EventHubRxOperation {
 
-    private final ConcurrentHashMap<Tuple<String, String>, Observable<Message<?>>> subjectByNameAndGroup =
+    private final ConcurrentHashMap<Tuple2<String, String>, Observable<Message<?>>> subjectByNameAndGroup =
         new ConcurrentHashMap<>();
 
     public EventHubRxTemplate(EventHubClientFactory clientFactory) {
@@ -46,7 +47,7 @@ public class EventHubRxTemplate extends AbstractEventHubTemplate implements Even
 
     @Override
     public Observable<Message<?>> subscribe(String destination, String consumerGroup, Class<?> messagePayloadType) {
-        Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
+        Tuple2<String, String> nameAndConsumerGroup = Tuples.of(destination, consumerGroup);
 
         subjectByNameAndGroup.computeIfAbsent(nameAndConsumerGroup, k -> Observable.<Message<?>>create(subscriber -> {
             final EventHubProcessor eventHubProcessor = new EventHubProcessor(subscriber::onNext, messagePayloadType,

@@ -7,14 +7,14 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Triple;
-import com.azure.spring.core.util.Tuple;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
 /**
  * Resource manager for Service Bus topic subscription.
  */
 public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
-                                                                             Triple<String, String, String>> {
+    Tuple3<String, String, String>> {
 
 
     public ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
@@ -22,8 +22,8 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
         super(azureResourceManager, azureResourceMetadata);
     }
     @Override
-    String getResourceName(Triple<String, String, String> key) {
-        return key.getThird();
+    String getResourceName(Tuple3<String, String, String> key) {
+        return key.getT3();
     }
 
     @Override
@@ -32,12 +32,12 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     }
 
     @Override
-    public ServiceBusSubscription internalGet(Triple<String, String, String> subscriptionCoordinate) {
+    public ServiceBusSubscription internalGet(Tuple3<String, String, String> subscriptionCoordinate) {
         try {
             return new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
-                .get(Tuple.of(subscriptionCoordinate.getFirst(), subscriptionCoordinate.getSecond()))
+                .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()))
                 .subscriptions()
-                .getByName(subscriptionCoordinate.getSecond());
+                .getByName(subscriptionCoordinate.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
@@ -48,11 +48,11 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
     }
 
     @Override
-    public ServiceBusSubscription internalCreate(Triple<String, String, String> subscriptionCoordinate) {
+    public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate) {
         return new ServiceBusTopicCrud(this.resourceManager, this.resourceMetadata)
-            .getOrCreate(Tuple.of(subscriptionCoordinate.getFirst(), subscriptionCoordinate.getSecond()))
+            .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()))
             .subscriptions()
-            .define(subscriptionCoordinate.getThird())
+            .define(subscriptionCoordinate.getT3())
             .create();
     }
 }

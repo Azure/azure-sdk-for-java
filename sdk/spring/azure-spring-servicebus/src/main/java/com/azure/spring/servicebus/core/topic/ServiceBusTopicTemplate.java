@@ -4,7 +4,6 @@
 package com.azure.spring.servicebus.core.topic;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.core.util.Tuple;
 import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
@@ -21,6 +20,8 @@ import org.springframework.util.Assert;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * Default implementation of {@link ServiceBusTopicOperation}.
@@ -37,7 +38,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
 
     private static final String MSG_SUCCESS_CHECKPOINT = "Consumer group '%s' of topic '%s' checkpointed %s in %s mode";
 
-    private final Set<Tuple<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
+    private final Set<Tuple2<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
 
     public ServiceBusTopicTemplate(ServiceBusTopicClientFactory clientFactory) {
         super(clientFactory);
@@ -60,7 +61,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                              Class<?> payloadType) {
         Assert.hasText(destination, "destination can't be null or empty");
 
-        Tuple<String, String> nameAndConsumerGroup = Tuple.of(destination, consumerGroup);
+        Tuple2<String, String> nameAndConsumerGroup = Tuples.of(destination, consumerGroup);
 
         if (this.nameAndConsumerGroups.contains(nameAndConsumerGroup)) {
             return false;
@@ -76,7 +77,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
     public boolean unsubscribe(String destination, String consumerGroup) {
         // TODO: unregister message handler but service bus sdk unsupported
 
-        return this.nameAndConsumerGroups.remove(Tuple.of(destination, consumerGroup));
+        return this.nameAndConsumerGroups.remove(Tuples.of(destination, consumerGroup));
     }
 
     /**

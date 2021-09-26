@@ -7,9 +7,8 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Triple;
-import com.azure.spring.core.util.Tuple;
 import com.azure.spring.servicebus.core.ServiceBusTopicProvisioner;
+import reactor.util.function.Tuples;
 
 /**
  * A default implementation to provision Service Bus Topic.
@@ -27,11 +26,11 @@ public class DefaultServiceBusTopicProvisioner implements ServiceBusTopicProvisi
 
     @Override
     public void provisionTopic(String namespace, String topic) {
-        this.topicCrud.getOrCreate(Tuple.of(namespace, topic));
+        this.topicCrud.getOrCreate(Tuples.of(namespace, topic));
     }
 
     @Override
     public void provisionSubscription(String namespace, String topic, String subscription) {
-        this.subscriptionCrud.getOrCreate(Triple.of(namespace, topic, subscription));
+        this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription));
     }
 }

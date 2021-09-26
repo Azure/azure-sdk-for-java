@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.spring.core.util.Tuple;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,8 @@ import org.springframework.beans.factory.DisposableBean;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * Default implementation of {@link ServiceBusTopicClientFactory}. Client will be cached to improve performance
@@ -26,7 +27,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     implements ServiceBusTopicClientFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusTopicClientFactory.class);
-    private final Map<Tuple<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
+    private final Map<Tuple2<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();
     private final Map<String, ServiceBusSenderAsyncClient> topicSenderMap = new ConcurrentHashMap<>();
 
 
@@ -57,9 +58,9 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
         String subscription,
         ServiceBusClientConfig clientConfig,
         ServiceBusMessageProcessor messageProcessor) {
-        return this.topicProcessorMap.computeIfAbsent(Tuple.of(topic, subscription),
-                                                      t -> createProcessor(t.getFirst(),
-                                                                           t.getSecond(),
+        return this.topicProcessorMap.computeIfAbsent(Tuples.of(topic, subscription),
+                                                      t -> createProcessor(t.getT1(),
+                                                                           t.getT2(),
                                                                            clientConfig,
                                                                            messageProcessor));
     }
