@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
+
 /**
  * Auto-configuration for Azure Spring default token credential.
  */
 @Configuration
 public class AzureDefaultTokenCredentialAutoConfiguration {
-
-    public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springDefaultAzureCredential";
 
     private final AzureGlobalProperties azureGlobalProperties;
 
@@ -25,7 +25,6 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         this.azureGlobalProperties = azureGlobalProperties;
     }
 
-    @SuppressWarnings("rawtypes")
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
@@ -34,7 +33,6 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     public AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory() {
         return new AzureCredentialBuilderFactory<>(azureGlobalProperties, new DefaultAzureCredentialBuilder());
     }

@@ -8,6 +8,8 @@ package com.azure.spring.cloud.autoconfigure.context;
  */
 public abstract class AzureContextUtils {
 
+    public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springDefaultAzureCredential";
+
     public static final String SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME =
         "SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME";
     public static final String SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME =
