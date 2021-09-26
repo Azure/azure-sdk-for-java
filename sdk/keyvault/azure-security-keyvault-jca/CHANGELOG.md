@@ -3,10 +3,12 @@
 ## 2.1.0 (2021-09-26)
 
 ### Features Added
+- Enable access token cache. ([23847](https://github.com/Azure/azure-sdk-for-java/pull/23847))
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fix bug about dead loop. ([23923](https://github.com/Azure/azure-sdk-for-java/pull/23923))
 
 ### Other Changes
 
