@@ -42,7 +42,6 @@ public interface SendOperation {
      * @param message message
      * @param partitionSupplier partition supplier
      * @param <T> payload class in message
-     * @return void
      */
     default <T> void send(String destination, Message<T> message, PartitionSupplier partitionSupplier) {
         sendAsync(destination, message, partitionSupplier).block();
@@ -53,7 +52,6 @@ public interface SendOperation {
      * @param destination destination
      * @param message message
      * @param <T> payload class in message
-     * @return void
      */
     default <T> void send(String destination, Message<T> message) {
         send(destination, message, null);

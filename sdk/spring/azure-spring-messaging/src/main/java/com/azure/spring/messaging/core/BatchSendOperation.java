@@ -45,7 +45,6 @@ public interface BatchSendOperation {
      * @param messages message set
      * @param partitionSupplier partition supplier
      * @param <T> payload type in message
-     * @return Mono Void
      */
     default <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier) {
         sendAsync(destination, messages, partitionSupplier).block();
@@ -56,7 +55,6 @@ public interface BatchSendOperation {
      * @param destination destination
      * @param messages message set
      * @param <T> payload type in message
-     * @return Mono Void
      */
     default <T> void send(String destination, Collection<Message<T>> messages) {
         send(destination, messages, null);
