@@ -6,7 +6,7 @@ package com.azure.security.attestation.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 /**
  * An AttestationResult contains the defined claims included in a Microsoft Azure Attestation Token.
@@ -43,7 +43,7 @@ public interface AttestationResult {
      *
      * @return the IssuedAt value.
      */
-    LocalDateTime getIssuedAt();
+    Instant getIssuedAt();
 
     /**
      * Get the ExpiresOn property: The expiration time after which the token is no longer valid. The ExpiresOn property
@@ -51,7 +51,7 @@ public interface AttestationResult {
      *
      * @return the expiration time for the token.
      */
-    LocalDateTime getExpiresOn();
+    Instant getExpiresOn();
 
     /**
      * Get the NotBefore property: The time before which a token cannot be considered valid. The ExpiresOn property
@@ -59,7 +59,7 @@ public interface AttestationResult {
      *
      * @return the time before which the token is invalid.
      */
-    LocalDateTime getNotBefore();
+    Instant getNotBefore();
 
     /**
      * Returns the  Nonce input to the attestation request, if provided. The Nonce claim corresponds to the

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.EMPTY_LABEL;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,8 +19,6 @@ import org.springframework.util.StringUtils;
  * Properties on what Selects are checked before loading configurations.
  */
 public final class AppConfigurationStoreSelects {
-
-    private static final String EMPTY_LABEL = "\0";
 
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
 
@@ -70,6 +70,10 @@ public final class AppConfigurationStoreSelects {
         Collections.reverse(labels);
         String[] t = new String[labels.size()];
         return labels.toArray(t);
+    }
+
+    public String getLabelFilterText(List<String> profiles) {
+        return String.join(",", getLabelFilter(profiles));
     }
 
     /**
