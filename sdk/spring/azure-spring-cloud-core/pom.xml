@@ -64,6 +64,12 @@
       <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
     <!-- Used to eliminate warnings when generate Java Docs.
         Added this dependency to include necessary annotations used by reactor core.
