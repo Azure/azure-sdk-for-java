@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-identity-spring</artifactId>
-  <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+  <version>1.9.0</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Spring Integration Library</name>
