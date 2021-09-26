@@ -27,6 +27,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
@@ -69,6 +70,7 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     protected boolean isManagedHsmTest = false;
 
     @Override
@@ -643,9 +645,8 @@ public abstract class KeyClientTestBase extends TestBase {
 
             assertNotNull(httpResponse);
 
-            JacksonAdapter jacksonAdapter = new JacksonAdapter();
             AttestationToken attestationToken =
-                jacksonAdapter.deserialize(httpResponse.getBodyAsByteArray().block(),
+                SERIALIZER_ADAPTER.deserialize(httpResponse.getBodyAsByteArray().block(),
                     AttestationToken.class, SerializerEncoding.JSON);
             return attestationToken.getToken();
         }
