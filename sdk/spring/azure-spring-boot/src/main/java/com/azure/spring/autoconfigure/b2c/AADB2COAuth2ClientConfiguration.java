@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Configuration for AAD B2C OAuth2 client support, when depends on the Spring OAuth2 Client module.
  */
+@Deprecated
 @Configuration
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.ClientRegistrationCondition.class })

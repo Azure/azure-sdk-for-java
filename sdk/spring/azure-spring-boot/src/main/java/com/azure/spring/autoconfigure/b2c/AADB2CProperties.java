@@ -23,6 +23,7 @@ import static com.azure.spring.aad.AADAuthorizationGrantType.CLIENT_CREDENTIALS;
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
+@Deprecated
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
 public class AADB2CProperties implements InitializingBean {

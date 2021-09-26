@@ -9,6 +9,7 @@ import com.azure.spring.utils.ApplicationId;
 /**
  * Used to set azure service header tag when use "auth-code" to get "access_token".
  */
+@Deprecated
 public class AADB2COAuth2AuthorizationCodeGrantRequestEntityConverter
     extends AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter {
 

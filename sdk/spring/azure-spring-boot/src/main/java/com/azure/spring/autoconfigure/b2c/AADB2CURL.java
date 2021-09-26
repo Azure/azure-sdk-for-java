@@ -11,6 +11,7 @@ import java.net.URLEncoder;
 /**
  * To get AAD B2C URLs for configuration.
  */
+@Deprecated
 public final class AADB2CURL {
 
     private AADB2CURL() {

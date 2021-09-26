@@ -37,6 +37,7 @@ import java.util.List;
  * necessary beans for AAD B2C resource server beans, and import {@link AADB2COAuth2ClientConfiguration} class for AAD
  * B2C OAuth2 client support.
  */
+@Deprecated
 @Configuration
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @Conditional(AADB2CConditions.CommonCondition.class)

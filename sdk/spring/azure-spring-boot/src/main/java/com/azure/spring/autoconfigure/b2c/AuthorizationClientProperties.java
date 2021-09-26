@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Properties for an oauth2 client.
  */
+@Deprecated
 public class AuthorizationClientProperties {
 
     private List<String> scopes;

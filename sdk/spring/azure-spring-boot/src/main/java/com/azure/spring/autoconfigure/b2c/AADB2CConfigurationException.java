@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.b2c;
 /**
  * Throw runtime exception for configuration.
  */
+@Deprecated
 public class AADB2CConfigurationException extends RuntimeException {
 
     public AADB2CConfigurationException(String message) {

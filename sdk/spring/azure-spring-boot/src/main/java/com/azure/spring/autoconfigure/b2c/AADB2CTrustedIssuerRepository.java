@@ -12,6 +12,7 @@ import static java.util.Locale.ROOT;
 /**
  * Construct a trusted aad b2c issuer repository.
  */
+@Deprecated
 public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
 
     private final String resolvedBaseUri;

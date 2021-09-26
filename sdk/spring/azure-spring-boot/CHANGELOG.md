@@ -8,6 +8,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Features Added
 - Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
 ### Breaking Changes
+- Deprecated azure-spring-boot-starter-active-directory-b2c
 
 ### Bugs Fixed
 - Fix bug about application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))

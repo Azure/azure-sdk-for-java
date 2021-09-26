@@ -24,6 +24,7 @@ import java.util.Optional;
  * Userflow name is added in the request link and forgotten password redirection to password-reset page is added on the
  * base of default OAuth2 authorization resolve.
  */
+@Deprecated
 public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private static final String REQUEST_BASE_URI =

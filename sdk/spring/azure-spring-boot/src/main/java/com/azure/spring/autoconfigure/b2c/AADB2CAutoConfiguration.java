@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
  * configure the necessary beans for AAD B2C authentication and authorization,
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
+@Deprecated
 @Configuration
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
 @Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })

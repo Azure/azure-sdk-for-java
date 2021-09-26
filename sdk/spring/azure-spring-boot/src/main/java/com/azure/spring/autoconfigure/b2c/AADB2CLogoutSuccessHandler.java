@@ -14,6 +14,7 @@ import java.io.IOException;
 /**
  * Get the url of successful logout and handle the navigation on logout.
  */
+@Deprecated
 public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     private final AADB2CProperties properties;

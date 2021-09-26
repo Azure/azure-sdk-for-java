@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * Conditions for activating AAD B2C beans.
  */
+@Deprecated
 public final class AADB2CConditions {
 
     /**

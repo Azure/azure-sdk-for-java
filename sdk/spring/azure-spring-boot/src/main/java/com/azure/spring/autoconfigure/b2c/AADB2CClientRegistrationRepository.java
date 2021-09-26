@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
  * ClientRegistrationRepository for aad b2c
  * </p>
  */
+@Deprecated
 public class AADB2CClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
     private final InMemoryClientRegistrationRepository clientRegistrations;
