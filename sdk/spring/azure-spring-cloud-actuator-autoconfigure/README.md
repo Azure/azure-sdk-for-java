@@ -1,4 +1,4 @@
-# Spring Cloud for Azure Actuator Autoconfigure library for Java
+# Spring Cloud for Azure Actuator Autoconfigure client library for Java
 This package provides the actuator auto-configuration for all Azure Spring libraries.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]

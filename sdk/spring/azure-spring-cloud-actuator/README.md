@@ -1,4 +1,4 @@
-# Spring Cloud for Azure Actuator library for Java
+# Spring Cloud for Azure Actuator client library for Java
 This package provides the actuator ability for all Azure Spring libraries.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
