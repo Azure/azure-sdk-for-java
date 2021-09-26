@@ -15,6 +15,7 @@ import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import io.micrometer.core.instrument.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,17 +44,31 @@ public class AbstractEventHubTemplate {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractEventHubTemplate.class);
 
-    private final EventHubClientFactory clientFactory;
+    protected final EventHubClientFactory clientFactory;
 
     private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     private StartPosition startPosition = StartPosition.LATEST;
 
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
-        .checkpointMode(CheckpointMode.RECORD).build();
+                                                                .checkpointMode(CheckpointMode.RECORD).build();
+
+    protected Counter recodeSendTotal;
+
+    protected Counter recodeConsumeTotal;
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
+        meterRegistry(this.clientFactory);
+    }
+
+    private void meterRegistry(EventHubClientFactory clientFactory) {
+        DefaultEventHubClientFactory defaultEventHubClientFactory = (DefaultEventHubClientFactory) clientFactory;
+        recodeSendTotal =
+            Counter.builder("recode.send.total").register(defaultEventHubClientFactory.getMeterRegistry());
+
+        recodeConsumeTotal =
+            Counter.builder("recode.consume.total").register(defaultEventHubClientFactory.getMeterRegistry());
     }
 
     private static EventPosition buildEventPosition(StartPosition startPosition) {
@@ -69,7 +84,7 @@ public class AbstractEventHubTemplate {
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(eventHubName, "eventHubName can't be null or empty");
         List<EventData> eventData = messages.stream().map(m -> messageConverter.fromMessage(m, EventData.class))
-            .collect(Collectors.toList());
+                                            .collect(Collectors.toList());
         return doSend(eventHubName, partitionSupplier, eventData);
     }
 
@@ -79,7 +94,7 @@ public class AbstractEventHubTemplate {
         EventHubProducerAsyncClient producer = this.clientFactory.getOrCreateProducerClient(eventHubName);
 
         CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
-
+        recodeSendTotal.increment();
         return producer.createBatch(options).flatMap(batch -> {
             for (EventData event : events) {
                 try {
@@ -148,4 +163,7 @@ public class AbstractEventHubTemplate {
         this.checkpointConfig = checkpointConfig;
     }
 
+    public EventHubClientFactory getClientFactory() {
+        return clientFactory;
+    }
 }

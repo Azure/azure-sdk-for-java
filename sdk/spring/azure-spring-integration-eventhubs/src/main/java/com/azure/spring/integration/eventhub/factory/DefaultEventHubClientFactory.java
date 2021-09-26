@@ -17,6 +17,7 @@ import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -58,6 +59,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         Memoizer.memoize(consumerClientMap, this::createEventHubClient);
     private final Function<String, EventHubProducerAsyncClient> producerClientCreator =
         Memoizer.memoize(producerClientMap, this::createProducerClient);
+    private MeterRegistry meterRegistry;
 
     public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
                                         String checkpointConnectionString,
@@ -157,5 +159,13 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     @Override
     public EventProcessorClient removeEventProcessorClient(String eventHubName, String consumerGroup) {
         return this.processorClientMap.remove(Tuple.of(eventHubName, consumerGroup));
+    }
+
+    public MeterRegistry getMeterRegistry() {
+        return meterRegistry;
+    }
+
+    public void setMeterRegistry(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
     }
 }

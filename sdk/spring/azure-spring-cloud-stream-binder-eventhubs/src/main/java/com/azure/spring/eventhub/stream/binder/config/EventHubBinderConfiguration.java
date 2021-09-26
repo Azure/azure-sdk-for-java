@@ -17,8 +17,11 @@ import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
+import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.eventhub.metrics.MicrometerListener;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,13 +104,10 @@ public class EventHubBinderConfiguration {
         EventHubMessageChannelBinder binder =
             new EventHubMessageChannelBinder(null, eventHubChannelProvisioner, eventHubOperation);
         binder.setBindingProperties(bindingProperties);
-        eventHubMetricsConfiguration(eventHubOperation, meterRegistry);
+        DefaultEventHubClientFactory clientFactory =
+            (DefaultEventHubClientFactory) ((EventHubTemplate) eventHubOperation).getClientFactory();
+        clientFactory.setMeterRegistry(meterRegistry);
         return binder;
-    }
-
-    private void eventHubMetricsConfiguration(EventHubOperation eventHubOperation,
-                                              MeterRegistry meterRegistry) {
-        eventHubOperation.addListener(new MicrometerListener(meterRegistry, eventHubOperation));
     }
 
 }

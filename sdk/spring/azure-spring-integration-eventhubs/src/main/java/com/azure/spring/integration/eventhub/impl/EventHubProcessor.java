@@ -17,6 +17,7 @@ import com.azure.spring.integration.core.api.reactor.AzureCheckpointer;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.eventhub.checkpoint.CheckpointManager;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
+import io.micrometer.core.instrument.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -39,6 +40,7 @@ public class EventHubProcessor {
     protected final EventHubMessageConverter messageConverter;
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
+    private Counter recodeConsumeTotal;
 
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
                              EventHubMessageConverter messageConverter) {
@@ -59,7 +61,8 @@ public class EventHubProcessor {
     }
 
     public void onEvent(EventContext context) {
-        //TODO 添加计数器，去计算消费次数
+        recodeConsumeTotal.increment();
+
         PartitionContext partition = context.getPartitionContext();
 
         Map<String, Object> headers = new HashMap<>();
@@ -87,5 +90,9 @@ public class EventHubProcessor {
 
     public void setEventPosition(EventPosition eventPosition) {
         this.eventPosition = eventPosition;
+    }
+
+    public void setRecodeConsumeTotal(Counter recodeConsumeTotal) {
+        this.recodeConsumeTotal = recodeConsumeTotal;
     }
 }
