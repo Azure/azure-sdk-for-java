@@ -8,9 +8,8 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubConsum
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Triple;
-import com.azure.spring.core.util.Tuple;
 import com.azure.spring.eventhubs.core.EventHubProvisioner;
+import reactor.util.function.Tuples;
 
 /**
  * Default implementation to provision an Event Hub.
@@ -35,12 +34,12 @@ public class DefaultEventHubProvisioner implements EventHubProvisioner {
 
     @Override
     public void provisionEventHub(String namespace, String eventHub) {
-        this.eventHubCrud.getOrCreate(Tuple.of(namespace, eventHub));
+        this.eventHubCrud.getOrCreate(Tuples.of(namespace, eventHub));
     }
 
     @Override
     public void provisionConsumerGroup(String namespace, String eventHub, String consumerGroup) {
-        this.consumerGroupCrud.getOrCreate(Triple.of(namespace, eventHub, consumerGroup));
+        this.consumerGroupCrud.getOrCreate(Tuples.of(namespace, eventHub, consumerGroup));
     }
 
 }

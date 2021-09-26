@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.core;
 
-import com.azure.spring.core.util.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -11,6 +10,8 @@ import org.springframework.messaging.Message;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Consumer;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * Default implementation of {@link EventHubOperation}.
@@ -22,7 +23,7 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
     private static final Logger LOG = LoggerFactory.getLogger(EventHubTemplate.class);
 
     // Use this concurrent map as set since no concurrent set which has putIfAbsent
-    private final ConcurrentMap<Tuple<String, String>, Boolean> subscribedNameAndGroup = new ConcurrentHashMap<>();
+    private final ConcurrentMap<Tuple2<String, String>, Boolean> subscribedNameAndGroup = new ConcurrentHashMap<>();
 
     public EventHubTemplate(EventHubClientFactory clientFactory) {
         super(clientFactory);
@@ -32,7 +33,7 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
     @Override
     public boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
                              Class<?> messagePayloadType) {
-        if (subscribedNameAndGroup.putIfAbsent(Tuple.of(destination, consumerGroup), true) == null) {
+        if (subscribedNameAndGroup.putIfAbsent(Tuples.of(destination, consumerGroup), true) == null) {
             this.createEventProcessorClient(destination, consumerGroup, createEventProcessor(consumer,
                 messagePayloadType));
 
@@ -46,7 +47,7 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
 
     @Override
     public boolean unsubscribe(String destination, String consumerGroup) {
-        if (subscribedNameAndGroup.remove(Tuple.of(destination, consumerGroup), true)) {
+        if (subscribedNameAndGroup.remove(Tuples.of(destination, consumerGroup), true)) {
             stopEventProcessorClient(destination, consumerGroup);
             LOG.info("Consumer unsubscribed from destination '{}' with consumer group '{}'", destination,
                 consumerGroup);

@@ -7,14 +7,15 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Triple;
-import com.azure.spring.core.util.Tuple;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
+
 
 /**
  * Resource manager for Event Hubs consumer group.
  */
 public class EventHubConsumerGroupCrud
-    extends AbstractResourceCrud<EventHubConsumerGroup, Triple<String, String, String>> {
+    extends AbstractResourceCrud<EventHubConsumerGroup, Tuple3<String, String, String>> {
 
     public EventHubConsumerGroupCrud(AzureResourceManager azureResourceManager,
                                      AzureResourceMetadata resourceMetadata) {
@@ -22,8 +23,8 @@ public class EventHubConsumerGroupCrud
     }
 
     @Override
-    String getResourceName(Triple<String, String, String> key) {
-        return key.getThird();
+    String getResourceName(Tuple3<String, String, String> key) {
+        return key.getT3();
     }
 
     @Override
@@ -32,13 +33,13 @@ public class EventHubConsumerGroupCrud
     }
 
     @Override
-    public EventHubConsumerGroup internalGet(Triple<String, String, String> consumerGroupCoordinate) {
+    public EventHubConsumerGroup internalGet(Tuple3<String, String, String> consumerGroupCoordinate) {
         try {
             return this.resourceManager
                 .eventHubs()
                 .consumerGroups()
-                .getByName(this.resourceMetadata.getResourceGroup(), consumerGroupCoordinate.getFirst(),
-                           consumerGroupCoordinate.getSecond(), consumerGroupCoordinate.getThird());
+                .getByName(this.resourceMetadata.getResourceGroup(), consumerGroupCoordinate.getT1(),
+                           consumerGroupCoordinate.getT2(), consumerGroupCoordinate.getT3());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
@@ -49,14 +50,14 @@ public class EventHubConsumerGroupCrud
     }
 
     @Override
-    public EventHubConsumerGroup internalCreate(Triple<String, String, String> consumerGroupCoordinate) {
+    public EventHubConsumerGroup internalCreate(Tuple3<String, String, String> consumerGroupCoordinate) {
         return this.resourceManager
             .eventHubs()
             .consumerGroups()
-            .define(consumerGroupCoordinate.getSecond())
+            .define(consumerGroupCoordinate.getT2())
             .withExistingEventHub(new EventHubCrud(this.resourceManager, this.resourceMetadata)
-                                      .getOrCreate(Tuple.of(consumerGroupCoordinate.getFirst(),
-                                                            consumerGroupCoordinate.getSecond())))
+                                      .getOrCreate(Tuples.of(consumerGroupCoordinate.getT1(),
+                                                            consumerGroupCoordinate.getT2())))
             .create();
     }
 }
