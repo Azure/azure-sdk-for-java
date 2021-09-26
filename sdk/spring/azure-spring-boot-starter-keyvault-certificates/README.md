@@ -53,7 +53,7 @@ This starter provides a KeyStore (`AzureKeyVault`) which can get certificates fr
 ## Examples
 ### Server side SSL
 
-#### Option 1 - Use an Azure client ID and Azure client secret
+#### Option 1 - Use an Azure client ID and Azure client secret to identify your app
 
 To create an Azure client and an Azure client secret use the command line below. Please store the values returned such as appId, password, tenant.
 ```shell
@@ -92,7 +92,8 @@ server:
     key-store-type: AzureKeyVault  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
 ```
 
-#### Option 2 - Use a managed identity
+#### Option 2 - Use a managed identity to identify your app. 
+If you use managed identity, you need deploy your app on the Azure Spring Cloud, please refer to [Azure Spring Cloud TLS][Azure Spring Cloud TLS]
 
 Firstly, you need have an Azure Spring Cloud instance. If you don't have one, you can create it via the command line below:
 
@@ -125,7 +126,7 @@ Make sure the managed identity can access target Key Vault. To grant access use 
         --secret-permissions get list \
         --certificate-permissions get list
 ```
-If you are using managed identity instead of App registrations, add these items in your `application.yml`:
+If you are using managed identity instead of App registrations, add the following items to your `application.yml`:
 
 ```yaml
 azure:
@@ -182,7 +183,7 @@ public RestTemplate restTemplateWithTLS() throws Exception {
 
 #### Using a managed identity
 
-If you are using managed identity instead of App registration, add these items in your `application.yml`:
+If you are using managed identity instead of App registration, add the following items to your `application.yml`:
 ```yaml
 azure:
   keyvault:
@@ -219,7 +220,7 @@ public RestTemplate restTemplateWithTLS() throws Exception {
 
 ### Enable mutual SSL (mTLS).
  
-Step 1. On the server side, add these items in your `application.yml`:
+Step 1. On the server side, add the following items to your `application.yml`:
 
 ```yaml
 server:
@@ -303,7 +304,7 @@ spring:
 
 ### Refresh certificate periodically
 
-KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+KeyVaultKeyStore can fetch certificates from KeyVault periodically if the following property is configured:
 
 ```yaml
 azure:
@@ -430,4 +431,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-
+[Azure Spring Cloud TLS]: https://docs.microsoft.com/en-us/azure/spring-cloud/how-to-enable-end-to-end-tls
