@@ -16,7 +16,7 @@ import reactor.core.publisher.Mono;
 public interface SendOperation {
 
     /**
-     * Send a {@link Message} to the given destination with a given partition supplier.
+     * Send a {@link Message} to the given destination with a given partition supplier asynchronously.
      * @param destination destination
      * @param message message
      * @param partitionSupplier partition supplier
@@ -26,7 +26,7 @@ public interface SendOperation {
     <T> Mono<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier);
 
     /**
-     * Send a {@link Message} to the given destination.
+     * Send a {@link Message} to the given destination asynchronously.
      * @param destination destination
      * @param message message
      * @param <T> payload class in message
@@ -34,5 +34,28 @@ public interface SendOperation {
      */
     default <T> Mono<Void> sendAsync(String destination, Message<T> message) {
         return sendAsync(destination, message, null);
+    }
+
+    /**
+     * Send a {@link Message} to the given destination with a given partition supplier synchronously.
+     * @param destination destination
+     * @param message message
+     * @param partitionSupplier partition supplier
+     * @param <T> payload class in message
+     * @return void
+     */
+    default <T> void send(String destination, Message<T> message, PartitionSupplier partitionSupplier) {
+        sendAsync(destination, message, partitionSupplier).block();
+    }
+
+    /**
+     * Send a {@link Message} to the given destination synchronously.
+     * @param destination destination
+     * @param message message
+     * @param <T> payload class in message
+     * @return void
+     */
+    default <T> void send(String destination, Message<T> message) {
+        send(destination, message, null);
     }
 }

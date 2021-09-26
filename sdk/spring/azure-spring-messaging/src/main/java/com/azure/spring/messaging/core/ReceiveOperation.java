@@ -17,11 +17,20 @@ import reactor.core.publisher.Mono;
 public interface ReceiveOperation {
 
     /**
-     * Receive a message from destination async.
+     * Receive a message from destination asynchronously.
      * @param destination destination
      * @return {@link Mono} of the next available {@link Message} or {@code null} if empty
      */
     Mono<Message<?>> receiveAsync(String destination);
+
+    /**
+     * Receive a message from destination synchronously.
+     * @param destination destination
+     * @return received {@link Message} or {@code null} if empty
+     */
+    default Object receive(String destination) {
+        return receiveAsync(destination).block();
+    }
 
     /**
      * Set message payload type. Default is {@code byte[]}

@@ -18,7 +18,7 @@ import java.util.Collection;
 public interface BatchSendOperation {
 
     /**
-     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier.
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier asynchronously.
      * @param destination destination
      * @param messages message set
      * @param partitionSupplier partition supplier
@@ -29,7 +29,7 @@ public interface BatchSendOperation {
                              PartitionSupplier partitionSupplier);
 
     /**
-     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination.
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination asynchronously.
      * @param destination destination
      * @param messages message set
      * @param <T> payload type in message
@@ -37,5 +37,28 @@ public interface BatchSendOperation {
      */
     default <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages) {
         return sendAsync(destination, messages, null);
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
+    default <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier) {
+        sendAsync(destination, messages, partitionSupplier).block();
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
+    default <T> void send(String destination, Collection<Message<T>> messages) {
+        send(destination, messages, null);
     }
 }
