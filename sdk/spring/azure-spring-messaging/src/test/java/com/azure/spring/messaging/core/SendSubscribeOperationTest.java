@@ -25,44 +25,35 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public abstract class SendSubscribeOperationTest<T extends SendOperation> {
 
-    protected T sendSubscribeOperation;
-
-    protected String partitionId = "1";
     protected String destination = "test";
-    protected String payload = "payload";
-    protected User user = new User(payload);
-    protected Map<String, Object> headers = new HashMap<>();
-    protected Message<User> userMessage = new GenericMessage<>(user, headers);
-
+    protected String partitionId = "1";
+    protected T sendSubscribeOperation;
+    private Map<String, Object> headers = new HashMap<>();
     protected List<Message<User>> messages = IntStream.range(1, 5)
                                                       .mapToObj(String::valueOf)
                                                       .map(User::new)
                                                       .map(u -> new GenericMessage<>(u, headers))
                                                       .collect(Collectors.toList());
-    private final Message<String> stringMessage = new GenericMessage<>(payload, headers);
-    private final Message<byte[]> byteMessage = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8), headers);
+    private String payload = "payload";
+    private Message<byte[]> byteMessage = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8), headers);
+    private Message<String> stringMessage = new GenericMessage<>(payload, headers);
+    protected User user = new User(payload);
+    protected Message<User> userMessage = new GenericMessage<>(user, headers);
+
+    protected abstract void setCheckpointConfig(CheckpointConfig checkpointConfig);
 
     @BeforeEach
     public abstract void setUp() throws Exception;
 
-    @Test
-    public void testSendString() {
-        subscribe(destination, this::stringHandler, String.class);
-        sendSubscribeOperation.sendAsync(destination, stringMessage);
-    }
+    protected abstract void subscribe(String destination, Consumer<Message<?>> consumer, Class<?> payloadType);
 
     @Test
     public void testSendByte() {
         subscribe(destination, this::byteHandler, byte[].class);
         sendSubscribeOperation.sendAsync(destination, byteMessage);
-    }
-
-    @Test
-    public void testSendUser() {
-        subscribe(destination, this::userHandler, User.class);
-        sendSubscribeOperation.sendAsync(destination, userMessage);
     }
 
     @Test
@@ -78,6 +69,39 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
         subscribe(destination, this::recordCheckpointHandler, User.class);
         messages.forEach(m -> sendSubscribeOperation.sendAsync(destination, m));
         verifyCheckpointSuccessCalled(messages.size());
+    }
+
+    @Test
+    public void testSendString() {
+        subscribe(destination, this::stringHandler, String.class);
+        sendSubscribeOperation.sendAsync(destination, stringMessage);
+    }
+
+    @Test
+    public void testSendUser() {
+        subscribe(destination, this::userHandler, User.class);
+        sendSubscribeOperation.sendAsync(destination, userMessage);
+    }
+
+    @Deprecated
+    protected abstract void verifyCheckpointBatchSuccessCalled(int times);
+
+    protected void verifyCheckpointFailure(Checkpointer checkpointer) {
+        checkpointer.failure();
+        verifyCheckpointFailureCalled(1);
+    }
+
+    protected abstract void verifyCheckpointFailureCalled(int times);
+
+    protected void verifyCheckpointSuccess(Checkpointer checkpointer) {
+        checkpointer.success();
+        verifyCheckpointSuccessCalled(1);
+    }
+
+    protected abstract void verifyCheckpointSuccessCalled(int times);
+
+    private void byteHandler(Message<?> message) {
+        assertEquals(payload, new String((byte[]) message.getPayload(), StandardCharsets.UTF_8));
     }
 
     protected void manualCheckpointHandler(Message<?> message) {
@@ -96,40 +120,8 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
         assertEquals(payload, message.getPayload());
     }
 
-    private void byteHandler(Message<?> message) {
-        assertEquals(payload, new String((byte[]) message.getPayload(), StandardCharsets.UTF_8));
-    }
-
     private void userHandler(Message<?> message) {
         assertEquals(user, message.getPayload());
-    }
-
-    protected abstract void verifyCheckpointSuccessCalled(int times);
-
-    protected abstract void verifyCheckpointBatchSuccessCalled(int times);
-
-    protected abstract void verifyCheckpointFailureCalled(int times);
-
-    protected abstract void subscribe(String destination, Consumer<Message<?>> consumer, Class<?> payloadType);
-
-    protected abstract void setCheckpointConfig(CheckpointConfig checkpointConfig);
-
-    protected void verifyCheckpointSuccess(Checkpointer checkpointer) {
-        checkpointer.success();
-        verifyCheckpointSuccessCalled(1);
-    }
-
-    protected void verifyCheckpointFailure(Checkpointer checkpointer) {
-        checkpointer.failure();
-        verifyCheckpointFailureCalled(1);
-    }
-
-    public String getPartitionId() {
-        return partitionId;
-    }
-
-    public void setPartitionId(String partitionId) {
-        this.partitionId = partitionId;
     }
 
     public T getSendSubscribeOperation() {
@@ -138,6 +130,14 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
 
     public void setSendSubscribeOperation(T sendSubscribeOperation) {
         this.sendSubscribeOperation = sendSubscribeOperation;
+    }
+
+    public String getPartitionId() {
+        return partitionId;
+    }
+
+    public void setPartitionId(String partitionId) {
+        this.partitionId = partitionId;
     }
 
     protected void waitMillis(long millis) {

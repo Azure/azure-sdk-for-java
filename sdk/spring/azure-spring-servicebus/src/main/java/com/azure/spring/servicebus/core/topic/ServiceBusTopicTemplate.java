@@ -98,14 +98,18 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
             this.checkpointConfig, payloadType, consumer, this.messageConverter) {
             @Override
-            protected String buildCheckpointFailMessage(Message<?> message) {
-                return String.format(MSG_FAIL_CHECKPOINT, consumer, name, message);
+            protected void buildCheckpointFailMessage(Message<?> message, Throwable t) {
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, consumer, name, message), t);
+                }
             }
 
             @Override
-            protected String buildCheckpointSuccessMessage(Message<?> message) {
-                return String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
-                    getCheckpointConfig().getCheckpointMode());
+            protected void buildCheckpointSuccessMessage(Message<?> message) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
+                        getCheckpointConfig().getCheckpointMode()));
+                }
             }
         };
         Instrumentation instrumentation = new Instrumentation(name + consumerGroup, Instrumentation.Type.CONSUME);

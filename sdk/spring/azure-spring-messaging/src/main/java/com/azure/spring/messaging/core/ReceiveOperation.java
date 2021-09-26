@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.core.reactor;
+package com.azure.spring.messaging.core;
 
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import org.springframework.messaging.Message;

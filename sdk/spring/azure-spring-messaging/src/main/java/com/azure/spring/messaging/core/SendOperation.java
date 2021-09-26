@@ -5,14 +5,13 @@ package com.azure.spring.messaging.core;
 
 import com.azure.spring.messaging.PartitionSupplier;
 import org.springframework.messaging.Message;
-
-import java.util.concurrent.CompletableFuture;
+import reactor.core.publisher.Mono;
 
 
 /**
  * Operations for sending {@link Message} to a destination.
  *
- * @author Warren Zhu
+ * @author Xiaolu Dai
  */
 public interface SendOperation {
 
@@ -21,19 +20,19 @@ public interface SendOperation {
      * @param destination destination
      * @param message message
      * @param partitionSupplier partition supplier
-     * @param <T> payload type in message
-     * @return future instance
+     * @param <T> payload class in message
+     * @return Mono Void
      */
-    <T> CompletableFuture<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier);
+    <T> Mono<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier);
 
     /**
      * Send a {@link Message} to the given destination.
      * @param destination destination
      * @param message message
-     * @param <T> payload type in message
-     * @return future instance
+     * @param <T> payload class in message
+     * @return Mono Void
      */
-    default <T> CompletableFuture<Void> sendAsync(String destination, Message<T> message) {
+    default <T> Mono<Void> sendAsync(String destination, Message<T> message) {
         return sendAsync(destination, message, null);
     }
 }

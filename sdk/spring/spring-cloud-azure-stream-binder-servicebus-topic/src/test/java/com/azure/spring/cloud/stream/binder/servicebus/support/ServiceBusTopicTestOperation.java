@@ -12,13 +12,13 @@ import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -39,7 +39,7 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     }
 
     @Override
-    public <U> CompletableFuture<Void> sendAsync(String name, Message<U> message, PartitionSupplier partitionSupplier) {
+    public <U> Mono<Void> sendAsync(String name, Message<U> message, PartitionSupplier partitionSupplier) {
 
         ServiceBusMessage azureMessage = getMessageConverter().fromMessage(message, ServiceBusMessage.class);
 
@@ -52,7 +52,7 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
         }
         processorsByTopicAndSub.get(name).values().forEach(c -> c.processMessage().accept(receivedMessageContext));
 
-        return CompletableFuture.completedFuture(null);
+        return Mono.empty();
     }
 
     @Override
