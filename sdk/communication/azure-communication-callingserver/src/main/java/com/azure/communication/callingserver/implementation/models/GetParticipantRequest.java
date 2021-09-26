@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for removing participant from hold. */
+/** The get participant by identifier request. */
 @Fluent
-public final class StopHoldMusicRequest {
+public final class GetParticipantRequest {
     /*
      * The identifier of the participant.
      */
@@ -29,9 +29,9 @@ public final class StopHoldMusicRequest {
      * Set the identifier property: The identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the StopHoldMusicRequest object itself.
+     * @return the GetParticipantRequest object itself.
      */
-    public StopHoldMusicRequest setIdentifier(CommunicationIdentifierModel identifier) {
+    public GetParticipantRequest setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }

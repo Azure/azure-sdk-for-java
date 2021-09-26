@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StartHoldMusicRequest {
     /*
+     * The identifier of the participant.
+     */
+    @JsonProperty(value = "identifier", required = true)
+    private CommunicationIdentifierModel identifier;
+
+    /*
      * The media resource uri of the hold music request.
      * Currently only Wave file (.wav) format audio prompts are supported.
      * More specifically, the audio content in the wave file must be mono
@@ -32,6 +38,32 @@ public final class StartHoldMusicRequest {
      */
     @JsonProperty(value = "callbackUri")
     private String callbackUri;
+
+    /*
+     * The value to identify context of the operation.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /**
+     * Get the identifier property: The identifier of the participant.
+     *
+     * @return the identifier value.
+     */
+    public CommunicationIdentifierModel getIdentifier() {
+        return this.identifier;
+    }
+
+    /**
+     * Set the identifier property: The identifier of the participant.
+     *
+     * @param identifier the identifier value to set.
+     * @return the StartHoldMusicRequest object itself.
+     */
+    public StartHoldMusicRequest setIdentifier(CommunicationIdentifierModel identifier) {
+        this.identifier = identifier;
+        return this;
+    }
 
     /**
      * Get the audioFileUri property: The media resource uri of the hold music request. Currently only Wave file (.wav)
@@ -94,6 +126,26 @@ public final class StartHoldMusicRequest {
      */
     public StartHoldMusicRequest setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the StartHoldMusicRequest object itself.
+     */
+    public StartHoldMusicRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

@@ -31,9 +31,9 @@ To update generated files for calling service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-09-15-preview
+tag: package-2021-11-15-preview
 require:
-    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/2b4bddc11bb41ab64fc3d4da7d7bb87c0b50beda/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/e1844b300b297c26789fbede0a78815f2e6653e9/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -94,14 +94,14 @@ directive:
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal    
-- rename-model:
-    from: CallConnectionProperties
-    to: CallConnectionPropertiesInternal  
+    to: ToneInfoInternal
 - rename-model:
     from: StartHoldMusicResult
     to: StartHoldMusicResultInternal
 - rename-model:
     from: StopHoldMusicResult
-    to: StopHoldMusicResultInternal                    
+    to: StopHoldMusicResultInternal
+- rename-model:
+    from: AnswerCallResult
+    to: AnswerCallResultInternal
 ```

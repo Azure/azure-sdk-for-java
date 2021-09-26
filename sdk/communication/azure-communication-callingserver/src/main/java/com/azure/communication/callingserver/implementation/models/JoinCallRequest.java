@@ -14,6 +14,12 @@ import java.util.List;
 @Fluent
 public final class JoinCallRequest {
     /*
+     * The call locator.
+     */
+    @JsonProperty(value = "callLocator", required = true)
+    private CallLocatorModel callLocator;
+
+    /*
      * The source of the call.
      */
     @JsonProperty(value = "source", required = true)
@@ -42,6 +48,26 @@ public final class JoinCallRequest {
      */
     @JsonProperty(value = "requestedCallEvents")
     private List<EventSubscriptionType> requestedCallEvents;
+
+    /**
+     * Get the callLocator property: The call locator.
+     *
+     * @return the callLocator value.
+     */
+    public CallLocatorModel getCallLocator() {
+        return this.callLocator;
+    }
+
+    /**
+     * Set the callLocator property: The call locator.
+     *
+     * @param callLocator the callLocator value to set.
+     * @return the JoinCallRequest object itself.
+     */
+    public JoinCallRequest setCallLocator(CallLocatorModel callLocator) {
+        this.callLocator = callLocator;
+        return this;
+    }
 
     /**
      * Get the source property: The source of the call.
