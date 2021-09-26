@@ -122,7 +122,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        long refreshInterval = Optional.of("azure.keyvault.jca.certificates-refresh-interval")
+        long refreshInterval = Optional.of("azure.keyvault.jca.certificates-refresh-interval-in-ms")
                                        .map(System::getProperty)
                                        .map(Long::valueOf)
                                        .orElse(0L);

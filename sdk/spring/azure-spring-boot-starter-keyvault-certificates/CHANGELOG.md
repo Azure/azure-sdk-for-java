@@ -8,6 +8,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Features Added
 
 ### Breaking Changes
+Rename `azure.keyvault.jca.certificates-refresh-interval` to `azure.keyvault.jca.certificates-refresh-interval-in-ms`.
 
 ### Bugs Fixed
 
