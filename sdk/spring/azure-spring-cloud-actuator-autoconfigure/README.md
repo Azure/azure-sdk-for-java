@@ -1,8 +1,6 @@
 # Spring Cloud for Azure Actuator Autoconfigure client library for Java
 This package provides the actuator auto-configuration for all Azure Spring libraries.
 
-[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
-
 ## Getting started
 
 ### Prerequisites
@@ -50,9 +48,6 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]:
-[package]:
-[refdocs]:
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
