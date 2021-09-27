@@ -1,6 +1,6 @@
 # Release History
 
-## 3.2.0 (2021-09-26)
+## 3.2.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
