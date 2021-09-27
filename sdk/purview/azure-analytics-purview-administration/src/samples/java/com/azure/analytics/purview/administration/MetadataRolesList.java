@@ -15,6 +15,6 @@ public class MetadataRolesList {
                         .endpoint(System.getenv("ENDPOINT"))
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildMetadataRolesClient();
-        PagedIterable<BinaryData> response = client.list(null);
+        PagedIterable<BinaryData> response = client.list(null, null);
     }
 }

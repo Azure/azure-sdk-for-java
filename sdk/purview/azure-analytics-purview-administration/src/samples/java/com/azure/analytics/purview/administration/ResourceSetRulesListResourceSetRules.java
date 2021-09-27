@@ -15,6 +15,6 @@ public class ResourceSetRulesListResourceSetRules {
                         .endpoint(System.getenv("ENDPOINT"))
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildResourceSetRulesClient();
-        PagedIterable<BinaryData> response = client.listResourceSetRules(null);
+        PagedIterable<BinaryData> response = client.listResourceSetRules(null, null);
     }
 }

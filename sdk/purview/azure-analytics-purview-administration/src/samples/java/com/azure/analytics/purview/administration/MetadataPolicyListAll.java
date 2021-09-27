@@ -15,6 +15,6 @@ public class MetadataPolicyListAll {
                         .endpoint(System.getenv("ENDPOINT"))
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildMetadataPolicyClient();
-        PagedIterable<BinaryData> response = client.listAll(null);
+        PagedIterable<BinaryData> response = client.listAll(null, null);
     }
 }
