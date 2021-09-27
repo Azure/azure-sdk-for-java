@@ -7,20 +7,20 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Tuple;
+import reactor.util.function.Tuple2;
 
 /**
  * Resource manager for Service Bus topic.
  */
-public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple<String, String>> {
+public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<String, String>> {
 
     public ServiceBusTopicCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
     @Override
-    String getResourceName(Tuple<String, String> key) {
-        return key.getSecond();
+    String getResourceName(Tuple2<String, String> key) {
+        return key.getT2();
     }
 
     @Override
@@ -29,12 +29,12 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple<Strin
     }
 
     @Override
-    public Topic internalGet(Tuple<String, String> namespaceAndName) {
+    public Topic internalGet(Tuple2<String, String> namespaceAndName) {
         try {
             return new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-                .get(namespaceAndName.getFirst())
+                .get(namespaceAndName.getT1())
                 .topics()
-                .getByName(namespaceAndName.getSecond());
+                .getByName(namespaceAndName.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
@@ -45,11 +45,11 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple<Strin
     }
 
     @Override
-    public Topic internalCreate(Tuple<String, String> namespaceAndName) {
+    public Topic internalCreate(Tuple2<String, String> namespaceAndName) {
         return new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
-            .getOrCreate(namespaceAndName.getFirst())
+            .getOrCreate(namespaceAndName.getT1())
             .topics()
-            .define(namespaceAndName.getSecond())
+            .define(namespaceAndName.getT2())
             .create();
     }
 }

@@ -7,20 +7,20 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Tuple;
+import reactor.util.function.Tuple2;
 
 /**
  * Resource manager for Event Hubs.
  */
-public class EventHubCrud extends AbstractResourceCrud<EventHub, Tuple<String, String>> {
+public class EventHubCrud extends AbstractResourceCrud<EventHub, Tuple2<String, String>> {
 
     public EventHubCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
     @Override
-    String getResourceName(Tuple<String, String> key) {
-        return key.getSecond();
+    String getResourceName(Tuple2<String, String> key) {
+        return key.getT2();
     }
 
     @Override
@@ -29,12 +29,12 @@ public class EventHubCrud extends AbstractResourceCrud<EventHub, Tuple<String, S
     }
 
     @Override
-    public EventHub internalGet(Tuple<String, String> namespaceAndName) {
+    public EventHub internalGet(Tuple2<String, String> namespaceAndName) {
         try {
             return this.resourceManager.eventHubs()
                                        .getByName(this.resourceMetadata.getResourceGroup(),
-                                                  namespaceAndName.getFirst(),
-                                                  namespaceAndName.getSecond());
+                                                  namespaceAndName.getT1(),
+                                                  namespaceAndName.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
@@ -45,12 +45,12 @@ public class EventHubCrud extends AbstractResourceCrud<EventHub, Tuple<String, S
     }
 
     @Override
-    public EventHub internalCreate(Tuple<String, String> namespaceAndName) {
+    public EventHub internalCreate(Tuple2<String, String> namespaceAndName) {
         return this.resourceManager.eventHubs()
-                                   .define(namespaceAndName.getSecond())
+                                   .define(namespaceAndName.getT2())
                                    .withExistingNamespace(new EventHubNamespaceCrud(this.resourceManager,
                                                                                     this.resourceMetadata)
-                                                              .getOrCreate(namespaceAndName.getFirst()))
+                                                              .getOrCreate(namespaceAndName.getT1()))
                                    .create();
     }
 }

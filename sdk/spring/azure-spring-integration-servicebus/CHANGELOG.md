@@ -18,8 +18,10 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.
 ### Features Added
 
 ### Breaking Changes
+- Change the value type of ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME from Instant to OffsetDateTime.
 
 ### Bugs Fixed
+- Fix the bug of ClassCastException when forward Service Bus messages with the header of schedule enqueued time.
 
 ### Other Changes
 

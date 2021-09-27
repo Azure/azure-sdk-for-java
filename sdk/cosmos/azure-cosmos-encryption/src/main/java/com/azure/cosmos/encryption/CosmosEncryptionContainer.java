@@ -39,13 +39,41 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * create item and encrypts the requested fields
+     * Creates a new item synchronously and returns its respective Cosmos item response.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return the Cosmos item resource response.
+     * @param <T> the type parameter
+     * @param item the item
+     * @return the Cosmos item response
+     */
+    public <T> CosmosItemResponse<T> createItem(T item) {
+        return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.createItem(item));
+    }
+
+    /**
+     * Creates a new item synchronously and returns its respective Cosmos item response
+     * while specifying additional options.
+     * <p>
+     * The partition key value will be automatically extracted from the item's content.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param options the options.
+     * @return the cosmos item response.
+     */
+
+    public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) {
+        return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.createItem(item, options));
+    }
+
+    /**
+     * Creates a new item synchronously and returns its respective Cosmos item response
+     * while specifying additional options.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param partitionKey the partition key.
+     * @param requestOptions the options.
+     * @return the Cosmos item response.
      */
     @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> createItem(T item,
@@ -55,12 +83,12 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * Deletes the item.
+     * Deletes an item in the current container.
      *
-     * @param itemId         id of the item.
-     * @param partitionKey   partitionKey of the item.
-     * @param requestOptions the request options.
-     * @return the Cosmos item resource response.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the options.
+     * @return the Cosmos item response.
      */
     public CosmosItemResponse<Object> deleteItem(String itemId,
                                                  PartitionKey partitionKey,
@@ -70,13 +98,62 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * upserts item and encrypts the requested fields
+     * Deletes an item in the current container.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item to be deleted.
+     * @param options the options.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<Object> deleteItem(T item, CosmosItemRequestOptions options) {
+        return  this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteItem(item, options));
+    }
+
+    /**
+     * Deletes all items in the Container with the specified partitionKey value.
+     * Starts an asynchronous Cosmos DB background operation which deletes all items in the Container with the specified value.
+     * The asynchronous Cosmos DB background operation runs using a percentage of user RUs.
+     *
+     * @param partitionKey the partition key.
+     * @param options the options.
+     * @return the Cosmos item response
+     */
+    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
+    }
+
+    /**
+     * Upserts an Cosmos item in the current container.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<T> upsertItem(T item) {
+        return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.upsertItem(item));
+    }
+
+    /**
+     * Upserts a item Cosmos sync item while specifying additional options.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param options the options.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<T> upsertItem(T item, CosmosItemRequestOptions options) {
+        return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.upsertItem(item, options));
+    }
+
+    /**
+     * Upserts a item Cosmos sync item while specifying additional options.
+     *
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param partitionKey the partitionKey.
+     * @param requestOptions the options.
+     * @return the Cosmos item response.
      */
     @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> upsertItem(T item,
@@ -86,14 +163,14 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * replaces item and encrypts the requested fields
+     * Replaces an item in the current container.
      *
-     * @param item           the Cosmos item represented as a POJO or Cosmos item object.
-     * @param itemId         the item id.
-     * @param partitionKey   the partition key.
-     * @param requestOptions request option
-     * @param <T>            serialization class type
-     * @return the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param item the item.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the options.
+     * @return the Cosmos item response.
      */
     @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> replaceItem(T item,
@@ -105,14 +182,30 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * Reads item and decrypt the encrypted fields
+     * Reads an item in the current container.
      *
-     * @param id             item id
-     * @param partitionKey   the partition key.
-     * @param requestOptions request options
-     * @param classType      deserialization class type
-     * @param <T>            type
-     * @return the Cosmos item resource response.
+     * @param <T> the type parameter.
+     * @param id the item id.
+     * @param partitionKey the partition key.
+     * @param classType the class type of item.
+     * @return the Cosmos item response.
+     */
+    public <T> CosmosItemResponse<T> readItem(String id, PartitionKey partitionKey, Class<T> classType) {
+        return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.readItem(id,
+            partitionKey,
+            new CosmosItemRequestOptions(),
+            classType));
+    }
+
+    /**
+     * Reads an item in the current container while specifying additional options.
+     *
+     * @param <T> the type parameter.
+     * @param id the item id.
+     * @param partitionKey the partition key.
+     * @param requestOptions the options.
+     * @param classType the class type of item.
+     * @return the Cosmos item response.
      */
     public <T> CosmosItemResponse<T> readItem(String id,
                                               PartitionKey partitionKey,
@@ -123,33 +216,33 @@ public class CosmosEncryptionContainer {
     }
 
     /**
-     * Query for items in the current container using a string.
+     * Query items in the current container returning the results as {@link CosmosPagedIterable}.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query text.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param query the query.
+     * @param requestOptions the options.
      * @param classType the class type.
-     * @return a {@link CosmosPagedIterable}.
+     * @return the {@link CosmosPagedIterable}.
      */
-    public <T> CosmosPagedIterable<T> queryItems(String query, CosmosQueryRequestOptions options,
+    public <T> CosmosPagedIterable<T> queryItems(String query, CosmosQueryRequestOptions requestOptions,
                                                  Class<T> classType) {
 
-        return getCosmosPagedIterable(this.cosmosEncryptionAsyncContainer.queryItems(query, options, classType));
+        return getCosmosPagedIterable(this.cosmosEncryptionAsyncContainer.queryItems(query, requestOptions, classType));
     }
 
     /**
-     * Query for items in the current container using a {@link SqlQuerySpec}.
+     * Query items in the current container returning the results as {@link CosmosPagedIterable}.
      *
-     * @param <T>       the type parameter.
-     * @param query     the query.
-     * @param options   the query request options.
+     * @param <T> the type parameter.
+     * @param query the query spec.
+     * @param requestOptions the options.
      * @param classType the class type.
-     * @return a {@link CosmosPagedIterable}.
+     * @return the {@link CosmosPagedIterable}.
      */
     public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec query,
-                                                 CosmosQueryRequestOptions options,
+                                                 CosmosQueryRequestOptions requestOptions,
                                                  Class<T> classType) {
-        return getCosmosPagedIterable(this.cosmosEncryptionAsyncContainer.queryItems(query, options, classType));
+        return getCosmosPagedIterable(this.cosmosEncryptionAsyncContainer.queryItems(query, requestOptions, classType));
     }
 
     /**

@@ -79,9 +79,8 @@ public class SchemaRegistryClientTests extends TestBase {
 
     @Override
     protected void afterTest() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
-
 
     /**
      * Verifies that we can register a schema and then get it by its schemaId.

@@ -6,8 +6,8 @@ package com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.core.util.Tuple;
 import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
+import reactor.util.function.Tuples;
 
 /**
  * A default implementation to provision Service Bus Queue.
@@ -23,7 +23,7 @@ public class DefaultServiceBusQueueProvisioner implements ServiceBusQueueProvisi
 
     @Override
     public void provisionQueue(String namespace, String queue) {
-        this.serviceBusQueueCrud.getOrCreate(Tuple.of(namespace, queue));
+        this.serviceBusQueueCrud.getOrCreate(Tuples.of(namespace, queue));
     }
 
 }

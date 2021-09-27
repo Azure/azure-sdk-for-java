@@ -1,6 +1,7 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.HttpAuthorization
+import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobContainerClient
@@ -8,6 +9,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.share.models.ShareStorageException
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions
+import spock.lang.Retry
 
 @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2020_10_02")
 class OAuthCopySourceTests extends APISpec {
@@ -43,6 +45,8 @@ class OAuthCopySourceTests extends APISpec {
             .createBlobContainer(getShareName())
     }
 
+    // RBAC replication lag
+    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
     def "Copy from URL with oauth source"() {
         given:
         def oauthHeader = getAuthToken()
