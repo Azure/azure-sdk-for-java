@@ -4,59 +4,50 @@
 
 package com.azure.analytics.purview.scanning;
 
+import com.azure.analytics.purview.scanning.implementation.ScanResultsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 
-/** Initializes a new instance of the ScanResultBaseClient type. */
+/** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
-public final class ScanResultBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+public final class ScanResultClient {
+    private final ScanResultsImpl serviceClient;
 
     /**
-     * Initializes an instance of ScanResultBaseClient client.
+     * Initializes an instance of ScanResults client.
      *
-     * @param endpoint The scanning endpoint of your purview account. Example:
-     *     https://{accountName}.scan.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    ScanResultBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    ScanResultClient(ScanResultsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Runs the scan.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>scanLevel</td><td>ScanLevelType</td><td>The scanLevel parameter</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>scanLevel</td><td>String</td><td>No</td><td>The scanLevel parameter</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -79,32 +70,36 @@ public final class ScanResultBaseClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest runScan(String dataSourceName, String scanName, String runId) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .setPathParam("scanName", scanName)
-                .setPathParam("runId", runId)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Response<BinaryData> runScanWithResponse(
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.runScanWithResponse(dataSourceName, scanName, runId, requestOptions, context);
     }
 
     /**
      * Cancels a scan.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     scanResultId: UUID
-     *     startTime: OffsetDateTime
-     *     endTime: OffsetDateTime
+     *     scanResultId: String
+     *     startTime: String
+     *     endTime: String
      *     status: String(Accepted/InProgress/TransientFailure/Succeeded/Failed/Canceled)
      *     error: {
      *         code: String
@@ -127,24 +122,28 @@ public final class ScanResultBaseClient {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest cancelScan(String dataSourceName, String scanName, String runId) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}/:cancel")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .setPathParam("scanName", scanName)
-                .setPathParam("runId", runId)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Response<BinaryData> cancelScanWithResponse(
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.cancelScanWithResponse(dataSourceName, scanName, runId, requestOptions, context);
     }
 
     /**
      * Lists the scan history of a scan.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -169,10 +168,10 @@ public final class ScanResultBaseClient {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -203,23 +202,27 @@ public final class ScanResultBaseClient {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listScanHistory(String dataSourceName, String scanName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}/scans/{scanName}/runs")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .setPathParam("scanName", scanName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listScanHistory(
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return this.serviceClient.listScanHistory(dataSourceName, scanName, requestOptions);
     }
 
     /**
-     * Get the next page of items.
+     * Lists the scan history of a scan.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -244,10 +247,10 @@ public final class ScanResultBaseClient {
      *                     String: int
      *                 }
      *             }
-     *             startTime: OffsetDateTime
-     *             queuedTime: OffsetDateTime
-     *             pipelineStartTime: OffsetDateTime
-     *             endTime: OffsetDateTime
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
      *             scanRulesetVersion: Integer
      *             scanRulesetType: String(Custom/System)
      *             scanLevelType: String(Full/Incremental)
@@ -276,27 +279,17 @@ public final class ScanResultBaseClient {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param dataSourceName The dataSourceName parameter.
+     * @param scanName The scanName parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listScanHistoryNext(String nextLink) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/{nextLink}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("nextLink", nextLink)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listScanHistory(
+            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.listScanHistory(dataSourceName, scanName, requestOptions, context);
     }
 }

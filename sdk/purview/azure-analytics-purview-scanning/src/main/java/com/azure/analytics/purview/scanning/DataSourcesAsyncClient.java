@@ -4,45 +4,43 @@
 
 package com.azure.analytics.purview.scanning;
 
+import com.azure.analytics.purview.scanning.implementation.DataSourcesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DataSourcesBaseClient type. */
-@ServiceClient(builder = PurviewScanningClientBuilder.class)
-public final class DataSourcesBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
+@ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
+public final class DataSourcesAsyncClient {
+    private final DataSourcesImpl serviceClient;
 
     /**
-     * Initializes an instance of DataSourcesBaseClient client.
+     * Initializes an instance of DataSources client.
      *
-     * @param endpoint The scanning endpoint of your purview account. Example:
-     *     https://{accountName}.scan.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    DataSourcesBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    DataSourcesAsyncClient(DataSourcesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Creates or Updates a data source.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -71,10 +69,10 @@ public final class DataSourcesBaseClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -103,30 +101,28 @@ public final class DataSourcesBaseClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * (recursive schema, see above)
-     * }</pre>
-     *
      * @param dataSourceName The dataSourceName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createOrUpdate(String dataSourceName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, requestOptions);
     }
 
     /**
      * Get a data source.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -156,10 +152,10 @@ public final class DataSourcesBaseClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -189,23 +185,27 @@ public final class DataSourcesBaseClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest get(String dataSourceName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(dataSourceName, requestOptions);
     }
 
     /**
      * Deletes a data source.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -235,10 +235,10 @@ public final class DataSourcesBaseClient {
      *                             String: int
      *                         }
      *                     }
-     *                     startTime: OffsetDateTime
-     *                     queuedTime: OffsetDateTime
-     *                     pipelineStartTime: OffsetDateTime
-     *                     endTime: OffsetDateTime
+     *                     startTime: String
+     *                     queuedTime: String
+     *                     pipelineStartTime: String
+     *                     endTime: String
      *                     scanRulesetVersion: Integer
      *                     scanRulesetType: String(Custom/System)
      *                     scanLevelType: String(Full/Incremental)
@@ -268,105 +268,26 @@ public final class DataSourcesBaseClient {
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest delete(String dataSourceName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources/{dataSourceName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("dataSourceName", dataSourceName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<BinaryData>> deleteWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(dataSourceName, requestOptions);
     }
 
     /**
      * List data sources in Data catalog.
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p><strong>Query Parameters</strong>
      *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             scans: [
-     *                 {
-     *                     id: String
-     *                     name: String
-     *                     scanResults: [
-     *                         {
-     *                             parentId: String
-     *                             id: String
-     *                             resourceId: String
-     *                             status: String
-     *                             assetsDiscovered: Long
-     *                             assetsClassified: Long
-     *                             diagnostics: {
-     *                                 notifications: [
-     *                                     {
-     *                                         message: String
-     *                                         code: Integer
-     *                                     }
-     *                                 ]
-     *                                 exceptionCountMap: {
-     *                                     String: int
-     *                                 }
-     *                             }
-     *                             startTime: OffsetDateTime
-     *                             queuedTime: OffsetDateTime
-     *                             pipelineStartTime: OffsetDateTime
-     *                             endTime: OffsetDateTime
-     *                             scanRulesetVersion: Integer
-     *                             scanRulesetType: String(Custom/System)
-     *                             scanLevelType: String(Full/Incremental)
-     *                             errorMessage: String
-     *                             error: {
-     *                                 code: String
-     *                                 message: String
-     *                                 target: String
-     *                                 details: [
-     *                                     {
-     *                                         code: String
-     *                                         message: String
-     *                                         target: String
-     *                                         details: [
-     *                                             (recursive schema, see above)
-     *                                         ]
-     *                                     }
-     *                                 ]
-     *                             }
-     *                             runType: String
-     *                             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
-     *                         }
-     *                     ]
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listAll() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/datasources")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Get the next page of items.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -399,10 +320,10 @@ public final class DataSourcesBaseClient {
      *                                     String: int
      *                                 }
      *                             }
-     *                             startTime: OffsetDateTime
-     *                             queuedTime: OffsetDateTime
-     *                             pipelineStartTime: OffsetDateTime
-     *                             endTime: OffsetDateTime
+     *                             startTime: String
+     *                             queuedTime: String
+     *                             pipelineStartTime: String
+     *                             endTime: String
      *                             scanRulesetVersion: Integer
      *                             scanRulesetType: String(Custom/System)
      *                             scanLevelType: String(Full/Incremental)
@@ -435,27 +356,13 @@ public final class DataSourcesBaseClient {
      * }
      * }</pre>
      *
-     * @param nextLink The nextLink parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listAllNext(String nextLink) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/{nextLink}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("nextLink", nextLink)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
+        return this.serviceClient.listAllAsync(requestOptions);
     }
 }
