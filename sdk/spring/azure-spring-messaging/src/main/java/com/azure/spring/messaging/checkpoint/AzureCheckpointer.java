@@ -4,34 +4,35 @@
 package com.azure.spring.messaging.checkpoint;
 
 import org.springframework.lang.NonNull;
+import reactor.core.publisher.Mono;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 /**
  * Azure implementation for check point callback.
  */
 public class AzureCheckpointer implements Checkpointer {
-    private final Supplier<CompletableFuture<Void>> success;
-    private final Supplier<CompletableFuture<Void>> fail;
 
-    public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success) {
+    private final Supplier<Mono<Void>> success;
+    private final Supplier<Mono<Void>> fail;
+
+    public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success) {
         this(success, null);
     }
 
-    public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success,
-                             Supplier<CompletableFuture<Void>> fail) {
+    public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success,
+                             Supplier<Mono<Void>> fail) {
         this.success = success;
         this.fail = fail;
     }
 
     @Override
-    public CompletableFuture<Void> success() {
+    public Mono<Void> success() {
         return this.success.get();
     }
 
     @Override
-    public CompletableFuture<Void> failure() {
+    public Mono<Void> failure() {
         if (this.fail == null) {
             throw new UnsupportedOperationException("Fail current message unsupported");
         }

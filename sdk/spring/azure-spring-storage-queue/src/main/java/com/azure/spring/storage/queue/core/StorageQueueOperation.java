@@ -3,8 +3,8 @@
 
 package com.azure.spring.storage.queue.core;
 
-import com.azure.spring.messaging.core.reactor.ReceiveOperation;
-import com.azure.spring.messaging.core.reactor.SendOperation;
+import com.azure.spring.messaging.core.ReceiveOperation;
+import com.azure.spring.messaging.core.SendOperation;
 
 /**
  * Azure storage queue operation to support send and receive

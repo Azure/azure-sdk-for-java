@@ -28,13 +28,12 @@ public class ServiceBusMessageHandlerTest extends MessageHandlerTest<ServiceBusQ
     @SuppressWarnings("unchecked")
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.future.complete(null);
         this.sendOperation = mock(ServiceBusQueueOperation.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
-                                          isA(PartitionSupplier.class))).thenReturn(future);
+                                          isA(PartitionSupplier.class))).thenReturn(mono);
         when(
             this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class), isA(PartitionSupplier.class)))
-            .thenReturn(future);
+            .thenReturn(mono);
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }
 

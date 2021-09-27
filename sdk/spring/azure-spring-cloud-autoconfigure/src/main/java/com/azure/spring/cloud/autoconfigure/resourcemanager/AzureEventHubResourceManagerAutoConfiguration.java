@@ -5,9 +5,9 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubProperties;
-import com.azure.spring.cloud.autoconfigure.eventhub.resourcemanager.DefaultEventHubProvisioner;
+import com.azure.spring.eventhubs.provisioning.arm.DefaultEventHubProvisioner;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubArmConnectionStringProvider;
-import com.azure.spring.eventhubs.core.EventHubProvisioner;
+import com.azure.spring.eventhubs.provisioning.EventHubProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

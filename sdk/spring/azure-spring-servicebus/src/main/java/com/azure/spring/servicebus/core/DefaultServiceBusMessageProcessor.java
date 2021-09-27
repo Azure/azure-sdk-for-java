@@ -17,10 +17,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
@@ -57,7 +57,8 @@ public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProce
         return context -> {
             Map<String, Object> headers = new HashMap<>();
 
-            Checkpointer checkpointer = new AzureCheckpointer(() -> success(context), () -> fail(context));
+            Checkpointer checkpointer = new AzureCheckpointer(() -> Mono.fromRunnable(context::complete),
+                                                              () -> Mono.fromRunnable(context::abandon));
             headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, context);
 
             if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
@@ -69,35 +70,24 @@ public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProce
             consumer.accept(message);
 
             if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD) {
-                checkpointer.success().whenComplete((v, t) -> checkpointHandler(message, t));
+                checkpointer.success()
+                            .doOnSuccess(t -> logCheckpointSuccess(message))
+                            .doOnError(t -> logCheckpointFail(message, t))
+                            .subscribe();
             }
         };
     }
 
-    private CompletableFuture<Void> success(ServiceBusReceivedMessageContext context) {
-        return CompletableFuture.runAsync(context::complete);
-    }
-
-    private CompletableFuture<Void> fail(ServiceBusReceivedMessageContext context) {
-        return CompletableFuture.runAsync(context::abandon);
-    }
-
-    private void checkpointHandler(Message<?> message, Throwable t) {
-        if (t != null) {
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(buildCheckpointFailMessage(message), t);
-            }
-        } else if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(buildCheckpointSuccessMessage(message));
+    protected void logCheckpointFail(Message<?> message, Throwable t) {
+        if (LOGGER.isWarnEnabled()) {
+            LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t);
         }
     }
 
-    protected String buildCheckpointFailMessage(Message<?> message) {
-        return String.format(MSG_FAIL_CHECKPOINT, message);
-    }
-
-    protected String buildCheckpointSuccessMessage(Message<?> message) {
-        return String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getCheckpointMode());
+    protected void logCheckpointSuccess(Message<?> message) {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getCheckpointMode()));
+        }
     }
 
 }

@@ -5,37 +5,58 @@ package com.azure.spring.messaging.core;
 
 import com.azure.spring.messaging.PartitionSupplier;
 import org.springframework.messaging.Message;
+import reactor.core.publisher.Mono;
 
 import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 
 
 /**
  * Operations for sending {@link Collection}&lt;{@link Message}&gt; to a destination.
  *
- * @author Warren Zhu
+ * @author Xiaolu Dai
  */
 public interface BatchSendOperation {
 
     /**
-     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier.
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier asynchronously.
      * @param destination destination
-     * @param messages message
+     * @param messages message set
      * @param partitionSupplier partition supplier
-     * @param <T> payload class type in message
-     * @return Future instance
+     * @param <T> payload type in message
+     * @return Mono Void
      */
-    <T> CompletableFuture<Void> sendAsync(String destination, Collection<Message<T>> messages,
-                                          PartitionSupplier partitionSupplier);
+    <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
+                             PartitionSupplier partitionSupplier);
 
     /**
-     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination.
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination asynchronously.
      * @param destination destination
-     * @param messages messages
-     * @param <T> payload class type in message
-     * @return Future instance
+     * @param messages message set
+     * @param <T> payload type in message
+     * @return Mono Void
      */
-    default <T> CompletableFuture<Void> sendAsync(String destination, Collection<Message<T>> messages) {
+    default <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages) {
         return sendAsync(destination, messages, null);
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
+     * @param <T> payload type in message
+     */
+    default <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier) {
+        sendAsync(destination, messages, partitionSupplier).block();
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param <T> payload type in message
+     */
+    default <T> void send(String destination, Collection<Message<T>> messages) {
+        send(destination, messages, null);
     }
 }

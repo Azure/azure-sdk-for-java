@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.messaging.core.reactor;
+ * Package com.azure.spring.servicebus.provisioning
  */
-package com.azure.spring.messaging.core.reactor;
+package com.azure.spring.servicebus.provisioning;

@@ -5,8 +5,8 @@ package com.azure.spring.integration.handler;
 
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.AzureSendFailureException;
-import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.expression.EvaluationContext;
@@ -22,14 +22,16 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageDeliveryException;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.ListenableFutureCallback;
+import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -39,9 +41,10 @@ import java.util.concurrent.TimeoutException;
  * It delegates real operation to {@link SendOperation} which supports synchronous and asynchronous sending.
  *
  * @author Warren Zhu
+ * @author Xiaolu
  */
 public class DefaultMessageHandler extends AbstractMessageProducingHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultMessageHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMessageHandler.class);
     private static final long DEFAULT_SEND_TIMEOUT = 10000;
     private final String destination;
     private final SendOperation sendOperation;
@@ -51,6 +54,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
     private ErrorMessageStrategy errorMessageStrategy = new DefaultErrorMessageStrategy();
     private Expression partitionKeyExpression;
+    private Expression partitionIdExpression;
     private MessageChannel sendFailureChannel;
     private String sendFailureChannelName;
 
@@ -64,79 +68,74 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     protected void onInit() {
         super.onInit();
         this.evaluationContext = ExpressionUtils.createStandardEvaluationContext(getBeanFactory());
-        LOG.info("Started DefaultMessageHandler with properties: {}", buildPropertiesMap());
+        LOGGER.info("Started DefaultMessageHandler with properties: {}", buildPropertiesMap());
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void handleMessageInternal(Message<?> message) {
-
         PartitionSupplier partitionSupplier = toPartitionSupplier(message);
         String destination = toDestination(message);
-        CompletableFuture<?> future = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
 
         if (this.sync) {
-            waitingSendResponse(future, message);
-            return;
+            waitingSendResponse(mono, message);
+        } else {
+            handleSendResponseAsync(mono, message);
         }
 
-        handleSendResponseAsync(message, future);
     }
 
-    private void handleSendResponseAsync(Message<?> message, CompletableFuture<?> future) {
-        future.handle((t, ex) -> {
-            if (ex != null) {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn("{} sent failed in async mode due to {}", message, ex.getMessage());
-                }
-                if (this.sendCallback != null) {
-                    this.sendCallback.onFailure(ex);
-                }
-
-                if (getSendFailureChannel() != null) {
-                    this.messagingTemplate.send(getSendFailureChannel(),
-                        getErrorMessageStrategy()
-                            .buildErrorMessage(new AzureSendFailureException(message, ex), null));
-                }
-
-            } else {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("{} sent successfully in async mode", message);
-                }
-                if (this.sendCallback != null) {
-                    this.sendCallback.onSuccess((Void) t);
-                }
+    private <T> void handleSendResponseAsync(Mono<T> mono, Message<?> message) {
+        mono.doOnError(ex -> {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn("{} sent failed in async mode due to {}", message, ex.getMessage());
+            }
+            if (this.sendCallback != null) {
+                this.sendCallback.onFailure(ex);
             }
 
-            return null;
-        });
+            if (getSendFailureChannel() != null) {
+                this.messagingTemplate.send(getSendFailureChannel(), getErrorMessageStrategy()
+                    .buildErrorMessage(new AzureSendFailureException(message, ex), null));
+            }
+        }).doOnSuccess(t -> {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("{} sent successfully in async mode", message);
+            }
+            if (this.sendCallback != null) {
+                this.sendCallback.onSuccess((Void) t);
+            }
+        }).subscribe();
     }
 
-    private void waitingSendResponse(CompletableFuture<?> future, Message<?> message) {
+    private <T> void waitingSendResponse(Mono<T> mono, Message<?> message) {
         Long sendTimeout = this.sendTimeoutExpression.getValue(this.evaluationContext, message, Long.class);
+
         if (sendTimeout == null || sendTimeout < 0) {
             try {
-                future.get();
+                mono.block();
             } catch (Exception e) {
                 throw new MessageDeliveryException(e.getMessage());
             }
         } else {
             try {
-                future.get(sendTimeout, TimeUnit.MILLISECONDS);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("{} sent successfully in sync mode", message);
+                mono.block(Duration.of(sendTimeout, ChronoUnit.MILLIS));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("{} sent successfully in sync mode", message);
                 }
-            } catch (TimeoutException e) {
-                throw new MessageTimeoutException(message, "Timeout waiting for send event hub response", e);
             } catch (Exception e) {
+                if (e.getCause() instanceof TimeoutException) {
+                    throw new MessageTimeoutException(message, "Timeout waiting for send event hub response");
+                }
                 throw new MessageDeliveryException(e.getMessage());
             }
+
         }
     }
 
     public void setSync(boolean sync) {
         this.sync = sync;
-        LOG.info("DefaultMessageHandler sync becomes: {}", sync);
+        LOGGER.info("DefaultMessageHandler sync becomes: {}", sync);
     }
 
     public void setSendTimeout(long sendTimeout) {
@@ -149,6 +148,10 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     public void setPartitionKeyExpression(Expression partitionKeyExpression) {
         this.partitionKeyExpression = partitionKeyExpression;
+    }
+
+    public void setPartitionIdExpression(Expression partitionIdExpression) {
+        this.partitionIdExpression = partitionIdExpression;
     }
 
     public void setPartitionKeyExpressionString(String partitionKeyExpression) {
@@ -165,20 +168,39 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     private PartitionSupplier toPartitionSupplier(Message<?> message) {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
-        String partitionKey = message.getHeaders().get(AzureHeaders.PARTITION_KEY, String.class);
+        // Priority setting partitionId
+        String partitionId = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_ID);
+        if (!StringUtils.hasText(partitionId) && this.partitionIdExpression != null) {
+            partitionId = this.partitionIdExpression.getValue(this.evaluationContext, message, String.class);
+        }
+        if (StringUtils.hasText(partitionId)) {
+            partitionSupplier.setPartitionId(partitionId);
+        }
+
+        String partitionKey = getHeaderValue(message.getHeaders(), AzureHeaders.PARTITION_KEY);
+        // The default key expression is the hash code of the payload.
         if (!StringUtils.hasText(partitionKey) && this.partitionKeyExpression != null) {
             partitionKey = this.partitionKeyExpression.getValue(this.evaluationContext, message, String.class);
         }
-
         if (StringUtils.hasText(partitionKey)) {
             partitionSupplier.setPartitionKey(partitionKey);
         }
 
-        if (message.getHeaders().containsKey(AzureHeaders.PARTITION_ID)) {
-            partitionSupplier
-                .setPartitionId(message.getHeaders().get(AzureHeaders.PARTITION_ID, String.class));
-        }
         return partitionSupplier;
+    }
+
+    /**
+     * Get header value from MessageHeaders
+     * @param headers MessageHeaders
+     * @param keyName Key name
+     * @return String header value
+     */
+    private String getHeaderValue(MessageHeaders headers, String keyName) {
+        return headers.keySet().stream()
+                                    .filter(header -> keyName.equals(header))
+                                    .map(key -> String.valueOf(headers.get(key)))
+                                    .findAny()
+                                    .orElse(null);
     }
 
     private Map<String, Object> buildPropertiesMap() {
@@ -186,7 +208,6 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         properties.put("sync", sync);
         properties.put("sendTimeout", sendTimeoutExpression);
         properties.put("destination", destination);
-
         return properties;
     }
 
@@ -201,7 +222,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     public void setSendTimeoutExpression(Expression sendTimeoutExpression) {
         Assert.notNull(sendTimeoutExpression, "'sendTimeoutExpression' must not be null");
         this.sendTimeoutExpression = sendTimeoutExpression;
-        LOG.info("DefaultMessageHandler syncTimeout becomes: {}", sendTimeoutExpression);
+        LOGGER.info("DefaultMessageHandler syncTimeout becomes: {}", sendTimeoutExpression);
     }
 
     protected MessageChannel getSendFailureChannel() {

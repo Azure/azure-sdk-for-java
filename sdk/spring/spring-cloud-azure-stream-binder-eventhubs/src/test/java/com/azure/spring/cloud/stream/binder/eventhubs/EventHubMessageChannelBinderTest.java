@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubProducerDestination;
-import com.azure.spring.integration.handler.reactor.DefaultMessageHandler;
+import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import com.azure.spring.eventhubs.support.EventHubTestOperation;
 import org.assertj.core.api.Assertions;

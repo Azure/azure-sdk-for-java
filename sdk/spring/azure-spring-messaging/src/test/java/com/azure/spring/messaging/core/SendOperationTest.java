@@ -3,8 +3,6 @@
 
 package com.azure.spring.messaging.core;
 
-import com.azure.spring.messaging.PartitionSupplier;
-import org.assertj.core.api.Fail;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.messaging.Message;
@@ -13,22 +11,20 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
+import static org.assertj.core.api.Fail.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public abstract class SendOperationTest<O extends SendOperation> {
 
+    protected String consumerGroup = "consumer-group";
     protected String destination = "event-hub";
     protected Message<?> message;
     protected Mono<Void> mono = Mono.empty();
-    protected String partitionKey = "key";
     protected String payload = "payload";
-    protected O sendOperation = null;
-    private String partitionId = "1";
+    protected O sendOperation;
 
     public SendOperationTest() {
         Map<String, Object> valueMap = new HashMap<>(2);
@@ -39,105 +35,50 @@ public abstract class SendOperationTest<O extends SendOperation> {
 
     protected abstract void setupError(String errorMessage);
 
+
     @Test
-    public void testSendCreateSenderFailure() throws Throwable {
+    public void testSend() {
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, null);
+
+        assertNull(mono.block());
+        verifySendCalled(1);
+    }
+
+    @Test
+    public void testSendCreateSenderFailure() {
         whenSendWithException();
 
-        assertThrows(NestedRuntimeException.class,
-            () -> this.sendOperation.sendAsync(destination, this.message, null).get());
+        assertThrows(NestedRuntimeException.class, () -> this.sendOperation.sendAsync(destination, this.message,
+            null).block());
     }
 
     @Test
     public void testSendFailure() {
-        setupError("future failed.");
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, this.message, null);
+        String errorMessage = "Send failed.";
+        setupError(errorMessage);
+        Mono<Void> mono = this.sendOperation.sendAsync(destination, this.message, null);
 
         try {
-            future.get();
-            Fail.fail("Test should fail.");
-        } catch (InterruptedException ie) {
-            Fail.fail("get() should fail with an ExecutionException.");
-        } catch (ExecutionException ee) {
-            assertEquals("future failed.", ee.getCause().getMessage());
+            mono.block();
+            fail("Test should fail.");
+        } catch (Exception e) {
+            assertEquals(errorMessage, e.getMessage());
         }
-    }
-
-    @Test
-    public void testSendWithPartitionId() throws ExecutionException, InterruptedException {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
-        partitionSupplier.setPartitionId(partitionId);
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, partitionSupplier);
-
-        assertNull(future.get());
-        verifySendWithPartitionId(1);
-        verifyPartitionSenderCalled(1);
-    }
-
-    @Test
-    public void testSendWithPartitionKey() throws ExecutionException, InterruptedException {
-        PartitionSupplier partitionSupplier = new PartitionSupplier();
-        partitionSupplier.setPartitionKey(partitionKey);
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, partitionSupplier);
-
-        assertNull(future.get());
-        verifySendWithPartitionKey(1);
-        verifyGetClientCreator(1);
-    }
-
-    @Test
-    public void testSendWithSessionId() throws ExecutionException, InterruptedException {
-        Map<String, Object> valueMap = new HashMap<>();
-        valueMap.put("key1", "value1");
-        valueMap.put("key2", "value2");
-        valueMap.put("azure_service_bus_session_id", "TestSessionId");
-        Message<?> messageWithSeesionId = new GenericMessage<>("testPayload", valueMap);
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionId);
-
-        assertNull(future.get());
-        verifySendCalled(1);
-    }
-
-    @Test
-    public void testSendWithSessionIdAndPartitionKeyDifferent() throws ExecutionException, InterruptedException {
-        Map<String, Object> valueMap = new HashMap<>();
-        valueMap.put("key1", "value1");
-        valueMap.put("key2", "value2");
-        valueMap.put("azure_service_bus_session_id", "TestSessionId");
-        valueMap.put("azure_service_bus_partition_key", "TestPartitionKey");
-        Message<?> messageWithSeesionIdAndPartitionKey = new GenericMessage<>("testPayload", valueMap);
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, messageWithSeesionIdAndPartitionKey);
-
-        assertNull(future.get());
-        verifySendCalled(1);
-    }
-
-    @Test
-    public void testSendWithoutPartition() throws ExecutionException, InterruptedException {
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, new PartitionSupplier());
-
-        assertNull(future.get());
-        verifySendCalled(1);
-    }
-
-    @Test
-    public void testSendWithoutPartitionSupplier() throws ExecutionException, InterruptedException {
-        CompletableFuture<Void> future = this.sendOperation.sendAsync(destination, message, null);
-
-        assertNull(future.get());
-        verifySendCalled(1);
     }
 
     protected abstract void verifyGetClientCreator(int times);
 
-    protected abstract void verifyPartitionSenderCalled(int times);
-
     protected abstract void verifySendCalled(int times);
 
-    protected abstract void verifySendWithPartitionId(int times);
-
-    protected abstract void verifySendWithPartitionKey(int times);
-
     protected abstract void whenSendWithException();
+
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    public void setConsumerGroup(String consumerGroup) {
+        this.consumerGroup = consumerGroup;
+    }
 
     public Mono<Void> getMono() {
         return mono;

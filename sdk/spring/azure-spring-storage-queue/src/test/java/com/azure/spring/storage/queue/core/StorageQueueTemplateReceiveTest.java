@@ -10,7 +10,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.IterableStream;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
+import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueStorageException;

@@ -3,27 +3,24 @@
 
 package com.azure.spring.messaging.checkpoint;
 
-import java.util.concurrent.CompletableFuture;
+import reactor.core.publisher.Mono;
 
 /**
  * A callback to perform checkpoint.
  *
- * @author Warren Zhu
+ * @author Xiaolu Dai
  */
 public interface Checkpointer {
 
     /**
      * Acknowledge success of current message. Please check result to detect failure
-     * @return completable future instance
+     * @return Mono Void
      */
-    CompletableFuture<Void> success();
+    Mono<Void> success();
 
     /**
      * Fail current message. Please check result to detect failure
-     * @return completable future instance
+     * @return Mono Void
      */
-    CompletableFuture<Void> failure();
-
-
-
+    Mono<Void> failure();
 }

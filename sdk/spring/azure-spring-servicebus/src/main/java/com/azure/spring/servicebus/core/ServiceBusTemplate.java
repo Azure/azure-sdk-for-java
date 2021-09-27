@@ -20,9 +20,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 import static com.azure.spring.messaging.checkpoint.CheckpointMode.MANUAL;
 import static com.azure.spring.messaging.checkpoint.CheckpointMode.RECORD;
@@ -55,9 +55,9 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
     }
 
     @Override
-    public <U> CompletableFuture<Void> sendAsync(String destination,
-                                                 Message<U> message,
-                                                 PartitionSupplier partitionSupplier) {
+    public <U> Mono<Void> sendAsync(String destination,
+                                    Message<U> message,
+                                    PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
         ServiceBusSenderAsyncClient senderAsyncClient = null;
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
@@ -77,7 +77,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
             throw new ServiceBusRuntimeException("ServiceBus send client startup failed, Caused by " + e.getMessage(), e);
         }
 
-        return senderAsyncClient.sendMessage(serviceBusMessage).toFuture();
+        return senderAsyncClient.sendMessage(serviceBusMessage);
     }
 
     public InstrumentationManager getInstrumentationManager() {
