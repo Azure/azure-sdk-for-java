@@ -2498,7 +2498,7 @@
 
    <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
-    <Class name="com.azure.core.util.implementation.ByteArrayContent"/>
+    <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
     <Field name="content"/>
     <Bug pattern="EI_EXPOSE_REP"/>
   </Match>

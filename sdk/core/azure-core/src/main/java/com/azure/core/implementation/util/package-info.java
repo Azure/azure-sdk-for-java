@@ -4,4 +4,4 @@
 /**
  * Package containing implementation-specific utility APIs that should not be used by end-users.
  */
-package com.azure.core.util.implementation;
+package com.azure.core.implementation.util;

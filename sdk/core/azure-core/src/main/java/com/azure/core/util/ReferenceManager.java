@@ -3,10 +3,10 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.implementation.ReferenceManagerImpl;
+import com.azure.core.implementation.util.ReferenceManagerImpl;
 
 /**
- * This interface represents the managing references to {@link Object Objects} and providing the ability to run a
+ * This interface represents managing references to {@link Object Objects} and providing the ability to run a
  * cleaning operation once the object is no longer able to be reference.
  * <p>
  * Expected usage of this is through {@link ReferenceManager#INSTANCE}.

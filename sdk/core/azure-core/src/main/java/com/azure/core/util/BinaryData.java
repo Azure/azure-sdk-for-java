@@ -3,12 +3,12 @@
 
 package com.azure.core.util;
 
-import com.azure.core.util.implementation.BinaryDataContent;
-import com.azure.core.util.implementation.ByteArrayContent;
-import com.azure.core.util.implementation.FileContent;
-import com.azure.core.util.implementation.InputStreamContent;
-import com.azure.core.util.implementation.SerializableContent;
-import com.azure.core.util.implementation.StringContent;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProvider;
@@ -28,7 +28,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
+import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
  *

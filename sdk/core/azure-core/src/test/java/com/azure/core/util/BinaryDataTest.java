@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_SIZE;
+import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
