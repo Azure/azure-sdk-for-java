@@ -71,20 +71,20 @@ public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProce
 
             if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD) {
                 checkpointer.success()
-                            .doOnSuccess(t -> buildCheckpointSuccessMessage(message))
-                            .doOnError(t -> buildCheckpointFailMessage(message, t))
+                            .doOnSuccess(t -> logCheckpointSuccess(message))
+                            .doOnError(t -> logCheckpointFail(message, t))
                             .subscribe();
             }
         };
     }
 
-    protected void buildCheckpointFailMessage(Message<?> message, Throwable t) {
+    protected void logCheckpointFail(Message<?> message, Throwable t) {
         if (LOGGER.isWarnEnabled()) {
             LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message), t);
         }
     }
 
-    protected void buildCheckpointSuccessMessage(Message<?> message) {
+    protected void logCheckpointSuccess(Message<?> message) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getCheckpointMode()));
         }

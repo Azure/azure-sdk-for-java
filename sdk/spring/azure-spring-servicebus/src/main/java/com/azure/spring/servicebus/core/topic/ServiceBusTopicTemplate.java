@@ -99,14 +99,14 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         final DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
             this.checkpointConfig, payloadType, consumer, this.messageConverter) {
             @Override
-            protected void buildCheckpointFailMessage(Message<?> message, Throwable t) {
+            protected void logCheckpointFail(Message<?> message, Throwable t) {
                 if (LOGGER.isWarnEnabled()) {
                     LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, consumer, name, message), t);
                 }
             }
 
             @Override
-            protected void buildCheckpointSuccessMessage(Message<?> message) {
+            protected void logCheckpointSuccess(Message<?> message) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
                         getCheckpointConfig().getCheckpointMode()));

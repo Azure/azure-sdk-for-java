@@ -60,14 +60,14 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
             this.checkpointConfig, payloadType, consumer, this.messageConverter) {
 
             @Override
-            protected void buildCheckpointFailMessage(Message<?> message, Throwable t) {
+            protected void logCheckpointFail(Message<?> message, Throwable t) {
                 if (LOGGER.isWarnEnabled()) {
                     LOGGER.warn(String.format(MSG_FAIL_CHECKPOINT, message, name), t);
                 }
             }
 
             @Override
-            protected void buildCheckpointSuccessMessage(Message<?> message) {
+            protected void logCheckpointSuccess(Message<?> message) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getCheckpointMode()));
                 }
