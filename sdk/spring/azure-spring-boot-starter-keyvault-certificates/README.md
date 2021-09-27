@@ -93,8 +93,8 @@ server:
 ```
 
 #### Option 2 - Use a managed identity to identify your app. 
-If you use managed identity, you need deploy your app on the Azure Spring Cloud, please refer to [Azure Spring Cloud TLS][Azure Spring Cloud TLS]
-
+If you use managed identity, you need deploy your app on the Azure Spring Cloud or in Azure virtual machine, please refer to [Deploy Application Azure Spring Cloud][Deploy Application Azure Spring Cloud] and [Azure Spring Cloud TLS][Azure Spring Cloud TLS]
+If you deploy your app on the Azure Spring Cloud, please refer to the following steps:
 Firstly, you need have an Azure Spring Cloud instance. If you don't have one, you can create it via the command line below:
 
 ```shell
@@ -117,6 +117,11 @@ Thirdly, assign a managed identity to Apps instance, use the command line below 
   echo ${MANAGED_IDENTITY}
 ```
 
+Fourthly, enable TLS for your Apps instance, use the command line below:
+```shell
+  az spring-cloud app update --enable-end-to-end-tls -n ${CLOUD_APP_INSTANCE} -s ${AZURE_SPRING_CLOUD_INSTANCE} -g ${RESOURCE_GROUP}
+```
+
 Make sure the managed identity can access target Key Vault. To grant access use the command line below:
 
 ```shell
@@ -126,7 +131,7 @@ Make sure the managed identity can access target Key Vault. To grant access use 
         --secret-permissions get list \
         --certificate-permissions get list
 ```
-If you are using managed identity instead of App registrations, add the following items to your `application.yml`:
+Add the following items to your `application.yml`:
 
 ```yaml
 azure:
@@ -432,3 +437,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 [Azure Spring Cloud TLS]: https://docs.microsoft.com/en-us/azure/spring-cloud/how-to-enable-end-to-end-tls
+[Deploy Application Azure Spring Cloud]: https://docs.microsoft.com/en-us/azure/spring-cloud/quickstart?tabs=Azure-CLI&pivots=programming-language-java
