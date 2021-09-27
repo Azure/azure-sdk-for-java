@@ -7,7 +7,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
-import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult;
 import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import reactor.core.publisher.Mono;

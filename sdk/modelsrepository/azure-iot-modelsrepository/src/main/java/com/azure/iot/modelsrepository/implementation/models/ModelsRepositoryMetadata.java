@@ -28,7 +28,9 @@ public class ModelsRepositoryMetadata {
         return this.publishDateUtc;
     }
 
-    public String getSourceRepo() { return this.sourceRepo; }
+    public String getSourceRepo() {
+        return this.sourceRepo;
+    }
 
     public Integer getTotalModelCount() {
         return this.totalModelCount;

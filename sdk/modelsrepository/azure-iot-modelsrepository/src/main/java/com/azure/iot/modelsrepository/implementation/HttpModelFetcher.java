@@ -7,7 +7,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
-import com.azure.iot.modelsrepository.ModelDependencyResolution;
 import com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult;
 import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +37,9 @@ class HttpModelFetcher implements ModelFetcher {
         return Mono.defer(() -> {
             Queue<String> work = new LinkedList<>();
             try {
+                if (tryFromExpanded) {
+                    work.add(getModelPath(dtmi, repositoryUri, true));
+                }
                 work.add(getModelPath(dtmi, repositoryUri, false));
             } catch (Exception e) {
                 return Mono.error(new AzureException(e));
@@ -52,7 +54,7 @@ class HttpModelFetcher implements ModelFetcher {
                     if (work.size() != 0) {
                         return evaluatePath(work.poll(), context);
                     } else {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath.toString()));
+                        logger.error(String.format(StatusStrings.ERROR_FETCHING_MODEL_CONTENT, tryContentPath));
                         return Mono.error(error);
                     }
                 })
@@ -62,7 +64,7 @@ class HttpModelFetcher implements ModelFetcher {
 
     @Override
     public Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context) {
-        return (Mono<FetchMetadataResult>) Mono.defer(() -> {
+        return Mono.defer(() -> {
             Queue<String> work = new LinkedList<>();
             try {
                 work.add(getMetadataPath(repositoryUri));
@@ -79,7 +81,7 @@ class HttpModelFetcher implements ModelFetcher {
                     if (work.size() != 0) {
                         return evaluatePath(work.poll(), context);
                     } else {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath.toString()));
+                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
                         return Mono.error(error);
                     }
                 })
@@ -87,7 +89,7 @@ class HttpModelFetcher implements ModelFetcher {
                     try {
                         return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
                     } catch (JsonProcessingException e) {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath.toString()));
+                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
                         return null;
                     }
                 });

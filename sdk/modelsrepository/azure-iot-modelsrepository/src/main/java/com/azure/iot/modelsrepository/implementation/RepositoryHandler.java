@@ -22,7 +22,6 @@ import java.util.Queue;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public final class RepositoryHandler {
@@ -71,7 +70,7 @@ public final class RepositoryHandler {
         }
 
         String targetDtmi = remainingWork.poll();
-        boolean tryFromExpanded = false;
+        Boolean tryFromExpanded = false;
 
         // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
         // metadata.json content from the target repository. The metadata object includes supported features
@@ -82,13 +81,19 @@ public final class RepositoryHandler {
         if (resolutionOption == ModelDependencyResolution.ENABLED) {
             Mono<FetchMetadataResult> repositoryMetadata = modelFetcher.fetchMetadataAsync(repositoryUri, context);
 
-            tryFromExpanded = repositoryMetadata.flatMap(repo -> {
-                if (repo != null && repo.getDefinition() != null &&
-                    repo.getDefinition().getFeatures() != null && repo.getDefinition().getFeatures().isExpanded()) {
-                    return Mono.just(true);
-                }
-                return Mono.just(true);
-            }).block();
+            if (repositoryMetadata != null) {
+                tryFromExpanded = repositoryMetadata
+                    .flatMap(repo -> {
+                        if (repo != null && repo.getDefinition() != null
+                            && repo.getDefinition().getFeatures() != null
+                            && repo.getDefinition().getFeatures().isExpanded()) {
+                            return Mono.just(true);
+                        }
+                        return Mono.just(false);
+                    })
+                    .defaultIfEmpty(false)
+                    .block();
+            }
         }
 
         logger.info(String.format(StatusStrings.PROCESSING_DTMIS, targetDtmi));

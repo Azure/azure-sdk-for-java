@@ -82,7 +82,7 @@ public final class DtmiConventions {
      * @throws IllegalArgumentException if the provided repository URI is not valid
      */
     public static URI getMetadataUri(URI repositoryUri) {
-       try {
+        try {
             String stringUri = repositoryUri.toString();
             if (stringUri.endsWith("/")) {
                 return new URI(stringUri + ModelsRepositoryConstants.MODELS_REPOSITORY_METADATA_FILE);
