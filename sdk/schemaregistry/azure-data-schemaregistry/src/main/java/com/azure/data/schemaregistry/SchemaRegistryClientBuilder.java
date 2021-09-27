@@ -52,7 +52,7 @@ import java.util.Objects;
  * <p><strong>Instantiating with custom retry policy and HTTP log options</strong></p>
  * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.instantiation}
  */
-@ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
+@ServiceClientBuilder(serviceClients = {SchemaRegistryAsyncClient.class, SchemaRegistryClient.class})
 public class SchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
