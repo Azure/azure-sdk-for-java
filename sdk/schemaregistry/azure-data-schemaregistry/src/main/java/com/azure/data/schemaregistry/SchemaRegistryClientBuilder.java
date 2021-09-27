@@ -37,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.function.Function;
 
 /**
  * Fluent builder for interacting with the Schema Registry service via {@link SchemaRegistryAsyncClient} and
@@ -56,9 +54,6 @@ import java.util.function.Function;
  */
 @ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
 public class SchemaRegistryClientBuilder {
-    static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
-    static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
-
     private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
@@ -69,8 +64,6 @@ public class SchemaRegistryClientBuilder {
     private static final AddHeadersPolicy API_HEADER_POLICY = new AddHeadersPolicy(new HttpHeaders()
         .set("api-version", "2020-09-01-preview"));
 
-    private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
-
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
 
@@ -80,7 +73,6 @@ public class SchemaRegistryClientBuilder {
     private String endpoint;
     private String host;
     private HttpClient httpClient;
-    private Integer maxSchemaMapSize;
     private TokenCredential credential;
     private ClientOptions clientOptions;
     private HttpLogOptions httpLogOptions;
@@ -93,8 +85,6 @@ public class SchemaRegistryClientBuilder {
      */
     public SchemaRegistryClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();
-        this.maxSchemaMapSize = null;
-        this.typeParserMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
         this.httpClient = null;
         this.credential = null;
         this.retryPolicy = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -129,24 +119,6 @@ public class SchemaRegistryClientBuilder {
             this.endpoint = endpoint;
         }
 
-        return this;
-    }
-
-    /**
-     * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
-     *
-     * @param maxCacheSize max size for internal schema caches in {@link SchemaRegistryAsyncClient}
-     * @return The updated {@link SchemaRegistryClientBuilder} object.
-     * @throws IllegalArgumentException on invalid maxCacheSize value
-     */
-    SchemaRegistryClientBuilder maxCacheSize(int maxCacheSize) {
-        if (maxCacheSize < MAX_SCHEMA_MAP_SIZE_MINIMUM) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format("Schema map size must be greater than %s entries",
-                    MAX_SCHEMA_MAP_SIZE_MINIMUM)));
-        }
-
-        this.maxSchemaMapSize = maxCacheSize;
         return this;
     }
 
@@ -333,11 +305,7 @@ public class SchemaRegistryClientBuilder {
             .pipeline(buildPipeline)
             .buildClient();
 
-        int buildMaxSchemaMapSize = (maxSchemaMapSize == null)
-            ? MAX_SCHEMA_MAP_SIZE_DEFAULT
-            : maxSchemaMapSize;
-
-        return new SchemaRegistryAsyncClient(restService, buildMaxSchemaMapSize, typeParserMap);
+        return new SchemaRegistryAsyncClient(restService);
     }
 
     /**
