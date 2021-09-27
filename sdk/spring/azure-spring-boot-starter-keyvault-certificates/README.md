@@ -131,6 +131,7 @@ Make sure the managed identity can access target Key Vault. To grant access use 
         --secret-permissions get list \
         --certificate-permissions get list
 ```
+
 Add the following items to your `application.yml`:
 
 ```yaml
