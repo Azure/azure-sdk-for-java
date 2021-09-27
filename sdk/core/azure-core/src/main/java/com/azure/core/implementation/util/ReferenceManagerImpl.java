@@ -10,6 +10,7 @@ import com.azure.core.util.logging.LogLevel;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.util.Objects;
+import java.util.concurrent.ThreadFactory;
 
 // This is the base implementation of ReferenceManager, there is another Java 9 specific implementation in
 // /src/main/java9 for multi-release JARs.
@@ -36,12 +37,18 @@ public final class ReferenceManagerImpl implements ReferenceManager {
         this.queue = new ReferenceQueue<>();
         this.cleanableReferenceList = new CleanableReference<>();
 
-        // Register this instance of ReferenceManager as the head of the cleaning queue. Doing so will allow the
-        // ReferenceManager to clean itself up when no longer in use, for now this is a no-op.
-        new CleanableReference<>(this, () -> { }, this);
-
         Thread thread = new Thread(Thread.currentThread().getThreadGroup(), this::clearReferenceQueue,
             BASE_THREAD_NAME);
+
+        // Register this instance of ReferenceManager as the head of the cleaning queue. Doing so will allow the
+        // ReferenceManager to clean itself up when no longer in use, for now it simply shuts down the backing thread.
+        new CleanableReference<>(this, () -> {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                LOGGER.log(LogLevel.WARNING, () -> "Failed to shutdown ReferenceManager thread.", e);
+            }
+        }, this);
 
         // If multiple instances of ReferenceManager needs to be supported each Thread should have a unique name with a
         // consistent base name.
