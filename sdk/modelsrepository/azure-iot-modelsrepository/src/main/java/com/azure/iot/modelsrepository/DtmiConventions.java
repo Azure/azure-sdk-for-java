@@ -74,6 +74,26 @@ public final class DtmiConventions {
         }
     }
 
+    /**
+     * Generates the model repository's metadata URI.
+     *
+     * @param repositoryUri The repository uri
+     * @return The repository metadata uri.
+     * @throws IllegalArgumentException if the provided repository URI is not valid
+     */
+    public static URI getMetadataUri(URI repositoryUri) {
+       try {
+            String stringUri = repositoryUri.toString();
+            if (stringUri.endsWith("/")) {
+                return new URI(stringUri + ModelsRepositoryConstants.MODELS_REPOSITORY_METADATA_FILE);
+            } else {
+                return new URI(stringUri + "/" + ModelsRepositoryConstants.MODELS_REPOSITORY_METADATA_FILE);
+            }
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid uri syntax");
+        }
+    }
+
     static String dtmiToPath(String dtmi) {
         if (!isValidDtmi(dtmi)) {
             throw new IllegalArgumentException(String.format(StatusStrings.INVALID_DTMI_FORMAT_S, dtmi));

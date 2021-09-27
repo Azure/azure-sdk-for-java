@@ -58,7 +58,7 @@ public final class ModelsRepositoryClientBuilder {
     // Fields with default values.
     private URI repositoryEndpoint;
 
-    private ModelDependencyResolution modelDependencyResolution = ModelDependencyResolution.DISABLED;
+    private ModelDependencyResolution modelDependencyResolution = ModelDependencyResolution.ENABLED;
 
     // optional/have default values
     private ModelsRepositoryServiceVersion serviceVersion;

@@ -8,7 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelDependencyResolution;
-import com.azure.iot.modelsrepository.implementation.models.FetchResult;
+import com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult;
+import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,7 @@ import java.util.Queue;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public final class RepositoryHandler {
@@ -55,10 +57,10 @@ public final class RepositoryHandler {
 
         return processAsync(modelsToProcess, resolutionOptions, context, processedModels)
             .last()
-            .map(IntermediateFetchResult::getMap);
+            .map(IntermediateFetchModelResult::getMap);
     }
 
-    private Flux<IntermediateFetchResult> processAsync(
+    private Flux<IntermediateFetchModelResult> processAsync(
         Queue<String> remainingWork,
         ModelDependencyResolution resolutionOption,
         Context context,
@@ -69,14 +71,33 @@ public final class RepositoryHandler {
         }
 
         String targetDtmi = remainingWork.poll();
+        boolean tryFromExpanded = false;
+
+        // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
+        // metadata.json content from the target repository. The metadata object includes supported features
+        // of the repository.
+        // If the metadata indicates expanded models are available. The client will try to fetch pre-computed model
+        // dependencies using .expanded.json.
+        // If the model expanded form does not exist fall back to computing model dependencies just-in-time.
+        if (resolutionOption == ModelDependencyResolution.ENABLED) {
+            Mono<FetchMetadataResult> repositoryMetadata = modelFetcher.fetchMetadataAsync(repositoryUri, context);
+
+            tryFromExpanded = repositoryMetadata.flatMap(repo -> {
+                if (repo != null && repo.getDefinition() != null &&
+                    repo.getDefinition().getFeatures() != null && repo.getDefinition().getFeatures().isExpanded()) {
+                    return Mono.just(true);
+                }
+                return Mono.just(true);
+            }).block();
+        }
 
         logger.info(String.format(StatusStrings.PROCESSING_DTMIS, targetDtmi));
 
-        return modelFetcher.fetchAsync(targetDtmi, repositoryUri, resolutionOption, context)
-            .map(result -> new IntermediateFetchResult(result, currentResults))
+        return modelFetcher.fetchModelAsync(targetDtmi, repositoryUri, tryFromExpanded, context)
+            .map(result -> new IntermediateFetchModelResult(result, currentResults))
             .expand(customType -> {
                 Map<String, String> results = customType.getMap();
-                FetchResult response = customType.getFetchResult();
+                FetchModelResult response = customType.getFetchModelResult();
 
                 if (response.isFromExpanded()) {
                     try {

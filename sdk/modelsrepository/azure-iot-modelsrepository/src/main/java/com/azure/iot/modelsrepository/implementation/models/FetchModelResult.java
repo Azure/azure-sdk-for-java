@@ -9,12 +9,12 @@ import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import java.util.Locale;
 
 /**
- * The FetchResult class has the purpose of containing key elements of
+ * The FetchModelResult class has the purpose of containing key elements of
  * an IModelFetcher Fetch() operation including model definition, path and whether
  * it was from an expanded (pre-calculated) fetch.
  */
 @Fluent
-public class FetchResult {
+public class FetchModelResult {
 
     private String definition;
     private String path;
@@ -32,9 +32,9 @@ public class FetchResult {
      * Sets the model definition
      *
      * @param definition the model definition
-     * @return the FetchResult object itself
+     * @return the {@link FetchModelResult} object itself
      */
-    public FetchResult setDefinition(String definition) {
+    public FetchModelResult setDefinition(String definition) {
         this.definition = definition;
         return this;
     }
@@ -52,9 +52,9 @@ public class FetchResult {
      * Sets the dtmi path.
      *
      * @param path the dtmi path.
-     * @return the {@link FetchResult} object itself
+     * @return the {@link FetchModelResult} object itself
      */
-    public FetchResult setPath(String path) {
+    public FetchModelResult setPath(String path) {
         this.path = path;
         return this;
     }

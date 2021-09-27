@@ -3,7 +3,7 @@
 
 package com.azure.iot.modelsrepository.implementation;
 
-import com.azure.iot.modelsrepository.implementation.models.FetchResult;
+import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 
 import java.util.Map;
 
@@ -11,17 +11,17 @@ import java.util.Map;
  * This type is used to unify the expand operation return types in the recursive function and has no other use cases.
  * Do not take any dependencies on this type.
  */
-class IntermediateFetchResult {
-    private final FetchResult fetchResult;
+class IntermediateFetchModelResult {
+    private final FetchModelResult fetchModelResult;
     private final Map<String, String> map;
 
-    IntermediateFetchResult(FetchResult fetchResult, Map<String, String> map) {
-        this.fetchResult = fetchResult;
+    IntermediateFetchModelResult(FetchModelResult fetchModelResult, Map<String, String> map) {
+        this.fetchModelResult = fetchModelResult;
         this.map = map;
     }
 
-    public FetchResult getFetchResult() {
-        return fetchResult;
+    public FetchModelResult getFetchModelResult() {
+        return fetchModelResult;
     }
 
     public Map<String, String> getMap() {
