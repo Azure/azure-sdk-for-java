@@ -154,10 +154,9 @@ jobs:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
 
-      - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+      - template: /eng/common/pipelines/templates/steps/detect-api-changes .yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
-        continueOnError: true
 
       - template: ../steps/upload-repository-on-failure.yml
 
