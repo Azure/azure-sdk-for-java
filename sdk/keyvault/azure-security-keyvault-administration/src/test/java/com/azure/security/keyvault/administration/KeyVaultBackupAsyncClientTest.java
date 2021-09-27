@@ -22,7 +22,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.spy;
@@ -68,15 +67,24 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
+            asyncClient.beginBackup(blobStorageUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
+        assertNotNull(backupOperation);
 
         // Restore the backup
-        String backupFolderUrl = backupPollResponse.getFinalResult().block();
-
+        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
         AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
-            asyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
+            asyncClient.beginRestore(backupFolderUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
+        KeyVaultRestoreOperation restoreOperation = restorePollResponse.getValue();
+        assertNotNull(restoreOperation);
     }
 
     /**
@@ -103,13 +111,23 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         // Create a backup
         AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
+            asyncClient.beginBackup(blobStorageUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+
+        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
+        assertNotNull(backupOperation);
 
         // Restore the backup
-        String backupFolderUrl = backupPollResponse.getFinalResult().block();
-        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePollResponse =
-            asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken).blockLast();
+        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
+        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePollResponse =
+            asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken)
+                .takeUntil(asyncPollResponse ->
+                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, selectiveKeyRestorePollResponse.getStatus());
+        KeyVaultSelectiveKeyRestoreOperation restoreOperation = restorePollResponse.getValue();
+        assertNotNull(restoreOperation);
     }
 }
