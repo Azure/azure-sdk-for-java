@@ -29,7 +29,7 @@ import java.util.function.Function;
 public class PurviewScanningClientTestBase extends TestBase {
     protected String getEndpoint() {
         String endpoint = interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
+            ? "https://localhost:8080/scan"
             : Configuration.getGlobalConfiguration().get("SCANNING_ENDPOINT");
         Objects.requireNonNull(endpoint);
         return endpoint;
