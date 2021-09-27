@@ -42,6 +42,13 @@
       <version>7.4.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-resourcemanager</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
       <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->

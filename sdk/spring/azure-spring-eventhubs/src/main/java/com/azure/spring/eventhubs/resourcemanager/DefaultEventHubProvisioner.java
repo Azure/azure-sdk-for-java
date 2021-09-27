@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.eventhub.resourcemanager;
+package com.azure.spring.eventhubs.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubConsumerGroupCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.eventhubs.core.EventHubProvisioner;
-import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
 /**

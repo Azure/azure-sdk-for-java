@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
-import com.azure.spring.servicebus.core.ServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.resourcemanager.ServiceBusTopicProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 

@@ -13,7 +13,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusQueueChannelResourceManagerProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusQueueMessageChannelBinder;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfiguration;
-import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.resourcemanager.ServiceBusQueueProvisioner;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

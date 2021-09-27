@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.servicebus.resourcemanager;
+package com.azure.spring.servicebus.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusQueueCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
-import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
 import reactor.util.function.Tuples;
 
 /**

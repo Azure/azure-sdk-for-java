@@ -4,6 +4,8 @@
 package com.azure.spring.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.servicebus.resourcemanager.ServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.resourcemanager.ServiceBusTopicProvisioner;
 
 import javax.annotation.Nullable;
 
