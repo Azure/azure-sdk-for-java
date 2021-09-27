@@ -17,6 +17,8 @@ import java.util.Map;
 
 /**
  * Conditions for activating AAD B2C beans.
+ *
+ * @deprecated All Azure AD B2C features supported by Spring security, please refer to https://github.com/zhichengliu12581/azure-spring-boot-samples/blob/add-samples-for-aad-b2c-with-only-spring-security/aad/aad-b2c-with-spring-security/README.adoc
  */
 @Deprecated
 public final class AADB2CConditions {

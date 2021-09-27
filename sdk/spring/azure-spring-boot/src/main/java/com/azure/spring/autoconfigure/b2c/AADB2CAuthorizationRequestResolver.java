@@ -23,6 +23,8 @@ import java.util.Optional;
  * <p>
  * Userflow name is added in the request link and forgotten password redirection to password-reset page is added on the
  * base of default OAuth2 authorization resolve.
+ *
+ * @deprecated All Azure AD B2C features supported by Spring security, please refer to https://github.com/zhichengliu12581/azure-spring-boot-samples/blob/add-samples-for-aad-b2c-with-only-spring-security/aad/aad-b2c-with-spring-security/README.adoc
  */
 @Deprecated
 public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {

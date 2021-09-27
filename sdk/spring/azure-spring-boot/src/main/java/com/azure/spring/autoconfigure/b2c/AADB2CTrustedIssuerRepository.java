@@ -11,6 +11,8 @@ import static java.util.Locale.ROOT;
 
 /**
  * Construct a trusted aad b2c issuer repository.
+ *
+ * @deprecated All Azure AD B2C features supported by Spring security, please refer to https://github.com/zhichengliu12581/azure-spring-boot-samples/blob/add-samples-for-aad-b2c-with-only-spring-security/aad/aad-b2c-with-spring-security/README.adoc
  */
 @Deprecated
 public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {

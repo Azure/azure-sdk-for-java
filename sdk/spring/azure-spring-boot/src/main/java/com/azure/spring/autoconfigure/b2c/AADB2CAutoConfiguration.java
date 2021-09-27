@@ -16,6 +16,8 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
  * When the configuration matches the {@link AADB2CConditions.CommonCondition.WebAppMode} condition,
  * configure the necessary beans for AAD B2C authentication and authorization,
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
+ *
+ * @deprecated All Azure AD B2C features supported by Spring security, please refer to https://github.com/zhichengliu12581/azure-spring-boot-samples/blob/add-samples-for-aad-b2c-with-only-spring-security/aad/aad-b2c-with-spring-security/README.adoc
  */
 @Deprecated
 @Configuration

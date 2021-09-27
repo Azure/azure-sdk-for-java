@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Properties for an oauth2 client.
+ *
+ * @deprecated All Azure AD B2C features supported by Spring security, please refer to https://github.com/zhichengliu12581/azure-spring-boot-samples/blob/add-samples-for-aad-b2c-with-only-spring-security/aad/aad-b2c-with-spring-security/README.adoc
  */
 @Deprecated
 public class AuthorizationClientProperties {
