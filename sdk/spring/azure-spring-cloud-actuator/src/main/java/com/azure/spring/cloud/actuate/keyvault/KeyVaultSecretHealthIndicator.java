@@ -3,9 +3,8 @@
 
 package com.azure.spring.cloud.actuate.keyvault;
 
-import com.azure.core.http.rest.Response;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
-import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -21,15 +20,16 @@ public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
     }
 
     @Override
-    protected void doHealthCheck(Health.Builder builder) throws Exception {
-        final Response<KeyVaultSecret> response = this.secretAsyncClient
-            .getSecretWithResponse("azure-spring-none-existing-secret", "")
-            .block();
-
-        if (response == null) {
-            builder.down();
-        } else {
+    protected void doHealthCheck(Health.Builder builder) {
+        try {
+            this.secretAsyncClient.getSecretWithResponse("azure-spring-none-existing-secret", "").block();
             builder.up();
+        } catch (Exception e) {
+            if (e instanceof ResourceNotFoundException) {
+                builder.up();
+            } else {
+                builder.down(e);
+            }
         }
     }
 

@@ -36,6 +36,7 @@ trigger:
       - sdk/spring/azure-spring-cloud-core/pom.xml
       - sdk/spring/azure-spring-cloud-resourcemanager/pom.xml
       - sdk/spring/azure-spring-cloud-starter/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-actuator/pom.xml
       - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
       - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
@@ -94,6 +95,7 @@ pr:
       - sdk/spring/azure-spring-cloud-core/pom.xml
       - sdk/spring/azure-spring-cloud-resourcemanager/pom.xml
       - sdk/spring/azure-spring-cloud-starter/pom.xml
+      - sdk/spring/azure-spring-cloud-starter-actuator/pom.xml
       - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
       - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
@@ -218,6 +220,12 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazuremessaging
         skipPublishDocMs: true
+      - name: azure-spring-cloud-starter-actuator
+        groupId: com.azure.spring
+        safeName: azurespringcloudstarteractuator
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: azure-spring-cloud-starter-cache
         groupId: com.azure.spring
         safeName: azurespringcloudstartercache

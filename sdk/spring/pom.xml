@@ -154,6 +154,7 @@
         <module>azure-spring-cloud-actuator</module>
         <module>azure-spring-cloud-actuator-autoconfigure</module>
         <module>azure-spring-cloud-starter</module>
+        <module>azure-spring-cloud-starter-actuator</module>
         <module>azure-spring-boot-starter-active-directory</module>
         <module>azure-spring-boot-starter-cosmos</module>
         <module>azure-spring-boot-starter-keyvault-certificates</module>

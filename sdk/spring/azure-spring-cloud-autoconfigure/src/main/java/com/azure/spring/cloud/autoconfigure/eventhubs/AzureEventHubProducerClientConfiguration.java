@@ -28,7 +28,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVE
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnExpression(
     "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.event-hub-name:}')"
-        + " and T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.event-hub-name:}')"
+        + " or T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.event-hub-name:}')"
 )
 class AzureEventHubProducerClientConfiguration {
 

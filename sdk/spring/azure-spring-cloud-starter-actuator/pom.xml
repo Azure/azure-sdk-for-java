@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-actuator</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-actuator;current} -->
+
+  <name>Azure Spring Cloud Starter for Actuator</name>
+  <description>Spring Cloud Starter for Azure Actuator</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-starter</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-actuator-autoconfigure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-actuator-autoconfigure;current} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+    </dependency>
+  </dependencies>
+
+</project>

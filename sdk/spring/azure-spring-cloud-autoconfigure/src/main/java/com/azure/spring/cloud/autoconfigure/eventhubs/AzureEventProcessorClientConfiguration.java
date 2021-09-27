@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
 @ConditionalOnBean({ EventProcessorListener.class, CheckpointStore.class })
 @ConditionalOnExpression(
     "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.event-hub-name:}')"
-        + " and T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.processor.event-hub-name:}')"
+        + " or T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.processor.event-hub-name:}')"
 )
 class AzureEventProcessorClientConfiguration {
 
