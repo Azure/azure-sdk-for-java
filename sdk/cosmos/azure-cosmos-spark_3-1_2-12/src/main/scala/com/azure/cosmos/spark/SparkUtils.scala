@@ -29,16 +29,10 @@ private object SparkUtils {
   }
 
   def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: ILogger): Unit = {
-    try {
-      container.openConnectionsAndInitCaches().block()
-    } catch {
-      case e: Exception => {
-        logger.logWarning("ignoring openConnectionsAndInitCaches failure", e)
-      }
-    }
+    safeOpenConnectionInitCaches(container, (msg, exception) => logger.logWarning(msg, exception))
   }
 
-  def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String , Exception) => Unit): Unit = {
+  def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String, Exception) => Unit): Unit = {
     try {
       container.openConnectionsAndInitCaches().block()
     } catch {
