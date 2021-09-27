@@ -34,7 +34,7 @@ public class ListAllSystemScanRulesets {
 
         System.out.println(list.size());
 
-        for(BinaryData systemScanRuleSet : list) {
+        for (BinaryData systemScanRuleSet : list) {
             JsonReader jsonReader = Json.createReader(new StringReader(systemScanRuleSet.toString()));
             JsonObject ruleset = jsonReader.readObject();
             System.out.println(ruleset.getString("name") + ": " + ruleset.getString("status"));
