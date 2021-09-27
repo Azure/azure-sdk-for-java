@@ -819,6 +819,7 @@
         <module>sdk/security</module>
         <module>sdk/servicebus</module>
         <module>sdk/servicefabric</module>
+        <module>sdk/servicelinker</module>
         <module>sdk/signalr</module>
         <module>sdk/spring</module>
         <module>sdk/sqlvirtualmachine</module>
