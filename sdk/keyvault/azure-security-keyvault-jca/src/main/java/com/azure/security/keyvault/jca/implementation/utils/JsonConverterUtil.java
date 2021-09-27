@@ -15,6 +15,9 @@ import static java.util.logging.Level.WARNING;
  * The Jackson JsonConverter.
  */
 public final class JsonConverterUtil {
+    private static final ObjectMapper FROM_JSON_MAPPER = new ObjectMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final ObjectMapper TO_JSON_MAPPER = new ObjectMapper();
 
     /**
      * Stores the logger.
@@ -32,9 +35,7 @@ public final class JsonConverterUtil {
         LOGGER.entering("JsonConverterUtil", "fromJson", new Object[] { string, resultClass });
         Object result = null;
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            result = objectMapper.readValue(string, resultClass);
+            result = FROM_JSON_MAPPER.readValue(string, resultClass);
         } catch (JsonProcessingException e) {
             LOGGER.log(WARNING, "Unable to convert from JSON", e);
         }
@@ -52,8 +53,7 @@ public final class JsonConverterUtil {
         LOGGER.entering("JsonConverterUtil", "toJson", object);
         String result = null;
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            result = mapper.writeValueAsString(object);
+            result = TO_JSON_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             LOGGER.log(WARNING, "Unable to convert to JSON", e);
         }

@@ -10,12 +10,12 @@ import com.azure.security.keyvault.keys.implementation.ByteExtensions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
@@ -40,16 +40,14 @@ import java.security.spec.EllipticCurve;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
-import java.util.ArrayList;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
@@ -57,6 +55,8 @@ import javax.crypto.spec.SecretKeySpec;
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility =
     JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
 
     /**
@@ -466,13 +466,8 @@ public class JsonWebKey {
 
     @Override
     public String toString() {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(this);
-        } catch (JsonGenerationException e) {
-            throw logger.logExceptionAsError(new IllegalStateException(e));
-        } catch (JsonMappingException e) {
-            throw logger.logExceptionAsError(new IllegalStateException(e));
+            return MAPPER.writeValueAsString(this);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         }
