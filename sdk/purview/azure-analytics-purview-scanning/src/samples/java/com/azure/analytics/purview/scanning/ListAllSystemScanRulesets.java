@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Sample for listing all system scan rulesets using the SystemScanRulesetsBaseClient.
+ * Sample for listing all system scan rulesets using the SystemScanRulesetsClient.
  */
 public class ListAllSystemScanRulesets {
     /**

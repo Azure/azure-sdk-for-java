@@ -39,7 +39,7 @@ In order to interact with the Azure Purview service, your client must present an
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 
-#### Create SystemScanRulesetsBaseClient with Azure Active Directory Credential
+#### Create SystemScanRulesetsClient with Azure Active Directory Credential
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
@@ -53,6 +53,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
     <version>1.3.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 

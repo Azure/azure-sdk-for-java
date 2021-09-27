@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SystemScanRulesetsBaseClientTests extends PurviewScanningClientTestBase {
+public class SystemScanRulesetsClientTests extends PurviewScanningClientTestBase {
     private SystemScanRulesetsClient client;
 
     @Override
