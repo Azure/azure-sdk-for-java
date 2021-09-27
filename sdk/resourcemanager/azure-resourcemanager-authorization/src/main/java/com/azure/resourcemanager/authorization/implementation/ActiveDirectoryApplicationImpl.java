@@ -58,14 +58,15 @@ class ActiveDirectoryApplicationImpl
         return manager
             .serviceClient()
             .getApplications()
-            .createAsync(createParameters)
+            .createAsync(this.manager.tenantId(), createParameters)
             .map(innerToFluentMap(this))
             .flatMap(application -> refreshCredentialsAsync());
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
-        return manager.serviceClient().getApplications().patchAsync(id(), updateParameters).then(Mono.just(this));
+        return manager.serviceClient().getApplications().patchAsync(
+            id(), this.manager.tenantId(), updateParameters).then(Mono.just(this));
     }
 
     Mono<ActiveDirectoryApplication> refreshCredentialsAsync() {
@@ -73,7 +74,7 @@ class ActiveDirectoryApplicationImpl
             manager
                 .serviceClient()
                 .getApplications()
-                .listKeyCredentialsAsync(id())
+                .listKeyCredentialsAsync(id(), this.manager.tenantId())
                 .map(
                     (Function<KeyCredentialInner, CertificateCredential>)
                     keyCredentialInner ->
@@ -90,7 +91,7 @@ class ActiveDirectoryApplicationImpl
             manager
                 .serviceClient()
                 .getApplications()
-                .listPasswordCredentialsAsync(id())
+                .listPasswordCredentialsAsync(id(), this.manager.tenantId())
                 .map(
                     (Function<PasswordCredentialInner, PasswordCredential>)
                     passwordCredentialInner ->
@@ -171,7 +172,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     protected Mono<ApplicationInner> getInnerAsync() {
-        return manager.serviceClient().getApplications().getAsync(id());
+        return manager.serviceClient().getApplications().getAsync(id(), this.manager.tenantId());
     }
 
     @Override

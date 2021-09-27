@@ -10,7 +10,9 @@ import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInn
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
+import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
+import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
@@ -95,7 +97,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
 
     @Override
     protected Mono<ServicePrincipalInner> getInnerAsync() {
-        return manager.serviceClient().getServicePrincipals().getAsync(id());
+        return manager.serviceClient().getServicePrincipals().getAsync(id(), this.manager.tenantId());
     }
 
     @Override
@@ -107,7 +109,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 createParameters.withAppId(application.applicationId());
             }
             sp = manager.serviceClient().getServicePrincipals()
-                .createAsync(createParameters).map(innerToFluentMap(this));
+                .createAsync(this.manager.tenantId(), createParameters).map(innerToFluentMap(this));
         }
         return sp
             .flatMap(
@@ -147,7 +149,10 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                         manager()
                             .serviceClient()
                             .getServicePrincipals()
-                            .updateKeyCredentialsAsync(sp.id(), updateKeyCredentials)
+                            .updateKeyCredentialsAsync(
+                                sp.id(),
+                                this.manager.tenantId(),
+                                new KeyCredentialsUpdateParameters().withValue(updateKeyCredentials))
                             .then(Mono.just(ServicePrincipalImpl.this)))
                     .last();
         }
@@ -169,7 +174,10 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                         manager()
                             .serviceClient()
                             .getServicePrincipals()
-                            .updatePasswordCredentialsAsync(sp.id(), updatePasswordCredentials)
+                            .updatePasswordCredentialsAsync(
+                                sp.id(),
+                                this.manager.tenantId(),
+                                new PasswordCredentialsUpdateParameters().withValue(updatePasswordCredentials))
                             .then(Mono.just(ServicePrincipalImpl.this)))
                     .last();
         }
@@ -252,7 +260,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 manager()
                     .serviceClient()
                     .getServicePrincipals()
-                    .listKeyCredentialsAsync(id())
+                    .listKeyCredentialsAsync(id(), this.manager.tenantId())
                     .map(
                         keyCredentialInner -> {
                             CertificateCredential credential = new CertificateCredentialImpl<>(keyCredentialInner);
@@ -263,7 +271,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
                 manager()
                     .serviceClient()
                     .getServicePrincipals()
-                    .listPasswordCredentialsAsync(id())
+                    .listPasswordCredentialsAsync(id(), this.manager.tenantId())
                     .map(
                         passwordCredentialInner -> {
                             PasswordCredential credential = new PasswordCredentialImpl<>(passwordCredentialInner);

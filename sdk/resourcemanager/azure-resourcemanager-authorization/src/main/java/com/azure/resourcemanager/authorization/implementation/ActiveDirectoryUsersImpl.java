@@ -27,7 +27,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().serviceClient().getUsers().list());
+        return wrapList(this.manager().serviceClient().getUsers().list(this.manager.tenantId()));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ActiveDirectoryUsersImpl
         return manager()
             .serviceClient()
             .getUsers()
-            .getAsync(id)
+            .getAsync(id, this.manager.tenantId())
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 
@@ -62,33 +62,26 @@ public class ActiveDirectoryUsersImpl
         return manager()
             .serviceClient()
             .getUsers()
-            .getAsync(name)
+            .getAsync(name, this.manager.tenantId())
             .onErrorResume(
                 GraphErrorException.class,
-                e -> {
-                    if (name.contains("@")) {
-                        return manager()
-                            .serviceClient()
-                            .getUsers()
-                            .listAsync(
-                                String
-                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")),
-                                null)
-                            .singleOrEmpty();
-                    } else {
-                        return manager()
-                            .serviceClient()
-                            .getUsers()
-                            .listAsync(String.format("displayName eq '%s'", name), null)
-                            .singleOrEmpty();
-                    }
-                })
+                e -> manager()
+                    .serviceClient()
+                    .getUsers()
+                    .listAsync(
+                        this.manager.tenantId(),
+                        name.contains("@")
+                            ? String.format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_"))
+                            : String.format("displayName eq '%s'", name),
+                        null,
+                        null)
+                    .singleOrEmpty())
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listAsync() {
-        return wrapPageAsync(this.inner().listAsync());
+        return wrapPageAsync(this.inner().listAsync(this.manager.tenantId()));
     }
 
     @Override
@@ -103,7 +96,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().serviceClient().getUsers().deleteAsync(id);
+        return manager().serviceClient().getUsers().deleteAsync(id, this.manager.tenantId());
     }
 
     @Override
@@ -122,6 +115,6 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listByFilterAsync(String filter) {
-        return inner().listAsync(filter, null).mapPage(this::wrapModel);
+        return inner().listAsync(this.manager.tenantId(), filter, null, null).mapPage(this::wrapModel);
     }
 }

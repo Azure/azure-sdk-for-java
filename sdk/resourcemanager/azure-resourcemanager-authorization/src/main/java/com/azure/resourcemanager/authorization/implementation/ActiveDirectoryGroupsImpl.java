@@ -26,7 +26,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.serviceClient().getGroups().list());
+        return wrapList(this.manager.serviceClient().getGroups().list(this.manager.tenantId()));
     }
 
     @Override
@@ -47,13 +47,13 @@ public class ActiveDirectoryGroupsImpl
         return manager
             .serviceClient()
             .getGroups()
-            .getAsync(id)
+            .getAsync(id, this.manager.tenantId())
             .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
     }
 
     @Override
     public PagedFlux<ActiveDirectoryGroup> listAsync() {
-        return wrapPageAsync(manager().serviceClient().getGroups().listAsync(null));
+        return wrapPageAsync(manager().serviceClient().getGroups().listAsync(this.manager.tenantId(), null));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ActiveDirectoryGroupsImpl
         return manager()
             .serviceClient()
             .getGroups()
-            .listAsync(String.format("displayName eq '%s'", name))
+            .listAsync(this.manager.tenantId(), String.format("displayName eq '%s'", name))
             .singleOrEmpty()
             .map(adGroupInner -> new ActiveDirectoryGroupImpl(adGroupInner, manager()));
     }
@@ -83,7 +83,7 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().serviceClient().getGroups().deleteAsync(id);
+        return manager().serviceClient().getGroups().deleteAsync(id, this.manager.tenantId());
     }
 
     @Override
@@ -102,6 +102,6 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryGroup> listByFilterAsync(String filter) {
-        return inner().listAsync(filter).mapPage(this::wrapModel);
+        return inner().listAsync(this.manager.tenantId(), filter).mapPage(this::wrapModel);
     }
 }
