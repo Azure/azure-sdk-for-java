@@ -259,8 +259,8 @@ org.codehaus.mojo:xml-maven-plugin;1.0.2
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
-org.jacoco:jacoco-maven-plugin;0.8.5
-org.jacoco:org.jacoco.agent;0.8.5
+org.jacoco:jacoco-maven-plugin;0.8.7
+org.jacoco:org.jacoco.agent;0.8.7
 org.mockito:mockito-core;3.9.0
 org.mockito:mockito-inline;3.9.0
 org.revapi:revapi-java;0.20.0
