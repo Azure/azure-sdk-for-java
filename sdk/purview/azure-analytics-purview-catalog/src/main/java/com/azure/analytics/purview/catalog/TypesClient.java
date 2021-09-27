@@ -4,39 +4,28 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.TypesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 
-/** Initializes a new instance of the TypesBaseClient type. */
+/** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
-public final class TypesBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+public final class TypesClient {
+    private final TypesImpl serviceClient;
 
     /**
-     * Initializes an instance of TypesBaseClient client.
+     * Initializes an instance of Types client.
      *
-     * @param endpoint The catalog endpoint of your Purview account. Example:
-     *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    TypesBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    TypesClient(TypesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -139,17 +128,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the classification.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the classification definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getClassificationDefByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/classificationdef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getClassificationDefByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getClassificationDefByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
@@ -252,17 +240,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the classification.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the classification definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getClassificationDefByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/classificationdef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getClassificationDefByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getClassificationDefByNameWithResponse(name, requestOptions, context);
     }
 
     /**
@@ -385,17 +372,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the Entity definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getEntityDefinitionByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/entitydef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getEntityDefinitionByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getEntityDefinitionByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
@@ -518,17 +504,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the entity definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getEntityDefinitionByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/entitydef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getEntityDefinitionByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getEntityDefinitionByNameWithResponse(name, requestOptions, context);
     }
 
     /**
@@ -604,17 +589,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the enum.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the enum definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getEnumDefByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/enumdef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getEnumDefByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getEnumDefByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
@@ -690,17 +674,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the enum.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the enum definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getEnumDefByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/enumdef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getEnumDefByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getEnumDefByNameWithResponse(name, requestOptions, context);
     }
 
     /**
@@ -805,17 +788,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the relationship definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getRelationshipDefByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/relationshipdef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getRelationshipDefByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getRelationshipDefByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
@@ -920,17 +902,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the relationship.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the relationship definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getRelationshipDefByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/relationshipdef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getRelationshipDefByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getRelationshipDefByNameWithResponse(name, requestOptions, context);
     }
 
     /**
@@ -1024,17 +1005,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the struct.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the struct definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getStructDefByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/structdef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getStructDefByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getStructDefByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
@@ -1128,17 +1108,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the struct.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the struct definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getStructDefByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/structdef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getStructDefByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getStructDefByNameWithResponse(name, requestOptions, context);
     }
 
     /**
@@ -1283,17 +1262,16 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the type definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getTypeDefinitionByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getTypeDefinitionByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getTypeDefinitionByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
@@ -1438,47 +1416,44 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the type definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getTypeDefinitionByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getTypeDefinitionByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getTypeDefinitionByNameWithResponse(name, requestOptions, context);
     }
 
     /**
      * Delete API for type identified by its name.
      *
      * @param name The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteTypeByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Response<Void> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.deleteTypeByNameWithResponse(name, requestOptions, context);
     }
 
     /**
      * Get all type definitions in Atlas in bulk.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>Type</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1741,16 +1716,15 @@ public final class TypesBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return all type definitions in Atlas in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getAllTypeDefinitions() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedefs")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getAllTypeDefinitionsWithResponse(requestOptions, context);
     }
 
     /**
@@ -2023,16 +1997,17 @@ public final class TypesBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param typesDef A composite wrapper object with corresponding lists of the type definition.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createTypeDefinitions() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedefs")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Response<BinaryData> createTypeDefinitionsWithResponse(
+            BinaryData typesDef, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.createTypeDefinitionsWithResponse(typesDef, requestOptions, context);
     }
 
     /**
@@ -2304,16 +2279,17 @@ public final class TypesBaseClient {
      * (recursive schema, see above)
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param typesDef A composite object that captures all type definition changes.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasTypesDef.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest updateAtlasTypeDefinitions() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedefs")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Response<BinaryData> updateAtlasTypeDefinitionsWithResponse(
+            BinaryData typesDef, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.updateAtlasTypeDefinitionsWithResponse(typesDef, requestOptions, context);
     }
 
     /**
@@ -2579,29 +2555,30 @@ public final class TypesBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param typesDef A composite object that captures all types to be deleted.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteTypeDefinitions() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedefs")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Response<Void> deleteTypeDefinitionsWithResponse(
+            BinaryData typesDef, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.deleteTypeDefinitionsWithResponse(typesDef, requestOptions, context);
     }
 
     /**
      * List all type definitions returned as a list of minimal information header.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>Type</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2616,20 +2593,27 @@ public final class TypesBaseClient {
      * ]
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listTypeDefinitionHeaders() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/types/typedefs/headers")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions, Context context) {
+        return this.serviceClient.listTypeDefinitionHeadersWithResponse(requestOptions, context);
     }
 
     /**
      * Get the term template definition for the given GUID.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2719,22 +2703,28 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the term template.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the term template definition for the given GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getTermTemplateDefByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/types/termtemplatedef/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getTermTemplateDefByGuidWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getTermTemplateDefByGuidWithResponse(guid, requestOptions, context);
     }
 
     /**
      * Get the term template definition by its name (unique).
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2824,27 +2814,15 @@ public final class TypesBaseClient {
      * }</pre>
      *
      * @param name The name of the term template.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the term template definition by its name (unique).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getTermTemplateDefByName(String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/types/termtemplatedef/name/{name}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("name", name)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    public Response<BinaryData> getTermTemplateDefByNameWithResponse(
+            String name, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getTermTemplateDefByNameWithResponse(name, requestOptions, context);
     }
 }

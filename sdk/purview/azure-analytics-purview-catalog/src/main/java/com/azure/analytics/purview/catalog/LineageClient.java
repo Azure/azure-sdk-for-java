@@ -4,54 +4,43 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.LineagesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 
-/** Initializes a new instance of the PurviewCatalogBaseClient type. */
+/** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
-public final class PurviewCatalogBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+public final class LineageClient {
+    private final LineagesImpl serviceClient;
 
     /**
-     * Initializes an instance of PurviewCatalogBaseClient client.
+     * Initializes an instance of Lineages client.
      *
-     * @param endpoint The catalog endpoint of your Purview account. Example:
-     *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    PurviewCatalogBaseClient(
-            String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    LineageClient(LineagesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Get lineage info of the entity specified by GUID.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>depth</td><td>Integer</td><td>The number of hops for lineage.</td></tr>
-     *     <tr><td>width</td><td>Integer</td><td>The number of max expanding width in lineage.</td></tr>
-     *     <tr><td>includeParent</td><td>Boolean</td><td>True to include the parent chain in the response.</td></tr>
-     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>True to include derived lineage in the response</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>depth</td><td>String</td><td>No</td><td>The number of hops for lineage.</td></tr>
+     *     <tr><td>width</td><td>String</td><td>No</td><td>The number of max expanding width in lineage.</td></tr>
+     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
+     *     <tr><td>includeParent</td><td>String</td><td>No</td><td>True to include the parent chain in the response.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -142,32 +131,31 @@ public final class PurviewCatalogBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getLineageGraph(String guid, String direction) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/lineage/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addQueryParam("direction", direction)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Response<BinaryData> getLineageGraphWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.getLineageGraphWithResponse(guid, requestOptions, context);
     }
 
     /**
      * Return immediate next page lineage info about entity with pagination.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>getDerivedLineage</td><td>Boolean</td><td>True to include derived lineage in the response</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>direction</td><td>String</td><td>Yes</td><td>The direction of the lineage, which could be INPUT, OUTPUT or BOTH.</td></tr>
+     *     <tr><td>getDerivedLineage</td><td>String</td><td>No</td><td>True to include derived lineage in the response</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -258,29 +246,15 @@ public final class PurviewCatalogBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasLineageInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest nextPageLineage(String guid, String direction) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/lineage/{guid}/next/")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addQueryParam("direction", direction)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    public Response<BinaryData> nextPageLineageWithResponse(
+            String guid, RequestOptions requestOptions, Context context) {
+        return this.serviceClient.nextPageLineageWithResponse(guid, requestOptions, context);
     }
 }

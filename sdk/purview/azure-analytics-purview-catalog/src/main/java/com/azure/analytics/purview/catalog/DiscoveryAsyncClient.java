@@ -4,43 +4,40 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.DiscoveriesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DiscoveryBaseClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
-public final class DiscoveryBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+/** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+public final class DiscoveryAsyncClient {
+    private final DiscoveriesImpl serviceClient;
 
     /**
-     * Initializes an instance of DiscoveryBaseClient client.
+     * Initializes an instance of Discoveries client.
      *
-     * @param endpoint The catalog endpoint of your Purview account. Example:
-     *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    DiscoveryBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    DiscoveryAsyncClient(DiscoveriesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Gets data using search.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -152,21 +149,27 @@ public final class DiscoveryBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param searchRequest An object specifying the search criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return data using search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest query() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/search/query")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
+        return this.serviceClient.queryWithResponseAsync(searchRequest, requestOptions);
     }
 
     /**
      * Get search suggestions by query criteria.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -220,21 +223,86 @@ public final class DiscoveryBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param suggestRequest An object specifying the suggest criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return search suggestions by query criteria.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest suggest() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/search/suggest")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
+        return this.serviceClient.suggestWithResponseAsync(suggestRequest, requestOptions);
+    }
+
+    /**
+     * Browse entities by path or entity type.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     entityType: String
+     *     path: String
+     *     limit: Integer
+     *     offset: Integer
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     searchCount: Integer
+     *     value: [
+     *         {
+     *             entityType: String
+     *             id: String
+     *             isLeaf: Boolean
+     *             name: String
+     *             owner: [
+     *                 {
+     *                     id: String
+     *                     displayName: String
+     *                     mail: String
+     *                     contactType: String
+     *                 }
+     *             ]
+     *             path: String
+     *             qualifiedName: String
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param browseRequest An object specifying the browse criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return browseResult.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
+        return this.serviceClient.browseWithResponseAsync(browseRequest, requestOptions);
     }
 
     /**
      * Get auto complete options.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -259,26 +327,15 @@ public final class DiscoveryBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param autoCompleteRequest An object specifying the autocomplete criteria.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return auto complete options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest autoComplete() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/search/autocomplete")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    public Mono<Response<BinaryData>> autoCompleteWithResponse(
+            BinaryData autoCompleteRequest, RequestOptions requestOptions) {
+        return this.serviceClient.autoCompleteWithResponseAsync(autoCompleteRequest, requestOptions);
     }
 }
