@@ -81,5 +81,9 @@ extends:
     AdditionalModules:
       - name: perf-test-core
         groupId: com.azure
-    MatrixReplace:
-      - TestGoals=surefire:test/surefire:test failsafe:integration-test failsafe:verify
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: sdk/core/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
