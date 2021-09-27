@@ -15,6 +15,6 @@ public class CollectionsListChildCollectionNames {
                         .endpoint(System.getenv("ENDPOINT"))
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildCollectionsClient();
-        PagedIterable<BinaryData> response = client.listChildCollectionNames("myCollection1", null);
+        PagedIterable<BinaryData> response = client.listChildCollectionNames("myCollection1", null, null);
     }
 }
