@@ -21,7 +21,7 @@ public class MetadataPolicyClientTests extends PurviewAccountClientTestBase {
     }
 
     @Test
-    public void testGetAccount() {
+    public void testListPolicy() {
         List<BinaryData> response = client.listAll(null).stream().collect(Collectors.toList());
         System.out.println(response);
     }

@@ -32,6 +32,7 @@ For more information about permissions, see [here][azure_purview_permissions].
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
+
 In order to interact with the Azure Purview service, your client must present an Azure Active Directory bearer token to the service.
 
 The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
