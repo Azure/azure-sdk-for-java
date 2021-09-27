@@ -765,18 +765,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canSendTypingNotificationWithOptions(HttpClient httpClient) {
-        // Action & Assert
-        TypingNotificationOptions options = new TypingNotificationOptions();
-        options.setSenderDisplayName("Sender");
-
-        setupTest(httpClient, "canSendTypingNotificationWithOptions");
-        StepVerifier.create(chatThreadClient.sendTypingNotification(options))
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendTypingNotificationWithResponseWithOptions(HttpClient httpClient) {
         // Action & Assert
         TypingNotificationOptions options = new TypingNotificationOptions();

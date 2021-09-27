@@ -8,10 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
+import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -284,6 +286,49 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @return the networkFeatures value.
+     */
+    public NetworkFeatures networkFeatures() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkFeatures();
+    }
+
+    /**
+     * Set the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @param networkFeatures the networkFeatures value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withNetworkFeatures(NetworkFeatures networkFeatures) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withNetworkFeatures(networkFeatures);
+        return this;
+    }
+
+    /**
+     * Get the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
+     * sharing networking resources.
+     *
+     * @return the networkSiblingSetId value.
+     */
+    public String networkSiblingSetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkSiblingSetId();
+    }
+
+    /**
+     * Get the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
+     * information for the volume.
+     *
+     * @return the storageToNetworkProximity value.
+     */
+    public VolumeStorageToNetworkProximity storageToNetworkProximity() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageToNetworkProximity();
+    }
+
+    /**
      * Get the mountTargets property: mountTargets List of mount targets.
      *
      * @return the mountTargets value.
@@ -293,7 +338,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the volumeType property: What type of volume is this.
+     * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @return the volumeType value.
      */
@@ -302,7 +348,8 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the volumeType property: What type of volume is this.
+     * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @param volumeType the volumeType value to set.
      * @return the VolumeInner object itself.

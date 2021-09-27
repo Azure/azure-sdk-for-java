@@ -1,14 +1,11 @@
 # Release History
 
-## 3.9.0-beta.1 (Unreleased)
+## 3.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
-
 ### Features Added
 - Support configuration of `AbstractJmsListenerContainerFactory` for `JmsListener`. Enabled properties include `replyPubSubDomain`, `replyQosSettings`, `subscriptionDurable`, `subscriptionShared` and `phase` with prefix as `spring.jms.servicebus.listener`.
-### Breaking Changes
-
 ### Bugs Fixed
 - Fix bug about application type validation. ([#23481](https://github.com/Azure/azure-sdk-for-java/issues/23481))
 
@@ -22,8 +19,6 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 - Fix the bug of not supporting Spring Boot autoconfiguration of JMS listener.
 ### Deprecations
 - Deprecate `azure.activedirectory.authorization-clients.xxx.on-demand`, use `azure.activedirectory.authorization-clients.xxx.authorization-grant-type` instead. If you are using `on-demand=true`, please change to `authorization-grant-type=authorization_code`.
-
-### Other Changes
 
 
 ## 3.8.0 (2021-08-25)

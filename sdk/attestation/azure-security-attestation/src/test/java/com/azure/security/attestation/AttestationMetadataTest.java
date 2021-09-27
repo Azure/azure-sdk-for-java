@@ -25,7 +25,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testGetMetadataConfiguration(HttpClient client, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
         AttestationOpenIdMetadata metadataConfig1 = attestationBuilder.buildClient().getOpenIdMetadata();
         verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
@@ -35,7 +35,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
         Response<AttestationOpenIdMetadata> metadataConfig = attestationBuilder.buildClient().getOpenIdMetadataWithResponse(Context.NONE);
         verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
@@ -46,7 +46,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @MethodSource("getAttestationClients")
     void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadata())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
@@ -58,7 +58,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void getOpenIdMetadataWithResponseAsync(HttpClient client, String clientUri) {
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadataWithResponse())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))

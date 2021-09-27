@@ -1,7 +1,18 @@
 # Release History
 
-## 12.0.0-beta.9 (Unreleased)
+## 12.0.0-beta.10 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.0.0-beta.9 (2021-09-15)
+### Other changes
+- Updated blob dependency to 12.14.0
 
 ## 12.0.0-beta.8 (2021-07-28)
 - Added support for the 2020-10-02 service version.

@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.12.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.11.0 (2021-09-09)
 #### New Features
 * Added Spring `ApplicationEventListener` support.

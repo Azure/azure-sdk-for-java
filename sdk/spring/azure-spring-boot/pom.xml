@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot</artifactId>
-  <version>3.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+  <version>3.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Spring Boot AutoConfigure</name>
@@ -116,7 +116,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.10.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      <version>3.11.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -164,7 +164,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.3.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -172,14 +172,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.13.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.14.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
     </dependency>
 

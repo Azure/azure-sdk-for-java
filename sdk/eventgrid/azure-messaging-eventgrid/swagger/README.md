@@ -33,6 +33,7 @@ generate-client-as-impl: true
 context-client-method-parameter: true
 models-subpackage: systemevents
 customization-class: EventGridCustomization
+service-interface-as-public: true
 directive:
     - rename-model:
         from: ResourceActionCancelData
