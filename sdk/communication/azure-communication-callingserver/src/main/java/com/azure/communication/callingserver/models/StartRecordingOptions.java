@@ -4,7 +4,10 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.core.annotation.Fluent;
+
 /** Defines values for RecordingFormatType. */
+@Fluent
 public final class StartRecordingOptions {
 
     private RecordingContentType recordingContentType = null;
