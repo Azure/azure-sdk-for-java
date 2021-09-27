@@ -1439,7 +1439,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk1_7036e05d00e040d8baaedede949e986a?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk1_7036e05d00e040d8baaedede949e986a?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d426d0e2-4c54-4884-a22b-7f0ae2d398fe",
@@ -1469,7 +1469,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk1_7036e05d00e040d8baaedede949e986a/beginGetAccess?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk1_7036e05d00e040d8baaedede949e986a/beginGetAccess?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "446037cb-2d9d-48e8-a66d-d2d27557adfd",
@@ -1557,7 +1557,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk2_d6f3d74977804e67a2039e92d8cc8716?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk2_d6f3d74977804e67a2039e92d8cc8716?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "68522bff-8dc4-4213-a80a-2c8c4a9524ef",
@@ -1587,7 +1587,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk2_d6f3d74977804e67a2039e92d8cc8716/beginGetAccess?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk2_d6f3d74977804e67a2039e92d8cc8716/beginGetAccess?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "718fe2db-1605-4541-b711-d6a3d3fd37fe",
@@ -1675,7 +1675,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk3_4d4d89ffa3bf40da8614413943f2b552?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk3_4d4d89ffa3bf40da8614413943f2b552?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ed4246d8-d25e-450d-9ad3-4e7842a2e886",
@@ -1705,7 +1705,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk3_4d4d89ffa3bf40da8614413943f2b552/beginGetAccess?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk3_4d4d89ffa3bf40da8614413943f2b552/beginGetAccess?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5e853c14-956e-4486-b268-b964bd774990",
@@ -1793,7 +1793,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk4_1be82eb1c0e643b5a1bbb055f0241357?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk4_1be82eb1c0e643b5a1bbb055f0241357?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "54a0a46d-c5b6-436c-900e-ae82da31fd84",
@@ -1823,7 +1823,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk4_1be82eb1c0e643b5a1bbb055f0241357/beginGetAccess?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk4_1be82eb1c0e643b5a1bbb055f0241357/beginGetAccess?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b095e82f-8b72-45e9-ba86-36b29926687f",
@@ -1911,7 +1911,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk5_e7cc9b706cdd4126a6cd8dfc3f64fbb2?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk5_e7cc9b706cdd4126a6cd8dfc3f64fbb2?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "79ce2cd7-0a82-46ef-96df-acf0299b0ddd",
@@ -1941,7 +1941,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk5_e7cc9b706cdd4126a6cd8dfc3f64fbb2/beginGetAccess?api-version=2020-12-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcomv61802ac/providers/Microsoft.Compute/disks/vm3980781_disk5_e7cc9b706cdd4126a6cd8dfc3f64fbb2/beginGetAccess?api-version=2021-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.4.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a267c4cc-b530-4143-ba68-a99638b0ddd2",

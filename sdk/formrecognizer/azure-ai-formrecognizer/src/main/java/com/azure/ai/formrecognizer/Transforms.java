@@ -62,9 +62,6 @@ final class Transforms {
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
     private static final int DEFAULT_TABLE_SPAN = 1;
-    public static final String NORMALIZATION_ERROR_MESSAGE = "Value was extracted from the form, but cannot "
-        + "be normalized to %s type. Consider accessing the `valueData.text` property for a textual representation "
-        + "of the value.";
 
     private Transforms() {
     }
@@ -411,8 +408,7 @@ final class Transforms {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                         FieldValueType.SELECTION_MARK_STATE);
                 } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(NORMALIZATION_ERROR_MESSAGE,
-                        fieldValue.getType())));
+                    value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.SELECTION_MARK_STATE);
                 }
                 break;
             case COUNTRY_REGION:

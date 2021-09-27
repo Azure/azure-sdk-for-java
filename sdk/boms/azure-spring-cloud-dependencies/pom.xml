@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-dependencies</artifactId>
-  <version>2.8.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-dependencies;current} -->
+  <version>2.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-dependencies;current} -->
   <packaging>pom</packaging>
 
   <name>Azure Spring Cloud Dependencies</name>
@@ -44,16 +44,16 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.core.version>1.20.0</azure.core.version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    <azure.eventhubs.checkpoint.version>1.9.0</azure.eventhubs.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
-    <azure.eventhubs.version>5.10.0</azure.eventhubs.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
-    <azure.identity.version>1.3.5</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    <azure.servicebus.version>7.4.0</azure.servicebus.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
-    <azure.resourcemanager.version>2.7.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+    <azure.eventhubs.checkpoint.version>1.10.0</azure.eventhubs.checkpoint.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+    <azure.eventhubs.version>5.10.1</azure.eventhubs.version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+    <azure.identity.version>1.3.6</azure.identity.version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    <azure.servicebus.version>7.4.1</azure.servicebus.version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+    <azure.resourcemanager.version>2.8.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     <azure.spring.appconfigure.version>2.1.0</azure.spring.appconfigure.version>
     <azure.spring.appconfigure.starter.version>2.1.0</azure.spring.appconfigure.starter.version>
     <azure.spring.appconfigure.feature.management.version>2.0.0</azure.spring.appconfigure.feature.management.version>
     <azure.spring.cloud.version>${project.version}</azure.spring.cloud.version>
-    <azure.storage.queue.version>12.10.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+    <azure.storage.queue.version>12.11.0</azure.storage.queue.version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
   </properties>
 
   <dependencyManagement>

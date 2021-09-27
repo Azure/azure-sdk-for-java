@@ -1,6 +1,27 @@
 ## Release History
 
-### 4.19.0-beta.2 (Unreleased)
+### 4.20.0-beta.2 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.20.0-beta.1 (2021-09-22)
+#### Key Bug Fixes
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+### 4.19.0 (2021-09-09)
+#### New Features
+* Added support for distinct count queries.
+* Added support for capturing `IndexMetrics` in `CosmosQueryRequestOptions`.
+
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+* Fixed issue for resuming order by queries from continuation token that includes undefined/null.
 
 ### 4.19.0-beta.1 (2021-09-02)
 #### Key Bug Fixes

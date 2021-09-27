@@ -60,7 +60,7 @@ Name | Description | Required | Default
 spring.cloud.azure.appconfiguration.stores[0].enabled | Whether the store will be loaded. | No | true
 spring.cloud.azure.appconfiguration.stores[0].fail-fast | Whether to throw a `RuntimeException` or not when failing to read from App Configuration during application start-up. If an exception does occur during startup when set to false the store is skipped. | No |  true
 spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pattern used to indicate which configuration(s) will be loaded.  | No | /application/*
-spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `{spring.profiles.active}` or if null `\0`
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `${spring.profiles.active}` or if null `\0`
 
 Configuration Store Authentication
 
@@ -88,7 +88,7 @@ spring.cloud.azure.appconfiguration.stores[0].monitoring.push-notification.secon
 
 Name | Description | Required | Default
 ---|---|---|---
-spring.cloud.azure.appconfiguration.stores[0].feature-flags.enable | Whether feature flags are loaded from the config store.  | No | false
+spring.cloud.azure.appconfiguration.stores[0].feature-flags.enabled | Whether feature flags are loaded from the config store.  | No | false
 spring.cloud.azure.appconfiguration.stores[0].feature-flags.label-filter | The label used to indicate which feature flags will be loaded. | No | \0
 
 ### Advanced usage
@@ -123,6 +123,28 @@ Spring Profiles are supported by automatically by being set as App Configuration
 
 ```properties
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=${spring.profiles.active},v1
+```
+
+If you need to use `(No Label)` you need to do the following:
+
+```properties
+spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter=,${spring.profiles.active}
+```
+
+where the empty value before the comma equals the `\0` value.
+
+and for yaml
+
+```yaml
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        stores:
+         -
+           selects:
+             -
+              label-filter: ',${spring.profiles.active}'
 ```
 
 #### Configuration Refresh

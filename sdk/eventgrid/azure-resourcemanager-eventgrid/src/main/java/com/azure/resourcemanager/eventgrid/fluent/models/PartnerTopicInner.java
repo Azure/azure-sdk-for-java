@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,10 +17,15 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** EventGrid Partner Topic. */
-@JsonFlatten
 @Fluent
-public class PartnerTopicInner extends Resource {
+public final class PartnerTopicInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerTopicInner.class);
+
+    /*
+     * Properties of the partner topic.
+     */
+    @JsonProperty(value = "properties")
+    private PartnerTopicProperties innerProperties;
 
     /*
      * The system metadata relating to Partner Topic resource.
@@ -35,42 +39,14 @@ public class PartnerTopicInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /*
-     * Source associated with this partner topic. This represents a unique
-     * partner resource.
+    /**
+     * Get the innerProperties property: Properties of the partner topic.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.source")
-    private String source;
-
-    /*
-     * Expiration time of the partner topic. If this timer expires while the
-     * partner topic is still never activated,
-     * the partner topic and corresponding event channel are deleted.
-     */
-    @JsonProperty(value = "properties.expirationTimeIfNotActivatedUtc")
-    private OffsetDateTime expirationTimeIfNotActivatedUtc;
-
-    /*
-     * Provisioning state of the partner topic.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private PartnerTopicProvisioningState provisioningState;
-
-    /*
-     * Activation state of the partner topic.
-     */
-    @JsonProperty(value = "properties.activationState")
-    private PartnerTopicActivationState activationState;
-
-    /*
-     * Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner
-     * topic.
-     * This will be helpful to remove any ambiguity of the origin of creation
-     * of the partner topic for the customer.
-     */
-    @JsonProperty(value = "properties.partnerTopicFriendlyDescription")
-    private String partnerTopicFriendlyDescription;
+    private PartnerTopicProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to Partner Topic resource.
@@ -101,101 +77,6 @@ public class PartnerTopicInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
-     *
-     * @return the source value.
-     */
-    public String source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: Source associated with this partner topic. This represents a unique partner resource.
-     *
-     * @param source the source value to set.
-     * @return the PartnerTopicInner object itself.
-     */
-    public PartnerTopicInner withSource(String source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
-     *
-     * @return the expirationTimeIfNotActivatedUtc value.
-     */
-    public OffsetDateTime expirationTimeIfNotActivatedUtc() {
-        return this.expirationTimeIfNotActivatedUtc;
-    }
-
-    /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
-     *
-     * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
-     * @return the PartnerTopicInner object itself.
-     */
-    public PartnerTopicInner withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
-        this.expirationTimeIfNotActivatedUtc = expirationTimeIfNotActivatedUtc;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the partner topic.
-     *
-     * @return the provisioningState value.
-     */
-    public PartnerTopicProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the activationState property: Activation state of the partner topic.
-     *
-     * @return the activationState value.
-     */
-    public PartnerTopicActivationState activationState() {
-        return this.activationState;
-    }
-
-    /**
-     * Set the activationState property: Activation state of the partner topic.
-     *
-     * @param activationState the activationState value to set.
-     * @return the PartnerTopicInner object itself.
-     */
-    public PartnerTopicInner withActivationState(PartnerTopicActivationState activationState) {
-        this.activationState = activationState;
-        return this;
-    }
-
-    /**
-     * Get the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
-     * ambiguity of the origin of creation of the partner topic for the customer.
-     *
-     * @return the partnerTopicFriendlyDescription value.
-     */
-    public String partnerTopicFriendlyDescription() {
-        return this.partnerTopicFriendlyDescription;
-    }
-
-    /**
-     * Set the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
-     * ambiguity of the origin of creation of the partner topic for the customer.
-     *
-     * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set.
-     * @return the PartnerTopicInner object itself.
-     */
-    public PartnerTopicInner withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription) {
-        this.partnerTopicFriendlyDescription = partnerTopicFriendlyDescription;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public PartnerTopicInner withLocation(String location) {
@@ -211,11 +92,121 @@ public class PartnerTopicInner extends Resource {
     }
 
     /**
+     * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
+     *
+     * @return the source value.
+     */
+    public String source() {
+        return this.innerProperties() == null ? null : this.innerProperties().source();
+    }
+
+    /**
+     * Set the source property: Source associated with this partner topic. This represents a unique partner resource.
+     *
+     * @param source the source value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withSource(String source) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
+     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
+     *
+     * @return the expirationTimeIfNotActivatedUtc value.
+     */
+    public OffsetDateTime expirationTimeIfNotActivatedUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimeIfNotActivatedUtc();
+    }
+
+    /**
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
+     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
+     *
+     * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withExpirationTimeIfNotActivatedUtc(expirationTimeIfNotActivatedUtc);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the partner topic.
+     *
+     * @return the provisioningState value.
+     */
+    public PartnerTopicProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the activationState property: Activation state of the partner topic.
+     *
+     * @return the activationState value.
+     */
+    public PartnerTopicActivationState activationState() {
+        return this.innerProperties() == null ? null : this.innerProperties().activationState();
+    }
+
+    /**
+     * Set the activationState property: Activation state of the partner topic.
+     *
+     * @param activationState the activationState value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withActivationState(PartnerTopicActivationState activationState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withActivationState(activationState);
+        return this;
+    }
+
+    /**
+     * Get the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
+     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
+     * ambiguity of the origin of creation of the partner topic for the customer.
+     *
+     * @return the partnerTopicFriendlyDescription value.
+     */
+    public String partnerTopicFriendlyDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerTopicFriendlyDescription();
+    }
+
+    /**
+     * Set the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
+     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
+     * ambiguity of the origin of creation of the partner topic for the customer.
+     *
+     * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set.
+     * @return the PartnerTopicInner object itself.
+     */
+    public PartnerTopicInner withPartnerTopicFriendlyDescription(String partnerTopicFriendlyDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerTopicProperties();
+        }
+        this.innerProperties().withPartnerTopicFriendlyDescription(partnerTopicFriendlyDescription);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

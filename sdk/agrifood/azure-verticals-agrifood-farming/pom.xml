@@ -32,6 +32,9 @@
   <properties>
     <!-- Anomaly detector temporarily skipping code coverage until tests are added -->
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -79,7 +82,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.5</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -33,9 +33,11 @@ public final class PlaybackClient implements HttpClient {
     // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
     private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)\\/\\/");
 
+    private static final Pattern ARRAYS_TO_STRING_SPLIT = Pattern.compile(", ");
+
     private final ClientLogger logger = new ClientLogger(PlaybackClient.class);
     private final AtomicInteger count = new AtomicInteger(0);
-    private final Map<String, String> textReplacementRules;
+    private final Map<Pattern, String> textReplacementRules;
     private final RecordedData recordedData;
 
     /**
@@ -49,7 +51,14 @@ public final class PlaybackClient implements HttpClient {
         Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
 
         this.recordedData = recordedData;
-        this.textReplacementRules = textReplacementRules == null ? new HashMap<>() : textReplacementRules;
+        this.textReplacementRules = new HashMap<>();
+        if (textReplacementRules != null) {
+            // Compile the replacement rules into Patterns as they'll be used as String.replaceAll functionality which
+            // compiles the target pattern anyways.
+            for (Map.Entry<String, String> kvp : textReplacementRules.entrySet()) {
+                this.textReplacementRules.put(Pattern.compile(kvp.getKey()), kvp.getValue());
+            }
+        }
     }
 
     /**
@@ -61,7 +70,7 @@ public final class PlaybackClient implements HttpClient {
     }
 
     private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
-        final String incomingUrl = applyReplacementRule(request.getUrl().toString());
+        final String incomingUrl = applyReplacementRules(request.getUrl().toString());
         final String incomingMethod = request.getHttpMethod().toString();
 
         final String matchingUrl = removeHost(incomingUrl);
@@ -108,13 +117,7 @@ public final class PlaybackClient implements HttpClient {
 
         for (Map.Entry<String, String> pair : networkCallRecord.getResponse().entrySet()) {
             if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body")) {
-                String rawHeader = pair.getValue();
-                for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
-                    if (rule.getValue() != null) {
-                        rawHeader = rawHeader.replaceAll(rule.getKey(), rule.getValue());
-                    }
-                }
-                headers.set(pair.getKey(), rawHeader);
+                headers.set(pair.getKey(), applyReplacementRules(pair.getValue()));
             }
         }
 
@@ -122,11 +125,7 @@ public final class PlaybackClient implements HttpClient {
         byte[] bytes = null;
 
         if (rawBody != null) {
-            for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
-                if (rule.getValue() != null) {
-                    rawBody = rawBody.replaceAll(rule.getKey(), rule.getValue());
-                }
-            }
+            rawBody = applyReplacementRules(rawBody);
 
             String contentType = networkCallRecord.getResponse().get("Content-Type");
 
@@ -149,7 +148,7 @@ public final class PlaybackClient implements HttpClient {
                      * and split the string into individual bytes using ', '.
                      */
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    for (String piece : rawBody.substring(1, rawBody.length() - 1).split(", ")) {
+                    for (String piece : ARRAYS_TO_STRING_SPLIT.split(rawBody.substring(1, rawBody.length() - 1))) {
                         outputStream.write(Byte.parseByte(piece));
                     }
 
@@ -173,10 +172,10 @@ public final class PlaybackClient implements HttpClient {
         return Mono.just(response);
     }
 
-    private String applyReplacementRule(String text) {
-        for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
+    private String applyReplacementRules(String text) {
+        for (Map.Entry<Pattern, String> rule : textReplacementRules.entrySet()) {
             if (rule.getValue() != null) {
-                text = text.replaceAll(rule.getKey(), rule.getValue());
+                text = rule.getKey().matcher(text).replaceAll(rule.getValue());
             }
         }
         return text;

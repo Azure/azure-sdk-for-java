@@ -23,7 +23,6 @@ import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -40,6 +39,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.KEYVAULT_TRACING_NAMESPACE_VALUE;
 
 class CryptographyServiceClient {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
     final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -110,21 +111,19 @@ class CryptographyServiceClient {
     }
 
     JsonWebKey transformSecretKey(SecretKey secretKey) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        ArrayNode a = mapper.createArrayNode();
+        ObjectNode rootNode = MAPPER.createObjectNode();
+        ArrayNode a = MAPPER.createArrayNode();
         a.add(KeyOperation.WRAP_KEY.toString());
         a.add(KeyOperation.UNWRAP_KEY.toString());
         a.add(KeyOperation.ENCRYPT.toString());
         a.add(KeyOperation.DECRYPT.toString());
 
-        ((ObjectNode) rootNode).put("k", Base64.getUrlDecoder().decode(secretKey.getValue()));
-        ((ObjectNode) rootNode).put("kid", this.keyId);
-        ((ObjectNode) rootNode).put("kty", KeyType.OCT.toString());
-        ((ObjectNode) rootNode).put("key_ops", a);
+        rootNode.put("k", Base64.getUrlDecoder().decode(secretKey.getValue()));
+        rootNode.put("kid", this.keyId);
+        rootNode.put("kty", KeyType.OCT.toString());
+        rootNode.set("key_ops", a);
 
-        String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
-        return mapper.readValue(jsonString, JsonWebKey.class);
+        return MAPPER.treeToValue(rootNode, JsonWebKey.class);
     }
 
     Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {

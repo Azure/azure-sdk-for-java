@@ -566,7 +566,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
         DownloadRetryOptions retryOptions = new DownloadRetryOptions().setMaxRetryRequests(3);
         ShareFileDownloadOptions options = new ShareFileDownloadOptions().setRange(range)
             .setRequestConditions(requestConditions)
-            .setRangeContentMd5(false)
+            .setRangeContentMd5Requested(false)
             .setRetryOptions(retryOptions);
         shareFileAsyncClient.downloadWithResponse(options)
             .subscribe(response ->
