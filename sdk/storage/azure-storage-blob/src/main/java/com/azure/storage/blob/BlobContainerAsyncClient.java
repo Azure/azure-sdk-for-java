@@ -16,6 +16,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.ContainersGetAccountInfoHeaders;
@@ -113,14 +114,16 @@ public final class BlobContainerAsyncClient {
      * {@code null} to allow the service to use its own encryption.
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
+     * @param serializerAdapter serializer adapter
      */
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, SerializerAdapter serializerAdapter) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
+            .serializerAdapter(serializerAdapter)
             .buildClient();
         this.serviceVersion = serviceVersion;
 
@@ -169,7 +172,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobAsyncClient(String blobName, String snapshot) {
         return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope);
+            getBlobContainerName(), blobName, snapshot, getCustomerProvidedKey(), encryptionScope, null, getSerializerAdapter());
     }
 
     /**
@@ -183,7 +186,7 @@ public final class BlobContainerAsyncClient {
      */
     public BlobAsyncClient getBlobVersionAsyncClient(String blobName, String versionId) {
         return new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
+            getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId, getSerializerAdapter());
     }
 
     /**
@@ -225,6 +228,15 @@ public final class BlobContainerAsyncClient {
     public String getAccountName() {
         return this.accountName;
     }
+    
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return azureBlobStorage.getSerializerAdapter();
+    }
 
     /**
      * Get an async client pointing to the account.
@@ -244,7 +256,8 @@ public final class BlobContainerAsyncClient {
             .serviceVersion(this.serviceVersion)
             .blobContainerEncryptionScope(this.blobContainerEncryptionScope)
             .encryptionScope(this.getEncryptionScope())
-            .customerProvidedKey(encryptionKey);
+            .customerProvidedKey(encryptionKey)
+            .serializerAdapter(getSerializerAdapter());
     }
 
     /**

@@ -15,6 +15,8 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
@@ -76,6 +78,7 @@ public final class BlobClientBuilder {
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobClient BlobClients} and {@link
@@ -141,7 +144,7 @@ public final class BlobClientBuilder {
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
-            snapshot, customerProvidedKey, encryptionScope, versionId);
+            snapshot, customerProvidedKey, encryptionScope, versionId, serializerAdapter);
     }
 
     /**
@@ -487,6 +490,20 @@ public final class BlobClientBuilder {
      */
     public BlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link SerializerAdapter} that is used when serializing/deserializing API requests and responses.
+     * <p>
+     * If the serializer adapter, the default {@link JacksonAdapter#createDefaultSerializerAdapter()} will be used.
+     * <p>
+     *
+     * @param serializerAdapter {@link SerializerAdapter} to be used when serializing/deserializing API requests and responses.
+     * @return the updated BlobClientBuilder object
+     */
+    public BlobClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 }

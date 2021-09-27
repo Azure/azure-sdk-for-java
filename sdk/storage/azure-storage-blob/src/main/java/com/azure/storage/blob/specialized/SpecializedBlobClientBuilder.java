@@ -15,6 +15,8 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -84,6 +86,7 @@ public final class SpecializedBlobClientBuilder {
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -112,7 +115,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, serializerAdapter);
     }
 
     /**
@@ -145,7 +148,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, serializerAdapter);
     }
 
     /**
@@ -177,7 +180,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), endpoint, getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId, serializerAdapter);
     }
 
     /*
@@ -635,6 +638,20 @@ public final class SpecializedBlobClientBuilder {
      */
     public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+    
+    /**
+     * Sets the {@link SerializerAdapter} that is used when serializing/deserializing API requests and responses.
+     * <p>
+     * If the serializer adapter, the default {@link JacksonAdapter#createDefaultSerializerAdapter()} will be used.
+     * <p>
+     *
+     * @param serializerAdapter {@link SerializerAdapter} to be used when serializing/deserializing API requests and responses.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 }

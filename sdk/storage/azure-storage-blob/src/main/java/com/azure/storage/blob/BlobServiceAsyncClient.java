@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -109,10 +110,11 @@ public final class BlobServiceAsyncClient {
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
      * @param anonymousAccess Whether or not the client was built with anonymousAccess
+     * @param serializerAdapter serializer adapter
      */
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
-        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
+        BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess, SerializerAdapter serializerAdapter) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
@@ -124,6 +126,7 @@ public final class BlobServiceAsyncClient {
             .pipeline(pipeline)
             .url(url)
             .version(serviceVersion.getVersion())
+            .serializerAdapter(serializerAdapter)
             .buildClient();
         this.serviceVersion = serviceVersion;
 
@@ -153,7 +156,8 @@ public final class BlobServiceAsyncClient {
         }
 
         return new BlobContainerAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), containerName, customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+            getAccountName(), containerName, customerProvidedKey, encryptionScope, 
+               blobContainerEncryptionScope, getSerializerAdapter());
     }
 
     /**
@@ -172,6 +176,15 @@ public final class BlobServiceAsyncClient {
      */
     public BlobServiceVersion getServiceVersion() {
         return serviceVersion;
+    }
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return azureBlobStorage.getSerializerAdapter();
     }
 
     /**

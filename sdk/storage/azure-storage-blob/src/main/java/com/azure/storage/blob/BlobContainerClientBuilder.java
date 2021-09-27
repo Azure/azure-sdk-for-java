@@ -15,6 +15,8 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -74,6 +76,7 @@ public final class BlobContainerClientBuilder {
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link BlobContainerClient ContainerClients}
@@ -131,7 +134,7 @@ public final class BlobContainerClientBuilder {
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new BlobContainerAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName,
-            customerProvidedKey, encryptionScope, blobContainerEncryptionScope);
+            customerProvidedKey, encryptionScope, blobContainerEncryptionScope, serializerAdapter);
     }
 
     /**
@@ -444,6 +447,20 @@ public final class BlobContainerClientBuilder {
      */
     public BlobContainerClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+    
+    /**
+     * Sets the {@link SerializerAdapter} that is used when serializing/deserializing API requests and responses.
+     * <p>
+     * If the serializer adapter, the default {@link JacksonAdapter#createDefaultSerializerAdapter()} will be used.
+     * <p>
+     *
+     * @param serializerAdapter {@link SerializerAdapter} to be used when serializing/deserializing API requests and responses.
+     * @return the updated BlobContainerClientBuilder object
+     */
+    public BlobContainerClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
         return this;
     }
 }

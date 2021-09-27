@@ -57,7 +57,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, BlobServiceVersion.getLatest(),
-        null, null, null, null, null, null, null);
+        null, null, null, null, null, null, null, null);
     private String leaseId = "leaseId";
     private String tags = "tags";
     private String copyId = "copyId";

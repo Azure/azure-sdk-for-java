@@ -15,6 +15,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -264,6 +265,15 @@ public class BlobClientBase {
      */
     public boolean isSnapshot() {
         return client.isSnapshot();
+    }
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return client.getSerializerAdapter();
     }
 
     /**

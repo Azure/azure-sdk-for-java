@@ -223,6 +223,7 @@ public final class BlockBlobClient extends BlobClientBase {
             .pipeline(getHttpPipeline())
             .endpoint(getBlobUrl())
             .snapshot(getSnapshotId())
+            .serializerAdapter(getSerializerAdapter())
             .serviceVersion(getServiceVersion());
 
         CpkInfo cpk = getCustomerProvidedKey();

@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.serializer.JacksonAdapter;
+
 import spock.lang.Specification
 
 class BlobServiceClientBuilderTest extends Specification {
@@ -24,5 +26,31 @@ class BlobServiceClientBuilderTest extends Specification {
 
         then:
         client.getAccountUrl() == "https://127.0.0.1:10000/"
+    }
+    
+    def "Create Blob Service client with default serializer adapter"() {
+        when:
+        def client = new BlobServiceClientBuilder()
+            .endpoint("https://127.0.0.1:10000")
+            .serializerAdapter(null)
+            .buildAsyncClient()
+
+        then:
+        client.serializerAdapter == JacksonAdapter.createDefaultSerializerAdapter()
+        client.getBlobContainerAsyncClient("container").serializerAdapter == JacksonAdapter.createDefaultSerializerAdapter()
+    }
+    
+    def "Create Blob Service client with default custom adapter"() {
+        when:
+        def adapter = new JacksonAdapter() {}
+        
+        def client = new BlobServiceClientBuilder()
+            .endpoint("https://127.0.0.1:10000")
+            .serializerAdapter(adapter)
+            .buildAsyncClient()
+
+        then:
+        client.serializerAdapter == adapter
+        client.getBlobContainerAsyncClient("container").serializerAdapter == adapter
     }
 }
