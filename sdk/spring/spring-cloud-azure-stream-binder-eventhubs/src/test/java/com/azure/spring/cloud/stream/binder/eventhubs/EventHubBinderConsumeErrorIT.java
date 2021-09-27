@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
+import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;

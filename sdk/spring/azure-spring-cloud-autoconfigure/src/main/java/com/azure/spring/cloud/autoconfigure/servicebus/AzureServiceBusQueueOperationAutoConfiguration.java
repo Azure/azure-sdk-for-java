@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.servicebus.core.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
-import com.azure.spring.servicebus.core.ServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;

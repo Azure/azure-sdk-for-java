@@ -3,16 +3,16 @@
 
 package com.azure.spring.storage.queue.core;
 
+import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.messaging.checkpoint.Checkpointer;
+import com.azure.spring.storage.queue.support.StorageQueueHelper;
+import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.QueueAsyncClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueStorageException;
-import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.messaging.checkpoint.reactor.AzureCheckpointer;
-import com.azure.spring.messaging.checkpoint.reactor.Checkpointer;
-import com.azure.spring.storage.queue.support.converter.StorageQueueMessageConverter;
-import com.azure.spring.storage.queue.support.StorageQueueHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;

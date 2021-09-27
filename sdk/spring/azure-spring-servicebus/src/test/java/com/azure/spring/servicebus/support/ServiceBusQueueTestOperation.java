@@ -12,6 +12,7 @@ import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -48,7 +48,7 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     }
 
     @Override
-    public <U> CompletableFuture<Void> sendAsync(String name, Message<U> message, PartitionSupplier partitionSupplier) {
+    public <U> Mono<Void> sendAsync(String name, Message<U> message, PartitionSupplier partitionSupplier) {
         ServiceBusMessage azureMessage = getMessageConverter().fromMessage(message, ServiceBusMessage.class);
 
         final ServiceBusReceivedMessageContext receivedMessageContext = mockReceivedMessageContext(azureMessage);
@@ -60,7 +60,7 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
 
         getRandom(processorsByQueue.get(name)).ifPresent(c -> c.processMessage().accept(receivedMessageContext));
 
-        return CompletableFuture.completedFuture(null);
+        return Mono.empty();
     }
 
     @Override

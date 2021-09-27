@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.core.reactor;
+package com.azure.spring.messaging.core;
 
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 import org.springframework.messaging.Message;
 
 import java.util.function.Consumer;

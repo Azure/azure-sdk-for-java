@@ -5,8 +5,8 @@ package com.azure.spring.eventhubs.core;
 
 import com.azure.spring.eventhubs.support.StartPosition;
 import com.azure.spring.messaging.core.SubscribeByGroupOperation;
-import com.azure.spring.messaging.core.reactor.BatchSendOperation;
-import com.azure.spring.messaging.core.reactor.SendOperation;
+import com.azure.spring.messaging.core.BatchSendOperation;
+import com.azure.spring.messaging.core.SendOperation;
 
 /**
  * Azure event hub operation to support send data asynchronously and subscribe
