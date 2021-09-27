@@ -31,229 +31,135 @@ import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInne
 import com.azure.resourcemanager.resources.models.DeploymentOperationsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeploymentOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * DeploymentOperationsClient.
+ */
 public final class DeploymentOperationsClientImpl implements DeploymentOperationsClient {
     private final ClientLogger logger = new ClientLogger(DeploymentOperationsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeploymentOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceManagementClientImpl client;
 
     /**
      * Initializes an instance of DeploymentOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeploymentOperationsClientImpl(ResourceManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(DeploymentOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(DeploymentOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ResourceManagementClientDeploymentOperations to be used by the proxy
+     * The interface defining all the services for
+     * ResourceManagementClientDeploymentOperations to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     private interface DeploymentOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationInner>> getAtScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationInner>> getAtScope(@HostParam("$host") String endpoint, @PathParam(value = "scope", encoded = true) String scope, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtScope(@HostParam("$host") String endpoint, @PathParam(value = "scope", encoded = true) String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationInner>> getAtTenantScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationInner>> getAtTenantScope(@HostParam("$host") String endpoint, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtTenantScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtTenantScope(@HostParam("$host") String endpoint, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/operations/{operationId}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationInner>> getAtManagementGroupScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationInner>> getAtManagementGroupScope(@HostParam("$host") String endpoint, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
-                + "/{deploymentName}/operations")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScope(@HostParam("$host") String endpoint, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-                + "/{operationId}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationInner>> getAtSubscriptionScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationInner>> getAtSubscriptionScope(@HostParam("$host") String endpoint, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtSubscriptionScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtSubscriptionScope(@HostParam("$host") String endpoint, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"
-                + "/{operationId}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}"
-                + "/operations")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("deploymentName") String deploymentName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtTenantScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtManagementGroupScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listAtSubscriptionScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listAtSubscriptionScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeploymentOperationsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeploymentOperationsListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -263,13 +169,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentOperationInner>> getAtScopeWithResponseAsync(
-        String scope, String deploymentName, String operationId) {
+    public Mono<Response<DeploymentOperationInner>> getAtScopeWithResponseAsync(String scope, String deploymentName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -281,24 +183,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAtScope(
-                            this.client.getEndpoint(),
-                            scope,
-                            deploymentName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getAtScope(this.client.getEndpoint(), scope, deploymentName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -309,13 +200,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentOperationInner>> getAtScopeWithResponseAsync(
-        String scope, String deploymentName, String operationId, Context context) {
+    private Mono<Response<DeploymentOperationInner>> getAtScopeWithResponseAsync(String scope, String deploymentName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -328,20 +215,12 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAtScope(
-                this.client.getEndpoint(),
-                scope,
-                deploymentName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getAtScope(this.client.getEndpoint(), scope, deploymentName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -353,19 +232,18 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentOperationInner> getAtScopeAsync(String scope, String deploymentName, String operationId) {
         return getAtScopeWithResponseAsync(scope, deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<DeploymentOperationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -381,7 +259,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -392,14 +270,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentOperationInner> getAtScopeWithResponse(
-        String scope, String deploymentName, String operationId, Context context) {
+    public Response<DeploymentOperationInner> getAtScopeWithResponse(String scope, String deploymentName, String operationId, Context context) {
         return getAtScopeWithResponseAsync(scope, deploymentName, operationId, context).block();
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -409,13 +286,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(
-        String scope, String deploymentName, Integer top) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(String scope, String deploymentName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -424,33 +297,20 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAtScope(
-                            this.client.getEndpoint(),
-                            scope,
-                            deploymentName,
-                            top,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtScope(this.client.getEndpoint(), scope, deploymentName, top, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -461,13 +321,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(
-        String scope, String deploymentName, Integer top, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(String scope, String deploymentName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -477,23 +333,19 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtScope(
-                this.client.getEndpoint(), scope, deploymentName, top, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtScope(this.client.getEndpoint(), scope, deploymentName, top, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -511,7 +363,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,7 +381,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -540,8 +392,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentOperationInner> listAtScopeAsync(
-        String scope, String deploymentName, Integer top, Context context) {
+    private PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top, context),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink, context));
@@ -549,7 +400,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,7 +416,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -576,14 +427,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtScope(
-        String scope, String deploymentName, Integer top, Context context) {
+    public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName, Integer top, Context context) {
         return new PagedIterable<>(listAtScopeAsync(scope, deploymentName, top, context));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -592,13 +442,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(
-        String deploymentName, String operationId) {
+    public Mono<Response<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(String deploymentName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
@@ -607,23 +453,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAtTenantScope(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getAtTenantScope(this.client.getEndpoint(), deploymentName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -633,13 +469,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(
-        String deploymentName, String operationId, Context context) {
+    private Mono<Response<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(String deploymentName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
@@ -649,14 +481,12 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAtTenantScope(
-                this.client.getEndpoint(), deploymentName, operationId, this.client.getApiVersion(), accept, context);
+        return service.getAtTenantScope(this.client.getEndpoint(), deploymentName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,19 +497,18 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentOperationInner> getAtTenantScopeAsync(String deploymentName, String operationId) {
         return getAtTenantScopeWithResponseAsync(deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<DeploymentOperationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -694,7 +523,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -704,14 +533,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentOperationInner> getAtTenantScopeWithResponse(
-        String deploymentName, String operationId, Context context) {
+    public Response<DeploymentOperationInner> getAtTenantScopeWithResponse(String deploymentName, String operationId, Context context) {
         return getAtTenantScopeWithResponseAsync(deploymentName, operationId, context).block();
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -720,44 +548,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(
-        String deploymentName, Integer top) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(String deploymentName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAtTenantScope(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            top,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtTenantScope(this.client.getEndpoint(), deploymentName, top, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -767,36 +579,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(
-        String deploymentName, Integer top, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(String deploymentName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtTenantScope(
-                this.client.getEndpoint(), deploymentName, top, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtTenantScope(this.client.getEndpoint(), deploymentName, top, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,7 +617,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -830,7 +634,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -840,8 +644,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(
-        String deploymentName, Integer top, Context context) {
+    private PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top, context),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink, context));
@@ -849,7 +652,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -864,7 +667,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -874,14 +677,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtTenantScope(
-        String deploymentName, Integer top, Context context) {
+    public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top, Context context) {
         return new PagedIterable<>(listAtTenantScopeAsync(deploymentName, top, context));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -891,13 +693,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(
-        String groupId, String deploymentName, String operationId) {
+    public Mono<Response<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -909,24 +707,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAtManagementGroupScope(
-                            this.client.getEndpoint(),
-                            groupId,
-                            deploymentName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getAtManagementGroupScope(this.client.getEndpoint(), groupId, deploymentName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -937,13 +724,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(
-        String groupId, String deploymentName, String operationId, Context context) {
+    private Mono<Response<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -956,20 +739,12 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAtManagementGroupScope(
-                this.client.getEndpoint(),
-                groupId,
-                deploymentName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getAtManagementGroupScope(this.client.getEndpoint(), groupId, deploymentName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -979,22 +754,20 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, String operationId) {
+    public Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(String groupId, String deploymentName, String operationId) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<DeploymentOperationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1004,14 +777,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner getAtManagementGroupScope(
-        String groupId, String deploymentName, String operationId) {
+    public DeploymentOperationInner getAtManagementGroupScope(String groupId, String deploymentName, String operationId) {
         return getAtManagementGroupScopeAsync(groupId, deploymentName, operationId).block();
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1022,14 +794,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentOperationInner> getAtManagementGroupScopeWithResponse(
-        String groupId, String deploymentName, String operationId, Context context) {
+    public Response<DeploymentOperationInner> getAtManagementGroupScopeWithResponse(String groupId, String deploymentName, String operationId, Context context) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId, context).block();
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1039,13 +810,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(
-        String groupId, String deploymentName, Integer top) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(String groupId, String deploymentName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1054,33 +821,20 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAtManagementGroupScope(
-                            this.client.getEndpoint(),
-                            groupId,
-                            deploymentName,
-                            top,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtManagementGroupScope(this.client.getEndpoint(), groupId, deploymentName, top, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1091,13 +845,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(
-        String groupId, String deploymentName, Integer top, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(String groupId, String deploymentName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1107,23 +857,19 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtManagementGroupScope(
-                this.client.getEndpoint(), groupId, deploymentName, top, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtManagementGroupScope(this.client.getEndpoint(), groupId, deploymentName, top, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1133,8 +879,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, Integer top) {
+    public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName, Integer top) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
@@ -1142,7 +887,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1160,7 +905,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1171,8 +916,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
-        String groupId, String deploymentName, Integer top, Context context) {
+    private PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top, context),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink, context));
@@ -1180,7 +924,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1196,7 +940,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1207,14 +951,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(
-        String groupId, String deploymentName, Integer top, Context context) {
+    public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName, Integer top, Context context) {
         return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, deploymentName, top, context));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1223,13 +966,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(
-        String deploymentName, String operationId) {
+    public Mono<Response<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(String deploymentName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
@@ -1238,30 +977,16 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAtSubscriptionScope(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getAtSubscriptionScope(this.client.getEndpoint(), deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -1271,13 +996,9 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(
-        String deploymentName, String operationId, Context context) {
+    private Mono<Response<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(String deploymentName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
@@ -1286,27 +1007,16 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAtSubscriptionScope(
-                this.client.getEndpoint(),
-                deploymentName,
-                operationId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getAtSubscriptionScope(this.client.getEndpoint(), deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1317,19 +1027,18 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentOperationInner> getAtSubscriptionScopeAsync(String deploymentName, String operationId) {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<DeploymentOperationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1344,7 +1053,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @param context The context to associate with this operation.
@@ -1354,14 +1063,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentOperationInner> getAtSubscriptionScopeWithResponse(
-        String deploymentName, String operationId, Context context) {
+    public Response<DeploymentOperationInner> getAtSubscriptionScopeWithResponse(String deploymentName, String operationId, Context context) {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName, operationId, context).block();
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1370,51 +1078,31 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(
-        String deploymentName, Integer top) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(String deploymentName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAtSubscriptionScope(
-                            this.client.getEndpoint(),
-                            deploymentName,
-                            top,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtSubscriptionScope(this.client.getEndpoint(), deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -1424,48 +1112,31 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(
-        String deploymentName, Integer top, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(String deploymentName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtSubscriptionScope(
-                this.client.getEndpoint(),
-                deploymentName,
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtSubscriptionScope(this.client.getEndpoint(), deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1482,7 +1153,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1499,7 +1170,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -1509,8 +1180,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(
-        String deploymentName, Integer top, Context context) {
+    private PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top, context),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink, context));
@@ -1518,7 +1188,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1533,7 +1203,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @param context The context to associate with this operation.
@@ -1543,14 +1213,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(
-        String deploymentName, Integer top, Context context) {
+    public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName, Integer top, Context context) {
         return new PagedIterable<>(listAtSubscriptionScopeAsync(deploymentName, top, context));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1560,17 +1229,12 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeploymentOperationInner>> getWithResponseAsync(
-        String resourceGroupName, String deploymentName, String operationId) {
+    public Mono<Response<DeploymentOperationInner>> getWithResponseAsync(String resourceGroupName, String deploymentName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
@@ -1579,31 +1243,16 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            deploymentName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1614,17 +1263,12 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeploymentOperationInner>> getWithResponseAsync(
-        String resourceGroupName, String deploymentName, String operationId, Context context) {
+    private Mono<Response<DeploymentOperationInner>> getWithResponseAsync(String resourceGroupName, String deploymentName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
@@ -1633,28 +1277,16 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                deploymentName,
-                operationId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1664,22 +1296,20 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAsync(
-        String resourceGroupName, String deploymentName, String operationId) {
+    public Mono<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId) {
         return getWithResponseAsync(resourceGroupName, deploymentName, operationId)
-            .flatMap(
-                (Response<DeploymentOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<DeploymentOperationInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1695,7 +1325,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets a deployments operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -1706,14 +1336,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeploymentOperationInner> getWithResponse(
-        String resourceGroupName, String deploymentName, String operationId, Context context) {
+    public Response<DeploymentOperationInner> getWithResponse(String resourceGroupName, String deploymentName, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, operationId, context).block();
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1723,56 +1352,34 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String deploymentName, Integer top) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String deploymentName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            deploymentName,
-                            top,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1783,53 +1390,34 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String deploymentName, Integer top, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String deploymentName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (deploymentName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                deploymentName,
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1839,8 +1427,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
-        String resourceGroupName, String deploymentName, Integer top) {
+    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName, Integer top) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -1848,7 +1435,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1857,8 +1444,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
-        String resourceGroupName, String deploymentName) {
+    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName) {
         final Integer top = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top),
@@ -1867,7 +1453,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1878,8 +1464,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
-        String resourceGroupName, String deploymentName, Integer top, Context context) {
+    private PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1887,7 +1472,7 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1896,15 +1481,14 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listByResourceGroup(
-        String resourceGroupName, String deploymentName) {
+    public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName) {
         final Integer top = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -1915,14 +1499,13 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listByResourceGroup(
-        String resourceGroupName, String deploymentName, Integer top, Context context) {
+    public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName, Integer top, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1935,29 +1518,23 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAtScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtScopeNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1966,35 +1543,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtScopeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2007,29 +1577,23 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAtTenantScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtTenantScopeNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2038,35 +1602,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtTenantScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtTenantScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2074,36 +1631,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listAtManagementGroupScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtManagementGroupScopeNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2112,35 +1661,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtManagementGroupScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtManagementGroupScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2153,30 +1695,23 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listAtSubscriptionScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAtSubscriptionScopeNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2185,35 +1720,28 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
      * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAtSubscriptionScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAtSubscriptionScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2226,29 +1754,23 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeploymentOperationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2262,23 +1784,17 @@ public final class DeploymentOperationsClientImpl implements DeploymentOperation
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

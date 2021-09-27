@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Entity representing the reference to the deployment parameters. */
+/**
+ * Entity representing the reference to the deployment parameters.
+ */
 @Fluent
 public final class ParametersLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParametersLink.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ParametersLink.class);
 
     /*
      * The URI of the parameters file.
@@ -28,7 +33,7 @@ public final class ParametersLink {
 
     /**
      * Get the uri property: The URI of the parameters file.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -37,7 +42,7 @@ public final class ParametersLink {
 
     /**
      * Set the uri property: The URI of the parameters file.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ParametersLink object itself.
      */
@@ -47,8 +52,9 @@ public final class ParametersLink {
     }
 
     /**
-     * Get the contentVersion property: If included, must match the ContentVersion in the template.
-     *
+     * Get the contentVersion property: If included, must match the
+     * ContentVersion in the template.
+     * 
      * @return the contentVersion value.
      */
     public String contentVersion() {
@@ -56,8 +62,9 @@ public final class ParametersLink {
     }
 
     /**
-     * Set the contentVersion property: If included, must match the ContentVersion in the template.
-     *
+     * Set the contentVersion property: If included, must match the
+     * ContentVersion in the template.
+     * 
      * @param contentVersion the contentVersion value to set.
      * @return the ParametersLink object itself.
      */
@@ -68,14 +75,12 @@ public final class ParametersLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (uri() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model ParametersLink"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property uri in model ParametersLink"));
         }
     }
 }

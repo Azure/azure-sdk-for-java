@@ -6,10 +6,14 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-//import com.azure.resourcemanager.resources.fluent.OperationsClient;
+import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
@@ -17,113 +21,133 @@ import com.azure.resourcemanager.resources.fluent.TenantsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the SubscriptionClientImpl type. */
+/**
+ * Initializes a new instance of the SubscriptionClientImpl type.
+ */
 @ServiceClient(builder = SubscriptionClientBuilder.class)
 public final class SubscriptionClientImpl extends AzureServiceClient implements SubscriptionClient {
     private final ClientLogger logger = new ClientLogger(SubscriptionClientImpl.class);
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-//    /** The OperationsClient object to access its operations. */
-//    private final OperationsClient operations;
-//
-//    /**
-//     * Gets the OperationsClient object to access its operations.
-//     *
-//     * @return the OperationsClient object.
-//     */
-//    public OperationsClient getOperations() {
-//        return this.operations;
-//    }
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
 
-    /** The SubscriptionsClient object to access its operations. */
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
+     * The SubscriptionsClient object to access its operations.
+     */
     private final SubscriptionsClient subscriptions;
 
     /**
      * Gets the SubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the SubscriptionsClient object.
      */
     public SubscriptionsClient getSubscriptions() {
         return this.subscriptions;
     }
 
-    /** The TenantsClient object to access its operations. */
+    /**
+     * The TenantsClient object to access its operations.
+     */
     private final TenantsClient tenants;
 
     /**
      * Gets the TenantsClient object to access its operations.
-     *
+     * 
      * @return the TenantsClient object.
      */
     public TenantsClient getTenants() {
         return this.tenants;
     }
 
-    /** The ResourceNamesClient object to access its operations. */
+    /**
+     * The ResourceNamesClient object to access its operations.
+     */
     private final ResourceNamesClient resourceNames;
 
     /**
      * Gets the ResourceNamesClient object to access its operations.
-     *
+     * 
      * @return the ResourceNamesClient object.
      */
     public ResourceNamesClient getResourceNames() {
@@ -132,26 +156,21 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
 
     /**
      * Initializes an instance of SubscriptionClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param endpoint server parameter.
      */
-    SubscriptionClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String endpoint) {
+    SubscriptionClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval, AzureEnvironment environment, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
-//        this.operations = new OperationsClientImpl(this);
+        this.apiVersion = "2016-06-01";
+        this.operations = new OperationsClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
         this.tenants = new TenantsClientImpl(this);
         this.resourceNames = new ResourceNamesClientImpl(this);

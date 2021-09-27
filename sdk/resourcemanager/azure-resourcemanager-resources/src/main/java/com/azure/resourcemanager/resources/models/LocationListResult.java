@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.LocationInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Location list operation response. */
+/**
+ * Location list operation response.
+ */
 @Fluent
 public final class LocationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LocationListResult.class);
 
     /*
      * An array of locations.
@@ -24,7 +29,7 @@ public final class LocationListResult {
 
     /**
      * Get the value property: An array of locations.
-     *
+     * 
      * @return the value value.
      */
     public List<LocationInner> value() {
@@ -33,7 +38,7 @@ public final class LocationListResult {
 
     /**
      * Set the value property: An array of locations.
-     *
+     * 
      * @param value the value value to set.
      * @return the LocationListResult object itself.
      */
@@ -44,7 +49,7 @@ public final class LocationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

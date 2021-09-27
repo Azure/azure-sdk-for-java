@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** HTTP message. */
+/**
+ * HTTP message.
+ */
 @Fluent
 public final class HttpMessage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpMessage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(HttpMessage.class);
 
     /*
      * HTTP message content.
@@ -22,7 +27,7 @@ public final class HttpMessage {
 
     /**
      * Get the content property: HTTP message content.
-     *
+     * 
      * @return the content value.
      */
     public Object content() {
@@ -31,7 +36,7 @@ public final class HttpMessage {
 
     /**
      * Set the content property: HTTP message content.
-     *
+     * 
      * @param content the content value to set.
      * @return the HttpMessage object itself.
      */
@@ -42,7 +47,7 @@ public final class HttpMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

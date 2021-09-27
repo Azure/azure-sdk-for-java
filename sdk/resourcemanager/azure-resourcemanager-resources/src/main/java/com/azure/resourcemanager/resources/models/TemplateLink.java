@@ -5,38 +5,25 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Entity representing the reference to the template. */
+/**
+ * Entity representing the reference to the template.
+ */
 @Fluent
 public final class TemplateLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TemplateLink.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TemplateLink.class);
 
     /*
-     * The URI of the template to deploy. Use either the uri or id property,
-     * but not both.
+     * The URI of the template to deploy.
      */
-    @JsonProperty(value = "uri")
+    @JsonProperty(value = "uri", required = true)
     private String uri;
-
-    /*
-     * The resource id of a Template Spec. Use either the id or uri property,
-     * but not both.
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /*
-     * The relativePath property can be used to deploy a linked template at a
-     * location relative to the parent. If the parent template was linked with
-     * a TemplateSpec, this will reference an artifact in the TemplateSpec.  If
-     * the parent was linked with a URI, the child deployment will be a
-     * combination of the parent and relativePath URIs
-     */
-    @JsonProperty(value = "relativePath")
-    private String relativePath;
 
     /*
      * If included, must match the ContentVersion in the template.
@@ -44,16 +31,9 @@ public final class TemplateLink {
     @JsonProperty(value = "contentVersion")
     private String contentVersion;
 
-    /*
-     * The query string (for example, a SAS token) to be used with the
-     * templateLink URI.
-     */
-    @JsonProperty(value = "queryString")
-    private String queryString;
-
     /**
-     * Get the uri property: The URI of the template to deploy. Use either the uri or id property, but not both.
-     *
+     * Get the uri property: The URI of the template to deploy.
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -61,8 +41,8 @@ public final class TemplateLink {
     }
 
     /**
-     * Set the uri property: The URI of the template to deploy. Use either the uri or id property, but not both.
-     *
+     * Set the uri property: The URI of the template to deploy.
+     * 
      * @param uri the uri value to set.
      * @return the TemplateLink object itself.
      */
@@ -72,54 +52,9 @@ public final class TemplateLink {
     }
 
     /**
-     * Get the id property: The resource id of a Template Spec. Use either the id or uri property, but not both.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: The resource id of a Template Spec. Use either the id or uri property, but not both.
-     *
-     * @param id the id value to set.
-     * @return the TemplateLink object itself.
-     */
-    public TemplateLink withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the relativePath property: The relativePath property can be used to deploy a linked template at a location
-     * relative to the parent. If the parent template was linked with a TemplateSpec, this will reference an artifact in
-     * the TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent
-     * and relativePath URIs.
-     *
-     * @return the relativePath value.
-     */
-    public String relativePath() {
-        return this.relativePath;
-    }
-
-    /**
-     * Set the relativePath property: The relativePath property can be used to deploy a linked template at a location
-     * relative to the parent. If the parent template was linked with a TemplateSpec, this will reference an artifact in
-     * the TemplateSpec. If the parent was linked with a URI, the child deployment will be a combination of the parent
-     * and relativePath URIs.
-     *
-     * @param relativePath the relativePath value to set.
-     * @return the TemplateLink object itself.
-     */
-    public TemplateLink withRelativePath(String relativePath) {
-        this.relativePath = relativePath;
-        return this;
-    }
-
-    /**
-     * Get the contentVersion property: If included, must match the ContentVersion in the template.
-     *
+     * Get the contentVersion property: If included, must match the
+     * ContentVersion in the template.
+     * 
      * @return the contentVersion value.
      */
     public String contentVersion() {
@@ -127,8 +62,9 @@ public final class TemplateLink {
     }
 
     /**
-     * Set the contentVersion property: If included, must match the ContentVersion in the template.
-     *
+     * Set the contentVersion property: If included, must match the
+     * ContentVersion in the template.
+     * 
      * @param contentVersion the contentVersion value to set.
      * @return the TemplateLink object itself.
      */
@@ -138,30 +74,13 @@ public final class TemplateLink {
     }
 
     /**
-     * Get the queryString property: The query string (for example, a SAS token) to be used with the templateLink URI.
-     *
-     * @return the queryString value.
-     */
-    public String queryString() {
-        return this.queryString;
-    }
-
-    /**
-     * Set the queryString property: The query string (for example, a SAS token) to be used with the templateLink URI.
-     *
-     * @param queryString the queryString value to set.
-     * @return the TemplateLink object itself.
-     */
-    public TemplateLink withQueryString(String queryString) {
-        this.queryString = queryString;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (uri() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property uri in model TemplateLink"));
+        }
     }
 }

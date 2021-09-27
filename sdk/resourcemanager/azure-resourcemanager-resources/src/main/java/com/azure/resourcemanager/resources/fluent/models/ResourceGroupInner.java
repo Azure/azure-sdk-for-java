@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ResourceGroupProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Resource group information. */
+/**
+ * Resource group information.
+ */
 @Fluent
 public final class ResourceGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceGroupInner.class);
 
     /*
      * The resource group properties.
@@ -31,7 +37,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Get the properties property: The resource group properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGroupProperties properties() {
@@ -40,7 +46,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Set the properties property: The resource group properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGroupInner object itself.
      */
@@ -50,8 +56,9 @@ public final class ResourceGroupInner extends Resource {
     }
 
     /**
-     * Get the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * Get the managedBy property: The ID of the resource that manages this
+     * resource group.
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -59,8 +66,9 @@ public final class ResourceGroupInner extends Resource {
     }
 
     /**
-     * Set the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * Set the managedBy property: The ID of the resource that manages this
+     * resource group.
+     * 
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupInner object itself.
      */
@@ -69,14 +77,18 @@ public final class ResourceGroupInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGroupInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +97,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

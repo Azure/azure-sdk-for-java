@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Lock owner properties. */
+/**
+ * Lock owner properties.
+ */
 @Fluent
 public final class ManagementLockOwner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementLockOwner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagementLockOwner.class);
 
     /*
      * The application ID of the lock owner.
@@ -22,7 +27,7 @@ public final class ManagementLockOwner {
 
     /**
      * Get the applicationId property: The application ID of the lock owner.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -31,7 +36,7 @@ public final class ManagementLockOwner {
 
     /**
      * Set the applicationId property: The application ID of the lock owner.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the ManagementLockOwner object itself.
      */
@@ -42,7 +47,7 @@ public final class ManagementLockOwner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

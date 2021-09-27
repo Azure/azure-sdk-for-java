@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of subscription tags. */
+/**
+ * List of subscription tags.
+ */
 @Fluent
 public final class TagsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TagsListResult.class);
 
     /*
      * An array of tags.
@@ -30,7 +35,7 @@ public final class TagsListResult {
 
     /**
      * Get the value property: An array of tags.
-     *
+     * 
      * @return the value value.
      */
     public List<TagDetailsInner> value() {
@@ -39,7 +44,7 @@ public final class TagsListResult {
 
     /**
      * Set the value property: An array of tags.
-     *
+     * 
      * @param value the value value to set.
      * @return the TagsListResult object itself.
      */
@@ -49,8 +54,9 @@ public final class TagsListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * Get the nextLink property: The URL to use for getting the next set of
+     * results.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class TagsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,13 +6,16 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import com.azure.resourcemanager.resources.fluent.OperationsClient;
-import com.azure.resourcemanager.resources.fluent.ProviderResourceTypesClient;
 import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
@@ -21,173 +24,189 @@ import com.azure.resourcemanager.resources.fluent.TagOperationsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the ResourceManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ResourceManagementClientImpl type.
+ */
 @ServiceClient(builder = ResourceManagementClientBuilder.class)
 public final class ResourceManagementClientImpl extends AzureServiceClient implements ResourceManagementClient {
     private final ClientLogger logger = new ClientLogger(ResourceManagementClientImpl.class);
 
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The DeploymentsClient object to access its operations. */
+    /**
+     * The DeploymentsClient object to access its operations.
+     */
     private final DeploymentsClient deployments;
 
     /**
      * Gets the DeploymentsClient object to access its operations.
-     *
+     * 
      * @return the DeploymentsClient object.
      */
     public DeploymentsClient getDeployments() {
         return this.deployments;
     }
 
-    /** The ProvidersClient object to access its operations. */
+    /**
+     * The ProvidersClient object to access its operations.
+     */
     private final ProvidersClient providers;
 
     /**
      * Gets the ProvidersClient object to access its operations.
-     *
+     * 
      * @return the ProvidersClient object.
      */
     public ProvidersClient getProviders() {
         return this.providers;
     }
 
-    /** The ProviderResourceTypesClient object to access its operations. */
-    private final ProviderResourceTypesClient providerResourceTypes;
-
     /**
-     * Gets the ProviderResourceTypesClient object to access its operations.
-     *
-     * @return the ProviderResourceTypesClient object.
+     * The ResourcesClient object to access its operations.
      */
-    public ProviderResourceTypesClient getProviderResourceTypes() {
-        return this.providerResourceTypes;
-    }
-
-    /** The ResourcesClient object to access its operations. */
     private final ResourcesClient resources;
 
     /**
      * Gets the ResourcesClient object to access its operations.
-     *
+     * 
      * @return the ResourcesClient object.
      */
     public ResourcesClient getResources() {
         return this.resources;
     }
 
-    /** The ResourceGroupsClient object to access its operations. */
+    /**
+     * The ResourceGroupsClient object to access its operations.
+     */
     private final ResourceGroupsClient resourceGroups;
 
     /**
      * Gets the ResourceGroupsClient object to access its operations.
-     *
+     * 
      * @return the ResourceGroupsClient object.
      */
     public ResourceGroupsClient getResourceGroups() {
         return this.resourceGroups;
     }
 
-    /** The TagOperationsClient object to access its operations. */
+    /**
+     * The TagOperationsClient object to access its operations.
+     */
     private final TagOperationsClient tagOperations;
 
     /**
      * Gets the TagOperationsClient object to access its operations.
-     *
+     * 
      * @return the TagOperationsClient object.
      */
     public TagOperationsClient getTagOperations() {
         return this.tagOperations;
     }
 
-    /** The DeploymentOperationsClient object to access its operations. */
+    /**
+     * The DeploymentOperationsClient object to access its operations.
+     */
     private final DeploymentOperationsClient deploymentOperations;
 
     /**
      * Gets the DeploymentOperationsClient object to access its operations.
-     *
+     * 
      * @return the DeploymentOperationsClient object.
      */
     public DeploymentOperationsClient getDeploymentOperations() {
@@ -196,7 +215,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Initializes an instance of ResourceManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -204,24 +223,17 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    ResourceManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ResourceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2019-10-01";
         this.operations = new OperationsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);
-        this.providerResourceTypes = new ProviderResourceTypesClientImpl(this);
         this.resources = new ResourcesClientImpl(this);
         this.resourceGroups = new ResourceGroupsClientImpl(this);
         this.tagOperations = new TagOperationsClientImpl(this);

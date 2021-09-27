@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentsWhatIfHeaders model. */
+/**
+ * The DeploymentsWhatIfHeaders model.
+ */
 @Fluent
 public final class DeploymentsWhatIfHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentsWhatIfHeaders.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeploymentsWhatIfHeaders.class);
 
     /*
      * The Retry-After property.
@@ -28,7 +33,7 @@ public final class DeploymentsWhatIfHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public String retryAfter() {
@@ -37,7 +42,7 @@ public final class DeploymentsWhatIfHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the DeploymentsWhatIfHeaders object itself.
      */
@@ -48,7 +53,7 @@ public final class DeploymentsWhatIfHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -57,7 +62,7 @@ public final class DeploymentsWhatIfHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeploymentsWhatIfHeaders object itself.
      */
@@ -68,7 +73,7 @@ public final class DeploymentsWhatIfHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

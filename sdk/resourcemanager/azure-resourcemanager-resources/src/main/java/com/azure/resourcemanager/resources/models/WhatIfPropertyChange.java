@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The predicted change to the resource property. */
+/**
+ * The predicted change to the resource property.
+ */
 @Fluent
 public final class WhatIfPropertyChange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfPropertyChange.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WhatIfPropertyChange.class);
 
     /*
      * The path of the property.
@@ -47,7 +52,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the path property: The path of the property.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -56,7 +61,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the path property: The path of the property.
-     *
+     * 
      * @param path the path value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -67,7 +72,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the propertyChangeType property: The type of property change.
-     *
+     * 
      * @return the propertyChangeType value.
      */
     public PropertyChangeType propertyChangeType() {
@@ -76,7 +81,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the propertyChangeType property: The type of property change.
-     *
+     * 
      * @param propertyChangeType the propertyChangeType value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -86,8 +91,9 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Get the before property: The value of the property before the deployment is executed.
-     *
+     * Get the before property: The value of the property before the deployment
+     * is executed.
+     * 
      * @return the before value.
      */
     public Object before() {
@@ -95,8 +101,9 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Set the before property: The value of the property before the deployment is executed.
-     *
+     * Set the before property: The value of the property before the deployment
+     * is executed.
+     * 
      * @param before the before value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -106,8 +113,9 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Get the after property: The value of the property after the deployment is executed.
-     *
+     * Get the after property: The value of the property after the deployment
+     * is executed.
+     * 
      * @return the after value.
      */
     public Object after() {
@@ -115,8 +123,9 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Set the after property: The value of the property after the deployment is executed.
-     *
+     * Set the after property: The value of the property after the deployment
+     * is executed.
+     * 
      * @param after the after value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -127,7 +136,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the children property: Nested property changes.
-     *
+     * 
      * @return the children value.
      */
     public List<WhatIfPropertyChange> children() {
@@ -136,7 +145,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the children property: Nested property changes.
-     *
+     * 
      * @param children the children value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -147,20 +156,15 @@ public final class WhatIfPropertyChange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property path in model WhatIfPropertyChange"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property path in model WhatIfPropertyChange"));
         }
         if (propertyChangeType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property propertyChangeType in model WhatIfPropertyChange"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property propertyChangeType in model WhatIfPropertyChange"));
         }
         if (children() != null) {
             children().forEach(e -> e.validate());

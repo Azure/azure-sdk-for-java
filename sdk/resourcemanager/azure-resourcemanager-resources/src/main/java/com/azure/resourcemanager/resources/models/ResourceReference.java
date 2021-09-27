@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.resources.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource Id model. */
+/**
+ * The resource Id model.
+ */
 @Immutable
 public final class ResourceReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceReference.class);
 
     /*
      * The fully qualified resource Id.
@@ -22,7 +27,7 @@ public final class ResourceReference {
 
     /**
      * Get the id property: The fully qualified resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +36,7 @@ public final class ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

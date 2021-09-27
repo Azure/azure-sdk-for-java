@@ -32,19 +32,26 @@ import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 import com.azure.resourcemanager.resources.models.FeatureOperationsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FeaturesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * FeaturesClient.
+ */
 public final class FeaturesClientImpl implements FeaturesClient {
     private final ClientLogger logger = new ClientLogger(FeaturesClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FeaturesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final FeatureClientImpl client;
 
     /**
      * Initializes an instance of FeaturesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FeaturesClientImpl(FeatureClientImpl client) {
@@ -53,106 +60,58 @@ public final class FeaturesClientImpl implements FeaturesClient {
     }
 
     /**
-     * The interface defining all the services for FeatureClientFeatures to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for FeatureClientFeatures to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClientFeature")
     private interface FeaturesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/features")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResult>> listAll(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureOperationsListResult>> listAll(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureOperationsListResult>> list(@HostParam("$host") String endpoint, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureResultInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
-            @PathParam("featureName") String featureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureResultInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam("featureName") String featureName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}/register")
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/register")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureResultInner>> register(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
-            @PathParam("featureName") String featureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureResultInner>> register(@HostParam("$host") String endpoint, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam("featureName") String featureName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}"
-                + "/features/{featureName}/unregister")
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Features/providers/{resourceProviderNamespace}/features/{featureName}/unregister")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureResultInner>> unregister(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
-            @PathParam("featureName") String featureName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureResultInner>> unregister(@HostParam("$host") String endpoint, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam("featureName") String featureName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureOperationsListResult>> listAllNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureOperationsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FeatureOperationsListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
@@ -160,43 +119,26 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAll(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<FeatureResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<FeatureResultInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -206,52 +148,40 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAll(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAll(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FeatureResultInner> listAllAsync() {
-        return new PagedFlux<>(() -> listAllSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listAllSinglePageAsync(),
+            nextLink -> listAllNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -261,12 +191,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FeatureResultInner> listAllAsync(Context context) {
         return new PagedFlux<>(
-            () -> listAllSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
+            () -> listAllSinglePageAsync(context),
+            nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
@@ -278,7 +209,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,7 +223,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -302,50 +233,29 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(String resourceProviderNamespace) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceProviderNamespace,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<FeatureResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<FeatureResultInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,50 +264,31 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(
-        String resourceProviderNamespace, Context context) {
+    private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(String resourceProviderNamespace, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceProviderNamespace,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -407,12 +298,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceProviderNamespace), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceProviderNamespace),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,7 +321,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,7 +335,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,7 +350,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Gets the preview feature with the specified name.
-     *
+     * 
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,48 +359,27 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FeatureResultInner>> getWithResponseAsync(
-        String resourceProviderNamespace, String featureName) {
+    public Mono<Response<FeatureResultInner>> getWithResponseAsync(String resourceProviderNamespace, String featureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceProviderNamespace,
-                            featureName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceProviderNamespace, featureName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the preview feature with the specified name.
-     *
+     * 
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @param context The context to associate with this operation.
@@ -518,45 +389,27 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FeatureResultInner>> getWithResponseAsync(
-        String resourceProviderNamespace, String featureName, Context context) {
+    private Mono<Response<FeatureResultInner>> getWithResponseAsync(String resourceProviderNamespace, String featureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceProviderNamespace,
-                featureName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceProviderNamespace, featureName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the preview feature with the specified name.
-     *
+     * 
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -567,19 +420,18 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
         return getWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<FeatureResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the preview feature with the specified name.
-     *
+     * 
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +446,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Gets the preview feature with the specified name.
-     *
+     * 
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @param context The context to associate with this operation.
@@ -604,14 +456,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return the preview feature with the specified name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FeatureResultInner> getWithResponse(
-        String resourceProviderNamespace, String featureName, Context context) {
+    public Response<FeatureResultInner> getWithResponse(String resourceProviderNamespace, String featureName, Context context) {
         return getWithResponseAsync(resourceProviderNamespace, featureName, context).block();
     }
 
     /**
      * Registers the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -620,48 +471,27 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FeatureResultInner>> registerWithResponseAsync(
-        String resourceProviderNamespace, String featureName) {
+    public Mono<Response<FeatureResultInner>> registerWithResponseAsync(String resourceProviderNamespace, String featureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .register(
-                            this.client.getEndpoint(),
-                            resourceProviderNamespace,
-                            featureName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.register(this.client.getEndpoint(), resourceProviderNamespace, featureName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Registers the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @param context The context to associate with this operation.
@@ -671,45 +501,27 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FeatureResultInner>> registerWithResponseAsync(
-        String resourceProviderNamespace, String featureName, Context context) {
+    private Mono<Response<FeatureResultInner>> registerWithResponseAsync(String resourceProviderNamespace, String featureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .register(
-                this.client.getEndpoint(),
-                resourceProviderNamespace,
-                featureName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.register(this.client.getEndpoint(), resourceProviderNamespace, featureName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Registers the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -720,19 +532,18 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<FeatureResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Registers the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -747,7 +558,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Registers the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @param context The context to associate with this operation.
@@ -757,14 +568,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FeatureResultInner> registerWithResponse(
-        String resourceProviderNamespace, String featureName, Context context) {
+    public Response<FeatureResultInner> registerWithResponse(String resourceProviderNamespace, String featureName, Context context) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName, context).block();
     }
 
     /**
      * Unregisters the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -773,48 +583,27 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
-        String resourceProviderNamespace, String featureName) {
+    public Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(String resourceProviderNamespace, String featureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .unregister(
-                            this.client.getEndpoint(),
-                            resourceProviderNamespace,
-                            featureName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.unregister(this.client.getEndpoint(), resourceProviderNamespace, featureName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Unregisters the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @param context The context to associate with this operation.
@@ -824,45 +613,27 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
-        String resourceProviderNamespace, String featureName, Context context) {
+    private Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(String resourceProviderNamespace, String featureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .unregister(
-                this.client.getEndpoint(),
-                resourceProviderNamespace,
-                featureName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.unregister(this.client.getEndpoint(), resourceProviderNamespace, featureName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Unregisters the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -873,19 +644,18 @@ public final class FeaturesClientImpl implements FeaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<FeatureResultInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Unregisters the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -900,7 +670,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
 
     /**
      * Unregisters the preview feature for the subscription.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @param context The context to associate with this operation.
@@ -910,14 +680,13 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FeatureResultInner> unregisterWithResponse(
-        String resourceProviderNamespace, String featureName, Context context) {
+    public Response<FeatureResultInner> unregisterWithResponse(String resourceProviderNamespace, String featureName, Context context) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,29 +699,23 @@ public final class FeaturesClientImpl implements FeaturesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FeatureResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FeatureResultInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -966,29 +729,23 @@ public final class FeaturesClientImpl implements FeaturesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1001,29 +758,23 @@ public final class FeaturesClientImpl implements FeaturesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FeatureResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FeatureResultInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1037,23 +788,17 @@ public final class FeaturesClientImpl implements FeaturesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

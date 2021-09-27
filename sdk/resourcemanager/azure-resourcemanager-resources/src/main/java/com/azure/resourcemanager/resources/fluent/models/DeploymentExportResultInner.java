@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The deployment export result. */
+/**
+ * The deployment export result.
+ */
 @Fluent
 public final class DeploymentExportResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentExportResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeploymentExportResultInner.class);
 
     /*
      * The template content.
@@ -22,7 +27,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Get the template property: The template content.
-     *
+     * 
      * @return the template value.
      */
     public Object template() {
@@ -31,7 +36,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Set the template property: The template content.
-     *
+     * 
      * @param template the template value to set.
      * @return the DeploymentExportResultInner object itself.
      */
@@ -42,7 +47,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

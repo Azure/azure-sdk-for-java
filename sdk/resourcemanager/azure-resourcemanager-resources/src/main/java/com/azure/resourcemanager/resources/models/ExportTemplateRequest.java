@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Export resource group template request parameters. */
+/**
+ * Export resource group template request parameters.
+ */
 @Fluent
 public final class ExportTemplateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportTemplateRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExportTemplateRequest.class);
 
     /*
      * The IDs of the resources to filter the export by. To export all
@@ -32,9 +37,10 @@ public final class ExportTemplateRequest {
     private String options;
 
     /**
-     * Get the resources property: The IDs of the resources to filter the export by. To export all resources, supply an
-     * array with single entry '*'.
-     *
+     * Get the resources property: The IDs of the resources to filter the
+     * export by. To export all resources, supply an array with single entry
+     * '*'.
+     * 
      * @return the resources value.
      */
     public List<String> resources() {
@@ -42,9 +48,10 @@ public final class ExportTemplateRequest {
     }
 
     /**
-     * Set the resources property: The IDs of the resources to filter the export by. To export all resources, supply an
-     * array with single entry '*'.
-     *
+     * Set the resources property: The IDs of the resources to filter the
+     * export by. To export all resources, supply an array with single entry
+     * '*'.
+     * 
      * @param resources the resources value to set.
      * @return the ExportTemplateRequest object itself.
      */
@@ -54,10 +61,11 @@ public final class ExportTemplateRequest {
     }
 
     /**
-     * Get the options property: The export template options. A CSV-formatted list containing zero or more of the
-     * following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization',
-     * 'SkipAllParameterization'.
-     *
+     * Get the options property: The export template options. A CSV-formatted
+     * list containing zero or more of the following:
+     * 'IncludeParameterDefaultValue', 'IncludeComments',
+     * 'SkipResourceNameParameterization', 'SkipAllParameterization'.
+     * 
      * @return the options value.
      */
     public String options() {
@@ -65,10 +73,11 @@ public final class ExportTemplateRequest {
     }
 
     /**
-     * Set the options property: The export template options. A CSV-formatted list containing zero or more of the
-     * following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization',
-     * 'SkipAllParameterization'.
-     *
+     * Set the options property: The export template options. A CSV-formatted
+     * list containing zero or more of the following:
+     * 'IncludeParameterDefaultValue', 'IncludeComments',
+     * 'SkipResourceNameParameterization', 'SkipAllParameterization'.
+     * 
      * @param options the options value to set.
      * @return the ExportTemplateRequest object itself.
      */
@@ -79,7 +88,7 @@ public final class ExportTemplateRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

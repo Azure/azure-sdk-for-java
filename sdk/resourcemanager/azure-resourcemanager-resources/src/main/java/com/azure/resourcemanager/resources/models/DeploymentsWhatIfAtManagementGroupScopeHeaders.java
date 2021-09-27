@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentsWhatIfAtManagementGroupScopeHeaders model. */
+/**
+ * The DeploymentsWhatIfAtManagementGroupScopeHeaders model.
+ */
 @Fluent
 public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
     @JsonIgnore
@@ -29,7 +33,7 @@ public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public String retryAfter() {
@@ -38,9 +42,10 @@ public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
-     * @return the DeploymentsWhatIfAtManagementGroupScopeHeaders object itself.
+     * @return the DeploymentsWhatIfAtManagementGroupScopeHeaders object
+     * itself.
      */
     public DeploymentsWhatIfAtManagementGroupScopeHeaders withRetryAfter(String retryAfter) {
         this.retryAfter = retryAfter;
@@ -49,7 +54,7 @@ public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -58,9 +63,10 @@ public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
-     * @return the DeploymentsWhatIfAtManagementGroupScopeHeaders object itself.
+     * @return the DeploymentsWhatIfAtManagementGroupScopeHeaders object
+     * itself.
      */
     public DeploymentsWhatIfAtManagementGroupScopeHeaders withLocation(String location) {
         this.location = location;
@@ -69,7 +75,7 @@ public final class DeploymentsWhatIfAtManagementGroupScopeHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

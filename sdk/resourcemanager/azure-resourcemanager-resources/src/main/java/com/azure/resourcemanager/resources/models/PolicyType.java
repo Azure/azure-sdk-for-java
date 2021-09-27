@@ -8,23 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyType. */
+/**
+ * Defines values for PolicyType.
+ */
 public final class PolicyType extends ExpandableStringEnum<PolicyType> {
-    /** Static value NotSpecified for PolicyType. */
+    /**
+     * Static value NotSpecified for PolicyType.
+     */
     public static final PolicyType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value BuiltIn for PolicyType. */
+    /**
+     * Static value BuiltIn for PolicyType.
+     */
     public static final PolicyType BUILT_IN = fromString("BuiltIn");
 
-    /** Static value Custom for PolicyType. */
+    /**
+     * Static value Custom for PolicyType.
+     */
     public static final PolicyType CUSTOM = fromString("Custom");
-
-    /** Static value Static for PolicyType. */
-    public static final PolicyType STATIC = fromString("Static");
 
     /**
      * Creates or finds a PolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyType.
      */
@@ -33,7 +38,9 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
         return fromString(name, PolicyType.class);
     }
 
-    /** @return known PolicyType values. */
+    /**
+     * @return known PolicyType values.
+     */
     public static Collection<PolicyType> values() {
         return values(PolicyType.class);
     }

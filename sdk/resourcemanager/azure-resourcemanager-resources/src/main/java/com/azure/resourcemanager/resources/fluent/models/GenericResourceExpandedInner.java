@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.models.ExtendedLocation;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Resource information. */
+/**
+ * Resource information.
+ */
 @Fluent
 public final class GenericResourceExpandedInner extends GenericResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenericResourceExpandedInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GenericResourceExpandedInner.class);
 
     /*
      * The created time of the resource. This is only present if requested via
@@ -42,9 +48,9 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     private String provisioningState;
 
     /**
-     * Get the createdTime property: The created time of the resource. This is only present if requested via the $expand
-     * query parameter.
-     *
+     * Get the createdTime property: The created time of the resource. This is
+     * only present if requested via the $expand query parameter.
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -52,9 +58,9 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     }
 
     /**
-     * Get the changedTime property: The changed time of the resource. This is only present if requested via the $expand
-     * query parameter.
-     *
+     * Get the changedTime property: The changed time of the resource. This is
+     * only present if requested via the $expand query parameter.
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -62,72 +68,82 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource. This is only present if requested via
-     * the $expand query parameter.
-     *
+     * Get the provisioningState property: The provisioning state of the
+     * resource. This is only present if requested via the $expand query
+     * parameter.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withPlan(Plan plan) {
         super.withPlan(plan);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withProperties(Object properties) {
         super.withProperties(properties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withKind(String kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withManagedBy(String managedBy) {
         super.withManagedBy(managedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withIdentity(Identity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public GenericResourceExpandedInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        super.withExtendedLocation(extendedLocation);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GenericResourceExpandedInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -136,7 +152,7 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

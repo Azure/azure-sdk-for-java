@@ -7,15 +7,27 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/** A builder for creating a new instance of the ResourceManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the ResourceManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = {ResourceManagementClientImpl.class})
 public final class ResourceManagementClientBuilder {
     /*
@@ -25,7 +37,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -41,7 +53,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -57,7 +69,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -73,7 +85,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -89,7 +101,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -105,7 +117,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ResourceManagementClientBuilder.
      */
@@ -116,7 +128,7 @@ public final class ResourceManagementClientBuilder {
 
     /**
      * Builds an instance of ResourceManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ResourceManagementClientImpl.
      */
     public ResourceManagementClientImpl buildClient() {
@@ -130,17 +142,12 @@ public final class ResourceManagementClientBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        ResourceManagementClientImpl client =
-            new ResourceManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        ResourceManagementClientImpl client = new ResourceManagementClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

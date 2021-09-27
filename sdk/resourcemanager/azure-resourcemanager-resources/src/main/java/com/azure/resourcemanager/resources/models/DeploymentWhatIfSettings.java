@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment What-If operation settings. */
+/**
+ * Deployment What-If operation settings.
+ */
 @Fluent
 public final class DeploymentWhatIfSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentWhatIfSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeploymentWhatIfSettings.class);
 
     /*
      * The format of the What-If results
@@ -22,7 +27,7 @@ public final class DeploymentWhatIfSettings {
 
     /**
      * Get the resultFormat property: The format of the What-If results.
-     *
+     * 
      * @return the resultFormat value.
      */
     public WhatIfResultFormat resultFormat() {
@@ -31,7 +36,7 @@ public final class DeploymentWhatIfSettings {
 
     /**
      * Set the resultFormat property: The format of the What-If results.
-     *
+     * 
      * @param resultFormat the resultFormat value to set.
      * @return the DeploymentWhatIfSettings object itself.
      */
@@ -42,7 +47,7 @@ public final class DeploymentWhatIfSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

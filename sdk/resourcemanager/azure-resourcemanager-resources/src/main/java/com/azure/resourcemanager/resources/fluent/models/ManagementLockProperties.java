@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLockOwner;
@@ -16,27 +15,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The lock information.
+ * The lock properties.
  */
 @Fluent
-public final class ManagementLockObjectInner extends ProxyResource {
+public final class ManagementLockProperties {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagementLockObjectInner.class);
+    private final ClientLogger logger = new ClientLogger(ManagementLockProperties.class);
 
     /*
-     * The properties of the lock.
+     * The level of the lock. Possible values are: NotSpecified, CanNotDelete,
+     * ReadOnly. CanNotDelete means authorized users are able to read and
+     * modify the resources, but not delete. ReadOnly means authorized users
+     * can only read from a resource, but they can't modify or delete it.
      */
-    @JsonProperty(value = "properties", required = true)
-    private ManagementLockProperties innerProperties = new ManagementLockProperties();
+    @JsonProperty(value = "level", required = true)
+    private LockLevel level;
 
-    /**
-     * Get the innerProperties property: The properties of the lock.
-     * 
-     * @return the innerProperties value.
+    /*
+     * Notes about the lock. Maximum of 512 characters.
      */
-    private ManagementLockProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "notes")
+    private String notes;
+
+    /*
+     * The owners of the lock.
+     */
+    @JsonProperty(value = "owners")
+    private List<ManagementLockOwner> owners;
 
     /**
      * Get the level property: The level of the lock. Possible values are:
@@ -48,7 +53,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * @return the level value.
      */
     public LockLevel level() {
-        return this.innerProperties() == null ? null : this.innerProperties().level();
+        return this.level;
     }
 
     /**
@@ -59,13 +64,10 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * can't modify or delete it.
      * 
      * @param level the level value to set.
-     * @return the ManagementLockObjectInner object itself.
+     * @return the ManagementLockProperties object itself.
      */
-    public ManagementLockObjectInner withLevel(LockLevel level) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagementLockProperties();
-        }
-        this.innerProperties().withLevel(level);
+    public ManagementLockProperties withLevel(LockLevel level) {
+        this.level = level;
         return this;
     }
 
@@ -75,20 +77,17 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * @return the notes value.
      */
     public String notes() {
-        return this.innerProperties() == null ? null : this.innerProperties().notes();
+        return this.notes;
     }
 
     /**
      * Set the notes property: Notes about the lock. Maximum of 512 characters.
      * 
      * @param notes the notes value to set.
-     * @return the ManagementLockObjectInner object itself.
+     * @return the ManagementLockProperties object itself.
      */
-    public ManagementLockObjectInner withNotes(String notes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagementLockProperties();
-        }
-        this.innerProperties().withNotes(notes);
+    public ManagementLockProperties withNotes(String notes) {
+        this.notes = notes;
         return this;
     }
 
@@ -98,20 +97,17 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * @return the owners value.
      */
     public List<ManagementLockOwner> owners() {
-        return this.innerProperties() == null ? null : this.innerProperties().owners();
+        return this.owners;
     }
 
     /**
      * Set the owners property: The owners of the lock.
      * 
      * @param owners the owners value to set.
-     * @return the ManagementLockObjectInner object itself.
+     * @return the ManagementLockProperties object itself.
      */
-    public ManagementLockObjectInner withOwners(List<ManagementLockOwner> owners) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagementLockProperties();
-        }
-        this.innerProperties().withOwners(owners);
+    public ManagementLockProperties withOwners(List<ManagementLockOwner> owners) {
+        this.owners = owners;
         return this;
     }
 
@@ -121,10 +117,11 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ManagementLockObjectInner"));
-        } else {
-            innerProperties().validate();
+        if (level() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property level in model ManagementLockProperties"));
+        }
+        if (owners() != null) {
+            owners().forEach(e -> e.validate());
         }
     }
 }

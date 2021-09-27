@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A dictionary of name and value pairs. */
+/**
+ * A dictionary of name and value pairs.
+ */
 @Fluent
 public final class Tags {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Tags.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Tags.class);
 
     /*
      * Dictionary of <string>
@@ -25,7 +30,7 @@ public final class Tags {
 
     /**
      * Get the tags property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +39,7 @@ public final class Tags {
 
     /**
      * Set the tags property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the Tags object itself.
      */
@@ -45,7 +50,7 @@ public final class Tags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

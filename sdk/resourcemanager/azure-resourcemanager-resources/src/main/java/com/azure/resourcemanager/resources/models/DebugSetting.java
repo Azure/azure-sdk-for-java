@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The debug setting. */
+/**
+ * The debug setting.
+ */
 @Fluent
 public final class DebugSetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSetting.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DebugSetting.class);
 
     /*
      * Specifies the type of information to log for debugging. The permitted
@@ -27,12 +32,15 @@ public final class DebugSetting {
     private String detailLevel;
 
     /**
-     * Get the detailLevel property: Specifies the type of information to log for debugging. The permitted values are
-     * none, requestContent, responseContent, or both requestContent and responseContent separated by a comma. The
-     * default is none. When setting this value, carefully consider the type of information you are passing in during
-     * deployment. By logging information about the request or response, you could potentially expose sensitive data
-     * that is retrieved through the deployment operations.
-     *
+     * Get the detailLevel property: Specifies the type of information to log
+     * for debugging. The permitted values are none, requestContent,
+     * responseContent, or both requestContent and responseContent separated by
+     * a comma. The default is none. When setting this value, carefully
+     * consider the type of information you are passing in during deployment.
+     * By logging information about the request or response, you could
+     * potentially expose sensitive data that is retrieved through the
+     * deployment operations.
+     * 
      * @return the detailLevel value.
      */
     public String detailLevel() {
@@ -40,12 +48,15 @@ public final class DebugSetting {
     }
 
     /**
-     * Set the detailLevel property: Specifies the type of information to log for debugging. The permitted values are
-     * none, requestContent, responseContent, or both requestContent and responseContent separated by a comma. The
-     * default is none. When setting this value, carefully consider the type of information you are passing in during
-     * deployment. By logging information about the request or response, you could potentially expose sensitive data
-     * that is retrieved through the deployment operations.
-     *
+     * Set the detailLevel property: Specifies the type of information to log
+     * for debugging. The permitted values are none, requestContent,
+     * responseContent, or both requestContent and responseContent separated by
+     * a comma. The default is none. When setting this value, carefully
+     * consider the type of information you are passing in during deployment.
+     * By logging information about the request or response, you could
+     * potentially expose sensitive data that is retrieved through the
+     * deployment operations.
+     * 
      * @param detailLevel the detailLevel value to set.
      * @return the DebugSetting object itself.
      */
@@ -56,7 +67,7 @@ public final class DebugSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
