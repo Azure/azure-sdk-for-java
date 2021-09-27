@@ -177,6 +177,6 @@ jobs:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/
           failIfCoverageEmpty: false
