@@ -29,9 +29,9 @@ public final class StartRecordingOptions {
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public RecordingContentType setRecordingContentType(RecordingContentType recordingContentType) {
+    public StartRecordingOptions setRecordingContentType(RecordingContentType recordingContentType) {
         this.recordingContentType = recordingContentType;
-        return this.recordingContentType;
+        return this;
     }
 
     /**
@@ -49,9 +49,9 @@ public final class StartRecordingOptions {
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public RecordingChannelType setRecordingChannelType(RecordingChannelType recordingChannelType) {
+    public StartRecordingOptions setRecordingChannelType(RecordingChannelType recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
-        return this.recordingChannelType;
+        return this;
     }
 
     /**
@@ -69,9 +69,9 @@ public final class StartRecordingOptions {
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public RecordingFormatType setRecordingFormatType(RecordingFormatType recordingFormatType) {
+    public StartRecordingOptions setRecordingFormatType(RecordingFormatType recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
-        return this.recordingFormatType;
+        return this;
     }
 
 }
