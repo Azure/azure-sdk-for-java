@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.resourcemanager;
+package com.azure.spring.servicebus.provisioning;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;

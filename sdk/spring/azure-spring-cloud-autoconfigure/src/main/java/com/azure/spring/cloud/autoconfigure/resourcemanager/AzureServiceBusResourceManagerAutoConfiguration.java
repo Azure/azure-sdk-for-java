@@ -5,11 +5,11 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusProperties;
-import com.azure.spring.servicebus.resourcemanager.DefaultServiceBusQueueProvisioner;
-import com.azure.spring.servicebus.resourcemanager.DefaultServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.provisioning.DefaultServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.provisioning.DefaultServiceBusTopicProvisioner;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.servicebus.resourcemanager.ServiceBusQueueProvisioner;
-import com.azure.spring.servicebus.resourcemanager.ServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
+import com.azure.spring.servicebus.provisioning.ServiceBusTopicProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
