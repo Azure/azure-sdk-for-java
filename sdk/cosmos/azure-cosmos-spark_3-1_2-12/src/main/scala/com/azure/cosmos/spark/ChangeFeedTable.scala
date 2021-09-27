@@ -77,7 +77,7 @@ private class ChangeFeedTable(val session: SparkSession,
     CosmosClientConfiguration(effectiveUserConfig,
     useEventualConsistency = readConfig.forceEventualConsistency), None)
   private val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
-  container.openConnectionsAndInitCaches().block()
+  SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   override def name(): String = tableName
 
