@@ -138,50 +138,6 @@ stages:
           condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
           displayName: 'Component Detection'
 
-        # Put cred scan step before install and build packages to avoid the tool scans generated folder like /target.
-        - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
-          displayName: 'Run CredScan'
-          inputs:
-            suppressionsFile: 'eng\CredScanSuppression.json'
-          condition: succeededOrFailed()
-        - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
-          displayName: 'Post Analysis'
-          inputs:
-            GdnBreakAllTools: false
-            GdnBreakGdnToolCredScan: true
-            GdnBreakGdnToolCredScanSeverity: Error
-            GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
-            GdnBreakBaselines: baseline
-            # Used for generating baseline file.
-            # GdnBreakOutputBaselineFile: java
-            # GdnBreakOutputBaseline: baseline
-          condition: succeededOrFailed()
-          continueOnError: true
-        - pwsh: |
-            $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
-            $csvRows = @()
-            $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
-            $results | ForEach-Object {
-              $csvRows += [pscustomobject]@{
-                ruleId = $_.ruleId
-                ruleIndex = $_.ruleIndex
-                fingerprints = $_.fingerprints
-                message = $_.message
-                properties = $_.properties
-                rank = $_.rank
-                fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
-                startLine = $_.locations.physicalLocation.region.startLine
-                startColumn = $_.locations.physicalLocation.region.startColumn
-                endLine = $_.locations.physicalLocation.region.endLine
-                endColumn = $_.locations.physicalLocation.region.endColumn
-                level = $_.level
-              }
-            }
-            $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
-          displayName: Add converted csv file for CredScan-matches.sarif
-        - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
-          displayName: 'Publish Security Analysis Logs'
-          condition: succeededOrFailed()
         # Run link verification at the end as it will run no matter the pipeline passing or failing.
         # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
         - template: /eng/common/pipelines/templates/steps/verify-links.yml
@@ -203,33 +159,54 @@ stages:
           vmImage: MMS2019
 
         steps:
-          - pwsh: |
-              azcopy copy "https://azuresdkartifacts.blob.core.windows.net/policheck/JavaPoliCheckExclusion.mdb?$(azuresdk-policheck-blob-SAS)" `
-              "$(Build.BinariesDirectory)"
-            displayName: 'Download PoliCheck Exclusion Database'
-            condition: succeededOrFailed()
-
-          - task: securedevelopmentteam.vss-secure-development-tools.build-task-policheck.PoliCheck@2
-            displayName: 'Run PoliCheck'
+          - template: /eng/common/pipelines/templates/steps/policheck.yml
+            parameters:
+              ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
+              PublishAnalysisLogs: false
+          
+          - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+            displayName: 'Run CredScan'
             inputs:
-              targetType: F
-              targetArgument: '$(Build.SourcesDirectory)'
-              result: PoliCheck.sarif
-              optionsFC: 0
-              optionsXS: 1
-              optionsPE: 1|2|3|4
-              optionsRulesDBPath: "$(Build.BinariesDirectory)/JavaPoliCheckExclusion.mdb"
-              optionsUEPATH: "$(Build.SourcesDirectory)/eng/guardian-tools/policheck/PolicheckExclusions.xml"
+              suppressionsFile: 'eng\CredScanSuppression.json'
             condition: succeededOrFailed()
 
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
-            displayName: 'Post Analysis (PoliCheck)'
+            displayName: 'Post Analysis'
             inputs:
               GdnBreakAllTools: false
-              GdnBreakGdnToolPoliCheck: true
-              GdnBreakGdnToolPoliCheckSeverity: Warning
+              GdnBreakGdnToolCredScan: true
+              GdnBreakGdnToolCredScanSeverity: Error
+              GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
+              GdnBreakBaselines: baseline
+              # Used for generating baseline file.
+              # GdnBreakOutputBaselineFile: java
+              # GdnBreakOutputBaseline: baseline
             condition: succeededOrFailed()
             continueOnError: true
 
+          - pwsh: |
+              $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
+              $csvRows = @()
+              $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
+              $results | ForEach-Object {
+                $csvRows += [pscustomobject]@{
+                  ruleId = $_.ruleId
+                  ruleIndex = $_.ruleIndex
+                  fingerprints = $_.fingerprints
+                  message = $_.message
+                  properties = $_.properties
+                  rank = $_.rank
+                  fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
+                  startLine = $_.locations.physicalLocation.region.startLine
+                  startColumn = $_.locations.physicalLocation.region.startColumn
+                  endLine = $_.locations.physicalLocation.region.endLine
+                  endColumn = $_.locations.physicalLocation.region.endColumn
+                  level = $_.level
+                }
+              }
+              $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
+            displayName: Add converted csv file for CredScan-matches.sarif
+
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
             displayName: 'Publish Security Analysis Logs'
+            condition: succeededOrFailed()
