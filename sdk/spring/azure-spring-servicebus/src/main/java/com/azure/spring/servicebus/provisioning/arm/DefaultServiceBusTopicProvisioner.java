@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.provisioning;
+package com.azure.spring.servicebus.provisioning.arm;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusTopicSubscriptionCrud;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
+import com.azure.spring.servicebus.provisioning.ServiceBusTopicProvisioner;
 import reactor.util.function.Tuples;
 
 /**
