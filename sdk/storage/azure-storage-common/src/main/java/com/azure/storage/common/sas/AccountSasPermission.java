@@ -248,7 +248,7 @@ public final class AccountSasPermission {
      * @return the updated AccountSasPermission object.
      */
     public AccountSasPermission setPermanentDeletePermission(boolean permanentDeletePermission) {
-        this.immutabilityPolicyPermission = permanentDeletePermission;
+        this.permanentDeletePermission = permanentDeletePermission;
         return this;
     }
 

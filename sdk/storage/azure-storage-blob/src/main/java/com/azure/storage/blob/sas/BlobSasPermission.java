@@ -227,7 +227,7 @@ public final class BlobSasPermission {
      * @return the updated BlobSasPermission object.
      */
     public BlobSasPermission setPermanentDeletePermission(boolean permanentDeletePermission) {
-        this.immutabilityPolicyPermission = permanentDeletePermission;
+        this.permanentDeletePermission = permanentDeletePermission;
         return this;
     }
 
