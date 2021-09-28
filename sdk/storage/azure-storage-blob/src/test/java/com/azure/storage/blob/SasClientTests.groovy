@@ -47,9 +47,10 @@ class SasClientTests extends APISpec {
         sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "blob sas all permissions success"() {
         setup:
+        // FE will reject a permission string it doesn't recognize
         def allPermissions = new BlobSasPermission()
             .setReadPermission(true)
             .setAddPermission(true)
