@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.utils;
+package com.azure.spring.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
