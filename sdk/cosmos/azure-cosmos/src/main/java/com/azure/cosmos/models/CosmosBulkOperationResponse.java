@@ -4,14 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
 
 /**
  * Request, response and the exception(if any) for a {@link CosmosItemOperation} request when processed using Bulk by calling
  * {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)}.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
@@ -54,22 +52,34 @@ public final class CosmosBulkOperationResponse<TContext> {
         this.batchContext = batchContext;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Get {@link CosmosItemOperation}
+     * @return CosmosItemOperation
+     */
     public CosmosItemOperation getOperation() {
         return operation;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Get {@link CosmosBulkItemResponse}
+     * @return CosmosBulkItemResponse
+     */
     public CosmosBulkItemResponse getResponse() {
         return response;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Get Exception
+     * @return Exception
+     */
     public Exception getException() {
         return exception;
     }
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Get BatchContext
+     * @return BatchContext
+     */
     public TContext getBatchContext() {
         return batchContext;
     }

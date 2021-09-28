@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
@@ -14,7 +13,6 @@ import java.time.Duration;
  * Encapsulates options that can be specified for operations used in Bulk execution.
  * It can be passed while processing bulk operations.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkExecutionOptions {
     private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
@@ -43,7 +41,6 @@ public final class CosmosBulkExecutionOptions {
      * Constructor
      * @param thresholdsState thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkExecutionOptions(CosmosBulkExecutionThresholdsState thresholdsState) {
         this(null, thresholdsState);
     }
@@ -51,7 +48,6 @@ public final class CosmosBulkExecutionOptions {
     /**
      * Constructor
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkExecutionOptions() {
         this(null);
     }
@@ -172,7 +168,6 @@ public final class CosmosBulkExecutionOptions {
      * Returns threshold state that can be passed to other CosmosBulkExecutionOptions in the future
      * @return thresholds
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkExecutionThresholdsState getThresholdsState() {
         return this.thresholds;
     }

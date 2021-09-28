@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +13,6 @@ import java.util.Map;
 /**
  * Encapsulates options that can be specified for a {@link CosmosBatch}.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
@@ -45,7 +43,6 @@ public final class CosmosBatchRequestOptions {
      *
      * @return the session token.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSessionToken() {
         return sessionToken;
     }
@@ -56,7 +53,6 @@ public final class CosmosBatchRequestOptions {
      * @param sessionToken the session token.
      * @return the TransactionalBatchRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchRequestOptions setSessionToken(String sessionToken) {
         this.sessionToken = sessionToken;
         return this;

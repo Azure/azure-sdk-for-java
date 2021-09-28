@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.patch;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosPatchOperations;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
