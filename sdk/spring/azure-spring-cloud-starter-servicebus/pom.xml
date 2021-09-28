@@ -12,19 +12,19 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-starter-servicebus</artifactId>
-  <version>2.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
+  <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-servicebus;current} -->
 
   <name>Azure Spring Cloud Starter Service Bus</name>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+      <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

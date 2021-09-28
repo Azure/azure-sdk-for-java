@@ -18,14 +18,22 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+### Log into Azure 
+```shell
+  az login
+```
+### Create a resource group
+To create an Azure resource group, use the command line below. Please replace myresourcegroup with a unique resource group name. 
+```shell
+  export RESOURCE_GROUP=myresourcegroup
+  az group create -l westus -n ${RESOURCE_GROUP}
+```
+### Create an Azure Key Vault
 
-### Creating an Azure Key Vault
-
-To create an Azure Key Vault use the command line below:
+To create an Azure Key Vault use the command line below. Please replace mykevault with a unique key vault name and store vaultUri returned for later use.
 
 ```shell
   export KEY_VAULT=mykeyvault
-  export RESOURCE_GROUP=myresourcegroup
   az keyvault create --name ${KEY_VAULT} -g ${RESOURCE_GROUP}
 ```
 
@@ -45,71 +53,76 @@ This starter provides a KeyStore (`AzureKeyVault`) which can get certificates fr
 ## Examples
 ### Server side SSL
 
-#### Using a client ID and client secret
+#### Option 1 - Use an Azure client ID and Azure client secret to identify your app
 
-To create a client and client secret use the command line below:
+To create an Azure client and an Azure client secret use the command line below. Please store the values returned such as appId, password, tenant.
 ```shell
   export APP_NAME=myApp
-  az ad app create --display-name ${APP_NAME}
-  az ad sp create-for-rbac --name ${APP_NAME}
+  az ad sp create-for-rbac --skip-assignment --name ${APP_NAME}
   export CLIENT_ID=$(az ad sp list --display-name ${APP_NAME} | jq -r '.[0].appId')
   az ad app credential reset --id ${CLIENT_ID}
 ```
 
 Store the values returned, which will be used later.
 
-Add these items in your `application.yml`:
-```yaml
-azure:
-  keyvault:
-    uri:                 # The URI to the Azure Key Vault used
-    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity).
-    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity).
-    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity).
-server:
-  port: 8443
-  ssl:
-    key-alias:           # The alias corresponding to the certificate in Azure Key Vault.
-    key-store-type: AzureKeyVault  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
-```
+#### Make sure the client-id can access target Key Vault. Here are steps to configure access policy:
 
-Make sure the client-id can access target Key Vault. Here are steps to configure access policy:
-
-To grant access use the command line below:
+To grant access, use the command line below:
 
 ```shell
   az keyvault set-policy --name ${KEY_VAULT} \
-        --object-id ${CLIENT_ID} \
+        --spn ${CLIENT_ID} \
         --secret-permissions get list \
         --certificate-permissions get list \
         --key-permissions get list
 ```
-#### Using a managed identity
 
-To assign a managed identity use the command line below:
-
-```shell
-  export SPRING_CLOUD_APP=myspringcloudapp
-  az spring-cloud app identity assign --name ${SPRING_CLOUD_APP}
-  export MANAGED_IDENTITY=$(az spring-cloud app show \
-    --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv)
-```
-
-If you are using managed identity instead of App registrations, add these items in your `application.yml`:
-
+#### Add the following items to your `application.yml`:
 ```yaml
 azure:
   keyvault:
-    uri: <the URI of the Azure Key Vault to use>
-#    managed-identity: # client-id of the user-assigned managed identity to use. If empty, then system-assigned managed identity will be used.
+    uri:                 # The URI to the Azure Key Vault used. The vaultUri returned from a previous step
+    tenant-id:           # The Tenant ID for your Azure Key Vault (needed if you are not using managed identity). The tenant returned from a previous step.
+    client-id:           # The Client ID that has been setup with access to your Azure Key Vault (needed if you are not using managed identity). The appId returned from a previous step.  
+    client-secret:       # The Client Secret that will be used for accessing your Azure Key Vault (needed if you are not using managed identity). The password returned from a previous step.
 server:
+  port: 8443
   ssl:
-    key-alias: <the name of the certificate in Azure Key Vault to use>
-    key-store-type: AzureKeyVault
+    key-alias:           # The alias corresponding to the certificate in Azure Key Vault. The certificate created in a previous step.
+    key-store-type: AzureKeyVault  # The keystore type that enables the use of Azure Key Vault for your server-side SSL certificate.
 ```
-Make sure the managed identity can access target Key Vault.
 
-To grant access use the command line below:
+#### Option 2 - Use a managed identity to identify your app. 
+If you use managed identity, you need deploy your app on the Azure Spring Cloud or in Azure virtual machine, please refer to [Deploy Application Azure Spring Cloud][Deploy Application Azure Spring Cloud] and [Azure Spring Cloud TLS][Azure Spring Cloud TLS]
+If you deploy your app on the Azure Spring Cloud, please refer to the following steps:
+Firstly, you need have an Azure Spring Cloud instance. If you don't have one, you can create it via the command line below:
+
+```shell
+  export AZURE_SPRING_CLOUD_INSTANCE=myspringcloundinstance
+  az spring-cloud create --name ${AZURE_SPRING_CLOUD_INSTANCE} --resource-group ${RESOURCE_GROUP}
+```
+
+Secondly, you need create an Apps instance in the Azure Spring Cloud instance via the command line below:
+```shell
+  export CLOUD_APP_INSTANCE=myappinstance
+  az spring-cloud app create --name ${CLOUD_APP_INSTANCE} --resource-group ${RESOURCE_GROUP}  --service ${AZURE_SPRING_CLOUD_INSTANCE} --assign-endpoint true
+```
+
+Thirdly, assign a managed identity to Apps instance, use the command line below and store the value returned for later use:
+
+```shell
+  az spring-cloud app identity assign --name ${CLOUD_APP_INSTANCE} -g ${RESOURCE_GROUP} -s ${AZURE_SPRING_CLOUD_INSTANCE}
+  export MANAGED_IDENTITY=$(az spring-cloud app show \
+    --name ${SPRING_CLOUD_APP} --query identity.principalId --output tsv -g ${RESOURCE_GROUP} -s ${AZURE_SPRING_CLOUD_INSTANCE})
+  echo ${MANAGED_IDENTITY}
+```
+
+Fourthly, enable TLS for your Apps instance, use the command line below:
+```shell
+  az spring-cloud app update --enable-end-to-end-tls -n ${CLOUD_APP_INSTANCE} -s ${AZURE_SPRING_CLOUD_INSTANCE} -g ${RESOURCE_GROUP}
+```
+
+Make sure the managed identity can access target Key Vault. To grant access use the command line below:
 
 ```shell
   az keyvault set-policy --name ${KEY_VAULT} \
@@ -119,10 +132,24 @@ To grant access use the command line below:
         --certificate-permissions get list
 ```
 
+Add the following items to your `application.yml`:
+
+```yaml
+azure:
+  keyvault:
+    uri: <the URI of the Azure Key Vault to use>
+#    managed-identity: #  managed identity to use, returned from a previous step. If empty, then system-assigned managed identity will be used.
+server:
+  ssl:
+    key-alias: <the name of the certificate in Azure Key Vault to use>
+    key-store-type: AzureKeyVault
+```
+
+
 ### Client side SSL
 
 #### Using a client ID and client secret
-Add these items in your `application.yml`:
+Add the following items to your `application.yml`:
 ```yaml
 azure:
   keyvault:
@@ -162,7 +189,7 @@ public RestTemplate restTemplateWithTLS() throws Exception {
 
 #### Using a managed identity
 
-If you are using managed identity instead of App registration, add these items in your `application.yml`:
+If you are using managed identity instead of App registration, add the following items to your `application.yml`:
 ```yaml
 azure:
   keyvault:
@@ -199,7 +226,7 @@ public RestTemplate restTemplateWithTLS() throws Exception {
 
 ### Enable mutual SSL (mTLS).
  
-Step 1. On the server side, add these items in your `application.yml`:
+Step 1. On the server side, add the following items to your `application.yml`:
 
 ```yaml
 server:
@@ -283,7 +310,7 @@ spring:
 
 ### Refresh certificate periodically
 
-KeyVaultKeyStore can fetch certificates from KeyVault periodically if following property is configured:
+KeyVaultKeyStore can fetch certificates from KeyVault periodically if the following property is configured:
 
 ```yaml
 azure:
@@ -410,4 +437,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-
+[Azure Spring Cloud TLS]: https://docs.microsoft.com/azure/spring-cloud/how-to-enable-end-to-end-tls
+[Deploy Application Azure Spring Cloud]: https://docs.microsoft.com/azure/spring-cloud/quickstart?tabs=Azure-CLI&pivots=programming-language-java
