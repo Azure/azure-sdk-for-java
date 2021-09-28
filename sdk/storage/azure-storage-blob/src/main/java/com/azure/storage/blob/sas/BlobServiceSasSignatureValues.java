@@ -90,6 +90,8 @@ public final class BlobServiceSasSignatureValues {
 
     private String correlationId;
 
+    private String encryptionScope;
+
     /**
      * Creates an object with empty values for all fields.
      * @deprecated Please use {@link #BlobServiceSasSignatureValues(String)},
@@ -543,6 +545,24 @@ public final class BlobServiceSasSignatureValues {
      */
     public BlobServiceSasSignatureValues setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * @return the encryption scope value for the SAS.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
+     * Sets the encryption scope value for the SAS.
+     *
+     * @param encryptionScope An encryption scope that will be applied to any write operations performed with the sas
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 

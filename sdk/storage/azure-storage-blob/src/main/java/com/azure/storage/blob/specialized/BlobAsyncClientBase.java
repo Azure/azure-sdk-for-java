@@ -2083,7 +2083,7 @@ public class BlobAsyncClientBase {
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId())
+            getSnapshotId(), getVersionId(), getEncryptionScope())
             .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
@@ -2120,7 +2120,7 @@ public class BlobAsyncClientBase {
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId())
+            getSnapshotId(), getVersionId(), getEncryptionScope())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 

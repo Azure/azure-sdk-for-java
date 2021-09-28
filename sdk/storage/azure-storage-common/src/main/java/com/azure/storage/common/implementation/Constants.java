@@ -88,7 +88,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-10-02");
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-12-06");
 
     private Constants() {
     }
@@ -331,6 +331,11 @@ public final class Constants {
          * The SAS signature parameter.
          */
         public static final String SAS_SIGNATURE = "sig";
+
+        /**
+         * The SAS encryption scope parameter.
+         */
+        public static final String SAS_ENCRYPTION_SCOPE = "ses";
 
         /**
          * The SAS cache control parameter.

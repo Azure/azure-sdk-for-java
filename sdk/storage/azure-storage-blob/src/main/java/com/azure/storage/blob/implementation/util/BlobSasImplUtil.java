@@ -91,6 +91,8 @@ public class BlobSasImplUtil {
 
     private String correlationId;
 
+    private String encryptionScope;
+
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -112,6 +114,21 @@ public class BlobSasImplUtil {
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
         String snapshotId, String versionId) {
+        this(sasValues, containerName, blobName, snapshotId, versionId, null);
+    }
+
+    /**
+     * Creates a new {@link BlobSasImplUtil} with the specified parameters
+     *
+     * @param sasValues {@link BlobServiceSasSignatureValues}
+     * @param containerName The container name
+     * @param blobName The blob name
+     * @param snapshotId The snapshot id
+     * @param versionId The version id
+     * @param encryptionScope The encryption scope
+     */
+    public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
+        String snapshotId, String versionId, String encryptionScope) {
         Objects.requireNonNull(sasValues);
         if (snapshotId != null && versionId != null) {
             throw LOGGER.logExceptionAsError(
@@ -134,6 +151,12 @@ public class BlobSasImplUtil {
         this.contentType = sasValues.getContentType();
         this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
+        /*
+        Prefer the encryption scope explicitly set on the sas values. If none present, fallback to the value on the
+        client.
+         */
+        this.encryptionScope = sasValues.getEncryptionScope() == null
+            ? encryptionScope : sasValues.getEncryptionScope();
     }
 
     /**
@@ -220,6 +243,7 @@ public class BlobSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
@@ -306,6 +330,7 @@ public class BlobSasImplUtil {
             VERSION,
             resource,
             versionSegment == null ? "" : versionSegment,
+            this.encryptionScope == null ? "" : this.encryptionScope,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
@@ -359,6 +384,7 @@ public class BlobSasImplUtil {
                 VERSION,
                 resource,
                 versionSegment == null ? "" : versionSegment,
+                this.encryptionScope == null ? "" : this.encryptionScope,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

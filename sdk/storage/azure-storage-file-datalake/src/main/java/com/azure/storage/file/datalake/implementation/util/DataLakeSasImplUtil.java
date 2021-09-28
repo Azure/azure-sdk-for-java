@@ -310,6 +310,7 @@ public class DataLakeSasImplUtil {
             VERSION,
             resource,
             "", /* Version segment. */
+            "", // encryptionScope
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
@@ -336,6 +337,7 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
+                "", // Encryption Scope
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

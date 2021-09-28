@@ -34,6 +34,8 @@ public final class AccountSasSignatureValues {
 
     private String resourceTypes;
 
+    private String encryptionScope;
+
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
      * @deprecated Please use {@link #AccountSasSignatureValues(OffsetDateTime, AccountSasPermission, AccountSasService,
@@ -236,6 +238,24 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * @return An encryption scope that will be applied to any write operations performed with the sas
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
+     * Sets the encryption scope that will be applied to any write operations performed with the sas
+     *
+     * @param encryptionScope the encryption scope to set
+     * @return the updated AccountSasSignatureValues object.
+     */
+    public AccountSasSignatureValues setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters for authenticating
      * requests.
      *
@@ -292,6 +312,7 @@ public final class AccountSasSignatureValues {
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             VERSION,
+            this.encryptionScope == null ? "" : this.encryptionScope,
             "" // Account SAS requires an additional newline character
         );
     }
