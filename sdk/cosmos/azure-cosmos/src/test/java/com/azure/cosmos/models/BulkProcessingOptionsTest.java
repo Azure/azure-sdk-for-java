@@ -20,12 +20,12 @@ public class BulkProcessingOptionsTest {
     @Test(groups = { "unit" })
     public void minAndMaxTargetRetryRateMustNotBeNegative() {
         assertThatThrownBy(
-            () -> new BulkProcessingOptions<Object>().setTargetedMicroBatchRetryRate(-0.001, 0))
+            () -> new CosmosBulkExecutionOptions().setTargetedMicroBatchRetryRate(-0.001, 0))
             .isInstanceOf(IllegalArgumentException.class);
 
         assertThatThrownBy(
-            () -> new BulkProcessingOptions<Object>().setTargetedMicroBatchRetryRate(0.3, 0.29999))
-            .isInstanceOf(IllegalArgumentException.class);;
+            () -> new CosmosBulkExecutionOptions().setTargetedMicroBatchRetryRate(0.3, 0.29999))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = { "unit" })

@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.patch;
 
-import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -71,7 +72,7 @@ public class PatchUnitTest {
     }
 
     private static <T> void validateOperations(CosmosPatchOperations cosmosPatchOperations, PatchOperationType operationType, T value) {
-        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatchOperations);
+        List<PatchOperation> patchOperations = ModelBridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatchOperations);
         assertThat(patchOperations.size()).isEqualTo(1);
 
         PatchOperation patchOperation = patchOperations.get(0);
