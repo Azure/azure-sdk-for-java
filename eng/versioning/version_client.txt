@@ -161,7 +161,7 @@ com.azure.spring:azure-spring-cloud-context;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-dependencies;2.8.0;2.9.0
 com.azure.spring:azure-spring-cloud-messaging;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-cache;2.9.0;2.10.0-beta.1
-com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;2.8.0;2.9.0
+com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-eventhubs;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-servicebus;2.8.0;2.9.0
 com.azure.spring:azure-spring-cloud-starter-storage-queue;2.8.0;2.9.0
