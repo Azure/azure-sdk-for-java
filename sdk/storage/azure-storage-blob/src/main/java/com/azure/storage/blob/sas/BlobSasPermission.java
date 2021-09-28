@@ -27,6 +27,8 @@ public final class BlobSasPermission {
 
     private boolean deleteVersionPermission;
 
+    private boolean permanentDeletePermission;
+
     private boolean tagsPermission;
 
     private boolean listPermission;
@@ -75,6 +77,9 @@ public final class BlobSasPermission {
                     break;
                 case 'x':
                     permissions.deleteVersionPermission = true;
+                    break;
+                case 'y':
+                    permissions.permanentDeletePermission = true;
                     break;
                 case 't':
                     permissions.tagsPermission = true;
@@ -209,6 +214,24 @@ public final class BlobSasPermission {
     }
 
     /**
+     * @return the permanent delete permission status.
+     */
+    public boolean hasPermanentDeletePermission() {
+        return permanentDeletePermission;
+    }
+
+    /**
+     * Sets the permanent delete permission status.
+     *
+     * @param permanentDeletePermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setPermanentPermission(boolean permanentDeletePermission) {
+        this.immutabilityPolicyPermission = permanentDeletePermission;
+        return this;
+    }
+
+    /**
      * @return the tags permission status.
      */
     public boolean hasTagsPermission() {
@@ -333,6 +356,10 @@ public final class BlobSasPermission {
 
         if (this.deleteVersionPermission) {
             builder.append('x');
+        }
+
+        if (this.permanentDeletePermission) {
+            builder.append('y');
         }
 
         if (this.listPermission) {
