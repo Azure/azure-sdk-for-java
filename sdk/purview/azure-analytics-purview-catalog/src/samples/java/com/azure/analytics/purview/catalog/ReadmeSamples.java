@@ -17,9 +17,9 @@ public class ReadmeSamples {
      * Sample for creating low level client.
      */
     public void createClient() {
-        GlossaryBaseClient client = new PurviewCatalogClientBuilder()
+        GlossaryClient client = new PurviewCatalogClientBuilder()
             .endpoint(System.getenv("<account-name>.catalog.purview.azure.com"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildGlossaryBaseClient();
+            .buildGlossaryClient();
     }
 }

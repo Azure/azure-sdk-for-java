@@ -16,7 +16,8 @@ public class GlossaryImportGlossaryTermsViaCsv {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildGlossaryClient();
         BinaryData file = BinaryData.fromString("\"examplefile.csv\"");
-        Response<BinaryData> response =
-                client.importGlossaryTermsViaCsvWithResponse("a02d8eb5-a977-4ed6-85c6-63d44239471a", file, null, null);
+        // TODO
+//        Response<BinaryData> response =
+//                client.importGlossaryTermsViaCsvWithResponse("a02d8eb5-a977-4ed6-85c6-63d44239471a", file, null, null);
     }
 }

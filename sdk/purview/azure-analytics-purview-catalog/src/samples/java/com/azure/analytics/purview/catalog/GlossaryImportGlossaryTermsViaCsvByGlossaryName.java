@@ -19,7 +19,8 @@ public class GlossaryImportGlossaryTermsViaCsvByGlossaryName {
         BinaryData file = BinaryData.fromString("\"examplefile.csv\"");
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("includeTermHierarchy", "true");
-        Response<BinaryData> response =
-                client.importGlossaryTermsViaCsvByGlossaryNameWithResponse("Glossary", file, requestOptions, null);
+        // TODO
+//        Response<BinaryData> response =
+//                client.importGlossaryTermsViaCsvByGlossaryNameWithResponse("Glossary", file, requestOptions, null);
     }
 }
