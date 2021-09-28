@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.spring.tracing.sleuth.implementation.HttpTraceUtil;
@@ -31,7 +32,8 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.isValid;
 
 /**
- * Pipeline policy that creates a Sleuth span which traces the service request.
+ * Pipeline policy that creates a Sleuth span which traces the service request,
+ * this policy will be placed after a {@link RetryPolicy} by default.
  */
 public class SleuthHttpPolicy implements HttpPipelinePolicy, Ordered {
 

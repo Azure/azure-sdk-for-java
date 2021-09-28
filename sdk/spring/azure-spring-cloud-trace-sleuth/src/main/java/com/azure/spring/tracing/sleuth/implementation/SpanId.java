@@ -26,9 +26,6 @@ public final class SpanId {
     private static final int HEX_LENGTH = 2 * BYTES_LENGTH;
     private static final String INVALID = "0000000000000000";
 
-    private SpanId() {
-    }
-
     /**
      * Returns the length of the lowercase hex (base16) representation of the {@code SpanId}.
      *

@@ -15,9 +15,6 @@ public final class TraceId {
     private static final int HEX_LENGTH = 2 * BYTES_LENGTH;
     private static final String INVALID = "00000000000000000000000000000000";
 
-    private TraceId() {
-    }
-
     /**
      * Returns the length of the lowercase hex (base16) representation of the {@code TraceId}.
      *
