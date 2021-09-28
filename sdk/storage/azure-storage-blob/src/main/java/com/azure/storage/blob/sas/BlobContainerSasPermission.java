@@ -224,9 +224,9 @@ public final class BlobContainerSasPermission {
      * Sets the permanent delete permission status.
      *
      * @param permanentDeletePermission Permission status to set
-     * @return the updated BlobSasPermission object.
+     * @return the updated BlobContainerSasPermission object.
      */
-    public BlobContainerSasPermission setPermanentPermission(boolean permanentDeletePermission) {
+    public BlobContainerSasPermission setPermanentDeletePermission(boolean permanentDeletePermission) {
         this.immutabilityPolicyPermission = permanentDeletePermission;
         return this;
     }

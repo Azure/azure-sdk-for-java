@@ -47,6 +47,24 @@ class SasClientTests extends APISpec {
         sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
+    def "blob sas all permissions success"() {
+        setup:
+        def allPermissions = new BlobSasPermission()
+            .setReadPermission(true)
+            .setAddPermission(true)
+            .setCreatePermission(true)
+            .setWritePermission(true)
+            .setDeletePermission(true)
+            .setDeleteVersionPermission(true)
+            .setPermanentDeletePermission(true)
+            .setTagsPermission(true)
+            .setListPermission(true)
+            .setMovePermission(true)
+            .setExecutePermission(true)
+            .setImmutabilityPolicyPermission(true)
+    }
+
     def "blob sas read permissions"() {
         setup:
         def permissions = new BlobSasPermission()
