@@ -156,7 +156,7 @@ com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter-storage;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot;3.9.0;3.10.0-beta.1
-com.azure.spring:azure-spring-cloud-autoconfigure;2.8.0;2.9.0
+com.azure.spring:azure-spring-cloud-autoconfigure;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-context;2.8.0;2.9.0
 com.azure.spring:azure-spring-cloud-dependencies;2.8.0;2.9.0
 com.azure.spring:azure-spring-cloud-messaging;2.8.0;2.9.0
