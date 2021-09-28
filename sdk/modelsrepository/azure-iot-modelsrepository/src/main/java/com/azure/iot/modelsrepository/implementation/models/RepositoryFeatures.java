@@ -12,6 +12,11 @@ public class RepositoryFeatures {
         this.index = index;
     }
 
+    public RepositoryFeatures() {
+        this.expanded = false;
+        this.index = false;
+    }
+
     public boolean isIndex() {
         return index;
     }

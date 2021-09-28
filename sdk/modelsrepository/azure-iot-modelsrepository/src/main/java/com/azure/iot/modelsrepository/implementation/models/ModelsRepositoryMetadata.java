@@ -20,6 +20,14 @@ public class ModelsRepositoryMetadata {
         this.features = features;
     }
 
+    public ModelsRepositoryMetadata() {
+        this.commitId = null;
+        this.publishDateUtc = null;
+        this.sourceRepo = null;
+        this.totalModelCount = null;
+        this.features = null;
+    }
+
     public String getCommitId() {
         return this.commitId;
     }
