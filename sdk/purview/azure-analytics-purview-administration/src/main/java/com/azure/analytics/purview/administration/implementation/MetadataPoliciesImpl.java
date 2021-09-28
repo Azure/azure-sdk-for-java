@@ -522,6 +522,57 @@ public final class MetadataPoliciesImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String
+     *     id: String
+     *     version: Integer
+     *     properties: {
+     *         description: String
+     *         decisionRules: [
+     *             {
+     *                 kind: String(decisionrule/attributerule)
+     *                 effect: String(Deny/Permit)
+     *                 dnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         attributeRules: [
+     *             {
+     *                 kind: String(decisionrule/attributerule)
+     *                 id: String
+     *                 name: String
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         collection: {
+     *             type: String
+     *             referenceName: String
+     *         }
+     *         parentCollectionName: String
+     *     }
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -602,6 +653,57 @@ public final class MetadataPoliciesImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String
+     *     id: String
+     *     version: Integer
+     *     properties: {
+     *         description: String
+     *         decisionRules: [
+     *             {
+     *                 kind: String(decisionrule/attributerule)
+     *                 effect: String(Deny/Permit)
+     *                 dnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         attributeRules: [
+     *             {
+     *                 kind: String(decisionrule/attributerule)
+     *                 id: String
+     *                 name: String
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         collection: {
+     *             type: String
+     *             referenceName: String
+     *         }
+     *         parentCollectionName: String
+     *     }
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -681,6 +783,57 @@ public final class MetadataPoliciesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     name: String
+     *     id: String
+     *     version: Integer
+     *     properties: {
+     *         description: String
+     *         decisionRules: [
+     *             {
+     *                 kind: String(decisionrule/attributerule)
+     *                 effect: String(Deny/Permit)
+     *                 dnfCondition: [
+     *                     [
+     *                         {
+     *                             attributeName: String
+     *                             attributeValueIncludes: String
+     *                             attributeValueIncludedIn: [
+     *                                 String
+     *                             ]
+     *                             attributeValueExcludes: String
+     *                             attributeValueExcludedIn: [
+     *                                 String
+     *                             ]
+     *                         }
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         attributeRules: [
+     *             {
+     *                 kind: String(decisionrule/attributerule)
+     *                 id: String
+     *                 name: String
+     *                 dnfCondition: [
+     *                     [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         collection: {
+     *             type: String
+     *             referenceName: String
+     *         }
+     *         parentCollectionName: String
+     *     }
+     * }
+     * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *

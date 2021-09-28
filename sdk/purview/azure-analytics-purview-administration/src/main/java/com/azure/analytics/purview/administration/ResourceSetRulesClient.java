@@ -267,7 +267,102 @@ public final class ResourceSetRulesClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     advancedResourceSet: {
+     *         modifiedAt: String
+     *         resourceSetProcessing: String(Default/Advanced)
+     *     }
+     *     name: String
+     *     pathPatternConfig: {
+     *         acceptedPatterns: [
+     *             {
+     *                 createdBy: String
+     *                 filterType: String(Pattern/Regex)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 path: String
+     *             }
+     *         ]
+     *         complexReplacers: [
+     *             {
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: Boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 typeName: String
+     *             }
+     *         ]
+     *         createdBy: String
+     *         enableDefaultPatterns: boolean
+     *         lastUpdatedTimestamp: Long
+     *         modifiedBy: String
+     *         normalizationRules: [
+     *             {
+     *                 description: String
+     *                 disabled: Boolean
+     *                 dynamicReplacement: Boolean
+     *                 entityTypes: [
+     *                     String
+     *                 ]
+     *                 lastUpdatedTimestamp: Long
+     *                 name: String
+     *                 regex: {
+     *                     maxDigits: Integer
+     *                     maxLetters: Integer
+     *                     minDashes: Integer
+     *                     minDigits: Integer
+     *                     minDigitsOrLetters: Integer
+     *                     minDots: Integer
+     *                     minHex: Integer
+     *                     minLetters: Integer
+     *                     minUnderscores: Integer
+     *                     options: Integer
+     *                     regexStr: String
+     *                 }
+     *                 replaceWith: String
+     *                 version: Double
+     *             }
+     *         ]
+     *         regexReplacers: [
+     *             {
+     *                 condition: String
+     *                 createdBy: String
+     *                 description: String
+     *                 disabled: boolean
+     *                 disableRecursiveReplacerApplication: Boolean
+     *                 doNotReplaceRegex: (recursive schema, see doNotReplaceRegex above)
+     *                 lastUpdatedTimestamp: Long
+     *                 modifiedBy: String
+     *                 name: String
+     *                 regex: (recursive schema, see regex above)
+     *                 replaceWith: String
+     *             }
+     *         ]
+     *         rejectedPatterns: [
+     *             (recursive schema, see above)
+     *         ]
+     *         scopedRules: [
+     *             {
+     *                 bindingUrl: String
+     *                 rules: [
+     *                     {
+     *                         displayName: String
+     *                         isResourceSet: Boolean
+     *                         lastUpdatedTimestamp: Long
+     *                         name: String
+     *                         qualifiedName: String
+     *                     }
+     *                 ]
+     *                 storeType: String
+     *             }
+     *         ]
+     *         version: Integer
+     *     }
+     * }
      * }</pre>
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
