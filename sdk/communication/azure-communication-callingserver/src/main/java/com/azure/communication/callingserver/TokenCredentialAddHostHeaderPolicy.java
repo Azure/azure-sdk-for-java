@@ -15,7 +15,7 @@ import java.util.Objects;
 /**
  * HttpPipelinePolicy to append headers required for Download and Delete in TokenCredential client cases
  */
-public final class TokenCredentialAdditionalHeaderPolicy implements HttpPipelinePolicy {
+public final class TokenCredentialAddHostHeaderPolicy implements HttpPipelinePolicy {
     private static final String X_MS_HOST_HEADER = "x-ms-host";
     private final String xMsHostValue;
 
@@ -23,7 +23,7 @@ public final class TokenCredentialAdditionalHeaderPolicy implements HttpPipeline
      * Created with a non-null resourceHostName value
      * @param resourceHostName Host name of the ACS resource
      */
-    public TokenCredentialAdditionalHeaderPolicy(String resourceHostName) {
+    public TokenCredentialAddHostHeaderPolicy(String resourceHostName) {
         Objects.requireNonNull(resourceHostName, "'resourceHostName' cannot be a null value.");
         xMsHostValue = resourceHostName;
     }
@@ -35,5 +35,4 @@ public final class TokenCredentialAdditionalHeaderPolicy implements HttpPipeline
         }
         return next.process();
     }
-
 }

@@ -293,7 +293,7 @@ public final class CallingServerClientBuilder {
         if (tokenCredential != null) {
             pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 "https://communication.azure.com//.default"));
-            pipelinePolicies.add(new TokenCredentialAdditionalHeaderPolicy(hostName));
+            pipelinePolicies.add(new TokenCredentialAddHostHeaderPolicy(hostName));
         } else if (azureKeyCredential != null) {
             pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
         } else {
