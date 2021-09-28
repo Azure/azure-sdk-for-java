@@ -9,14 +9,25 @@ import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
-public class DeleteAsyncLiveTests extends CallingServerTestBase {
+public class DeleteLiveTests extends CallingServerTestBase {
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void deleteRecordingWithConnectionStringClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient callingServerClient = setupClient(builder, "deleteRecordingWithConnectionStringClient");
+        deleteRecording(callingServerClient);
+    }
 /*
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -24,28 +35,16 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void deleteRecordingWithConnectionStringAsyncClient(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
-        deleteRecording(callingServerAsyncClient);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    @DisabledIfEnvironmentVariable(
-        named = "SKIP_LIVE_TEST",
-        matches = "(?i)(true)",
-        disabledReason = "Requires human intervention")
-    public void deleteRecordingWithTokenCredentialAsyncClient(HttpClient httpClient) {
+    public void deleteRecordingWithTokenCredentialClient(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
-        deleteRecording(callingServerAsyncClient);
-    }
+        CallingServerClient callingServerClient = setupClient(builder, "deleteRecordingWithTokenCredentialClient");
+        deleteRecording(callingServerClient);
+    }*/
 
 
-    private void deleteRecording(CallingServerAsyncClient callingServerAsyncClient) {
+    private void deleteRecording(CallingServerClient callingServerAsyncClient) {
         try {
-            Response<HttpResponse> response = callingServerAsyncClient.deleteRecordingWithResponse(RECORDING_DELETE_URL, null).block();
+            Response<HttpResponse> response = callingServerAsyncClient.deleteRecordingWithResponse(RECORDING_DELETE_URL, null);
             assertThat(response.getStatusCode(), is(equalTo(200)));
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -61,12 +60,9 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         disabledReason = "Requires human intervention")
     public void deleteRecording401Async(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callingServerAsyncClient.deleteRecordingWithResponse(RECORDING_DELETE_URL, null))
-            .consumeNextWith(response -> {
-                assertThat(response.getStatusCode(), is(equalTo(401)));
-            })
-            .verifyComplete();
+        CallingServerClient callingServerClient = setupClient(builder, "deleteRecording404Async");
+        Response<HttpResponse> response = callingServerClient.deleteRecordingWithResponse(RECORDING_DELETE_URL, null);
+        assertThat(response.getStatusCode(), is(equalTo(401)));
     }
 
     @ParameterizedTest
@@ -77,19 +73,16 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         disabledReason = "Requires human intervention")
     public void deleteRecording404Async(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallingServerAsyncClient callingServerAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callingServerAsyncClient.deleteRecordingWithResponse(RECORDING_DELETE_URL_404, null))
-            .consumeNextWith(response -> {
-                assertThat(response.getStatusCode(), is(equalTo(404)));
-            })
-            .verifyComplete();
+        CallingServerClient callingServerClient = setupClient(builder, "deleteRecording404Async");
+        Response<HttpResponse> response = callingServerClient.deleteRecordingWithResponse(RECORDING_DELETE_URL_404, null);
+        assertThat(response.getStatusCode(), is(equalTo(404)));
     }
 
-    private CallingServerAsyncClient setupAsyncClient(CallingServerClientBuilder builder, String testName) {
-        return addLoggingPolicy(builder, testName).buildAsyncClient();
+    private CallingServerClient setupClient(CallingServerClientBuilder builder, String testName) {
+        return addLoggingPolicy(builder, testName).buildClient();
     }
 
     protected CallingServerClientBuilder addLoggingPolicy(CallingServerClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
-    }*/
+    }
 }

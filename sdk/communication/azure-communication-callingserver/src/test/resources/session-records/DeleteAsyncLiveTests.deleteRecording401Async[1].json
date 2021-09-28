@@ -1,0 +1,20 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.asm.skype.com/v1/objects/0-eus-d18-1b7794cfc08ca73693c778203e65d81b",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (1.8.0_291; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "00171fd8-e31d-4b8d-86a6-936e8cc456ea"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "Date" : "Tue, 28 Sep 2021 23:33:55 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
