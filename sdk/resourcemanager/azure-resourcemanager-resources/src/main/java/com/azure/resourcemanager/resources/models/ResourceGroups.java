@@ -46,30 +46,4 @@ public interface ResourceGroups extends
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByName(String name);
-
-    /**
-     * Begins deleting a resource group from Azure, identifying it by its name.
-     *
-     * @param name the resource group name
-     * @param forceDeletionResourceTypes resource types for force deletion
-     * @return the accepted deleting operation
-     */
-    Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes);
-
-    /**
-     * Deletes a resource from Azure, identifying it by its resource name.
-     *
-     * @param name the name of the resource to delete
-     * @param forceDeletionResourceTypes resource types for force deletion
-     */
-    void deleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes);
-
-    /**
-     * Asynchronously delete a resource from Azure, identifying it by its resource name.
-     *
-     * @param name the name of the resource to delete
-     * @param forceDeletionResourceTypes resource types for force deletion
-     * @return a handle to cancel the request
-     */
-    Mono<Void> deleteByNameAsync(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes);
 }

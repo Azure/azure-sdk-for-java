@@ -71,17 +71,6 @@ public final class ResourceGroupsImpl
     }
 
     @Override
-    public Mono<Void> deleteByNameAsync(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        return manager().serviceClient().getResourceGroups()
-            .deleteAsync(name, forceDeletionTypes(forceDeletionResourceTypes));
-    }
-
-    @Override
-    public void deleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        deleteByNameAsync(name, forceDeletionResourceTypes).block();
-    }
-
-    @Override
     public Mono<Void> deleteByNameAsync(String name) {
         return manager().serviceClient().getResourceGroups().deleteAsync(name);
     }
@@ -111,17 +100,11 @@ public final class ResourceGroupsImpl
 
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
-        return beginDeleteByName(name, null);
-    }
-
-
-    @Override
-    public Accepted<Void> beginDeleteByName(String name, Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
         return AcceptedImpl.newAccepted(logger,
             this.manager().serviceClient().getHttpPipeline(),
             this.manager().serviceClient().getDefaultPollInterval(),
             () -> this.manager().serviceClient().getResourceGroups()
-                .deleteWithResponseAsync(name, forceDeletionTypes(forceDeletionResourceTypes)).block(),
+                .deleteWithResponseAsync(name).block(),
             Function.identity(),
             Void.class,
             null,

@@ -160,13 +160,13 @@ public final class ResourceUtils {
         // Exact match
         for (ProviderResourceType prt : provider.resourceTypes()) {
             if (prt.resourceType().equalsIgnoreCase(resourceType)) {
-                return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
+                return prt.apiVersions().get(0);
             }
         }
         // child resource, e.g. sites/config
         for (ProviderResourceType prt : provider.resourceTypes()) {
             if (prt.resourceType().toLowerCase(Locale.ROOT).contains("/" + resourceType)) {
-                return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
+                return prt.apiVersions().get(0);
             }
         }
         // look for parent
