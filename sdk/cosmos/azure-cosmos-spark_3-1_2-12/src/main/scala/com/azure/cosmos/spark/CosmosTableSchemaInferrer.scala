@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.models.CosmosQueryRequestOptions
+import com.azure.cosmos.spark.CosmosPartitionPlanner.logWarning
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
@@ -92,7 +93,7 @@ private object CosmosTableSchemaInferrer
     if (cosmosInferenceConfig.inferSchemaEnabled) {
       val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
       val sourceContainer = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
-      sourceContainer.openConnectionsAndInitCaches().block()
+      SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
