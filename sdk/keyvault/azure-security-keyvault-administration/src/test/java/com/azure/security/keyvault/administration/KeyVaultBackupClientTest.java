@@ -83,6 +83,10 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         PollResponse<KeyVaultRestoreOperation> restoreResponse = restorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restoreResponse.getStatus());
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 
     /**
@@ -121,5 +125,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         PollResponse<KeyVaultSelectiveKeyRestoreOperation> response = selectiveKeyRestorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 }

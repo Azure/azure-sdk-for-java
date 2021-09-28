@@ -85,6 +85,10 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         KeyVaultRestoreOperation restoreOperation = restorePollResponse.getValue();
         assertNotNull(restoreOperation);
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 
     /**
@@ -129,5 +133,9 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
 
         KeyVaultSelectiveKeyRestoreOperation restoreOperation = restorePollResponse.getValue();
         assertNotNull(restoreOperation);
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 }
