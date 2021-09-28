@@ -87,7 +87,7 @@
         <dependency>
           <groupId>com.azure.spring</groupId>
           <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
-          <version>2.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
+          <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
