@@ -11,19 +11,19 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-starter-appconfiguration-config</artifactId>
-  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
+  <version>2.1.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;current} -->
   <name>Azure Spring Cloud Starter App Configuration Config</name>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
-      <version>2.2.0-beta.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config-web;current} -->
+      <version>2.1.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config-web;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-feature-management-web</artifactId>
-      <version>2.0.0</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;dependency} -->
+      <version>2.0.1</version><!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
     </dependency>
   </dependencies>
 </project>

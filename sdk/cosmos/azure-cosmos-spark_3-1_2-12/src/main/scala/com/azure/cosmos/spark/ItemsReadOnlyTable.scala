@@ -72,7 +72,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
       useEventualConsistency = readConfig.forceEventualConsistency), None)
 
   protected val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
-  container.openConnectionsAndInitCaches().block()
+  SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   override def name(): String = tableName
 
