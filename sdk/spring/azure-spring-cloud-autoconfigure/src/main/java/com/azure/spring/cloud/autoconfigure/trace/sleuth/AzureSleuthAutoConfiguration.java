@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.trace.sleuth;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.tracing.sleuth.SleuthHttpPolicy;
-import com.azure.spring.tracing.sleuth.SleuthTracer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
  * Auto-configuration for an Azure SDK Sleuth {@link Tracer}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ SleuthHttpPolicy.class, SleuthTracer.class, Tracer.class, SleuthTracerProperties.class })
+@ConditionalOnClass({ SleuthHttpPolicy.class, Tracer.class, SleuthTracerProperties.class })
 @ConditionalOnProperty(value = "spring.sleuth.enabled", matchIfMissing = true)
 public class AzureSleuthAutoConfiguration {
 

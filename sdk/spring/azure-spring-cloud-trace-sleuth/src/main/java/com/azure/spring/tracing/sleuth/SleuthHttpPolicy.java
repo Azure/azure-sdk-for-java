@@ -8,7 +8,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
@@ -34,19 +33,11 @@ import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.is
 /**
  * Pipeline policy that creates a Sleuth span which traces the service request.
  */
-public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy, Ordered {
+public class SleuthHttpPolicy implements HttpPipelinePolicy, Ordered {
 
     @Override
     public int getOrder() {
         return Ordered.LOWEST_PRECEDENCE;
-    }
-
-    /**
-     * @return a Sleuth HTTP policy.
-     */
-    @Override
-    public HttpPipelinePolicy create() {
-        return this;
     }
 
     // Singleton Sleuth tracer capable of starting and exporting spans.
@@ -59,6 +50,7 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
     private static final String HTTP_URL = "http.url";
     private static final String HTTP_STATUS_CODE = "http.status_code";
     private static final String REQUEST_ID = "x-ms-request-id";
+    private static final String AZ_NAMESPACE_KEY = "az.namespace";
 
     public SleuthHttpPolicy(Tracer tracer, Propagator propagator) {
         Assert.notNull(tracer, "tracer must not be null!");
@@ -112,7 +104,7 @@ public class SleuthHttpPolicy implements AfterRetryPolicyProvider, HttpPipelineP
         putTagIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putTagIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
-        tracingNamespace.ifPresent(o -> putTagIfNotEmptyOrNull(span, SleuthTracer.AZ_NAMESPACE_KEY,
+        tracingNamespace.ifPresent(o -> putTagIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY,
             o.toString()));
     }
 

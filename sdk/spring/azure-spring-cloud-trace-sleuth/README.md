@@ -20,6 +20,9 @@ This package provides the common framework for all Azure Spring libraries.
 [//]: # ({x-version-update-end})
 
 ## Key concepts
+Azure SDK service implementation follows the `com.azure:azure-core` interfaces to trace service activities. [azure-core-tracing-opentelemetry](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-tracing-opentelemetry) is one implementation based on `Open Telemetry API`, this is not suitable for Spring developers based on `Spring Cloud Sleuth API`.
+
+This module will depend on `Spring Cloud Sleuth API` to implement the azure core interface(`HttpPipelinePolicy`). For HTTP protocol based service, it can add the http policy `com.azure.spring.tracing.sleuth.SleuthHttpPolicy` to enable Azure SDK service tracing and delegate to Spring Sleuth tracing context, then related span can be associated with the same trace id, which propagated from Spring MVC layer. This feature will be automatically enabled if Spring Sleuth is enabled. 
 
 ## Examples
 
