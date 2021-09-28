@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
-import com.azure.spring.integration.servicebus.factory.DefaultServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFactory;
-import com.azure.spring.integration.servicebus.factory.ServiceBusTopicProvisioner;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
-import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
+import com.azure.spring.servicebus.core.DefaultServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.provisioning.ServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.core.topic.ServiceBusTopicOperation;
+import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
+import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

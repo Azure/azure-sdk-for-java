@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 /**
  * Memorize function execution result
@@ -25,11 +27,11 @@ public class Memoizer {
     }
 
     public static <T, U, R> BiFunction<T, U, R> memoize(BiFunction<T, U, R> biFunction) {
-        Map<Tuple<T, U>, R> map = new ConcurrentHashMap<>();
-        return (t, u) -> map.computeIfAbsent(Tuple.of(t, u), (k) -> biFunction.apply(k.getFirst(), k.getSecond()));
+        Map<Tuple2<T, U>, R> map = new ConcurrentHashMap<>();
+        return (t, u) -> map.computeIfAbsent(Tuples.of(t, u), (k) -> biFunction.apply(k.getT1(), k.getT2()));
     }
 
-    public static <T, U, R> BiFunction<T, U, R> memoize(Map<Tuple<T, U>, R> map, BiFunction<T, U, R> biFunction) {
-        return (t, u) -> map.computeIfAbsent(Tuple.of(t, u), (k) -> biFunction.apply(k.getFirst(), k.getSecond()));
+    public static <T, U, R> BiFunction<T, U, R> memoize(Map<Tuple2<T, U>, R> map, BiFunction<T, U, R> biFunction) {
+        return (t, u) -> map.computeIfAbsent(Tuples.of(t, u), (k) -> biFunction.apply(k.getT1(), k.getT2()));
     }
 }
