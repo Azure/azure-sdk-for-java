@@ -437,5 +437,5 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
-[Azure Spring Cloud TLS]: https://docs.microsoft.com/en-us/azure/spring-cloud/how-to-enable-end-to-end-tls
-[Deploy Application Azure Spring Cloud]: https://docs.microsoft.com/en-us/azure/spring-cloud/quickstart?tabs=Azure-CLI&pivots=programming-language-java
+[Azure Spring Cloud TLS]: https://docs.microsoft.com/azure/spring-cloud/how-to-enable-end-to-end-tls
+[Deploy Application Azure Spring Cloud]: https://docs.microsoft.com/azure/spring-cloud/quickstart?tabs=Azure-CLI&pivots=programming-language-java
