@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * HttpPipelinePolicy to append headers required for Download and Delete in TokenCredential client cases
+ * HttpPipelinePolicy to append request host headers for CallingServerClient TokenCredential requests
  */
 public final class TokenCredentialAddHostHeaderPolicy implements HttpPipelinePolicy {
     private static final String X_MS_HOST_HEADER = "x-ms-host";
