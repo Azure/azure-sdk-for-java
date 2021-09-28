@@ -1,5 +1,5 @@
 ## Generate autorest code
-``` yaml
+```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/purview/data-plane/Azure.Analytics.Purview.Catalog/preview/2021-09-01/purviewcatalog.json
 java: true
 output-folder: ../
@@ -18,4 +18,11 @@ generate-client-as-impl: true
 add-context-parameter: true
 context-client-method-parameter: true
 generate-sync-async-clients: true
+generate-llc-samples: false
+polling:
+  default:
+    strategy: >-
+      new ChainedPollingStrategy<>(java.util.Arrays.asList(
+            new LocationPollingStrategy<>({httpPipeline}),
+            new StatusCheckPollingStrategy<>()))
 ```
