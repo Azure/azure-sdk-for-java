@@ -13,7 +13,8 @@ import reactor.core.publisher.Mono;
  * as closing {@literal I/O}. Instead of returning a sync {@code close()}, we use {@code closeAsync()} so users'
  * programs don't block waiting for this operation to complete.</p>
  *
- * {@codesnippet com.azure.core.util.AsyncCloseable.closeAsync}
+ * <!-- src_embed com.azure.core.util.AsyncCloseable.closeAsync -->
+ * <!-- end com.azure.core.util.AsyncCloseable.closeAsync -->
  */
 public interface AsyncCloseable {
     /**

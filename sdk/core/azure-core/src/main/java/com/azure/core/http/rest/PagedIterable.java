@@ -14,15 +14,18 @@ import java.util.stream.Stream;
  *
  * <p><strong>Code sample using {@link Stream} by page</strong></p>
  *
- * {@codesnippet com.azure.core.http.rest.pagedIterable.streamByPage}
+ * <!-- src_embed com.azure.core.http.rest.pagedIterable.streamByPage -->
+ * <!-- end com.azure.core.http.rest.pagedIterable.streamByPage -->
  *
  * <p><strong>Code sample using {@link Iterable} by page</strong></p>
  *
- * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage}
+ * <!-- src_embed com.azure.core.http.rest.pagedIterable.iterableByPage -->
+ * <!-- end com.azure.core.http.rest.pagedIterable.iterableByPage -->
  *
  * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
  *
- * {@codesnippet com.azure.core.http.rest.pagedIterable.iterableByPage.while}
+ * <!-- src_embed com.azure.core.http.rest.pagedIterable.iterableByPage.while -->
+ * <!-- end com.azure.core.http.rest.pagedIterable.iterableByPage.while -->
  *
  * @param <T> The type of value contained in this {@link IterableStream}.
  * @see PagedResponse

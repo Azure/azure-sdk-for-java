@@ -17,15 +17,18 @@ import java.util.stream.StreamSupport;
  *
  * <p><strong>Code sample using Stream</strong></p>
  *
- * {@codesnippet com.azure.core.util.iterableStream.stream}
+ * <!-- src_embed com.azure.core.util.iterableStream.stream -->
+ * <!-- end com.azure.core.util.iterableStream.stream -->
  *
  * <p><strong>Code sample using Iterator</strong></p>
  *
- * {@codesnippet com.azure.core.util.iterableStream.iterator.while}
+ * <!-- src_embed com.azure.core.util.iterableStream.iterator.while -->
+ * <!-- end com.azure.core.util.iterableStream.iterator.while -->
  *
  * <p><strong>Code sample using Stream and filter</strong></p>
  *
- * {@codesnippet com.azure.core.util.iterableStream.stream.filter}
+ * <!-- src_embed com.azure.core.util.iterableStream.stream.filter -->
+ * <!-- end com.azure.core.util.iterableStream.stream.filter -->
  *
  * @param <T> The type of value in this {@link Iterable}.
  * @see Iterable

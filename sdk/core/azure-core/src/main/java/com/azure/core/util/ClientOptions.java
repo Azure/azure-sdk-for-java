@@ -45,7 +45,8 @@ public class ClientOptions {
      *
      * <p>Create ClientOptions with application ID 'myApplicationId'</p>
      *
-     * {@codesnippet com.azure.core.util.ClientOptions.setApplicationId#String}
+     * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
+     * <!-- end com.azure.core.util.ClientOptions.setApplicationId#String -->
      *
      * @param applicationId The application ID.
      *
@@ -79,7 +80,8 @@ public class ClientOptions {
      *
      * <p>Create ClientOptions with Header 'myCustomHeader':'myStaticValue'</p>
      *
-     * {@codesnippet com.azure.core.util.ClientOptions.setHeaders#Iterable}
+     * <!-- src_embed com.azure.core.util.ClientOptions.setHeaders#Iterable -->
+     * <!-- end com.azure.core.util.ClientOptions.setHeaders#Iterable -->
      *
      * @param headers The headers.
      * @return The updated ClientOptions object.

@@ -12,10 +12,12 @@ import java.util.Objects;
  * {@link #getValue value} returned in the poll, as well as other useful information provided by the service.
  *
  * <p><strong>Code Sample Creating PollResponse Object</strong></p>
- * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
+ * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
+ * <!-- end com.azure.core.util.polling.pollresponse.status.value -->
  *
  * <p><strong>Code Sample Creating PollResponse Object with custom status</strong></p>
- * {@codesnippet com.azure.core.util.polling.pollresponse.custom.status.value}
+ * <!-- src_embed com.azure.core.util.polling.pollresponse.custom.status.value -->
+ * <!-- end com.azure.core.util.polling.pollresponse.custom.status.value -->
  *
  * @param <T> Type of poll response value.
  * @see LongRunningOperationStatus
@@ -30,7 +32,8 @@ public final class PollResponse<T> {
      * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
-     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties}
+     * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->
+     * <!-- end com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->
      *
      * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
@@ -52,7 +55,8 @@ public final class PollResponse<T> {
      * Creates a new {@link PollResponse} with status and value.
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
-     * {@codesnippet com.azure.core.util.polling.pollresponse.status.value}
+     * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
+     * <!-- end com.azure.core.util.polling.pollresponse.status.value -->
      *
      * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also

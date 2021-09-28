@@ -11,7 +11,7 @@ import com.azure.core.util.BinaryData;
 import java.util.function.Consumer;
 
 /**
- * This class contains the options to customize a HTTP request. {@link RequestOptions} can be
+ * This class contains the options to customize an HTTP request. {@link RequestOptions} can be
  * used to configure the request headers, query params, the request body, or add a callback
  * to modify all aspects of the HTTP request.
  *
@@ -27,10 +27,11 @@ import java.util.function.Consumer;
  * </p>
  *
  * <p><strong>Creating an instance of RequestOptions</strong></p>
- * {@codesnippet com.azure.core.http.rest.requestoptions.instantiation}
+ * <!-- src_embed com.azure.core.http.rest.requestoptions.instantiation -->
+ * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
- * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, a HTTP POST call should
+ * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should
  * be made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
  *
@@ -59,11 +60,13 @@ import java.util.function.Consumer;
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other Json building library can be used to achieve similar results.
  *
- * {@codesnippet com.azure.core.http.rest.requestoptions.createjsonrequest}
+ * <!-- src_embed com.azure.core.http.rest.requestoptions.createjsonrequest -->
+ * <!-- end com.azure.core.http.rest.requestoptions.createjsonrequest -->
  *
  * Now, this string representation of the JSON request can be set as body of RequestOptions
  *
- * {@codesnippet com.azure.core.http.rest.requestoptions.postrequest}
+ * <!-- src_embed com.azure.core.http.rest.requestoptions.postrequest -->
+ * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
 final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
@@ -78,7 +81,7 @@ final class RequestOptions {
     }
 
     /**
-     * Gets whether or not to throw an exception when an HTTP response with a status code indicating an error
+     * Gets whether an exception is thrown when an HTTP response with a status code indicating an error
      * (400 or above) is received.
      *
      * @return true if to throw on status codes of 400 or above, false if not. Default is true.
@@ -125,7 +128,7 @@ final class RequestOptions {
      *
      * @param parameterName the name of the query parameter
      * @param value the value of the query parameter
-     * @param encoded whether or not this query parameter is already encoded
+     * @param encoded whether this query parameter is already encoded
      * @return the modified RequestOptions object
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
@@ -163,8 +166,8 @@ final class RequestOptions {
     }
 
     /**
-     * Sets whether or not to throw an exception when an HTTP response with a status code indicating an error
-     * (400 or above) is received. By default an exception will be thrown when an error response is received.
+     * Sets whether exception is thrown when an HTTP response with a status code indicating an error
+     * (400 or above) is received. By default, an exception will be thrown when an error response is received.
      *
      * @param throwOnError true if to throw on status codes of 400 or above, false if not. Default is true.
      * @return the modified RequestOptions object

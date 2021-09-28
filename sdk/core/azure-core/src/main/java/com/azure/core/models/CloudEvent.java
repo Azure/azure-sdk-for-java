@@ -53,13 +53,15 @@ import java.util.UUID;
  * serialize the CloudEvent into its Json String representation and send it.</p>
  *
  * <p><strong>Create CloudEvent Samples</strong></p>
- * {@codesnippet com.azure.core.model.CloudEvent#constructor}
+ * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+ * <!-- end com.azure.core.model.CloudEvent#constructor -->
  *
  * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
  * use {@link #fromString(String)} to deserialize them from the Json string.</p>
  *
  * <p><strong>Deserialize CloudEvent Samples</strong></p>
- * {@codesnippet com.azure.core.model.CloudEvent.fromString}
+ * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+ * <!-- end com.azure.core.model.CloudEvent.fromString -->
  */
 @Fluent
 public final class CloudEvent {
@@ -182,7 +184,8 @@ public final class CloudEvent {
      * attribute <em>data</em> of the CloudEvent's Json representation.</p>
      *
      * <p><strong>Create CloudEvent Samples</strong></p>
-     * {@codesnippet com.azure.core.model.CloudEvent#constructor}
+     * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
+     * <!-- end com.azure.core.model.CloudEvent#constructor -->
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
      *               for each distinct event.
@@ -231,7 +234,8 @@ public final class CloudEvent {
      * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
      *
      * <p><strong>Deserialize CloudEvent Samples</strong></p>
-     * {@codesnippet com.azure.core.model.CloudEvent.fromString}
+     * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
+     * <!-- end com.azure.core.model.CloudEvent.fromString -->
      *
      * @param cloudEventsJson the JSON payload containing one or more events.
      *

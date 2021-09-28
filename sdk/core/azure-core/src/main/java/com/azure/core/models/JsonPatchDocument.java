@@ -74,7 +74,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendAdd#String-Object}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
      *
      * @param path The path to apply the addition.
      * @param value The value that will be serialized and added to the path.
@@ -95,7 +96,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
      *
      * @param path The path to apply the addition.
      * @param rawJson The raw JSON value that will be added to the path.
@@ -119,7 +121,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendReplace#String-Object}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
      *
      * @param path The path to replace.
      * @param value The value will be serialized and used as the replacement.
@@ -137,7 +140,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
      *
      * @param path The path to replace.
      * @param rawJson The raw JSON value that will be used as the replacement.
@@ -161,7 +165,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendCopy#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
      *
      * @param from The path to copy from.
      * @param path The path to copy to.
@@ -184,7 +189,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendMove#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
      *
      * @param from The path to move from.
      * @param path The path to move to.
@@ -205,7 +211,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendRemove#String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendRemove#String -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendRemove#String -->
      *
      * @param path The path to remove.
      * @return The updated JsonPatchDocument object.
@@ -224,7 +231,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendTest#String-Object}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
      *
      * @param path The path to test.
      * @param value The value that will be serialized and used to test against.
@@ -242,7 +250,8 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
      *
      * @param path The path to test.
      * @param rawJson The raw JSON value that will be used to test against.

@@ -29,7 +29,8 @@ import java.util.function.Supplier;
  * the Flux returned by the Page Retriever has {@code null} continuation token.
  *
  * <p><strong>Extending PagedFluxCore for Custom Continuation Token support</strong></p>
- * {@codesnippet com.azure.core.util.paging.pagedfluxcore.continuationtoken}
+ * <!-- src_embed com.azure.core.util.paging.pagedfluxcore.continuationtoken -->
+ * <!-- end com.azure.core.util.paging.pagedfluxcore.continuationtoken -->
  *
  * @param <C> the type of the continuation token
  * @param <T> The type of elements in a {@link ContinuablePage}

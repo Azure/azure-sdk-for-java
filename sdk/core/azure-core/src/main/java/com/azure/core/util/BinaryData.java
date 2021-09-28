@@ -73,27 +73,33 @@ import static com.azure.core.util.implementation.BinaryDataContent.STREAM_READ_S
  *
  * <p><strong>Create an instance from a byte array</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromBytes#byte}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
+ * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
  *
  * <p><strong>Create an instance from a String</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
+ * <!-- end com.azure.core.util.BinaryData.fromString#String -->
  *
  * <p><strong>Create an instance from an InputStream</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromStream#InputStream}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
+ * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
  *
  * <p><strong>Create an instance from an Object</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+ * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
  *
  * <p><strong>Create an instance from {@code Flux<ByteBuffer>}</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+ * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
  *
  * <p><strong>Create an instance from a file</strong></p>
  *
- * {@codesnippet com.azure.core.util.BinaryData.fromFile}
+ * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
+ * <!-- end com.azure.core.util.BinaryData.fromFile -->
  *
  * @see ObjectSerializer
  * @see JsonSerializer
@@ -119,7 +125,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromStream#InputStream}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromStream#InputStream -->
+     * <!-- end com.azure.core.util.BinaryData.fromStream#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link InputStream}.
@@ -136,7 +143,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an InputStream</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromStreamAsync#InputStream}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
+     * <!-- end com.azure.core.util.BinaryData.fromStreamAsync#InputStream -->
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link InputStream}.
@@ -152,7 +160,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the {@link Flux} of {@link ByteBuffer}.
@@ -171,7 +180,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a Flux of ByteBuffer</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFlux#Flux}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFlux#Flux -->
+     * <!-- end com.azure.core.util.BinaryData.fromFlux#Flux -->
      *
      * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
@@ -202,7 +212,8 @@ public final class BinaryData {
      * </p>
      * <p><strong>Create an instance from a String</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromString#String}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromString#String -->
+     * <!-- end com.azure.core.util.BinaryData.fromString#String -->
      *
      * @param data The {@link String} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link String}.
@@ -223,7 +234,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a byte array</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromBytes#byte}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromBytes#byte -->
+     * <!-- end com.azure.core.util.BinaryData.fromBytes#byte -->
      *
      * @param data The byte array that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the byte array.
@@ -243,7 +255,8 @@ public final class BinaryData {
      *</p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object -->
+     * <!-- end com.azure.core.util.BinaryData.fromObject#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the JSON serialized object.
@@ -264,7 +277,8 @@ public final class BinaryData {
      * </p>
      * <p><strong>Creating an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object -->
+     * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object -->
      *
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link Mono} of {@link BinaryData} representing the JSON serialized object.
@@ -290,7 +304,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
+     * <!-- end com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
@@ -322,7 +337,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from an Object</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
+     * <!-- end com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer -->
      *
      * @param data The object that will be serialized that {@link BinaryData} will represent. The {@code serializer}
      * determines how {@code null} data is serialized.
@@ -344,7 +360,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFile}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile -->
+     * <!-- end com.azure.core.util.BinaryData.fromFile -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @return A new {@link BinaryData}.
@@ -361,7 +378,8 @@ public final class BinaryData {
      *
      * <p><strong>Create an instance from a file</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.fromFile#Path-int}
+     * <!-- src_embed com.azure.core.util.BinaryData.fromFile#Path-int -->
+     * <!-- end com.azure.core.util.BinaryData.fromFile#Path-int -->
      *
      * @param file The {@link Path} that will be the {@link BinaryData} data.
      * @param chunkSize The requested size for each read of the path.
@@ -412,7 +430,8 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#Class}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class -->
+     * <!-- end com.azure.core.util.BinaryData.toObject#Class -->
      *
      * @param <T> Type of the deserialized Object.
      * @param clazz The {@link Class} representing the Object's type.
@@ -439,11 +458,13 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference -->
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -475,7 +496,8 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     * <!-- end com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -511,11 +533,13 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- end com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -547,7 +571,8 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#Class}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class -->
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -574,11 +599,13 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -610,7 +637,8 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer -->
      *
      * @param clazz The {@link Class} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -646,11 +674,13 @@ public final class BinaryData {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic}
+     * <!-- src_embed com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
+     * <!-- end com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer-generic -->
      *
      * @param typeReference The {@link TypeReference} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize object.
@@ -670,7 +700,8 @@ public final class BinaryData {
      *
      * <p><strong>Get an InputStream from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.core.util.BinaryData.toStream}
+     * <!-- src_embed com.azure.core.util.BinaryData.toStream -->
+     * <!-- end com.azure.core.util.BinaryData.toStream -->
      *
      * @return An {@link InputStream} representing the {@link BinaryData}.
      */
@@ -685,7 +716,8 @@ public final class BinaryData {
      *
      * <p><strong>Get a read-only ByteBuffer from the BinaryData</strong></p>
      *
-     * {@codesnippet com.azure.util.BinaryData.toByteBuffer}
+     * <!-- src_embed com.azure.util.BinaryData.toByteBuffer -->
+     * <!-- end com.azure.util.BinaryData.toByteBuffer -->
      *
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
      */

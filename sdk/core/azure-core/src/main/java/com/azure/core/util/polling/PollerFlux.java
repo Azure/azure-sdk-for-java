@@ -23,19 +23,24 @@ import java.util.function.Function;
  * <p><strong>Code samples</strong></p>
  *
  * <p><strong>Instantiating and subscribing to PollerFlux</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribe}
+ * <!-- src_embed com.azure.core.util.polling.poller.instantiationAndSubscribe -->
+ * <!-- end com.azure.core.util.polling.poller.instantiationAndSubscribe -->
  *
  * <p><strong>Asynchronously wait for polling to complete and then retrieve the final result</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.getResult}
+ * <!-- src_embed com.azure.core.util.polling.poller.getResult -->
+ * <!-- end com.azure.core.util.polling.poller.getResult -->
  *
  * <p><strong>Block for polling to complete and then retrieve the final result</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.blockAndGetResult}
+ * <!-- src_embed com.azure.core.util.polling.poller.blockAndGetResult -->
+ * <!-- end com.azure.core.util.polling.poller.blockAndGetResult -->
  *
  * <p><strong>Asynchronously poll until poller receives matching status</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.pollUntil}
+ * <!-- src_embed com.azure.core.util.polling.poller.pollUntil -->
+ * <!-- end com.azure.core.util.polling.poller.pollUntil -->
  *
  * <p><strong>Asynchronously cancel the long running operation</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.cancelOperation}
+ * <!-- src_embed com.azure.core.util.polling.poller.cancelOperation -->
+ * <!-- end com.azure.core.util.polling.poller.cancelOperation -->
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long running operation.

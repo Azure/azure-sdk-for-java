@@ -54,7 +54,8 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context#object-object}
+     * <!-- src_embed com.azure.core.util.context#object-object -->
+     * <!-- end com.azure.core.util.context#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
@@ -78,7 +79,8 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context.addData#object-object}
+     * <!-- src_embed com.azure.core.util.context.addData#object-object -->
+     * <!-- end com.azure.core.util.context.addData#object-object -->
      *
      * @param key The key with which the specified value should be associated.
      * @param value The value to be associated with the specified key.
@@ -98,7 +100,8 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context.of#map}
+     * <!-- src_embed com.azure.core.util.context.of#map -->
+     * <!-- end com.azure.core.util.context.of#map -->
      *
      * @param keyValues The input key value pairs that will be added to this context.
      * @return Context object containing all the key-value pairs in the input map.
@@ -126,7 +129,8 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.context.getData#object}
+     * <!-- src_embed com.azure.core.util.context.getData#object -->
+     * <!-- end com.azure.core.util.context.getData#object -->
      *
      * @param key The key to search for.
      * @return The value of the specified key if it exists.
@@ -149,7 +153,8 @@ public class Context {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.Context.getValues}
+     * <!-- src_embed com.azure.core.util.Context.getValues -->
+     * <!-- end com.azure.core.util.Context.getValues -->
      *
      * @return A map containing all values of the context linked-list.
      */

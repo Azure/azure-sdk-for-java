@@ -547,9 +547,9 @@
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+            <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
               for more Java documentation, including quick starts, tutorials, and code samples.
-            </footer>
+            </bottom>
             <linksource>false</linksource>
             <excludePackageNames>
               *.impl*:
@@ -632,17 +632,6 @@
                 <location>${project.basedir}/${relative.path.to.eng.folder}/eng/javadoc-package-lists/apache-avro/</location>
               </offlineLink>
             </offlineLinks>
-            <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
-            <docletArtifact>
-              <groupId>org.apidesign.javadoc</groupId>
-              <artifactId>codesnippet-doclet</artifactId>
-              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
-            </docletArtifact>
-            <additionalOptions>
-              <additionalOption>-maxLineLength 120</additionalOption>
-              <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
-              <additionalOption>-suppressMissingLinkWarnings</additionalOption>
-            </additionalOptions>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
             <doclint>all</doclint>
@@ -1366,6 +1355,80 @@
                 <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
               </dependency>
             </dependencies>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>codesnippet-doclet-javadoc</id>
+      <activation>
+        <property>
+          <name>!disable-codesnippet-doclet</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <configuration>
+              <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+              <docletArtifact>
+                <groupId>org.apidesign.javadoc</groupId>
+                <artifactId>codesnippet-doclet</artifactId>
+                <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+              </docletArtifact>
+              <additionalOptions>
+                <additionalOption>-maxLineLength 120</additionalOption>
+                <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
+                <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+              </additionalOptions>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>snippet-replacer-javadoc</id>
+      <activation>
+        <property>
+          <name>snippet-replacer-javadoc</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.azure.tools</groupId>
+            <artifactId>snippet-replacer-maven-plugin</artifactId>
+            <version>1.0.0</version>
+            <configuration>
+              <targetDir>${project.basedir}</targetDir>
+            </configuration>
+            <executions>
+              <execution>
+                <id>inject-snippets</id>
+                <phase>process-sources</phase>
+                <goals>
+                  <goal>snippet-engine</goal>
+                </goals>
+                <configuration>
+                  <mode>update</mode>
+                </configuration>
+              </execution>
+              <execution>
+                <id>verify-snippets</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>snippet-engine</goal>
+                </goals>
+                <configuration>
+                  <mode>verify</mode>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>

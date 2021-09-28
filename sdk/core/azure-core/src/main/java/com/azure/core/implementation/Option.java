@@ -11,7 +11,8 @@ import java.util.Objects;
  * non-null-value, null-value, or no-value.
  *
  * <p><strong>Code sample</strong></p>
- * {@codesnippet com.azure.core.util.Option}
+ * <!-- src_embed com.azure.core.util.Option -->
+ * <!-- end com.azure.core.util.Option -->
  *
  * @param <T> The value type.
  */

@@ -15,9 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p><strong>Code sample</strong></p>
  *
- * {@codesnippet com.azure.core.util.serializer.constructor}
+ * <!-- src_embed com.azure.core.util.serializer.constructor -->
+ * <!-- end com.azure.core.util.serializer.constructor -->
  *
- * {@codesnippet com.azure.core.util.serializer.createInstance#class}
+ * <!-- src_embed com.azure.core.util.serializer.createInstance#class -->
+ * <!-- end com.azure.core.util.serializer.createInstance#class -->
  *
  * @param <T> The type being represented.
  */

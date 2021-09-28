@@ -67,7 +67,8 @@ public class ClientLogger {
      *
      * <p>Logging with a specific log level</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.log}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.log -->
+     * <!-- end com.azure.core.util.logging.clientlogger.log -->
      *
      * @param logLevel Logging level for the log message.
      * @param message The format-able message to log.
@@ -83,7 +84,8 @@ public class ClientLogger {
      *
      * <p>Logging with a specific log level and exception</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.log#throwable}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.log#throwable -->
+     * <!-- end com.azure.core.util.logging.clientlogger.log#throwable -->
      *
      * @param logLevel Logging level for the log message.
      * @param message The format-able message to log.
@@ -102,7 +104,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose -->
+     * <!-- end com.azure.core.util.logging.clientlogger.verbose -->
      *
      * @param message The message to log.
      */
@@ -119,7 +122,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.verbose#string-object}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose#string-object -->
+     * <!-- end com.azure.core.util.logging.clientlogger.verbose#string-object -->
      *
      * @param format The formattable message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -138,7 +142,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at verbose log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.info}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.info -->
+     * <!-- end com.azure.core.util.logging.clientlogger.info -->
      *
      * @param message The message to log.
      */
@@ -155,7 +160,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at informational log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.info#string-object}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.info#string-object -->
+     * <!-- end com.azure.core.util.logging.clientlogger.info#string-object -->
      *
      * @param format The format-able message to log
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -174,7 +180,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.warning}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.warning -->
+     * <!-- end com.azure.core.util.logging.clientlogger.warning -->
      *
      * @param message The message to log.
      */
@@ -191,7 +198,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at warning log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.warning#string-object}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.warning#string-object -->
+     * <!-- end com.azure.core.util.logging.clientlogger.warning#string-object -->
      *
      * @param format The format-able message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
@@ -210,7 +218,8 @@ public class ClientLogger {
      *
      * <p>Logging a message at error log level.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.error}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.error -->
+     * <!-- end com.azure.core.util.logging.clientlogger.error -->
      *
      * @param message The message to log.
      */
@@ -227,7 +236,8 @@ public class ClientLogger {
      *
      * <p>Logging an error with stack trace.</p>
      *
-     * {@codesnippet com.azure.core.util.logging.clientlogger.error#string-object}
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.error#string-object -->
+     * <!-- end com.azure.core.util.logging.clientlogger.error#string-object -->
      *
      * @param format The format-able message to log.
      * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
