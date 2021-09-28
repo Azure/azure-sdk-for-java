@@ -4,8 +4,11 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.util.List;
 
 public class GlossaryClientTests extends PurviewCatalogClientTestBase {
@@ -38,8 +41,10 @@ public class GlossaryClientTests extends PurviewCatalogClientTestBase {
 //        assertEquals(1, terms.size());
     }
 
-    @Test
-    public void testImport() {
-
+    @Disabled
+    public void testImportTerm() {
+        BinaryData binaryData = BinaryData.fromFile(Path.of("C:\\Users\\fey\\Downloads\\import-terms-template-System-default.csv"));
+        System.out.println(binaryData);
+        client.beginImportGlossaryTermsViaCsvByGlossaryName("Glossary", binaryData, null, null).waitForCompletion();
     }
 }
