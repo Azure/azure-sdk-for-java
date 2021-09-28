@@ -63,6 +63,22 @@ class SasClientTests extends APISpec {
             .setMovePermission(true)
             .setExecutePermission(true)
             .setImmutabilityPolicyPermission(true)
+
+        def sasValues = generateValues(allPermissions)
+
+        when:
+        def sas = sasClient.generateSas(sasValues)
+
+        def client = getBlobClient(sas, cc.getBlobContainerUrl(), blobName).getBlockBlobClient()
+
+        def os = new ByteArrayOutputStream()
+        client.download(os)
+        def properties = client.getProperties()
+
+        then:
+        notThrown(BlobStorageException)
+        os.toString() == data.defaultText
+        validateSasProperties(properties)
     }
 
     def "blob sas read permissions"() {
