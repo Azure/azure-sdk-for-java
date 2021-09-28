@@ -12,6 +12,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -212,6 +213,19 @@ public final class CallingServerClient {
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
             parallelDownloadOptions, overwrite, context).block();
+    }
+
+    /**
+     * Delete the content located in {@code endpoint} into a file marked by {@code path}.
+     * This download will be done using parallel workers.
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
+        Objects.requireNonNull(deleteEndpoint, "'deleteEndpoint' cannot be null");
+        return callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 }
 

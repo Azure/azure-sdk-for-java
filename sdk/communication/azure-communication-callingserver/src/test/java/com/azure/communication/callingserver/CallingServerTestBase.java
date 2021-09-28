@@ -48,7 +48,7 @@ public class CallingServerTestBase extends TestBase {
 
     protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
-            "016a7064-0581-40b9-be73-6dde64d69d72");          
+            "016a7064-0581-40b9-be73-6dde64d69d72");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
@@ -70,6 +70,12 @@ public class CallingServerTestBase extends TestBase {
 
     protected static final String CONTENT_URL_404 = Configuration.getGlobalConfiguration()
         .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
+
+    protected static final String RECORDING_DELETE_URL = Configuration.getGlobalConfiguration()
+        .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
+
+    protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
+        .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -100,7 +106,7 @@ public class CallingServerTestBase extends TestBase {
           have unique groupId's so they do not conflict with other
           recording tests running in live mode.
          */
-        if (getTestMode() == TestMode.LIVE) {        
+        if (getTestMode() == TestMode.LIVE) {
             return UUID.randomUUID().toString();
         }
 

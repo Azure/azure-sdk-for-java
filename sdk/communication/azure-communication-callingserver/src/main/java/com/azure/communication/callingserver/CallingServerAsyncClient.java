@@ -19,7 +19,11 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -29,6 +33,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.OpenOption;
@@ -61,14 +67,17 @@ public final class CallingServerAsyncClient {
     private final ServerCallsImpl serverCallInternal;
     private final ClientLogger logger = new ClientLogger(CallingServerAsyncClient.class);
     private final ContentDownloader contentDownloader;
+    private final HttpPipeline httpPipelineInternal;
+    private final String resourceEndpoint;
 
     CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
         callConnectionInternal = callServiceClient.getCallConnections();
         serverCallInternal = callServiceClient.getServerCalls();
-
+        httpPipelineInternal = callServiceClient.getHttpPipeline();
+        resourceEndpoint = callServiceClient.getEndpoint();
         contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint(),
-            callServiceClient.getHttpPipeline());
+            resourceEndpoint,
+            httpPipelineInternal);
     }
 
     /**
@@ -450,5 +459,60 @@ public final class CallingServerAsyncClient {
         return Mono.just(fileChannel).flatMap(
             c -> contentDownloader.downloadToFileWithResponse(sourceEndpoint, c, finalParallelDownloadOptions, context))
             .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType));
+    }
+
+    /**
+     * Delete the content located at {@code endpoint}.
+     * Recording deletion will be done using parallel workers.
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     * @return RResponse for successful delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<HttpResponse>> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
+        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteEndpoint);
+        URL urlToSignWith = getUrlToSignRequestWith(deleteEndpoint);
+        Context finalContext;
+        if (context == null) {
+            finalContext = new Context("hmacSignatureURL", urlToSignWith);
+        } else {
+            finalContext = context.addData("hmacSignatureURL", urlToSignWith);
+        }
+        Mono<HttpResponse> httpResponse = httpPipelineInternal.send(request, finalContext);
+        try {
+            return httpResponse.map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Delete the content located at {@code endpoint}.
+     * Recording deletion will be done using parallel workers.
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRecording(String deleteEndpoint) {
+        try {
+            return deleteRecordingWithResponse(deleteEndpoint, null).then();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private URL getUrlToSignRequestWith(String endpoint) {
+        try {
+            String path = new URL(endpoint).getPath();
+
+            if (path.startsWith("/")) {
+                path = path.substring(1);
+            }
+
+            return new URL(resourceEndpoint + path);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
+        }
     }
 }
