@@ -1,4 +1,4 @@
-# Spring Cloud for Azure Sleuth Trace library for Java
+# Spring Cloud for Azure Sleuth Trace plugin library for Java
 This package provides the common framework for all Azure Spring libraries.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
