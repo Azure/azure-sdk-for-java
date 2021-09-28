@@ -8,14 +8,8 @@ import java.util.regex.Matcher;
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTDIRECTORY;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTDIRECTORY;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_MODE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTFILE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_POMFILE;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_REGEX;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_REPORTFILE;
-import static com.azure.tools.bomgenerator.Utils.EMPTY_STRING;
 import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
 import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
 import static com.azure.tools.bomgenerator.Utils.validateValues;
@@ -26,15 +20,16 @@ public class Main {
         BomGenerator generator = null;
         try {
             generator = parseCommandLine(args);
+            if(!generator.run()) {
+                System.exit(1);
+            }
+
+            System.out.println("Completed successfully.");
         } catch (FileNotFoundException e) {
             System.out.println("Error occurred.");
             e.printStackTrace();
-        }
-        if(!generator.run()) {
             System.exit(1);
         }
-
-        System.out.println("Completed successfully.");
     }
 
     private static BomGenerator parseCommandLine(String[] args) throws FileNotFoundException {
