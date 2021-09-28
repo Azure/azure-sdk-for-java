@@ -165,7 +165,7 @@ com.azure.spring:azure-spring-cloud-starter-eventhubs-kafka;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-eventhubs;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-servicebus;2.8.0;2.9.0
 com.azure.spring:azure-spring-cloud-starter-storage-queue;2.9.0;2.10.0-beta.1
-com.azure.spring:azure-spring-cloud-storage;2.8.0;2.9.0
+com.azure.spring:azure-spring-cloud-storage;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;2.9.0;2.10.0-beta.1
 com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;2.8.0;2.9.0
