@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Removed `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
 
 ### Bugs Fixed
 
