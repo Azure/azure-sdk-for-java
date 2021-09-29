@@ -139,8 +139,12 @@
     <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
     <parallelizeTests>true</parallelizeTests>
 
-    <!-- This property configures whether the codesnippet replacer plugin should be skipped. -->
-    <skipCodesnippetReplacer>true</skipCodesnippetReplacer>
+    <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
+    <skipNewCodesnippetTooling>true</skipNewCodesnippetTooling>
+
+    <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
+    <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
+    <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
   </properties>
 
   <build>
@@ -204,11 +208,35 @@
         </configuration>
       </plugin>
 
+      <!-- Configures the codesnippet replacement plugin -->
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.1</version>
+        <configuration>
+          <skip>${skipNewCodesnippetTooling}</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippets</id>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippets</id>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Configure the javadoc plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -545,7 +573,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+          <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -561,7 +589,7 @@
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
-              com.azure.perf*
+              com.azure.perf*:
               com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
@@ -640,6 +668,17 @@
             <doclint>all</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
+            <doclet>${javadocDoclet}</doclet>
+            <docletArtifact>
+              <groupId>org.apidesign.javadoc</groupId>
+              <artifactId>codesnippet-doclet</artifactId>
+              <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+            </docletArtifact>
+            <additionalOptions>
+              <!-- '-html5' is a dummy option, as this is the default. But, unfortunately, it's needed to prevent the Javadoc plugin -->
+              <!-- from throwing a NullPointerException when '${javadocDocletOptions}' is empty when using the new tooling. -->
+              <additionalOption>-html5 ${javadocDocletOptions}</additionalOption>
+            </additionalOptions>
           </configuration>
         </plugin>
 
@@ -740,7 +779,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <reportSets>
           <reportSet>
             <id>non-aggregate</id>
@@ -818,7 +857,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -833,7 +872,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <sourceFileExcludes>
                 <sourceFileExclude>module-info.java</sourceFileExclude>
@@ -950,7 +989,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
             </configuration>
@@ -1358,72 +1397,6 @@
                 <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
               </dependency>
             </dependencies>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>codesnippet-doclet-javadoc</id>
-      <activation>
-        <property>
-          <name>!disable-codesnippet-doclet</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
-            <configuration>
-              <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
-              <docletArtifact>
-                <groupId>org.apidesign.javadoc</groupId>
-                <artifactId>codesnippet-doclet</artifactId>
-                <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
-              </docletArtifact>
-              <additionalOptions>
-                <additionalOption>-maxLineLength 120</additionalOption>
-                <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
-                <additionalOption>-suppressMissingLinkWarnings</additionalOption>
-              </additionalOptions>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>snippet-replacer-javadoc</id>
-      <activation>
-        <property>
-          <name>snippet-replacer-javadoc</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.azure.tools</groupId>
-            <artifactId>codesnippet-plugin</artifactId>
-            <version>1.0.0-beta.1</version>
-            <configuration>
-              <skip>${skipCodesnippetReplacer}</skip>
-            </configuration>
-            <executions>
-              <execution>
-                <id>update-codesnippets</id>
-                <goals>
-                  <goal>update-codesnippet</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>verify-codesnippets</id>
-                <goals>
-                  <goal>verify-codesnippet</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

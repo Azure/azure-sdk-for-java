@@ -49,6 +49,9 @@
       --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=ALL-UNNAMED
       --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=com.google.gson
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

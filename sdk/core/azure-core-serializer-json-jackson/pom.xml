@@ -50,6 +50,9 @@
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson=com.fasterxml.jackson.databind
       --add-opens com.azure.core.serializer.json.jackson/com.azure.core.serializer.json.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
