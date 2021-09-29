@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions?api-version=2016-06-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ad3fa4c1-1595-4683-ab97-79e773a8b96c",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3e005c60-64ec-437f-925f-d9c85857561e",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "460",
+      "content-length" : "337",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "e1a76bc5-6c8d-43f0-b10b-cf7af9295cb0",
-      "Date" : "Tue, 11 May 2021 02:12:55 GMT",
+      "x-ms-correlation-request-id" : "44a1e21a-9a79-49bf-a2ad-3de09d1fcd41",
+      "Date" : "Wed, 29 Sep 2021 02:28:56 GMT",
       "x-ms-ratelimit-remaining-tenant-reads" : "11999",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210511T021255Z:e1a76bc5-6c8d-43f0-b10b-cf7af9295cb0",
+      "x-ms-routing-request-id" : "WESTUS2:20210929T022856Z:44a1e21a-9a79-49bf-a2ad-3de09d1fcd41",
       "Expires" : "-1",
-      "x-ms-request-id" : "e1a76bc5-6c8d-43f0-b10b-cf7af9295cb0",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"authorizationSource\":\"RoleBased\",\"managedByTenants\":[],\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"displayName\":\"Java Libs Tests with TTL = 7 Days\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Internal_2014-09-01\",\"quotaId\":\"Internal_2014-09-01\",\"spendingLimit\":\"Off\"}}],\"count\":{\"type\":\"Total\",\"value\":1}}",
+      "x-ms-request-id" : "44a1e21a-9a79-49bf-a2ad-3de09d1fcd41",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"authorizationSource\":\"RoleBased\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"displayName\":\"Visual Studio Enterprise\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Public_2014-09-01\",\"quotaId\":\"MSDN_2014-09-01\",\"spendingLimit\":\"On\"}}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
