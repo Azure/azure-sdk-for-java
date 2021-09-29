@@ -4,27 +4,29 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
-import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.ImportKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
@@ -980,5 +982,143 @@ public final class KeyClient {
     public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String target,
                                                              ReleaseKeyOptions options, Context context) {
         return client.releaseKeyWithResponse(name, version, target, options, context).block();
+    }
+
+    /**
+     * Rotates a {@link KeyVaultKey key}. The rotate key operation will do so based on
+     * {@link KeyRotationPolicy key's rotation policy}. This operation requires the {@code keys/rotate} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Rotates a {@link KeyVaultKey key}. Prints out {@link KeyVaultKey rotated key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.rotateKeyWithResponse#String}
+     *
+     * @param name The name of {@link KeyVaultKey key} to be rotated. The system will generate a new version in the
+     * specified {@link KeyVaultKey key}.
+     *
+     * @return The new version of the rotated {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultKey rotateKey(String name) {
+        return client.rotateKey(name).block();
+    }
+
+    /**
+     * Rotates a {@link KeyVaultKey key}. The rotate key operation will do so based on
+     * {@link KeyRotationPolicy key's rotation policy}. This operation requires the {@code keys/rotate} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Rotates a {@link KeyVaultKey key}. Prints out the {@link Response HTTP Response} and
+     * {@link KeyVaultKey rotated key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.rotateKeyWithResponse#String-Context}
+     *
+     * @param name The name of {@link KeyVaultKey key} to be rotated. The system will generate a new version in the
+     * specified {@link KeyVaultKey key}.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return The {@link Response HTTP response} for this operation containing the new version of the rotated
+     * {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultKey> rotateKeyWithResponse(String name, Context context) {
+        return client.rotateKeyWithResponse(name, context).block();
+    }
+
+    /**
+     * Gets the {@link KeyRotationPolicy} for the {@link KeyVaultKey key} with the provided name. This operation
+     * requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Prints out the
+     * {@link KeyRotationPolicy rotation policy key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getKeyRotationPolicy#String}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     *
+     * @return The {@link KeyRotationPolicy} for the {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyRotationPolicy getKeyRotationPolicy(String name) {
+        return client.getKeyRotationPolicy(name).block();
+    }
+
+    /**
+     * Gets the {@link KeyRotationPolicy} for the {@link KeyVaultKey key} with the provided name. This operation
+     * requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Prints out the
+     * {@link Response HTTP Response} and {@link KeyRotationPolicy rotation policy key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.getKeyRotationPolicyWithResponse#String-Context}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A  {@link Response HTTP response} for this operation containing the {@link KeyRotationPolicy} for the
+     * {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String name, Context context) {
+        return client.getKeyRotationPolicyWithResponse(name, context).block();
+    }
+
+    /**
+     * Updates the {@link KeyRotationPolicy} of the {@link KeyVaultKey key} with the provided name. This operation
+     * requires the {@code keys/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Prints out the
+     * {@link KeyRotationPolicy rotation policy key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyRotationPolicyProperties The {@link KeyRotationPolicy} for the ke{@link KeyVaultKey key}y.
+     *
+     * @return The {@link KeyRotationPolicy} for the {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyRotationPolicy updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties) {
+        return client.updateKeyRotationPolicy(name, keyRotationPolicyProperties).block();
+    }
+
+    /**
+     * Updates the {@link KeyRotationPolicy} of the key with the provided name. This operation requires the
+     * {@code keys/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Prints out the
+     * {@link Response HTTP Response} and {@link KeyRotationPolicy rotation policy key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties-Context}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyRotationPolicyProperties The {@link KeyRotationPolicyProperties} for the key.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     *
+     * @return A {@link Response HTTP response} for this operation containing the {@link KeyRotationPolicy} for the
+     * {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties, Context context) {
+        return client.updateKeyRotationPolicyWithResponse(name, keyRotationPolicyProperties, context).block();
     }
 }

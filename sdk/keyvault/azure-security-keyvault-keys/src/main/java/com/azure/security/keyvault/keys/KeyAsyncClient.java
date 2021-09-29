@@ -24,6 +24,10 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
+import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeAction;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionTrigger;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsType;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -34,6 +38,9 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.RandomBytes;
@@ -45,7 +52,9 @@ import reactor.core.publisher.Mono;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -1537,6 +1546,266 @@ public final class KeyAsyncClient {
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
+    }
+
+    /**
+     * Rotates a {@link KeyVaultKey key}. The rotate key operation will do so based on
+     * {@link KeyRotationPolicy key's rotation policy}. This operation requires the {@code keys/rotate} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Rotates a {@link KeyVaultKey key}. Prints out {@link KeyVaultKey rotated key} details.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.rotateKey#String}
+     *
+     * @param name The name of {@link KeyVaultKey key} to be rotated. The system will generate a new version in the
+     * specified {@link KeyVaultKey key}.
+     *
+     * @return The new version of the rotated {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> rotateKey(String name) {
+        try {
+            return rotateKeyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Rotates a {@link KeyVaultKey key}. The rotate key operation will do so based on
+     * {@link KeyRotationPolicy key's rotation policy}. This operation requires the {@code keys/rotate} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Rotates a {@link KeyVaultKey key}. Subscribes to the call asynchronously and prints out the
+     * {@link Response HTTP Response} and {@link KeyVaultKey rotated key} details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.rotateKeyWithResponse#String}
+     *
+     * @param name The name of {@link KeyVaultKey key} to be rotated. The system will generate a new version in the
+     * specified {@link KeyVaultKey key}.
+     *
+     * @return A {@link Mono} containing the {@link Response HTTP response} for this operation and the new version of
+     * the rotated {@link KeyVaultKey key}.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> rotateKeyWithResponse(String name) {
+        try {
+            return withContext(context -> rotateKeyWithResponse(name, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<KeyVaultKey>> rotateKeyWithResponse(String name, Context context) {
+        try {
+            if (CoreUtils.isNullOrEmpty(name)) {
+                return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
+            }
+
+            return service.rotateKey(vaultUrl, name, apiVersion, "application/json",
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Rotating key with name %s.", name))
+                .doOnSuccess(response -> logger.verbose("Rotated key with name %s.", name))
+                .doOnError(error -> logger.warning("Failed to rotate key - {}", error));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets the {@link KeyRotationPolicy} for the {@link KeyVaultKey key} with the provided name. This operation
+     * requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
+     * call asynchronously and prints out the {@link KeyRotationPolicy rotation policy key} details when a response
+     * has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicy#String}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     *
+     * @return A {@link Mono} containing the {@link KeyRotationPolicy} for the key.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyRotationPolicy> getKeyRotationPolicy(String name) {
+        try {
+            return getKeyRotationPolicyWithResponse(name).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets the {@link KeyRotationPolicy} for the {@link KeyVaultKey key} with the provided name. This operation
+     * requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Retrieves the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
+     * call asynchronously and prints out the {@link Response HTTP Response} and
+     * {@link KeyRotationPolicy rotation policy key} details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicyWithResponse#String}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     *
+     * @return A {@link Mono} containing the {@link Response HTTP response} for this operation and the
+     * {@link KeyRotationPolicy} for the key.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyWithResponse(String name) {
+        try {
+            return withContext(context -> getKeyRotationPolicyWithResponse(name, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<KeyRotationPolicy>> getKeyRotationPolicyWithResponse(String name, Context context) {
+        try {
+            if (CoreUtils.isNullOrEmpty(name)) {
+                return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
+            }
+
+            return service.getKeyRotationPolicy(vaultUrl, name, apiVersion, "application/json",
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Retrieving key rotation policy for key with name.", name))
+                .doOnSuccess(response -> logger.verbose("Retrieved key rotation policy for key with name.", name))
+                .doOnError(error -> logger.warning("Failed to retrieve key rotation policy - {}", error))
+                .map(response -> new SimpleResponse<>(response, toKeyRotationPolicy(response.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Updates the {@link KeyRotationPolicy} of the key with the provided name. This operation requires the
+     * {@code keys/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
+     * call asynchronously and prints out the {@link KeyRotationPolicy rotation policy key} details when a response
+     * has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyRotationPolicyProperties The {@link KeyRotationPolicyProperties} for the key.
+     *
+     * @return A {@link Mono} containing the {@link KeyRotationPolicy} for the key.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyRotationPolicy> updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties) {
+        try {
+            return updateKeyRotationPolicyWithResponse(name, keyRotationPolicyProperties).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Updates the {@link KeyRotationPolicy} of the key with the provided name. This operation requires the
+     * {@code keys/update} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
+     * call asynchronously and prints out the {@link Response HTTP Response} and
+     * {@link KeyRotationPolicy rotation policy key} details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties}
+     *
+     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyRotationPolicyProperties The {@link KeyRotationPolicyProperties} for the key.
+     *
+     * @return A {@link Mono} containing the {@link Response HTTP response} for this operation and the
+     * {@link KeyRotationPolicy} for the key.
+     *
+     * @throws IllegalArgumentException If {@code name} is {@code null} or empty.
+     * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties) {
+        try {
+            return withContext(context ->
+                updateKeyRotationPolicyWithResponse(name, keyRotationPolicyProperties, context));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    Mono<Response<KeyRotationPolicy>> updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties, Context context) {
+        try {
+            if (CoreUtils.isNullOrEmpty(name)) {
+                return monoError(logger, new IllegalArgumentException("'name' cannot be null or empty"));
+            }
+
+            List<LifetimeAction> lifetimeActions = new ArrayList<>();
+
+            for (KeyRotationLifetimeAction lifetimeAction : keyRotationPolicyProperties.getLifetimeActions()) {
+                lifetimeActions.add(new LifetimeAction()
+                    .setAction(new LifetimeActionsType()
+                        .setType(lifetimeAction.getType()))
+                    .setTrigger(new LifetimeActionTrigger()
+                        .setTimeAfterCreate(lifetimeAction.getTimeAfterCreate())
+                        .setTimeBeforeExpiry(lifetimeAction.getTimeBeforeExpiry())));
+            }
+
+            com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy keyRotationPolicy =
+                new com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy()
+                    .setAttributes(new KeyRotationPolicyAttributes()
+                        .setExpiryTime(keyRotationPolicyProperties.getExpiryTime()))
+                    .setLifetimeActions(lifetimeActions);
+
+            return service.updateKeyRotationPolicy(vaultUrl, name, apiVersion, keyRotationPolicy, "application/json",
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.verbose("Updating key rotation policy for key with name.", name))
+                .doOnSuccess(response -> logger.verbose("Updated key rotation policy for key with name.", name))
+                .doOnError(error -> logger.warning("Failed to retrieve key rotation policy - {}", error))
+                .map(response -> new SimpleResponse<>(response, toKeyRotationPolicy(response.getValue())));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private KeyRotationPolicy toKeyRotationPolicy(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy keyRotationPolicy) {
+        if (keyRotationPolicy == null) {
+            return null;
+        }
+
+        List<KeyRotationLifetimeAction> keyRotationLifetimeActions = null;
+
+        if (keyRotationPolicy.getLifetimeActions() != null) {
+            keyRotationLifetimeActions = new ArrayList<>();
+
+            for (LifetimeAction lifetimeAction : keyRotationPolicy.getLifetimeActions()) {
+                keyRotationLifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
+                    .setTimeBeforeExpiry(lifetimeAction.getTrigger().getTimeBeforeExpiry())
+                    .setTimeAfterCreate(lifetimeAction.getTrigger().getTimeAfterCreate()));
+            }
+        }
+
+        Long createdOn = null;
+        Long updatedOn = null;
+        String expiryTime = null;
+
+        if (keyRotationPolicy.getAttributes() != null) {
+            createdOn = keyRotationPolicy.getAttributes().getCreatedOn();
+            updatedOn = keyRotationPolicy.getAttributes().getUpdatedOn();
+            expiryTime = keyRotationPolicy.getAttributes().getExpiryTime();
+        }
+
+        return new KeyRotationPolicy(keyRotationPolicy.getId(), createdOn, updatedOn)
+            .setExpiryTime(expiryTime)
+            .setLifetimeActions(keyRotationLifetimeActions);
     }
 }
 
