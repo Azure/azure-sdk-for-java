@@ -47,7 +47,7 @@ public final class GlossariesImpl {
      */
     GlossariesImpl(PurviewCatalogClientImpl client) {
         this.service =
-            RestProxy.create(GlossariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                RestProxy.create(GlossariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,264 +60,264 @@ public final class GlossariesImpl {
     private interface GlossariesService {
         @Get("/atlas/v2/glossary")
         Mono<Response<BinaryData>> listGlossaries(
-            @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/glossary")
         Mono<Response<BinaryData>> createGlossary(
-            @HostParam("Endpoint") String endpoint,
-            @BodyParam("application/json") BinaryData atlasGlossary,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData atlasGlossary,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary/categories")
         Mono<Response<BinaryData>> createGlossaryCategories(
-            @HostParam("Endpoint") String endpoint,
-            @BodyParam("application/json") BinaryData glossaryCategory,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryCategory,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary/category")
         Mono<Response<BinaryData>> createGlossaryCategory(
-            @HostParam("Endpoint") String endpoint,
-            @BodyParam("application/json") BinaryData glossaryCategory,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryCategory,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}")
         Mono<Response<BinaryData>> getGlossaryCategory(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("categoryGuid") String categoryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryGuid}")
         Mono<Response<BinaryData>> updateGlossaryCategory(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("categoryGuid") String categoryGuid,
-            @BodyParam("application/json") BinaryData glossaryCategory,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @BodyParam("application/json") BinaryData glossaryCategory,
+                RequestOptions requestOptions,
+                Context context);
 
         @Delete("/atlas/v2/glossary/category/{categoryGuid}")
         Mono<Response<Void>> deleteGlossaryCategory(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("categoryGuid") String categoryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/category/{categoryGuid}/partial")
         Mono<Response<BinaryData>> partialUpdateGlossaryCategory(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("categoryGuid") String categoryGuid,
-            @BodyParam("application/json") BinaryData partialUpdates,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                @BodyParam("application/json") BinaryData partialUpdates,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}/related")
         Mono<Response<BinaryData>> listRelatedCategories(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("categoryGuid") String categoryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/category/{categoryGuid}/terms")
         Mono<Response<BinaryData>> listCategoryTerms(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("categoryGuid") String categoryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("categoryGuid") String categoryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary/term")
         Mono<Response<BinaryData>> createGlossaryTerm(
-            @HostParam("Endpoint") String endpoint,
-            @BodyParam("application/json") BinaryData glossaryTerm,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryTerm,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/term/{termGuid}")
         Mono<Response<BinaryData>> getGlossaryTerm(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/term/{termGuid}")
         Mono<Response<BinaryData>> updateGlossaryTerm(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            @BodyParam("application/json") BinaryData glossaryTerm,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData glossaryTerm,
+                RequestOptions requestOptions,
+                Context context);
 
         @Delete("/atlas/v2/glossary/term/{termGuid}")
         Mono<Response<Void>> deleteGlossaryTerm(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/term/{termGuid}/partial")
         Mono<Response<BinaryData>> partialUpdateGlossaryTerm(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            @BodyParam("application/json") BinaryData partialUpdates,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData partialUpdates,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary/terms")
         Mono<Response<BinaryData>> createGlossaryTerms(
-            @HostParam("Endpoint") String endpoint,
-            @BodyParam("application/json") BinaryData glossaryTerm,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @BodyParam("application/json") BinaryData glossaryTerm,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
         Mono<Response<BinaryData>> getEntitiesAssignedWithTerm(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
         Mono<Response<Void>> assignTermToEntities(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData relatedObjectIds,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
         Mono<Response<Void>> removeTermAssignmentFromEntities(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData relatedObjectIds,
+                RequestOptions requestOptions,
+                Context context);
 
         @Delete("/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
         Mono<Response<Void>> deleteTermAssignmentFromEntities(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            @BodyParam("application/json") BinaryData relatedObjectIds,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                @BodyParam("application/json") BinaryData relatedObjectIds,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/terms/{termGuid}/related")
         Mono<Response<BinaryData>> listRelatedTerms(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("termGuid") String termGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("termGuid") String termGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}")
         Mono<Response<BinaryData>> getGlossary(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/{glossaryGuid}")
         Mono<Response<BinaryData>> updateGlossary(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            @BodyParam("application/json") BinaryData updatedGlossary,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @BodyParam("application/json") BinaryData updatedGlossary,
+                RequestOptions requestOptions,
+                Context context);
 
         @Delete("/atlas/v2/glossary/{glossaryGuid}")
         Mono<Response<Void>> deleteGlossary(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/categories")
         Mono<Response<BinaryData>> listGlossaryCategories(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/categories/headers")
         Mono<Response<BinaryData>> listGlossaryCategoriesHeaders(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/detailed")
         Mono<Response<BinaryData>> getDetailedGlossary(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Put("/atlas/v2/glossary/{glossaryGuid}/partial")
         Mono<Response<BinaryData>> partialUpdateGlossary(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            @BodyParam("application/json") BinaryData partialUpdates,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @BodyParam("application/json") BinaryData partialUpdates,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/terms")
         Mono<Response<BinaryData>> listGlossaryTerms(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/atlas/v2/glossary/{glossaryGuid}/terms/headers")
         Mono<Response<BinaryData>> listGlossaryTermHeaders(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                RequestOptions requestOptions,
+                Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/glossary/{glossaryGuid}/terms/import")
         Mono<Response<BinaryData>> importGlossaryTermsViaCsv(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("multipart/form-data") BinaryData file,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("multipart/form-data") BinaryData file,
+                RequestOptions requestOptions,
+                Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/glossary/name/{glossaryName}/terms/import")
         Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryName(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryName") String glossaryName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("multipart/form-data") BinaryData file,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryName") String glossaryName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("multipart/form-data") BinaryData file,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/glossary/terms/import/{operationGuid}")
         Mono<Response<BinaryData>> getImportCsvOperationStatus(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("operationGuid") String operationGuid,
-            @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("operationGuid") String operationGuid,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/glossary/{glossaryGuid}/terms/export")
         Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsv(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryGuid") String glossaryGuid,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BinaryData termGuids,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryGuid") String glossaryGuid,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData termGuids,
+                RequestOptions requestOptions,
+                Context context);
 
         @Get("/glossary/name/{glossaryName}/terms")
         Mono<Response<BinaryData>> listTermsByGlossaryName(
-            @HostParam("Endpoint") String endpoint,
-            @PathParam("glossaryName") String glossaryName,
-            @QueryParam("api-version") String apiVersion,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("glossaryName") String glossaryName,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -402,8 +402,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponseAsync(RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(context -> service.listGlossaries(this.client.getEndpoint(), requestOptions, context));
+        return FluxUtil.withContext(
+                context -> service.listGlossaries(this.client.getEndpoint(), requestOptions, context));
     }
 
     /**
@@ -708,9 +708,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponseAsync(
-        BinaryData atlasGlossary, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            BinaryData atlasGlossary, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context -> service.createGlossary(this.client.getEndpoint(), atlasGlossary, requestOptions, context));
     }
 
@@ -845,7 +844,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponseAsync(
-        BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
+            BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
         return service.createGlossary(this.client.getEndpoint(), atlasGlossary, requestOptions, context);
     }
 
@@ -980,7 +979,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryWithResponse(
-        BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
+            BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
         return createGlossaryWithResponseAsync(atlasGlossary, requestOptions, context).block();
     }
 
@@ -1125,13 +1124,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
-        BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .createGlossaryCategories(
-                            this.client.getEndpoint(), glossaryCategory, requestOptions, context));
+                        service.createGlossaryCategories(
+                                this.client.getEndpoint(), glossaryCategory, requestOptions, context));
     }
 
     /**
@@ -1276,7 +1273,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponseAsync(
-        BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return service.createGlossaryCategories(this.client.getEndpoint(), glossaryCategory, requestOptions, context);
     }
 
@@ -1422,7 +1419,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoriesWithResponse(
-        BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions, context).block();
     }
 
@@ -1564,12 +1561,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponseAsync(
-        BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .createGlossaryCategory(this.client.getEndpoint(), glossaryCategory, requestOptions, context));
+                        service.createGlossaryCategory(
+                                this.client.getEndpoint(), glossaryCategory, requestOptions, context));
     }
 
     /**
@@ -1711,7 +1707,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponseAsync(
-        BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return service.createGlossaryCategory(this.client.getEndpoint(), glossaryCategory, requestOptions, context);
     }
 
@@ -1854,7 +1850,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoryWithResponse(
-        BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return createGlossaryCategoryWithResponseAsync(glossaryCategory, requestOptions, context).block();
     }
 
@@ -1932,11 +1928,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String categoryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                        service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context));
     }
 
     /**
@@ -2014,7 +2009,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return service.getGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context);
     }
 
@@ -2093,7 +2088,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryCategoryWithResponse(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return getGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions, context).block();
     }
 
@@ -2235,13 +2230,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponseAsync(
-        String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .updateGlossaryCategory(
-                            this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context));
+                        service.updateGlossaryCategory(
+                                this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context));
     }
 
     /**
@@ -2383,9 +2376,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponseAsync(
-        String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return service
-            .updateGlossaryCategory(this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context);
+            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+        return service.updateGlossaryCategory(
+                this.client.getEndpoint(), categoryGuid, glossaryCategory, requestOptions, context);
     }
 
     /**
@@ -2527,7 +2520,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryCategoryWithResponse(
-        String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
+            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
         return updateGlossaryCategoryWithResponseAsync(categoryGuid, glossaryCategory, requestOptions, context).block();
     }
 
@@ -2542,11 +2535,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String categoryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.deleteGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                        service.deleteGlossaryCategory(
+                                this.client.getEndpoint(), categoryGuid, requestOptions, context));
     }
 
     /**
@@ -2561,7 +2554,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return service.deleteGlossaryCategory(this.client.getEndpoint(), categoryGuid, requestOptions, context);
     }
 
@@ -2577,7 +2570,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryCategoryWithResponse(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return deleteGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions, context).block();
     }
 
@@ -2665,13 +2658,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponseAsync(
-        String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .partialUpdateGlossaryCategory(
-                            this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context));
+                        service.partialUpdateGlossaryCategory(
+                                this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context));
     }
 
     /**
@@ -2759,9 +2750,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponseAsync(
-        String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return service
-            .partialUpdateGlossaryCategory(
+            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+        return service.partialUpdateGlossaryCategory(
                 this.client.getEndpoint(), categoryGuid, partialUpdates, requestOptions, context);
     }
 
@@ -2850,9 +2840,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryCategoryWithResponse(
-        String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
         return partialUpdateGlossaryCategoryWithResponseAsync(categoryGuid, partialUpdates, requestOptions, context)
-            .block();
+                .block();
     }
 
     /**
@@ -2893,11 +2883,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String categoryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.listRelatedCategories(this.client.getEndpoint(), categoryGuid, requestOptions, context));
+                        service.listRelatedCategories(
+                                this.client.getEndpoint(), categoryGuid, requestOptions, context));
     }
 
     /**
@@ -2939,7 +2929,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return service.listRelatedCategories(this.client.getEndpoint(), categoryGuid, requestOptions, context);
     }
 
@@ -2982,7 +2972,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedCategoriesWithResponse(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions, context).block();
     }
 
@@ -3024,9 +3014,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String categoryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context -> service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, requestOptions, context));
     }
 
@@ -3069,7 +3058,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponseAsync(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return service.listCategoryTerms(this.client.getEndpoint(), categoryGuid, requestOptions, context);
     }
 
@@ -3112,7 +3101,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listCategoryTermsWithResponse(
-        String categoryGuid, RequestOptions requestOptions, Context context) {
+            String categoryGuid, RequestOptions requestOptions, Context context) {
         return listCategoryTermsWithResponseAsync(categoryGuid, requestOptions, context).block();
     }
 
@@ -3438,11 +3427,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponseAsync(
-        BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
+                        service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
     }
 
     /**
@@ -3768,7 +3756,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponseAsync(
-        BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return service.createGlossaryTerm(this.client.getEndpoint(), glossaryTerm, requestOptions, context);
     }
 
@@ -4095,7 +4083,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermWithResponse(
-        BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return createGlossaryTermWithResponseAsync(glossaryTerm, requestOptions, context).block();
     }
 
@@ -4269,8 +4257,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+        return FluxUtil.withContext(
                 context -> service.getGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
     }
 
@@ -4445,7 +4432,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponseAsync(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return service.getGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
     }
 
@@ -4620,7 +4607,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryTermWithResponse(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return getGlossaryTermWithResponseAsync(termGuid, requestOptions, context).block();
     }
 
@@ -4938,13 +4925,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponseAsync(
-        String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .updateGlossaryTerm(
-                            this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context));
+                        service.updateGlossaryTerm(
+                                this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context));
     }
 
     /**
@@ -5262,7 +5247,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponseAsync(
-        String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return service.updateGlossaryTerm(this.client.getEndpoint(), termGuid, glossaryTerm, requestOptions, context);
     }
 
@@ -5581,7 +5566,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryTermWithResponse(
-        String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return updateGlossaryTermWithResponseAsync(termGuid, glossaryTerm, requestOptions, context).block();
     }
 
@@ -5596,8 +5581,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponseAsync(String termGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+        return FluxUtil.withContext(
                 context -> service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
     }
 
@@ -5613,7 +5597,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponseAsync(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return service.deleteGlossaryTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
     }
 
@@ -5629,7 +5613,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryTermWithResponse(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return deleteGlossaryTermWithResponseAsync(termGuid, requestOptions, context).block();
     }
 
@@ -5813,13 +5797,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponseAsync(
-        String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .partialUpdateGlossaryTerm(
-                            this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context));
+                        service.partialUpdateGlossaryTerm(
+                                this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context));
     }
 
     /**
@@ -6003,9 +5985,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponseAsync(
-        String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return service
-            .partialUpdateGlossaryTerm(this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context);
+            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+        return service.partialUpdateGlossaryTerm(
+                this.client.getEndpoint(), termGuid, partialUpdates, requestOptions, context);
     }
 
     /**
@@ -6189,7 +6171,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryTermWithResponse(
-        String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
         return partialUpdateGlossaryTermWithResponseAsync(termGuid, partialUpdates, requestOptions, context).block();
     }
 
@@ -6518,11 +6500,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
-        BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
+                        service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context));
     }
 
     /**
@@ -6851,7 +6832,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponseAsync(
-        BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return service.createGlossaryTerms(this.client.getEndpoint(), glossaryTerm, requestOptions, context);
     }
 
@@ -7181,7 +7162,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermsWithResponse(
-        BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
+            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
         return createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions, context).block();
     }
 
@@ -7232,11 +7213,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
-        String termGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.getEntitiesAssignedWithTerm(this.client.getEndpoint(), termGuid, requestOptions, context));
+                        service.getEntitiesAssignedWithTerm(
+                                this.client.getEndpoint(), termGuid, requestOptions, context));
     }
 
     /**
@@ -7287,7 +7268,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponseAsync(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return service.getEntitiesAssignedWithTerm(this.client.getEndpoint(), termGuid, requestOptions, context);
     }
 
@@ -7339,7 +7320,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions, context).block();
     }
 
@@ -7381,13 +7362,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .assignTermToEntities(
-                            this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                        service.assignTermToEntities(
+                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
     }
 
     /**
@@ -7429,9 +7408,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponseAsync(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return service
-            .assignTermToEntities(this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+        return service.assignTermToEntities(
+                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
     }
 
     /**
@@ -7473,7 +7452,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
         return assignTermToEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions, context).block();
     }
 
@@ -7515,13 +7494,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponseAsync(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .removeTermAssignmentFromEntities(
-                            this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                        service.removeTermAssignmentFromEntities(
+                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
     }
 
     /**
@@ -7563,9 +7540,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponseAsync(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return service
-            .removeTermAssignmentFromEntities(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+        return service.removeTermAssignmentFromEntities(
                 this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
     }
 
@@ -7608,9 +7584,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeTermAssignmentFromEntitiesWithResponse(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
         return removeTermAssignmentFromEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions, context)
-            .block();
+                .block();
     }
 
     /**
@@ -7651,13 +7627,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .deleteTermAssignmentFromEntities(
-                            this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
+                        service.deleteTermAssignmentFromEntities(
+                                this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context));
     }
 
     /**
@@ -7699,9 +7673,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponseAsync(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return service
-            .deleteTermAssignmentFromEntities(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+        return service.deleteTermAssignmentFromEntities(
                 this.client.getEndpoint(), termGuid, relatedObjectIds, requestOptions, context);
     }
 
@@ -7744,9 +7717,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(
-        String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
         return deleteTermAssignmentFromEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions, context)
-            .block();
+                .block();
     }
 
     /**
@@ -7790,9 +7763,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
-        String termGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String termGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context -> service.listRelatedTerms(this.client.getEndpoint(), termGuid, requestOptions, context));
     }
 
@@ -7838,7 +7810,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponseAsync(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return service.listRelatedTerms(this.client.getEndpoint(), termGuid, requestOptions, context);
     }
 
@@ -7884,7 +7856,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedTermsWithResponse(
-        String termGuid, RequestOptions requestOptions, Context context) {
+            String termGuid, RequestOptions requestOptions, Context context) {
         return listRelatedTermsWithResponseAsync(termGuid, requestOptions, context).block();
     }
 
@@ -7958,8 +7930,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+        return FluxUtil.withContext(
                 context -> service.getGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
@@ -8034,7 +8005,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.getGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -8109,7 +8080,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return getGlossaryWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -8243,13 +8214,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponseAsync(
-        String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .updateGlossary(
-                            this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context));
+                        service.updateGlossary(
+                                this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context));
     }
 
     /**
@@ -8383,9 +8352,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponseAsync(
-        String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
-        return service
-            .updateGlossary(this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context);
+            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
+        return service.updateGlossary(
+                this.client.getEndpoint(), glossaryGuid, updatedGlossary, requestOptions, context);
     }
 
     /**
@@ -8519,7 +8488,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryWithResponse(
-        String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
         return updateGlossaryWithResponseAsync(glossaryGuid, updatedGlossary, requestOptions, context).block();
     }
 
@@ -8534,8 +8503,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponseAsync(String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+        return FluxUtil.withContext(
                 context -> service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
@@ -8551,7 +8519,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.deleteGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -8567,7 +8535,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return deleteGlossaryWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -8657,11 +8625,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.listGlossaryCategories(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                        service.listGlossaryCategories(
+                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
     /**
@@ -8751,7 +8719,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.listGlossaryCategories(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -8842,7 +8810,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -8881,13 +8849,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .listGlossaryCategoriesHeaders(
-                            this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                        service.listGlossaryCategoriesHeaders(
+                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
     /**
@@ -8926,7 +8892,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.listGlossaryCategoriesHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -8966,7 +8932,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -9188,11 +9154,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                        service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
     /**
@@ -9414,7 +9379,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.getDetailedGlossary(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -9637,7 +9602,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDetailedGlossaryWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return getDetailedGlossaryWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -9728,13 +9693,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponseAsync(
-        String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .partialUpdateGlossary(
-                            this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context));
+                        service.partialUpdateGlossary(
+                                this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context));
     }
 
     /**
@@ -9825,9 +9788,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponseAsync(
-        String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return service
-            .partialUpdateGlossary(this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context);
+            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+        return service.partialUpdateGlossary(
+                this.client.getEndpoint(), glossaryGuid, partialUpdates, requestOptions, context);
     }
 
     /**
@@ -9918,7 +9881,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryWithResponse(
-        String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
         return partialUpdateGlossaryWithResponseAsync(glossaryGuid, partialUpdates, requestOptions, context).block();
     }
 
@@ -10097,9 +10060,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context -> service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
@@ -10279,7 +10241,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.listGlossaryTerms(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -10459,7 +10421,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermsWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -10501,11 +10463,11 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service.listGlossaryTermHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context));
+                        service.listGlossaryTermHeaders(
+                                this.client.getEndpoint(), glossaryGuid, requestOptions, context));
     }
 
     /**
@@ -10547,7 +10509,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponseAsync(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return service.listGlossaryTermHeaders(this.client.getEndpoint(), glossaryGuid, requestOptions, context);
     }
 
@@ -10590,7 +10552,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermHeadersWithResponse(
-        String glossaryGuid, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, RequestOptions requestOptions, Context context) {
         return listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions, context).block();
     }
 
@@ -10648,18 +10610,16 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-        String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .importGlossaryTermsViaCsv(
-                            this.client.getEndpoint(),
-                            glossaryGuid,
-                            this.client.getServiceVersion().getVersion(),
-                            file,
-                            requestOptions,
-                            context));
+                        service.importGlossaryTermsViaCsv(
+                                this.client.getEndpoint(),
+                                glossaryGuid,
+                                this.client.getServiceVersion().getVersion(),
+                                file,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -10717,9 +10677,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponseAsync(
-        String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
-        return service
-            .importGlossaryTermsViaCsv(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
+        return service.importGlossaryTermsViaCsv(
                 this.client.getEndpoint(),
                 glossaryGuid,
                 this.client.getServiceVersion().getVersion(),
@@ -10782,16 +10741,13 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-        String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return PollerFlux
-            .create(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {
-                },
-                new TypeReference<BinaryData>() {
-                });
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -10849,16 +10805,13 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
-        String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
-        return PollerFlux
-            .create(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
+        return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions, context),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {
-                },
-                new TypeReference<BinaryData>() {
-                });
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -10916,7 +10869,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-        String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions, context).getSyncPoller();
     }
 
@@ -10974,18 +10927,16 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-        String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .importGlossaryTermsViaCsvByGlossaryName(
-                            this.client.getEndpoint(),
-                            glossaryName,
-                            this.client.getServiceVersion().getVersion(),
-                            file,
-                            requestOptions,
-                            context));
+                        service.importGlossaryTermsViaCsvByGlossaryName(
+                                this.client.getEndpoint(),
+                                glossaryName,
+                                this.client.getServiceVersion().getVersion(),
+                                file,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -11043,9 +10994,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-        String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
-        return service
-            .importGlossaryTermsViaCsvByGlossaryName(
+            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
+        return service.importGlossaryTermsViaCsvByGlossaryName(
                 this.client.getEndpoint(),
                 glossaryName,
                 this.client.getServiceVersion().getVersion(),
@@ -11108,16 +11058,13 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-        String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return PollerFlux
-            .create(
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(glossaryName, file, requestOptions),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {
-                },
-                new TypeReference<BinaryData>() {
-                });
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -11175,19 +11122,15 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
-        String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
-        return PollerFlux
-            .create(
+            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
+        return PollerFlux.create(
                 Duration.ofSeconds(1),
                 () ->
-                    this
-                        .importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
-                            glossaryName, file, requestOptions, context),
+                        this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
+                                glossaryName, file, requestOptions, context),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {
-                },
-                new TypeReference<BinaryData>() {
-                });
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -11245,10 +11188,9 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-        String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
-        return this
-            .beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions, context)
-            .getSyncPoller();
+            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
+        return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions, context)
+                .getSyncPoller();
     }
 
     /**
@@ -11289,17 +11231,15 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
-        String operationGuid, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String operationGuid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .getImportCsvOperationStatus(
-                            this.client.getEndpoint(),
-                            operationGuid,
-                            this.client.getServiceVersion().getVersion(),
-                            requestOptions,
-                            context));
+                        service.getImportCsvOperationStatus(
+                                this.client.getEndpoint(),
+                                operationGuid,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -11341,9 +11281,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponseAsync(
-        String operationGuid, RequestOptions requestOptions, Context context) {
-        return service
-            .getImportCsvOperationStatus(
+            String operationGuid, RequestOptions requestOptions, Context context) {
+        return service.getImportCsvOperationStatus(
                 this.client.getEndpoint(),
                 operationGuid,
                 this.client.getServiceVersion().getVersion(),
@@ -11390,7 +11329,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImportCsvOperationStatusWithResponse(
-        String operationGuid, RequestOptions requestOptions, Context context) {
+            String operationGuid, RequestOptions requestOptions, Context context) {
         return getImportCsvOperationStatusWithResponseAsync(operationGuid, requestOptions, context).block();
     }
 
@@ -11429,18 +11368,16 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
-        String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .exportGlossaryTermsAsCsv(
-                            this.client.getEndpoint(),
-                            glossaryGuid,
-                            this.client.getServiceVersion().getVersion(),
-                            termGuids,
-                            requestOptions,
-                            context));
+                        service.exportGlossaryTermsAsCsv(
+                                this.client.getEndpoint(),
+                                glossaryGuid,
+                                this.client.getServiceVersion().getVersion(),
+                                termGuids,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -11479,9 +11416,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponseAsync(
-        String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
-        return service
-            .exportGlossaryTermsAsCsv(
+            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
+        return service.exportGlossaryTermsAsCsv(
                 this.client.getEndpoint(),
                 glossaryGuid,
                 this.client.getServiceVersion().getVersion(),
@@ -11526,7 +11462,7 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvWithResponse(
-        String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
+            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
         return exportGlossaryTermsAsCsvWithResponseAsync(glossaryGuid, termGuids, requestOptions, context).block();
     }
 
@@ -11705,17 +11641,15 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
-        String glossaryName, RequestOptions requestOptions) {
-        return FluxUtil
-            .withContext(
+            String glossaryName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
                 context ->
-                    service
-                        .listTermsByGlossaryName(
-                            this.client.getEndpoint(),
-                            glossaryName,
-                            this.client.getServiceVersion().getVersion(),
-                            requestOptions,
-                            context));
+                        service.listTermsByGlossaryName(
+                                this.client.getEndpoint(),
+                                glossaryName,
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -11894,9 +11828,8 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponseAsync(
-        String glossaryName, RequestOptions requestOptions, Context context) {
-        return service
-            .listTermsByGlossaryName(
+            String glossaryName, RequestOptions requestOptions, Context context) {
+        return service.listTermsByGlossaryName(
                 this.client.getEndpoint(),
                 glossaryName,
                 this.client.getServiceVersion().getVersion(),
@@ -12080,7 +12013,10 @@ public final class GlossariesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTermsByGlossaryNameWithResponse(
-        String glossaryName, RequestOptions requestOptions, Context context) {
+            String glossaryName, RequestOptions requestOptions, Context context) {
         return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions, context).block();
+    }
+
+    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {
     }
 }
