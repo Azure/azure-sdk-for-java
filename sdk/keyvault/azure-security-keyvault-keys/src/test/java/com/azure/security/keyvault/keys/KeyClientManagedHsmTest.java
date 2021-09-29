@@ -19,19 +19,32 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KeyClientManagedHsmTest extends KeyClientTest {
     public KeyClientManagedHsmTest() {
-        this.isManagedHsmTest = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
+        this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
+        this.isManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
     }
 
     @Override
     protected void beforeTest() {
-        Assumptions.assumeTrue(isManagedHsmTest || getTestMode() == TestMode.PLAYBACK);
+        Assumptions.assumeTrue(isManagedHsmTest);
 
         super.beforeTest();
     }
 
     /**
+     * Tests that an RSA key is created.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> assertKeyEquals(expected, client.createRsaKey(expected)));
+    }
+
+    /**
      * Tests that an RSA key with a public exponent can be created in the key vault.
      */
+    @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
@@ -39,11 +52,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
         createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
             KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
 
-            assertEquals(createRsaKeyOptions.getName(), rsaKey.getName());
-            assertEquals(KeyType.RSA_HSM, rsaKey.getKey().getKeyType());
-            assertEquals(createRsaKeyOptions.getExpiresOn(), rsaKey.getProperties().getExpiresOn());
-            assertEquals(createRsaKeyOptions.getNotBefore(), rsaKey.getProperties().getNotBefore());
-            assertEquals(createRsaKeyOptions.getTags(), rsaKey.getProperties().getTags());
+            assertKeyEquals(createRsaKeyOptions, rsaKey);
             assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
                 toBigInteger(rsaKey.getKey().getE()));
             assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
