@@ -130,8 +130,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         return abstractMap;
     }
 
-    @Override
-    public Map<String, String[]> toMultiMap() {
+    Map<String, String[]> toMultiMap() {
         if (abstractMultiMap == null) {
             abstractMultiMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders,
                 getAll -> getAll.toArray(new String[0]));
