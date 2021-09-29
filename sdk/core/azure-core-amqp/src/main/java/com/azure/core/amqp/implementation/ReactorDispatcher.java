@@ -87,6 +87,15 @@ public final class ReactorDispatcher {
         return shutdownSignal.asMono();
     }
 
+    /**
+     * Schedules work to be performed on the underlying proton-j reactor.
+     *
+     * @param work Work to be run on the underlying proton-j reactor.
+     *
+     * @throws IOException If the underlying IO pipe cannot be signalled saying that there is more work to be done.
+     * @throws RejectedExecutionException if the reactor instance has already been closed or the underlying IO Pipe
+     *     has been closed.
+     */
     public void invoke(final Runnable work) throws IOException {
         this.throwIfSchedulerError();
 
@@ -94,6 +103,16 @@ public final class ReactorDispatcher {
         this.signalWorkQueue();
     }
 
+    /**
+     * Schedules work to be performed on the proton-j reactor after {@code delay}.
+     *
+     * @param work Work to be run on the underlying proton-j reactor.
+     * @param delay Delay before work should scheduled for execution.
+     *
+     * @throws IOException If the underlying IO pipe cannot be signalled saying that there is more work to be done.
+     * @throws RejectedExecutionException if the reactor instance has already been closed or the underlying IO Pipe
+     *     has been closed.
+     */
     public void invoke(final Runnable work, final Duration delay) throws IOException {
         this.throwIfSchedulerError();
 
@@ -106,14 +125,16 @@ public final class ReactorDispatcher {
         final RejectedExecutionException rejectedException = this.reactor.attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.logExceptionAsError(new RejectedExecutionException(rejectedException.getMessage(),
-                rejectedException));
+            throw new RejectedExecutionException(
+                "Underlying Reactor was already disposed. Should not continue dispatching work to this. "
+                    + rejectedException.getMessage(), rejectedException);
         }
 
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            throw logger.logExceptionAsError(new RejectedExecutionException("ReactorDispatcher instance is closed."));
+            throw new RejectedExecutionException("ReactorDispatcher instance is closed. Should not continue "
+                + "dispatching work to this reactor.");
         }
     }
 
@@ -203,7 +224,7 @@ public final class ReactorDispatcher {
             logger.info("connectionId[{}] Reactor selectable is being disposed.", connectionId);
 
             shutdownSignal.emitValue(new AmqpShutdownSignal(false, false,
-                String.format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
+                    String.format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
                 Sinks.EmitFailureHandler.FAIL_FAST);
 
             try {
