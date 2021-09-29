@@ -11,7 +11,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-feature-management-web</artifactId>
-  <version>2.0.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
+  <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
   <name>Azure Spring Cloud Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
 
