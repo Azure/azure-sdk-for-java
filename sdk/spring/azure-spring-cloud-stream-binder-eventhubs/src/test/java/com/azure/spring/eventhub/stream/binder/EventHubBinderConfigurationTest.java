@@ -11,7 +11,9 @@ import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.eventhub.stream.binder.config.EventHubBinderConfiguration;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -39,6 +41,7 @@ public class EventHubBinderConfigurationTest {
     public void testStorageNotConfiguredToGetClientFactoryBeanOnConnectionString() {
         contextRunner
             .withPropertyValues(EVENT_HUB_PROPERTY_PREFIX + connectionString)
+            .withBean(SimpleMeterRegistry.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubClientFactory.class);
                 assertThat(context).hasSingleBean(EventHubOperation.class);
@@ -55,9 +58,10 @@ public class EventHubBinderConfigurationTest {
                 AZURE_PROPERTY_PREFIX + "resource-group=fake-res-group",
                 AZURE_PROPERTY_PREFIX + "subscription-id=fake-sub"
             )
+            .withBean(SimpleMeterRegistry.class)
             .withBean(EventHubConnectionStringProvider.class, connectionString)
             .run(context -> {
-                assertThat(context).hasSingleBean(EventHubClientFactory.class);
+                assertThat(context).hasSingleBean(DefaultEventHubClientFactory.class);
                 assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
                 assertThat(context).hasSingleBean(EventHubOperation.class);
                 assertThat(context).doesNotHaveBean(StorageAccountManager.class);

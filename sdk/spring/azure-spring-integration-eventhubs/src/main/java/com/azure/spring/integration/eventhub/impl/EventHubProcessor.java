@@ -4,12 +4,12 @@
 package com.azure.spring.integration.eventhub.impl;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.InitializationContext;
 import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
@@ -61,8 +61,6 @@ public class EventHubProcessor {
     }
 
     public void onEvent(EventContext context) {
-        recodeConsumeTotal.increment();
-
         PartitionContext partition = context.getPartitionContext();
 
         Map<String, Object> headers = new HashMap<>();
@@ -71,6 +69,7 @@ public class EventHubProcessor {
         final EventData event = context.getEventData();
 
         Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
+        ((AzureCheckpointer) checkpointer).setRecordConsumeTotal(recodeConsumeTotal);
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }

@@ -17,12 +17,9 @@ import com.azure.spring.eventhub.stream.binder.EventHubMessageChannelBinder;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
-import com.azure.spring.integration.eventhub.metrics.MicrometerListener;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,7 +41,7 @@ import org.springframework.context.annotation.Import;
     AzureEventHubAutoConfiguration.class,
     EventHubBinderHealthIndicatorConfiguration.class
 })
-@EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
+@EnableConfigurationProperties({AzureEventHubProperties.class, EventHubExtendedBindingProperties.class})
 public class EventHubBinderConfiguration {
 
     @Bean
@@ -104,9 +101,8 @@ public class EventHubBinderConfiguration {
         EventHubMessageChannelBinder binder =
             new EventHubMessageChannelBinder(null, eventHubChannelProvisioner, eventHubOperation);
         binder.setBindingProperties(bindingProperties);
-        DefaultEventHubClientFactory clientFactory =
-            (DefaultEventHubClientFactory) ((EventHubTemplate) eventHubOperation).getClientFactory();
-        clientFactory.setMeterRegistry(meterRegistry);
+        EventHubTemplate eventHubTemplate = (EventHubTemplate) eventHubOperation;
+        eventHubTemplate.getClientFactory().setMeterRegistry(meterRegistry);
         return binder;
     }
 

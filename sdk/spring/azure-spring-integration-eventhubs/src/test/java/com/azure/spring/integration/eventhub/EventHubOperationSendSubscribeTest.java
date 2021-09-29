@@ -11,9 +11,12 @@ import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.azure.spring.integration.test.support.reactor.SendSubscribeByGroupOperationTest;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +40,13 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
     @Mock
     PartitionContext partitionContext;
 
+    @Mock
+    DefaultEventHubClientFactory defaultEventHubClientFactory;
+
     private AutoCloseable closeable;
+
+    private MeterRegistry meterRegistry = new SimpleMeterRegistry();
+
 
     @BeforeEach
     @Override
@@ -46,8 +55,8 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn(this.partitionId);
-
-        this.sendSubscribeOperation = new EventHubTestOperation(null, () -> eventContext);
+        when(this.defaultEventHubClientFactory.getMeterRegistry()).thenReturn(this.meterRegistry);
+        this.sendSubscribeOperation = new EventHubTestOperation(defaultEventHubClientFactory, () -> eventContext);
     }
 
     @AfterEach
@@ -62,7 +71,7 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
 
     @Override
     protected void verifyCheckpointBatchSuccessCalled(int times) {
-//        verify(this.eventContext, times(times)).updateCheckpoint();
+        //        verify(this.eventContext, times(times)).updateCheckpoint();
     }
 
     @Override

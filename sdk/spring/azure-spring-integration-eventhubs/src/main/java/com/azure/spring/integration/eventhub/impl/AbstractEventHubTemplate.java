@@ -13,8 +13,8 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.StartPosition;
-import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import io.micrometer.core.instrument.Counter;
 import org.slf4j.Logger;
@@ -24,11 +24,11 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -53,22 +53,12 @@ public class AbstractEventHubTemplate {
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
                                                                 .checkpointMode(CheckpointMode.RECORD).build();
 
-    protected Counter recodeSendTotal;
+    protected Counter recordSendTotal;
 
-    protected Counter recodeConsumeTotal;
+    protected Counter recordConsumeTotal;
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
-        meterRegistry(this.clientFactory);
-    }
-
-    private void meterRegistry(EventHubClientFactory clientFactory) {
-        DefaultEventHubClientFactory defaultEventHubClientFactory = (DefaultEventHubClientFactory) clientFactory;
-        recodeSendTotal =
-            Counter.builder("recode.send.total").register(defaultEventHubClientFactory.getMeterRegistry());
-
-        recodeConsumeTotal =
-            Counter.builder("recode.consume.total").register(defaultEventHubClientFactory.getMeterRegistry());
     }
 
     private static EventPosition buildEventPosition(StartPosition startPosition) {
@@ -90,11 +80,16 @@ public class AbstractEventHubTemplate {
 
     private Mono<Void> doSend(String eventHubName, PartitionSupplier partitionSupplier,
                               List<EventData> events) {
+        if (recordSendTotal == null) {
+            recordSendTotal =
+                Counter.builder("azure.eventhub.producer.record.send.total")
+                     .description("The total number of records sent")
+                     .tag("eventhub.namespace", eventHubName)
+                     .register(getClientFactory().getMeterRegistry());
 
+        }
         EventHubProducerAsyncClient producer = this.clientFactory.getOrCreateProducerClient(eventHubName);
-
         CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
-        recodeSendTotal.increment();
         return producer.createBatch(options).flatMap(batch -> {
             for (EventData event : events) {
                 try {
@@ -163,7 +158,15 @@ public class AbstractEventHubTemplate {
         this.checkpointConfig = checkpointConfig;
     }
 
-    public EventHubClientFactory getClientFactory() {
-        return clientFactory;
+    public DefaultEventHubClientFactory getClientFactory() {
+        return (DefaultEventHubClientFactory) this.clientFactory;
+    }
+
+    public Counter getRecordSendTotal() {
+        return recordSendTotal;
+    }
+
+    public Counter getRecordConsumeTotal() {
+        return recordConsumeTotal;
     }
 }

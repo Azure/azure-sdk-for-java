@@ -56,9 +56,9 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     private final String eventHubConnectionString;
     // Memoized functional client creator
     private final BiFunction<String, String, EventHubConsumerAsyncClient> eventHubConsumerClientCreator =
-        Memoizer.memoize(consumerClientMap, this::createEventHubClient);
+        Memoizer.memoize(consumerClientMap, this::createEventHubConsumerClient);
     private final Function<String, EventHubProducerAsyncClient> producerClientCreator =
-        Memoizer.memoize(producerClientMap, this::createProducerClient);
+        Memoizer.memoize(producerClientMap, this::createEventHubProducerClient);
     private MeterRegistry meterRegistry;
 
     public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
@@ -69,23 +69,24 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         this.checkpointStorageContainer = checkpointStorageContainer;
     }
 
-    private EventHubConsumerAsyncClient createEventHubClient(String eventHubName, String consumerGroup) {
+    private EventHubClientBuilder createEventHubClient(String eventHubName) {
+
         return new EventHubClientBuilder()
             .connectionString(eventHubConnectionString, eventHubName)
-            .consumerGroup(consumerGroup)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
-            .buildAsyncConsumerClient();
+            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID));
     }
 
-    private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
-        return new EventHubClientBuilder()
-            .connectionString(eventHubConnectionString, eventHubName)
-            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
-            .buildAsyncProducerClient();
+    private EventHubConsumerAsyncClient createEventHubConsumerClient(String eventHubName, String consumerGroup) {
+        return createEventHubClient(eventHubName).consumerGroup(consumerGroup).buildAsyncConsumerClient();
+    }
+
+    private EventHubProducerAsyncClient createEventHubProducerClient(String eventHubName) {
+        return createEventHubClient(eventHubName).buildAsyncProducerClient();
     }
 
     private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
                                                                     EventHubProcessor eventHubProcessor) {
+
         Assert.hasText(checkpointStorageConnectionString, "checkpointConnectionString can't be null or empty, check "
             + "whether checkpoint-storage-account is configured in the configuration file.");
         // We set eventHubName as the container name when we use track1 library, and the EventHubProcessor will create

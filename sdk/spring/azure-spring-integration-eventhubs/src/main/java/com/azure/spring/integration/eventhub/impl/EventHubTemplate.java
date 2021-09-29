@@ -6,6 +6,7 @@ package com.azure.spring.integration.eventhub.impl;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import io.micrometer.core.instrument.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -33,6 +34,14 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
     @Override
     public boolean subscribe(String destination, String consumerGroup, Consumer<Message<?>> consumer,
                              Class<?> messagePayloadType) {
+        if (recordConsumeTotal == null) {
+            recordConsumeTotal =
+                Counter.builder("azure.eventhub.consumer.record.consume.total")
+                       .description("The total number of records consumed")
+                       .tag("eventhub.namespace", destination)
+                       .tag("consumer.group", consumerGroup)
+                       .register(getClientFactory().getMeterRegistry());
+        }
         if (subscribedNameAndGroup.putIfAbsent(Tuple.of(destination, consumerGroup), true) == null) {
             this.createEventProcessorClient(destination, consumerGroup, createEventProcessor(consumer,
                 messagePayloadType));
@@ -60,7 +69,7 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
         EventHubProcessor eventHubProcessor = new EventHubProcessor(consumer, messagePayloadType,
             getCheckpointConfig(), getMessageConverter());
-        eventHubProcessor.setRecodeConsumeTotal(recodeConsumeTotal);
+        eventHubProcessor.setRecodeConsumeTotal(recordConsumeTotal);
         return eventHubProcessor;
     }
 }

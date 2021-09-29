@@ -119,6 +119,9 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         } else {
             try {
                 mono.block(Duration.of(sendTimeout, ChronoUnit.MILLIS));
+                if (this.sendCallback != null) {
+                    this.sendCallback.onSuccess(null);
+                }
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("{} sent successfully in sync mode", message);
                 }
@@ -185,16 +188,17 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     /**
      * Get header value from MessageHeaders
+     *
      * @param headers MessageHeaders
      * @param keyName Key name
      * @return String header value
      */
     private String getHeaderValue(MessageHeaders headers, String keyName) {
         return headers.keySet().stream()
-                                    .filter(header -> keyName.equals(header))
-                                    .map(key -> String.valueOf(headers.get(key)))
-                                    .findAny()
-                                    .orElse(null);
+                      .filter(header -> keyName.equals(header))
+                      .map(key -> String.valueOf(headers.get(key)))
+                      .findAny()
+                      .orElse(null);
     }
 
     private Map<String, Object> buildPropertiesMap() {

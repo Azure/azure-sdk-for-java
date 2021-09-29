@@ -9,8 +9,11 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProper
 import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -32,7 +35,9 @@ public class EventHubPartitionBinderTests extends
     //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
-    EventHubClientFactory clientFactory;
+    DefaultEventHubClientFactory mockClientFactory;
+
+    private MeterRegistry meterRegistry = new SimpleMeterRegistry();
 
     @Mock
     EventContext eventContext;
@@ -48,8 +53,8 @@ public class EventHubPartitionBinderTests extends
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn("1");
-
-        this.binder = new EventHubTestBinder(new EventHubTestOperation(clientFactory, () -> eventContext));
+        when(this.mockClientFactory.getMeterRegistry()).thenReturn(this.meterRegistry);
+        this.binder = new EventHubTestBinder(new EventHubTestOperation(mockClientFactory, () -> eventContext));
     }
 
     @Override

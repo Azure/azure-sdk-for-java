@@ -11,6 +11,7 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
@@ -28,6 +29,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.util.StringUtils;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.Map;
 import java.util.UUID;
@@ -65,6 +67,14 @@ public class EventHubMessageChannelBinder extends
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
+        handler.setSendCallback(new ListenableFutureCallback<Void>(){
+            @Override
+            public void onSuccess(Void unused) {
+                ((EventHubTemplate)eventHubOperation).getRecordSendTotal().increment();
+            }
+            @Override
+            public void onFailure(Throwable throwable) {}
+        });
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(
                 EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));
