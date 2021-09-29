@@ -1,0 +1,34 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.purview.azure.com//catalog/api/atlas/v2/glossary",
+    "Headers" : {
+      "x-ms-client-request-id" : "6ae85800-4743-4bba-a979-9ac45cea4876"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "AzurePurview",
+      "Access-Control-Allow-Origin" : "*",
+      "Access-Control-Allow-Methods" : "GET,OPTIONS,HEAD,PUT,POST,DELETE,PATCH",
+      "X-Content-Type-Options" : "nosniff,nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 29 Sep 2021 04:34:02 GMT",
+      "Access-Control-Allow-Headers" : "authorization,content-type,x-xsrf-header,x-ms-client-request-id,lastmodifiedts",
+      "x-ms-correlation-request-id" : "b6468c51-951d-4688-bf62-f16caa6024a0",
+      "X-Frame-Options" : "DENY",
+      "Access-Control-Expose-Headers" : "x-ms-request-id,lastmodifiedts",
+      "Strict-Transport-Security" : "max-age=31536000 ; includeSubDomains",
+      "Cache-Control" : "no-store, must-revalidate, no-cache, max-age=0",
+      "x-xss-protection" : "1; mode=block",
+      "Content-Security-Policy" : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:; connect-src 'self'; img-src 'self' blob: data:; style-src 'self' 'unsafe-inline';font-src 'self' data:",
+      "Expires" : "0",
+      "x-ms-request-id" : "6ae85800-4743-4bba-a979-9ac45cea4876",
+      "Body" : "[{\"guid\":\"78b880ed-fe3b-4a9b-aca3-7eae015ec195\",\"qualifiedName\":\"Glossary\",\"name\":\"Glossary\",\"lastModifiedTS\":\"1\",\"terms\":[{\"termGuid\":\"af897e95-3f88-4c9d-b528-b088a4ffcf54\",\"relationGuid\":\"d4c172d4-e2e8-4f20-be16-7383b2d6b004\",\"displayText\":\"Parent Name 1_Parent Name 2_Term Name 1\"},{\"termGuid\":\"b2ae2477-a80c-4584-a6d5-63aee721fac2\",\"relationGuid\":\"530ea5b8-d116-41d5-a8ce-35d9e12c0ebd\",\"displayText\":\"Parent Name 1_Parent Name 2\"},{\"termGuid\":\"6eef0a73-1d8c-4d51-afa1-869d34f4e28f\",\"relationGuid\":\"cc1b40a5-a7b6-4971-800d-16c5a0a47c0c\",\"displayText\":\"Parent Term 2_Term Name 5\"},{\"termGuid\":\"dcaf23c3-4cc9-4ce0-9158-d6bab0c2dab8\",\"relationGuid\":\"5dbe5ceb-837f-485d-9016-3d97f224d83a\",\"displayText\":\"Term Name 4\"},{\"termGuid\":\"499a4522-ae8e-4c8e-8a9b-99eb04e2d253\",\"relationGuid\":\"7a0b7127-eb3e-4a9a-8ae0-40c9e2010871\",\"displayText\":\"Term Name 2\"},{\"termGuid\":\"d38de7eb-7119-45e5-9ccb-8327bd15d809\",\"relationGuid\":\"e4809ccd-ae9e-4036-9aed-f581b094da50\",\"displayText\":\"Parent Name 1_Term Name 3\"}]}]",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
