@@ -49,8 +49,10 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testGetRefreshInterval() {
-        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "1000");
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
+        assertEquals(keystore.getRefreshInterval(), 0);
+        System.setProperty("azure.keyvault.jca.certificates-refresh-interval", "1000");
+        keystore = new KeyVaultKeyStore();
         assertEquals(keystore.getRefreshInterval(), 1000);
         System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "2000");
         assertEquals(keystore.getRefreshInterval(), 2000);
