@@ -191,8 +191,12 @@ class ReactorExecutor implements AsyncCloseable {
             return isClosedMono.asMono();
         }
 
+        // Pending tasks are scheduled to be invoked after the timeout period, which would complete this Mono.
         if (hasStarted.get()) {
             scheduleCompletePendingTasks();
+        } else {
+            // Rector never started, so just complete this Mono.
+            isClosedMono.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
         }
 
         return isClosedMono.asMono();
