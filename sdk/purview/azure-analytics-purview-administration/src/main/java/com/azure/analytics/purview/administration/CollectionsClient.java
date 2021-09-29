@@ -113,7 +113,24 @@ public final class CollectionsClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
+     *     description: String
+     *     friendlyName: String
+     *     name: String
+     *     parentCollection: {
+     *         referenceName: String
+     *         type: String
+     *     }
+     *     systemData: {
+     *         createdAt: String
+     *         createdBy: String
+     *         createdByType: String(User/Application/ManagedIdentity/Key)
+     *         lastModifiedAt: String
+     *         lastModifiedBy: String
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     }
+     * }
      * }</pre>
      *
      * @param collectionName The collectionName parameter.
