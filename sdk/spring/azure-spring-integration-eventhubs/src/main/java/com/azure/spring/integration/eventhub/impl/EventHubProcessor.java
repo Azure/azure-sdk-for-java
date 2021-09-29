@@ -69,13 +69,18 @@ public class EventHubProcessor {
         final EventData event = context.getEventData();
 
         Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
-        ((AzureCheckpointer) checkpointer).setRecordConsumeTotal(recodeConsumeTotal);
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
+            ((AzureCheckpointer) checkpointer).setRecordConsumeTotal(recodeConsumeTotal);
         }
 
-        this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
-        this.checkpointManager.onMessage(context, context.getEventData());
+        try {
+            this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
+            this.checkpointManager.onMessage(context, context.getEventData());
+            recodeConsumeTotal.increment();
+        }catch (Exception ex){
+            LOGGER.error("An error occurred during message consumption.", ex);
+        }
 
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
             this.checkpointManager.completeBatch(context);
