@@ -3,20 +3,21 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.DocumentClassificationCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ClassificationCategoryCollectionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link ClassificationCategoryCollection} model.
+ * The {@link ClassificationCategoryCollection} includes a list of {@link ClassificationCategory}
+ * classifications and the {@link TextAnalyticsWarning} warnings if exist.
  */
 @Immutable
 public final class ClassificationCategoryCollection extends IterableStream<ClassificationCategory> {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        DocumentClassificationCollectionPropertiesHelper.setAccessor(
-            (documentClassifications, warnings) -> documentClassifications.setWarnings(warnings));
+        ClassificationCategoryCollectionPropertiesHelper.setAccessor(
+            (classifications, warnings) -> classifications.setWarnings(warnings));
     }
 
     /**
@@ -30,7 +31,7 @@ public final class ClassificationCategoryCollection extends IterableStream<Class
     }
 
     /**
-     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      *
      * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
      */

@@ -69,15 +69,15 @@ public final class AnalyzeActionsResult {
                 }
 
                 @Override
-                public void setClassifyCustomCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<SingleCategoryClassifyActionResult> classifyCustomCategoryResults) {
-                    analyzeActionsResult.setSingleCategoryClassifyResults(classifyCustomCategoryResults);
+                public void setSingleCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults) {
+                    analyzeActionsResult.setSingleCategoryClassifyResults(singleCategoryClassifyResults);
                 }
 
                 @Override
-                public void setClassifyCustomCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-                    IterableStream<MultiCategoryClassifyActionResult> classifyCustomCategoriesResults) {
-                    analyzeActionsResult.setMultiCategoryClassifyResults(classifyCustomCategoriesResults);
+                public void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults) {
+                    analyzeActionsResult.setMultiCategoryClassifyResults(multiCategoryClassifyResults);
                 }
             });
     }

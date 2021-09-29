@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.DocumentClassificationPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ClassificationCategoryPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -15,16 +15,16 @@ public final class ClassificationCategory {
     private double confidenceScore;
 
     static {
-        DocumentClassificationPropertiesHelper.setAccessor(
-            new DocumentClassificationPropertiesHelper.DocumentClassificationAccessor() {
+        ClassificationCategoryPropertiesHelper.setAccessor(
+            new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
                 @Override
-                public void setCategory(ClassificationCategory classificationCategory, String category) {
-                    classificationCategory.setCategory(category);
+                public void setCategory(ClassificationCategory classification, String category) {
+                    classification.setCategory(category);
                 }
 
                 @Override
-                public void setConfidenceScore(ClassificationCategory classificationCategory, double confidenceScore) {
-                    classificationCategory.setConfidenceScore(confidenceScore);
+                public void setConfidenceScore(ClassificationCategory classification, double confidenceScore) {
+                    classification.setConfidenceScore(confidenceScore);
                 }
             });
     }
@@ -32,14 +32,14 @@ public final class ClassificationCategory {
     /**
      * Gets the classified category of document.
      *
-     * @return The {@link String}.
+     * @return The classified category of document.
      */
     public String getCategory() {
         return category;
     }
 
     /**
-     * Gets the score property: Confidence score between 0 and 1 of the recognized entity.
+     * Gets the score property: Confidence score between 0 and 1 of the classified category.
      *
      * @return The {@code confidenceScore} value.
      */

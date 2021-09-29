@@ -9,17 +9,17 @@ import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 /**
  * The helper class to set the non-public properties of an {@link MultiCategoryClassifyActionResult} instance.
  */
-public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
+public final class MultiCategoryClassifyActionResultPropertiesHelper {
 
-    private static ClassifyCustomCategoriesActionResultAccessor accessor;
+    private static MultiCategoryClassifyActionResultAccessor accessor;
 
-    private ClassifyCustomCategoriesActionResultPropertiesHelper() { }
+    private MultiCategoryClassifyActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MultiCategoryClassifyActionResult}
      * instance.
      */
-    public interface ClassifyCustomCategoriesActionResultAccessor {
+    public interface MultiCategoryClassifyActionResultAccessor {
         void setDocumentsResults(MultiCategoryClassifyActionResult actionResult,
             MultiCategoryClassifyResultCollection documentsResults);
     }
@@ -27,11 +27,11 @@ public final class ClassifyCustomCategoriesActionResultPropertiesHelper {
     /**
      * The method called from {@link MultiCategoryClassifyActionResult} to set it's accessor.
      *
-     * @param classifyCustomCategoriesActionResultAccessor The accessor.
+     * @param multiCategoryClassifyActionResultAccessor The accessor.
      */
     public static void setAccessor(
-        final ClassifyCustomCategoriesActionResultAccessor classifyCustomCategoriesActionResultAccessor) {
-        accessor = classifyCustomCategoriesActionResultAccessor;
+        final MultiCategoryClassifyActionResultAccessor multiCategoryClassifyActionResultAccessor) {
+        accessor = multiCategoryClassifyActionResultAccessor;
     }
 
     public static void setDocumentsResults(MultiCategoryClassifyActionResult actionResult,

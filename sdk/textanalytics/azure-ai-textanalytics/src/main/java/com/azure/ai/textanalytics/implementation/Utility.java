@@ -973,14 +973,14 @@ public final class Utility {
      *
      * @return A {@link SingleCategoryClassifyResultCollection}.
      */
-    public static SingleCategoryClassifyResultCollection toClassifySingleCategoryResultCollection(
+    public static SingleCategoryClassifyResultCollection toSingleCategoryClassifyResultCollection(
         CustomSingleClassificationResult customSingleClassificationResult) {
         final List<SingleCategoryClassifyResult> singleCategoryClassifyResults = new ArrayList<>();
         final List<SingleClassificationDocument> singleClassificationDocuments =
             customSingleClassificationResult.getDocuments();
 
         for (SingleClassificationDocument documentSummary : singleClassificationDocuments) {
-            singleCategoryClassifyResults.add(toClassifySingleCategoryResult(documentSummary));
+            singleCategoryClassifyResults.add(toSingleCategoryClassifyResult(documentSummary));
         }
 
         for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
@@ -990,18 +990,18 @@ public final class Utility {
 
         final SingleCategoryClassifyResultCollection resultCollection =
             new SingleCategoryClassifyResultCollection(singleCategoryClassifyResults);
-        ClassifyCustomCategoryResultCollectionPropertiesHelper.setProjectName(resultCollection,
+        SingleCategoryClassifyResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customSingleClassificationResult.getProjectName());
-        ClassifyCustomCategoryResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
+        SingleCategoryClassifyResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
             customSingleClassificationResult.getDeploymentName());
         if (customSingleClassificationResult.getStatistics() != null) {
-            ClassifyCustomCategoryResultCollectionPropertiesHelper.setStatistics(resultCollection,
+            SingleCategoryClassifyResultCollectionPropertiesHelper.setStatistics(resultCollection,
                 toBatchStatistics(customSingleClassificationResult.getStatistics()));
         }
         return resultCollection;
     }
 
-    private static SingleCategoryClassifyResult toClassifySingleCategoryResult(
+    private static SingleCategoryClassifyResult toSingleCategoryClassifyResult(
         SingleClassificationDocument singleClassificationDocument) {
         final ClassificationResult classificationResult = singleClassificationDocument.getClassification();
         // Warnings
@@ -1013,17 +1013,17 @@ public final class Utility {
             singleClassificationDocument.getStatistics() == null
                 ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
             null);
-        ClassifyCustomCategoryResultPropertiesHelper.setDocumentClassification(singleCategoryClassifyResult,
+        SingleCategoryClassifyResultPropertiesHelper.setClassification(singleCategoryClassifyResult,
             toDocumentClassification(classificationResult));
-        ClassifyCustomCategoryResultPropertiesHelper.setWarnings(singleCategoryClassifyResult,
+        SingleCategoryClassifyResultPropertiesHelper.setWarnings(singleCategoryClassifyResult,
             new IterableStream<>(warnings));
         return singleCategoryClassifyResult;
     }
 
     private static ClassificationCategory toDocumentClassification(ClassificationResult classificationResult) {
         final ClassificationCategory classificationCategory = new ClassificationCategory();
-        DocumentClassificationPropertiesHelper.setCategory(classificationCategory, classificationResult.getCategory());
-        DocumentClassificationPropertiesHelper.setConfidenceScore(classificationCategory,
+        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory, classificationResult.getCategory());
+        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory,
             classificationResult.getConfidenceScore());
         return classificationCategory;
     }
@@ -1036,14 +1036,14 @@ public final class Utility {
      *
      * @return A {@link SingleCategoryClassifyResultCollection}.
      */
-    public static MultiCategoryClassifyResultCollection toClassifyMultiCategoriesResultCollection(
+    public static MultiCategoryClassifyResultCollection toMultiCategoryClassifyResultCollection(
         CustomMultiClassificationResult customMultiClassificationResult) {
         final List<MultiCategoryClassifyResult> multiCategoryClassifyResults = new ArrayList<>();
         final List<MultiClassificationDocument> multiClassificationDocuments =
             customMultiClassificationResult.getDocuments();
 
         for (MultiClassificationDocument multiClassificationDocument : multiClassificationDocuments) {
-            multiCategoryClassifyResults.add(toClassifyMultiCategoriesResult(multiClassificationDocument));
+            multiCategoryClassifyResults.add(toMultiCategoryClassifyResult(multiClassificationDocument));
         }
 
         for (DocumentError documentError : customMultiClassificationResult.getErrors()) {
@@ -1053,18 +1053,18 @@ public final class Utility {
 
         final MultiCategoryClassifyResultCollection resultCollection =
             new MultiCategoryClassifyResultCollection(multiCategoryClassifyResults);
-        ClassifyCustomCategoriesResultCollectionPropertiesHelper.setProjectName(resultCollection,
+        MultiCategoryClassifyResultCollectionPropertiesHelper.setProjectName(resultCollection,
             customMultiClassificationResult.getProjectName());
-        ClassifyCustomCategoriesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
+        MultiCategoryClassifyResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
             customMultiClassificationResult.getDeploymentName());
         if (customMultiClassificationResult.getStatistics() != null) {
-            ClassifyCustomCategoriesResultCollectionPropertiesHelper.setStatistics(resultCollection,
+            MultiCategoryClassifyResultCollectionPropertiesHelper.setStatistics(resultCollection,
                 toBatchStatistics(customMultiClassificationResult.getStatistics()));
         }
         return resultCollection;
     }
 
-    private static MultiCategoryClassifyResult toClassifyMultiCategoriesResult(
+    private static MultiCategoryClassifyResult toMultiCategoryClassifyResult(
         MultiClassificationDocument multiClassificationDocument) {
         final List<ClassificationCategory> classificationCategories =
             multiClassificationDocument
@@ -1083,13 +1083,10 @@ public final class Utility {
                 ? null : toTextDocumentStatistics(multiClassificationDocument.getStatistics()),
             null);
 
-        final ClassificationCategoryCollection classificationCategoryCollection = new ClassificationCategoryCollection(
+        final ClassificationCategoryCollection classifications = new ClassificationCategoryCollection(
             new IterableStream<>(classificationCategories));
-        DocumentClassificationCollectionPropertiesHelper.setWarnings(classificationCategoryCollection,
-            new IterableStream<>(warnings));
-
-        ClassifyCustomCategoriesResultPropertiesHelper.setDocumentClassifications(classifySingleCategoryResult,
-            classificationCategoryCollection);
+        ClassificationCategoryCollectionPropertiesHelper.setWarnings(classifications, new IterableStream<>(warnings));
+        MultiCategoryClassifyResultPropertiesHelper.setClassifications(classifySingleCategoryResult, classifications);
         return classifySingleCategoryResult;
     }
 

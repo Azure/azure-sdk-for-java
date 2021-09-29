@@ -9,16 +9,16 @@ import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
 /**
  * The helper class to set the non-public properties of an {@link SingleCategoryClassifyActionResult} instance.
  */
-public final class ClassifyCustomCategoryActionResultPropertiesHelper {
-    private static ClassifyCustomCategoryActionResultAccessor accessor;
+public final class SingleCategoryClassifyActionResultPropertiesHelper {
+    private static SingleCategoryClassifyActionResultAccessor accessor;
 
-    private ClassifyCustomCategoryActionResultPropertiesHelper() { }
+    private SingleCategoryClassifyActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SingleCategoryClassifyActionResult}
      * instance.
      */
-    public interface ClassifyCustomCategoryActionResultAccessor {
+    public interface SingleCategoryClassifyActionResultAccessor {
         void setDocumentsResults(SingleCategoryClassifyActionResult actionResult,
             SingleCategoryClassifyResultCollection documentsResults);
     }
@@ -26,11 +26,11 @@ public final class ClassifyCustomCategoryActionResultPropertiesHelper {
     /**
      * The method called from {@link SingleCategoryClassifyActionResult} to set it's accessor.
      *
-     * @param classifyCustomCategoryActionResultAccessor The accessor.
+     * @param singleCategoryClassifyActionResultAccessor The accessor.
      */
     public static void setAccessor(
-        final ClassifyCustomCategoryActionResultAccessor classifyCustomCategoryActionResultAccessor) {
-        accessor = classifyCustomCategoryActionResultAccessor;
+        final SingleCategoryClassifyActionResultAccessor singleCategoryClassifyActionResultAccessor) {
+        accessor = singleCategoryClassifyActionResultAccessor;
     }
 
     public static void setDocumentsResults(SingleCategoryClassifyActionResult actionResult,

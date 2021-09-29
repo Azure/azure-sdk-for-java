@@ -41,10 +41,10 @@ public final class AnalyzeActionsResultPropertiesHelper {
             IterableStream<ExtractSummaryActionResult> extractSummaryResults);
         void setRecognizeCustomEntitiesResults(AnalyzeActionsResult analyzeActionsResult,
             IterableStream<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesResults);
-        void setClassifyCustomCategoryResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<SingleCategoryClassifyActionResult> classifyCustomCategoryResults);
-        void setClassifyCustomCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
-            IterableStream<MultiCategoryClassifyActionResult> classifyCustomCategoriesResults);
+        void setSingleCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<SingleCategoryClassifyActionResult> singleCategoryClassifyResults);
+        void setMultiCategoryClassifyResults(AnalyzeActionsResult analyzeActionsResult,
+            IterableStream<MultiCategoryClassifyActionResult> multiCategoryClassifyResults);
     }
 
     /**
@@ -94,11 +94,11 @@ public final class AnalyzeActionsResultPropertiesHelper {
 
     public static void setClassifySingleCategoryResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<SingleCategoryClassifyActionResult> classifyCustomCategoryResults) {
-        accessor.setClassifyCustomCategoryResults(analyzeActionsResult, classifyCustomCategoryResults);
+        accessor.setSingleCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoryResults);
     }
 
     public static void setClassifyMultiCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<MultiCategoryClassifyActionResult> classifyCustomCategoriesResults) {
-        accessor.setClassifyCustomCategoriesResults(analyzeActionsResult, classifyCustomCategoriesResults);
+        accessor.setMultiCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoriesResults);
     }
 }

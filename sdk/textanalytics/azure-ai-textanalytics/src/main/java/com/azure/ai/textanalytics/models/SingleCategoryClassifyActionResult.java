@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SingleCategoryClassifyActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
 import com.azure.core.annotation.Immutable;
 
@@ -16,7 +16,7 @@ public final class SingleCategoryClassifyActionResult extends TextAnalyticsActio
     private SingleCategoryClassifyResultCollection documentsResults;
 
     static {
-        ClassifyCustomCategoryActionResultPropertiesHelper.setAccessor(
+        SingleCategoryClassifyActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 

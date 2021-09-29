@@ -690,16 +690,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    @Disabled("Service issue: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/10968334/")
     abstract void recognizeCustomEntitiesAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void classifyCustomSingleCategoryAction(HttpClient httpClient,
+    abstract void singleCategoryClassifyAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void classifyCustomMultiCategoriesAction(HttpClient httpClient,
+    abstract void multiCategoryClassifyAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner

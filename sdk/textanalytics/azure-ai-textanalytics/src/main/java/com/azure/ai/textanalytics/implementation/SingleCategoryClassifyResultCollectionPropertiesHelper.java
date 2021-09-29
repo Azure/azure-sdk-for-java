@@ -9,16 +9,16 @@ import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
 /**
  * The helper class to set the non-public properties of an {@link SingleCategoryClassifyResultCollection} instance.
  */
-public final class ClassifyCustomCategoryResultCollectionPropertiesHelper {
-    private static ClassifyCustomCategoryResultCollectionAccessor accessor;
+public final class SingleCategoryClassifyResultCollectionPropertiesHelper {
+    private static SingleCategoryClassifyResultCollectionAccessor accessor;
 
-    private ClassifyCustomCategoryResultCollectionPropertiesHelper() { }
+    private SingleCategoryClassifyResultCollectionPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SingleCategoryClassifyResultCollection}
      * instance.
      */
-    public interface ClassifyCustomCategoryResultCollectionAccessor {
+    public interface SingleCategoryClassifyResultCollectionAccessor {
         void setProjectName(SingleCategoryClassifyResultCollection resultCollection, String projectName);
         void setDeploymentName(SingleCategoryClassifyResultCollection resultCollection, String deploymentName);
         void setStatistics(SingleCategoryClassifyResultCollection resultCollection,
@@ -28,11 +28,11 @@ public final class ClassifyCustomCategoryResultCollectionPropertiesHelper {
     /**
      * The method called from {@link SingleCategoryClassifyResultCollection} to set it's accessor.
      *
-     * @param classifyCustomCategoryResultCollectionAccessor The accessor.
+     * @param singleCategoryClassifyResultCollectionAccessor The accessor.
      */
     public static void setAccessor(
-        final ClassifyCustomCategoryResultCollectionAccessor classifyCustomCategoryResultCollectionAccessor) {
-        accessor = classifyCustomCategoryResultCollectionAccessor;
+        final SingleCategoryClassifyResultCollectionAccessor singleCategoryClassifyResultCollectionAccessor) {
+        accessor = singleCategoryClassifyResultCollectionAccessor;
     }
 
     public static void setProjectName(SingleCategoryClassifyResultCollection resultCollection, String projectName) {

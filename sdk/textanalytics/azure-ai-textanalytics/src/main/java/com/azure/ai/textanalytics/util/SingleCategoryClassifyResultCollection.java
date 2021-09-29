@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SingleCategoryClassifyResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
@@ -20,8 +20,8 @@ public final class SingleCategoryClassifyResultCollection extends IterableStream
     private TextDocumentBatchStatistics statistics;
 
     static {
-        ClassifyCustomCategoryResultCollectionPropertiesHelper.setAccessor(
-            new ClassifyCustomCategoryResultCollectionPropertiesHelper.ClassifyCustomCategoryResultCollectionAccessor() {
+        SingleCategoryClassifyResultCollectionPropertiesHelper.setAccessor(
+            new SingleCategoryClassifyResultCollectionPropertiesHelper.SingleCategoryClassifyResultCollectionAccessor() {
                 @Override
                 public void setProjectName(SingleCategoryClassifyResultCollection resultCollection,
                     String projectName) {

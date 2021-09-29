@@ -9,16 +9,16 @@ import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 /**
  * The helper class to set the non-public properties of an {@link MultiCategoryClassifyResultCollection} instance.
  */
-public final class ClassifyCustomCategoriesResultCollectionPropertiesHelper {
-    private static ClassifyCustomCategoriesResultCollectionAccessor accessor;
+public final class MultiCategoryClassifyResultCollectionPropertiesHelper {
+    private static MultiCategoryClassifyResultCollectionAccessor accessor;
 
-    private ClassifyCustomCategoriesResultCollectionPropertiesHelper() { }
+    private MultiCategoryClassifyResultCollectionPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MultiCategoryClassifyResultCollection}
      * instance.
      */
-    public interface ClassifyCustomCategoriesResultCollectionAccessor {
+    public interface MultiCategoryClassifyResultCollectionAccessor {
         void setProjectName(MultiCategoryClassifyResultCollection resultCollection, String projectName);
         void setDeploymentName(MultiCategoryClassifyResultCollection resultCollection, String deploymentName);
         void setStatistics(MultiCategoryClassifyResultCollection resultCollection,
@@ -28,11 +28,11 @@ public final class ClassifyCustomCategoriesResultCollectionPropertiesHelper {
     /**
      * The method called from {@link MultiCategoryClassifyResultCollection} to set it's accessor.
      *
-     * @param classifyCustomCategoriesResultCollectionAccessor The accessor.
+     * @param multiCategoryClassifyResultCollectionAccessor The accessor.
      */
     public static void setAccessor(
-        final ClassifyCustomCategoriesResultCollectionAccessor classifyCustomCategoriesResultCollectionAccessor) {
-        accessor = classifyCustomCategoriesResultCollectionAccessor;
+        final MultiCategoryClassifyResultCollectionAccessor multiCategoryClassifyResultCollectionAccessor) {
+        accessor = multiCategoryClassifyResultCollectionAccessor;
     }
 
     public static void setProjectName(MultiCategoryClassifyResultCollection resultCollection, String projectName) {

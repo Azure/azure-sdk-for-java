@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MultiCategoryClassifyResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
@@ -15,9 +15,9 @@ public final class MultiCategoryClassifyResult extends TextAnalyticsResult {
     private ClassificationCategoryCollection classifications;
 
     static {
-        ClassifyCustomCategoriesResultPropertiesHelper.setAccessor(
-            ((classifyMultiCategoriesResult, documentClassifications) ->
-                 classifyMultiCategoriesResult.setClassifications(documentClassifications))
+        MultiCategoryClassifyResultPropertiesHelper.setAccessor(
+            ((classifyMultiCategoriesResult, classifications) ->
+                 classifyMultiCategoriesResult.setClassifications(classifications))
         );
     }
 

@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SingleCategoryClassifyResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
@@ -16,8 +16,8 @@ public final class SingleCategoryClassifyResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        ClassifyCustomCategoryResultPropertiesHelper.setAccessor(
-            new ClassifyCustomCategoryResultPropertiesHelper.ClassifyCustomCategoryResultAccessor() {
+        SingleCategoryClassifyResultPropertiesHelper.setAccessor(
+            new SingleCategoryClassifyResultPropertiesHelper.SingleCategoryClassifyResultAccessor() {
                 @Override
                 public void setClassification(
                     SingleCategoryClassifyResult singleCategoryClassifyResult,

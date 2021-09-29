@@ -3,19 +3,19 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MultiCategoryClassifyActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link MultiCategoryClassifyActionResult} model.
+ * The {@link MultiCategoryClassifyActionResult} is the result for
  */
 @Immutable
 public final class MultiCategoryClassifyActionResult extends TextAnalyticsActionResult {
     private MultiCategoryClassifyResultCollection documentsResults;
 
     static {
-        ClassifyCustomCategoriesActionResultPropertiesHelper.setAccessor(
+        MultiCategoryClassifyActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 

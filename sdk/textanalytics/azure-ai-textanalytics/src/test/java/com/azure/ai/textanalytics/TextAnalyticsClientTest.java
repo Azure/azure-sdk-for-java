@@ -2539,7 +2539,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         }
     }
 
-    @Disabled("Service issue: https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/10968334/")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeCustomEntitiesAction(HttpClient httpClient,
@@ -2564,7 +2563,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void classifyCustomSingleCategoryAction(HttpClient httpClient,
+    public void singleCategoryClassifyAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         classifyCustomSingleCategoryActionRunner((documents, tasks) -> {
@@ -2585,7 +2584,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void classifyCustomMultiCategoriesAction(HttpClient httpClient,
+    public void multiCategoryClassifyAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         classifyCustomMultiCategoriesActionRunner((documents, tasks) -> {

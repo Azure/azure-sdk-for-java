@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsOperationDetailPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoriesActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.ClassifyCustomCategoryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MultiCategoryClassifyActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SingleCategoryClassifyActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesActionResultPropertiesHelper;
@@ -110,8 +110,8 @@ import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
-import static com.azure.ai.textanalytics.implementation.Utility.toClassifyMultiCategoriesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toClassifySingleCategoryResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toMultiCategoryClassifyResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toSingleCategoryClassifyResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractSummaryResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
@@ -623,8 +623,8 @@ class AnalyzeActionsAsyncClient {
                     new SingleCategoryClassifyActionResult();
                 final CustomSingleClassificationResult results = taskItem.getResults();
                 if (results != null) {
-                    ClassifyCustomCategoryActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                        toClassifySingleCategoryResultCollection(results));
+                    SingleCategoryClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        toSingleCategoryClassifyResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
@@ -640,8 +640,8 @@ class AnalyzeActionsAsyncClient {
                     new MultiCategoryClassifyActionResult();
                 final CustomMultiClassificationResult results = taskItem.getResults();
                 if (results != null) {
-                    ClassifyCustomCategoriesActionResultPropertiesHelper.setDocumentsResults(actionResult,
-                        toClassifyMultiCategoriesResultCollection(results));
+                    MultiCategoryClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        toMultiCategoryClassifyResultCollection(results));
                 }
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
