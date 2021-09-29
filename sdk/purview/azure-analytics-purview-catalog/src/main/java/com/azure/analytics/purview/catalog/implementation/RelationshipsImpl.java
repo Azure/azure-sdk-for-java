@@ -115,7 +115,31 @@ public final class RelationshipsImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
@@ -166,7 +190,31 @@ public final class RelationshipsImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
@@ -218,7 +266,31 @@ public final class RelationshipsImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
@@ -270,7 +342,31 @@ public final class RelationshipsImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
@@ -321,7 +417,31 @@ public final class RelationshipsImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
@@ -373,7 +493,31 @@ public final class RelationshipsImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.

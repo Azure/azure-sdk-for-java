@@ -182,7 +182,60 @@ public final class GlossaryClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
+     * }
      * }</pre>
      *
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
@@ -271,7 +324,64 @@ public final class GlossaryClient {
      *
      * <pre>{@code
      * [
-     *     (recursive schema, see above)
+     *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
+     *         anchor: {
+     *             displayText: String
+     *             glossaryGuid: String
+     *             relationGuid: String
+     *         }
+     *         childrenCategories: [
+     *             {
+     *                 categoryGuid: String
+     *                 description: String
+     *                 displayText: String
+     *                 parentCategoryGuid: String
+     *                 relationGuid: String
+     *             }
+     *         ]
+     *         parentCategory: (recursive schema, see parentCategory above)
+     *         terms: [
+     *             {
+     *                 description: String
+     *                 displayText: String
+     *                 expression: String
+     *                 relationGuid: String
+     *                 source: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *                 steward: String
+     *                 termGuid: String
+     *             }
+     *         ]
+     *     }
      * ]
      * }</pre>
      *
@@ -357,7 +467,64 @@ public final class GlossaryClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     childrenCategories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     parentCategory: (recursive schema, see parentCategory above)
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
@@ -522,7 +689,64 @@ public final class GlossaryClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     childrenCategories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     parentCategory: (recursive schema, see parentCategory above)
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
@@ -897,7 +1121,152 @@ public final class GlossaryClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     abbreviation: String
+     *     templateName: [
+     *         Object
+     *     ]
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     antonyms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     createTime: Float
+     *     createdBy: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     status: String(Draft/Approved/Alert/Expired)
+     *     resources: [
+     *         {
+     *             displayName: String
+     *             url: String
+     *         }
+     *     ]
+     *     contacts: {
+     *         String: [
+     *             {
+     *                 id: String
+     *                 info: String
+     *             }
+     *         ]
+     *     }
+     *     attributes: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     assignedEntities: [
+     *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
+     *             displayText: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             relationshipType: String
+     *             relationshipAttributes: {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *             }
+     *             relationshipGuid: String
+     *             relationshipStatus: String(ACTIVE/DELETED)
+     *         }
+     *     ]
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             relationGuid: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         }
+     *     ]
+     *     classifies: [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples: [
+     *         String
+     *     ]
+     *     isA: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso: [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String
+     *     validValues: [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
      * }</pre>
      *
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
@@ -1246,7 +1615,152 @@ public final class GlossaryClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     abbreviation: String
+     *     templateName: [
+     *         Object
+     *     ]
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     antonyms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     createTime: Float
+     *     createdBy: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     status: String(Draft/Approved/Alert/Expired)
+     *     resources: [
+     *         {
+     *             displayName: String
+     *             url: String
+     *         }
+     *     ]
+     *     contacts: {
+     *         String: [
+     *             {
+     *                 id: String
+     *                 info: String
+     *             }
+     *         ]
+     *     }
+     *     attributes: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     assignedEntities: [
+     *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
+     *             displayText: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             relationshipType: String
+     *             relationshipAttributes: {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *             }
+     *             relationshipGuid: String
+     *             relationshipStatus: String(ACTIVE/DELETED)
+     *         }
+     *     ]
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             relationGuid: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         }
+     *     ]
+     *     classifies: [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples: [
+     *         String
+     *     ]
+     *     isA: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso: [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String
+     *     validValues: [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
@@ -1633,7 +2147,152 @@ public final class GlossaryClient {
      *
      * <pre>{@code
      * [
-     *     (recursive schema, see above)
+     *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
+     *         abbreviation: String
+     *         templateName: [
+     *             Object
+     *         ]
+     *         anchor: {
+     *             displayText: String
+     *             glossaryGuid: String
+     *             relationGuid: String
+     *         }
+     *         antonyms: [
+     *             {
+     *                 description: String
+     *                 displayText: String
+     *                 expression: String
+     *                 relationGuid: String
+     *                 source: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *                 steward: String
+     *                 termGuid: String
+     *             }
+     *         ]
+     *         createTime: Float
+     *         createdBy: String
+     *         updateTime: Float
+     *         updatedBy: String
+     *         status: String(Draft/Approved/Alert/Expired)
+     *         resources: [
+     *             {
+     *                 displayName: String
+     *                 url: String
+     *             }
+     *         ]
+     *         contacts: {
+     *             String: [
+     *                 {
+     *                     id: String
+     *                     info: String
+     *                 }
+     *             ]
+     *         }
+     *         attributes: {
+     *             String: {
+     *                 String: Object
+     *             }
+     *         }
+     *         assignedEntities: [
+     *             {
+     *                 guid: String
+     *                 typeName: String
+     *                 uniqueAttributes: {
+     *                     String: Object
+     *                 }
+     *                 displayText: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 relationshipType: String
+     *                 relationshipAttributes: {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                 }
+     *                 relationshipGuid: String
+     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *             }
+     *         ]
+     *         categories: [
+     *             {
+     *                 categoryGuid: String
+     *                 description: String
+     *                 displayText: String
+     *                 relationGuid: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             }
+     *         ]
+     *         classifies: [
+     *             (recursive schema, see above)
+     *         ]
+     *         examples: [
+     *             String
+     *         ]
+     *         isA: [
+     *             (recursive schema, see above)
+     *         ]
+     *         preferredTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         preferredToTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         replacedBy: [
+     *             (recursive schema, see above)
+     *         ]
+     *         replacementTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         seeAlso: [
+     *             (recursive schema, see above)
+     *         ]
+     *         synonyms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         translatedTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         translationTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         usage: String
+     *         validValues: [
+     *             (recursive schema, see above)
+     *         ]
+     *         validValuesFor: [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * ]
      * }</pre>
      *
@@ -2019,7 +2678,60 @@ public final class GlossaryClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
+     * }
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
@@ -2770,64 +3482,6 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return status of import csv operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions);
-    }
-
-    /**
-     * Import Glossary Terms from local csv file.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryGuid The globally unique identifier for glossary.
-     * @param file The csv file to import glossary terms from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
@@ -2837,64 +3491,6 @@ public final class GlossaryClient {
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return this.serviceClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions, context);
-    }
-
-    /**
-     * Import Glossary Terms from local csv file by glossaryName.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * Flux<ByteBuffer>
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     status: String(NotStarted/Succeeded/Failed/Running)
-     *     createTime: String
-     *     lastUpdateTime: String
-     *     properties: {
-     *         importedTerms: String
-     *         totalTermsDetected: String
-     *     }
-     *     error: {
-     *         errorCode: Integer
-     *         errorMessage: String
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param glossaryName The name of the glossary.
-     * @param file The csv file to import glossary terms from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return status of import csv operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, requestOptions);
     }
 
     /**

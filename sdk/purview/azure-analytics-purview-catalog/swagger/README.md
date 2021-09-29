@@ -20,4 +20,5 @@ add-context-parameter: true
 context-client-method-parameter: true
 generate-sync-async-clients: true
 generate-llc-samples: false
+polling: {}
 ```

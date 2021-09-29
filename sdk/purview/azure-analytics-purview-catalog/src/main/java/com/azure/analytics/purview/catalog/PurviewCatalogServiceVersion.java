@@ -8,6 +8,9 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of PurviewCatalog. */
 public enum PurviewCatalogServiceVersion implements ServiceVersion {
+    /** Enum value 2021-05-01-preview. */
+    V2021_05_01_PREVIEW("2021-05-01-preview"),
+
     /** Enum value 2021-09-01. */
     V2021_09_01("2021-09-01");
 

@@ -310,7 +310,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -318,7 +338,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -446,7 +477,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -454,7 +505,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -582,7 +644,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -590,7 +672,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -1037,7 +1130,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -1045,7 +1158,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -1176,7 +1300,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -1184,7 +1328,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -1314,7 +1469,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -1322,7 +1497,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -3639,7 +3825,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -3647,7 +3853,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -3789,7 +4006,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -3797,7 +4034,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -3938,7 +4186,27 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -3946,7 +4214,18 @@ public final class EntitiesImpl {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }

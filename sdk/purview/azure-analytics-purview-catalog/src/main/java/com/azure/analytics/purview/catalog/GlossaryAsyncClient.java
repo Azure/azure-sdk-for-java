@@ -181,7 +181,60 @@ public final class GlossaryAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
+     * }
      * }</pre>
      *
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
@@ -269,7 +322,64 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     (recursive schema, see above)
+     *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
+     *         anchor: {
+     *             displayText: String
+     *             glossaryGuid: String
+     *             relationGuid: String
+     *         }
+     *         childrenCategories: [
+     *             {
+     *                 categoryGuid: String
+     *                 description: String
+     *                 displayText: String
+     *                 parentCategoryGuid: String
+     *                 relationGuid: String
+     *             }
+     *         ]
+     *         parentCategory: (recursive schema, see parentCategory above)
+     *         terms: [
+     *             {
+     *                 description: String
+     *                 displayText: String
+     *                 expression: String
+     *                 relationGuid: String
+     *                 source: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *                 steward: String
+     *                 termGuid: String
+     *             }
+     *         ]
+     *     }
      * ]
      * }</pre>
      *
@@ -354,7 +464,64 @@ public final class GlossaryAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     childrenCategories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     parentCategory: (recursive schema, see parentCategory above)
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
@@ -517,7 +684,64 @@ public final class GlossaryAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     childrenCategories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     parentCategory: (recursive schema, see parentCategory above)
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
@@ -886,7 +1110,152 @@ public final class GlossaryAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     abbreviation: String
+     *     templateName: [
+     *         Object
+     *     ]
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     antonyms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     createTime: Float
+     *     createdBy: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     status: String(Draft/Approved/Alert/Expired)
+     *     resources: [
+     *         {
+     *             displayName: String
+     *             url: String
+     *         }
+     *     ]
+     *     contacts: {
+     *         String: [
+     *             {
+     *                 id: String
+     *                 info: String
+     *             }
+     *         ]
+     *     }
+     *     attributes: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     assignedEntities: [
+     *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
+     *             displayText: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             relationshipType: String
+     *             relationshipAttributes: {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *             }
+     *             relationshipGuid: String
+     *             relationshipStatus: String(ACTIVE/DELETED)
+     *         }
+     *     ]
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             relationGuid: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         }
+     *     ]
+     *     classifies: [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples: [
+     *         String
+     *     ]
+     *     isA: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso: [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String
+     *     validValues: [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
      * }</pre>
      *
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
@@ -1232,7 +1601,152 @@ public final class GlossaryAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     abbreviation: String
+     *     templateName: [
+     *         Object
+     *     ]
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     antonyms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     createTime: Float
+     *     createdBy: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     status: String(Draft/Approved/Alert/Expired)
+     *     resources: [
+     *         {
+     *             displayName: String
+     *             url: String
+     *         }
+     *     ]
+     *     contacts: {
+     *         String: [
+     *             {
+     *                 id: String
+     *                 info: String
+     *             }
+     *         ]
+     *     }
+     *     attributes: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     assignedEntities: [
+     *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
+     *             displayText: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             relationshipType: String
+     *             relationshipAttributes: {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *             }
+     *             relationshipGuid: String
+     *             relationshipStatus: String(ACTIVE/DELETED)
+     *         }
+     *     ]
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             relationGuid: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         }
+     *     ]
+     *     classifies: [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples: [
+     *         String
+     *     ]
+     *     isA: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso: [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String
+     *     validValues: [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
@@ -1614,7 +2128,152 @@ public final class GlossaryAsyncClient {
      *
      * <pre>{@code
      * [
-     *     (recursive schema, see above)
+     *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
+     *         abbreviation: String
+     *         templateName: [
+     *             Object
+     *         ]
+     *         anchor: {
+     *             displayText: String
+     *             glossaryGuid: String
+     *             relationGuid: String
+     *         }
+     *         antonyms: [
+     *             {
+     *                 description: String
+     *                 displayText: String
+     *                 expression: String
+     *                 relationGuid: String
+     *                 source: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *                 steward: String
+     *                 termGuid: String
+     *             }
+     *         ]
+     *         createTime: Float
+     *         createdBy: String
+     *         updateTime: Float
+     *         updatedBy: String
+     *         status: String(Draft/Approved/Alert/Expired)
+     *         resources: [
+     *             {
+     *                 displayName: String
+     *                 url: String
+     *             }
+     *         ]
+     *         contacts: {
+     *             String: [
+     *                 {
+     *                     id: String
+     *                     info: String
+     *                 }
+     *             ]
+     *         }
+     *         attributes: {
+     *             String: {
+     *                 String: Object
+     *             }
+     *         }
+     *         assignedEntities: [
+     *             {
+     *                 guid: String
+     *                 typeName: String
+     *                 uniqueAttributes: {
+     *                     String: Object
+     *                 }
+     *                 displayText: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 relationshipType: String
+     *                 relationshipAttributes: {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                 }
+     *                 relationshipGuid: String
+     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *             }
+     *         ]
+     *         categories: [
+     *             {
+     *                 categoryGuid: String
+     *                 description: String
+     *                 displayText: String
+     *                 relationGuid: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             }
+     *         ]
+     *         classifies: [
+     *             (recursive schema, see above)
+     *         ]
+     *         examples: [
+     *             String
+     *         ]
+     *         isA: [
+     *             (recursive schema, see above)
+     *         ]
+     *         preferredTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         preferredToTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         replacedBy: [
+     *             (recursive schema, see above)
+     *         ]
+     *         replacementTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         seeAlso: [
+     *             (recursive schema, see above)
+     *         ]
+     *         synonyms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         translatedTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         translationTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         usage: String
+     *         validValues: [
+     *             (recursive schema, see above)
+     *         ]
+     *         validValuesFor: [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * ]
      * }</pre>
      *
@@ -1991,7 +2650,60 @@ public final class GlossaryAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
+     * }
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
