@@ -18,7 +18,7 @@ public class FetchMetadataResult {
 
     private ModelsRepositoryMetadata definition;
     private String path;
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Gets the model repository's metadata definition
@@ -36,7 +36,7 @@ public class FetchMetadataResult {
      * @return the {@link FetchMetadataResult}  object itself
      */
     public FetchMetadataResult setDefinition(String definition) throws JsonProcessingException {
-        this.definition = mapper.readValue(definition, ModelsRepositoryMetadata.class);
+        this.definition = MAPPER.readValue(definition, ModelsRepositoryMetadata.class);
         return this;
     }
 
