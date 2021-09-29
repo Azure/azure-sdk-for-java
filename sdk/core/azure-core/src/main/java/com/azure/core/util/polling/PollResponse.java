@@ -13,10 +13,24 @@ import java.util.Objects;
  *
  * <p><strong>Code Sample Creating PollResponse Object</strong></p>
  * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
+ * <pre>
+ * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
+ *
+ * PollResponse&lt;String&gt; inProgressPollResponse
+ *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;my custom response&quot;&#41;;
+ *
+ * </pre>
  * <!-- end com.azure.core.util.polling.pollresponse.status.value -->
  *
  * <p><strong>Code Sample Creating PollResponse Object with custom status</strong></p>
  * <!-- src_embed com.azure.core.util.polling.pollresponse.custom.status.value -->
+ * <pre>
+ * &#47;&#47; Lets say we want to crete poll response with custom status as OTHER_CUSTOM_STATUS
+ *
+ * PollResponse&lt;String&gt; pollResponseWithCustomStatus
+ *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.fromString&#40;&quot;OTHER_CUSTOM_STATUS&quot;, false&#41;,
+ *         &quot;my custom status response&quot;&#41;;
+ * </pre>
  * <!-- end com.azure.core.util.polling.pollresponse.custom.status.value -->
  *
  * @param <T> Type of poll response value.
@@ -33,6 +47,13 @@ public final class PollResponse<T> {
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
      * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->
+     * <pre>
+     *
+     * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
+     * PollResponse&lt;String&gt; inProgressPollResponse
+     *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;mycustom response&quot;,
+     *     Duration.ofMillis&#40;2000&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->
      *
      * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
@@ -56,6 +77,13 @@ public final class PollResponse<T> {
      *
      * <p><strong>Code Sample Creating PollResponse Object</strong></p>
      * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
+     * <pre>
+     * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
+     *
+     * PollResponse&lt;String&gt; inProgressPollResponse
+     *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;my custom response&quot;&#41;;
+     *
+     * </pre>
      * <!-- end com.azure.core.util.polling.pollresponse.status.value -->
      *
      * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.

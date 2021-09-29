@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Flow;
 
@@ -186,13 +187,12 @@ class JdkAsyncHttpClient implements HttpClient {
     static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders();
 
-        for (final String key : headers.map().keySet()) {
-            final List<String> values = headers.allValues(key);
-            if (CoreUtils.isNullOrEmpty(values)) {
+        for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
+            if (CoreUtils.isNullOrEmpty(kvp.getValue())) {
                 continue;
             }
 
-            httpHeaders.set(key, values);
+            httpHeaders.set(kvp.getKey(), kvp.getValue());
         }
 
         return httpHeaders;

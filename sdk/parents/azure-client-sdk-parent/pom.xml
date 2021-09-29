@@ -138,6 +138,9 @@
 
     <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
     <parallelizeTests>true</parallelizeTests>
+
+    <!-- This property configures whether the codesnippet replacer plugin should be skipped. -->
+    <skipCodesnippetReplacer>true</skipCodesnippetReplacer>
   </properties>
 
   <build>
@@ -547,7 +550,7 @@
             <source>1.8</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-            <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+            <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
               for more Java documentation, including quick starts, tutorials, and code samples.
             </bottom>
             <linksource>false</linksource>
@@ -1402,31 +1405,23 @@
         <plugins>
           <plugin>
             <groupId>com.azure.tools</groupId>
-            <artifactId>snippet-replacer-maven-plugin</artifactId>
-            <version>1.0.0</version>
+            <artifactId>codesnippet-plugin</artifactId>
+            <version>1.0.0-beta.1</version>
             <configuration>
-              <targetDir>${project.basedir}</targetDir>
+              <skip>${skipCodesnippetReplacer}</skip>
             </configuration>
             <executions>
               <execution>
-                <id>inject-snippets</id>
-                <phase>process-sources</phase>
+                <id>update-codesnippets</id>
                 <goals>
-                  <goal>snippet-engine</goal>
+                  <goal>update-codesnippet</goal>
                 </goals>
-                <configuration>
-                  <mode>update</mode>
-                </configuration>
               </execution>
               <execution>
-                <id>verify-snippets</id>
-                <phase>verify</phase>
+                <id>verify-codesnippets</id>
                 <goals>
-                  <goal>snippet-engine</goal>
+                  <goal>verify-codesnippet</goal>
                 </goals>
-                <configuration>
-                  <mode>verify</mode>
-                </configuration>
               </execution>
             </executions>
           </plugin>

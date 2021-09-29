@@ -68,6 +68,10 @@ public class ClientLogger {
      * <p>Logging with a specific log level</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.log -->
+     * <pre>
+     * logger.log&#40;LogLevel.VERBOSE,
+     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.log -->
      *
      * @param logLevel Logging level for the log message.
@@ -85,6 +89,12 @@ public class ClientLogger {
      * <p>Logging with a specific log level and exception</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.log#throwable -->
+     * <pre>
+     * Throwable illegalArgumentException = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
+     * logger.log&#40;LogLevel.VERBOSE,
+     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;,
+     *     illegalArgumentException&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.log#throwable -->
      *
      * @param logLevel Logging level for the log message.
@@ -105,6 +115,9 @@ public class ClientLogger {
      * <p>Logging a message at verbose log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose -->
+     * <pre>
+     * logger.verbose&#40;&quot;A log message&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.verbose -->
      *
      * @param message The message to log.
@@ -123,6 +136,9 @@ public class ClientLogger {
      * <p>Logging a message at verbose log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose#string-object -->
+     * <pre>
+     * logger.verbose&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.verbose#string-object -->
      *
      * @param format The formattable message to log.
@@ -143,6 +159,9 @@ public class ClientLogger {
      * <p>Logging a message at verbose log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.info -->
+     * <pre>
+     * logger.info&#40;&quot;A log message&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.info -->
      *
      * @param message The message to log.
@@ -161,6 +180,9 @@ public class ClientLogger {
      * <p>Logging a message at informational log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.info#string-object -->
+     * <pre>
+     * logger.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.info#string-object -->
      *
      * @param format The format-able message to log
@@ -181,6 +203,10 @@ public class ClientLogger {
      * <p>Logging a message at warning log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.warning -->
+     * <pre>
+     * Throwable detailedException = new IllegalArgumentException&#40;&quot;A exception with a detailed message&quot;&#41;;
+     * logger.warning&#40;detailedException.getMessage&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.warning -->
      *
      * @param message The message to log.
@@ -199,6 +225,10 @@ public class ClientLogger {
      * <p>Logging a message at warning log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.warning#string-object -->
+     * <pre>
+     * Throwable exception = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
+     * logger.warning&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.warning#string-object -->
      *
      * @param format The format-able message to log.
@@ -219,6 +249,13 @@ public class ClientLogger {
      * <p>Logging a message at error log level.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.error -->
+     * <pre>
+     * try &#123;
+     *     upload&#40;resource&#41;;
+     * &#125; catch &#40;IOException ex&#41; &#123;
+     *     logger.error&#40;ex.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.error -->
      *
      * @param message The message to log.
@@ -237,6 +274,13 @@ public class ClientLogger {
      * <p>Logging an error with stack trace.</p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.error#string-object -->
+     * <pre>
+     * try &#123;
+     *     upload&#40;resource&#41;;
+     * &#125; catch &#40;IOException ex&#41; &#123;
+     *     logger.error&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, ex&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.error#string-object -->
      *
      * @param format The format-able message to log.

@@ -28,6 +28,11 @@ import java.util.function.Consumer;
  *
  * <p><strong>Creating an instance of RequestOptions</strong></p>
  * <!-- src_embed com.azure.core.http.rest.requestoptions.instantiation -->
+ * <pre>
+ * RequestOptions options = new RequestOptions&#40;&#41;
+ *     .setBody&#40;BinaryData.fromString&#40;&quot;&#123;&#92;&quot;name&#92;&quot;:&#92;&quot;Fluffy&#92;&quot;&#125;&quot;&#41;&#41;
+ *     .addHeader&#40;&quot;x-ms-pet-version&quot;, &quot;2021-06-01&quot;&#41;;
+ * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
@@ -61,11 +66,48 @@ import java.util.function.Consumer;
  * other Json building library can be used to achieve similar results.
  *
  * <!-- src_embed com.azure.core.http.rest.requestoptions.createjsonrequest -->
+ * <pre>
+ * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
+ *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
+ *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
+ *     .build&#40;&#41;;
+ *
+ * JsonArray tags = Json.createArrayBuilder&#40;&#41;
+ *     .add&#40;Json.createObjectBuilder&#40;&#41;
+ *         .add&#40;&quot;id&quot;, 0&#41;
+ *         .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .add&#40;Json.createObjectBuilder&#40;&#41;
+ *         .add&#40;&quot;id&quot;, 1&#41;
+ *         .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ *
+ * JsonObject requestBody = Json.createObjectBuilder&#40;&#41;
+ *     .add&#40;&quot;id&quot;, 0&#41;
+ *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
+ *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
+ *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
+ *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
+ *     .add&#40;&quot;tags&quot;, tags&#41;
+ *     .build&#40;&#41;;
+ *
+ * String requestBodyStr = requestBody.toString&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.createjsonrequest -->
  *
  * Now, this string representation of the JSON request can be set as body of RequestOptions
  *
  * <!-- src_embed com.azure.core.http.rest.requestoptions.postrequest -->
+ * <pre>
+ * RequestOptions options = new RequestOptions&#40;&#41;
+ *     .addRequestCallback&#40;request -&gt; request
+ *         &#47;&#47; may already be set if request is created from a client
+ *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
+ *         .setHttpMethod&#40;HttpMethod.POST&#41;
+ *         .setBody&#40;requestBodyStr&#41;
+ *         .setHeader&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
 final class RequestOptions {

@@ -24,22 +24,140 @@ import java.util.function.Function;
  *
  * <p><strong>Instantiating and subscribing to PollerFlux</strong></p>
  * <!-- src_embed com.azure.core.util.polling.poller.instantiationAndSubscribe -->
+ * <pre>
+ * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMillis&#40;800&#41;&#41;;
+ *
+ * &#47;&#47; Create poller instance
+ * PollerFlux&lt;String, String&gt; poller = new PollerFlux&lt;&gt;&#40;Duration.ofMillis&#40;100&#41;,
+ *     &#40;context&#41; -&gt; Mono.empty&#40;&#41;,
+ *     &#47;&#47; Define your custom poll operation
+ *     &#40;context&#41; -&gt;  &#123;
+ *         if &#40;LocalDateTime.now&#40;&#41;.isBefore&#40;timeToReturnFinalResponse&#41;&#41; &#123;
+ *             System.out.println&#40;&quot;Returning intermediate response.&quot;&#41;;
+ *             return Mono.just&#40;new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS,
+ *                     &quot;Operation in progress.&quot;&#41;&#41;;
+ *         &#125; else &#123;
+ *             System.out.println&#40;&quot;Returning final response.&quot;&#41;;
+ *             return Mono.just&#40;new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+ *                     &quot;Operation completed.&quot;&#41;&#41;;
+ *         &#125;
+ *     &#125;,
+ *     &#40;activationResponse, context&#41; -&gt; Mono.error&#40;new RuntimeException&#40;&quot;Cancellation is not supported&quot;&#41;&#41;,
+ *     &#40;context&#41; -&gt; Mono.just&#40;&quot;Final Output&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Listen to poll responses
+ * poller.subscribe&#40;response -&gt; &#123;
+ *     &#47;&#47; Process poll response
+ *     System.out.printf&#40;&quot;Got response. Status: %s, Value: %s%n&quot;, response.getStatus&#40;&#41;, response.getValue&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * &#47;&#47; Do something else
+ *
+ * </pre>
  * <!-- end com.azure.core.util.polling.poller.instantiationAndSubscribe -->
  *
  * <p><strong>Asynchronously wait for polling to complete and then retrieve the final result</strong></p>
  * <!-- src_embed com.azure.core.util.polling.poller.getResult -->
+ * <pre>
+ * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMinutes&#40;5&#41;&#41;;
+ *
+ * &#47;&#47; Create poller instance
+ * PollerFlux&lt;String, String&gt; poller = new PollerFlux&lt;&gt;&#40;Duration.ofMillis&#40;100&#41;,
+ *     &#40;context&#41; -&gt; Mono.empty&#40;&#41;,
+ *     &#40;context&#41; -&gt;  &#123;
+ *         if &#40;LocalDateTime.now&#40;&#41;.isBefore&#40;timeToReturnFinalResponse&#41;&#41; &#123;
+ *             System.out.println&#40;&quot;Returning intermediate response.&quot;&#41;;
+ *             return Mono.just&#40;new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS,
+ *                     &quot;Operation in progress.&quot;&#41;&#41;;
+ *         &#125; else &#123;
+ *             System.out.println&#40;&quot;Returning final response.&quot;&#41;;
+ *             return Mono.just&#40;new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+ *                     &quot;Operation completed.&quot;&#41;&#41;;
+ *         &#125;
+ *     &#125;,
+ *     &#40;activationResponse, context&#41; -&gt; Mono.just&#40;&quot;FromServer:OperationIsCancelled&quot;&#41;,
+ *     &#40;context&#41; -&gt; Mono.just&#40;&quot;FromServer:FinalOutput&quot;&#41;&#41;;
+ *
+ * poller.take&#40;Duration.ofMinutes&#40;30&#41;&#41;
+ *         .last&#40;&#41;
+ *         .flatMap&#40;asyncPollResponse -&gt; &#123;
+ *             if &#40;asyncPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
+ *                 &#47;&#47; operation completed successfully, retrieving final result.
+ *                 return asyncPollResponse
+ *                         .getFinalResult&#40;&#41;;
+ *             &#125; else &#123;
+ *                 return Mono.error&#40;new RuntimeException&#40;&quot;polling completed unsuccessfully with status:&quot;
+ *                         + asyncPollResponse.getStatus&#40;&#41;&#41;&#41;;
+ *             &#125;
+ *         &#125;&#41;.block&#40;&#41;;
+ *
+ * </pre>
  * <!-- end com.azure.core.util.polling.poller.getResult -->
  *
  * <p><strong>Block for polling to complete and then retrieve the final result</strong></p>
  * <!-- src_embed com.azure.core.util.polling.poller.blockAndGetResult -->
+ * <pre>
+ * AsyncPollResponse&lt;String, String&gt; terminalResponse = pollerFlux.blockLast&#40;&#41;;
+ * System.out.printf&#40;&quot;Polling complete. Final Status: %s&quot;, terminalResponse.getStatus&#40;&#41;&#41;;
+ * if &#40;terminalResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
+ *     String finalResult = terminalResponse.getFinalResult&#40;&#41;.block&#40;&#41;;
+ *     System.out.printf&#40;&quot;Polling complete. Final Status: %s&quot;, finalResult&#41;;
+ * &#125;
+ * </pre>
  * <!-- end com.azure.core.util.polling.poller.blockAndGetResult -->
  *
  * <p><strong>Asynchronously poll until poller receives matching status</strong></p>
  * <!-- src_embed com.azure.core.util.polling.poller.pollUntil -->
+ * <pre>
+ * final Predicate&lt;AsyncPollResponse&lt;String, String&gt;&gt; isComplete = response -&gt; &#123;
+ *     return response.getStatus&#40;&#41; != LongRunningOperationStatus.IN_PROGRESS
+ *         &amp;&amp; response.getStatus&#40;&#41; != LongRunningOperationStatus.NOT_STARTED;
+ * &#125;;
+ *
+ * pollerFlux
+ *     .takeUntil&#40;isComplete&#41;
+ *     .subscribe&#40;completed -&gt; &#123;
+ *         System.out.println&#40;&quot;Completed poll response, status: &quot; + completed.getStatus&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
  * <!-- end com.azure.core.util.polling.poller.pollUntil -->
  *
  * <p><strong>Asynchronously cancel the long running operation</strong></p>
  * <!-- src_embed com.azure.core.util.polling.poller.cancelOperation -->
+ * <pre>
+ * LocalDateTime timeToReturnFinalResponse = LocalDateTime.now&#40;&#41;.plus&#40;Duration.ofMinutes&#40;5&#41;&#41;;
+ *
+ * &#47;&#47; Create poller instance
+ * PollerFlux&lt;String, String&gt; poller = new PollerFlux&lt;&gt;&#40;Duration.ofMillis&#40;100&#41;,
+ *     &#40;context&#41; -&gt; Mono.empty&#40;&#41;,
+ *     &#40;context&#41; -&gt;  &#123;
+ *         if &#40;LocalDateTime.now&#40;&#41;.isBefore&#40;timeToReturnFinalResponse&#41;&#41; &#123;
+ *             System.out.println&#40;&quot;Returning intermediate response.&quot;&#41;;
+ *             return Mono.just&#40;new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS,
+ *                     &quot;Operation in progress.&quot;&#41;&#41;;
+ *         &#125; else &#123;
+ *             System.out.println&#40;&quot;Returning final response.&quot;&#41;;
+ *             return Mono.just&#40;new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+ *                     &quot;Operation completed.&quot;&#41;&#41;;
+ *         &#125;
+ *     &#125;,
+ *     &#40;activationResponse, context&#41; -&gt; Mono.just&#40;&quot;FromServer:OperationIsCancelled&quot;&#41;,
+ *     &#40;context&#41; -&gt; Mono.just&#40;&quot;FromServer:FinalOutput&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Asynchronously wait 30 minutes to complete the polling, if not completed
+ * &#47;&#47; within in the time then cancel the server operation.
+ * poller.take&#40;Duration.ofMinutes&#40;30&#41;&#41;
+ *         .last&#40;&#41;
+ *         .flatMap&#40;asyncPollResponse -&gt; &#123;
+ *             if &#40;!asyncPollResponse.getStatus&#40;&#41;.isComplete&#40;&#41;&#41; &#123;
+ *                 return asyncPollResponse
+ *                         .cancelOperation&#40;&#41;
+ *                         .then&#40;Mono.error&#40;new RuntimeException&#40;&quot;Operation is cancelled!&quot;&#41;&#41;&#41;;
+ *             &#125; else &#123;
+ *                 return Mono.just&#40;asyncPollResponse&#41;;
+ *             &#125;
+ *         &#125;&#41;.block&#40;&#41;;
+ *
+ * </pre>
  * <!-- end com.azure.core.util.polling.poller.cancelOperation -->
  *
  * @param <T> The type of poll response value.

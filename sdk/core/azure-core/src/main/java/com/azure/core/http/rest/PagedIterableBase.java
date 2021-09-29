@@ -15,16 +15,43 @@ import java.util.stream.Stream;
  * <p><strong>Code sample using {@link Stream} by page</strong></p>
  *
  * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.streamByPage -->
+ * <pre>
+ * &#47;&#47; process the streamByPage
+ * CustomPagedFlux&lt;String&gt; customPagedFlux = createCustomInstance&#40;&#41;;
+ * PagedIterableBase&lt;String, PagedResponse&lt;String&gt;&gt; customPagedIterableResponse =
+ *     new PagedIterableBase&lt;&gt;&#40;customPagedFlux&#41;;
+ * customPagedIterableResponse.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
+ *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+ *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+ *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %s %n&quot;, value&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
  * <!-- end com.azure.core.http.rest.pagedIterableBase.streamByPage -->
  *
  * <p><strong>Code sample using {@link Iterable} by page</strong></p>
  *
  * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.iterableByPage -->
+ * <pre>
+ * &#47;&#47; process the iterableByPage
+ * customPagedIterableResponse.iterableByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
+ *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+ *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+ *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %s %n&quot;, value&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
  * <!-- end com.azure.core.http.rest.pagedIterableBase.iterableByPage -->
  *
  * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
  *
  * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.iterableByPage.while -->
+ * <pre>
+ * &#47;&#47; iterate over each page
+ * for &#40;PagedResponse&lt;String&gt; resp : customPagedIterableResponse.iterableByPage&#40;&#41;&#41; &#123;
+ *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+ *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+ *     resp.getElements&#40;&#41;.forEach&#40;value -&gt; System.out.printf&#40;&quot;Response value is %s %n&quot;, value&#41;&#41;;
+ * &#125;
+ * </pre>
  * <!-- end com.azure.core.http.rest.pagedIterableBase.iterableByPage.while -->
  *
  * @param <T> The type of value contained in this {@link IterableStream}.

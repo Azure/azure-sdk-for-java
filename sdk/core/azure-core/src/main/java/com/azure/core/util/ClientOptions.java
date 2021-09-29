@@ -46,6 +46,10 @@ public class ClientOptions {
      * <p>Create ClientOptions with application ID 'myApplicationId'</p>
      *
      * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
+     * <pre>
+     * ClientOptions clientOptions = new ClientOptions&#40;&#41;
+     *     .setApplicationId&#40;&quot;myApplicationId&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.ClientOptions.setApplicationId#String -->
      *
      * @param applicationId The application ID.
@@ -81,6 +85,10 @@ public class ClientOptions {
      * <p>Create ClientOptions with Header 'myCustomHeader':'myStaticValue'</p>
      *
      * <!-- src_embed com.azure.core.util.ClientOptions.setHeaders#Iterable -->
+     * <pre>
+     * ClientOptions clientOptions = new ClientOptions&#40;&#41;
+     *     .setHeaders&#40;Collections.singletonList&#40;new Header&#40;&quot;myCustomHeader&quot;, &quot;myStaticValue&quot;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.core.util.ClientOptions.setHeaders#Iterable -->
      *
      * @param headers The headers.
