@@ -224,6 +224,18 @@ public final class ScanRulesetsImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     scanRulesetType: String(Custom/System)
+     *     status: String(Enabled/Disabled)
+     *     version: Integer
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -266,6 +278,18 @@ public final class ScanRulesetsImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     scanRulesetType: String(Custom/System)
+     *     status: String(Enabled/Disabled)
+     *     version: Integer
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -306,6 +330,18 @@ public final class ScanRulesetsImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     scanRulesetType: String(Custom/System)
+     *     status: String(Enabled/Disabled)
+     *     version: Integer
+     * }
+     * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -637,45 +673,6 @@ public final class ScanRulesetsImpl {
         return new PagedFlux<>(
                 () -> listAllSinglePageAsync(requestOptions, context),
                 nextLink -> listAllNextSinglePageAsync(nextLink, null, context));
-    }
-
-    /**
-     * List scan rulesets in Data catalog.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             scanRulesetType: String(Custom/System)
-     *             status: String(Enabled/Disabled)
-     *             version: Integer
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
-        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**

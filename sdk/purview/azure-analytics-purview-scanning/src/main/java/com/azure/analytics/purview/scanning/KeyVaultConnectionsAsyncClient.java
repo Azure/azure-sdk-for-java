@@ -91,7 +91,14 @@ public final class KeyVaultConnectionsAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         baseUrl: String
+     *         description: String
+     *     }
+     * }
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.

@@ -74,6 +74,18 @@ public final class ScanRulesetsAsyncClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     scanRulesetType: String(Custom/System)
+     *     status: String(Enabled/Disabled)
+     *     version: Integer
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code

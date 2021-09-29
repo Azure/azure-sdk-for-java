@@ -380,7 +380,51 @@ public final class TriggersImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         recurrence: {
+     *             frequency: String(Week/Month)
+     *             interval: Integer
+     *             startTime: String
+     *             endTime: String
+     *             schedule: {
+     *                 additionalProperties: {
+     *                     String: Object
+     *                 }
+     *                 minutes: [
+     *                     int
+     *                 ]
+     *                 hours: [
+     *                     int
+     *                 ]
+     *                 weekDays: [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 ]
+     *                 monthDays: [
+     *                     int
+     *                 ]
+     *                 monthlyOccurrences: [
+     *                     {
+     *                         additionalProperties: {
+     *                             String: Object
+     *                         }
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                         occurrence: Integer
+     *                     }
+     *                 ]
+     *             }
+     *             timeZone: String
+     *         }
+     *         recurrenceInterval: String
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
+     *         scanLevel: String(Full/Incremental)
+     *         incrementalScanStartTime: String
+     *     }
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
@@ -470,7 +514,51 @@ public final class TriggersImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         recurrence: {
+     *             frequency: String(Week/Month)
+     *             interval: Integer
+     *             startTime: String
+     *             endTime: String
+     *             schedule: {
+     *                 additionalProperties: {
+     *                     String: Object
+     *                 }
+     *                 minutes: [
+     *                     int
+     *                 ]
+     *                 hours: [
+     *                     int
+     *                 ]
+     *                 weekDays: [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 ]
+     *                 monthDays: [
+     *                     int
+     *                 ]
+     *                 monthlyOccurrences: [
+     *                     {
+     *                         additionalProperties: {
+     *                             String: Object
+     *                         }
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                         occurrence: Integer
+     *                     }
+     *                 ]
+     *             }
+     *             timeZone: String
+     *         }
+     *         recurrenceInterval: String
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
+     *         scanLevel: String(Full/Incremental)
+     *         incrementalScanStartTime: String
+     *     }
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
@@ -559,7 +647,51 @@ public final class TriggersImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         recurrence: {
+     *             frequency: String(Week/Month)
+     *             interval: Integer
+     *             startTime: String
+     *             endTime: String
+     *             schedule: {
+     *                 additionalProperties: {
+     *                     String: Object
+     *                 }
+     *                 minutes: [
+     *                     int
+     *                 ]
+     *                 hours: [
+     *                     int
+     *                 ]
+     *                 weekDays: [
+     *                     String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                 ]
+     *                 monthDays: [
+     *                     int
+     *                 ]
+     *                 monthlyOccurrences: [
+     *                     {
+     *                         additionalProperties: {
+     *                             String: Object
+     *                         }
+     *                         day: String(Sunday/Monday/Tuesday/Wednesday/Thursday/Friday/Saturday)
+     *                         occurrence: Integer
+     *                     }
+     *                 ]
+     *             }
+     *             timeZone: String
+     *         }
+     *         recurrenceInterval: String
+     *         createdAt: String
+     *         lastModifiedAt: String
+     *         lastScheduled: String
+     *         scanLevel: String(Full/Incremental)
+     *         incrementalScanStartTime: String
+     *     }
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.

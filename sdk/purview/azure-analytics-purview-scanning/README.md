@@ -61,7 +61,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 <!-- embedme ./src/samples/java/com/azure/analytics/purview/scanning/ReadmeSamples.java#L20-L23 -->
 ```java
 SystemScanRulesetsClient client = new PurviewScanningClientBuilder()
-    .endpoint("<account-name>.scan.purview.azure.com")
+    .endpoint(System.getenv("SCANNING_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildSystemScanRulesetsClient();
 ```

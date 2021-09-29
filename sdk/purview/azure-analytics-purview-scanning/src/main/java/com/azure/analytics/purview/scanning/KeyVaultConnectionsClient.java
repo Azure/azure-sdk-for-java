@@ -92,7 +92,14 @@ public final class KeyVaultConnectionsClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         baseUrl: String
+     *         description: String
+     *     }
+     * }
      * }</pre>
      *
      * @param keyVaultName The keyVaultName parameter.
@@ -144,46 +151,6 @@ public final class KeyVaultConnectionsClient {
     public Response<BinaryData> deleteWithResponse(
             String keyVaultName, RequestOptions requestOptions, Context context) {
         return this.serviceClient.deleteWithResponse(keyVaultName, requestOptions, context);
-    }
-
-    /**
-     * List key vault connections in account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             properties: {
-     *                 baseUrl: String
-     *                 description: String
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
-        return this.serviceClient.listAll(requestOptions);
     }
 
     /**

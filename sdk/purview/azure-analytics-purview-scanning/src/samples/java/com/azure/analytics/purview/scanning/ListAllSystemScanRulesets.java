@@ -5,6 +5,7 @@ package com.azure.analytics.purview.scanning;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import javax.json.Json;
@@ -29,7 +30,7 @@ public class ListAllSystemScanRulesets {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildSystemScanRulesetsClient();
 
-        PagedIterable<BinaryData> response = client.listAll(null);
+        PagedIterable<BinaryData> response = client.listAll(null, Context.NONE);
         List<BinaryData> list = response.stream().collect(Collectors.toList());
 
         System.out.println(list.size());
