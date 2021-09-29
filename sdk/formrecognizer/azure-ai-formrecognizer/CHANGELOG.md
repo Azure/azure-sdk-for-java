@@ -1,8 +1,19 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 4.0.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added new DocumentAnalysisClient with beginAnalyzeDocument and beginAnalyzeDocumentFromUrl methods. 
+Use these methods with the latest Form Recognizer API version to analyze documents, with prebuilt and custom models.
+- Added new models to use with the new DocumentAnalysisClient: AnalyzeResult, AnalyzedDocument, BoundingRegion, DocumentElement, 
+DocumentEntity, DocumentField, DocumentKeyValuePair, DocumentKeyValueElement, DocumentLine, DocumentPage, DocumentSelectionMark,
+DocumentSpan, DocumentStyle, DocumentTable, DocumentTableCell, DocumentWord, DocumentOperationResult.
+- Added a new model `DocumentAnalysisServiceVersion` that supports Azure Form Recognizer service version "2021-09-30-preview" and onwards.
+- Added new DocumentModelAdministrationClient with methods: beginBuildModel, beginCreateComposedModel, getCopyAuthorization,
+deleteModel, getAccountProperties, beginCopyModel, listModels, getModel, getOperation, listOperations.
+- Added new models to use with the new DocumentTrainingClient: DocumentModel, DocTypeInfo, DocumentFieldSchema, 
+AccountProperties, CopyAuthorization, BuildModelOptions, CopyAuthorizationOptions, CreateComposedModelOptions,
+DocumentModelInfo, ModelOperation, ModelOperationInfo, ModelOperationStatus, ModelOperationKind.
 
 ### Breaking Changes
 
