@@ -13,16 +13,11 @@ credential-scopes: https://purview.azure.net/.default
 title: PurviewCatalogClient
 service-name: PurviewCatalog
 service-versions:
+  - 2021-05-01-preview
   - "2021-09-01"
 generate-client-as-impl: true
 add-context-parameter: true
 context-client-method-parameter: true
 generate-sync-async-clients: true
 generate-llc-samples: false
-polling:
-  default:
-    strategy: >-
-      new ChainedPollingStrategy<>(java.util.Arrays.asList(
-            new LocationPollingStrategy<>({httpPipeline}),
-            new StatusCheckPollingStrategy<>()))
 ```
