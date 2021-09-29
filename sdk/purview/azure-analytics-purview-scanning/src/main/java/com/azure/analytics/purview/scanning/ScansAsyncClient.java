@@ -98,7 +98,56 @@ public final class ScansAsyncClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     scanResults: [
+     *         {
+     *             parentId: String
+     *             id: String
+     *             resourceId: String
+     *             status: String
+     *             assetsDiscovered: Long
+     *             assetsClassified: Long
+     *             diagnostics: {
+     *                 notifications: [
+     *                     {
+     *                         message: String
+     *                         code: Integer
+     *                     }
+     *                 ]
+     *                 exceptionCountMap: {
+     *                     String: int
+     *                 }
+     *             }
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
+     *             scanRulesetVersion: Integer
+     *             scanRulesetType: String(Custom/System)
+     *             scanLevelType: String(Full/Incremental)
+     *             errorMessage: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     {
+     *                         code: String
+     *                         message: String
+     *                         target: String
+     *                         details: [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *             runType: String
+     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.

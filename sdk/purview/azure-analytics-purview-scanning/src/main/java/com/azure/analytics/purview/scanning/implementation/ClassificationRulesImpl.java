@@ -242,6 +242,15 @@ public final class ClassificationRulesImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -281,6 +290,15 @@ public final class ClassificationRulesImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -318,6 +336,15 @@ public final class ClassificationRulesImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     * }
+     * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -655,42 +682,6 @@ public final class ClassificationRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
-        return new PagedIterable<>(listAllAsync(requestOptions));
-    }
-
-    /**
-     * List classification rules in Account.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
@@ -889,44 +880,6 @@ public final class ClassificationRulesImpl {
                         listVersionsByClassificationRuleNameSinglePageAsync(
                                 classificationRuleName, requestOptions, context),
                 nextLink -> listVersionsByClassificationRuleNameNextSinglePageAsync(nextLink, null, context));
-    }
-
-    /**
-     * Lists the rule versions of a classification rule.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param classificationRuleName The classificationRuleName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersionsByClassificationRuleName(
-            String classificationRuleName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listVersionsByClassificationRuleNameAsync(classificationRuleName, requestOptions));
     }
 
     /**

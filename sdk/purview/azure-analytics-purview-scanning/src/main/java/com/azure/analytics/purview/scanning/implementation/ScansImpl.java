@@ -169,7 +169,56 @@ public final class ScansImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     scanResults: [
+     *         {
+     *             parentId: String
+     *             id: String
+     *             resourceId: String
+     *             status: String
+     *             assetsDiscovered: Long
+     *             assetsClassified: Long
+     *             diagnostics: {
+     *                 notifications: [
+     *                     {
+     *                         message: String
+     *                         code: Integer
+     *                     }
+     *                 ]
+     *                 exceptionCountMap: {
+     *                     String: int
+     *                 }
+     *             }
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
+     *             scanRulesetVersion: Integer
+     *             scanRulesetType: String(Custom/System)
+     *             scanLevelType: String(Full/Incremental)
+     *             errorMessage: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     {
+     *                         code: String
+     *                         message: String
+     *                         target: String
+     *                         details: [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *             runType: String
+     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
@@ -264,7 +313,56 @@ public final class ScansImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     scanResults: [
+     *         {
+     *             parentId: String
+     *             id: String
+     *             resourceId: String
+     *             status: String
+     *             assetsDiscovered: Long
+     *             assetsClassified: Long
+     *             diagnostics: {
+     *                 notifications: [
+     *                     {
+     *                         message: String
+     *                         code: Integer
+     *                     }
+     *                 ]
+     *                 exceptionCountMap: {
+     *                     String: int
+     *                 }
+     *             }
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
+     *             scanRulesetVersion: Integer
+     *             scanRulesetType: String(Custom/System)
+     *             scanLevelType: String(Full/Incremental)
+     *             errorMessage: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     {
+     *                         code: String
+     *                         message: String
+     *                         target: String
+     *                         details: [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *             runType: String
+     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
@@ -358,7 +456,56 @@ public final class ScansImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     id: String
+     *     name: String
+     *     scanResults: [
+     *         {
+     *             parentId: String
+     *             id: String
+     *             resourceId: String
+     *             status: String
+     *             assetsDiscovered: Long
+     *             assetsClassified: Long
+     *             diagnostics: {
+     *                 notifications: [
+     *                     {
+     *                         message: String
+     *                         code: Integer
+     *                     }
+     *                 ]
+     *                 exceptionCountMap: {
+     *                     String: int
+     *                 }
+     *             }
+     *             startTime: String
+     *             queuedTime: String
+     *             pipelineStartTime: String
+     *             endTime: String
+     *             scanRulesetVersion: Integer
+     *             scanRulesetType: String(Custom/System)
+     *             scanLevelType: String(Full/Incremental)
+     *             errorMessage: String
+     *             error: {
+     *                 code: String
+     *                 message: String
+     *                 target: String
+     *                 details: [
+     *                     {
+     *                         code: String
+     *                         message: String
+     *                         target: String
+     *                         details: [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                     }
+     *                 ]
+     *             }
+     *             runType: String
+     *             dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param dataSourceName The dataSourceName parameter.
@@ -1251,89 +1398,6 @@ public final class ScansImpl {
         return new PagedFlux<>(
                 () -> listByDataSourceSinglePageAsync(dataSourceName, requestOptions, context),
                 nextLink -> listByDataSourceNextSinglePageAsync(nextLink, null, context));
-    }
-
-    /**
-     * List scans in data source.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             scanResults: [
-     *                 {
-     *                     parentId: String
-     *                     id: String
-     *                     resourceId: String
-     *                     status: String
-     *                     assetsDiscovered: Long
-     *                     assetsClassified: Long
-     *                     diagnostics: {
-     *                         notifications: [
-     *                             {
-     *                                 message: String
-     *                                 code: Integer
-     *                             }
-     *                         ]
-     *                         exceptionCountMap: {
-     *                             String: int
-     *                         }
-     *                     }
-     *                     startTime: String
-     *                     queuedTime: String
-     *                     pipelineStartTime: String
-     *                     endTime: String
-     *                     scanRulesetVersion: Integer
-     *                     scanRulesetType: String(Custom/System)
-     *                     scanLevelType: String(Full/Incremental)
-     *                     errorMessage: String
-     *                     error: {
-     *                         code: String
-     *                         message: String
-     *                         target: String
-     *                         details: [
-     *                             {
-     *                                 code: String
-     *                                 message: String
-     *                                 target: String
-     *                                 details: [
-     *                                     (recursive schema, see above)
-     *                                 ]
-     *                             }
-     *                         ]
-     *                     }
-     *                     runType: String
-     *                     dataSourceType: String(None/AzureSubscription/AzureResourceGroup/AzureSynapseWorkspace/AzureSynapse/AdlsGen1/AdlsGen2/AmazonAccount/AmazonS3/AmazonSql/AzureCosmosDb/AzureDataExplorer/AzureFileService/AzureSqlDatabase/AmazonPostgreSql/AzurePostgreSql/SqlServerDatabase/AzureSqlDatabaseManagedInstance/AzureSqlDataWarehouse/AzureMySql/AzureStorage/Teradata/Oracle/SapS4Hana/SapEcc/PowerBI)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
-     * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
-     *     false.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByDataSource(String dataSourceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(listByDataSourceAsync(dataSourceName, requestOptions));
     }
 
     /**

@@ -216,6 +216,23 @@ public final class FiltersImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         excludeUriPrefixes: [
+     *             String
+     *         ]
+     *         includeUriPrefixes: [
+     *             String
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -265,6 +282,23 @@ public final class FiltersImpl {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         excludeUriPrefixes: [
+     *             String
+     *         ]
+     *         includeUriPrefixes: [
+     *             String
+     *         ]
+     *     }
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -312,6 +346,23 @@ public final class FiltersImpl {
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     *     properties: {
+     *         excludeUriPrefixes: [
+     *             String
+     *         ]
+     *         includeUriPrefixes: [
+     *             String
+     *         ]
+     *     }
+     * }
+     * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *

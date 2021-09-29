@@ -71,6 +71,15 @@ public final class ClassificationRulesAsyncClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     name: String
+     * }
+     * }</pre>
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
