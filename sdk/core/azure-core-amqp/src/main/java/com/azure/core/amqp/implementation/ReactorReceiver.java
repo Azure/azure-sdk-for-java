@@ -93,7 +93,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
                             sink.success(message);
                         });
-                    } catch (IOException e) {
+                    } catch (IOException | RejectedExecutionException e) {
                         sink.error(e);
                     }
                 });
@@ -186,6 +186,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 sink.error(new UncheckedIOException(String.format(
                     "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
                     handler.getConnectionId(), getLinkName()), e));
+            } catch (RejectedExecutionException e) {
+                sink.error(e);
             }
         });
     }

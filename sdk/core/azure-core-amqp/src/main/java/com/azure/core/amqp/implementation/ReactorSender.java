@@ -623,7 +623,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private void scheduleWorkOnDispatcher() {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
-        } catch (IOException e) {
+        } catch (IOException | RejectedExecutionException e) {
             logger.error("Error scheduling work on reactor.", e);
         }
     }

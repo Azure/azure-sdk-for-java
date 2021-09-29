@@ -18,6 +18,7 @@ import org.apache.qpid.proton.engine.Session;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Locale;
+import java.util.concurrent.RejectedExecutionException;
 
 public class SessionHandler extends Handler {
     private final String entityName;
@@ -48,7 +49,7 @@ public class SessionHandler extends Handler {
 
         try {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
-        } catch (IOException ioException) {
+        } catch (IOException | RejectedExecutionException ioException) {
             logger.warning("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
                 getConnectionId(), this.entityName,
                 ioException.getMessage());
