@@ -1,30 +1,60 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostat-1.expanded.json",
+    "Uri" : "https://REDACTED.azure.com/%2Fmetadata.json",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ce4f8dc5-3ea1-40b6-b04a-acdf4c035775"
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "95e5e01c-6785-4402-bd80-d06d174a5dee"
     },
     "Response" : {
       "X-Cache" : "HIT",
+      "content-length" : "253",
       "x-ms-version" : "2018-03-28",
-      "Server" : "ECAcc (sed/E120)",
+      "Server" : "ECAcc (sed/E179)",
       "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
-      "Last-Modified" : "Tue, 15 Dec 2020 21:10:57 GMT",
+      "Last-Modified" : "Wed, 29 Sep 2021 20:17:12 GMT",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Access-Control-Allow-Headers" : "*",
-      "Date" : "Tue, 23 Mar 2021 22:20:07 GMT",
+      "Date" : "Wed, 29 Sep 2021 21:52:07 GMT",
+      "Content-MD5" : "qaVYpz9oxThaeAEdfv7cMg==",
+      "Accept-Ranges" : "bytes",
+      "Access-Control-Expose-Headers" : "*",
+      "Cache-Control" : "max-age=600",
+      "Etag" : "\"0x8D983861F20E768\"",
+      "Expires" : "Wed, 29 Sep 2021 22:02:07 GMT",
+      "x-ms-request-id" : "e18a4033-501e-003f-387c-b53085000000",
+      "Body" : "{\n  \"commitId\": \"3651c9d3e80167f9226baacb145d196a1c0ba446\",\n  \"features\": {\n    \"expanded\": true,\n    \"index\": true\n  },\n  \"publishDateUtc\": \"2021-09-29T20:00:57.332025+00:00\",\n  \"sourceRepo\": \"Azure/iot-plugandplay-models\",\n  \"totalModelCount\": 19018\n}",
+      "Age" : "88",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostat-1.expanded.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0ff85bcd-037a-44dd-9cbc-6d975ef85407"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "2651",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "ECAcc (sed/E120)",
+      "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
+      "Last-Modified" : "Wed, 14 Apr 2021 00:07:35 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Access-Control-Allow-Headers" : "*",
+      "Date" : "Wed, 29 Sep 2021 21:52:07 GMT",
       "Content-MD5" : "pH51cS5+u5tWh2Krmys7qA==",
       "Accept-Ranges" : "bytes",
       "Access-Control-Expose-Headers" : "*",
-      "Etag" : "\"0x8D8A13DEAC57DB3\"",
+      "Etag" : "\"0x8D8FED94ECA13B6\"",
       "x-ms-error-code" : "ConditionNotMet",
-      "Content-Length" : "2651",
-      "x-ms-request-id" : "0552d4aa-d01e-006e-4479-1fd74c000000",
+      "x-ms-request-id" : "e422263d-601e-005c-3c16-b40fa1000000",
       "Body" : "[\n  {\n    \"@context\": \"dtmi:dtdl:context;2\",\n    \"@id\": \"dtmi:com:example:Thermostat;1\",\n    \"@type\": \"Interface\",\n    \"displayName\": \"Thermostat\",\n    \"description\": \"Reports current temperature and provides desired temperature control.\",\n    \"contents\": [\n      {\n        \"@type\": [\n          \"Telemetry\",\n          \"Temperature\"\n        ],\n        \"name\": \"temperature\",\n        \"displayName\": \"Temperature\",\n        \"description\": \"Temperature in degrees Celsius.\",\n        \"schema\": \"double\",\n        \"unit\": \"degreeCelsius\"\n      },\n      {\n        \"@type\": [\n          \"Property\",\n          \"Temperature\"\n        ],\n        \"name\": \"targetTemperature\",\n        \"schema\": \"double\",\n        \"displayName\": \"Target Temperature\",\n        \"description\": \"Allows to remotely specify the desired target temperature.\",\n        \"unit\": \"degreeCelsius\",\n        \"writable\": true\n      },\n      {\n        \"@type\": [\n          \"Property\",\n          \"Temperature\"\n        ],\n        \"name\": \"maxTempSinceLastReboot\",\n        \"schema\": \"double\",\n        \"unit\": \"degreeCelsius\",\n        \"displayName\": \"Max temperature since last reboot.\",\n        \"description\": \"Returns the max temperature since last device reboot.\"\n      },\n      {\n        \"@type\": \"Command\",\n        \"name\": \"getMaxMinReport\",\n        \"displayName\": \"Get Max-Min report.\",\n        \"description\": \"This command returns the max, min and average temperature from the specified time to the current time.\",\n        \"request\": {\n          \"name\": \"since\",\n          \"displayName\": \"Since\",\n          \"description\": \"Period to return the max-min report.\",\n          \"schema\": \"dateTime\"\n        },\n        \"response\": {\n          \"name\": \"tempReport\",\n          \"displayName\": \"Temperature Report\",\n          \"schema\": {\n            \"@type\": \"Object\",\n            \"fields\": [\n              {\n                \"name\": \"maxTemp\",\n                \"displayName\": \"Max temperature\",\n                \"schema\": \"double\"\n              },\n              {\n                \"name\": \"minTemp\",\n                \"displayName\": \"Min temperature\",\n                \"schema\": \"double\"\n              },\n              {\n                \"name\": \"avgTemp\",\n                \"displayName\": \"Average Temperature\",\n                \"schema\": \"double\"\n              },\n              {\n                \"name\": \"startTime\",\n                \"displayName\": \"Start Time\",\n                \"schema\": \"dateTime\"\n              },\n              {\n                \"name\": \"endTime\",\n                \"displayName\": \"End Time\",\n                \"schema\": \"dateTime\"\n              }\n            ]\n          }\n        }\n      }\n    ]\n  }\n]",
-      "Age" : "79705",
+      "Age" : "153814",
       "Content-Type" : "application/json"
     },
     "Exception" : null

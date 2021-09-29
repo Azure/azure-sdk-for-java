@@ -1,24 +1,55 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.expanded.json",
+    "Uri" : "https://REDACTED.azure.com/%2Fmetadata.json",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a8905328-6bf9-4a21-92bd-e78de3658d58"
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c9391aad-48fb-4676-adad-18d30bbcd39f"
     },
     "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "253",
+      "x-ms-version" : "2018-03-28",
+      "Server" : "ECAcc (sed/E179)",
+      "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
+      "Last-Modified" : "Wed, 29 Sep 2021 20:17:12 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Access-Control-Allow-Headers" : "*",
+      "Date" : "Wed, 29 Sep 2021 21:52:07 GMT",
+      "Content-MD5" : "qaVYpz9oxThaeAEdfv7cMg==",
+      "Accept-Ranges" : "bytes",
+      "Access-Control-Expose-Headers" : "*",
+      "Cache-Control" : "max-age=600",
+      "Etag" : "\"0x8D983861F20E768\"",
+      "Expires" : "Wed, 29 Sep 2021 22:02:07 GMT",
+      "x-ms-request-id" : "e18a4033-501e-003f-387c-b53085000000",
+      "Body" : "{\n  \"commitId\": \"3651c9d3e80167f9226baacb145d196a1c0ba446\",\n  \"features\": {\n    \"expanded\": true,\n    \"index\": true\n  },\n  \"publishDateUtc\": \"2021-09-29T20:00:57.332025+00:00\",\n  \"sourceRepo\": \"Azure/iot-plugandplay-models\",\n  \"totalModelCount\": 19018\n}",
+      "Age" : "88",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.expanded.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a5a24337-efd8-482e-89cc-630bcfc4358f"
+    },
+    "Response" : {
+      "content-length" : "321",
       "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Web/1.0 Microsoft-HTTPAPI/2.0",
       "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
       "retry-after" : "0",
       "StatusCode" : "404",
       "Access-Control-Allow-Headers" : "*",
-      "Date" : "Tue, 23 Mar 2021 22:20:07 GMT",
+      "Date" : "Wed, 29 Sep 2021 21:52:06 GMT",
       "Access-Control-Expose-Headers" : "*",
+      "Vary" : "Origin",
       "x-ms-error-code" : "WebContentNotFound",
-      "Content-Length" : "321",
-      "x-ms-request-id" : "3c9fb664-c01e-004b-3232-20c175000000",
-      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 3c9fb664-c01e-004b-3232-20c175000000</li><li>TimeStamp : 2021-03-23T22:20:07.2215660Z</li></ul></p></body></html>",
+      "x-ms-request-id" : "2ef2ac7f-401e-00a2-257c-b508e9000000",
+      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 2ef2ac7f-401e-00a2-257c-b508e9000000</li><li>TimeStamp : 2021-09-29T21:52:07.4957322Z</li></ul></p></body></html>",
       "Content-Type" : "text/html"
     },
     "Exception" : null
@@ -26,22 +57,23 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.azure.com/%2Fdtmi%2Fcom%2Fexample%2Fthermostatddd-1.json",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e833bda3-456a-470f-862b-b11625f09186"
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (16.0.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f12aca18-2bae-41e6-bb41-e72487de135e"
     },
     "Response" : {
+      "content-length" : "321",
       "x-ms-version" : "2018-03-28",
       "Server" : "Windows-Azure-Web/1.0 Microsoft-HTTPAPI/2.0",
       "Access-Control-Allow-Methods" : "GET, HEAD, OPTIONS",
       "retry-after" : "0",
       "StatusCode" : "404",
       "Access-Control-Allow-Headers" : "*",
-      "Date" : "Tue, 23 Mar 2021 22:20:06 GMT",
+      "Date" : "Wed, 29 Sep 2021 21:52:06 GMT",
       "Access-Control-Expose-Headers" : "*",
+      "Vary" : "Origin",
       "x-ms-error-code" : "WebContentNotFound",
-      "Content-Length" : "321",
-      "x-ms-request-id" : "5b308299-601e-0051-0632-207f42000000",
-      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 5b308299-601e-0051-0632-207f42000000</li><li>TimeStamp : 2021-03-23T22:20:07.3151755Z</li></ul></p></body></html>",
+      "x-ms-request-id" : "5250b7e1-501e-006b-317c-b5ffbe000000",
+      "Body" : "<!DOCTYPE html><html><head><title>WebContentNotFound</title></head><body><h1>The requested content does not exist.</h1><p><ul><li>HttpStatusCode: 404</li><li>ErrorCode: WebContentNotFound</li><li>RequestId : 5250b7e1-501e-006b-317c-b5ffbe000000</li><li>TimeStamp : 2021-09-29T21:52:07.5558209Z</li></ul></p></body></html>",
       "Content-Type" : "text/html"
     },
     "Exception" : null

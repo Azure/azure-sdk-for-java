@@ -70,7 +70,7 @@ public final class RepositoryHandler {
         }
 
         String targetDtmi = remainingWork.poll();
-        Boolean tryFromExpanded = false;
+        Mono<Boolean> tryFromExpanded = Mono.just(false);
 
         // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
         // metadata.json content from the target repository. The metadata object includes supported features
@@ -83,22 +83,19 @@ public final class RepositoryHandler {
 
             if (repositoryMetadata != null) {
                 tryFromExpanded = repositoryMetadata
-                    .flatMap(repo -> {
-                        if (repo != null && repo.getDefinition() != null
-                            && repo.getDefinition().getFeatures() != null
-                            && repo.getDefinition().getFeatures().isExpanded()) {
-                            return Mono.just(true);
-                        }
-                        return Mono.just(false);
-                    })
-                    .defaultIfEmpty(false)
-                    .block();
+                    .map(repo -> (
+                        repo != null && repo.getDefinition() != null
+                        && repo.getDefinition().getFeatures() != null
+                        && repo.getDefinition().getFeatures().isExpanded()
+                        )
+                    )
+                    .defaultIfEmpty(false);
             }
         }
 
         logger.info(String.format(StatusStrings.PROCESSING_DTMIS, targetDtmi));
 
-        return modelFetcher.fetchModelAsync(targetDtmi, repositoryUri, tryFromExpanded, context)
+        return tryFromExpanded.flatMap( t -> modelFetcher.fetchModelAsync(targetDtmi, repositoryUri, t, context))
             .map(result -> new IntermediateFetchModelResult(result, currentResults))
             .expand(customType -> {
                 Map<String, String> results = customType.getMap();
