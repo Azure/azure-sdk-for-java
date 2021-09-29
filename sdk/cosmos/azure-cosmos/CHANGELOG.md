@@ -1,7 +1,30 @@
 ## Release History
 
-## 4.19.0-beta.1 (Unreleased)
+### 4.19.1 (2021-09-24)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
 
+#### Key Bug Fixes
+* Fixed ReadMany Api on partition split.
+* Removed full exception trace from 404 error on open telemetry.
+* Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
+
+### 4.20.0-beta.1 (2021-09-22)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+### 4.19.0 (2021-09-09)
+#### New Features
+* Added support for distinct count queries.
+* Added support for capturing `IndexMetrics` in `CosmosQueryRequestOptions`.
+
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+* Fixed issue for resuming order by queries from continuation token that includes undefined/null.
+
+### 4.19.0-beta.1 (2021-09-02)
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
 
 ### 4.18.0 (2021-08-16)
 > [!IMPORTANT]
@@ -80,7 +103,7 @@
 * Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
 * Query performance improvements.
 
-### 4.13.0 (2021-03-11) 
+### 4.13.0 (2021-03-11)
 > [!IMPORTANT] 
 > This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
 #### New Features

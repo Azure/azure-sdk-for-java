@@ -4,7 +4,7 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.models.HttpResponseError;
+import com.azure.core.models.ResponseError;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public final class MetricResult {
     private final String metricName;
     private final List<TimeSeriesElement> timeSeries;
     private final String description;
-    private final HttpResponseError error;
+    private final ResponseError error;
 
     /**
      * Creates an instance of the result data of a query.
@@ -32,7 +32,7 @@ public final class MetricResult {
      * @param httpResponseError The error information if the request failed to fetch the queried metric.
      */
     public MetricResult(String id, String resourceType, MetricUnit unit, String metricName, List<TimeSeriesElement> timeSeries,
-                        String description, HttpResponseError httpResponseError) {
+                        String description, ResponseError httpResponseError) {
         this.id = id;
         this.resourceType = resourceType;
         this.unit = unit;
@@ -94,7 +94,7 @@ public final class MetricResult {
      * Returns the error message encountered querying this specific metric.
      * @return the error message encountered querying this specific metric.
      */
-    public HttpResponseError getError() {
+    public ResponseError getError() {
         return error;
     }
 }

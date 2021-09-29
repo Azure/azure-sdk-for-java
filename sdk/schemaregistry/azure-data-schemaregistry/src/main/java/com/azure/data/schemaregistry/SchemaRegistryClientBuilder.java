@@ -277,8 +277,9 @@ public class SchemaRegistryClientBuilder {
      * credential} are not set.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(credential, "'credential' cannot be null");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
+        Objects.requireNonNull(credential,
+            "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null and must be set in the builder.endpoint(String)");
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()

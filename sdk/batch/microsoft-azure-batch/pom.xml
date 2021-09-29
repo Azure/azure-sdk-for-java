@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.19.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -184,7 +184,7 @@
   </build>
   <profiles>
     <profile>
-      <id>is.jdk.11</id>
+      <id>java9plus</id>
       <activation>
         <jdk>[9,)</jdk>
       </activation>

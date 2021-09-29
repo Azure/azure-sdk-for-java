@@ -32,18 +32,28 @@
     <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
   </scm>
 
+  <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
+    </javaModulesSurefireArgLine>
+  </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -114,7 +124,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.4.8]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.4.9]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
                 <include>org.junit.jupiter:junit-jupiter-api:[5.7.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.7.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
@@ -136,32 +146,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
-                --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
-
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
-                --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

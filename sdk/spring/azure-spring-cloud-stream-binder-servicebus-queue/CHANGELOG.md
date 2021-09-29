@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.9.0 (2021-09-27)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
+### Dependency Upgrades
+- Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
+### Breaking Changes
+- Change the value type of ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME from Instant to OffsetDateTime.
+### Bugs Fixed
+- Fix the bug of ClassCastException when forward Service Bus messages with the header of schedule enqueued time.
+
 
 ## 2.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.

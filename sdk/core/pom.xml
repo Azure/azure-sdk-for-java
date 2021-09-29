@@ -32,7 +32,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core</artifactId>
-          <version>1.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+          <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -47,7 +47,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-experimental</artifactId>
-          <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+          <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -57,7 +57,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-netty</artifactId>
-          <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+          <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -72,7 +72,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-serializer-avro-apache</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+          <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -87,7 +87,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-tracing-opentelemetry</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+          <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
         </dependency>
       </dependencies>
 
@@ -96,7 +96,13 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <configuration>
+              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>META-INF/**</exclude>
+              </excludes>
+            </configuration>
             <executions>
               <execution>
                 <id>report-aggregate</id>
@@ -104,9 +110,6 @@
                 <goals>
                   <goal>report-aggregate</goal>
                 </goals>
-                <configuration>
-                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-                </configuration>
               </execution>
             </executions>
           </plugin>

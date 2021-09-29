@@ -20,7 +20,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-cosmos</artifactId>
-          <version>4.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+          <version>4.19.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
         </dependency>
       </dependencies>
 
@@ -29,7 +29,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>report-aggregate</id>

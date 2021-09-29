@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DataMaskingFunction;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Sql pool data masking rule. */
-@JsonFlatten
 @Fluent
-public class DataMaskingRuleInner extends ProxyResource {
+public final class DataMaskingRuleInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMaskingRuleInner.class);
+
+    /*
+     * The properties of the resource.
+     */
+    @JsonProperty(value = "properties")
+    private DataMaskingRuleProperties innerProperties;
 
     /*
      * The location of the data masking rule.
@@ -31,89 +35,14 @@ public class DataMaskingRuleInner extends ProxyResource {
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /*
-     * The rule Id.
+    /**
+     * Get the innerProperties property: The properties of the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.id", access = JsonProperty.Access.WRITE_ONLY)
-    private String idPropertiesId;
-
-    /*
-     * The alias name. This is a legacy parameter and is no longer used.
-     */
-    @JsonProperty(value = "properties.aliasName")
-    private String aliasName;
-
-    /*
-     * The rule state. Used to delete a rule. To delete an existing rule,
-     * specify the schemaName, tableName, columnName, maskingFunction, and
-     * specify ruleState as disabled. However, if the rule doesn't already
-     * exist, the rule will be created with ruleState set to enabled,
-     * regardless of the provided value of ruleState.
-     */
-    @JsonProperty(value = "properties.ruleState")
-    private DataMaskingRuleState ruleState;
-
-    /*
-     * The schema name on which the data masking rule is applied.
-     */
-    @JsonProperty(value = "properties.schemaName")
-    private String schemaName;
-
-    /*
-     * The table name on which the data masking rule is applied.
-     */
-    @JsonProperty(value = "properties.tableName")
-    private String tableName;
-
-    /*
-     * The column name on which the data masking rule is applied.
-     */
-    @JsonProperty(value = "properties.columnName")
-    private String columnName;
-
-    /*
-     * The masking function that is used for the data masking rule.
-     */
-    @JsonProperty(value = "properties.maskingFunction")
-    private DataMaskingFunction maskingFunction;
-
-    /*
-     * The numberFrom property of the masking rule. Required if maskingFunction
-     * is set to Number, otherwise this parameter will be ignored.
-     */
-    @JsonProperty(value = "properties.numberFrom")
-    private String numberFrom;
-
-    /*
-     * The numberTo property of the data masking rule. Required if
-     * maskingFunction is set to Number, otherwise this parameter will be
-     * ignored.
-     */
-    @JsonProperty(value = "properties.numberTo")
-    private String numberTo;
-
-    /*
-     * If maskingFunction is set to Text, the number of characters to show
-     * unmasked in the beginning of the string. Otherwise, this parameter will
-     * be ignored.
-     */
-    @JsonProperty(value = "properties.prefixSize")
-    private String prefixSize;
-
-    /*
-     * If maskingFunction is set to Text, the number of characters to show
-     * unmasked at the end of the string. Otherwise, this parameter will be
-     * ignored.
-     */
-    @JsonProperty(value = "properties.suffixSize")
-    private String suffixSize;
-
-    /*
-     * If maskingFunction is set to Text, the character to use for masking the
-     * unexposed part of the string. Otherwise, this parameter will be ignored.
-     */
-    @JsonProperty(value = "properties.replacementString")
-    private String replacementString;
+    private DataMaskingRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: The location of the data masking rule.
@@ -134,12 +63,12 @@ public class DataMaskingRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the idPropertiesId property: The rule Id.
+     * Get the id property: The rule Id.
      *
-     * @return the idPropertiesId value.
+     * @return the id value.
      */
     public String idPropertiesId() {
-        return this.idPropertiesId;
+        return this.innerProperties() == null ? null : this.innerProperties().id();
     }
 
     /**
@@ -148,7 +77,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the aliasName value.
      */
     public String aliasName() {
-        return this.aliasName;
+        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
     }
 
     /**
@@ -158,7 +87,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withAliasName(String aliasName) {
-        this.aliasName = aliasName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withAliasName(aliasName);
         return this;
     }
 
@@ -171,7 +103,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the ruleState value.
      */
     public DataMaskingRuleState ruleState() {
-        return this.ruleState;
+        return this.innerProperties() == null ? null : this.innerProperties().ruleState();
     }
 
     /**
@@ -184,7 +116,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withRuleState(DataMaskingRuleState ruleState) {
-        this.ruleState = ruleState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withRuleState(ruleState);
         return this;
     }
 
@@ -194,7 +129,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the schemaName value.
      */
     public String schemaName() {
-        return this.schemaName;
+        return this.innerProperties() == null ? null : this.innerProperties().schemaName();
     }
 
     /**
@@ -204,7 +139,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withSchemaName(String schemaName) {
-        this.schemaName = schemaName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withSchemaName(schemaName);
         return this;
     }
 
@@ -214,7 +152,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the tableName value.
      */
     public String tableName() {
-        return this.tableName;
+        return this.innerProperties() == null ? null : this.innerProperties().tableName();
     }
 
     /**
@@ -224,7 +162,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withTableName(String tableName) {
-        this.tableName = tableName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withTableName(tableName);
         return this;
     }
 
@@ -234,7 +175,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the columnName value.
      */
     public String columnName() {
-        return this.columnName;
+        return this.innerProperties() == null ? null : this.innerProperties().columnName();
     }
 
     /**
@@ -244,7 +185,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withColumnName(String columnName) {
-        this.columnName = columnName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withColumnName(columnName);
         return this;
     }
 
@@ -254,7 +198,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the maskingFunction value.
      */
     public DataMaskingFunction maskingFunction() {
-        return this.maskingFunction;
+        return this.innerProperties() == null ? null : this.innerProperties().maskingFunction();
     }
 
     /**
@@ -264,7 +208,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withMaskingFunction(DataMaskingFunction maskingFunction) {
-        this.maskingFunction = maskingFunction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withMaskingFunction(maskingFunction);
         return this;
     }
 
@@ -275,7 +222,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the numberFrom value.
      */
     public String numberFrom() {
-        return this.numberFrom;
+        return this.innerProperties() == null ? null : this.innerProperties().numberFrom();
     }
 
     /**
@@ -286,7 +233,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withNumberFrom(String numberFrom) {
-        this.numberFrom = numberFrom;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withNumberFrom(numberFrom);
         return this;
     }
 
@@ -297,7 +247,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the numberTo value.
      */
     public String numberTo() {
-        return this.numberTo;
+        return this.innerProperties() == null ? null : this.innerProperties().numberTo();
     }
 
     /**
@@ -308,7 +258,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withNumberTo(String numberTo) {
-        this.numberTo = numberTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withNumberTo(numberTo);
         return this;
     }
 
@@ -319,7 +272,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the prefixSize value.
      */
     public String prefixSize() {
-        return this.prefixSize;
+        return this.innerProperties() == null ? null : this.innerProperties().prefixSize();
     }
 
     /**
@@ -330,7 +283,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withPrefixSize(String prefixSize) {
-        this.prefixSize = prefixSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withPrefixSize(prefixSize);
         return this;
     }
 
@@ -341,7 +297,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the suffixSize value.
      */
     public String suffixSize() {
-        return this.suffixSize;
+        return this.innerProperties() == null ? null : this.innerProperties().suffixSize();
     }
 
     /**
@@ -352,7 +308,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withSuffixSize(String suffixSize) {
-        this.suffixSize = suffixSize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withSuffixSize(suffixSize);
         return this;
     }
 
@@ -363,7 +322,7 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the replacementString value.
      */
     public String replacementString() {
-        return this.replacementString;
+        return this.innerProperties() == null ? null : this.innerProperties().replacementString();
     }
 
     /**
@@ -374,7 +333,10 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @return the DataMaskingRuleInner object itself.
      */
     public DataMaskingRuleInner withReplacementString(String replacementString) {
-        this.replacementString = replacementString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withReplacementString(replacementString);
         return this;
     }
 
@@ -384,5 +346,8 @@ public class DataMaskingRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

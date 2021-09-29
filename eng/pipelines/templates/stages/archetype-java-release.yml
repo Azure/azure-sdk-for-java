@@ -48,7 +48,6 @@ stages:
 
                 - download: current
                   artifact: ${{parameters.ArtifactName}}
-                  timeoutInMinutes: 5
 
                 - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
                   parameters:
@@ -58,16 +57,15 @@ stages:
                 - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
                   artifact: ${{parameters.ArtifactName}}-signed
                   displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
-                  timeoutInMinutes: 5
 
-  # We generate two interdepdent stages for each artifact listed in the ci.yml file, creates the release
+  # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
   # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
   # effectively burn the version number. For testing of packages prior to burning the version number -
   # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # pipeline completes.
-  - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
     - ${{ each artifact in parameters.Artifacts }}:
-      - stage: Release_${{artifact.safeName}}
+      - stage:
         displayName: 'Release: ${{artifact.name}}'
         dependsOn: Signing
         condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
@@ -116,11 +114,11 @@ stages:
                     PackageName: ${{artifact.name}}
                     ServiceName: ${{parameters.ServiceDirectory}}
                     ForRelease: true
-
-          - template: /eng/pipelines/templates/jobs/installation.check.yml
-            parameters:
-              Artifact: ${{ artifact }}
-              ArtifactName: ${{ parameters.ArtifactName }}
+              - template: /eng/pipelines/templates/steps/compilation.check.yml
+                parameters:
+                  Artifact: ${{ artifact }}
+                  ArtifactName: ${{ parameters.ArtifactName }}
+                  ArtifactDirectory: "$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}"
 
           - deployment: TagRepository
             displayName: "Create release tag"
@@ -177,6 +175,10 @@ stages:
                           Target: MavenCentral
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                        parameters:
+                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
+                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                       # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                       # this is that the azure-sdk-for-java feed will have the package available immediately
                       # whereas Maven can take several hours for the package to become available.
@@ -189,6 +191,10 @@ stages:
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                        parameters:
+                          ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
+                          ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
 
           - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
             - deployment: PublicDocsMs
@@ -349,7 +355,6 @@ stages:
               echo "Using Java Private Dev Feed"
             }
           displayName: Setup TargetFeed
-          timeoutInMinutes: 5
 
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
@@ -362,5 +367,8 @@ stages:
                 ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                 RepositoryUrl: $(RepositoryUrl)
                 Target: JavaDevFeed
-                BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                 JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+            - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+              parameters:
+                ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
+                ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed

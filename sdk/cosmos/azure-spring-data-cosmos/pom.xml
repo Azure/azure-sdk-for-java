@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-data-cosmos</artifactId>
-  <version>3.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+  <version>3.12.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
   <packaging>jar</packaging>
   <name>Spring Data for Azure Cosmos DB SQL API</name>
   <description>Spring Data for Azure Cosmos DB SQL API</description>
@@ -22,6 +22,19 @@
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      <!-- Azure Spring Data Cosmos tests need this -->
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.common=spring.core
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.convert=com.fasterxml.jackson.databind
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.converter=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.mapping=spring.core
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.query=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.support=ALL-UNNAMED,spring.core
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -59,7 +72,7 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-commons</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.data:spring-data-commons;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>org.slf4j</groupId>
@@ -75,7 +88,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.19.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -130,7 +143,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -142,7 +155,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.8</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -187,7 +200,7 @@
                 <include>org.springframework:spring-expression:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-expression;external_dependency} -->
                 <include>org.springframework:spring-core:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
                 <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:[2.5.3]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.5.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
                 <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
@@ -221,38 +234,4 @@
 
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                <!-- Azure Spring Data Cosmos tests need this -->
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.common=spring.core
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core=ALL-UNNAMED
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.convert=com.fasterxml.jackson.databind
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.converter=ALL-UNNAMED
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.mapping=spring.core
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository=ALL-UNNAMED
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.query=ALL-UNNAMED
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.support=ALL-UNNAMED,spring.core
-                --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-
-    </profile>
-  </profiles>
-
 </project>

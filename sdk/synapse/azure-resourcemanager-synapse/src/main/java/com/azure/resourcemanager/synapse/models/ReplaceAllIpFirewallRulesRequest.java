@@ -6,7 +6,9 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public final class ReplaceAllIpFirewallRulesRequest {
      * IP firewall rule properties
      */
     @JsonProperty(value = "ipFirewallRules")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, IpFirewallRuleProperties> ipFirewallRules;
 
     /**

@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-context</artifactId>
-  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+  <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
 
   <name>Azure Spring Cloud Context</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-aop</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -56,21 +56,21 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager</artifactId>
-      <version>2.7.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+      <version>2.8.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
     </dependency>
 
     <!-- Identity -->
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-identity-spring</artifactId>
-      <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
+      <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-identity-spring;current} -->
     </dependency>
 
     <!-- test -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.5.3</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -96,8 +96,8 @@
             <bannedDependencies>
               <includes>
                 <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-aop:[2.5.3]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-aop:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
                 <include>org.springframework:spring-context-support:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework:spring-context:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>

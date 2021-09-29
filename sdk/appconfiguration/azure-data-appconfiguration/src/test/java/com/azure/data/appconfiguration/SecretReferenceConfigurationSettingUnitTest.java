@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SecretReferenceConfigurationSettingUnitTest {
     // Original value
     static final String NEW_KEY = "newKey";
-    static final String SECRET_ID_VALUE = "https://www.google.com/";
+    static final String SECRET_ID_VALUE = "https://www.microsoft.com/";
     // Updated value
-    static final String UPDATED_SECRET_ID_VALUE = "https://www.google.com/updated";
+    static final String UPDATED_SECRET_ID_VALUE = "https://www.microsoft.com/updated";
     @Test
     public void accessingStronglyTypedPropertiesAfterSettingDifferentSecretReferenceJSON() {
         // Create a new configuration setting,

@@ -15,7 +15,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
+  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Management</name>
@@ -40,6 +40,21 @@
     <!-- RMJacoco -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.resourcemanager/com.azure.resourcemanager=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.appservice/com.azure.resourcemanager.appservice=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.compute/com.azure.resourcemanager.compute=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.containerinstance/com.azure.resourcemanager.containerinstance=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.containerregistry/com.azure.resourcemanager.containerregistry=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.eventhubs/com.azure.resourcemanager.eventhubs=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.keyvault/com.azure.resourcemanager.keyvault=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.msi/com.azure.resourcemanager.msi=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.sql/com.azure.resourcemanager.sql=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -53,117 +68,117 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-storage</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-compute</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-compute;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-network</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-network;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-keyvault</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-keyvault;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-msi</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-msi;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-sql</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-sql;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-authorization</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-authorization;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appservice</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cosmos</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerservice</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerservice;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-monitor</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-monitor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerregistry</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-dns</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-dns;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-containerinstance</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-containerinstance;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-privatedns</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-privatedns;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-redis</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-redis;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-eventhubs</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-trafficmanager</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-trafficmanager;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-trafficmanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-servicebus</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-cdn</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-cdn;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-search</artifactId>
-      <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-search;current} -->
+      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-search;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -186,13 +201,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -219,38 +234,6 @@
         </dependency>
       </dependencies>
     </profile>
-    <profile>
-      <id>java-lts</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                <!-- tests fail without these exports. -->
-                --add-opens com.azure.resourcemanager/com.azure.resourcemanager=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.appservice/com.azure.resourcemanager.appservice=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.compute/com.azure.resourcemanager.compute=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.containerinstance/com.azure.resourcemanager.containerinstance=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.containerregistry/com.azure.resourcemanager.containerregistry=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.eventhubs/com.azure.resourcemanager.eventhubs=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.keyvault/com.azure.resourcemanager.keyvault=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.msi/com.azure.resourcemanager.msi=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.sql/com.azure.resourcemanager.sql=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
   <build>
     <plugins>
@@ -271,7 +254,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>
@@ -286,7 +269,6 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
-          <skip>true</skip>
           <analysisConfiguration>
             <revapi.ignore>
               <item>

@@ -3,7 +3,6 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -20,20 +19,6 @@ public interface RedirectStrategy {
      * @return The max number of redirect attempts.
      */
     int getMaxAttempts();
-
-    /**
-     * The header name to look up the value for the redirect url in response headers.
-     *
-     * @return the value of the header, or null if the header doesn't exist in the response.
-     */
-    String getLocationHeader();
-
-    /**
-     * The {@link HttpMethod http methods} that are allowed to be redirected.
-     *
-     * @return the set of redirect allowed methods.
-     */
-    Set<HttpMethod> getAllowedMethods();
 
     /**
      * Determines if the url should be redirected between each try.
