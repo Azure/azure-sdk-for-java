@@ -47,23 +47,29 @@ class SasClientTests extends APISpec {
         sasClient.upload(data.defaultInputStream, data.defaultDataSize)
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_10_02")
     def "blob sas all permissions success"() {
         setup:
         // FE will reject a permission string it doesn't recognize
         def allPermissions = new BlobSasPermission()
             .setReadPermission(true)
-            .setAddPermission(true)
-            .setCreatePermission(true)
             .setWritePermission(true)
+            .setCreatePermission(true)
             .setDeletePermission(true)
-            .setDeleteVersionPermission(true)
-            .setPermanentDeletePermission(true)
-            .setTagsPermission(true)
+            .setAddPermission(true)
             .setListPermission(true)
-            .setMovePermission(true)
-            .setExecutePermission(true)
             .setImmutabilityPolicyPermission(true)
+
+        if (Constants.SAS_SERVICE_VERSION >= "2019-12-12") {
+            allPermissions
+                .setMovePermission(true)
+                .setExecutePermission(true)
+                .setDeleteVersionPermission(true)
+                .setTagsPermission(true)
+        }
+        if (Constants.SAS_SERVICE_VERSION >= "V2020_06_12") {
+            allPermissions
+                .setPermanentDeletePermission(true)
+        }
 
         def sasValues = generateValues(allPermissions)
 
