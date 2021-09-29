@@ -37,7 +37,7 @@ public final class SerializableContent extends BinaryDataContent {
 
     @Override
     public Long getLength() {
-        return null;
+        return (long) toBytes().length;
     }
 
     @Override

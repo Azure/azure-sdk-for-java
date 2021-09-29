@@ -88,6 +88,20 @@ public final class RequestOptions {
     }
 
     /**
+     * Sets or replaces a header to the HTTP request.
+     * @param header the header key
+     * @param value the header value
+     *
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions setHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> {
+            request.getHeaders().set(header, value);
+        });
+        return this;
+    }
+
+    /**
      * Adds a header to the HTTP request.
      * @param header the header key
      * @param value the header value
