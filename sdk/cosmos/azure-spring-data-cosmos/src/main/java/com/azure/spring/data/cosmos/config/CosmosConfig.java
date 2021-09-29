@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.config;
 
+import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 
 import java.beans.ConstructorProperties;
@@ -12,6 +13,8 @@ import java.beans.ConstructorProperties;
 public class CosmosConfig {
 
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
+
+    private final DatabaseThroughputConfig databaseThroughputConfig;
 
     private final boolean queryMetricsEnabled;
 
@@ -24,7 +27,22 @@ public class CosmosConfig {
     @ConstructorProperties({"responseDiagnosticsProcessor", "queryMetricsEnabled"})
     public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                         boolean queryMetricsEnabled) {
+        this(responseDiagnosticsProcessor, null, queryMetricsEnabled);
+    }
+
+    /**
+     * Initialization
+     *
+     * @param responseDiagnosticsProcessor must not be {@literal null}
+     * @param databaseThroughputConfig may be @{literal null}
+     * @param queryMetricsEnabled must not be {@literal null}
+     */
+    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled"})
+    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                        DatabaseThroughputConfig databaseThroughputConfig,
+                        boolean queryMetricsEnabled) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
+        this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
     }
 
@@ -47,6 +65,15 @@ public class CosmosConfig {
     }
 
     /**
+     * Gets the database throughput configuration.
+     *
+     * @return DatabaseThroughputConfig, or null if no database throughput is configured
+     */
+    public DatabaseThroughputConfig getDatabaseThroughputConfig() {
+        return databaseThroughputConfig;
+    }
+
+    /**
      * Create a CosmosConfigBuilder instance
      *
      * @return CosmosConfigBuilder
@@ -60,6 +87,7 @@ public class CosmosConfig {
      */
     public static class CosmosConfigBuilder {
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
+        private DatabaseThroughputConfig databaseThroughputConfig;
         private boolean queryMetricsEnabled;
         CosmosConfigBuilder() {
         }
@@ -88,19 +116,25 @@ public class CosmosConfig {
             return this;
         }
 
+        public CosmosConfigBuilder enableDatabaseThroughput(boolean autoscale, int requestUnits) {
+            this.databaseThroughputConfig = new DatabaseThroughputConfig(autoscale, requestUnits);
+            return this;
+        }
+
         /**
          * Build a CosmosConfig instance
          *
          * @return CosmosConfig
          */
         public CosmosConfig build() {
-            return new CosmosConfig(this.responseDiagnosticsProcessor, this.queryMetricsEnabled);
+            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig, this.queryMetricsEnabled);
         }
 
         @Override
         public String toString() {
             return "CosmosConfigBuilder{"
                 + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
+                + ", databaseThroughputConfig=" + databaseThroughputConfig
                 + ", queryMetricsEnabled=" + queryMetricsEnabled
                 + '}';
         }

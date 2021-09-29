@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -18,6 +19,7 @@ import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.config.DatabaseThroughputConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
@@ -61,6 +63,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
+    private final DatabaseThroughputConfig databaseThroughputConfig;
 
     private ApplicationContext applicationContext;
 
@@ -114,6 +117,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
         this.cosmosAuditingHandler = cosmosAuditingHandler;
+        this.databaseThroughputConfig = cosmosConfig.getDatabaseThroughputConfig();
     }
 
     /**
@@ -146,8 +150,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
-        return cosmosAsyncClient
-            .createDatabaseIfNotExists(this.databaseName)
+        return createDatabaseIfNotExists()
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable))
@@ -186,6 +189,19 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                             throwable));
             });
 
+    }
+
+    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
+        if (databaseThroughputConfig == null) {
+            return cosmosAsyncClient
+                .createDatabaseIfNotExists(this.databaseName);
+        } else {
+            ThroughputProperties throughputProperties = databaseThroughputConfig.isAutoScale()
+                ? ThroughputProperties.createAutoscaledThroughput(databaseThroughputConfig.getRequestUnits())
+                : ThroughputProperties.createManualThroughput(databaseThroughputConfig.getRequestUnits());
+            return cosmosAsyncClient
+                .createDatabaseIfNotExists(this.databaseName, throughputProperties);
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
@@ -119,23 +120,23 @@ public class ReactiveCosmosTemplateIT {
             azureKeyCredential = new AzureKeyCredential(cosmosDbKey);
             cosmosClientBuilder.credential(azureKeyCredential);
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
-
-            final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo = new CosmosEntityInformation<>(Person.class);
             containerName = personInfo.getContainerName();
-
-            mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
-
-            final MappingCosmosConverter dbConverter =
-                new MappingCosmosConverter(mappingContext, null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
+            cosmosTemplate = createReactiveCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
 
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, Person.class, GenIdEntity.class, AuditableEntity.class);
 
         insertedPerson = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON))).block();
+    }
+
+    private ReactiveCosmosTemplate createReactiveCosmosTemplate(CosmosConfig config, String dbName) throws ClassNotFoundException {
+        final CosmosFactory cosmosFactory = new CosmosFactory(client, dbName);
+        final CosmosMappingContext mappingContext = new CosmosMappingContext();
+        mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+        final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
+        return new ReactiveCosmosTemplate(cosmosFactory, config, cosmosConverter);
     }
 
     @After
@@ -545,4 +546,34 @@ public class ReactiveCosmosTemplateIT {
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
     }
+
+    @Test
+    public void createDatabaseWithThroughput() throws ClassNotFoundException {
+        final String dbName = TestConstants.DB_NAME + "-other";
+        deleteDatabaseIfExists(dbName);
+
+        Integer expectedRequestUnits = 700;
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableDatabaseThroughput(false, expectedRequestUnits)
+            .build();
+        cosmosTemplate = createReactiveCosmosTemplate(config, dbName);
+
+        final CosmosEntityInformation<Person, String> personInfo =
+            new CosmosEntityInformation<>(Person.class);
+        cosmosTemplate.createContainerIfNotExists(personInfo).block();
+
+        final CosmosAsyncDatabase database = client.getDatabase(dbName);
+        final ThroughputResponse response = database.readThroughput().block();
+        assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+    }
+
+    private void deleteDatabaseIfExists(String dbName) {
+        CosmosAsyncDatabase database = client.getDatabase(dbName);
+        try {
+            database.delete().block();
+        } catch (CosmosException ex) {
+            assertEquals(ex.getStatusCode(), 404);
+        }
+    }
+
 }
