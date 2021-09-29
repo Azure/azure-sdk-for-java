@@ -7,6 +7,7 @@ package com.azure.analytics.purview.catalog;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryListGlossaries {
@@ -20,6 +21,6 @@ public class GlossaryListGlossaries {
         requestOptions.addQueryParam("limit", "1");
         requestOptions.addQueryParam("sort", "ASC");
         requestOptions.addQueryParam("offset", "0");
-        Response<BinaryData> response = client.listGlossariesWithResponse(requestOptions, null);
+        Response<BinaryData> response = client.listGlossariesWithResponse(requestOptions, Context.NONE);
     }
 }
