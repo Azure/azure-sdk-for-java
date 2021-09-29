@@ -53,7 +53,7 @@ public final class CosmosBulkOperationResponse<TContext> {
     }
 
     /**
-     * Get {@link CosmosItemOperation}
+     * Gets the {@link CosmosItemOperation}
      * @return CosmosItemOperation
      */
     public CosmosItemOperation getOperation() {
@@ -61,7 +61,7 @@ public final class CosmosBulkOperationResponse<TContext> {
     }
 
     /**
-     * Get {@link CosmosBulkItemResponse}
+     * Gets the {@link CosmosBulkItemResponse}
      * @return CosmosBulkItemResponse
      */
     public CosmosBulkItemResponse getResponse() {
@@ -69,7 +69,7 @@ public final class CosmosBulkOperationResponse<TContext> {
     }
 
     /**
-     * Get Exception
+     * Gets the Exception
      * @return Exception
      */
     public Exception getException() {
@@ -77,7 +77,7 @@ public final class CosmosBulkOperationResponse<TContext> {
     }
 
     /**
-     * Get BatchContext
+     * Gets the BatchContext
      * @return BatchContext
      */
     public TContext getBatchContext() {
