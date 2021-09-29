@@ -4,44 +4,28 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.EntitiesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.ObjectSerializer;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the EntityBaseClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
-public final class EntityBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+/** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+public final class EntityAsyncClient {
+    private final EntitiesImpl serviceClient;
 
     /**
-     * Initializes an instance of EntityBaseClient client.
+     * Initializes an instance of Entities client.
      *
-     * @param endpoint The catalog endpoint of your Purview account. Example:
-     *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    EntityBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    EntityAsyncClient(EntitiesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -147,7 +131,27 @@ public final class EntityBaseClient {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -155,7 +159,18 @@ public final class EntityBaseClient {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -167,29 +182,29 @@ public final class EntityBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param entity Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createOrUpdate() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(entity, requestOptions);
     }
 
     /**
      * List entities in bulk identified by its GUIDs.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>Boolean</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to create.</td></tr>
+     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -273,18 +288,14 @@ public final class EntityBaseClient {
      * }
      * }</pre>
      *
-     * @param guids An array of GUIDs of entities to create.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listByGuids(List<String> guids) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/bulk")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("guids", serializeIterable(guids, CollectionFormat.CSV))
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listByGuidsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listByGuidsWithResponseAsync(requestOptions);
     }
 
     /**
@@ -392,7 +403,27 @@ public final class EntityBaseClient {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -400,7 +431,18 @@ public final class EntityBaseClient {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -412,20 +454,28 @@ public final class EntityBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param entities An array of entities to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createOrUpdateEntities() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/bulk")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponse(
+            BinaryData entities, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateEntitiesWithResponseAsync(entities, requestOptions);
     }
 
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique attributes.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
+     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -497,18 +547,14 @@ public final class EntityBaseClient {
      * }
      * }</pre>
      *
-     * @param guids An array of GUIDs of entities to delete.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteByGuids(List<String> guids) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/bulk")
-                .setPathParam("Endpoint", endpoint)
-                .addQueryParam("guids", serializeIterable(guids, CollectionFormat.CSV))
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<BinaryData>> deleteByGuidsWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.deleteByGuidsWithResponseAsync(requestOptions);
     }
 
     /**
@@ -545,28 +591,27 @@ public final class EntityBaseClient {
      * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param request The request to associate a classification to multiple entities.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest addClassification() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/bulk/classification")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<Void>> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationWithResponseAsync(request, requestOptions);
     }
 
     /**
      * Get complete definition of an entity given its GUID.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>Boolean</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -649,23 +694,28 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return complete definition of an entity given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getByGuidWithResponseAsync(guid, requestOptions);
     }
 
     /**
      * Update entity partially - create or update entity attribute identified by its GUID. Supports only primitive
      * attribute type and entity references. It does not support updating complex types like arrays, and maps. Null
      * updates are not possible.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -744,19 +794,16 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @param name The name of the attribute.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param body The value of the attribute.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest partialUpdateEntityAttributeByGuid(String guid, String name) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addQueryParam("name", name)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponse(
+            String guid, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateEntityAttributeByGuidWithResponseAsync(guid, body, requestOptions);
     }
 
     /**
@@ -833,17 +880,14 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteByGuid(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<BinaryData>> deleteByGuidWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteByGuidWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -877,18 +921,15 @@ public final class EntityBaseClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasClassification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getClassification(String guid, String classificationName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .setPathParam("classificationName", classificationName)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getClassificationWithResponse(
+            String guid, String classificationName, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationWithResponseAsync(guid, classificationName, requestOptions);
     }
 
     /**
@@ -896,18 +937,15 @@ public final class EntityBaseClient {
      *
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteClassification(String guid, String classificationName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .setPathParam("classificationName", classificationName)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<Void>> deleteClassificationWithResponse(
+            String guid, String classificationName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteClassificationWithResponseAsync(guid, classificationName, requestOptions);
     }
 
     /**
@@ -929,17 +967,14 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasClassifications.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getClassifications(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}/classifications")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getClassificationsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getClassificationsWithResponseAsync(guid, requestOptions);
     }
 
     /**
@@ -974,17 +1009,16 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param classifications An array of classifications to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest addClassifications(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}/classifications")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<Void>> addClassificationsWithResponse(
+            String guid, BinaryData classifications, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationsWithResponseAsync(guid, classifications, requestOptions);
     }
 
     /**
@@ -1019,17 +1053,16 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param classifications An array of classifications to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest updateClassifications(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}/classifications")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<Void>> updateClassificationsWithResponse(
+            String guid, BinaryData classifications, RequestOptions requestOptions) {
+        return this.serviceClient.updateClassificationsWithResponseAsync(guid, classifications, requestOptions);
     }
 
     /**
@@ -1039,14 +1072,14 @@ public final class EntityBaseClient {
      * qualifiedName. The REST request would look something like this: GET
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>Boolean</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>The qualified name of the entity.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1129,17 +1162,17 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
+     *     parameter, attribute key-value pair(s) can be provided in the following format:
+     *     attr:\&lt;attrName&gt;=&lt;attrValue&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getByUniqueAttributes(String typeName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getByUniqueAttributesWithResponse(
+            String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.getByUniqueAttributesWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -1150,12 +1183,12 @@ public final class EntityBaseClient {
      * qualifiedName. The REST request would look something like this: PUT
      * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>The qualified name of the entity.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1256,7 +1289,27 @@ public final class EntityBaseClient {
      *                     String
      *                 ]
      *                 classifications: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         attributes: {
+     *                             String: Object
+     *                         }
+     *                         typeName: String
+     *                         lastModifiedTS: String
+     *                         entityGuid: String
+     *                         entityStatus: String(ACTIVE/DELETED)
+     *                         removePropagationsOnEntityDelete: Boolean
+     *                         validityPeriods: [
+     *                             {
+     *                                 endTime: String
+     *                                 startTime: String
+     *                                 timeZone: String
+     *                             }
+     *                         ]
+     *                         source: String
+     *                         sourceDetails: {
+     *                             String: Object
+     *                         }
+     *                     }
      *                 ]
      *                 displayText: String
      *                 guid: String
@@ -1264,7 +1317,18 @@ public final class EntityBaseClient {
      *                     String
      *                 ]
      *                 meanings: [
-     *                     (recursive schema, see above)
+     *                     {
+     *                         confidence: Integer
+     *                         createdBy: String
+     *                         description: String
+     *                         displayText: String
+     *                         expression: String
+     *                         relationGuid: String
+     *                         source: String
+     *                         status: String(DISCOVERED/PROPOSED/IMPORTED/VALIDATED/DEPRECATED/OBSOLETE/OTHER)
+     *                         steward: String
+     *                         termGuid: String
+     *                     }
      *                 ]
      *                 status: String(ACTIVE/DELETED)
      *             }
@@ -1277,17 +1341,17 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param atlasEntityWithExtInfo Atlas entity with extended information.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest partialUpdateEntityByUniqueAttributes(String typeName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponse(
+            String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateEntityByUniqueAttributesWithResponseAsync(
+                typeName, atlasEntityWithExtInfo, requestOptions);
     }
 
     /**
@@ -1296,12 +1360,12 @@ public final class EntityBaseClient {
      * NOTE: The attrName and attrValue should be unique across entities, eg. qualifiedName. The REST request would look
      * something like this: DELETE /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>The qualified name of the entity.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1375,56 +1439,51 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteByUniqueAttribute(String typeName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponse(
+            String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteByUniqueAttributeWithResponseAsync(typeName, requestOptions);
     }
 
     /**
      * Delete a given classification from an entity identified by its type and unique attributes.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>The qualified name of the entity.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteClassificationByUniqueAttribute(String typeName, String classificationName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl(
-                        "{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}/classification/{classificationName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .setPathParam("classificationName", classificationName)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<Void>> deleteClassificationByUniqueAttributeWithResponse(
+            String typeName, String classificationName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteClassificationByUniqueAttributeWithResponseAsync(
+                typeName, classificationName, requestOptions);
     }
 
     /**
      * Add classification to the entity identified by its type and unique attributes.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>The qualified name of the entity.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1456,28 +1515,28 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param atlasClassificationArray An array of classification to be added.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest addClassificationsByUniqueAttribute(String typeName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponse(
+            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        return this.serviceClient.addClassificationsByUniqueAttributeWithResponseAsync(
+                typeName, atlasClassificationArray, requestOptions);
     }
 
     /**
      * Update classification on an entity identified by its type and unique attributes.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>The qualified name of the entity.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1509,17 +1568,17 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param atlasClassificationArray An array of classification to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest updateClassificationsByUniqueAttribute(String typeName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponse(
+            String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        return this.serviceClient.updateClassificationsByUniqueAttributeWithResponseAsync(
+                typeName, atlasClassificationArray, requestOptions);
     }
 
     /**
@@ -1595,16 +1654,16 @@ public final class EntityBaseClient {
      * ]
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param entityHeaders Atlas entity headers.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return response that indicates each classification mutation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest setClassifications() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/bulk/setClassifications")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> setClassificationsWithResponse(
+            BinaryData entityHeaders, RequestOptions requestOptions) {
+        return this.serviceClient.setClassificationsWithResponseAsync(entityHeaders, requestOptions);
     }
 
     /**
@@ -1622,14 +1681,14 @@ public final class EntityBaseClient {
      * <p>GET
      * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_0:qualifiedName=db1@cl1&amp;attr_2:qualifiedName=db2@cl1.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>Boolean</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1714,17 +1773,15 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param typeName The name of the type.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasEntitiesWithExtInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getEntitiesByUniqueAttributes(String typeName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/bulk/uniqueAttribute/type/{typeName}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("typeName", typeName)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponse(
+            String typeName, RequestOptions requestOptions) {
+        return this.serviceClient.getEntitiesByUniqueAttributesWithResponseAsync(typeName, requestOptions);
     }
 
     /**
@@ -1789,36 +1846,13 @@ public final class EntityBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return entity header given its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getHeader(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/entity/guid/{guid}/header")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
-    }
-
-    private String serializeIterable(Iterable<?> iterable, CollectionFormat format) {
-        if (iterable == null) {
-            return null;
-        }
-        return StreamSupport.stream(iterable.spliterator(), false)
-                .map(item -> item == null ? "" : new String(serializer.serializeToBytes(item), StandardCharsets.UTF_8))
-                .map(serialized -> serialized.replace("^\"*|\"*$", ""))
-                .collect(Collectors.joining(format.getDelimiter()));
+    public Mono<Response<BinaryData>> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getHeaderWithResponseAsync(guid, requestOptions);
     }
 }

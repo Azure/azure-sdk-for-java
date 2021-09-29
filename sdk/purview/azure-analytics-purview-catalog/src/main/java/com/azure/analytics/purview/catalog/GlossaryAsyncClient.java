@@ -4,52 +4,45 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollerFlux;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the GlossaryBaseClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
-public final class GlossaryBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+/** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+public final class GlossaryAsyncClient {
+    private final GlossariesImpl serviceClient;
 
     /**
-     * Initializes an instance of GlossaryBaseClient client.
+     * Initializes an instance of Glossaries client.
      *
-     * @param endpoint The catalog endpoint of your Purview account. Example:
-     *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    GlossaryBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    GlossaryAsyncClient(GlossariesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * Get all glossaries registered with Atlas.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -113,16 +106,14 @@ public final class GlossaryBaseClient {
      * ]
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return all glossaries registered with Atlas.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listGlossaries() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listGlossariesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listGlossariesWithResponseAsync(requestOptions);
     }
 
     /**
@@ -190,19 +181,73 @@ public final class GlossaryBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
+     * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
+     *     anchor attribute when creating the Term/Category.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createGlossary() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createGlossaryWithResponse(
+            BinaryData atlasGlossary, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryWithResponseAsync(atlasGlossary, requestOptions);
     }
 
     /**
@@ -277,20 +322,77 @@ public final class GlossaryBaseClient {
      *
      * <pre>{@code
      * [
-     *     (recursive schema, see above)
+     *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
+     *         anchor: {
+     *             displayText: String
+     *             glossaryGuid: String
+     *             relationGuid: String
+     *         }
+     *         childrenCategories: [
+     *             {
+     *                 categoryGuid: String
+     *                 description: String
+     *                 displayText: String
+     *                 parentCategoryGuid: String
+     *                 relationGuid: String
+     *             }
+     *         ]
+     *         parentCategory: (recursive schema, see parentCategory above)
+     *         terms: [
+     *             {
+     *                 description: String
+     *                 displayText: String
+     *                 expression: String
+     *                 relationGuid: String
+     *                 source: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *                 steward: String
+     *                 termGuid: String
+     *             }
+     *         ]
+     *     }
      * ]
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param glossaryCategory An array of glossary category definitions to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return an array of glossary category created successfully in bulk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createGlossaryCategories() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/categories")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponse(
+            BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryCategoriesWithResponseAsync(glossaryCategory, requestOptions);
     }
 
     /**
@@ -362,19 +464,77 @@ public final class GlossaryBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     childrenCategories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     parentCategory: (recursive schema, see parentCategory above)
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
+     *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createGlossaryCategory() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createGlossaryCategoryWithResponse(
+            BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryCategoryWithResponseAsync(glossaryCategory, requestOptions);
     }
 
     /**
@@ -444,17 +604,15 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return specific glossary category by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getGlossaryCategory(String categoryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category/{categoryGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("categoryGuid", categoryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getGlossaryCategoryWithResponse(
+            String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions);
     }
 
     /**
@@ -526,38 +684,92 @@ public final class GlossaryBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     childrenCategories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     parentCategory: (recursive schema, see parentCategory above)
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     * }
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param glossaryCategory The glossary category to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest updateGlossaryCategory(String categoryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category/{categoryGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("categoryGuid", categoryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponse(
+            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return this.serviceClient.updateGlossaryCategoryWithResponseAsync(
+                categoryGuid, glossaryCategory, requestOptions);
     }
 
     /**
      * Delete a glossary category.
      *
      * @param categoryGuid The globally unique identifier of the category.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteGlossaryCategory(String categoryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category/{categoryGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("categoryGuid", categoryGuid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<Void>> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions);
     }
 
     /**
@@ -635,31 +847,32 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
+     *     partial update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossaryCategory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest partialUpdateGlossaryCategory(String categoryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category/{categoryGuid}/partial")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("categoryGuid", categoryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponse(
+            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateGlossaryCategoryWithResponseAsync(
+                categoryGuid, partialUpdates, requestOptions);
     }
 
     /**
      * Get all related categories (parent and children). Limit, offset, and sort parameters are currently not being
      * enabled and won't work even they are passed.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -679,30 +892,28 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return all related categories (parent and children).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listRelatedCategories(String categoryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category/{categoryGuid}/related")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("categoryGuid", categoryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listRelatedCategoriesWithResponse(
+            String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listRelatedCategoriesWithResponseAsync(categoryGuid, requestOptions);
     }
 
     /**
      * Get all terms associated with the specific category.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -723,28 +934,26 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param categoryGuid The globally unique identifier of the category.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return all terms associated with the specific category.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listCategoryTerms(String categoryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/category/{categoryGuid}/terms")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("categoryGuid", categoryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listCategoryTermsWithResponse(
+            String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listCategoryTermsWithResponseAsync(categoryGuid, requestOptions);
     }
 
     /**
      * Create a glossary term.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -901,30 +1110,176 @@ public final class GlossaryBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     abbreviation: String
+     *     templateName: [
+     *         Object
+     *     ]
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     antonyms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     createTime: Float
+     *     createdBy: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     status: String(Draft/Approved/Alert/Expired)
+     *     resources: [
+     *         {
+     *             displayName: String
+     *             url: String
+     *         }
+     *     ]
+     *     contacts: {
+     *         String: [
+     *             {
+     *                 id: String
+     *                 info: String
+     *             }
+     *         ]
+     *     }
+     *     attributes: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     assignedEntities: [
+     *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
+     *             displayText: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             relationshipType: String
+     *             relationshipAttributes: {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *             }
+     *             relationshipGuid: String
+     *             relationshipStatus: String(ACTIVE/DELETED)
+     *         }
+     *     ]
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             relationGuid: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         }
+     *     ]
+     *     classifies: [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples: [
+     *         String
+     *     ]
+     *     isA: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso: [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String
+     *     validValues: [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
+     *     Optionally it can be categorized as well.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createGlossaryTerm() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/term")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createGlossaryTermWithResponse(
+            BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryTermWithResponseAsync(glossaryTerm, requestOptions);
     }
 
     /**
      * Get a specific glossary term by its GUID.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1079,17 +1434,14 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a specific glossary term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getGlossaryTerm(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/term/{termGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getGlossaryTermWithResponseAsync(termGuid, requestOptions);
     }
 
     /**
@@ -1249,49 +1601,190 @@ public final class GlossaryBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     abbreviation: String
+     *     templateName: [
+     *         Object
+     *     ]
+     *     anchor: {
+     *         displayText: String
+     *         glossaryGuid: String
+     *         relationGuid: String
+     *     }
+     *     antonyms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     createTime: Float
+     *     createdBy: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     status: String(Draft/Approved/Alert/Expired)
+     *     resources: [
+     *         {
+     *             displayName: String
+     *             url: String
+     *         }
+     *     ]
+     *     contacts: {
+     *         String: [
+     *             {
+     *                 id: String
+     *                 info: String
+     *             }
+     *         ]
+     *     }
+     *     attributes: {
+     *         String: {
+     *             String: Object
+     *         }
+     *     }
+     *     assignedEntities: [
+     *         {
+     *             guid: String
+     *             typeName: String
+     *             uniqueAttributes: {
+     *                 String: Object
+     *             }
+     *             displayText: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             relationshipType: String
+     *             relationshipAttributes: {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *             }
+     *             relationshipGuid: String
+     *             relationshipStatus: String(ACTIVE/DELETED)
+     *         }
+     *     ]
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             relationGuid: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *         }
+     *     ]
+     *     classifies: [
+     *         (recursive schema, see above)
+     *     ]
+     *     examples: [
+     *         String
+     *     ]
+     *     isA: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     preferredToTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacedBy: [
+     *         (recursive schema, see above)
+     *     ]
+     *     replacementTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     seeAlso: [
+     *         (recursive schema, see above)
+     *     ]
+     *     synonyms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translatedTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     translationTerms: [
+     *         (recursive schema, see above)
+     *     ]
+     *     usage: String
+     *     validValues: [
+     *         (recursive schema, see above)
+     *     ]
+     *     validValuesFor: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param glossaryTerm The glossary term to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest updateGlossaryTerm(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/term/{termGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> updateGlossaryTermWithResponse(
+            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.updateGlossaryTermWithResponseAsync(termGuid, glossaryTerm, requestOptions);
     }
 
     /**
      * Delete a glossary term.
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteGlossaryTerm(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/term/{termGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<Void>> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGlossaryTermWithResponseAsync(termGuid, requestOptions);
     }
 
     /**
      * Update the glossary term partially.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1454,28 +1947,28 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
+     *     updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossaryTerm.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest partialUpdateGlossaryTerm(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/term/{termGuid}/partial")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponse(
+            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateGlossaryTermWithResponseAsync(termGuid, partialUpdates, requestOptions);
     }
 
     /**
      * Create glossary terms in bulk.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1635,33 +2128,178 @@ public final class GlossaryBaseClient {
      *
      * <pre>{@code
      * [
-     *     (recursive schema, see above)
+     *     {
+     *         guid: String
+     *         classifications: [
+     *             {
+     *                 attributes: {
+     *                     String: Object
+     *                 }
+     *                 typeName: String
+     *                 lastModifiedTS: String
+     *                 entityGuid: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 removePropagationsOnEntityDelete: Boolean
+     *                 validityPeriods: [
+     *                     {
+     *                         endTime: String
+     *                         startTime: String
+     *                         timeZone: String
+     *                     }
+     *                 ]
+     *                 source: String
+     *                 sourceDetails: {
+     *                     String: Object
+     *                 }
+     *             }
+     *         ]
+     *         longDescription: String
+     *         name: String
+     *         qualifiedName: String
+     *         shortDescription: String
+     *         lastModifiedTS: String
+     *         abbreviation: String
+     *         templateName: [
+     *             Object
+     *         ]
+     *         anchor: {
+     *             displayText: String
+     *             glossaryGuid: String
+     *             relationGuid: String
+     *         }
+     *         antonyms: [
+     *             {
+     *                 description: String
+     *                 displayText: String
+     *                 expression: String
+     *                 relationGuid: String
+     *                 source: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *                 steward: String
+     *                 termGuid: String
+     *             }
+     *         ]
+     *         createTime: Float
+     *         createdBy: String
+     *         updateTime: Float
+     *         updatedBy: String
+     *         status: String(Draft/Approved/Alert/Expired)
+     *         resources: [
+     *             {
+     *                 displayName: String
+     *                 url: String
+     *             }
+     *         ]
+     *         contacts: {
+     *             String: [
+     *                 {
+     *                     id: String
+     *                     info: String
+     *                 }
+     *             ]
+     *         }
+     *         attributes: {
+     *             String: {
+     *                 String: Object
+     *             }
+     *         }
+     *         assignedEntities: [
+     *             {
+     *                 guid: String
+     *                 typeName: String
+     *                 uniqueAttributes: {
+     *                     String: Object
+     *                 }
+     *                 displayText: String
+     *                 entityStatus: String(ACTIVE/DELETED)
+     *                 relationshipType: String
+     *                 relationshipAttributes: {
+     *                     attributes: {
+     *                         String: Object
+     *                     }
+     *                     typeName: String
+     *                     lastModifiedTS: String
+     *                 }
+     *                 relationshipGuid: String
+     *                 relationshipStatus: String(ACTIVE/DELETED)
+     *             }
+     *         ]
+     *         categories: [
+     *             {
+     *                 categoryGuid: String
+     *                 description: String
+     *                 displayText: String
+     *                 relationGuid: String
+     *                 status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             }
+     *         ]
+     *         classifies: [
+     *             (recursive schema, see above)
+     *         ]
+     *         examples: [
+     *             String
+     *         ]
+     *         isA: [
+     *             (recursive schema, see above)
+     *         ]
+     *         preferredTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         preferredToTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         replacedBy: [
+     *             (recursive schema, see above)
+     *         ]
+     *         replacementTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         seeAlso: [
+     *             (recursive schema, see above)
+     *         ]
+     *         synonyms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         translatedTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         translationTerms: [
+     *             (recursive schema, see above)
+     *         ]
+     *         usage: String
+     *         validValues: [
+     *             (recursive schema, see above)
+     *         ]
+     *         validValuesFor: [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
      * ]
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param glossaryTerm An array of glossary term definitions to be created in bulk.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return if bulk glossary terms creation was successful.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest createGlossaryTerms() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/terms")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createGlossaryTermsWithResponse(
+            BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryTermsWithResponseAsync(glossaryTerm, requestOptions);
     }
 
     /**
      * Get all related objects assigned with the specified term.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1691,17 +2329,15 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return all related objects assigned with the specified term.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getEntitiesAssignedWithTerm(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponse(
+            String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getEntitiesAssignedWithTermWithResponseAsync(termGuid, requestOptions);
     }
 
     /**
@@ -1734,17 +2370,16 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest assignTermToEntities(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<Void>> assignTermToEntitiesWithResponse(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return this.serviceClient.assignTermToEntitiesWithResponseAsync(termGuid, relatedObjectIds, requestOptions);
     }
 
     /**
@@ -1777,17 +2412,17 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest removeTermAssignmentFromEntities(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponse(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return this.serviceClient.removeTermAssignmentFromEntitiesWithResponseAsync(
+                termGuid, relatedObjectIds, requestOptions);
     }
 
     /**
@@ -1820,31 +2455,31 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteTermAssignmentFromEntities(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/terms/{termGuid}/assignedEntities")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponse(
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return this.serviceClient.deleteTermAssignmentFromEntitiesWithResponseAsync(
+                termGuid, relatedObjectIds, requestOptions);
     }
 
     /**
      * Get all related terms for a specific term by its GUID. Limit, offset, and sort parameters are currently not being
      * enabled and won't work even they are passed.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1867,17 +2502,14 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param termGuid The globally unique identifier for glossary term.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return all related terms for a specific term by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listRelatedTerms(String termGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/terms/{termGuid}/related")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("termGuid", termGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listRelatedTermsWithResponseAsync(termGuid, requestOptions);
     }
 
     /**
@@ -1943,17 +2575,14 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a specific Glossary by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getGlossary(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getGlossaryWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
@@ -2021,51 +2650,100 @@ public final class GlossaryBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     guid: String
+     *     classifications: [
+     *         {
+     *             attributes: {
+     *                 String: Object
+     *             }
+     *             typeName: String
+     *             lastModifiedTS: String
+     *             entityGuid: String
+     *             entityStatus: String(ACTIVE/DELETED)
+     *             removePropagationsOnEntityDelete: Boolean
+     *             validityPeriods: [
+     *                 {
+     *                     endTime: String
+     *                     startTime: String
+     *                     timeZone: String
+     *                 }
+     *             ]
+     *             source: String
+     *             sourceDetails: {
+     *                 String: Object
+     *             }
+     *         }
+     *     ]
+     *     longDescription: String
+     *     name: String
+     *     qualifiedName: String
+     *     shortDescription: String
+     *     lastModifiedTS: String
+     *     categories: [
+     *         {
+     *             categoryGuid: String
+     *             description: String
+     *             displayText: String
+     *             parentCategoryGuid: String
+     *             relationGuid: String
+     *         }
+     *     ]
+     *     language: String
+     *     terms: [
+     *         {
+     *             description: String
+     *             displayText: String
+     *             expression: String
+     *             relationGuid: String
+     *             source: String
+     *             status: String(DRAFT/ACTIVE/DEPRECATED/OBSOLETE/OTHER)
+     *             steward: String
+     *             termGuid: String
+     *         }
+     *     ]
+     *     usage: String
+     * }
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param updatedGlossary The glossary definition to be updated.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest updateGlossary(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> updateGlossaryWithResponse(
+            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
+        return this.serviceClient.updateGlossaryWithResponseAsync(glossaryGuid, updatedGlossary, requestOptions);
     }
 
     /**
      * Delete a glossary.
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest deleteGlossary(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
+    public Mono<Response<Void>> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGlossaryWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
      * Get the categories belonging to a specific glossary.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2134,30 +2812,28 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the categories belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listGlossaryCategories(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}/categories")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponse(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryCategoriesWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
      * Get the category headers belonging to a specific glossary.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2175,28 +2851,26 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the category headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listGlossaryCategoriesHeaders(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}/categories/headers")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponse(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryCategoriesHeadersWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
      * Get a specific glossary with detailed information.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2399,28 +3073,26 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return a specific glossary with detailed information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getDetailedGlossary(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}/detailed")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getDetailedGlossaryWithResponse(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getDetailedGlossaryWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
      * Update the glossary partially. Some properties such as qualifiedName are not allowed to be updated.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2491,31 +3163,30 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasGlossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest partialUpdateGlossary(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}/partial")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponse(
+            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateGlossaryWithResponseAsync(glossaryGuid, partialUpdates, requestOptions);
     }
 
     /**
      * Get terms belonging to a specific glossary.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2672,30 +3343,28 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return terms belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listGlossaryTerms(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}/terms")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listGlossaryTermsWithResponse(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryTermsWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
      * Get term headers belonging to a specific glossary.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>sort</td><td>String</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2716,28 +3385,35 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return term headers belonging to a specific glossary.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listGlossaryTermHeaders(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/glossary/{glossaryGuid}/terms/headers")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponse(
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryTermHeadersWithResponseAsync(glossaryGuid, requestOptions);
     }
 
     /**
      * Import Glossary Terms from local csv file.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2754,39 +3430,106 @@ public final class GlossaryBaseClient {
      *     status: String(NotStarted/Succeeded/Failed/Running)
      *     createTime: String
      *     lastUpdateTime: String
-     *     errorCode: Integer
-     *     errorMessage: String
-     *     importedTerms: String
-     *     totalTermsDetected: String
+     *     properties: {
+     *         importedTerms: String
+     *         totalTermsDetected: String
+     *     }
+     *     error: {
+     *         errorCode: Integer
+     *         errorMessage: String
+     *     }
      * }
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @param contentLength The contentLength parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest importGlossaryTermsViaCsv(String glossaryGuid, long contentLength) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/glossary/{glossaryGuid}/terms/import")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Content-Length", String.valueOf(contentLength))
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "multipart/form-data")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions);
+    }
+
+    /**
+     * Import Glossary Terms from local csv file.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     status: String(NotStarted/Succeeded/Failed/Running)
+     *     createTime: String
+     *     lastUpdateTime: String
+     *     properties: {
+     *         importedTerms: String
+     *         totalTermsDetected: String
+     *     }
+     *     error: {
+     *         errorCode: Integer
+     *         errorMessage: String
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param glossaryGuid The globally unique identifier for glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return status of import csv operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions);
     }
 
     /**
      * Import Glossary Terms from local csv file by glossaryName.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2803,32 +3546,56 @@ public final class GlossaryBaseClient {
      *     status: String(NotStarted/Succeeded/Failed/Running)
      *     createTime: String
      *     lastUpdateTime: String
-     *     errorCode: Integer
-     *     errorMessage: String
-     *     importedTerms: String
-     *     totalTermsDetected: String
+     *     properties: {
+     *         importedTerms: String
+     *         totalTermsDetected: String
+     *     }
+     *     error: {
+     *         errorCode: Integer
+     *         errorMessage: String
+     *     }
      * }
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
-     * @param contentLength The contentLength parameter.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest importGlossaryTermsViaCsvByGlossaryName(String glossaryName, long contentLength) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/glossary/name/{glossaryName}/terms/import")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryName", glossaryName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Content-Length", String.valueOf(contentLength))
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "multipart/form-data")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
+                glossaryName, file, requestOptions);
     }
 
     /**
-     * Get the status of import csv operation.
+     * Import Glossary Terms from local csv file by glossaryName.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -2838,37 +3605,82 @@ public final class GlossaryBaseClient {
      *     status: String(NotStarted/Succeeded/Failed/Running)
      *     createTime: String
      *     lastUpdateTime: String
-     *     errorCode: Integer
-     *     errorMessage: String
-     *     importedTerms: String
-     *     totalTermsDetected: String
+     *     properties: {
+     *         importedTerms: String
+     *         totalTermsDetected: String
+     *     }
+     *     error: {
+     *         errorCode: Integer
+     *         errorMessage: String
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param glossaryName The name of the glossary.
+     * @param file The csv file to import glossary terms from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return status of import csv operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions);
+    }
+
+    /**
+     * Get the status of import csv operation.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String
+     *     status: String(NotStarted/Succeeded/Failed/Running)
+     *     createTime: String
+     *     lastUpdateTime: String
+     *     properties: {
+     *         importedTerms: String
+     *         totalTermsDetected: String
+     *     }
+     *     error: {
+     *         errorCode: Integer
+     *         errorMessage: String
+     *     }
      * }
      * }</pre>
      *
      * @param operationGuid The globally unique identifier for async operation/job.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the status of import csv operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest getImportCsvOperationStatus(String operationGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/glossary/terms/import/{operationGuid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("operationGuid", operationGuid)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponse(
+            String operationGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getImportCsvOperationStatusWithResponseAsync(operationGuid, requestOptions);
     }
 
     /**
      * Export Glossary Terms as csv file.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2886,31 +3698,30 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryGuid The globally unique identifier for glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param termGuids An array of term guids.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest exportGlossaryTermsAsCsv(String glossaryGuid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/glossary/{glossaryGuid}/terms/export")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryGuid", glossaryGuid)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "text/csv")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponse(
+            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
+        return this.serviceClient.exportGlossaryTermsAsCsvWithResponseAsync(glossaryGuid, termGuids, requestOptions);
     }
 
     /**
      * Get terms by glossary name.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>Integer</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>Integer</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>Whether include term hierarchy</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3067,27 +3878,14 @@ public final class GlossaryBaseClient {
      * }</pre>
      *
      * @param glossaryName The name of the glossary.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return terms by glossary name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest listTermsByGlossaryName(String glossaryName) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/glossary/name/{glossaryName}/terms")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("glossaryName", glossaryName)
-                .addQueryParam("api-version", apiVersion)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponse(
+            String glossaryName, RequestOptions requestOptions) {
+        return this.serviceClient.listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions);
     }
 }
