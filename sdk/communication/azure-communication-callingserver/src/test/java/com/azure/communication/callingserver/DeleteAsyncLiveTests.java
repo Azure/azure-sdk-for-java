@@ -17,7 +17,6 @@ import static org.hamcrest.CoreMatchers.is;
 
 
 public class DeleteAsyncLiveTests extends CallingServerTestBase {
-/*
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -91,5 +90,5 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
 
     protected CallingServerClientBuilder addLoggingPolicy(CallingServerClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
-    }*/
+    }
 }

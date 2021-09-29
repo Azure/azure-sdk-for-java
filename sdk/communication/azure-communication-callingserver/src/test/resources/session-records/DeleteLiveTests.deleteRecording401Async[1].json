@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.asm.skype.com/v1/objects/https://storage.asm.skype.com/v1/objects/0-eus-d11-229745ac3df2eeaf672cefd311ef2401",
+    "Uri" : "https://REDACTED.asm.skype.com/v1/objects/0-eus-d11-229745ac3df2eeaf672cefd311ef2401",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (1.8.0_291; Windows 10; 10.0)",
       "x-ms-client-request-id" : "79a06e02-32f1-4c79-9d07-36313d4ae318"

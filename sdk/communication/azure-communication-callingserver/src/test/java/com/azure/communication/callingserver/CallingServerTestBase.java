@@ -66,10 +66,10 @@ public class CallingServerTestBase extends TestBase {
         .get("AUDIO_FILE_URI", "https://host.app/audio/bot-callcenter-intro.wav");
 
     protected static final String METADATA_URL = Configuration.getGlobalConfiguration()
-        .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-wus-d8-85723230e68f016d8f25aea7f2e8fcac/content/acsmetadata");
+        .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
 
     protected static final String VIDEO_URL = Configuration.getGlobalConfiguration()
-        .get("VIDEO_URL", "https://storage.asm.skype.com/v1/objects/0-wus-d8-85723230e68f016d8f25aea7f2e8fcac/content/video");
+        .get("VIDEO_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/video");
 
     protected static final String CONTENT_URL_404 = Configuration.getGlobalConfiguration()
         .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");

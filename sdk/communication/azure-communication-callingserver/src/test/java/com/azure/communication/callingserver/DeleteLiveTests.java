@@ -28,7 +28,7 @@ public class DeleteLiveTests extends CallingServerTestBase {
         CallingServerClient callingServerClient = setupClient(builder, "deleteRecordingWithConnectionStringClient");
         deleteRecording(callingServerClient);
     }
-/*
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -39,9 +39,8 @@ public class DeleteLiveTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "deleteRecordingWithTokenCredentialClient");
         deleteRecording(callingServerClient);
-    }*/
-
-
+    }
+    
     private void deleteRecording(CallingServerClient callingServerAsyncClient) {
         try {
             Response<HttpResponse> response = callingServerAsyncClient.deleteRecordingWithResponse(RECORDING_DELETE_URL, null);

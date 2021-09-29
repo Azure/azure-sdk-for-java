@@ -28,7 +28,7 @@ public class TokenCredentialAddHostHeaderPolicyTests {
         }
     }
 
-    private final String HOST_NAME = "host.communication.azure.com";
+    private static final String HOST_NAME = "host.communication.azure.com";
 
     private final HttpPipelinePolicy verifyHeadersPolicy = (context, next) -> {
         HttpRequest request = context.getHttpRequest();
