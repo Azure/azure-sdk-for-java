@@ -159,6 +159,7 @@ com.azure.spring:azure-spring-cloud-actuator;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-actuator-autoconfigure;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-resourcemanager;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter;4.0.0-beta.1;4.0.0-beta.1
+com.azure.spring:azure-spring-cloud-starter-actuator;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-messaging;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-cache;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventhubs-kafka;4.0.0-beta.1;4.0.0-beta.1
