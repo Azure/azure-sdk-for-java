@@ -6,17 +6,18 @@ package com.azure.core.util;
 import com.azure.core.util.logging.ClientLogger;
 
 /**
- * This class represents an HTTP ETag.
+ * This class represents an HTTP ETag. A ETag value could be strong or weak ETag.
+ * More information, check https://en.wikipedia.org/wiki/HTTP_ETag
  */
 public final class ETag {
     private static final ClientLogger LOGGER = new ClientLogger(ETag.class);
 
-    private static final String EMPTY_STRING = "";
     private static final String QUOTE_STRING = "\"";
     private static final String WEAK_ETAG_PREFIX_QUOTE = "W/\"";
 
-    public static final String DEFAULT_FORMAT = "G";
-    public static final String HEADER_FORMAT = "H";
+    /**
+     * The asterisk is a special value representing any resource.
+     */
     public static final ETag ALL = new ETag("*");
 
     private final String eTag;
@@ -24,35 +25,31 @@ public final class ETag {
     /**
      * Creates a new instance of {@link ETag}.
      *
-     * @param eTag The eTag string value.
+     * @param eTag The HTTP entity tag string value.
      */
     public ETag(String eTag) {
         checkValidETag(eTag);
         this.eTag = eTag;
     }
 
-    /**
-     * It returns the ETag value in specific format. If {@link #DEFAULT_FORMAT}, it turns the original {@code eTag}
-     * value. If {@link #HEADER_FORMAT}, the {@code eTag} value is quoted. For example, if eTag = 12345,
-     * it returns as it is if DEFAULT_FORMAT, "12345" if HEADER_FORMAT.
-     *
-     * @param format A valid format value is {@link #DEFAULT_FORMAT} and {@link #HEADER_FORMAT}
-     *
-     * @return The ETag value in specific format.
-     */
-    public String toString(String format) {
-        if (format == null) {
-            return EMPTY_STRING;
-        }
-        // TODO: what if weak ETag?
-        if (DEFAULT_FORMAT.equals(format)) {
-            return eTag;
-        } else if (HEADER_FORMAT.equals(format)) {
-            return String.format("\"%s\"", eTag);
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
         }
 
-        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-            String.format("Invalid format string, \"%s\".", format)));
+        if (!(o instanceof ETag)) {
+            return false;
+        }
+
+        ETag oETag = (ETag) o;
+
+        return this.eTag.equals(oETag.eTag);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.eTag.hashCode();
     }
 
     /**
@@ -67,8 +64,8 @@ public final class ETag {
         if (eTag == null || ALL.equals(eTag))
             return;
 
-        if ((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
-                && eTag.endsWith(QUOTE_STRING)) {
+        if (!((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
+                  && eTag.endsWith(QUOTE_STRING))) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
                 eTag)));
