@@ -11,7 +11,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Locale;
@@ -45,7 +44,7 @@ final class HeaderCollectionHandler {
         values.put(headerName.substring(prefixLength), headerValue);
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
         /*
          * First check if the deserialized headers type has a public setter.
@@ -60,7 +59,7 @@ final class HeaderCollectionHandler {
         final boolean declaredFieldAccessibleBackup = declaringField.isAccessible();
         try {
             if (!declaredFieldAccessibleBackup) {
-                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
                     declaringField.setAccessible(true);
                     return null;
                 });
@@ -71,7 +70,7 @@ final class HeaderCollectionHandler {
             logger.warning("Failed to inject header collection values into deserialized headers.", ex);
         } finally {
             if (!declaredFieldAccessibleBackup) {
-                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
                     declaringField.setAccessible(false);
                     return null;
                 });

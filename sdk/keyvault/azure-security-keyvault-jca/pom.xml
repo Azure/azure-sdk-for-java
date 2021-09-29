@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.1.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
+            <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -175,7 +175,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+                <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
