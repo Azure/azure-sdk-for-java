@@ -10739,6 +10739,7 @@ public final class GlossariesImpl {
      *     false.
      * @return status of import csv operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
         return PollerFlux.create(
@@ -10802,6 +10803,7 @@ public final class GlossariesImpl {
      *     false.
      * @return status of import csv operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvAsync(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return PollerFlux.create(
@@ -10865,6 +10867,7 @@ public final class GlossariesImpl {
      *     false.
      * @return status of import csv operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return this.beginImportGlossaryTermsViaCsvAsync(glossaryGuid, file, requestOptions, context).getSyncPoller();
@@ -11053,6 +11056,7 @@ public final class GlossariesImpl {
      *     false.
      * @return status of import csv operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
         return PollerFlux.create(
@@ -11116,6 +11120,7 @@ public final class GlossariesImpl {
      *     false.
      * @return status of import csv operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryNameAsync(
             String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
         return PollerFlux.create(
@@ -11181,6 +11186,7 @@ public final class GlossariesImpl {
      *     false.
      * @return status of import csv operation.
      */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
         return this.beginImportGlossaryTermsViaCsvByGlossaryNameAsync(glossaryName, file, requestOptions, context)

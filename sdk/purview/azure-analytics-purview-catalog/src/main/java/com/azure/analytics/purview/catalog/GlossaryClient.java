@@ -3487,7 +3487,7 @@ public final class GlossaryClient {
      *     false.
      * @return status of import csv operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
         return this.serviceClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions, context);
@@ -3546,7 +3546,7 @@ public final class GlossaryClient {
      *     false.
      * @return status of import csv operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
         return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryName(
