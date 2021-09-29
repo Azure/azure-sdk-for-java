@@ -95,7 +95,8 @@ public final class RepositoryHandler {
 
         logger.info(String.format(StatusStrings.PROCESSING_DTMIS, targetDtmi));
 
-        return tryFromExpanded.flatMap( t -> modelFetcher.fetchModelAsync(targetDtmi, repositoryUri, t, context))
+        return tryFromExpanded
+            .flatMap (tryExpanded -> modelFetcher.fetchModelAsync(targetDtmi, repositoryUri, tryExpanded, context))
             .map(result -> new IntermediateFetchModelResult(result, currentResults))
             .expand(customType -> {
                 Map<String, String> results = customType.getMap();

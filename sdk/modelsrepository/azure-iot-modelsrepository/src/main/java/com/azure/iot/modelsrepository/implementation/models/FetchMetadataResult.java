@@ -18,11 +18,7 @@ public class FetchMetadataResult {
 
     private ModelsRepositoryMetadata definition;
     private String path;
-    private final ObjectMapper mapper;
-
-    public FetchMetadataResult() {
-        mapper = new ObjectMapper();
-    }
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Gets the model repository's metadata definition
