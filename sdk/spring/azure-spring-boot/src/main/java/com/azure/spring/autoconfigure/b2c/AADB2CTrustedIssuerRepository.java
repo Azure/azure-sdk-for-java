@@ -42,7 +42,7 @@ public class AADB2CTrustedIssuerRepository extends AADTrustedIssuerRepository {
     private void addB2CUserFlowIssuers() {
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
         Assert.notNull(userFlows, "userFlows cannot be null.");
-        userFlows.keySet()
+        userFlows.values()
                  .stream()
                  .map(uf -> String.format("%s/tfp/%s/%s/v2.0/", resolvedBaseUri, tenantId, uf.toLowerCase(ROOT)))
                  .forEach(this::addTrustedIssuer);
