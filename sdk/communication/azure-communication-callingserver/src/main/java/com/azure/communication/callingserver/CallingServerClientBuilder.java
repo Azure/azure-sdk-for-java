@@ -27,6 +27,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -253,7 +256,12 @@ public final class CallingServerClientBuilder {
 
         Objects.requireNonNull(endpoint);
         if (isTokenCredentialSet) {
-            hostName = getHostNameFromEndpoint();
+            try {
+                hostName = getHostNameFromEndpoint();
+            } catch (MalformedURLException e)
+            {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
         }
 
         if (pipeline == null) {
@@ -351,7 +359,7 @@ public final class CallingServerClientBuilder {
         return httpLogOptions;
     }
 
-    private String getHostNameFromEndpoint() {
-        return endpoint.replace("https://", "");
+    private String getHostNameFromEndpoint() throws MalformedURLException {
+        return new URL(endpoint).getHost();
     }
 }
