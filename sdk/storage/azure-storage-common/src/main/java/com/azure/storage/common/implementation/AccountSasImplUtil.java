@@ -47,18 +47,9 @@ public class AccountSasImplUtil {
      * Creates a new {@link AccountSasImplUtil} with the specified parameters
      *
      * @param sasValues {@link AccountSasSignatureValues}
-     */
-    public AccountSasImplUtil(AccountSasSignatureValues sasValues) {
-        this(null, sasValues);
-    }
-
-    /**
-     * Creates a new {@link AccountSasImplUtil} with the specified parameters
-     *
      * @param encryptionScope An encryption scope that will be applied to any write operations performed with the sas
-     * @param sasValues {@link AccountSasSignatureValues}
      */
-    public AccountSasImplUtil(String encryptionScope, AccountSasSignatureValues sasValues) {
+    public AccountSasImplUtil(AccountSasSignatureValues sasValues, String encryptionScope) {
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();

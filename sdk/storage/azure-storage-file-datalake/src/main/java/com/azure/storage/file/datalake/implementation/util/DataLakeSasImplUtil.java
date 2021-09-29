@@ -299,24 +299,44 @@ public class DataLakeSasImplUtil {
     }
 
     private String stringToSign(String canonicalName) {
-        return String.join("\n",
-            this.permissions == null ? "" : permissions,
-            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            canonicalName,
-            this.identifier == null ? "" : this.identifier,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            VERSION,
-            resource,
-            "", /* Version segment. */
-            "", // encryptionScope
-            this.cacheControl == null ? "" : this.cacheControl,
-            this.contentDisposition == null ? "" : this.contentDisposition,
-            this.contentEncoding == null ? "" : this.contentEncoding,
-            this.contentLanguage == null ? "" : this.contentLanguage,
-            this.contentType == null ? "" : this.contentType
-        );
+        if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
+            return String.join("\n",
+                this.permissions == null ? "" : permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName,
+                this.identifier == null ? "" : this.identifier,
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                resource,
+                "", /* Version segment. */
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType
+            );
+        } else {
+            return String.join("\n",
+                this.permissions == null ? "" : permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName,
+                this.identifier == null ? "" : this.identifier,
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                resource,
+                "", /* Version segment. */
+                "", // encryptionScope
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType
+            );
+        }
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
@@ -337,14 +357,13 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
-                "", // Encryption Scope
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        } else {
+        } if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -364,6 +383,34 @@ public class DataLakeSasImplUtil {
                 VERSION,
                 resource,
                 "", /* Version segment. */
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType
+            );
+        }
+        else {
+            return String.join("\n",
+                this.permissions == null ? "" : this.permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName,
+                key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
+                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+                key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+                key.getSignedService() == null ? "" : key.getSignedService(),
+                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+                this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+                this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
+                this.correlationId == null ? "" : this.correlationId,
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                resource,
+                "", /* Version segment. */
+                "", /* Encryption scope. */
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

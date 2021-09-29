@@ -1031,7 +1031,7 @@ class SasClientTests extends APISpec {
         }
         v.setProtocol(protocol)
 
-        def implUtil = new AccountSasImplUtil(v)
+        def implUtil = new AccountSasImplUtil(v, null)
 
         def sasToken = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 

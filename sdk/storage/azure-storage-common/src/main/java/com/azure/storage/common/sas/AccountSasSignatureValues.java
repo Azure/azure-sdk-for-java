@@ -302,18 +302,33 @@ public final class AccountSasSignatureValues {
     }
 
     private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {
-        return String.join("\n",
-            storageSharedKeyCredentials.getAccountName(),
-            AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
-            this.services,
-            resourceTypes,
-            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-            Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-            this.protocol == null ? "" : this.protocol.toString(),
-            VERSION,
-            this.encryptionScope == null ? "" : this.encryptionScope,
-            "" // Account SAS requires an additional newline character
-        );
+        if (VERSION.compareTo("2020-10-02") <= 0) {
+            return String.join("\n",
+                storageSharedKeyCredentials.getAccountName(),
+                AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
+                this.services,
+                resourceTypes,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                "" // Account SAS requires an additional newline character
+            );
+        } else {
+            return String.join("\n",
+                storageSharedKeyCredentials.getAccountName(),
+                AccountSasPermission.parse(this.permissions).toString(), // guarantees ordering
+                this.services,
+                resourceTypes,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
+                VERSION,
+                this.encryptionScope == null ? "" : this.encryptionScope,
+                "" // Account SAS requires an additional newline character
+            );
+        }
     }
 }
