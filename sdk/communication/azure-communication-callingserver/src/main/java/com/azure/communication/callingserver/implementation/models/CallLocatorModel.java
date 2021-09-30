@@ -11,80 +11,80 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CallLocatorModel {
     /*
-     * The group call locator.
+     * The group call id
      */
-    @JsonProperty(value = "groupCallLocator")
-    private GroupCallLocatorModel groupCallLocator;
+    @JsonProperty(value = "groupCallId")
+    private String groupCallId;
 
     /*
-     * The server call locator.
+     * The server call id.
      */
-    @JsonProperty(value = "serverCallLocator")
-    private ServerCallLocatorModel serverCallLocator;
+    @JsonProperty(value = "serverCallId")
+    private String serverCallId;
 
     /*
-     * The call locator type.
+     * The call locator kind.
      */
-    @JsonProperty(value = "type")
-    private CallLocatorTypeModel type;
+    @JsonProperty(value = "kind")
+    private CallLocatorKindModel kind;
 
     /**
-     * Get the groupCallLocator property: The group call locator.
+     * Get the groupCallId property: The group call id.
      *
-     * @return the groupCallLocator value.
+     * @return the groupCallId value.
      */
-    public GroupCallLocatorModel getGroupCallLocator() {
-        return this.groupCallLocator;
+    public String getGroupCallId() {
+        return this.groupCallId;
     }
 
     /**
-     * Set the groupCallLocator property: The group call locator.
+     * Set the groupCallId property: The group call id.
      *
-     * @param groupCallLocator the groupCallLocator value to set.
+     * @param groupCallId the groupCallId value to set.
      * @return the CallLocatorModel object itself.
      */
-    public CallLocatorModel setGroupCallLocator(GroupCallLocatorModel groupCallLocator) {
-        this.groupCallLocator = groupCallLocator;
+    public CallLocatorModel setGroupCallId(String groupCallId) {
+        this.groupCallId = groupCallId;
         return this;
     }
 
     /**
-     * Get the serverCallLocator property: The server call locator.
+     * Get the serverCallId property: The server call id.
      *
-     * @return the serverCallLocator value.
+     * @return the serverCallId value.
      */
-    public ServerCallLocatorModel getServerCallLocator() {
-        return this.serverCallLocator;
+    public String getServerCallId() {
+        return this.serverCallId;
     }
 
     /**
-     * Set the serverCallLocator property: The server call locator.
+     * Set the serverCallId property: The server call id.
      *
-     * @param serverCallLocator the serverCallLocator value to set.
+     * @param serverCallId the serverCallId value to set.
      * @return the CallLocatorModel object itself.
      */
-    public CallLocatorModel setServerCallLocator(ServerCallLocatorModel serverCallLocator) {
-        this.serverCallLocator = serverCallLocator;
+    public CallLocatorModel setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
         return this;
     }
 
     /**
-     * Get the type property: The call locator type.
+     * Get the kind property: The call locator kind.
      *
-     * @return the type value.
+     * @return the kind value.
      */
-    public CallLocatorTypeModel getType() {
-        return this.type;
+    public CallLocatorKindModel getKind() {
+        return this.kind;
     }
 
     /**
-     * Set the type property: The call locator type.
+     * Set the kind property: The call locator kind.
      *
-     * @param type the type value to set.
+     * @param kind the kind value to set.
      * @return the CallLocatorModel object itself.
      */
-    public CallLocatorModel setType(CallLocatorTypeModel type) {
-        this.type = type;
+    public CallLocatorModel setKind(CallLocatorKindModel kind) {
+        this.kind = kind;
         return this;
     }
 }

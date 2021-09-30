@@ -6,20 +6,52 @@ package com.azure.communication.callingserver;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
 import com.azure.communication.callingserver.implementation.ServerCallsImpl;
+import com.azure.communication.callingserver.implementation.converters.AddParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
+import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.JoinCallRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
+import com.azure.communication.callingserver.implementation.converters.StartHoldMusicResultConverter;
+import com.azure.communication.callingserver.implementation.converters.StopHoldMusicResultConverter;
+import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.AddParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CancelMediaOperationRequest;
+import com.azure.communication.callingserver.implementation.models.CancelMediaOperationWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
+import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
+import com.azure.communication.callingserver.implementation.models.GetAllParticipantsWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.GetParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.GetParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.RemoveParticipantWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingRequest;
+import com.azure.communication.callingserver.implementation.models.StartCallRecordingWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicRequest;
+import com.azure.communication.callingserver.implementation.models.StartHoldMusicWithCallLocatorRequest;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicRequest;
+import com.azure.communication.callingserver.implementation.models.StopHoldMusicWithCallLocatorRequest;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallLocator;
+import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.callingserver.models.StartHoldMusicResult;
+import com.azure.communication.callingserver.models.StopHoldMusicResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -34,15 +66,19 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -176,7 +212,7 @@ public final class CallingServerAsyncClient {
     /**
      * Join a Call
      *
-     * @param serverCallId Server call id.
+     * @param callLocator the call locator.
      * @param source Source identity.
      * @param joinCallOptions Join call options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -185,14 +221,14 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionAsync> joinCall(
-        String serverCallId,
+        CallLocator callLocator,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal
-                .joinCallAsync(serverCallId, JoinCallRequestConverter.convert(source, joinCallOptions))
+                .joinCallAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
@@ -203,7 +239,7 @@ public final class CallingServerAsyncClient {
     /**
      * Join a call
      *
-     * @param serverCallId Server call id.
+     * @param callLocator the call locator.
      * @param source Source identity.
      * @param joinCallOptions Join call options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -212,14 +248,14 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionAsync>> joinCallWithResponse(
-        String serverCallId,
+        CallLocator callLocator,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal.
-                joinCallWithResponseAsync(serverCallId, JoinCallRequestConverter.convert(source, joinCallOptions))
+                joinCallWithResponseAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .map(response -> new SimpleResponse<>(response,
                     new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
@@ -229,14 +265,14 @@ public final class CallingServerAsyncClient {
     }
 
     Mono<CallConnection> joinInternal(
-        String serverCallId,
+        CallLocator callLocator,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
             Objects.requireNonNull(source, "'source' cannot be null.");
             Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal
-                .joinCallAsync(serverCallId, JoinCallRequestConverter.convert(source, joinCallOptions))
+                .joinCallAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response ->
                     Mono.just(new CallConnection(new CallConnectionAsync(response.getCallConnectionId(),
@@ -247,7 +283,7 @@ public final class CallingServerAsyncClient {
     }
 
     Mono<Response<CallConnection>>joinWithResponseInternal(
-        String serverCallId,
+        CallLocator callLocator,
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions,
         Context context) {
@@ -258,7 +294,7 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .joinCallWithResponseAsync(serverCallId, JoinCallRequestConverter.convert(source, joinCallOptions), contextValue)
+                    .joinCallWithResponseAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions), contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(
@@ -289,19 +325,557 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Get ServerCall object.
+     * Add a participant to the call.
      *
-     * @param serverCallId Server call id.
-     * @return ServerCall object.
+     * @param callLocator the call locator.
+     * @param participant The identifier of the participant.
+     * @param callBackUri callBackUri to get notifications.
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
      */
-    public ServerCallAsync initializeServerCall(String serverCallId) {
-        Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
-        return new ServerCallAsync(serverCallId, serverCallInternal);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddParticipantResult> addParticipant(
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
+        URI callBackUri,
+        String alternateCallerId,
+        String operationContext) {
+        try {
+            Objects.requireNonNull(participant, "'participant' cannot be null.");
+
+            AddParticipantWithCallLocatorRequest requestWithCallLocator = getAddParticipantWithCallLocatorRequest(callLocator, participant,
+                    callBackUri, alternateCallerId, operationContext);
+
+            return serverCallInternal.addParticipantAsync(requestWithCallLocator, Context.NONE)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(new AddParticipantResult(result.getParticipantId())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
-    ServerCall initializeServerCallInternal(String serverCallId) {
-        Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
-        return new ServerCall(new ServerCallAsync(serverCallId, serverCallInternal));
+    /**
+     * Add a participant to the call.
+     *
+     * @param callLocator the call locator.
+     * @param participant The identifier of the participant.
+     * @param callBackUri callBackUri to get notifications.
+     * @param alternateCallerId Phone number to use when adding a phone number participant.
+     * @param operationContext Value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful add participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
+        URI callBackUri,
+        String alternateCallerId,
+        String operationContext) {
+        return addParticipantWithResponse(
+            callLocator,
+            participant,
+            callBackUri,
+            alternateCallerId,
+            operationContext,
+            null);
+    }
+
+    Mono<Response<AddParticipantResult>> addParticipantWithResponse(
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
+        URI callBackUri,
+        String alternateCallerId,
+        String operationContext,
+        Context context) {
+        try {
+            Objects.requireNonNull(participant, "'participant' cannot be null.");
+
+            AddParticipantWithCallLocatorRequest requestWithCallLocator = getAddParticipantWithCallLocatorRequest(callLocator, participant,
+                    callBackUri, alternateCallerId, operationContext);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .addParticipantWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, new AddParticipantResult(response.getValue().getParticipantId())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private AddParticipantWithCallLocatorRequest getAddParticipantWithCallLocatorRequest(CallLocator callLocator, CommunicationIdentifier participant,
+            URI callBackUri, String alternateCallerId, String operationContext) {
+        AddParticipantRequest request = AddParticipantRequestConverter.convert(
+            participant,
+            alternateCallerId,
+            operationContext,
+            callBackUri.toString());
+
+        AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest();
+        requestWithCallLocator.setAddParticipantRequest(request);
+        requestWithCallLocator.setCallLocator(CallLocatorConverter.convert(callLocator));
+        return requestWithCallLocator;
+    }
+
+    /**
+     * Remove a participant from the call.
+     *
+     * @param callLocator the call locator.
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful remove participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> removeParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
+        try {
+            RemoveParticipantWithCallLocatorRequest requestWithCallLocator = getRemoveParticipantWithCallLocatorRequest(callLocator, participant);
+
+            return serverCallInternal.removeParticipantAsync(requestWithCallLocator)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove a participant from the call.
+     *
+     * @param callLocator the call locator.
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful remove participant request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant) {
+        return removeParticipantWithResponse(callLocator, participant, null);
+    }
+
+    Mono<Response<Void>> removeParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
+        try {
+            RemoveParticipantWithCallLocatorRequest requestWithCallLocator = getRemoveParticipantWithCallLocatorRequest(callLocator, participant);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .removeParticipantWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private RemoveParticipantWithCallLocatorRequest getRemoveParticipantWithCallLocatorRequest(CallLocator callLocator,
+            CommunicationIdentifier participant) {
+        RemoveParticipantRequest request = new RemoveParticipantRequest();
+        request.setIdentifier(CommunicationIdentifierConverter.convert(participant));
+
+        RemoveParticipantWithCallLocatorRequest requestWithCallLocator = new RemoveParticipantWithCallLocatorRequest();
+        requestWithCallLocator.setCallLocator(CallLocatorConverter.convert(callLocator));
+        requestWithCallLocator.setRemoveParticipantRequest(request);
+        return requestWithCallLocator;
+    }
+
+    /**
+     * Get participant from the call.
+     *
+     * @param callLocator the call locator.
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<List<CallParticipant>> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
+        try {
+            GetParticipantWithCallLocatorRequest requestWithCallLocator = getGetParticipantWithCallLocatorRequest(callLocator, participant);
+
+            return serverCallInternal.getParticipantAsync(requestWithCallLocator)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(
+                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private GetParticipantWithCallLocatorRequest getGetParticipantWithCallLocatorRequest(CallLocator callLocator,
+            CommunicationIdentifier participant) {
+        GetParticipantRequest request = new GetParticipantRequest()
+            .setIdentifier(CommunicationIdentifierConverter.convert(participant));
+        GetParticipantWithCallLocatorRequest requestWithCallLocator = new GetParticipantWithCallLocatorRequest()
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setGetParticipantRequest(request);
+        return requestWithCallLocator;
+    }
+
+    /**
+     * Get participant from the call using identifier.
+     *
+     * @param callLocator the call locator.
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participant request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant) {
+        return getParticipantWithResponse(callLocator, participant, Context.NONE);
+    }
+
+    Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
+        try {
+            GetParticipantWithCallLocatorRequest requestWithCallLocator = getGetParticipantWithCallLocatorRequest(callLocator, participant);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal.getParticipantWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response,
+                            response.getValue()
+                            .stream()
+                            .map(CallParticipantConverter::convert)
+                            .collect(Collectors.toList()
+                        )
+                    )
+                );
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get all participants of the call.
+     *
+     * @param callLocator the call locator.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participants request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<List<CallParticipant>> getAllParticipants(CallLocator callLocator) {
+        try {
+            GetAllParticipantsWithCallLocatorRequest requestWithCallLocator = new GetAllParticipantsWithCallLocatorRequest()
+                .setCallLocator(CallLocatorConverter.convert(callLocator));
+
+            return serverCallInternal.getParticipantsAsync(requestWithCallLocator)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(
+                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get all participants of the call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get participants request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Mono<Response<List<CallParticipant>>> getAllParticipantsWithResponse(CallLocator callLocator) {
+        return getParticipantsWithResponse(callLocator, Context.NONE);
+    }
+
+    Mono<Response<List<CallParticipant>>> getParticipantsWithResponse(CallLocator callLocator, Context context) {
+        try {
+            GetAllParticipantsWithCallLocatorRequest requestWithCallLocator = new GetAllParticipantsWithCallLocatorRequest()
+                .setCallLocator(CallLocatorConverter.convert(callLocator));
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal.getParticipantsWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response,
+                            response.getValue()
+                            .stream()
+                            .map(CallParticipantConverter::convert)
+                            .collect(Collectors.toList()
+                        )
+                    )
+                );
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Start recording of the call.     *
+     *
+     * @param callLocator the call locator.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartCallRecordingResult> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
+        try {
+            Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
+            if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
+                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
+            }
+            StartCallRecordingWithCallLocatorRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
+                    recordingStateCallbackUri);
+
+            return serverCallInternal.startRecordingAsync(requestWithCallLocator, null)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(new StartCallRecordingResult(result.getRecordingId())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private StartCallRecordingWithCallLocatorRequest getStartCallRecordingWithCallLocatorRequest(CallLocator callLocator,
+        URI recordingStateCallbackUri) {
+        StartCallRecordingRequest request = new StartCallRecordingRequest();
+        request.setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
+
+        StartCallRecordingWithCallLocatorRequest requestWithCallLocator = new StartCallRecordingWithCallLocatorRequest();
+        requestWithCallLocator.setCallLocator(CallLocatorConverter.convert(callLocator));
+        requestWithCallLocator.setStartCallRecordingRequest(request);
+        return requestWithCallLocator;
+    }
+
+    /**
+     * Start recording of the call.
+     *
+     * @param callLocator the call locator.
+     * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful start recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(CallLocator callLocator, URI recordingStateCallbackUri) {
+        return startRecordingWithResponse(callLocator, recordingStateCallbackUri, null);
+    }
+
+    Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
+        CallLocator callLocator,
+        URI recordingStateCallbackUri,
+        Context context) {
+        try {
+            Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
+            if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
+                throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
+            }
+            StartCallRecordingWithCallLocatorRequest requestWithCallLocator = getStartCallRecordingWithCallLocatorRequest(callLocator,
+                    recordingStateCallbackUri);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .startRecordingWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, new StartCallRecordingResult(response.getValue().getRecordingId())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Stop recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful stop recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopRecording(String recordingId) {
+        try {
+            return serverCallInternal.stopRecordingAsync(recordingId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Stop recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful stop recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopRecordingWithResponse(String recordingId) {
+        return stopRecordingWithResponse(recordingId, Context.NONE);
+    }
+
+    Mono<Response<Void>> stopRecordingWithResponse(String recordingId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .stopRecordingWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Pause recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful pause recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> pauseRecording(String recordingId) {
+        try {
+            return serverCallInternal.pauseRecordingAsync(recordingId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Pause recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful pause recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId) {
+        return pauseRecordingWithResponse(recordingId, Context.NONE);
+    }
+
+    Mono<Response<Void>> pauseRecordingWithResponse(String recordingId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .pauseRecordingWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Resume recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for a successful resume recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resumeRecording(String recordingId) {
+        try {
+            return serverCallInternal.resumeRecordingAsync(recordingId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Resume recording of the call.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for a successful resume recording request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resumeRecordingWithResponse(String recordingId) {
+        return resumeRecordingWithResponse(recordingId, Context.NONE);
+    }
+
+    Mono<Response<Void>> resumeRecordingWithResponse(String recordingId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .resumeRecordingWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get current recording state by recording id.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallRecordingProperties> getRecordingState(String recordingId) {
+        try {
+            return serverCallInternal.getRecordingPropertiesAsync(recordingId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(new CallRecordingProperties(result.getRecordingState())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get current recording state by recording id.
+     *
+     * @param recordingId Recording id to stop.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful get recording state request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallRecordingProperties>> getRecordingStateWithResponse(String recordingId) {
+        return getRecordingStateWithResponse(recordingId, Context.NONE);
+    }
+
+    Mono<Response<CallRecordingProperties>> getRecordingStateWithResponse(String recordingId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, new CallRecordingProperties(response.getValue().getRecordingState())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -460,7 +1034,7 @@ public final class CallingServerAsyncClient {
     /**
      * Play audio in a call.
      *
-     * @param serverCallId The server call id.
+     * @param callLocator The call locator.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -470,43 +1044,30 @@ public final class CallingServerAsyncClient {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudio(String serverCallId, String audioFileUri, PlayAudioOptions playAudioOptions) {
-        return playAudioInternal(serverCallId, audioFileUri, playAudioOptions, Context.NONE);
+    public Mono<PlayAudioResult> playAudio(CallLocator callLocator, URI audioFileUri, PlayAudioOptions playAudioOptions) {
+        return playAudioInternal(callLocator, audioFileUri, playAudioOptions, Context.NONE);
     }
 
-    Mono<PlayAudioResult> playAudioInternal(String serverCallId, String audioFileUri, 
-            PlayAudioOptions playAudioOptions, Context context) {
+    Mono<PlayAudioResult> playAudioInternal(CallLocator callLocator, URI audioFileUri, PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
+            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri);
-            if (playAudioOptions != null) {
-                request
-                    .setLoop(playAudioOptions.isLoop())
-                    .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri());
-            }
-            return playAudioInternal(serverCallId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
 
-    Mono<PlayAudioResult> playAudioInternal(String serverCallId, PlayAudioRequest playAudioRequest, Context context) {
-        try {
-            return serverCallInternal.playAudioAsync(serverCallId, playAudioRequest, context)
+            PlayAudioWithCallLocatorRequest requestWithCallLocator = getPlayAudioWithCallLocatorRequest(callLocator, audioFileUri,
+                    playAudioOptions);
+
+            return serverCallInternal.playAudioAsync(requestWithCallLocator, context)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }  
-    
+    }
+
     /**
      * Play audio in a call.
      *
-     * @param serverCallId The server call id.
+     * @param callLocator The server call id.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -517,44 +1078,29 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResult>> playAudioWithResponse(
-        String serverCallId,
-        String audioFileUri,
+        CallLocator callLocator,
+        URI audioFileUri,
         PlayAudioOptions playAudioOptions) {
-        return playAudioWithResponseInternal(serverCallId, audioFileUri, playAudioOptions, Context.NONE);
+        return playAudioWithResponseInternal(callLocator, audioFileUri, playAudioOptions, Context.NONE);
     }
 
     Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        String serverCallId,
-        String audioFileUri,
+        CallLocator callLocator,
+        URI audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
+            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri);
-            if (playAudioOptions != null) {
-                request
-                    .setLoop(playAudioOptions.isLoop())
-                    .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri());
-            }
-            return playAudioWithResponseInternal(serverCallId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
 
-    Mono<Response<PlayAudioResult>> playAudioWithResponseInternal(
-        String serverCallId,
-        PlayAudioRequest playAudioRequest,
-        Context context) {
-        try {
+            PlayAudioWithCallLocatorRequest requestWithCallLocator = getPlayAudioWithCallLocatorRequest(callLocator, audioFileUri,
+                    playAudioOptions);
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .playAudioWithResponseAsync(serverCallId, playAudioRequest, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, 
+                    .playAudioWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class,
                                 CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
@@ -564,10 +1110,42 @@ public final class CallingServerAsyncClient {
         }
     }
 
+    private PlayAudioWithCallLocatorRequest getPlayAudioWithCallLocatorRequest(CallLocator callLocator, URI audioFileUri,
+            PlayAudioOptions playAudioOptions) {
+        PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri.toString());
+        if (playAudioOptions != null) {
+            request
+                .setLoop(playAudioOptions.isLoop())
+                .setOperationContext(playAudioOptions.getOperationContext())
+                .setAudioFileId(playAudioOptions.getAudioFileId())
+                .setCallbackUri(playAudioOptions.getCallbackUri().toString());
+        }
+        PlayAudioWithCallLocatorRequest requestWithCallLocator = new PlayAudioWithCallLocatorRequest();
+        requestWithCallLocator.setCallLocator(CallLocatorConverter.convert(callLocator));
+        requestWithCallLocator.setPlayAudioRequest(request);
+        return requestWithCallLocator;
+    }
+
     /**
      * Cancel Media Operation.
      *
-     * @param serverCallId The server call id.
+     * @param callLocator The server call id.
+     * @param mediaOperationId The Id of the media operation to Cancel.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelMediaOperation(
+        CallLocator callLocator,
+        String mediaOperationId) {
+        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE).block();
+    }
+
+    /**
+     * Cancel Media Operation.
+     *
+     * @param callLocator The server call id.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -575,15 +1153,15 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelMediaOperationWithResponse(
-        String serverCallId,
+        CallLocator callLocator,
         String mediaOperationId) {
-        return cancelMediaOperationWithResponseInternal(serverCallId, mediaOperationId, Context.NONE);
+        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE);
     }
 
     /**
      * Cancel Media Operation.
      *
-     * @param serverCallId The server call id.
+     * @param callLocator The server call id.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -591,35 +1169,29 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelParticipantMediaOperation(
-        String serverCallId,
+        CallLocator callLocator,
         String mediaOperationId) {
-        return cancelMediaOperationWithResponseInternal(serverCallId, mediaOperationId, Context.NONE).block();
+        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE).block();
     }
 
     Mono<Response<Void>> cancelMediaOperationWithResponseInternal(
-        String serverCallId,
+        CallLocator callLocator,
         String mediaOperationId,
         Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
+            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
             Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
             CancelMediaOperationRequest request = new CancelMediaOperationRequest().setMediaOperationId(mediaOperationId);
-            return cancelMediaOperationWithResponseInternal(serverCallId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
 
-    Mono<Response<Void>> cancelMediaOperationWithResponseInternal(
-        String serverCallId,
-        CancelMediaOperationRequest cancelMediaOperationRequest,
-        Context context) {
-        try {
+            CancelMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelMediaOperationWithCallLocatorRequest();
+            requestWithCallLocator.setCallLocator(CallLocatorConverter.convert(callLocator));
+            requestWithCallLocator.setCancelMediaOperationRequest(request);
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .cancelMediaOperationAsync(serverCallId, cancelMediaOperationRequest, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, 
+                    .cancelMediaOperationAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class,
                                 CallingServerErrorConverter::translateException)
                     .flatMap(result -> Mono.empty());
             });
@@ -631,8 +1203,8 @@ public final class CallingServerAsyncClient {
     /**
      * Cancel Participant Media Operation.
      *
-     * @param serverCallId The server call id.
-     * @param participantId The participant id.
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -640,17 +1212,17 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelParticipantMediaOperationWithResponse(
-        String serverCallId,
-        String participantId,
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
         String mediaOperationId) {
-        return cancelParticipantMediaOperationWithResponseInternal(serverCallId, participantId, mediaOperationId, Context.NONE);
+        return cancelParticipantMediaOperationWithResponseInternal(callLocator, participant, mediaOperationId, Context.NONE);
     }
 
     /**
      * Cancel Participant Media Operation.
      *
-     * @param serverCallId The server call id.
-     * @param participantId The participant id.
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -658,39 +1230,31 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelParticipantMediaOperation(
-        String serverCallId,
-        String participantId,
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
         String mediaOperationId) {
-        return cancelParticipantMediaOperationWithResponseInternal(serverCallId, participantId, mediaOperationId, Context.NONE).block();
+        return cancelParticipantMediaOperationWithResponseInternal(callLocator, participant, mediaOperationId, Context.NONE).block();
     }
 
     Mono<Response<Void>> cancelParticipantMediaOperationWithResponseInternal(
-        String serverCallId,
-        String participantId,
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
         String mediaOperationId,
         Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
-            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
-            Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
-            CancelMediaOperationRequest request = new CancelMediaOperationRequest().setMediaOperationId(mediaOperationId);
-            return cancelParticipantMediaOperationWithResponseInternal(serverCallId, participantId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
 
-    Mono<Response<Void>> cancelParticipantMediaOperationWithResponseInternal(
-        String serverCallId,
-        String participantId,
-        CancelMediaOperationRequest cancelMediaOperationRequest,
-        Context context) {
-        try {
+            CancelParticipantMediaOperationRequest request = new CancelParticipantMediaOperationRequest();
+            request.setIdentifier(CommunicationIdentifierConverter.convert(participant));
+            request.setMediaOperationId(mediaOperationId);
+            CancelParticipantMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelParticipantMediaOperationWithCallLocatorRequest();
+            requestWithCallLocator.setCallLocator(CallLocatorConverter.convert(callLocator));
+            requestWithCallLocator.setCancelParticipantMediaOperationRequest(request);
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .cancelParticipantMediaOperationAsync(serverCallId, participantId, cancelMediaOperationRequest, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, 
+                    .cancelParticipantMediaOperationAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class,
                                 CallingServerErrorConverter::translateException)
                     .flatMap(result -> Mono.empty());
             });
@@ -702,8 +1266,8 @@ public final class CallingServerAsyncClient {
     /**
      * Play audio to a participant.
      *
-     * @param serverCallId The server call id.
-     * @param participantId The participant id.
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -713,45 +1277,42 @@ public final class CallingServerAsyncClient {
      * @return Response payload for play audio to participant operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResult> playAudioToParticipant(String serverCallId, String participantId, String audioFileUri, PlayAudioOptions playAudioOptions) {
-        return playAudioToParticipantInternal(serverCallId, participantId, audioFileUri, playAudioOptions, Context.NONE);
+    public Mono<PlayAudioResult> playAudioToParticipant(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri, PlayAudioOptions playAudioOptions) {
+        return playAudioToParticipantInternal(callLocator, participant, audioFileUri, playAudioOptions, Context.NONE);
     }
 
-    Mono<PlayAudioResult> playAudioToParticipantInternal(String serverCallId, String participantId, String audioFileUri, 
+    Mono<PlayAudioResult> playAudioToParticipantInternal(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri,
             PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
-            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
+            Objects.requireNonNull(participant, "'participant' cannot be null.");
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri);
-            if (playAudioOptions != null) {
-                request
-                    .setLoop(playAudioOptions.isLoop())
-                    .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri());
-            }
-            return playAudioToParticipantInternal(serverCallId, participantId, request, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
 
-    Mono<PlayAudioResult> playAudioToParticipantInternal(String serverCallId, String participantId, PlayAudioRequest playAudioRequest, Context context) {
-        try {
-            return serverCallInternal.participantPlayAudioAsync(serverCallId, participantId, playAudioRequest, context)
+            PlayAudioToParticipantRequest request = new PlayAudioToParticipantRequest();
+            request.setIdentifier(CommunicationIdentifierConverter.convert(participant));
+            request.setAudioFileUri(audioFileUri.toString());
+            request.setAudioFileId(playAudioOptions.getAudioFileId());
+            request.setCallbackUri(playAudioOptions.getCallbackUri().toString());
+            request.setLoop(playAudioOptions.isLoop());
+            request.setOperationContext(playAudioOptions.getOperationContext());
+
+            PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocatorRequest = new PlayAudioToParticipantWithCallLocatorRequest();
+            requestWithCallLocatorRequest.setCallLocator(CallLocatorConverter.convert(callLocator));
+            requestWithCallLocatorRequest.setPlayAudioToParticipantRequest(request);
+
+            return serverCallInternal.participantPlayAudioAsync(requestWithCallLocatorRequest, context)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(PlayAudioResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }  
-    
+    }
+
     /**
      * Play audio to a participant.
      *
-     * @param serverCallId The server call id.
-     * @param participantId The participant id.
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -762,51 +1323,188 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResult>> playAudioToParticipantWithResponse(
-        String serverCallId,
-        String participantId,
-        String audioFileUri,
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
+        URI audioFileUri,
         PlayAudioOptions playAudioOptions) {
-        return playAudioToParticipantWithResponseInternal(serverCallId, participantId, audioFileUri, playAudioOptions, Context.NONE);
+        return playAudioToParticipantWithResponseInternal(callLocator, participant, audioFileUri, playAudioOptions, Context.NONE);
     }
 
     Mono<Response<PlayAudioResult>> playAudioToParticipantWithResponseInternal(
-        String serverCallId,
-        String participantId,
-        String audioFileUri,
+        CallLocator callLocator,
+        CommunicationIdentifier participant,
+        URI audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
-            Objects.requireNonNull(serverCallId, "'serverCallId' cannot be null.");
-            Objects.requireNonNull(participantId, "'participantId' cannot be null.");
+            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
+            Objects.requireNonNull(participant, "'participant' cannot be null.");
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-            PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri);
-            if (playAudioOptions != null) {
-                request
-                    .setLoop(playAudioOptions.isLoop())
-                    .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri());
-            }
-            return playAudioToParticipantWithResponseInternal(serverCallId, participantId, request, context);
+
+            PlayAudioToParticipantRequest request = new PlayAudioToParticipantRequest();
+            request.setIdentifier(CommunicationIdentifierConverter.convert(participant));
+            request.setAudioFileUri(audioFileUri.toString());
+            request.setAudioFileId(playAudioOptions.getAudioFileId());
+            request.setCallbackUri(playAudioOptions.getCallbackUri().toString());
+            request.setLoop(playAudioOptions.isLoop());
+            request.setOperationContext(playAudioOptions.getOperationContext());
+
+            PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocatorRequest = new PlayAudioToParticipantWithCallLocatorRequest();
+            requestWithCallLocatorRequest.setCallLocator(CallLocatorConverter.convert(callLocator));
+            requestWithCallLocatorRequest.setPlayAudioToParticipantRequest(request);
+
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .participantPlayAudioWithResponseAsync(requestWithCallLocatorRequest, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class,
+                                CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PlayAudioResult>> playAudioToParticipantWithResponseInternal(
-        String serverCallId,
-        String participantId,
-        PlayAudioRequest playAudioRequest,
-        Context context) {
+    /**
+     * Hold the participant and play custom audio.
+     *
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
+     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
+     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
+     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StartHoldMusicResult> startHoldMusic(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
         try {
+            StartHoldMusicWithCallLocatorRequest request = getStartHoldMusicWithCallLocatorRequest(callLocator, audioFileUri, audioFileId, callbackUri, operationContext);
+
+            return serverCallInternal.startHoldMusicAsync(request)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(StartHoldMusicResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private StartHoldMusicWithCallLocatorRequest getStartHoldMusicWithCallLocatorRequest(CallLocator callLocator, URI audioFileUri, String audioFileId,
+            URI callbackUri, String operationContext) {
+        StartHoldMusicRequest request = new StartHoldMusicRequest()
+            .setAudioFileUri(audioFileUri.toString())
+            .setAudioFileId(audioFileId)
+            .setCallbackUri(callbackUri.toString())
+            .setOperationContext(operationContext);
+
+        StartHoldMusicWithCallLocatorRequest requestWithCallLocator = new StartHoldMusicWithCallLocatorRequest()
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setStartHoldMusicRequest(request);
+        return requestWithCallLocator;
+    }
+
+    /**
+     * Hold the participant and play custom audio.
+     *
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
+     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
+     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
+     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for start hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponse(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
+        return startHoldMusicWithResponse(callLocator, participant, audioFileUri, audioFileId, callbackUri, operationContext, Context.NONE);
+    }
+
+    Mono<Response<StartHoldMusicResult>> startHoldMusicWithResponse(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
+        try {
+            StartHoldMusicWithCallLocatorRequest request = getStartHoldMusicWithCallLocatorRequest(callLocator, audioFileUri, audioFileId, callbackUri, operationContext);
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .participantPlayAudioWithResponseAsync(serverCallId, participantId, playAudioRequest, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, 
-                                CallingServerErrorConverter::translateException)
+                    .startHoldMusicWithResponseAsync(request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
-                        new SimpleResponse<>(response, PlayAudioResultConverter.convert(response.getValue())));
+                        new SimpleResponse<>(response, StartHoldMusicResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Remove participant from the hold and stop playing audio.
+     *
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
+     * @param startHoldMusicOperationId The id of the start hold music operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for stop hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StopHoldMusicResult> stopHoldMusic(CallLocator callLocator, CommunicationIdentifier participant, String startHoldMusicOperationId) {
+        try {
+                StopHoldMusicWithCallLocatorRequest requestWithCallLocator = getStopHoldMusicWithCallLocatorRequest(callLocator, participant,
+                        startHoldMusicOperationId);
+
+            return serverCallInternal.stopHoldMusicAsync(requestWithCallLocator)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(StopHoldMusicResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private StopHoldMusicWithCallLocatorRequest getStopHoldMusicWithCallLocatorRequest(CallLocator callLocator, CommunicationIdentifier participant,
+            String startHoldMusicOperationId) {
+        StopHoldMusicWithCallLocatorRequest requestWithCallLocator = new StopHoldMusicWithCallLocatorRequest()
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+            .setStartHoldMusicOperationId(startHoldMusicOperationId);
+        return requestWithCallLocator;
+    }
+
+    /**
+     * Remove participant from the hold and stop playing audio.
+     *
+     * @param callLocator The server call id.
+     * @param participant The identifier of the participant.
+     * @param startHoldMusicOperationId The id of the start hold music operation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for stop hold music operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponse(CallLocator callLocator, CommunicationIdentifier participant,
+    String startHoldMusicOperationId) {
+        return stopHoldMusicWithResponse(callLocator, participant, startHoldMusicOperationId, null);
+    }
+
+    Mono<Response<StopHoldMusicResult>> stopHoldMusicWithResponse(CallLocator callLocator, CommunicationIdentifier participant,
+    String startHoldMusicOperationId, Context context) {
+        try {
+            StopHoldMusicWithCallLocatorRequest requestWithCallLocator = getStopHoldMusicWithCallLocatorRequest(callLocator, participant,
+                        startHoldMusicOperationId);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return serverCallInternal
+                    .stopHoldMusicWithResponseAsync(requestWithCallLocator, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, StopHoldMusicResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

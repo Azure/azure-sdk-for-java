@@ -11,6 +11,7 @@ import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -41,7 +43,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -57,12 +59,14 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             // Play Audio
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
+            PlayAudioOptions playAudioOptions = new PlayAudioOptions()
+                .setAudioFileId(null)
+                .setCallbackUri(null)
+                .setLoop(false)
+                .setOperationContext(operationContext);
             PlayAudioResult playAudioResult = callConnectionAsync.playAudio(
-                AUDIO_FILE_URI,
-                false,
-                UUID.randomUUID().toString(),
-                null,
-                operationContext).block();
+                URI.create(AUDIO_FILE_URI),
+                playAudioOptions).block();
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult);
 
             // Cancel All Media Operations
@@ -93,7 +97,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -118,7 +122,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
                     .setCallbackUri(null)
                     .setOperationContext(operationContext);
             Response<PlayAudioResult> playAudioResponse =
-                callConnectionAsync.playAudioWithResponse(AUDIO_FILE_URI, playAudioOptions).block();
+                callConnectionAsync.playAudioWithResponse(URI.create(AUDIO_FILE_URI), playAudioOptions).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse);
 
             // Cancel All Media Operations
@@ -150,7 +154,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -166,14 +170,14 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             // Add User
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier(toUser);
             AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
-                new CommunicationUserIdentifier(toUser),
+                addedUser,
                 null,
                 operationContext).block();
 
             assert addParticipantResult != null;
-            String participantId = addParticipantResult.getParticipantId();
-            callConnectionAsync.removeParticipant(participantId).block();
+            callConnectionAsync.removeParticipant(addedUser).block();
 
             // Hang up
             callConnectionAsync.hangup().block();
@@ -197,7 +201,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -215,17 +219,17 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier(toUser);
             Response<AddParticipantResult> addParticipantResponse =
                 callConnectionAsync.addParticipantWithResponse(
-                    new CommunicationUserIdentifier(toUser),
+                    addedUser,
                     null,
                     operationContext).block();
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 
             assert addParticipantResponse != null;
-            String participantId = addParticipantResponse.getValue().getParticipantId();
             Response<Void> removeParticipantResponse =
-                callConnectionAsync.removeParticipantWithResponse(participantId).block();
+                callConnectionAsync.removeParticipantWithResponse(addedUser).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
@@ -251,7 +255,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -271,12 +275,12 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
              */
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
             CallConnectionAsync joinedCallConnectionAsync =
                 callingServerAsyncClient.joinCall(
-                    serverCallId,
+                    new ServerCallLocator(serverCallId),
                     new CommunicationUserIdentifier(toUser),
                     joinCallOptions).block();
             CallingServerTestUtils.validateCallConnectionAsync(joinedCallConnectionAsync);
@@ -306,7 +310,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -329,12 +333,12 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
              */
             String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
             JoinCallOptions joinCallOptions = new JoinCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
             Response<CallConnectionAsync> joinedCallConnectionAsyncResponse =
                 callingServerAsyncClient.joinCallWithResponse(
-                    serverCallId,
+                    new ServerCallLocator(serverCallId),
                     new CommunicationUserIdentifier(toUser),
                     joinCallOptions).block();
             CallingServerTestUtils.validateJoinCallConnectionAsyncResponse(joinedCallConnectionAsyncResponse);

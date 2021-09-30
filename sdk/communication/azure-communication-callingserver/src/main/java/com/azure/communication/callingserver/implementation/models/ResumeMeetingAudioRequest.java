@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The get participant by identifier request. */
+/** The request payload for resuming meeting audio for a participant. */
 @Fluent
-public final class GetParticipantByIdRequest {
+public final class ResumeMeetingAudioRequest {
     /*
      * The identifier of the participant.
      */
@@ -29,9 +29,9 @@ public final class GetParticipantByIdRequest {
      * Set the identifier property: The identifier of the participant.
      *
      * @param identifier the identifier value to set.
-     * @return the GetParticipantByIdRequest object itself.
+     * @return the ResumeMeetingAudioRequest object itself.
      */
-    public GetParticipantByIdRequest setIdentifier(CommunicationIdentifierModel identifier) {
+    public ResumeMeetingAudioRequest setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
         return this;
     }

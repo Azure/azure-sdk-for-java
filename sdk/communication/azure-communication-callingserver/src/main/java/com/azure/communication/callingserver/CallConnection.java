@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import java.net.URI;
 import java.util.List;
 
 import com.azure.communication.callingserver.models.AddParticipantResult;
@@ -53,7 +54,7 @@ public final class CallConnection {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult playAudio(String audioFileUri, PlayAudioOptions playAudioOptions) {
+    public PlayAudioResult playAudio(URI audioFileUri, PlayAudioOptions playAudioOptions) {
         return callConnectionAsync.playAudioInternal(audioFileUri, playAudioOptions).block();
     }
 
@@ -71,7 +72,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResult> playAudioWithResponse(
-        String audioFileUri,
+        URI audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context) {
         return callConnectionAsync
@@ -178,59 +179,33 @@ public final class CallConnection {
     /**
      * Remove a participant from the call.
      *
-     * @param participantId Participant id.
+     * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeParticipant(String participantId) {
-        callConnectionAsync.removeParticipant(participantId).block();
+    public void removeParticipant(CommunicationIdentifier participant) {
+        callConnectionAsync.removeParticipant(participant).block();
     }
 
     /**
      * Remove a participant from the call.
      *
-     * @param participantId Participant id.
+     * @param participant The identifier of the participant.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful remove participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(String participantId, Context context) {
-        return callConnectionAsync.removeParticipantWithResponse(participantId, context).block();
-    }
-
-    /**
-     * Remove participant from the call using identifier.
-     *
-     * @param participant The identifier of the participant to be removed from the call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeParticipantById(CommunicationIdentifier participant) {
-        callConnectionAsync.removeParticipantById(participant).block();
-    }
-
-    /**
-     * Remove participant from the call using identifier.
-     *
-     * @param participant The identifier of the participant to be removed from the call.
-     * @param context {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful remove participant request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantByIdWithResponse(CommunicationIdentifier participant, Context context) {
-        return callConnectionAsync.removeParticipantByIdWithResponse(participant, context).block();
+    public Response<Void> removeParticipantWithResponse(CommunicationIdentifier participant, Context context) {
+        return callConnectionAsync.removeParticipantWithResponse(participant, context).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant The target participant.
+     * @param targetParticipant The identifier of the participant.
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -244,7 +219,7 @@ public final class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant The target participant.
+     * @param targetParticipant The identifier of the participant.
      * @param userToUserInformation The user to user information.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -309,142 +284,92 @@ public final class CallConnection {
     /**
      * Get participant of the call using participant id.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallParticipant getParticipant(String participantId) {
-        return callConnectionAsync.getParticipant(participantId).block();
+    public List<CallParticipant> getParticipant(CommunicationIdentifier participant) {
+        return callConnectionAsync.getParticipant(participant).block();
     }
 
     /**
      * Get participant of the call using participant id.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallParticipant> getParticipantWithResponse(String participantId, Context context) {
-        return callConnectionAsync.getParticipantWithResponse(participantId, context).block();
-    }
-
-    /**
-     * Get participant from the call using identifier.
-     *
-     * @param participant The identifier of the participant to be removed from the call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get participant request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<CallParticipant> getParticipantById(CommunicationIdentifier participant) {
-        return callConnectionAsync.getParticipantById(participant).block();
-    }
-
-    /**
-     * Get participant from the call using identifier.
-     *
-     * @param participant The identifier of the participant to be removed from the call.
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get participant request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<CallParticipant>> getParticipantByIdWithResponse(CommunicationIdentifier participant, Context context) {
-        return callConnectionAsync.getParticipantByIdWithResponse(participant, context).block();
+    public Response<List<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier participant, Context context) {
+        return callConnectionAsync.getParticipantWithResponse(participant, context).block();
     }
 
     /**
      * Hold the participant and play default music.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
+     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
+     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
+     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResult startHoldMusic(String participantId) {  
-        return callConnectionAsync.startHoldMusic(participantId).block();
+    public StartHoldMusicResult startHoldMusic(CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
+        return callConnectionAsync.startHoldMusic(participant, audioFileUri, audioFileId, callbackUri, operationContext).block();
     }
 
     /**
      * Hold the participant and play default music.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
+     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
+     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
+     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
+     * @param operationContext The value to identify context of the operation. This is used to co-relate other
+     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(String participantId, Context context) {  
-        return callConnectionAsync.startHoldMusicWithResponse(participantId, context).block();
-    }
-
-    /**
-     * Hold the participant and play custom audio.
-     *
-     * @param participantId The participant id.
-     * @param audioFileUri The uri of the audio file.
-     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
-     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResult startHoldMusic(String participantId, String audioFileUri, String audioFileId, String callbackUri) {  
-        return callConnectionAsync.startHoldMusic(participantId, audioFileUri, audioFileId, callbackUri).block();
-    }
-
-    /**
-     * Hold the participant and play custom audio.
-     *
-     * @param participantId The participant id.
-     * @param audioFileUri The uri of the audio file.
-     * @param audioFileId Tne id for the media in the AudioFileUri, using which we cache the media resource.
-     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(String participantId, String audioFileUri, String audioFileId, String callbackUri, Context context) {  
-        return callConnectionAsync.startHoldMusicWithResponse(participantId, audioFileUri, audioFileId, callbackUri, context).block();
+    public Response<StartHoldMusicResult> startHoldMusicWithResponse(CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
+        return callConnectionAsync.startHoldMusicWithResponse(participant, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
     }
 
     /**
      * Remove participant from the hold and stop playing audio.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for stop hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopHoldMusicResult stopHoldMusic(String participantId) {  
-        return callConnectionAsync.stopHoldMusic(participantId).block();
+    public StopHoldMusicResult stopHoldMusic(CommunicationIdentifier participant) {
+        return callConnectionAsync.stopHoldMusic(participant).block();
     }
 
     /**
      * Remove participant from the hold and stop playing audio.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for stop hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(String participantId, Context context) {  
-        return callConnectionAsync.stopHoldMusicWithResponse(participantId, context).block();
+    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(CommunicationIdentifier participant, Context context) {
+        return callConnectionAsync.stopHoldMusicWithResponse(participant, context).block();
     }
 
     /**
@@ -475,7 +400,7 @@ public final class CallConnection {
     /**
      * Play audio to a participant.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -487,18 +412,18 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlayAudioResult PlayAudioToParticipant(
-        String participantId,
-        String audioFileUri,
-        PlayAudioOptions playAudioOptions,        
+        CommunicationIdentifier participant,
+        URI audioFileUri,
+        PlayAudioOptions playAudioOptions,
         Context context
     ) {
-        return callConnectionAsync.PlayAudioToParticipantInternal(participantId, audioFileUri, playAudioOptions, context).block();
+        return callConnectionAsync.PlayAudioToParticipantInternal(participant, audioFileUri, playAudioOptions, context).block();
     }
 
     /**
      * Play audio to a participant.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -510,18 +435,18 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResult> PlayAudioToParticipantWithResponse(
-        String participantId,
-        String audioFileUri,
+        CommunicationIdentifier participant,
+        URI audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context
     ) {
-        return callConnectionAsync.PlayAudioToParticipantWithResponseInternal(participantId, audioFileUri, playAudioOptions, context).block();
+        return callConnectionAsync.PlayAudioToParticipantWithResponseInternal(participant, audioFileUri, playAudioOptions, context).block();
     }
 
     /**
      * Cancel Participant Media Operation.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -530,17 +455,17 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void CancelParticipantMediaOperation(
-        String participantId,
+        CommunicationIdentifier participant,
         String mediaOperationId,
         Context context
     ) {
-        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participantId, mediaOperationId, context).block().getValue();
+        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participant, mediaOperationId, context).block().getValue();
     }
 
     /**
      * Cancel Participant Media Operation.
      *
-     * @param participantId The participant id.
+     * @param participant The identifier of the participant.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -549,9 +474,9 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> CancelParticipantMediaOperationWithResponse(
-        String participantId,
+        CommunicationIdentifier participant,
         String mediaOperationId,
         Context context) {
-        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participantId, mediaOperationId, context).block();
+        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participant, mediaOperationId, context).block();
     }
 }

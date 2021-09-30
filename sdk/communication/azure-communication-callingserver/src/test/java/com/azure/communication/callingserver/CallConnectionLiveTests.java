@@ -10,6 +10,7 @@ import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -39,7 +41,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -54,12 +56,13 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Play Audio
             String playAudioOperationContext = UUID.randomUUID().toString();
+            PlayAudioOptions playAudioOptions = new PlayAudioOptions()
+                .setAudioFileId(UUID.randomUUID().toString())
+                .setCallbackUri(URI.create(CALLBACK_URI))
+                .setLoop(false)
+                .setOperationContext(playAudioOperationContext);
             PlayAudioResult playAudioResult = callConnection.playAudio(
-                AUDIO_FILE_URI,
-                false,
-                UUID.randomUUID().toString(),
-                null,
-                playAudioOperationContext);
+                URI.create(AUDIO_FILE_URI), playAudioOptions);
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult);
 
             // Cancel All Media Operations
@@ -90,7 +93,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -115,7 +118,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
                     .setCallbackUri(null)
                     .setOperationContext(operationContext);
             Response<PlayAudioResult> playAudioResult =
-                callConnection.playAudioWithResponse(AUDIO_FILE_URI, playAudioOptions, null);
+                callConnection.playAudioWithResponse(URI.create(AUDIO_FILE_URI), playAudioOptions, null);
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResult);
 
             // Cancel All Media Operations
@@ -146,7 +149,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -161,10 +164,11 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            AddParticipantResult addParticipantResult = callConnection.addParticipant(new CommunicationUserIdentifier(toUser), null, operationContext);
+            CommunicationUserIdentifier addUser = new CommunicationUserIdentifier(toUser);
+            AddParticipantResult addParticipantResult = callConnection.addParticipant(addUser, null, operationContext);
 
             String participantId = addParticipantResult.getParticipantId();
-            callConnection.removeParticipant(participantId);
+            callConnection.removeParticipant(addUser);
 
             // Hang up
             callConnection.hangup();
@@ -188,7 +192,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -206,17 +210,17 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
 
             // Add User
             String operationContext = UUID.randomUUID().toString();
+            CommunicationUserIdentifier addUser = new CommunicationUserIdentifier(toUser);
             Response<AddParticipantResult> addParticipantResponse = callConnection
                 .addParticipantWithResponse(
-                    new CommunicationUserIdentifier(toUser),
+                    addUser,
                     null,
                     operationContext,
                     null);
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 
-            String participantId = addParticipantResponse.getValue().getParticipantId();
             Response<Void> removeParticipantResponse =
-                callConnection.removeParticipantWithResponse(participantId, null);
+                callConnection.removeParticipantWithResponse(addUser, null);
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
 
             // Hang up
@@ -241,7 +245,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -259,13 +263,13 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            ServerCallLocator serverCallLocator = new ServerCallLocator("aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L2RUUjRPVGFxVzAyZ3cxVGpNSUNBdEE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3");
             JoinCallOptions joinCallOptions = new JoinCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
             CallConnection joinedCallConnection =
-                callingServerClient.joinCall(serverCallId, new CommunicationUserIdentifier(toUser), joinCallOptions);
+                callingServerClient.joinCall(serverCallLocator, new CommunicationUserIdentifier(toUser), joinCallOptions);
             CallingServerTestUtils.validateCallConnection(joinedCallConnection);
 
             //Hangup
@@ -291,7 +295,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
         try {
             // Establish a call
             CreateCallOptions createCallOptions = new CreateCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -307,14 +311,14 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             CallConnection callConnection = callConnectionResponse.getValue();
 
             // Join
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            ServerCallLocator serverCallLocator = new ServerCallLocator("aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3dXZW9hNjAweGtPZ0d6eHE2eG1tQVE_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4");
             JoinCallOptions joinCallOptions = new JoinCallOptions(
-                CALLBACK_URI,
+                URI.create(CALLBACK_URI),
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
             Response<CallConnection> joinedCallConnectionResponse =
                 callingServerClient.joinCallWithResponse(
-                    serverCallId,
+                    serverCallLocator,
                     new CommunicationUserIdentifier(toUser),
                     joinCallOptions,
                     null);

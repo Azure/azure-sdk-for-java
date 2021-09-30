@@ -31,7 +31,7 @@ public final class CallRecordingStateChangeEventInternal {
     private OffsetDateTime startDateTime;
 
     /*
-     * The locator used for joining or taking action on a call.
+     * The call locator.
      */
     @JsonProperty(value = "callLocator")
     private CallLocatorModel callLocator;
@@ -97,7 +97,7 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Get the callLocator property: The locator used for joining or taking action on a call.
+     * Get the callLocator property: The call locator.
      *
      * @return the callLocator value.
      */
@@ -106,7 +106,7 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Set the callLocator property: The locator used for joining or taking action on a call.
+     * Set the callLocator property: The call locator.
      *
      * @param callLocator the callLocator value to set.
      * @return the CallRecordingStateChangeEventInternal object itself.

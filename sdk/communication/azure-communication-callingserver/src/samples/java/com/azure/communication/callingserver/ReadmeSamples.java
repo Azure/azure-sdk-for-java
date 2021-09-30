@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 
+import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +63,7 @@ public class ReadmeSamples {
             EventSubscriptionType.PARTICIPANTS_UPDATED);
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
-            callbackUri,
+            URI.create(callbackUri),
             requestedMediaTypes,
             requestedCallEvents);
 

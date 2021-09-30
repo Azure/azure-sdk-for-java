@@ -6,6 +6,7 @@ package com.azure.communication.callingserver.models;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public final class CreateCallOptions {
     /**
      * The callback URI.
      */
-    private final String callbackUri;
+    private final URI callbackUri;
 
     /**
      * The requested media types.
@@ -84,7 +85,7 @@ public final class CreateCallOptions {
      *
      * @return the subject value.
      */
-    public String getCallbackUri() {
+    public URI getCallbackUri() {
         return callbackUri;
     }
 
@@ -115,7 +116,7 @@ public final class CreateCallOptions {
      * @throws IllegalArgumentException if any parameters are null.
      */
     public CreateCallOptions(
-        String callbackUri,
+        URI callbackUri,
         List<MediaType> requestedMediaTypes,
         List<EventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {

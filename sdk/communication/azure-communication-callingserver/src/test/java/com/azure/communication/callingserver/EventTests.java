@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantResultEventInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionStateChangedEventInternal;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
@@ -17,6 +18,7 @@ import com.azure.communication.callingserver.implementation.models.ToneReceivedE
 import com.azure.communication.callingserver.models.CallConnectionState;
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.communication.callingserver.models.OperationStatus;
+import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.ToneValue;
 import com.azure.communication.callingserver.models.events.AddParticipantResultEvent;
 import com.azure.communication.callingserver.models.events.CallConnectionStateChangedEvent;
@@ -58,7 +60,7 @@ public class EventTests {
         CallConnectionStateChangedEventInternal internalEvent =
             new CallConnectionStateChangedEventInternal()
                 .setCallConnectionId(callConnectionId)
-                .setServerCallId(serverCallId)
+                .setCallLocator(CallLocatorConverter.convert(new ServerCallLocator(serverCallId)))
                 .setCallConnectionState(CallConnectionState.CONNECTED);
 
         BinaryData binaryData = getBinaryData(internalEvent);
@@ -67,7 +69,7 @@ public class EventTests {
 
         assertNotNull(event);
         assertEquals(event.getCallConnectionId(), callConnectionId);
-        assertEquals(event.getServerCallId(), serverCallId);
+        assertEquals(CallLocatorConverter.convert(event.getCallLocator()).getServerCallId(), serverCallId);
         assertEquals(event.getCallConnectionState(), CallConnectionState.CONNECTED);
     }
 
@@ -100,7 +102,7 @@ public class EventTests {
         String recordingId = UUID.randomUUID().toString();
         CallRecordingStateChangeEventInternal internalEvent =
             new CallRecordingStateChangeEventInternal()
-                .setServerCallId(serverCallId)
+                .setCallLocator(CallLocatorConverter.convert(new ServerCallLocator(serverCallId)))
                 .setRecordingId(recordingId)
                 .setState(CallRecordingState.ACTIVE)
                 .setStartDateTime(OffsetDateTime.MIN);
@@ -111,7 +113,7 @@ public class EventTests {
 
         assertNotNull(event);
         assertEquals(event.getRecordingId(), recordingId);
-        assertEquals(event.getServerCallId(), serverCallId);
+        assertEquals(CallLocatorConverter.convert(event.getCallLocator()).getServerCallId(), serverCallId);
         assertEquals(event.getState(), CallRecordingState.ACTIVE);
         assertEquals(event.getStartDateTime(), OffsetDateTime.MIN);
     }

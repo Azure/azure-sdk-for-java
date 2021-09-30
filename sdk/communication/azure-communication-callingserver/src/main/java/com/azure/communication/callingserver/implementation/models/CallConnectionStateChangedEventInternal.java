@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CallConnectionStateChangedEventInternal {
     /*
-     * The locator used for joining or taking action on a call.
+     * The call locator.
      */
     @JsonProperty(value = "callLocator")
     private CallLocatorModel callLocator;
@@ -30,7 +30,7 @@ public final class CallConnectionStateChangedEventInternal {
     private CallConnectionState callConnectionState;
 
     /**
-     * Get the callLocator property: The locator used for joining or taking action on a call.
+     * Get the callLocator property: The call locator.
      *
      * @return the callLocator value.
      */
@@ -39,7 +39,7 @@ public final class CallConnectionStateChangedEventInternal {
     }
 
     /**
-     * Set the callLocator property: The locator used for joining or taking action on a call.
+     * Set the callLocator property: The call locator.
      *
      * @param callLocator the callLocator value to set.
      * @return the CallConnectionStateChangedEventInternal object itself.

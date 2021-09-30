@@ -2,13 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callingserver.implementation.converters;
-
-import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
-
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 
 import java.util.stream.Collectors;
@@ -21,9 +15,9 @@ public final class CallConnectionPropertiesConverter {
     /**
      * Converts to {@link CallConnectionProperties}.
      */
-    public static CallConnectionProperties convert(
-        CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
-            
+    public static com.azure.communication.callingserver.models.CallConnectionProperties convert(
+        com.azure.communication.callingserver.implementation.models.CallConnectionProperties callConnectionPropertiesInternal) {
+
         if (callConnectionPropertiesInternal == null) {
             return null;
         }
@@ -33,7 +27,7 @@ public final class CallConnectionPropertiesConverter {
             alternateCallerId = new PhoneNumberIdentifier(callConnectionPropertiesInternal.getAlternateCallerId().getValue());
         }
 
-        return new CallConnectionProperties()
+        return new com.azure.communication.callingserver.models.CallConnectionProperties()
             .setCallConnectionId(callConnectionPropertiesInternal.getCallConnectionId())
             .setSource(CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSource()))
             .setAlternateCallerId(alternateCallerId)
@@ -46,7 +40,7 @@ public final class CallConnectionPropertiesConverter {
             .setCallbackUri(callConnectionPropertiesInternal.getCallbackUri())
             .setRequestedMediaTypes(callConnectionPropertiesInternal.getRequestedMediaTypes())
             .setRequestedCallEvents(callConnectionPropertiesInternal.getRequestedCallEvents())
-            .setServerCallId(callConnectionPropertiesInternal.getServerCallId());
+            .setCallLocator(CallLocatorConverter.convert(callConnectionPropertiesInternal.getCallLocator()));
     }
 
     private CallConnectionPropertiesConverter() {

@@ -3,6 +3,8 @@
 
 package com.azure.communication.callingserver.models;
 
+import java.net.URI;
+
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -32,7 +34,7 @@ public final class PlayAudioOptions {
      * The callback Uri to receive playAudio status notifications.
      */
     @JsonProperty(value = "callbackUri")
-    private String callbackUri;
+    private URI callbackUri;
 
     /**
      * Get the loop property: The flag indicating whether audio file needs to be played in loop or not.
@@ -99,7 +101,7 @@ public final class PlayAudioOptions {
      *
      * @return the callbackUri value.
      */
-    public String getCallbackUri() {
+    public URI getCallbackUri() {
         return callbackUri;
     }
 
@@ -109,7 +111,7 @@ public final class PlayAudioOptions {
      * @param callbackUri the callbackUri value to set.
      * @return the PlayAudioOptions object itself.
      */
-    public PlayAudioOptions setCallbackUri(String callbackUri) {
+    public PlayAudioOptions setCallbackUri(URI callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }

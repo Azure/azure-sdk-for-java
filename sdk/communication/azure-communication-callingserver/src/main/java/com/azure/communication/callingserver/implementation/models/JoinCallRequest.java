@@ -16,7 +16,7 @@ public final class JoinCallRequest {
     /*
      * The call locator.
      */
-    @JsonProperty(value = "callLocator", required = true)
+    @JsonProperty(value = "callLocator")
     private CallLocatorModel callLocator;
 
     /*

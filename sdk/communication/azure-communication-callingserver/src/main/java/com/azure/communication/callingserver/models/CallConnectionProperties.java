@@ -72,10 +72,10 @@ public final class CallConnectionProperties {
     private List<EventSubscriptionType> requestedCallEvents;
 
     /*
-     * The server call id.
+     * The call locator.
      */
-    @JsonProperty(value = "serverCallId")
-    private String serverCallId;
+    @JsonProperty(value = "callLocator")
+    private CallLocator callLocator;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -260,22 +260,22 @@ public final class CallConnectionProperties {
     }
 
     /**
-     * Get the serverCallId property: The server call id.
+     * Get the callLocator property: The call locator.
      *
-     * @return the serverCallId value.
+     * @return the callLocator value.
      */
-    public String getServerCallId() {
-        return this.serverCallId;
+    public CallLocator getCallLocator() {
+        return this.callLocator;
     }
 
     /**
-     * Set the serverCallId property: The server call id.
+     * Set the callLocator property: The call locator.
      *
-     * @param serverCallId the serverCallId value to set.
+     * @param callLocator the callLocator value to set.
      * @return the CallConnectionProperties object itself.
      */
-    public CallConnectionProperties setServerCallId(String serverCallId) {
-        this.serverCallId = serverCallId;
+    public CallConnectionProperties setCallLocator(CallLocator callLocator) {
+        this.callLocator = callLocator;
         return this;
     }
 }

@@ -70,7 +70,7 @@ public final class CallConnectionProperties {
     private List<EventSubscriptionType> requestedCallEvents;
 
     /*
-     * The locator used for joining or taking action on a call.
+     * The call locator.
      */
     @JsonProperty(value = "callLocator")
     private CallLocatorModel callLocator;
@@ -258,7 +258,7 @@ public final class CallConnectionProperties {
     }
 
     /**
-     * Get the callLocator property: The locator used for joining or taking action on a call.
+     * Get the callLocator property: The call locator.
      *
      * @return the callLocator value.
      */
@@ -267,7 +267,7 @@ public final class CallConnectionProperties {
     }
 
     /**
-     * Set the callLocator property: The locator used for joining or taking action on a call.
+     * Set the callLocator property: The call locator.
      *
      * @param callLocator the callLocator value to set.
      * @return the CallConnectionProperties object itself.
