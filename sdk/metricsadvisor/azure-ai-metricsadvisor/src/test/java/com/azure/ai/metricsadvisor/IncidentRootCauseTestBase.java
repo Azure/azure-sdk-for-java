@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class IncidentRootCauseTestBase extends MetricsAdvisorClientTestBase {
 
-    static final String INCIDENT_ROOT_CAUSE_ID = "2583ff47fef9174e6d6bfe73415ad914-174d2024c00";
+    static final String INCIDENT_ROOT_CAUSE_ID = "aee0225fd93cfe42ec4acd365613c857-17bb8679000";
     static final String INCIDENT_ROOT_CAUSE_CONFIGURATION_ID = DETECTION_CONFIGURATION_ID;
 
     @Override
@@ -41,7 +41,7 @@ public abstract class IncidentRootCauseTestBase extends MetricsAdvisorClientTest
 
     void validateIncidentRootCauses(IncidentRootCause expectedIncidentRootCause,
         IncidentRootCause actualIncidentRootCause) {
-        assertEquals(expectedIncidentRootCause.getSeriesKey(), actualIncidentRootCause.getSeriesKey());
+        assertEquals(expectedIncidentRootCause.getSeriesKey().asMap(), actualIncidentRootCause.getSeriesKey().asMap());
         assertEquals(expectedIncidentRootCause.getDescription(), actualIncidentRootCause.getDescription());
         assertEquals(expectedIncidentRootCause.getPaths(), actualIncidentRootCause.getPaths());
         assertNotNull(actualIncidentRootCause.getContributionScore());

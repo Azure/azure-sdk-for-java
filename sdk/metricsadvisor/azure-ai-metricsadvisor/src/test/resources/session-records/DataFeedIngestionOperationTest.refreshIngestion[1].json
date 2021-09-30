@@ -1,22 +1,35 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/9860df01-e740-40ec-94a2-6351813552ba/ingestionProgress/reset",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/151e5444-449f-441e-8b64-988f21c5d054/ingestionProgress/reset",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "0f92e09c-b75e-4d41-9133-6a3190cc3ce6",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ff91d567-4811-4308-80df-57bee7b4bdc9",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.util.concurrent.TimeoutException",
+      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/151e5444-449f-441e-8b64-988f21c5d054/ingestionProgress/reset",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ff91d567-4811-4308-80df-57bee7b4bdc9",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "ba752000-03f8-45b7-9412-aecd35b7681e",
+      "x-request-id" : "a7ebc9c4-1b9a-4340-8765-88e69ffb8ab6",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "332",
+      "x-envoy-upstream-service-time" : "41376",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ba752000-03f8-45b7-9412-aecd35b7681e",
+      "apim-request-id" : "a7ebc9c4-1b9a-4340-8765-88e69ffb8ab6",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 06 Jul 2021 19:51:07 GMT"
+      "Date" : "Thu, 30 Sep 2021 21:45:36 GMT"
     },
     "Exception" : null
   } ],
