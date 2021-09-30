@@ -77,33 +77,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for analyzing custom documents using custom-built models.
-     */
-    public void analyzeCustomDocument() {
-        String documentUrl = "{document-url}";
-        String modelId = "{custom-built-model-ID}";
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
-            documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
-
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
-
-        for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
-            System.out.printf("----------- Analyzing custom document %d -----------%n", i);
-            System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
-            analyzedDocument.getFields().forEach((key, documentField) -> {
-                System.out.printf("Document Field content: %s%n", documentField.getContent());
-                System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-                System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
-                System.out.printf("Document Field found within bounding region: %s%n",
-                    documentField.getBoundingRegions().toString());
-            });
-        }
-    }
-
-    /**
-     * Analyze layout data for provided document.
+     * Extract layout data for provided document.
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
@@ -203,84 +177,23 @@ public class ReadmeSamples {
                     List<DocumentField> receiptItems = receiptItemsField.getValueList();
                     receiptItems.stream()
                         .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                        .map(formField -> formField.getValueMap())
-                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                        .map(documentField -> documentField.getValueMap())
+                        .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                             if ("Name".equals(key)) {
-                                if (DocumentFieldType.STRING == formField.getType()) {
-                                    String name = formField.getValueString();
+                                if (DocumentFieldType.STRING == documentField.getType()) {
+                                    String name = documentField.getValueString();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        name, formField.getConfidence());
+                                        name, documentField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (DocumentFieldType.FLOAT == formField.getType()) {
-                                    Float quantity = formField.getValueFloat();
+                                if (DocumentFieldType.FLOAT == documentField.getType()) {
+                                    Float quantity = documentField.getValueFloat();
                                     System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                        quantity, formField.getConfidence());
+                                        quantity, documentField.getConfidence());
                                 }
                             }
                         }));
-                }
-            }
-        }
-    }
-
-    /**
-     * Code snippet for analyzing invoice documents using prebuilt models.
-     */
-    public void analyzeBusinessCardFromUrl() {
-        String businessCardUrl =
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
-                + "/azure-ai-formrecognizer/src/samples/resources/sample-forms/businessCards/businessCard.jpg";
-
-        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeBusinessCardPoller =
-            documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-businessCard", businessCardUrl);
-
-        AnalyzeResult businessCardPageResults = analyzeBusinessCardPoller.getFinalResult();
-
-        for (int i = 0; i < businessCardPageResults.getDocuments().size(); i++) {
-            System.out.printf("--------Analyzing business card %d%n--------", i);
-            AnalyzedDocument analyzedBusinessCard = businessCardPageResults.getDocuments().get(i);
-            Map<String, DocumentField> businessCardFields = analyzedBusinessCard.getFields();
-            DocumentField contactNamesDocumentField = businessCardFields.get("ContactNames");
-            if (contactNamesDocumentField != null) {
-                if (DocumentFieldType.LIST == contactNamesDocumentField.getType()) {
-                    List<DocumentField> contactNamesList = contactNamesDocumentField.getValueList();
-                    contactNamesList.stream()
-                        .filter(contactName -> DocumentFieldType.MAP == contactName.getType())
-                        .map(contactName -> {
-                            System.out.printf("Contact name: %s%n", contactName.getContent());
-                            return contactName.getValueMap();
-                        })
-                        .forEach(contactNamesMap -> contactNamesMap.forEach((key, contactName) -> {
-                            if ("FirstName".equals(key)) {
-                                if (DocumentFieldType.STRING == contactName.getType()) {
-                                    String firstName = contactName.getValueString();
-                                    System.out.printf("\tFirst Name: %s, confidence: %.2f%n",
-                                        firstName, contactName.getConfidence());
-                                }
-                            }
-                            if ("LastName".equals(key)) {
-                                if (DocumentFieldType.STRING == contactName.getType()) {
-                                    String lastName = contactName.getValueString();
-                                    System.out.printf("\tLast Name: %s, confidence: %.2f%n",
-                                        lastName, contactName.getConfidence());
-                                }
-                            }
-                        }));
-                }
-            }
-
-            DocumentField emails = businessCardFields.get("Emails");
-            if (emails != null) {
-                if (DocumentFieldType.LIST == emails.getType()) {
-                    List<DocumentField> emailsItems = emails.getValueList();
-                    emailsItems.forEach(emailsItem -> {
-                        if (DocumentFieldType.STRING == emailsItem.getType()) {
-                            String email = emailsItem.getValueString();
-                            System.out.printf("Email: %s, confidence: %.2f%n", email, emailsItem.getConfidence());
-                        }
-                    });
                 }
             }
         }
@@ -313,6 +226,65 @@ public class ReadmeSamples {
                 System.out.printf("Document field confidence: %.2f%n", docTypeInfo.getFieldConfidence().get(name));
             });
         });
+    }
+
+    /**
+     * Code snippet for analyzing custom documents using custom-built models.
+     */
+    public void analyzeCustomDocument() {
+        String documentUrl = "{document-url}";
+        String modelId = "{custom-built-model-ID}";
+        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+
+        for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
+            System.out.printf("----------- Analyzing custom document %d -----------%n", i);
+            System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
+                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+            analyzedDocument.getFields().forEach((key, documentField) -> {
+                System.out.printf("Document Field content: %s%n", documentField.getContent());
+                System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
+                System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+                System.out.printf("Document Field found within bounding region: %s%n",
+                    documentField.getBoundingRegions().toString());
+            });
+        }
+
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line %s is within a bounding box %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingBox().toString()));
+
+            // words
+            documentPage.getWords().forEach(documentWord ->
+                System.out.printf("Word %s has a confidence score of %.2f%n.",
+                    documentWord.getContent(),
+                    documentWord.getConfidence()));
+        });
+
+        // tables
+        List<DocumentTable> tables = analyzeResult.getTables();
+        for (int i = 0; i < tables.size(); i++) {
+            DocumentTable documentTable = tables.get(i);
+            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+                documentTable.getColumnCount());
+            documentTable.getCells().forEach(documentTableCell -> {
+                System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+                    documentTableCell.getContent(),
+                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+            });
+            System.out.println();
+        }
     }
 
     /**
