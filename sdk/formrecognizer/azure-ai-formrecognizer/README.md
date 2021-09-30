@@ -68,7 +68,18 @@ This table shows the relationship between SDK versions and supported API version
 |-|-
 |3.0.x | 2.0
 |3.1.X - 3.1.3| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest GA release| 2021-09-30-preview (default)
+|4.0.0-beta.1 - Latest beta release| 2021-09-30-preview (default)
+
+> Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features
+> of the Form Recognizer service. Please see the Migration Guide for detailed instructions on how to update application
+> code from client library version 3.1.X or lower to the latest version. Additionally, see the [Changelog][changelog] for more detailed information.
+> The below table describes the relationship of each client and its supported API version(s):
+
+|API version|Supported clients
+|-|-
+|2021-09-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2.1 | FormRecognizerClient and FormTrainingClient
+|2.0 | FormRecognizerClient and FormTrainingClient
 
 #### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
@@ -180,7 +191,7 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
 provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
-Use the `model` parameter to select the type of model for analysis.
+Use the `modelId` parameter to select the type of model for analysis.
 
 |Model| Features
 |-|-
@@ -192,7 +203,7 @@ Use the `model` parameter to select the type of model for analysis.
 |"prebuilt-receipt"| Text extraction and prebuilt fields and values pertaining to English sales receipts
 |"{custom-model-id}"| Text extraction, selection marks, tables, labeled fields and values from your custom documents
 
-Sample code snippets to illustrate using a DocumentAnalysisClient [here](#analyze-documents-using-a-custom-model "Analyze Documents Using a Custom Model").
+Sample code snippets to illustrate using a DocumentAnalysisClient [here].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -206,7 +217,7 @@ The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 - Creating a composed model from a collection of existing built models.
 - Listing document model operations associated with the Form Recognizer resource.
 
-Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr-labeling-tool].
+Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
 Sample code snippets are provided to illustrate using a DocumentModelAdministrationClient [here](#examples "Examples").
 
 ### Long-running operations
@@ -214,8 +225,8 @@ Long-running operations are operations which consist of an initial request sent 
 followed by polling the service at intervals to determine whether the operation has completed or failed, and if it has
 succeeded, to get the result.
 
-Methods that build models or analyze values from documents are modeled as long-running operations. The client exposes
-a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
+Methods that build models, analyze values from documents or copy and compose models are modeled as long-running operations.
+The client exposes a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<MethodName>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#examples).
@@ -370,7 +381,7 @@ Build a machine-learned model on your own document type. The resulting model wil
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
 
-More details on setting up a container and required file structure can be found in the [service documentation][fr-build-training-set].
+More details on setting up a container and required file structure can be found in the [service documentation][fr_build_training_set].
 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L206-L228 -->
 ```java
@@ -565,7 +576,7 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
 
 ### Additional documentation
-
+See the [Sample README][sample_readme] for several code snippets illustrating common patterns used in the Form Recognizer Java SDK.
 For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
 
 ## Contributing
@@ -602,7 +613,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [fr_labeling_tool]: https://aka.ms/azsdk/formrecognizer/labelingtool
+[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
 
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/
