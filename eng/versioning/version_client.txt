@@ -150,7 +150,7 @@ com.azure.spring:azure-spring-boot-bom;3.8.0;3.9.0
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter-cosmos;3.9.0;3.10.0-beta.1
-com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.2.0;3.3.0-beta.1
+com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.2.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.9.0;3.10.0-beta.1
 com.azure.spring:azure-spring-boot-starter-storage;3.9.0;3.10.0-beta.1

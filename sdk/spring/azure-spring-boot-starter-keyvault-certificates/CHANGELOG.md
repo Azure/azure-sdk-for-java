@@ -1,6 +1,6 @@
 # Release History
 
-## 3.3.0-beta.1 (Unreleased)
+## 3.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Skip minor versions to make version align to other azure-spring-boot-starters
 
 ## 3.2.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
