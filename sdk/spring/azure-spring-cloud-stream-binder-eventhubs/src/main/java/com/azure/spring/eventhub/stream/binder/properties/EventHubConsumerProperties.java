@@ -45,6 +45,10 @@ public class EventHubConsumerProperties {
      */
     private Duration checkpointInterval = Duration.ofSeconds(5);
 
+    private int maxBatchSize;
+
+    private Duration maxBatchDuration = null;
+
     public StartPosition getStartPosition() {
         return startPosition;
     }
@@ -75,5 +79,21 @@ public class EventHubConsumerProperties {
 
     public void setCheckpointInterval(Duration checkpointInterval) {
         this.checkpointInterval = checkpointInterval;
+    }
+
+    public int getMaxBatchSize() {
+        return maxBatchSize;
+    }
+
+    public void setMaxBatchSize(int maxBatchSize) {
+        this.maxBatchSize = maxBatchSize;
+    }
+
+    public Duration getMaxBatchDuration() {
+        return maxBatchDuration;
+    }
+
+    public void setMaxBatchDuration(Duration maxBatchDuration) {
+        this.maxBatchDuration = maxBatchDuration;
     }
 }

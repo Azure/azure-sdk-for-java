@@ -38,4 +38,9 @@ public interface SubscribeByGroupOperation extends Checkpointable {
      * if was not registered.
      */
     boolean unsubscribe(String destination, String consumerGroup);
+
+    default void setBatchConfig(BatchConfig batchconfig) {
+        // no-op
+    }
+
 }

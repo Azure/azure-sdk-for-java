@@ -9,10 +9,7 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.integration.core.api.CheckpointConfig;
-import com.azure.spring.integration.core.api.CheckpointMode;
-import com.azure.spring.integration.core.api.PartitionSupplier;
-import com.azure.spring.integration.core.api.StartPosition;
+import com.azure.spring.integration.core.api.*;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import org.slf4j.Logger;
@@ -50,6 +47,8 @@ public class AbstractEventHubTemplate {
 
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
         .checkpointMode(CheckpointMode.RECORD).build();
+
+    private BatchConfig batchConfig = BatchConfig.builder().maxBatchSize(1).build();
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
@@ -99,7 +98,7 @@ public class AbstractEventHubTemplate {
 
     protected void createEventProcessorClient(String name, String consumerGroup, EventHubProcessor eventHubProcessor) {
         eventHubProcessor.setEventPosition(buildEventPosition(startPosition));
-        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor);
+        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor, batchConfig);
     }
 
     protected void startEventProcessorClient(String name, String consumerGroup) {
@@ -145,6 +144,14 @@ public class AbstractEventHubTemplate {
     public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
         LOGGER.info("EventHubTemplate checkpoint config becomes: {}", checkpointConfig);
         this.checkpointConfig = checkpointConfig;
+    }
+
+    public BatchConfig getBatchConfig() {
+        return batchConfig;
+    }
+
+    public void setBatchConfig(BatchConfig batchConfig) {
+        this.batchConfig = batchConfig;
     }
 
 }

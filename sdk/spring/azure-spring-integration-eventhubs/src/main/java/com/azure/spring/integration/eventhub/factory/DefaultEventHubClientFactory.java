@@ -13,6 +13,7 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.core.api.BatchConfig;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -83,7 +84,8 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     }
 
     private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
-                                                                    EventHubProcessor eventHubProcessor) {
+                                                                    EventHubProcessor eventHubProcessor,
+                                                                    BatchConfig batchConfig) {
         Assert.hasText(checkpointStorageConnectionString, "checkpointConnectionString can't be null or empty, check "
             + "whether checkpoint-storage-account is configured in the configuration file.");
         // We set eventHubName as the container name when we use track1 library, and the EventHubProcessor will create
@@ -104,15 +106,27 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         }
 
         // TODO (xiada): set up event processing position for each partition
-        return new EventProcessorClientBuilder()
-            .connectionString(eventHubConnectionString, eventHubName)
-            .consumerGroup(consumerGroup)
-            .checkpointStore(new BlobCheckpointStore(blobClient))
-            .processPartitionInitialization(eventHubProcessor::onInitialize)
-            .processPartitionClose(eventHubProcessor::onClose)
-            .processEvent(eventHubProcessor::onEvent)
-            .processError(eventHubProcessor::onError)
-            .buildEventProcessorClient();
+        if (batchConfig.getMaxBatchSize() > 1) {
+            return new EventProcessorClientBuilder()
+                .connectionString(eventHubConnectionString, eventHubName)
+                .consumerGroup(consumerGroup)
+                .checkpointStore(new BlobCheckpointStore(blobClient))
+                .processPartitionInitialization(eventHubProcessor::onInitialize)
+                .processPartitionClose(eventHubProcessor::onClose)
+                .processEventBatch(eventHubProcessor::onEventBatch, batchConfig.getMaxBatchSize(), batchConfig.getMaxWaitTime())
+                .processError(eventHubProcessor::onError)
+                .buildEventProcessorClient();
+        } else {
+            return new EventProcessorClientBuilder()
+                .connectionString(eventHubConnectionString, eventHubName)
+                .consumerGroup(consumerGroup)
+                .checkpointStore(new BlobCheckpointStore(blobClient))
+                .processPartitionInitialization(eventHubProcessor::onInitialize)
+                .processPartitionClose(eventHubProcessor::onClose)
+                .processEvent(eventHubProcessor::onEvent)
+                .processError(eventHubProcessor::onError)
+                .buildEventProcessorClient();
+        }
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {
@@ -144,9 +158,9 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
     @Override
     public EventProcessorClient createEventProcessorClient(String eventHubName, String consumerGroup,
-                                                           EventHubProcessor processor) {
+                                                           EventHubProcessor processor, BatchConfig batchConfig) {
         return processorClientMap.computeIfAbsent(Tuple.of(eventHubName, consumerGroup), (t) ->
-            createEventProcessorClientInternal(eventHubName, consumerGroup, processor));
+            createEventProcessorClientInternal(eventHubName, consumerGroup, processor, batchConfig));
     }
 
     @Override
