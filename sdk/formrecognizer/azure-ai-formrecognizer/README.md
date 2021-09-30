@@ -1,17 +1,11 @@
 # Azure Form Recognizer client library for Java
-Azure Cognitive Services Form Recognizer is a cloud service that uses machine learning to accurately extract text, 
-key-value pairs, tables, and structured data from documents. It includes the following main functionalities:
+Azure Cognitive Services Form Recognizer is a cloud service that uses machine learning to analyze text and structured data from your documents.
+It includes the following main features:
 
-* Custom document analysis models - Analyze content and structured data from documents using your own custom-built models. 
-These models are built with your own data, so they're tailored to your custom documents.
-With this library you can also manage the custom models you've created by building, listing, deleting, and copying models 
-and see how close you are to the limit of custom models your account can hold.
-* Analyze Layout - Analyze text, style and table structures, along with their bounding box coordinates, from documents.
-* Prebuilt receipt model - Analyze data from sales receipts using a prebuilt model ("prebuilt-receipt").
-* Prebuilt invoice model - Analyze data from USA sales invoices using a prebuilt model ("prebuilt-invoice").
-* Prebuilt business card model - Analyze data from business cards using a prebuilt model ("prebuilt-businessCard").
-* Prebuilt identity document model - Analyze data from identity documents using a prebuilt model ("prebuilt-idDocument").
-* Prebuilt document model - Analyze data from documents using a prebuilt model ("prebuilt-document").
+* Layout - Extract text, table structures, and selection marks, along with their bounding region coordinates, from documents.
+* Document - Analyze entities, key-value pairs, tables, and selection marks from documents using the general prebuilt document model.
+* Prebuilt - Analyze data from certain types of common documents (such as receipts, invoices, business cards, or identity documents) using prebuilt models.
+* Custom - Build custom models to extract text, field values, selection marks, and table data from documents. Custom models are built with your own data, so they're tailored to your documents.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -66,7 +60,7 @@ add the direct dependency to your project as follows.
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-> Note: This version of the client library defaults to the `"V2021-09-30-preview"` version of the service.
+> Note: This version of the client library defaults to the `"2021-09-30-preview"` version of the service.
 
 This table shows the relationship between SDK versions and supported API versions of the service:
 
@@ -74,7 +68,18 @@ This table shows the relationship between SDK versions and supported API version
 |-|-
 |3.0.x | 2.0
 |3.1.X - 3.1.3| 2.0, 2.1 (default)
-|4.0.0-beta.1 - Latest GA release| V2021-09-30-preview (default)
+|4.0.0-beta.1 - Latest beta release| 2021-09-30-preview (default)
+
+> Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features
+> of the Form Recognizer service. Please see the Migration Guide for detailed instructions on how to update application
+> code from client library version 3.1.X or lower to the latest version. Additionally, see the [Changelog][changelog] for more detailed information.
+> The below table describes the relationship of each client and its supported API version(s):
+
+|API version|Supported clients
+|-|-
+|2021-09-30-preview | DocumentAnalysisClient and DocumentModelAdministrationClient
+|2.1 | FormRecognizerClient and FormTrainingClient
+|2.0 | FormRecognizerClient and FormTrainingClient
 
 #### Create a Form Recognizer resource
 Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's
@@ -184,41 +189,44 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 ## Key concepts
 ### DocumentAnalysisClient
 The [DocumentAnalysisClient][document_analysis_sync_client] and [DocumentAnalysisAsyncClient][document_analysis_async_client]
-provide both synchronous and asynchronous operations
- - Recognizing document fields and layout using custom models built to analyze your custom documents.
- These values are returned in a `AnalyzeResult` object. See example [Analyze Custom Documents](#analyze-documents-using-a-custom-model).
- - Recognizing document layout, including tables, lines and words, without the need to build a model.
- Document layout is returned in a `AnalyzeResult` object. See example [Analyze Layout](#analyze-layout).
-- Recognizing common fields from the following document types using prebuilt models. These fields and meta-data are returned
-  in a collection of fields on a `AnalyzeResult` object.
-  Supported prebuilt models:
-    - Receipts
-    - Business cards
-    - Invoices
-    - Identity Documents
-    - Documents
-    
-  See example [Prebuilt Models](#use-prebuilt-models).
+provide both synchronous and asynchronous operations for analyzing input documents using custom and prebuilt models
+through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
+Use the `modelId` parameter to select the type of model for analysis.
+
+|Model| Features
+|-|-
+|"prebuilt-layout"| Text extraction, selection marks, tables
+|"prebuilt-document"| Text extraction, selection marks, tables, key-value pairs and entities
+|"prebuilt-invoices"| Text extraction, selection marks, tables, and prebuilt fields and values pertaining to English invoices
+|"prebuilt-businessCard"| Text extraction and prebuilt fields and values pertaining to English business cards
+|"prebuilt-idDocument"| Text extraction and prebuilt fields and values pertaining to US driver licenses and international passports
+|"prebuilt-receipt"| Text extraction and prebuilt fields and values pertaining to English sales receipts
+|"{custom-model-id}"| Text extraction, selection marks, tables, labeled fields and values from your custom documents
+
+Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 [DocumentModelAdministrationAsyncClient][document_model_admin_sync_client] provide both synchronous and asynchronous operations
 - Build custom document analysis models to analyze text content, fields and values found in your custom documents. See example [Build a model](#build-a-model).
- A `DocumentModel` is returned indicating the document types that the model can analyze, and the fields and schemas it will extract in
-each doc type.
-- Managing models created in your account by building, listing, deleting, and see how close you are to the limit of 
-custom models your account can hold. See example [Manage models](#manage-your-models).
+  A `DocumentModel` is returned indicating the document types that the model can analyze, and the fields and schemas it will extract in
+  each doc type.
+- Managing models created in your account by building, listing, deleting, and see how close you are to the limit of
+  custom models your account can hold. See example [Manage models](#manage-your-models).
 - Copying a custom model from one Form Recognizer resource to another.
 - Creating a composed model from a collection of existing built models.
-- Listing all document model operations associated with the Form Recognizer resource.
+- Listing document model operations associated with the Form Recognizer resource.
 
-### Long-Running Operations
+Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
+Sample code snippets are provided to illustrate using a DocumentModelAdministrationClient [here](#examples "Examples").
+
+### Long-running operations
 Long-running operations are operations which consist of an initial request sent to the service to start an operation,
 followed by polling the service at intervals to determine whether the operation has completed or failed, and if it has
 succeeded, to get the result.
 
-Methods that build models or analyze values from documents are modeled as long-running operations. The client exposes
-a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
+Methods that build models, analyze values from documents or copy and compose models are modeled as long-running operations.
+The client exposes a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
 `begin<MethodName>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#examples).
@@ -227,44 +235,16 @@ Callers should wait for the operation to completed by calling `getFinalResult()`
 
 The following section provides several code snippets covering some of the most common Form Recognizer tasks, including:
 
-* [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
-* [Analyze Layout](#analyze-layout "Analyze Layout")
+* [Extract Layout](#extract-layout "Extract Layout")
 * [Use Prebuilt Models](#use-prebuilt-models)
 * [Build a Model](#build-a-model "Build a model")
+* [Analyze Documents using a Custom Model](#analyze-documents-using-a-custom-model "Analyze Documents using a Custom Model")
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
-### Analyze Documents using a Custom Model
-Analyze the key/value pairs and table data from documents. These models are built with your own data,
-so they're tailored to your documents. You should only analyze documents of the same doc type that the custom model 
-was built on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L83-L102 -->
-```java
-String documentUrl = "{document-url}";
-String modelId = "{custom-built-model-ID}";
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
-    documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
-
-AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
-
-for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
-    final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
-    System.out.printf("----------- Analyzing custom document %d -----------%n", i);
-    System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
-        analyzedDocument.getDocType(), analyzedDocument.getConfidence());
-    analyzedDocument.getFields().forEach((key, documentField) -> {
-        System.out.printf("Document Field content: %s%n", documentField.getContent());
-        System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
-        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
-        System.out.printf("Document Field found within bounding region: %s%n",
-            documentField.getBoundingRegions().toString());
-    });
-}
-```
-
-### Analyze Layout
-Analyze text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
+### Extract Layout
+Extract text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
 coordinates, from documents, without the need to build a model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L111-L153 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L85-L127 -->
 ```java
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
@@ -312,14 +292,15 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 ### Use Prebuilt Models
-Extract fields from certain types of common documents using prebuilt models provided by the Form Recognizer service. Supported prebuilt models are:
-- Business cards. See fields found on a business card [here][service_analyze_business_cards_fields].
-- Invoices. See fields found on an invoice [here][service_analyze_invoices_fields].
-- Identity documents. See fields found on an identity document [here][service_analyze_identity_documents_fields].
-- Sales receipts. See fields found on a receipt [here][service_analyze_receipt_fields].
-- Document. See fields found on a document [here][service_analyze_document_fields]
-- 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L160-L225-->
+Extract fields from select document types such as receipts, invoices, business cards, and identity documents using prebuilt models provided by the Form Recognizer service.
+Supported prebuilt models are:
+- Analyze receipts using the `prebuilt-receipt` model (fields recognized by the service can be found [here][service_analyze_receipt_fields])
+- Analyze business cards using the `prebuilt-businessCard` model (fields recognized by the service can be found [here][service_analyze_business_cards_fields]).
+- Analyze invoices using the `prebuilt-invoice` model (fields recognized by the service can be found [here][service_analyze_invoices_fields]).
+- Analyze identity documents using the `prebuilt-idDocuments` model (fields recognized by the service can be found [here][service_analyze_identity_documents_fields]).
+
+For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocument` method:
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L134-L199-->
 ```java
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
@@ -367,20 +348,20 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             List<DocumentField> receiptItems = receiptItemsField.getValueList();
             receiptItems.stream()
                 .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                .map(formField -> formField.getValueMap())
-                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                .map(documentField -> documentField.getValueMap())
+                .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                     if ("Name".equals(key)) {
-                        if (DocumentFieldType.STRING == formField.getType()) {
-                            String name = formField.getValueString();
+                        if (DocumentFieldType.STRING == documentField.getType()) {
+                            String name = documentField.getValueString();
                             System.out.printf("Name: %s, confidence: %.2fs%n",
-                                name, formField.getConfidence());
+                                name, documentField.getConfidence());
                         }
                     }
                     if ("Quantity".equals(key)) {
-                        if (DocumentFieldType.FLOAT == formField.getType()) {
-                            Float quantity = formField.getValueFloat();
+                        if (DocumentFieldType.FLOAT == documentField.getType()) {
+                            Float quantity = documentField.getValueFloat();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                quantity, formField.getConfidence());
+                                quantity, documentField.getConfidence());
                         }
                     }
                 }));
@@ -399,7 +380,10 @@ For more information and samples using prebuilt models see:
 Build a machine-learned model on your own document type. The resulting model will be able to analyze values from the types of documents it was built on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L293-L315 -->
+
+More details on setting up a container and required file structure can be found in the [service documentation][fr_build_training_set].
+
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L206-L228 -->
 ```java
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
@@ -426,9 +410,70 @@ documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
 });
 ```
 
+### Analyze Documents using a Custom Model
+Analyze the key/value pairs and table data from documents. These models are built with your own data,
+so they're tailored to your documents. You should only analyze documents of the same doc type that the custom model
+was built on.
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L235-L287 -->
+```java
+String documentUrl = "{document-url}";
+String modelId = "{custom-built-model-ID}";
+SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+    documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+
+AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+
+for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
+    final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
+    System.out.printf("----------- Analyzing custom document %d -----------%n", i);
+    System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
+        analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+    analyzedDocument.getFields().forEach((key, documentField) -> {
+        System.out.printf("Document Field content: %s%n", documentField.getContent());
+        System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
+        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+        System.out.printf("Document Field found within bounding region: %s%n",
+            documentField.getBoundingRegions().toString());
+    });
+}
+
+analyzeResult.getPages().forEach(documentPage -> {
+    System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+        documentPage.getWidth(),
+        documentPage.getHeight(),
+        documentPage.getUnit());
+
+    // lines
+    documentPage.getLines().forEach(documentLine ->
+        System.out.printf("Line %s is within a bounding box %s.%n",
+            documentLine.getContent(),
+            documentLine.getBoundingBox().toString()));
+
+    // words
+    documentPage.getWords().forEach(documentWord ->
+        System.out.printf("Word %s has a confidence score of %.2f%n.",
+            documentWord.getContent(),
+            documentWord.getConfidence()));
+});
+
+// tables
+List<DocumentTable> tables = analyzeResult.getTables();
+for (int i = 0; i < tables.size(); i++) {
+    DocumentTable documentTable = tables.get(i);
+    System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+        documentTable.getColumnCount());
+    documentTable.getCells().forEach(documentTableCell -> {
+        System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+            documentTableCell.getContent(),
+            documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+    });
+    System.out.println();
+}
+```
+
 ### Manage your models
 Manage the models in your Form Recognizer account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L322-L351 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L294-L323 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 
@@ -470,7 +515,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L358-L362 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L330-L334 -->
 ```java
 try {
     documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
@@ -498,18 +543,18 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Analyze invoice from a URL: [AnalyzeInvoiceFromUrl][analyze_invoices_from_url]
 * Analyze receipts: [AnalyzeReceipts][analyze_receipts]
 * Analyze receipts from a URL: [AnalyzeReceiptsFromUrl][analyze_receipts_from_url]
-* Analyze content: [AnalyzeContent][analyze_layout]
-* Analyze custom documents from a URL: [AnalyzeCustomDocumentsFromUrl][analyze_custom_documents]
+* Extract layout: [AnalyzeLayout][analyze_layout]
+* Analyze custom documents from a URL: [AnalyzeCustomDocumentFromUrl][analyze_custom_documents]
 * Build a model: [BuildModel][build_model]
 * Manage custom models: [ManageCustomModels][manage_custom_models]
 * Copy a model between Form Recognizer resources: [CopyModel][copy_model]
 * Create a composed model from a collection of custom-built models: [CreateComposedModel][create_composed_model]
-* Get all document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
+* Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
 
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `DocumentAnalysisAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L369-L372 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L341-L344 -->
 ```java
 DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -522,16 +567,17 @@ DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisCl
 * Analyze invoice: [AnalyzeInvoiceAsync][analyze_invoices_async]
 * Analyze receipts: [AnalyzeReceiptsAsync][analyze_receipts_async]
 * Analyze receipts from a URL: [AnalyzeReceiptsFromUrlAsync][analyze_receipts_from_url_async]
-* Analyze content from a URL: [AnalyzeContentFromUrlAsync][analyze_layout_from_url_async]
-* Analyze custom documents: [AnalyzeCustomDocumentsAsync][analyze_custom_documents_async]
+* Extract layout from a URL: [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]
+* Analyze custom documents: [AnalyzeCustomDocumentAsync][analyze_custom_documents_async]
 * Build a model: [BuildModelAsync][build_model_async]
 * Manage custom models: [ManageCustomModelsAsync][manage_custom_models_async]
 * Copy a model between Form Recognizer resources: [CopyModelAsync][copy_model_async]
 * Create a composed model from a collection of custom-built models: [CreateComposedModelAsync][create_composed_model_async]
+* Get/List document model operations associated with the Form Recognizer resource: [GetOperationAsync][get_operation_async]
 
 ### Additional documentation
-
-For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][github_io_docs].
+See the [Sample README][sample_readme] for several code snippets illustrating common patterns used in the Form Recognizer Java SDK.
+For more extensive documentation on Azure Cognitive Services Form Recognizer, see the [Form Recognizer documentation][api_reference_doc].
 
 ## Contributing
 
@@ -546,7 +592,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
-[github_io_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
@@ -566,72 +611,46 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
+[register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[fr_labeling_tool]: https://aka.ms/azsdk/formrecognizer/labelingtool
+[fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
 
-[comment]: <> ([create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java)
-
-[comment]: <> ([create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CreateComposedModelAsync.java)
-
-[comment]: <> ([sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/)
-
-[comment]: <> ([document_analysis_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java)
-
-[comment]: <> ([document_analysis_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java)
-
-[comment]: <> ([document_model_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationAsyncClient.java)
-
-[comment]: <> ([document_model_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClient.java)
-
-[comment]: <> ([manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModels.java)
-
-[comment]: <> ([manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModelsAsync.java)
-
-[comment]: <> ([analyze_business_cards_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeBusinessCardFromUrl.java)
-
-[comment]: <> ([analyze_business_cards_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeBusinessCardFromUrlAsync.java)
-
-[comment]: <> ([analyze_identity_documents_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeIdentityDocumentsFromUrl.java)
-
-[comment]: <> ([analyze_identity_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeIdentityDocumentsFromUrlAsync.java)
-
-[comment]: <> ([analyze_invoices_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeInvoicesAsync.java)
-
-[comment]: <> ([analyze_invoices_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeInvoicesFromUrl.java)
-
-[comment]: <> ([analyze_layout]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeLayout.java)
-
-[comment]: <> ([analyze_layout_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeLayoutFromUrlAsync.java)
-
-[comment]: <> ([analyze_receipts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceipts.java)
-
-[comment]: <> ([analyze_receipts_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsAsync.java)
-
-[comment]: <> ([analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrl.java)
-
-[comment]: <> ([analyze_receipts_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrlAsync.java)
-
-[comment]: <> ([analyze_custom_documents]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeCustomDocumentsFromUrl.java)
-
-[comment]: <> ([analyze_custom_documents_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeCustomDocumentsAsync.java)
-
-[comment]: <> ([register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal)
-
-[comment]: <> ([build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModel.java)
-
-[comment]: <> ([build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java)
-
-[comment]: <> ([copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java)
-
-[comment]: <> ([copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModelAsync.java)
-
-[comment]: <> ([service_analyze_document_fields]: TODO)
-
-[comment]: <> ([get_operation]: TODO)
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
+[create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
+[create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/
+[document_analysis_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java
+[document_analysis_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java
+[document_model_admin_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationAsyncClient.java
+[document_model_admin_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClient.java
+[manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModels.java
+[manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/ManageCustomModelsAsync.java
+[analyze_business_cards_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeBusinessCardFromUrl.java
+[analyze_business_cards_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeBusinessCardFromUrlAsync.java
+[analyze_identity_documents_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeIdentityDocumentsFromUrl.java
+[analyze_identity_documents_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeIdentityDocumentsFromUrlAsync.java
+[analyze_invoices_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeInvoicesAsync.java
+[analyze_invoices_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeInvoicesFromUrl.java
+[analyze_layout]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeLayout.java
+[analyze_layout_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeLayoutFromUrlAsync.java
+[analyze_receipts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceipts.java
+[analyze_receipts_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsAsync.java
+[analyze_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrl.java
+[analyze_receipts_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeReceiptsFromUrlAsync.java
+[analyze_custom_documents]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeCustomDocumentFromUrl.java
+[analyze_custom_documents_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AnalyzeCustomDocumentAsync.java
+[build_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModel.java
+[build_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildModelAsync.java
+[copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModel.java
+[copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CopyModelAsync.java
+[get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationInfo.java
+[get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationInfoAsync.java
 
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[service_analyze_business_cards_fields]: https://aka.ms/formrecognizer/businesscardfields
-[service_analyze_invoices_fields]: https://aka.ms/formrecognizer/invoicefields
-[service_analyze_identity_documents_fields]: https://aka.ms/formrecognizer/iddocumentfields
-[service_analyze_receipt_fields]: https://aka.ms/formrecognizer/receiptfields
+[service_analyze_business_cards_fields]: https://aka.ms/azsdk/formrecognizer/businesscardfieldschema
+[service_analyze_invoices_fields]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema
+[service_analyze_identity_documents_fields]: https://aka.ms/azsdk/formrecognizer/iddocumentfieldschema
+[service_analyze_receipt_fields]: https://aka.ms/azsdk/formrecognizer/receiptfieldschema
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src
 [quickstart_training]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract#train-a-form-recognizer-model
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

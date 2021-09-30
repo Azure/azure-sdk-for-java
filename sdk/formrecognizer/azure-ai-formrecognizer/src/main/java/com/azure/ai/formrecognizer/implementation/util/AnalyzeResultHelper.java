@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.implementation.util;
 import com.azure.ai.formrecognizer.models.DocumentEntity;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.models.DocumentPage;
-import com.azure.ai.formrecognizer.models.StringIndexType;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.DocumentStyle;
@@ -27,7 +26,6 @@ public final class AnalyzeResultHelper {
      */
     public interface AnalyzeResultAccessor {
         void setModelId(AnalyzeResult analyzeResult, String id);
-        void setStringIndexType(AnalyzeResult analyzeResult, StringIndexType stringIndexType);
         void setContent(AnalyzeResult analyzeResult, String content);
         void setPages(AnalyzeResult analyzeResult, List<DocumentPage> pages);
         void setTables(AnalyzeResult analyzeResult, List<DocumentTable> tables);
@@ -48,10 +46,6 @@ public final class AnalyzeResultHelper {
 
     static void setModelId(AnalyzeResult analyzeResult, String modelId) {
         accessor.setModelId(analyzeResult, modelId);
-    }
-
-    static void setStringIndexType(AnalyzeResult analyzeResult, StringIndexType stringIndexType) {
-        accessor.setStringIndexType(analyzeResult, stringIndexType);
     }
 
     static void setContent(AnalyzeResult analyzeResult, String content) {
