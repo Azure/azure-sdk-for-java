@@ -11,7 +11,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-feature-management-web</artifactId>
-  <version>2.0.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
+  <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
   <name>Azure Spring Cloud Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
 
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-feature-management</artifactId>
-      <version>2.0.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
     Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -69,7 +69,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.azure.spring:azure-spring-cloud-feature-management:[2.0.1]</include> <!-- {x-include-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
+                <include>com.azure.spring:azure-spring-cloud-feature-management:[2.1.0-beta.1]</include> <!-- {x-include-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-webmvc:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->

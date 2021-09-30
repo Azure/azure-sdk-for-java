@@ -3,14 +3,14 @@
 
 package com.azure.ai.formrecognizer.perf.core;
 
-import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
-import com.azure.ai.formrecognizer.FormRecognizerClient;
-import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
-import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
-import com.azure.ai.formrecognizer.training.FormTrainingClient;
-import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
-import com.azure.ai.formrecognizer.training.models.CustomFormModel;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
+import com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient;
+import com.azure.ai.formrecognizer.DocumentAnalysisClient;
+import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient;
+import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.administration.models.BuildModelOptions;
+import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -26,10 +26,10 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     private static final String CONFIGURATION_ERROR = "Configuration %s must be set in either environment variables "
         + "or system properties.%n";
 
-    protected final FormRecognizerClient formrecognizerClient;
-    protected final FormRecognizerAsyncClient formrecognizerAsyncClient;
-    protected final FormTrainingClient formTrainingClient;
-    private final FormTrainingAsyncClient formTrainingAsyncClient;
+    protected final DocumentAnalysisClient documentAnalysisClient;
+    protected final DocumentAnalysisAsyncClient documentAnalysisAsyncClient;
+    protected final DocumentModelAdministrationClient documentModelAdministrationClient;
+    private final DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient;
 
     protected String modelId;
 
@@ -37,7 +37,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      * The base class for Azure Formrecognizer tests.
      *
      * @param options the configurable options for performing perf testing on this class.
-     * 
+     *
      * @throws RuntimeException if "AZURE_FORMRECOGNIZER_API_KEY" or "AZURE_FORMRECOGNIZER_ENDPOINT" is null or empty.
      */
     public ServiceTest(TOptions options) {
@@ -53,14 +53,14 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             throw new RuntimeException(String.format(CONFIGURATION_ERROR, "AZURE_FORMRECOGNIZER_API_KEY"));
         }
 
-        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
+        DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(formrecognizerEndpoint)
             .credential(new AzureKeyCredential(formrecognizerApiKey));
 
-        this.formTrainingClient = builder.buildClient();
-        this.formrecognizerAsyncClient = builder.buildAsyncClient().getFormRecognizerAsyncClient();
-        this.formrecognizerClient = formTrainingClient.getFormRecognizerClient();
-        this.formTrainingAsyncClient  = builder.buildAsyncClient();
+        this.documentModelAdministrationClient = builder.buildClient();
+        this.documentAnalysisAsyncClient = builder.buildAsyncClient().getDocumentAnalysisAsyncClient();
+        this.documentAnalysisClient = documentModelAdministrationClient.getDocumentAnalysisClient();
+        this.documentModelAdministrationAsyncClient = builder.buildAsyncClient();
     }
 
     /**
@@ -76,11 +76,11 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
                 return Mono.error(new RuntimeException(
                     String.format(CONFIGURATION_ERROR, "FORMRECOGNIZER_TRAINING_CONTAINER_SAS_URL")));
             }
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel>
-                syncPoller = formTrainingAsyncClient
-                .beginTraining(trainingDocumentsUrl,
-                    true,
-                    new TrainingOptions().setModelName("labeled-perf-model"))
+            SyncPoller<DocumentOperationResult, DocumentModel>
+                syncPoller = documentModelAdministrationAsyncClient
+                .beginBuildModel(trainingDocumentsUrl,
+                    null,
+                    new BuildModelOptions().setDescription("perf-model"))
                 .getSyncPoller();
             modelId = syncPoller.getFinalResult().getModelId();
             return Mono.empty();
@@ -92,6 +92,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return Mono.defer(() -> formTrainingAsyncClient.deleteModel(modelId));
+        return Mono.defer(() -> documentModelAdministrationAsyncClient.deleteModel(modelId));
     }
 }

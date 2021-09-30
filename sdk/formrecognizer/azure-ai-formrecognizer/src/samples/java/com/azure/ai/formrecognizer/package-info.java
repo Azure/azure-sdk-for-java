@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing sample classes for interacting with {@link com.azure.ai.formrecognizer.FormRecognizerClient} to
+ * Package containing sample classes for interacting with {@link com.azure.ai.formrecognizer.DocumentAnalysisClient} to
  * perform operations on Azure Form Recognizer
  */
 package com.azure.ai.formrecognizer;
