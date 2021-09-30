@@ -22,9 +22,8 @@ public class KeyRotationPolicyProperties {
 
     /**
      * Get the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be at least 28 days and defined as an ISO 8601 duration. For example, 90 days would be formatted as
-     * follows: "P90D", 3 months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D", to
-     * name a few.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
      *
      * @return The expiry time in ISO 8601 format.
      */
@@ -34,9 +33,8 @@ public class KeyRotationPolicyProperties {
 
     /**
      * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be at least 28 days and defined as an ISO 8601 duration. For example, 90 days would be formatted as
-     * follows: "P90D", 3 months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D", to
-     * name a few.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
      *
      * @param expiryTime The expiry time to set in ISO 8601 format.
      *
@@ -49,9 +47,7 @@ public class KeyRotationPolicyProperties {
     }
 
     /**
-     * Get the actions that will be performed by Key Vault over the lifetime of a key. At the moment,
-     * {@link KeyRotationLifetimeAction} can only have two items at maximum: one for rotate, one for notify.
-     * The notification time default value is 30 days before expiry and is not configurable.
+     * Get the actions that will be performed by Key Vault over the lifetime of a key.
      *
      * <p>You may also pass an empty array to restore to its default values.</p>
      *
@@ -62,9 +58,7 @@ public class KeyRotationPolicyProperties {
     }
 
     /**
-     * Set the actions that will be performed by Key Vault over the lifetime of a key. At the moment,
-     * {@link KeyRotationLifetimeAction} can only have two items at maximum: one for rotate, one for notify.
-     * The notification time default value is 30 days before expiry and is not configurable.
+     * Set the actions that will be performed by Key Vault over the lifetime of a key.
      *
      * <p>You may also pass an empty array to restore to its default values.</p>
      *

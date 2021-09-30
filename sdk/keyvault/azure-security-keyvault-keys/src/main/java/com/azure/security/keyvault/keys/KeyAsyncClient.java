@@ -52,6 +52,10 @@ import reactor.core.publisher.Mono;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1918,13 +1922,15 @@ public final class KeyAsyncClient {
             }
         }
 
-        Long createdOn = null;
-        Long updatedOn = null;
+        OffsetDateTime createdOn = null;
+        OffsetDateTime updatedOn = null;
         String expiryTime = null;
 
         if (keyRotationPolicy.getAttributes() != null) {
-            createdOn = keyRotationPolicy.getAttributes().getCreatedOn();
-            updatedOn = keyRotationPolicy.getAttributes().getUpdatedOn();
+            createdOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(keyRotationPolicy.getAttributes().getCreatedOn(),
+                0, ZoneOffset.UTC), ZoneOffset.UTC);
+            updatedOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(keyRotationPolicy.getAttributes().getUpdatedOn(),
+                0, ZoneOffset.UTC), ZoneOffset.UTC);
             expiryTime = keyRotationPolicy.getAttributes().getExpiryTime();
         }
 

@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -13,8 +14,8 @@ import java.util.List;
 @Immutable
 public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
     private final String id;
-    private final Long createdOn;
-    private final Long updatedOn;
+    private final OffsetDateTime createdOn;
+    private final OffsetDateTime updatedOn;
 
     /**
      * Creates an instance of {@link KeyRotationPolicy}.
@@ -23,7 +24,7 @@ public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
      * @param createdOn The {@link KeyRotationPolicy policy's} created time in UTC.
      * @param updatedOn The {@link KeyRotationPolicy policy's} last updated time in UTC.
      */
-    public KeyRotationPolicy(String id, Long createdOn, Long updatedOn) {
+    public KeyRotationPolicy(String id, OffsetDateTime createdOn, OffsetDateTime updatedOn) {
         this.id = id;
         this.createdOn = createdOn;
         this.updatedOn = updatedOn;
@@ -47,7 +48,7 @@ public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
      *
      * @return The {@link KeyRotationPolicy policy's} created time in UTC.
      */
-    public Long getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
 
@@ -58,15 +59,14 @@ public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
      *
      * @return The {@link KeyRotationPolicy policy's} last updated time in UTC.
      */
-    public Long getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return this.updatedOn;
     }
 
     /**
      * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
-     * It should be at least 28 days and defined as an ISO 8601 duration. For example, 90 days would be formatted as
-     * follows: "P90D", 3 months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D", to
-     * name a few.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
      *
      * @param expiryTime The expiry time to set in ISO 8601 format.
      *
@@ -79,9 +79,7 @@ public final class KeyRotationPolicy extends KeyRotationPolicyProperties {
     }
 
     /**
-     * Set the actions that will be performed by Key Vault over the lifetime of a key. At the moment,
-     * {@link KeyRotationLifetimeAction} can only have two items at maximum: one for rotate, one for notify.
-     * The notification time default value is 30 days before expiry and is not configurable.
+     * Set the actions that will be performed by Key Vault over the lifetime of a key.
      *
      * <p>You may also pass an empty array to restore to its default values.</p>
      *

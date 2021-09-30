@@ -21,10 +21,9 @@ public final class KeyRotationPolicyAttributes {
     private Long updatedOn;
 
     /**
-     * Get the {@link KeyRotationPolicy policy's} {@code expiryTime}. It will be applied on the new key version. It
-     * should be at least 28 days. It will be in ISO 8601 format. For example, 90 days would be formatted as follows:
-     * "P90D", 3 months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D", to name a
-     * few.
+     * Get the optional key expiration period used to define the duration after which a newly rotated key will expire.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
      *
      * @return The expiry time in ISO 8601 format.
      */
@@ -33,10 +32,9 @@ public final class KeyRotationPolicyAttributes {
     }
 
     /**
-     * Set the {@link KeyRotationPolicy policy's} {@code expiryTime}. It will be applied on the new key version. It
-     * should be at least 28 days. It will be in ISO 8601 format. For example, 90 days would be formatted as follows:
-     * "P90D", 3 months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D", to name a
-     * few.
+     * Set the optional key expiration period used to define the duration after which a newly rotated key will expire.
+     * It should be defined as an ISO 8601 duration. For example, 90 days would be formatted as follows: "P90D", 3
+     * months would be "P3M", 48 hours would be "PT48H" and 1 year and 10 days would be "P1Y10D".
      *
      * @param expiryTime The expiry time to set in ISO 8601 format.
      *

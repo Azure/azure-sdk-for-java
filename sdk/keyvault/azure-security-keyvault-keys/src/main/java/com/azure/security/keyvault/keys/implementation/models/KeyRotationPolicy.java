@@ -32,9 +32,7 @@ public final class KeyRotationPolicy {
     }
 
     /**
-     * Get the actions that will be performed by Key Vault over the lifetime of a key. At the moment,
-     * {@link LifetimeAction} can only have two items at maximum: one for rotate, one for notify. The notification time
-     * default value is 30 days before expiry and is not configurable.
+     * Get the actions that will be performed by Key Vault over the lifetime of a key.
      *
      * @return The {@link LifetimeAction actions} in this {@link KeyRotationPolicy policy}.
      */
@@ -43,9 +41,7 @@ public final class KeyRotationPolicy {
     }
 
     /**
-     * Set the actions that will be performed by Key Vault over the lifetime of a key. At the moment,
-     * {@link LifetimeAction} can only have two items at maximum: one for rotate, one for notify. The notification time
-     * default value is 30 days before expiry and is not configurable.
+     * Set the actions that will be performed by Key Vault over the lifetime of a key.
      *
      * @param lifetimeActions The {@link LifetimeAction actions} to set.
      *

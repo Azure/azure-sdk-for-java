@@ -18,8 +18,8 @@ public final class LifetimeActionTrigger {
     private String timeBeforeExpiry;
 
     /**
-     * Get the time after creation to attempt to rotate. It only applies to the 'rotate' action. It will be in ISO 8601
-     * duration format. For example, 90 days is represented as follows: "P90D".
+     * Get the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
+     * as follows: "P90D".
      *
      * @return The time after creation to attempt to rotate.
      */
@@ -28,8 +28,8 @@ public final class LifetimeActionTrigger {
     }
 
     /**
-     * Get the time after creation to attempt to rotate. It only applies to the 'rotate' action. It will be in ISO 8601
-     * duration format. For example, 90 days is represented as follows: "P90D".
+     * Set the time after creation to attempt to rotate in ISO 8601 duration format. For example, 90 days is represented
+     * as follows: "P90D".
      *
      * @param timeAfterCreate The time after creation to attempt to rotate.
      *
@@ -42,8 +42,8 @@ public final class LifetimeActionTrigger {
     }
 
     /**
-     * Get the time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. For example,
-     * 90 days is represented as follows: "P90D".
+     * Get the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
+     * represented as follows: "P90D".
      *
      * @return The time before expiry to attempt to rotate or notify.
      */
@@ -52,8 +52,8 @@ public final class LifetimeActionTrigger {
     }
 
     /**
-     * Set the time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. For example,
-     * 90 days is represented as follows: "P90D".
+     * Set the time before expiry to attempt to rotate or notify in ISO 8601 duration format. For example, 90 days is
+     * represented as follows: "P90D".
      *
      * @param timeBeforeExpiry The time before expiry to attempt to rotate or notify.
      *
