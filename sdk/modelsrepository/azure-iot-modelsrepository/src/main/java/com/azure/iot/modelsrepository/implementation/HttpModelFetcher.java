@@ -65,34 +65,31 @@ class HttpModelFetcher implements ModelFetcher {
     @Override
     public Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context) {
         return Mono.defer(() -> {
-            Queue<String> work = new LinkedList<>();
             try {
-                work.add(getMetadataPath(repositoryUri));
-            } catch (Exception e) {
+                String tryContentPath = getMetadataPath(repositoryUri);
+
+                logger.info(StatusStrings.FETCHING_METADATA_CONTENT, tryContentPath);
+
+                return evaluatePath(tryContentPath, context)
+                    .onErrorResume(error -> {
+                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s",
+                            tryContentPath, error.getMessage()));
+                        return null;
+                    })
+                    .map(s -> {
+                        try {
+                            if (s == null) {
+                                return null;
+                            }
+                            return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
+                        } catch (JsonProcessingException e) {
+                            logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
+                            return null;
+                        }
+                    });
+            } catch (MalformedURLException | URISyntaxException e) {
                 return Mono.error(new AzureException(e));
             }
-
-            String tryContentPath = work.poll();
-
-            logger.info(StatusStrings.FETCHING_METADATA_CONTENT, tryContentPath);
-
-            return evaluatePath(tryContentPath, context)
-                .onErrorResume(error -> {
-                    if (work.size() != 0) {
-                        return evaluatePath(work.poll(), context);
-                    } else {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
-                        return Mono.error(error);
-                    }
-                })
-                .map(s -> {
-                    try {
-                        return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
-                    } catch (JsonProcessingException e) {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
-                        return null;
-                    }
-                });
         });
     }
 

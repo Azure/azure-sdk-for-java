@@ -83,18 +83,9 @@ class FileModelFetcher implements ModelFetcher {
     @Override
     public Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context) {
         return Mono.defer(() -> {
-            Queue<String> work = new LinkedList<>();
 
             try {
-                work.add(getMetadataPath(repositoryUri));
-            } catch (MalformedURLException | URISyntaxException e) {
-                return Mono.error(new AzureException(e));
-            }
-
-            String fnfError = "";
-            while (work.size() != 0) {
-                String tryContentPath = work.poll();
-
+                String tryContentPath = getMetadataPath(repositoryUri);
                 Path path = Paths.get(new File(tryContentPath).getPath());
 
                 logger.info(StatusStrings.FETCHING_METADATA_CONTENT, path);
@@ -106,16 +97,17 @@ class FileModelFetcher implements ModelFetcher {
                                 .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
                                 .setPath(tryContentPath));
                     } catch (IOException e) {
-                        return Mono.error(new AzureException(e));
+                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
+                            path.toString(), e.getMessage()));
+                        return null;
                     }
                 }
 
                 logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, path.toString()));
-
-                fnfError = String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath);
+                return null;
+            } catch (MalformedURLException | URISyntaxException e) {
+                return Mono.error(new AzureException(e));
             }
-
-            return Mono.error(new AzureException(fnfError));
         });
     }
 
@@ -124,7 +116,7 @@ class FileModelFetcher implements ModelFetcher {
             .getPath();
     }
 
-    private String getMetadataPath(URI repositoryUri) throws URISyntaxException, MalformedURLException {
+    private String getMetadataPath(URI repositoryUri) throws URISyntaxException, MalformedURLException  {
         return DtmiConventions.getMetadataUri(repositoryUri)
             .getPath();
     }
