@@ -4,13 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -21,8 +22,7 @@ import org.springframework.core.annotation.Order;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusClientBuilder.class)
-@ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.connection-string:}')"
-                             + " or !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.servicebus.namespace:}')")
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
 class AzureServiceBusClientBuilderConfiguration {
 
     private final AzureServiceBusProperties serviceBusProperties;

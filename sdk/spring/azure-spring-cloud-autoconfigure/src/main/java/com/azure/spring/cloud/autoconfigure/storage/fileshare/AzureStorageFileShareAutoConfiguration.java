@@ -4,27 +4,23 @@
 package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 
 /**
  * Auto-configuration for a {@link ShareServiceClientBuilder} and file share service clients.
  */
 @ConditionalOnClass(ShareServiceClientBuilder.class)
-@AzureStorageFileShareAutoConfiguration.ConditionalOnStorageFileShare
+@ConditionalOnProperty(value = "spring.cloud.azure.storage.fileshare.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.fileshare", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureStorageFileShareAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
@@ -59,19 +55,6 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     @ConditionalOnMissingBean
     public ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
         return factory.build();
-    }
-
-    /**
-     * Condition indicates when storage file share should be auto-configured.
-     */
-    @Target({ ElementType.TYPE, ElementType.METHOD })
-    @Retention(RetentionPolicy.RUNTIME)
-    @Documented
-    @ConditionalOnExpression("${spring.cloud.azure.storage.fileshare.enabled:true} and ("
-                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.fileshare.account-name:}') or "
-                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.fileshare.endpoint:}') or "
-                                 + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.storage.fileshare.connection-string:}'))")
-    public @interface ConditionalOnStorageFileShare {
     }
 
 }

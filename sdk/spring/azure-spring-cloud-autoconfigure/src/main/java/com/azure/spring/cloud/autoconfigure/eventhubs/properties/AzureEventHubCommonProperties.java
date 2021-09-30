@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.eventhubs;
+package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;

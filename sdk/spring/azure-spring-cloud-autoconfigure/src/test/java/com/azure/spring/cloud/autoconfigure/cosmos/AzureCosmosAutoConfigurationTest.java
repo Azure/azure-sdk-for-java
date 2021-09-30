@@ -56,7 +56,7 @@ class AzureCosmosAutoConfigurationTest {
 
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.cosmos.uri=" + TEST_URI_HTTPS)
-            .withBean("azureProperties", AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilder.class, () -> mockCosmosClientBuilder)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
@@ -75,7 +75,7 @@ class AzureCosmosAutoConfigurationTest {
         azureProperties.getRetry().getBackoff().setDelay(Duration.ofSeconds(2));
 
         this.contextRunner
-            .withBean("azureProperties", AzureGlobalProperties.class, () -> azureProperties)
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .withPropertyValues("spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
                                 "spring.cloud.azure.cosmos.retry.backoff.delay=2m",

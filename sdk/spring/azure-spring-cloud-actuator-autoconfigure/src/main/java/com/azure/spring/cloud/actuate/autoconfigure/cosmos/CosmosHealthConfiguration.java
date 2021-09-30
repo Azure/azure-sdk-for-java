@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(CosmosAsyncClient.class)
 @AutoConfigureAfter(AzureCosmosAutoConfiguration.class)
 @ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true} and"
-                             + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}') or"
+                             + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.uri:}') and"
                              + "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.cosmos.database:}')")
 public class CosmosHealthConfiguration {
 

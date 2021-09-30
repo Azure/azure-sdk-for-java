@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.eventhubs;
+package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Azure Event Hub related properties.
  */
-public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
+public class AzureEventHubProperties extends AzureEventHubCommonProperties {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
@@ -63,7 +63,6 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
-        propertyMapper.from(this.getConsumerGroup()).to(properties::setConsumerGroup);
 
         propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
@@ -89,7 +88,6 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
-        propertyMapper.from(this.getConsumerGroup()).to(properties::setConsumerGroup);
 
         propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
@@ -113,8 +111,6 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
         return properties;
     }
 
-
-
     public Boolean getSharedConnection() {
         return isSharedConnection;
     }
@@ -135,16 +131,22 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
         return processor;
     }
 
-    static class Producer extends AzureEventHubCommonProperties {
-
-    }
-
-    static class Consumer extends AzureEventHubConsumerProperties {
+    /**
+     * Properties of an Event Hub producer.
+     */
+    public static class Producer extends AzureEventHubCommonProperties {
 
     }
 
     /**
-     * Azure Event Processor related properties.
+     * Properties of an Event Hub consumer.
+     */
+    public static class Consumer extends AzureEventHubConsumerProperties {
+
+    }
+
+    /**
+     * Properties of an Event Hub processor.
      */
     public static class Processor extends AzureEventHubConsumerProperties {
 
@@ -220,7 +222,7 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
          */
         public static class Batch {
             private Duration maxWaitTime;
-            private int maxSize = 1;
+            private Integer maxSize;
 
             public Duration getMaxWaitTime() {
                 return maxWaitTime;
@@ -230,11 +232,11 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
                 this.maxWaitTime = maxWaitTime;
             }
 
-            public int getMaxSize() {
+            public Integer getMaxSize() {
                 return maxSize;
             }
 
-            public void setMaxSize(int maxSize) {
+            public void setMaxSize(Integer maxSize) {
                 this.maxSize = maxSize;
             }
         }
@@ -242,7 +244,7 @@ public class AzureEventHubProperties extends AzureEventHubConsumerProperties {
         /**
          * Blob checkpoint store.
          */
-        static class BlobCheckpointStore extends AzureStorageBlobProperties  {
+        public static class BlobCheckpointStore extends AzureStorageBlobProperties  {
 
 
         }

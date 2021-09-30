@@ -6,14 +6,16 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.eventhubs.core.EventHubOperation;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,16 +28,12 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVE
  *
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnExpression(
-    "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.event-hub-name:}')"
-        + " or T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.event-hub-name:}')"
-)
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "producer.event-hub-name" })
 class AzureEventHubProducerClientConfiguration {
 
-    @ConditionalOnExpression(
-        "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.connection-string:}')"
-            + " and T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.namespace:}')"
-    )
+    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
+    @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedProducerConnectionConfiguration {
         @Bean
@@ -51,10 +49,7 @@ class AzureEventHubProducerClientConfiguration {
         }
     }
 
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.connection-string:}') "
-            + "or !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.producer.namespace:}')"
-    )
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedProducerConnectionConfiguration {
 

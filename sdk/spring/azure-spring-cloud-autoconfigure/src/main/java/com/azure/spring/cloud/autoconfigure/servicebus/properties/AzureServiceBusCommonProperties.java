@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.servicebus;
+package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
 import com.azure.spring.core.properties.client.AmqpClientProperties;

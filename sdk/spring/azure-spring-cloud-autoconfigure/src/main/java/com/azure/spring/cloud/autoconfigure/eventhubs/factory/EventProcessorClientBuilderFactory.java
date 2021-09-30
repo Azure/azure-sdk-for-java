@@ -12,7 +12,7 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
@@ -71,7 +71,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return null;
+        return this.processorProperties;
     }
 
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
@@ -135,19 +135,17 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     private void configureProcessorListener(EventProcessorClientBuilder builder) {
+        final AzureEventHubProperties.Processor.Batch batch = this.processorProperties.getBatch();
+        boolean isBatchEnabled = batch.getMaxWaitTime() != null || batch.getMaxSize() != null;
+
+        if (isBatchEnabled) {
+            builder.processEventBatch(processorListener::onEventBatch, batch.getMaxSize(), batch.getMaxWaitTime());
+        } else {
+            builder.processEvent(processorListener::onEvent);
+        }
         builder.processError(processorListener::onError);
-        builder.processEvent(processorListener::onEvent);
         builder.processPartitionClose(processorListener::onPartitionClose);
         builder.processPartitionInitialization(processorListener::onInitialization);
-
-
-        final AzureEventHubProperties.Processor.Batch batch = this.processorProperties.getBatch();
-
-        if (batch.getMaxWaitTime() != null) {
-            builder.processEventBatch(processorListener::onEventBatch, batch.getMaxSize());
-        } else {
-            builder.processEventBatch(processorListener::onEventBatch, batch.getMaxSize(), batch.getMaxWaitTime());
-        }
-
     }
+
 }

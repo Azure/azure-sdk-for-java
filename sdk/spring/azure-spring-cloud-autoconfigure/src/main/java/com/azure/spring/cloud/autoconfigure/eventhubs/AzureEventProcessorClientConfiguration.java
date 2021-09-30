@@ -6,17 +6,21 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.AbstractArmConnectionStringProvider;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.eventhubs.core.EventProcessorListener;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
@@ -26,10 +30,7 @@ import org.springframework.util.StringUtils;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventProcessorClientBuilder.class)
 @ConditionalOnBean({ EventProcessorListener.class, CheckpointStore.class })
-@ConditionalOnExpression(
-    "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.event-hub-name:}')"
-        + " or T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.processor.event-hub-name:}')"
-)
+@Conditional(AzureEventProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventProcessorClientConfiguration {
 
 
@@ -67,5 +68,35 @@ class AzureEventProcessorClientConfiguration {
     @ConditionalOnMissingBean
     public EventProcessorClientBuilder evenProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
         return factory.build();
+    }
+
+    static class ProcessorAvailableCondition extends AllNestedConditions {
+
+        ProcessorAvailableCondition() {
+            super(ConfigurationPhase.PARSE_CONFIGURATION);
+        }
+
+        @ConditionalOnAnyProperty(
+            prefix = "spring.cloud.azure.eventhubs",
+            name = { "event-hub-name", "processor.event-hub-name" })
+        static class EventHubName {
+            EventHubName() {
+            }
+        }
+
+        @ConditionalOnProperty(
+            prefix = "spring.cloud.azure.eventhubs.processor",
+            name = "consumer-group")
+        static class ConsumerGroup {
+            ConsumerGroup() {
+            }
+        }
+
+        @ConditionalOnAnyProperty(
+            prefix = "spring.cloud.azure.eventhubs",
+            name = { "namespace", "connection-string", "processor.namespace", "processor.connection-string" })
+        static class ConnectionInfo {
+
+        }
     }
 }

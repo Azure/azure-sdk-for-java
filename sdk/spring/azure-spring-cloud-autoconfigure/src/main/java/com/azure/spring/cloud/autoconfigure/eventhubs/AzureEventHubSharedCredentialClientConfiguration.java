@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubSharedAuthenticationClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventProcessorSharedAuthenticationClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.eventhubs.core.EventHubOperation;

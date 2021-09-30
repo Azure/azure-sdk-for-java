@@ -7,9 +7,9 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -19,8 +19,8 @@ import org.springframework.context.annotation.Bean;
  * Auto-configuration for a {@link SecretClientBuilder} and Azure Key Vault secret clients.
  */
 @ConditionalOnClass(SecretClientBuilder.class)
-@ConditionalOnExpression("${spring.cloud.azure.keyvault.secret.enabled:true}")
-@ConditionalOnProperty("spring.cloud.azure.keyvault.secret.vault-url")
+@ConditionalOnProperty(value = "spring.cloud.azure.keyvault.secret.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.keyvault.secret", name = "vault-url")
 public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurationBase {
 
 

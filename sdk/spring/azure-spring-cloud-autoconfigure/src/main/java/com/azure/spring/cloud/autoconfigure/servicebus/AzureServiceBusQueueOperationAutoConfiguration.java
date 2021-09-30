@@ -6,16 +6,16 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.servicebus.core.DefaultServiceBusQueueClientFactory;
 import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
-import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
+import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(ServiceBusQueueClientFactory.class)
-@ConditionalOnExpression("${spring.cloud.azure.servicebus.enabled:true}")
+@ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 public class AzureServiceBusQueueOperationAutoConfiguration {
 

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.beans.factory.ObjectProvider;

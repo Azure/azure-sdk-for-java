@@ -4,13 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.ConnectionStringProvider;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -23,9 +24,8 @@ import org.springframework.core.annotation.Order;
  *
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnExpression("!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.event-hub-name:}')"
-                             + " or !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.connection-string:}')"
-                             + " or !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.namespace:}')")
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
+@ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs", name = "event-hub-name")
 class AzureEventHubClientBuilderConfiguration {
 
     @Bean
@@ -37,7 +37,7 @@ class AzureEventHubClientBuilderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubProperties properties,
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
+                                                                     ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
         final EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
 
         builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());

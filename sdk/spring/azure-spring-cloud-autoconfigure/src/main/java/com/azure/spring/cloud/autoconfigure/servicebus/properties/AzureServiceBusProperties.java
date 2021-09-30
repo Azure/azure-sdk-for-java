@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.servicebus;
+package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
@@ -123,8 +123,10 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
         return properties;
     }
 
-
-    static class Producer extends AzureServiceBusCommonProperties {
+    /**
+     * Properties of a Service Bus producer.
+     */
+    public static class Producer extends AzureServiceBusCommonProperties {
 
         private String queueName;
         private String topicName;
@@ -146,7 +148,10 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
         }
     }
 
-    static class Consumer extends AzureServiceBusCommonProperties {
+    /**
+     * Properties of a Service Bus consumer.
+     */
+    public static class Consumer extends AzureServiceBusCommonProperties {
 
         // TODO (xiada): name for session
         private Boolean sessionAware;
@@ -232,7 +237,10 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
         }
     }
 
-    static class Processor extends Consumer {
+    /**
+     * Properties of a Service Bus processor.
+     */
+    public static class Processor extends Consumer {
         private Integer maxConcurrentCalls;
         private Integer maxConcurrentSessions;
 

@@ -11,7 +11,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
@@ -75,9 +75,9 @@ public class EventProcessorSharedAuthenticationClientBuilderFactory extends Abst
     @Override
     protected void configureService(EventProcessorSharedAuthenticationClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        map.from(eventHubProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
+        map.from(eventHubProperties.getProcessor().getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventHubProperties.getProcessor().getTrackLastEnqueuedEventProperties()).to(builder::trackLastEnqueuedEventProperties);
         map.from(eventHubProperties.getProcessor().getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
         map.from(eventHubProperties.getProcessor().getInitialPartitionEventPosition()).to(builder::initialPartitionEventPosition);

@@ -6,14 +6,17 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -31,16 +34,13 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVE
     AzureEventHubConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class,
     AzureEventHubConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class
 })
-@ConditionalOnExpression(
-    "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.event-hub-name:}')"
-        + " or T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.consumer.event-hub-name:}')"
-)
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "consumer.event-hub-name" })
+@ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = "consumer-group")
 class AzureEventHubConsumerClientConfiguration {
 
-    @ConditionalOnExpression(
-        "T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.consumer.connection-string:}')"
-            + " and T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.consumer.namespace:}')"
-    )
+    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
+    @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedConsumerConnectionConfiguration {
         @Bean
@@ -56,10 +56,7 @@ class AzureEventHubConsumerClientConfiguration {
         }
     }
 
-    @ConditionalOnExpression(
-        "!T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.consumer.connection-string:}')"
-            + " or !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.consumer.namespace:}')"
-    )
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedConsumerConnectionConfiguration {
 

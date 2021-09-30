@@ -10,7 +10,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
@@ -87,7 +87,6 @@ public class EventHubSharedAuthenticationClientBuilderFactory extends AbstractAz
     @Override
     protected void configureService(EventHubSharedAuthenticationClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        map.from(eventHubProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
         map.from(eventHubProperties.getSharedConnection()).whenTrue().to(t -> builder.shareConnection());

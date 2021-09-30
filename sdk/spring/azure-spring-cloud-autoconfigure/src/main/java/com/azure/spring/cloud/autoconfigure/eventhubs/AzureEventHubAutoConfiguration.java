@@ -5,9 +5,10 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +20,7 @@ import org.springframework.context.annotation.Import;
  */
 @ConditionalOnClass(EventHubClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnExpression(" !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.connection-string:}')"
-                             + " or !T(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.namespace:}')")
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 @Import({
     AzureEventHubClientBuilderConfiguration.class,
     AzureEventHubConsumerClientConfiguration.class,

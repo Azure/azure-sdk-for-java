@@ -3,16 +3,18 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.eventhubs.core.DefaultEventHubClientFactory;
 import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import com.azure.spring.eventhubs.core.EventHubOperation;
 import com.azure.spring.eventhubs.core.EventHubSharedAuthenticationClientBuilder;
 import com.azure.spring.eventhubs.core.EventHubTemplate;
 import com.azure.spring.eventhubs.core.EventProcessorSharedAuthenticationClientBuilder;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -22,19 +24,24 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventHubOperation.class)
-@ConditionalOnExpression(
-    "!(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.connection-string:}')"
-        + " or !(org.springframework.util.StringUtils).isEmpty('${spring.cloud.azure.eventhubs.namespace:}')"
-)
+@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 @AutoConfigureAfter(AzureEventHubAutoConfiguration.class)
 @Import(AzureEventHubSharedCredentialClientConfiguration.class)
 public class AzureEventHubOperationAutoConfiguration {
 
+    // TODO (xiada): should processor be optional?
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientFactory eventhubClientFactory(EventHubSharedAuthenticationClientBuilder eventHubServiceClientBuilder,
-                                                       EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder) {
-        return new DefaultEventHubClientFactory(eventHubServiceClientBuilder, eventProcessorServiceClientBuilder);
+                                                       ObjectProvider<EventProcessorSharedAuthenticationClientBuilder> eventProcessorBuilders) {
+        DefaultEventHubClientFactory factory = new DefaultEventHubClientFactory(eventHubServiceClientBuilder);
+
+        if (eventProcessorBuilders.getIfAvailable() != null) {
+            factory.setEventProcessorServiceClientBuilder(eventProcessorBuilders.getIfAvailable());
+        }
+
+        return factory;
     }
 
     @Bean
