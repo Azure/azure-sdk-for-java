@@ -140,7 +140,7 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
     </dependency>
   </dependencies>
   <profiles>
@@ -206,7 +206,7 @@
                 <include>com.microsoft.sqlserver:mssql-jdbc:[9.2.1.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
                 <include>org.eclipse.jgit:org.eclipse.jgit:[4.5.7.201904151645-r]</include> <!-- {x-include-update;org.eclipse.jgit:org.eclipse.jgit;external_dependency} -->
                 <include>commons-net:commons-net:[3.6]</include> <!-- {x-include-update;commons-net:commons-net;external_dependency} -->
-                <include>com.github.spotbugs:spotbugs-annotations:[4.2.0]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+                <include>com.github.spotbugs:spotbugs-annotations:[4.2.2]</include> <!-- {x-include-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -215,7 +215,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>

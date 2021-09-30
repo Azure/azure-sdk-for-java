@@ -3,8 +3,8 @@
 
 package com.azure.identity.util;
 
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.experimental.credential.TokenRequestContextExperimental;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
 import org.junit.Assert;
@@ -20,7 +20,7 @@ public class IdentityUtilTests {
     public void testMultiTenantAuthenticationEnabled() throws Exception {
         String currentTenant = "tenant";
         String newTenant = "tenant-new";
-        TokenRequestContextExperimental trc = new TokenRequestContextExperimental()
+        TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
         IdentityClientOptions options = new IdentityClientOptions();
@@ -33,7 +33,7 @@ public class IdentityUtilTests {
     public void testMultiTenantAuthenticationDisabled() throws Exception {
         String currentTenant = "tenant";
         String newTenant = "tenant-new";
-        TokenRequestContextExperimental trc = new TokenRequestContextExperimental()
+        TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId("newTenant");
         IdentityClientOptions options = new IdentityClientOptions();

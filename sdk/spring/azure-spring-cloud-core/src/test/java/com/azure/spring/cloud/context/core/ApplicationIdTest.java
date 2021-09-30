@@ -2,18 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.context.core;
 
+import com.azure.spring.core.ApplicationId;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE;
-import static com.azure.spring.core.ApplicationId.VERSION;
 
 
 public class ApplicationIdTest {
 
     @Test
-    public void maxLength() {
-        Assertions.assertTrue((AZURE_SPRING_INTEGRATION_STORAGE_QUEUE + VERSION).length() <= 24);
+    public void testPomVersion() {
+        Assertions.assertNotNull(ApplicationId.VERSION);
+        Assertions.assertNotEquals("unknown", ApplicationId.VERSION);
     }
-
 }

@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-formrecognizer</artifactId>
-      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -174,7 +174,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.20.0-beta.2</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.19.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -264,7 +264,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-jca</artifactId>
-      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -490,7 +490,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>3.12.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -615,7 +615,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>report-aggregate</id>

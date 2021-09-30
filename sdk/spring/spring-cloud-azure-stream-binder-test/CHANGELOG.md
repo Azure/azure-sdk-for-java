@@ -10,18 +10,11 @@
 
 ### Other Changes
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
@@ -61,7 +54,9 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 ## 2.0.0 (2020-12-30)
 
 ## 2.0.0-beta.1 (2020-11-18)
-- fix checkstyle
+### Breaking Changes
+- Change group id from `com.microsoft.azure` to `com.azure.spring`.
+- Change artifact id from `spring-cloud-azure-messaging` to `azure-spring-cloud-messaging`.
 
 ## 1.2.8 (2020-09-14)
 ### Breaking Changes

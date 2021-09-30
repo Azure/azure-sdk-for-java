@@ -185,29 +185,6 @@ public class SchemaRegistryClientTests extends TestBase {
     }
 
     /**
-     * Verifies that we can register a schema and then get it by its schemaId.
-     */
-    @Test
-    public void registerAndGetCachedSchema() {
-        // Arrange
-        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
-        final SchemaRegistryClient client1 = builder.buildClient();
-
-        // Act & Assert
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SerializationType.AVRO);
-        assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
-
-        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
-        // cached, so it won't make a network call when getting the schema.
-        final String schemaIdToGet = response.getSchemaId();
-
-        // Act & Assert
-        final SchemaProperties response2 = client1.getSchema(schemaIdToGet);
-        assertSchemaProperties(response2, schemaIdToGet, schemaName, SCHEMA_CONTENT);
-    }
-
-    /**
      * Verifies that we get 404 when non-existent schema returned.
      */
     @Test

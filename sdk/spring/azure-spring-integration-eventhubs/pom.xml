@@ -66,7 +66,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -84,13 +84,13 @@
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito2</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+      <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-api-mockito2;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -105,9 +105,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.mockito:mockito-core:[3.9.0]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
-                <include>org.powermock:powermock-api-mockito2:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
-                <include>org.powermock:powermock-module-junit4:[2.0.2]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
+                <include>org.mockito:mockito-core:[3.12.4]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
+                <include>org.powermock:powermock-api-mockito2:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
+                <include>org.powermock:powermock-module-junit4:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

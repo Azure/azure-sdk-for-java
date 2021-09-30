@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.regex.Pattern;
 
 /**
  * Custom serializer for deserializing complex types with additional properties. If a complex type has a property named
@@ -30,6 +31,8 @@ import java.lang.reflect.Field;
  */
 final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
     private static final long serialVersionUID = 700052863615540646L;
+
+    private static final Pattern JSON_FLATTEN_SPLIT = Pattern.compile("((?<!\\\\))\\.");
 
     /**
      * The default mapperAdapter for the current type.
@@ -104,7 +107,7 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
                     continue;
                 }
                 JsonProperty property = field.getAnnotation(JsonProperty.class);
-                String key = isJsonFlatten ? property.value().split("((?<!\\\\))\\.")[0] : property.value();
+                String key = isJsonFlatten ? JSON_FLATTEN_SPLIT.split(property.value())[0] : property.value();
                 if (!key.isEmpty()) {
                     if (copy.has(key)) {
                         copy.remove(key);

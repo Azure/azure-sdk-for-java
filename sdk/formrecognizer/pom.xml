@@ -22,7 +22,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-ai-formrecognizer</artifactId>
-          <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
         </dependency>
       </dependencies>
 
@@ -31,7 +31,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>report-aggregate</id>
