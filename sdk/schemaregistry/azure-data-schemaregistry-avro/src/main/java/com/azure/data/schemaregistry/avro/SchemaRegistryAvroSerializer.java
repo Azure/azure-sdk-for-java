@@ -8,7 +8,7 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationType;
+import com.azure.data.schemaregistry.models.SerializationFormat;
 import org.apache.avro.Schema;
 import reactor.core.publisher.Mono;
 
@@ -198,11 +198,11 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     private Mono<String> maybeRegisterSchema(String schemaGroup, String schemaName, String schemaString) {
         if (this.autoRegisterSchemas) {
             return this.schemaRegistryClient
-                .registerSchema(schemaGroup, schemaName, schemaString, SerializationType.AVRO)
+                .registerSchema(schemaGroup, schemaName, schemaString, SerializationFormat.AVRO)
                 .map(SchemaProperties::getSchemaId);
         } else {
             return this.schemaRegistryClient.getSchemaId(
-                schemaGroup, schemaName, schemaString, SerializationType.AVRO);
+                schemaGroup, schemaName, schemaString, SerializationFormat.AVRO);
         }
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationType;
+import com.azure.data.schemaregistry.models.SerializationFormat;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -41,14 +41,14 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param content The string representation of the schema.
-     * @param serializationType The serialization type of this schema.
+     * @param serializationFormat The serialization type of this schema.
      *
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties registerSchema(String groupName, String name, String content,
-        SerializationType serializationType) {
-        return this.asyncClient.registerSchema(groupName, name, content, serializationType).block();
+        SerializationFormat serializationFormat) {
+        return this.asyncClient.registerSchema(groupName, name, content, serializationFormat).block();
     }
 
     /**
@@ -58,15 +58,15 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param content The string representation of the schema.
-     * @param serializationType The serialization type of this schema.
+     * @param serializationFormat The serialization type of this schema.
      * @param context The context to pass to the Http pipeline.
      *
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> registerSchemaWithResponse(String groupName, String name, String content,
-        SerializationType serializationType, Context context) {
-        return this.asyncClient.registerSchemaWithResponse(groupName, name, content, serializationType,
+        SerializationFormat serializationFormat, Context context) {
+        return this.asyncClient.registerSchemaWithResponse(groupName, name, content, serializationFormat,
             context).block();
     }
 
@@ -88,12 +88,12 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param content The string representation of the schema.
-     * @param serializationType The serialization type of this schema.
+     * @param serializationFormat The serialization type of this schema.
      *
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getSchemaId(String groupName, String name, String content, SerializationType serializationType) {
-        return this.asyncClient.getSchemaId(groupName, name, content, serializationType).block();
+    public String getSchemaId(String groupName, String name, String content, SerializationFormat serializationFormat) {
+        return this.asyncClient.getSchemaId(groupName, name, content, serializationFormat).block();
     }
 }
