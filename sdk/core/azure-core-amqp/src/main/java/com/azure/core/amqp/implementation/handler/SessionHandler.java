@@ -50,7 +50,7 @@ public class SessionHandler extends Handler {
         try {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
         } catch (IOException | RejectedExecutionException ioException) {
-            logger.warning("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
+            logger.info("onSessionLocalOpen connectionId[{}], entityName[{}], reactorDispatcherError[{}]",
                 getConnectionId(), this.entityName,
                 ioException.getMessage());
 

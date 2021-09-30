@@ -437,9 +437,16 @@ public class ReactorConnection implements AmqpConnection {
             if (dispatcher != null) {
                 try {
                     dispatcher.invoke(() -> closeConnectionWork());
-                } catch (IOException | RejectedExecutionException e) {
-                    logger.warning("connectionId[{}] Error while scheduling closeConnection work. Manually disposing.",
-                        connectionId, e);
+                } catch (IOException e) {
+                    logger.warning("connectionId[{}] IOException while scheduling closeConnection work. Manually "
+                            + "disposing.", connectionId, e);
+
+                    closeConnectionWork();
+                } catch (RejectedExecutionException e) {
+                    // Not logging error here again because we have to log the exception when we throw it.
+                    logger.info("connectionId[{}] Could not schedule closeConnection work. Manually disposing.",
+                        connectionId);
+
                     closeConnectionWork();
                 }
             } else {
