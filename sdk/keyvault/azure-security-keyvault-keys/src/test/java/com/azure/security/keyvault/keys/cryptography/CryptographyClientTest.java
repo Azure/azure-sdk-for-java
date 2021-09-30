@@ -49,15 +49,16 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     private void initializeKeyClient(HttpClient httpClient) {
-        pipeline = getHttpPipeline(httpClient, KeyServiceVersion.getLatest());
+        pipeline = getHttpPipeline(httpClient);
         client = new KeyClientBuilder()
             .pipeline(pipeline)
             .vaultUrl(getEndpoint())
+            .serviceVersion(KeyServiceVersion.getLatest())
             .buildClient();
     }
 
     private CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        pipeline = getHttpPipeline(httpClient, serviceVersion);
+        pipeline = getHttpPipeline(httpClient);
         return new CryptographyClientBuilder()
             .pipeline(pipeline)
             .serviceVersion(serviceVersion)

@@ -5,7 +5,6 @@ package com.azure.identity.implementation.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.experimental.credential.TokenRequestContextExperimental;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -24,13 +23,7 @@ public final class IdentityUtil {
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
                                          IdentityClientOptions options) {
 
-        String contextTenantId;
-        if (requestContext instanceof TokenRequestContextExperimental) {
-            TokenRequestContextExperimental experimental = ((TokenRequestContextExperimental) requestContext);
-            contextTenantId = experimental.getTenantId();
-        } else {
-            return currentTenantId;
-        }
+        String contextTenantId = requestContext.getTenantId();
 
         if (!options.isMultiTenantAuthenticationAllowed()) {
             if (contextTenantId != null && !currentTenantId.equals(contextTenantId)
