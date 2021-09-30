@@ -20,7 +20,7 @@ We assume that you are familiar with the old SDK `azure-ai-formrecognizer (3.0.x
 
 ## Migration benefits
 
-A natural question to ask when considering whether or not to adopt a new version or library is its benefits. As Azure has matured and been embraced by a more diverse group of developers, we have been focused on learning the patterns and practices to best support developer productivity and to understand the gaps that the Java
+A natural question to ask when considering whether to adopt a new version or library is its benefits. As Azure has matured and been embraced by a more diverse group of developers, we have been focused on learning the patterns and practices to best support developer productivity and to understand the gaps that the Java
 client libraries have.
 
 There were several areas of consistent feedback expressed across the Azure client library ecosystem. The most important is that many developers have felt that the learning curve was difficult, and the APIs did not offer a good, approachable, and consistent onboarding story for those learning Azure or exploring a specific Azure service.
@@ -33,9 +33,9 @@ Aside from the benefits of the new design mentioned above, the `azure-ai-formrec
 
 ### Cross Service SDK improvements
 
-The modern Form Recognizer client library also provides the ability to share in some of the cross-service improvements made to the Azure development experience, such as
+The modern Form Recognizer client library also provides the ability to share in some cross-service improvements made to the Azure development experience, such as
 
-- A unified method for analyzing analyzing text and structured data from your documents across each of the client libraries.
+- A unified method for extracting text and structured data from your documents across each of the client libraries.
 - A unified return type `DocumentModel` indicating the document type the model can analyze and the specific fields it can analyze along with the estimated confidence for each field.
 - Specifying a modelId instead of the generated GUID when creating custom models, along with an optional description.
 - Modified `Generate Copy Authorization operation` response to return the target resource information so that it could be used directly when copying custom models method.
@@ -140,7 +140,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
 
 #### Build a custom document analysis model
 In 3.X, creating a custom model required specifying `useTrainingLabels` to indicate if the model creation was using the custom labeling or not with the `beginTraining` method.
-In 4.X, we introduced the new general document model (prebuilt-document) consisting of of key-value pair extraction, it is no longer necessary to train a custom model to extract key-value pairs. Thus, we removed the option to train custom models without labels. Hence, with 4.X, we can build a custom document analysis model using the `beginBuildModel` method as shown in the example below:
+In 4.X, we introduced the new general document model (prebuilt-document) consisting of key-value pair extraction, it is no longer necessary to train a custom model to extract key-value pairs. Thus, we removed the option to train custom models without labels. Hence, with 4.X, we can build a custom document analysis model using the `beginBuildModel` method as shown in the example below:
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L293-L315 -->
 ```java
 // Build custom document analysis model
@@ -240,16 +240,16 @@ More examples can be found at:
 - [Form Recognizer samples][README-Samples]
 
 <!-- Links -->
-<!-- [DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClientBuilder.java
+[DocumentAnalysisClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClientBuilder.java
 [DocumentAnalysisClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisClient.java
 [DocumentAnalysisAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/DocumentAnalysisAsyncClient.java
 [DocumentModelAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClientBuilder.java
 [DocumentModelAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationClient.java
-[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationAsyncClient.java -->
+[DocumentModelAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/administration/DocumentModelAdministrationAsyncClient.java
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
-[README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/README.md
+[README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2Fmigration-guide.png)
