@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class KeyClientManagedHsmTest extends KeyClientTest {
     public KeyClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
-        this.isManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
+        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
     }
 
     @Override
     protected void beforeTest() {
-        Assumptions.assumeTrue(isManagedHsmTest);
+        Assumptions.assumeTrue(runManagedHsmTest);
 
         super.beforeTest();
     }
@@ -89,5 +89,15 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
 
             assertEquals(count, randomBytes.getBytes().length);
         });
+    }
+
+    /**
+     * Tests that an existing key can be released.
+     */
+    @Override
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        super.releaseKey(httpClient, serviceVersion);
     }
 }

@@ -94,7 +94,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         final KeyType keyType;
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             keyType = KeyType.RSA_HSM;
         } else {
             keyType = KeyType.RSA;
@@ -518,7 +518,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // TODO: Remove assumption once Key Vault allows for creating exportable keys.
-        Assumptions.assumeTrue(isManagedHsmTest);
+        Assumptions.assumeTrue(runManagedHsmTest);
 
         createKeyAsyncClient(httpClient, serviceVersion);
         releaseKeyRunner((keyToRelease, attestationUrl) -> {

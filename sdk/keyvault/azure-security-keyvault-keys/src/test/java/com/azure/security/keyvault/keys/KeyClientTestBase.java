@@ -76,7 +76,7 @@ public abstract class KeyClientTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     protected boolean isHsmEnabled = false;
-    protected boolean isManagedHsmTest = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -160,7 +160,7 @@ public abstract class KeyClientTestBase extends TestBase {
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             createRsaKeyOptions.setHardwareProtected(true);
         }
 
@@ -382,7 +382,7 @@ public abstract class KeyClientTestBase extends TestBase {
             .setKeySize(2048)
             .setPublicExponent(3);
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             keyOptions.setHardwareProtected(true);
         }
 
@@ -399,7 +399,7 @@ public abstract class KeyClientTestBase extends TestBase {
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             keyOptions.setHardwareProtected(true);
         }
 
@@ -438,7 +438,7 @@ public abstract class KeyClientTestBase extends TestBase {
         final CreateRsaKeyOptions keyToRelease =
             new CreateRsaKeyOptions(testResourceNamer.randomName("keyToRelease", 20))
                 .setKeySize(2048)
-                .setHardwareProtected(isManagedHsmTest)
+                .setHardwareProtected(runManagedHsmTest)
                 .setReleasePolicy(new KeyReleasePolicy(releasePolicyContents.getBytes(StandardCharsets.UTF_8)))
                 .setExportable(true);
 
