@@ -10,6 +10,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.schemaregistry.SchemaRegistryVersion;
 
 /** Initializes a new instance of the AzureSchemaRegistry type. */
 public final class AzureSchemaRegistry {
@@ -79,8 +80,7 @@ public final class AzureSchemaRegistry {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint, "2020-09-01-preview");
+                endpoint);
     }
 
     /**
@@ -89,7 +89,8 @@ public final class AzureSchemaRegistry {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     AzureSchemaRegistry(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, "2020-09-01-preview");
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint,
+            SchemaRegistryVersion.getLatest().getVersion());
     }
 
     /**
