@@ -78,6 +78,7 @@ public class SchemaRegistryClientBuilder {
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
+    private SchemaRegistryVersion serviceVersion;
 
     /**
      * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
@@ -213,6 +214,17 @@ public class SchemaRegistryClientBuilder {
     }
 
     /**
+     * Sets the service version to use.
+     *
+     * @param serviceVersion Service version.
+     * @return The updated instance.
+     */
+    public SchemaRegistryClientBuilder serviceVersion(SchemaRegistryVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
@@ -301,8 +313,11 @@ public class SchemaRegistryClientBuilder {
                 .build();
         }
 
+        SchemaRegistryVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
+
         AzureSchemaRegistry restService = new AzureSchemaRegistryBuilder()
             .endpoint(fullyQualifiedNamespace)
+            .apiVersion(version.getVersion())
             .pipeline(buildPipeline)
             .buildClient();
 

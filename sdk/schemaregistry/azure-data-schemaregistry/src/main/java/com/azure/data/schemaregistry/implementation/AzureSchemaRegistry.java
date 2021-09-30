@@ -80,7 +80,7 @@ public final class AzureSchemaRegistry {
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint, "2020-09-01-preview");
     }
 
     /**
@@ -89,7 +89,7 @@ public final class AzureSchemaRegistry {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     AzureSchemaRegistry(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, "2020-09-01-preview");
     }
 
     /**
@@ -98,11 +98,12 @@ public final class AzureSchemaRegistry {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
-    AzureSchemaRegistry(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    AzureSchemaRegistry(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-09-01-preview";
+        this.apiVersion = apiVersion;
         this.schemas = new Schemas(this);
     }
 }
