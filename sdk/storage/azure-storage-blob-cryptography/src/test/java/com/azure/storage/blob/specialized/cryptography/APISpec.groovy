@@ -403,7 +403,7 @@ class APISpec extends StorageSpec {
      * real key this way.
      */
     static def getRandomKey(long seed = new Random().nextLong()) {
-        if (getEnv().getTestMode() == TestMode.LIVE) {
+        if (getEnvironment().getTestMode() == TestMode.LIVE) {
             def key = new byte[32] // 256 bit key
             new Random(seed).nextBytes(key)
             return key
@@ -417,7 +417,7 @@ class APISpec extends StorageSpec {
      * and RECORD testing modes only.
      */
     static def mockAesKey(EncryptedBlobAsyncClient encryptedClient) {
-        if (getEnv().getTestMode() != TestMode.LIVE) {
+        if (getEnvironment().getTestMode() != TestMode.LIVE) {
             def mockAesKey = new SecretKey() {
                 @Override
                 String getAlgorithm() {

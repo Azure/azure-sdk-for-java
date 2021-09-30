@@ -38,7 +38,7 @@ class SASTest extends APISpec {
 
     def setup() {
         pathName = generatePathName()
-        sasClient = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        sasClient = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         sasClient.append(data.defaultInputStream, 0, data.defaultDataSize)
         sasClient.flush(data.defaultDataSize)
@@ -110,7 +110,7 @@ class SASTest extends APISpec {
     def "directory sas permission"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -148,7 +148,7 @@ class SASTest extends APISpec {
     def "directory sas permission fail"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission() /* No read permission. */
             .setWritePermission(true)
@@ -251,7 +251,7 @@ class SASTest extends APISpec {
     def "directory user delegation"() {
         setup:
         def pathName = generatePathName()
-        DataLakeDirectoryClient sasClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        DataLakeDirectoryClient sasClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         sasClient.create()
         def permissions = new PathSasPermission()
             .setReadPermission(true)
@@ -358,7 +358,7 @@ class SASTest extends APISpec {
 
         when:
         /* Grant userOID on root folder. */
-        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
+        def rootClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
         ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
         PathAccessControlEntry ace = new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.USER)
@@ -382,7 +382,7 @@ class SASTest extends APISpec {
         sasWithPermissions.contains("saoid=" + saoid)
 
         when:
-        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        client = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
         def accessControl = client.getAccessControl()
 
         then:
@@ -431,7 +431,7 @@ class SASTest extends APISpec {
 
         when: "User is now authorized."
         /* Grant userOID on root folder. */
-        def rootClient = getDirectoryClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
+        def rootClient = getDirectoryClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), "")
         ArrayList<PathAccessControlEntry> acl = new ArrayList<>();
         PathAccessControlEntry ace = new PathAccessControlEntry()
             .setAccessControlType(AccessControlType.USER)
@@ -450,7 +450,7 @@ class SASTest extends APISpec {
         client.append(data.defaultInputStream, 0, data.defaultDataSize)
         client.flush(data.defaultDataSize)
 
-        client = getFileClient(env.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
+        client = getFileClient(environment.dataLakeAccount.credential, fsc.getFileSystemUrl(), pathName)
 
         then:
         notThrown(DataLakeStorageException)
@@ -657,7 +657,7 @@ class SASTest extends APISpec {
         def fsc = getFileSystemClientBuilder(primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "?" + sas).buildClient()
         fsc.listPaths()
 
-        def fc = getFileClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
+        def fc = getFileClient(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl() + "/" + fileSystemName + "/" + pathName + "?" + sas)
 
         fc.create()
 
@@ -685,7 +685,7 @@ class SASTest extends APISpec {
         } else {
             v = new DataLakeServiceSasSignatureValues(e, p)
         }
-        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
+        def expected = String.format(expectedStringToSign, environment.dataLakeAccount.name)
 
         v.setPermissions(p)
 
@@ -707,7 +707,7 @@ class SASTest extends APISpec {
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(util.getCanonicalName(env.dataLakeAccount.name))
+        def sasToken = util.stringToSign(util.getCanonicalName(environment.dataLakeAccount.name))
 
         then:
         sasToken == expected
@@ -741,7 +741,7 @@ class SASTest extends APISpec {
         p.setReadPermission(true)
 
         def v = new DataLakeServiceSasSignatureValues(e, p)
-        def expected = String.format(expectedStringToSign, env.dataLakeAccount.name)
+        def expected = String.format(expectedStringToSign, environment.dataLakeAccount.name)
 
         p.setReadPermission(true)
         v.setPermissions(p)
@@ -775,7 +775,7 @@ class SASTest extends APISpec {
 
         def util = new DataLakeSasImplUtil(v, "fileSystemName", "pathName", false)
         util.ensureState()
-        def sasToken = util.stringToSign(key, util.getCanonicalName(env.dataLakeAccount.name))
+        def sasToken = util.stringToSign(key, util.getCanonicalName(environment.dataLakeAccount.name))
 
         then:
         sasToken == expected
