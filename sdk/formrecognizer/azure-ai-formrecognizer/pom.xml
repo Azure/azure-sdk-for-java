@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-formrecognizer</artifactId>
-  <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
 
   <name>Microsoft Azure client library for Form Recognizer</name>
   <description>This package contains the Microsoft Azure Cognitive Services Form Recognizer SDK.</description>
@@ -36,8 +36,8 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
+      --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.administration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

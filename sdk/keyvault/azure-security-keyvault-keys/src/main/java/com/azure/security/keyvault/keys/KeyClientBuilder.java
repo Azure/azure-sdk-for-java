@@ -178,7 +178,6 @@ public final class KeyClientBuilder {
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         policies.add(new KeyVaultCredentialPolicy(credential));
-
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
 

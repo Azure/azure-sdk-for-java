@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/keytorelease5s45ds/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/keytorelease728ha8/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -20,12 +20,12 @@
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.107.174;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "4fa0e8e6-f715-11eb-a622-000d3aa6a10f",
-      "Body" : "{\"attributes\":{\"created\":1628295646,\"enabled\":true,\"exportable\":true,\"recoverableDays\":90,\"recoveryLevel\":\"Recoverable+Purgeable\",\"updated\":1628295646},\"key\":{\"e\":\"AQAB\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://vicolinamhsmhsm.managedhsm.azure.net/keys/keytorelease5s45ds/8713f6289a2441313075698b8625bf32\",\"kty\":\"RSA-HSM\",\"n\":\"qwmJOrLUYKn5h4NCpuYC1oFFPHms8nXM-z3rHWJK4OYBvqQLwhp6wBOhsm7FPenRxXzsZAZbjOaqUQ_sDkCWNulm_ifa6LsRvjM_4ZeAExP6kabgkeHU1nmAm0vi2aBKqbvgysKjexRsrHCHO9zxOtktOz9W8r4HMrNJZkAou-h5tuBzFfe5DrHsTLNv_BMFwmvwIkX_6Gg1Sahgo-26CZHl2Koi6GQyYS0-nVwvJzqUZXxNPslFFLO0DnCg65izEqx7KnCNJR0nIZ6UhkaiMqdZQ3JaZE1fXCdBrOE9s6MCz6Pk3g51rJ67biefhaaAaUEfTyDvBTiU0zSckh6IsQ\"},\"release_policy\":{\"contentType\":\"application/json; charset=utf-8\",\"data\":\"eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL3NrcmF0dGVzdGF0aW9uLmF6dXJld2Vic2l0ZXMubmV0LyJ9XSwidmVyc2lvbiI6IjEuMC4wIn0\"}}"
+      "Body" : "{\"attributes\":{\"created\":1628295646,\"enabled\":true,\"exportable\":true,\"recoverableDays\":90,\"recoveryLevel\":\"Recoverable+Purgeable\",\"updated\":1628295646},\"key\":{\"e\":\"AQAB\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://vicolinamhsmhsm.managedhsm.azure.net/keys/keytorelease728ha8/8713f6289a2441313075698b8625bf32\",\"kty\":\"RSA\",\"n\":\"qwmJOrLUYKn5h4NCpuYC1oFFPHms8nXM-z3rHWJK4OYBvqQLwhp6wBOhsm7FPenRxXzsZAZbjOaqUQ_sDkCWNulm_ifa6LsRvjM_4ZeAExP6kabgkeHU1nmAm0vi2aBKqbvgysKjexRsrHCHO9zxOtktOz9W8r4HMrNJZkAou-h5tuBzFfe5DrHsTLNv_BMFwmvwIkX_6Gg1Sahgo-26CZHl2Koi6GQyYS0-nVwvJzqUZXxNPslFFLO0DnCg65izEqx7KnCNJR0nIZ6UhkaiMqdZQ3JaZE1fXCdBrOE9s6MCz6Pk3g51rJ67biefhaaAaUEfTyDvBTiU0zSckh6IsQ\"},\"release_policy\":{\"contentType\":\"application/json; charset=utf-8\",\"data\":\"eyJhbnlPZiI6W3siYW55T2YiOlt7ImNsYWltIjoic2RrLXRlc3QiLCJlcXVhbHMiOiJ0cnVlIn1dLCJhdXRob3JpdHkiOiJodHRwczovL3NrcmF0dGVzdGF0aW9uLmF6dXJld2Vic2l0ZXMubmV0LyJ9XSwidmVyc2lvbiI6IjEuMC4wIn0\"}}"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/keytorelease5s45ds//release?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/keytorelease728ha8//release?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -48,5 +48,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "keytorelease5s45ds" ]
+  "variables" : [ "keytorelease728ha8" ]
 }

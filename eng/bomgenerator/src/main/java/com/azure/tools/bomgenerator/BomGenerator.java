@@ -13,10 +13,12 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,84 +50,77 @@ public class BomGenerator {
     private String overriddenInputDependenciesFileName;
     private String reportFileName;
     private String mode;
+    private String outputDirectory;
+    private String inputDirectory;
 
     private static Logger logger = LoggerFactory.getLogger(BomGenerator.class);
 
-    BomGenerator() {
-        this.mode = GENERATE_MODE;
+    BomGenerator(String inputDirectory, String outputDirectory, String mode) throws FileNotFoundException {
+        validateNotNullOrEmpty(inputDirectory, "inputDirectory");
+        validateNotNullOrEmpty(outputDirectory, "outputDirectory");
+
+        this.inputDirectory = inputDirectory;
+        this.outputDirectory = outputDirectory;
+        this.mode = (mode == null ? GENERATE_MODE : mode);
+
+        parseInputs();
+        validateInputs();
+
+        Path outputDirPath = Paths.get(outputDirectory);
+        outputDirPath.toFile().mkdirs();
     }
 
-    public String getInputFileName() {
-        return this.inputFileName;
-    }
+   private void parseInputs() throws FileNotFoundException {
+        this.outputFileName = Paths.get(outputDirectory, "pom.xml").toString();
+        this.reportFileName = Paths.get(outputDirectory, "dependency_conflictlist.html").toString();
+        this.inputFileName = Paths.get(inputDirectory, "version_client.txt").toString();
+        this.pomFileName = Paths.get(inputDirectory, "pom.xml").toString();
+        this.overriddenInputDependenciesFileName = Paths.get(inputDirectory, "dependencies.txt").toString();
+   }
 
-    public void setInputFileName(String inputFileName) {
-        this.inputFileName = inputFileName;
-    }
-
-    public String getOverriddenInputDependenciesFileName() {
-        return this.overriddenInputDependenciesFileName;
-    }
-
-    public void setOverriddenInputDependenciesFileName(String overriddenInputDependenciesFileName) {
-        this.overriddenInputDependenciesFileName = overriddenInputDependenciesFileName;
-    }
-
-    public String getOutputFileName() {
-        return this.outputFileName;
-    }
-
-    public void setOutputFileName(String outputFileName) {
-        this.outputFileName = outputFileName;
-    }
-
-    public String getPomFileName() {
-        return this.pomFileName;
-    }
-
-    public void setPomFileName(String pomFileName) {
-        this.pomFileName = pomFileName;
-    }
-
-    public String getReportFileName() {
-        return this.reportFileName;
-    }
-
-    public void setReportFileName(String reportFileName) {
-        this.reportFileName = reportFileName;
-    }
-
-    public String getMode() {
-        return this.mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
-
-    public void run() {
-        switch (mode) {
+    private void validateInputs() throws FileNotFoundException {
+        switch (this.mode) {
             case ANALYZE_MODE:
-                validate();
+                validateFilePath(this.pomFileName);
                 break;
 
             case GENERATE_MODE:
-                generate();
+                // In generate mode, we should have the inputFile, outputFile and the pomFile.
+                validateFilePath(this.pomFileName);
+                validateFilePath(this.inputFileName);
                 break;
+        }
+    }
+
+   private void validateFilePath(String filePath) throws FileNotFoundException {
+        if(Files.notExists(Paths.get(filePath))) {
+            throw new FileNotFoundException(String.format("%s not found.", filePath));
+        }
+   }
+
+    public boolean run() {
+        switch (mode) {
+            case ANALYZE_MODE:
+                return validate();
+
+            case GENERATE_MODE:
+                return generate();
 
             default:
                 logger.error("Unknown value for mode: {}", mode);
                 break;
         }
+
+        return false;
     }
 
-    private void validate() {
+    private boolean validate() {
         var inputDependencies = parsePomFileContent(this.pomFileName);
         DependencyAnalyzer analyzer = new DependencyAnalyzer(inputDependencies, null, this.reportFileName);
-        analyzer.validate();
+        return !analyzer.validate();
     }
 
-    private void generate() {
+    private boolean generate() {
         List<BomDependency> inputDependencies = scan();
         List<BomDependency> externalDependencies = resolveExternalDependencies();
 
@@ -141,14 +136,15 @@ public class BomGenerator {
         outputDependencies = analyzer.getBomEligibleDependencies();
 
         // 4. Create the new BOM file.
-        if(!validationFailed) {
+        if (!validationFailed) {
             // Rewrite the existing BOM to have the dependencies in the order in which we insert them, making the diff PR easier to review.
             rewriteExistingBomFile();
             writeBom(outputDependencies);
+            return true;
         }
-        else {
-            logger.trace("Validation for the BOM failed. Exiting...");
-        }
+
+        logger.trace("Validation for the BOM failed. Exiting...");
+        return false;
     }
 
     private List<BomDependency> scanVersioningClientFileDependencies() {

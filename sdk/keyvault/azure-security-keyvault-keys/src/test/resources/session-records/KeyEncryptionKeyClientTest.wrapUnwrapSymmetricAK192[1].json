@@ -1,56 +1,56 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretKey?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretkey14694bf4?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "275",
+      "content-length" : "289",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:48:38 GMT",
+      "Date" : "Mon, 20 Sep 2021 22:56:41 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "9028c4c1-dfe2-41c1-9dc5-6770d9b3a49b",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azure-kv-tests2.vault.azure.net/secrets/secretKey/a0a903ed3ded491da68d4618cccc9a9f\",\"attributes\":{\"enabled\":true,\"created\":1619164118,\"updated\":1619164118,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "8553b0c1-6071-4f6d-8fe3-5ad2890e2c53",
+      "x-ms-keyvault-service-version" : "1.9.79.2",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azure-kv-tests2.vault.azure.net/secrets/secretkey14694bf4/8f01ce961c4d4d7d8591f67741a2c9aa\",\"attributes\":{\"enabled\":true,\"created\":1632178602,\"updated\":1632178602,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretKey/a0a903ed3ded491da68d4618cccc9a9f?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/secrets/secretkey14694bf4/8f01ce961c4d4d7d8591f67741a2c9aa?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "275",
+      "content-length" : "289",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 23 Apr 2021 07:48:38 GMT",
+      "Date" : "Mon, 20 Sep 2021 22:56:41 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "d095c059-55cb-4b95-aca7-1b1d196b1193",
-      "x-ms-keyvault-service-version" : "1.2.236.0",
-      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azure-kv-tests2.vault.azure.net/secrets/secretKey/a0a903ed3ded491da68d4618cccc9a9f\",\"attributes\":{\"enabled\":true,\"created\":1619164118,\"updated\":1619164118,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "x-ms-request-id" : "2c13abed-7ffe-478b-9b76-2ed2f017d147",
+      "x-ms-keyvault-service-version" : "1.9.79.2",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azure-kv-tests2.vault.azure.net/secrets/secretkey14694bf4/8f01ce961c4d4d7d8591f67741a2c9aa\",\"attributes\":{\"enabled\":true,\"created\":1632178602,\"updated\":1632178602,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "secretkey14694bf4" ]
 }

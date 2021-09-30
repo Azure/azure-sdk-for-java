@@ -7,8 +7,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -50,12 +48,11 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
         KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
             .serviceVersion(serviceVersion)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildAsyncClient());
 
         if (interceptorManager.isPlaybackMode()) {
@@ -491,7 +488,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // TODO: Remove assumption once Key Vault allows for creating exportable keys.
-        Assumptions.assumeTrue(isManagedHsmTest);
+        Assumptions.assumeTrue(isManagedHsmTest || getTestMode() == TestMode.PLAYBACK);
 
         createKeyClient(httpClient, serviceVersion);
         releaseKeyRunner((keyToRelease, attestationUrl) -> {
