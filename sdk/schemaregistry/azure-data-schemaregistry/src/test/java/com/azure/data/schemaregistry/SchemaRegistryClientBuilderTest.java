@@ -3,10 +3,13 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link SchemaRegistryClientBuilder}.
@@ -28,6 +31,19 @@ public class SchemaRegistryClientBuilderTest {
         Assertions.assertThrows(NullPointerException.class,
             () -> new SchemaRegistryClientBuilder()
                 .credential(credential)
+                .buildAsyncClient());
+    }
+
+    @Test
+    public void testInvalidEndpoint() {
+        // Arrange
+        final TokenCredential credential = mock(TokenCredential.class);
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new SchemaRegistryClientBuilder()
+                .credential(credential)
+                .fullyQualifiedNamespace("")
                 .buildAsyncClient());
     }
 

@@ -238,14 +238,21 @@ public class SchemaRegistryClientBuilder {
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored.
      *
      * @return A {@link SchemaRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #fullyQualifiedNamespace(String) endpoint} and {@link #credential(TokenCredential)
-     * credential} are not set.
+     * @throws NullPointerException if {@link #fullyQualifiedNamespace(String) fullyQualifiedNamespace} and
+     *      {@link #credential(TokenCredential) credential} are not set.
+     * @throws IllegalArgumentException if {@link #fullyQualifiedNamespace(String) fullyQualifiedNamespace} is an empty
+     *      string.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
         Objects.requireNonNull(credential,
             "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
         Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'fullyQualifiedNamespace' cannot be an empty string."));
+        }
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
