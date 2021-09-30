@@ -31,13 +31,13 @@ public enum ListBlobsIncludeItem {
     TAGS("tags"),
 
     /** Enum value immutabilitypolicy. */
-    IMMUTABILITY_POLICY("immutabilitypolicy"),
+    IMMUTABILITYPOLICY("immutabilitypolicy"),
 
     /** Enum value legalhold. */
-    LEGAL_HOLD("legalhold"),
+    LEGALHOLD("legalhold"),
 
     /** Enum value deletedwithversions. */
-    DELETED_WITH_VERSIONS("deletedwithversions");
+    DELETEDWITHVERSIONS("deletedwithversions");
 
     /** The actual serialized value for a ListBlobsIncludeItem instance. */
     private final String value;
