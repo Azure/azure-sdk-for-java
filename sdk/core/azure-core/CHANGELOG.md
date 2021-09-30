@@ -3,6 +3,7 @@
 ## 1.21.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `setTenantId` and `getTenantId` methods to `TokenRequestContext` class that allows to configure TenantId Challenges.
 
 ### Breaking Changes
 

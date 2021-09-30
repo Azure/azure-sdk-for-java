@@ -54,7 +54,7 @@
 
 #### Key Bug Fixes
 * Added validation for all config-settings with a name starting with "spark.cosmos."
-* Fixed a bug in bulk write causing hang.
+* Fixed a bug in bulk write causing nonresponse.
 
 ### 4.0.0-beta.2 (2021-04-19)
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.2` Release.

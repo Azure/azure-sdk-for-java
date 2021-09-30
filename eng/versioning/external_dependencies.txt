@@ -15,9 +15,9 @@ com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.4
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.4
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.4
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.4
-com.github.spotbugs:spotbugs;4.2.0
-com.github.spotbugs:spotbugs-annotations;4.2.0
-com.github.spotbugs:spotbugs-maven-plugin;4.2.0
+com.github.spotbugs:spotbugs;4.2.2
+com.github.spotbugs:spotbugs-annotations;4.2.2
+com.github.spotbugs:spotbugs-maven-plugin;4.2.2
 com.google.code.gson:gson;2.8.7
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
@@ -88,8 +88,8 @@ org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
-org.powermock:powermock-api-mockito2;2.0.2
-org.powermock:powermock-module-junit4;2.0.2
+org.powermock:powermock-api-mockito2;2.0.9
+org.powermock:powermock-module-junit4;2.0.9
 org.slf4j:slf4j-api;1.7.32
 org.slf4j:slf4j-nop;1.7.32
 org.slf4j:slf4j-simple;1.7.32
@@ -260,11 +260,12 @@ org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.7
 org.jacoco:org.jacoco.agent;0.8.7
-org.mockito:mockito-core;3.9.0
-org.mockito:mockito-inline;3.9.0
+org.mockito:mockito-core;3.12.4
+org.mockito:mockito-inline;3.12.4
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1
+org.ow2.asm:asm;9.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than

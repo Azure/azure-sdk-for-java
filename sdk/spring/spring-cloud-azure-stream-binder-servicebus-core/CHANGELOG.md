@@ -10,12 +10,10 @@
 
 ### Other Changes
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades
 - Upgrade to [spring-boot-dependencies:2.5.4](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.4/spring-boot-dependencies-2.5.4.pom).
-
-### Features Added
 
 ### Breaking Changes
 - Change the value type of ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME from Instant to OffsetDateTime.
@@ -23,7 +21,6 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.
 ### Bugs Fixed
 - Fix the bug of ClassCastException when forward Service Bus messages with the header of schedule enqueued time.
 
-### Other Changes
 
 ## 2.8.0 (2021-08-25)
 This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.0.3.
@@ -39,6 +36,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 - Deprecate the `spring.cloud.stream.servicebus.queue.bindings.<channelName>.consumer.concurrency` property,
   use `maxConcurrentSessions` and `maxConcurrentCalls` to set the properties.
 
+
 ## 2.7.0 (2021-07-20)
 ### Key Bug Fixes
 - Fix bug of setting message headers repeatedly with different value types. ([#22939](https://github.com/Azure/azure-sdk-for-java/pull/22939))
@@ -50,15 +48,16 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 - Upgrade to [spring-boot-dependencies:2.5.2](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.2/spring-boot-dependencies-2.5.2.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.3](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.3/spring-cloud-dependencies-2020.0.3.pom).
 
+
 ## 2.6.0 (2021-06-23)
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.5.0](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.5.0/spring-boot-dependencies-2.5.0.pom).
+
 
 ## 2.5.0 (2021-05-24)
 ### New Features
 - Upgrade to [spring-boot-dependencies:2.4.5](https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-dependencies/2.4.5/spring-boot-dependencies-2.4.5.pom).
 - Upgrade to [spring-cloud-dependencies:2020.0.2](https://repo.maven.apache.org/maven2/org/springframework/cloud/spring-cloud-dependencies/2020.0.2/spring-cloud-dependencies-2020.0.2.pom).
-
 
 
 ## 2.4.0 (2021-04-19)
@@ -68,6 +67,7 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 ### New Features
 - Upgrade to `Spring Boot` [2.4.3](https://github.com/spring-projects/spring-boot/releases/tag/v2.4.3).
 
+
 ## 2.2.0 (2021-03-03)
 
 
@@ -76,10 +76,12 @@ This release is compatible with Spring Boot 2.5.0 - 2.5.3 and Spring Cloud 2020.
 
 ## 2.0.0 (2020-12-30)
 
+
 ## 2.0.0-beta.1 (2020-11-18)
 ### Breaking Changes
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `spring-cloud-azure-servicebus-stream-binder-core` to `azure-spring-cloud-stream-binder-servicebus-core`.
+
 
 ## 1.2.8 (2020-09-14)
 ### New Features

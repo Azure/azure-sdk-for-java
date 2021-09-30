@@ -92,7 +92,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
 
     /**
      * Allows to override the tenant being used in the authentication request
-     * via {@link com.azure.core.experimental.credential.TokenRequestContextExperimental#setTenantId(String)}.
+     * via {@link com.azure.core.credential.TokenRequestContext#setTenantId(String)}.
      *
      * @return An updated instance of this builder.
      */
