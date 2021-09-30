@@ -70,7 +70,7 @@ def correct_file(file, verbose):
     
     classre = re.compile(r'public class ([a-z|A-Z|0-9]*?)[ \n\r\t]*{')
     
-    # If this is a model class and not a custom model class, extend our custom code if necessary - additionally add back potentially nuked imports
+    # If this is a model class and not a custom model class, extend our custom code if necessary - additionally add back potentially removed imports
     dir, fn = os.path.split(file)
     if os.path.split(dir)[1] == "models":
         classes = classre.search(code)
@@ -82,7 +82,7 @@ def correct_file(file, verbose):
                     print("Updating generated '%s' to extend custom '%s'" % (classname, classname))
                 code = classre.sub(r'public class \1 extends %s.\1 {' % CUSTOM_MODEL_NAMESPACE, code)
     
-        # Add back webkey imports which may have been nuked
+        # Add back webkey imports which may have been removed
         class_usage_re = re.compile(r'[ \t<](' + '|'.join(WEBKEY_REPLACE_MODELS) + ')[ \t>]')
         needed_classes = list(set(class_usage_re.findall(code)))
         if len(needed_classes) > 0:
