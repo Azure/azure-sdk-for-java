@@ -32,14 +32,6 @@ public class SchemaRegistryClientBuilderTest {
     }
 
     @Test
-    public void testInvalidEndpoint() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new SchemaRegistryClientBuilder()
-                .endpoint("invalidEndpoint")
-                .buildAsyncClient());
-    }
-
-    @Test
     public void testSchemaRegistryClientCreation() {
 
         ClientSecretCredential credential = new ClientSecretCredentialBuilder()
@@ -50,7 +42,7 @@ public class SchemaRegistryClientBuilderTest {
 
         Assertions.assertNotNull(new SchemaRegistryClientBuilder()
             .credential(credential)
-            .endpoint("https://localhost")
+            .fullyQualifiedNamespace("https://localhost")
             .buildAsyncClient());
     }
 }

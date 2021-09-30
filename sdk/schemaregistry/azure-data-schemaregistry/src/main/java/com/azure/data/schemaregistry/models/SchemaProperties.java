@@ -50,10 +50,9 @@ public final class SchemaProperties {
      * The serialization type of this schema.
      * @return schema type associated with the schema payload
      */
-    public SerializationFormat getSerializationType() {
+    public SerializationFormat getSerializationFormat() {
         return serializationFormat;
     }
-
 
     /**
      * The name of the schema.

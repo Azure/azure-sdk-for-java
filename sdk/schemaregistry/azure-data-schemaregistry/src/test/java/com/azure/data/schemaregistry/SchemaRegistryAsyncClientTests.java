@@ -73,7 +73,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         builder = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .endpoint(endpoint);
+            .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -123,7 +123,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client2.getSchema(schemaIdToGet))
             .assertNext(schema -> {
                 assertEquals(schemaIdToGet, schema.getSchemaId());
-                assertEquals(SerializationFormat.AVRO, schema.getSerializationType());
+                assertEquals(SerializationFormat.AVRO, schema.getSerializationFormat());
 
                 // Replace white space.
                 final String contents = new String(schema.getSchema(), StandardCharsets.UTF_8);
@@ -263,7 +263,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotEquals(expectedContents, "'expectedContents' should not be null.");
 
         assertEquals(expectedSchemaName, actual.getSchemaName());
-        assertEquals(SerializationFormat.AVRO, actual.getSerializationType());
+        assertEquals(SerializationFormat.AVRO, actual.getSerializationFormat());
 
         assertNotNull(actual.getSchemaId());
 

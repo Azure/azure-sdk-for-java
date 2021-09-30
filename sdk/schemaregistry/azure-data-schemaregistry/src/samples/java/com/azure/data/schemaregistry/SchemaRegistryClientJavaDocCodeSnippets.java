@@ -28,7 +28,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
             .build();
         SchemaRegistryClient client = new SchemaRegistryClientBuilder()
-            .endpoint("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+            .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
             .credential(azureCredential)
             .buildClient();
         // END: com.azure.data.schemaregistry.schemaregistryclient.instantiation
@@ -43,7 +43,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
             .build();
         SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .endpoint("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+            .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
             .credential(azureCredential)
             .buildAsyncClient();
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation
@@ -63,7 +63,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(5, Duration.ofSeconds(30)));
         SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .endpoint("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+            .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
             .httpLogOptions(httpLogOptions)
             .retryPolicy(retryPolicy)
             .credential(azureCredential)
@@ -169,14 +169,14 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
     private static SchemaRegistryAsyncClient buildAsyncClient() {
         return new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint}")
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
 
     private static SchemaRegistryClient buildClient() {
         return new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint}")
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     }

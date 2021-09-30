@@ -67,7 +67,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         builder = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .endpoint(endpoint);
+            .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

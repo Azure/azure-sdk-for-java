@@ -24,7 +24,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildAsyncClient();
     }
@@ -36,7 +36,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
     }
@@ -48,7 +48,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
 
@@ -77,7 +77,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
 
@@ -92,7 +92,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
 
