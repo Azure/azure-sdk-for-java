@@ -55,6 +55,15 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
+     * Gets the fully qualified namespace of the Schema Registry instance.
+     *
+     * @return The fully qualified namespace of the Schema Registry instance.
+     */
+    public String getFullyQualifiedNamespace() {
+        return this.restService.getEndpoint();
+    }
+
+    /**
      * Registers a new schema in the specified schema group with the given schema name. If the schema name already
      * exists in this schema group, a new version with the updated schema string will be registered.
      *
