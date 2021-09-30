@@ -74,7 +74,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -123,7 +123,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +170,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -194,7 +194,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -210,7 +210,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Checks whether the Video Analyzer resource name is available.
      *
-     * @param locationName The name of the location.
+     * @param locationName Location Name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

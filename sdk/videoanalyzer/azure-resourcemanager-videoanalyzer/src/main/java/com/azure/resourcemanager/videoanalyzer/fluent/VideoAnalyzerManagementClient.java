@@ -45,6 +45,48 @@ public interface VideoAnalyzerManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the EdgeModulesClient object to access its operations.
+     *
+     * @return the EdgeModulesClient object.
+     */
+    EdgeModulesClient getEdgeModules();
+
+    /**
+     * Gets the PipelineTopologiesClient object to access its operations.
+     *
+     * @return the PipelineTopologiesClient object.
+     */
+    PipelineTopologiesClient getPipelineTopologies();
+
+    /**
+     * Gets the LivePipelinesClient object to access its operations.
+     *
+     * @return the LivePipelinesClient object.
+     */
+    LivePipelinesClient getLivePipelines();
+
+    /**
+     * Gets the PipelineJobsClient object to access its operations.
+     *
+     * @return the PipelineJobsClient object.
+     */
+    PipelineJobsClient getPipelineJobs();
+
+    /**
+     * Gets the LivePipelineOperationStatusesClient object to access its operations.
+     *
+     * @return the LivePipelineOperationStatusesClient object.
+     */
+    LivePipelineOperationStatusesClient getLivePipelineOperationStatuses();
+
+    /**
+     * Gets the PipelineJobOperationStatusesClient object to access its operations.
+     *
+     * @return the PipelineJobOperationStatusesClient object.
+     */
+    PipelineJobOperationStatusesClient getPipelineJobOperationStatuses();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -59,18 +101,53 @@ public interface VideoAnalyzerManagementClient {
     VideoAnalyzersClient getVideoAnalyzers();
 
     /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the OperationStatusesClient object to access its operations.
+     *
+     * @return the OperationStatusesClient object.
+     */
+    OperationStatusesClient getOperationStatuses();
+
+    /**
+     * Gets the OperationResultsClient object to access its operations.
+     *
+     * @return the OperationResultsClient object.
+     */
+    OperationResultsClient getOperationResults();
+
+    /**
+     * Gets the VideoAnalyzerOperationStatusesClient object to access its operations.
+     *
+     * @return the VideoAnalyzerOperationStatusesClient object.
+     */
+    VideoAnalyzerOperationStatusesClient getVideoAnalyzerOperationStatuses();
+
+    /**
+     * Gets the VideoAnalyzerOperationResultsClient object to access its operations.
+     *
+     * @return the VideoAnalyzerOperationResultsClient object.
+     */
+    VideoAnalyzerOperationResultsClient getVideoAnalyzerOperationResults();
+
+    /**
      * Gets the LocationsClient object to access its operations.
      *
      * @return the LocationsClient object.
      */
     LocationsClient getLocations();
-
-    /**
-     * Gets the EdgeModulesClient object to access its operations.
-     *
-     * @return the EdgeModulesClient object.
-     */
-    EdgeModulesClient getEdgeModules();
 
     /**
      * Gets the VideosClient object to access its operations.

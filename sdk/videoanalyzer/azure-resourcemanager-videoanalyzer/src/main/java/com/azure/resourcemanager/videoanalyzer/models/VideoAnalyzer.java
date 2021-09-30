@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.videoanalyzer.models;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerInner;
 import java.util.List;
@@ -50,14 +48,7 @@ public interface VideoAnalyzer {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system data of the Video Analyzer account.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the identity property: The set of managed identities associated with the Video Analyzer resource.
+     * Gets the identity property: The identities associated to the Video Analyzer resource.
      *
      * @return the identity value.
      */
@@ -71,7 +62,7 @@ public interface VideoAnalyzer {
     List<StorageAccount> storageAccounts();
 
     /**
-     * Gets the endpoints property: The list of endpoints associated with this resource.
+     * Gets the endpoints property: The endpoints associated with this resource.
      *
      * @return the endpoints value.
      */
@@ -83,6 +74,42 @@ public interface VideoAnalyzer {
      * @return the encryption value.
      */
     AccountEncryption encryption();
+
+    /**
+     * Gets the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @return the iotHubs value.
+     */
+    List<IotHub> iotHubs();
+
+    /**
+     * Gets the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Gets the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @return the networkAccessControl value.
+     */
+    NetworkAccessControl networkAccessControl();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the Video Analyzer account.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
+     * Gets the privateEndpointConnections property: Private Endpoint Connections created under Video Analyzer account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
 
     /**
      * Gets the region of the resource.
@@ -153,7 +180,10 @@ public interface VideoAnalyzer {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithStorageAccounts,
-                DefinitionStages.WithEncryption {
+                DefinitionStages.WithEncryption,
+                DefinitionStages.WithIotHubs,
+                DefinitionStages.WithPublicNetworkAccess,
+                DefinitionStages.WithNetworkAccessControl {
             /**
              * Executes the create request.
              *
@@ -182,10 +212,9 @@ public interface VideoAnalyzer {
         /** The stage of the VideoAnalyzer definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: The set of managed identities associated with the Video Analyzer
-             * resource..
+             * Specifies the identity property: The identities associated to the Video Analyzer resource..
              *
-             * @param identity The set of managed identities associated with the Video Analyzer resource.
+             * @param identity The identities associated to the Video Analyzer resource.
              * @return the next definition stage.
              */
             WithCreate withIdentity(VideoAnalyzerIdentity identity);
@@ -210,6 +239,38 @@ public interface VideoAnalyzer {
              */
             WithCreate withEncryption(AccountEncryption encryption);
         }
+        /** The stage of the VideoAnalyzer definition allowing to specify iotHubs. */
+        interface WithIotHubs {
+            /**
+             * Specifies the iotHubs property: The IoT Hubs for this resource..
+             *
+             * @param iotHubs The IoT Hubs for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIotHubs(List<IotHub> iotHubs);
+        }
+        /** The stage of the VideoAnalyzer definition allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for resources
+             * under the Video Analyzer account..
+             *
+             * @param publicNetworkAccess Whether or not public network access is allowed for resources under the Video
+             *     Analyzer account.
+             * @return the next definition stage.
+             */
+            WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the VideoAnalyzer definition allowing to specify networkAccessControl. */
+        interface WithNetworkAccessControl {
+            /**
+             * Specifies the networkAccessControl property: Network access control for Video Analyzer..
+             *
+             * @param networkAccessControl Network access control for Video Analyzer.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkAccessControl(NetworkAccessControl networkAccessControl);
+        }
     }
     /**
      * Begins update for the VideoAnalyzer resource.
@@ -223,7 +284,10 @@ public interface VideoAnalyzer {
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
             UpdateStages.WithStorageAccounts,
-            UpdateStages.WithEncryption {
+            UpdateStages.WithEncryption,
+            UpdateStages.WithIotHubs,
+            UpdateStages.WithPublicNetworkAccess,
+            UpdateStages.WithNetworkAccessControl {
         /**
          * Executes the update request.
          *
@@ -281,6 +345,38 @@ public interface VideoAnalyzer {
              */
             Update withEncryption(AccountEncryption encryption);
         }
+        /** The stage of the VideoAnalyzer update allowing to specify iotHubs. */
+        interface WithIotHubs {
+            /**
+             * Specifies the iotHubs property: The IoT Hubs for this resource..
+             *
+             * @param iotHubs The IoT Hubs for this resource.
+             * @return the next definition stage.
+             */
+            Update withIotHubs(List<IotHub> iotHubs);
+        }
+        /** The stage of the VideoAnalyzer update allowing to specify publicNetworkAccess. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Specifies the publicNetworkAccess property: Whether or not public network access is allowed for resources
+             * under the Video Analyzer account..
+             *
+             * @param publicNetworkAccess Whether or not public network access is allowed for resources under the Video
+             *     Analyzer account.
+             * @return the next definition stage.
+             */
+            Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+        /** The stage of the VideoAnalyzer update allowing to specify networkAccessControl. */
+        interface WithNetworkAccessControl {
+            /**
+             * Specifies the networkAccessControl property: Network access control for Video Analyzer..
+             *
+             * @param networkAccessControl Network access control for Video Analyzer.
+             * @return the next definition stage.
+             */
+            Update withNetworkAccessControl(NetworkAccessControl networkAccessControl);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -296,26 +392,4 @@ public interface VideoAnalyzer {
      * @return the refreshed resource.
      */
     VideoAnalyzer refresh(Context context);
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void syncStorageKeys(SyncStorageKeysInput parameters);
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context);
 }

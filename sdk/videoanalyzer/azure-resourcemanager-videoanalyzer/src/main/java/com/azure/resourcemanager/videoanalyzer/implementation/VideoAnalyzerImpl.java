@@ -4,21 +4,25 @@
 
 package com.azure.resourcemanager.videoanalyzer.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.videoanalyzer.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerInner;
 import com.azure.resourcemanager.videoanalyzer.models.AccountEncryption;
 import com.azure.resourcemanager.videoanalyzer.models.Endpoint;
+import com.azure.resourcemanager.videoanalyzer.models.IotHub;
+import com.azure.resourcemanager.videoanalyzer.models.NetworkAccessControl;
+import com.azure.resourcemanager.videoanalyzer.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.videoanalyzer.models.ProvisioningState;
+import com.azure.resourcemanager.videoanalyzer.models.PublicNetworkAccess;
 import com.azure.resourcemanager.videoanalyzer.models.StorageAccount;
-import com.azure.resourcemanager.videoanalyzer.models.SyncStorageKeysInput;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzer;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerIdentity;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerUpdate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Definition, VideoAnalyzer.Update {
     private VideoAnalyzerInner innerObject;
@@ -50,10 +54,6 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public VideoAnalyzerIdentity identity() {
         return this.innerModel().identity();
     }
@@ -78,6 +78,41 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
 
     public AccountEncryption encryption() {
         return this.innerModel().encryption();
+    }
+
+    public List<IotHub> iotHubs() {
+        List<IotHub> inner = this.innerModel().iotHubs();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public NetworkAccessControl networkAccessControl() {
+        return this.innerModel().networkAccessControl();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -112,8 +147,7 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
             serviceManager
                 .serviceClient()
                 .getVideoAnalyzers()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -122,8 +156,7 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
             serviceManager
                 .serviceClient()
                 .getVideoAnalyzers()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
@@ -143,8 +176,7 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
             serviceManager
                 .serviceClient()
                 .getVideoAnalyzers()
-                .updateWithResponse(resourceGroupName, accountName, updateParameters, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, accountName, updateParameters, Context.NONE);
         return this;
     }
 
@@ -153,8 +185,7 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
             serviceManager
                 .serviceClient()
                 .getVideoAnalyzers()
-                .updateWithResponse(resourceGroupName, accountName, updateParameters, context)
-                .getValue();
+                .update(resourceGroupName, accountName, updateParameters, context);
         return this;
     }
 
@@ -184,16 +215,6 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
                 .getByResourceGroupWithResponse(resourceGroupName, accountName, context)
                 .getValue();
         return this;
-    }
-
-    public void syncStorageKeys(SyncStorageKeysInput parameters) {
-        serviceManager.videoAnalyzers().syncStorageKeys(resourceGroupName, accountName, parameters);
-    }
-
-    public Response<Void> syncStorageKeysWithResponse(SyncStorageKeysInput parameters, Context context) {
-        return serviceManager
-            .videoAnalyzers()
-            .syncStorageKeysWithResponse(resourceGroupName, accountName, parameters, context);
     }
 
     public VideoAnalyzerImpl withRegion(Region location) {
@@ -242,6 +263,36 @@ public final class VideoAnalyzerImpl implements VideoAnalyzer, VideoAnalyzer.Def
             return this;
         } else {
             this.updateParameters.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public VideoAnalyzerImpl withIotHubs(List<IotHub> iotHubs) {
+        if (isInCreateMode()) {
+            this.innerModel().withIotHubs(iotHubs);
+            return this;
+        } else {
+            this.updateParameters.withIotHubs(iotHubs);
+            return this;
+        }
+    }
+
+    public VideoAnalyzerImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public VideoAnalyzerImpl withNetworkAccessControl(NetworkAccessControl networkAccessControl) {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkAccessControl(networkAccessControl);
+            return this;
+        } else {
+            this.updateParameters.withNetworkAccessControl(networkAccessControl);
             return this;
         }
     }

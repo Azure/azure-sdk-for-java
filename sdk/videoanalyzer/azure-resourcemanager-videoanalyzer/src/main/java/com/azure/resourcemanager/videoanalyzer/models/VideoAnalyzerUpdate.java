@@ -7,7 +7,9 @@ package com.azure.resourcemanager.videoanalyzer.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.videoanalyzer.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class VideoAnalyzerUpdate {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -37,7 +40,7 @@ public class VideoAnalyzerUpdate {
     private List<StorageAccount> storageAccounts;
 
     /*
-     * The list of endpoints associated with this resource.
+     * The endpoints associated with this resource.
      */
     @JsonProperty(value = "properties.endpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<Endpoint> endpoints;
@@ -47,6 +50,37 @@ public class VideoAnalyzerUpdate {
      */
     @JsonProperty(value = "properties.encryption")
     private AccountEncryption encryption;
+
+    /*
+     * The IoT Hubs for this resource.
+     */
+    @JsonProperty(value = "properties.iotHubs")
+    private List<IotHub> iotHubs;
+
+    /*
+     * Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Network access control for Video Analyzer.
+     */
+    @JsonProperty(value = "properties.networkAccessControl")
+    private NetworkAccessControl networkAccessControl;
+
+    /*
+     * Provisioning state of the Video Analyzer account.
+     */
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Private Endpoint Connections created under Video Analyzer account.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Get the tags property: Resource tags.
@@ -109,7 +143,7 @@ public class VideoAnalyzerUpdate {
     }
 
     /**
-     * Get the endpoints property: The list of endpoints associated with this resource.
+     * Get the endpoints property: The endpoints associated with this resource.
      *
      * @return the endpoints value.
      */
@@ -138,6 +172,86 @@ public class VideoAnalyzerUpdate {
     }
 
     /**
+     * Get the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @return the iotHubs value.
+     */
+    public List<IotHub> iotHubs() {
+        return this.iotHubs;
+    }
+
+    /**
+     * Set the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @param iotHubs the iotHubs value to set.
+     * @return the VideoAnalyzerUpdate object itself.
+     */
+    public VideoAnalyzerUpdate withIotHubs(List<IotHub> iotHubs) {
+        this.iotHubs = iotHubs;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the VideoAnalyzerUpdate object itself.
+     */
+    public VideoAnalyzerUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @return the networkAccessControl value.
+     */
+    public NetworkAccessControl networkAccessControl() {
+        return this.networkAccessControl;
+    }
+
+    /**
+     * Set the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @param networkAccessControl the networkAccessControl value to set.
+     * @return the VideoAnalyzerUpdate object itself.
+     */
+    public VideoAnalyzerUpdate withNetworkAccessControl(NetworkAccessControl networkAccessControl) {
+        this.networkAccessControl = networkAccessControl;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Video Analyzer account.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private Endpoint Connections created under Video Analyzer account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -154,6 +268,15 @@ public class VideoAnalyzerUpdate {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (iotHubs() != null) {
+            iotHubs().forEach(e -> e.validate());
+        }
+        if (networkAccessControl() != null) {
+            networkAccessControl().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

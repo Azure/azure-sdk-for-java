@@ -32,8 +32,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideosClient;
+import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoContentTokenInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoEntityInner;
-import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoStreamingTokenInner;
 import com.azure.resourcemanager.videoanalyzer.models.VideoEntityCollection;
 import reactor.core.publisher.Mono;
 
@@ -149,10 +149,10 @@ public final class VideosClientImpl implements VideosClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}/videos/{videoName}/listStreamingToken")
+                + "/videoAnalyzers/{accountName}/videos/{videoName}/listContentToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoStreamingTokenInner>> listStreamingToken(
+        Mono<Response<VideoContentTokenInner>> listContentToken(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -174,7 +174,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -234,7 +234,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -292,7 +292,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -311,7 +311,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -329,7 +329,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -350,7 +350,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -366,7 +366,7 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -385,15 +385,15 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoEntityInner>> getWithResponseAsync(
@@ -438,16 +438,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoEntityInner>> getWithResponseAsync(
@@ -489,15 +489,15 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoEntityInner> getAsync(String resourceGroupName, String accountName, String videoName) {
@@ -513,15 +513,15 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VideoEntityInner get(String resourceGroupName, String accountName, String videoName) {
@@ -529,16 +529,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoEntityInner> getWithResponse(
@@ -547,16 +547,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Creates a new video resource or updates an existing one in an account.
+     * Creates a new video resource or updates an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to create or update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoEntityInner>> createOrUpdateWithResponseAsync(
@@ -607,17 +607,17 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Creates a new video resource or updates an existing one in an account.
+     * Creates a new video resource or updates an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to create or update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoEntityInner>> createOrUpdateWithResponseAsync(
@@ -665,16 +665,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Creates a new video resource or updates an existing one in an account.
+     * Creates a new video resource or updates an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to create or update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoEntityInner> createOrUpdateAsync(
@@ -691,16 +691,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Creates a new video resource or updates an existing one in an account.
+     * Creates a new video resource or updates an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to create or update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VideoEntityInner createOrUpdate(
@@ -709,17 +709,17 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Creates a new video resource or updates an existing one in an account.
+     * Creates a new video resource or updates an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to create or update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoEntityInner> createOrUpdateWithResponse(
@@ -732,7 +732,7 @@ public final class VideosClientImpl implements VideosClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -785,7 +785,7 @@ public final class VideosClientImpl implements VideosClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -836,7 +836,7 @@ public final class VideosClientImpl implements VideosClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -853,7 +853,7 @@ public final class VideosClientImpl implements VideosClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -868,7 +868,7 @@ public final class VideosClientImpl implements VideosClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -882,16 +882,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Updates individual properties of an existing video resource.
+     * Updates individual properties of an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoEntityInner>> updateWithResponseAsync(
@@ -942,17 +942,17 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Updates individual properties of an existing video resource.
+     * Updates individual properties of an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoEntityInner>> updateWithResponseAsync(
@@ -1000,16 +1000,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Updates individual properties of an existing video resource.
+     * Updates individual properties of an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VideoEntityInner> updateAsync(
@@ -1026,16 +1026,16 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Updates individual properties of an existing video resource.
+     * Updates individual properties of an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VideoEntityInner update(
@@ -1044,17 +1044,17 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Updates individual properties of an existing video resource.
+     * Updates individual properties of an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to update.
+     * @param videoName The Video name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VideoEntityInner> updateWithResponse(
@@ -1063,19 +1063,19 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoStreamingTokenInner>> listStreamingTokenWithResponseAsync(
+    private Mono<Response<VideoContentTokenInner>> listContentTokenWithResponseAsync(
         String resourceGroupName, String accountName, String videoName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1104,7 +1104,7 @@ public final class VideosClientImpl implements VideosClient {
             .withContext(
                 context ->
                     service
-                        .listStreamingToken(
+                        .listContentToken(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -1117,20 +1117,20 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoStreamingTokenInner>> listStreamingTokenWithResponseAsync(
+    private Mono<Response<VideoContentTokenInner>> listContentTokenWithResponseAsync(
         String resourceGroupName, String accountName, String videoName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1157,7 +1157,7 @@ public final class VideosClientImpl implements VideosClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listStreamingToken(
+            .listContentToken(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -1169,23 +1169,23 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoStreamingTokenInner> listStreamingTokenAsync(
+    private Mono<VideoContentTokenInner> listContentTokenAsync(
         String resourceGroupName, String accountName, String videoName) {
-        return listStreamingTokenWithResponseAsync(resourceGroupName, accountName, videoName)
+        return listContentTokenWithResponseAsync(resourceGroupName, accountName, videoName)
             .flatMap(
-                (Response<VideoStreamingTokenInner> res) -> {
+                (Response<VideoContentTokenInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1195,39 +1195,39 @@ public final class VideosClientImpl implements VideosClient {
     }
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoStreamingTokenInner listStreamingToken(String resourceGroupName, String accountName, String videoName) {
-        return listStreamingTokenAsync(resourceGroupName, accountName, videoName).block();
+    public VideoContentTokenInner listContentToken(String resourceGroupName, String accountName, String videoName) {
+        return listContentTokenAsync(resourceGroupName, accountName, videoName).block();
     }
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoStreamingTokenInner> listStreamingTokenWithResponse(
+    public Response<VideoContentTokenInner> listContentTokenWithResponse(
         String resourceGroupName, String accountName, String videoName, Context context) {
-        return listStreamingTokenWithResponseAsync(resourceGroupName, accountName, videoName, context).block();
+        return listContentTokenWithResponseAsync(resourceGroupName, accountName, videoName, context).block();
     }
 
     /**

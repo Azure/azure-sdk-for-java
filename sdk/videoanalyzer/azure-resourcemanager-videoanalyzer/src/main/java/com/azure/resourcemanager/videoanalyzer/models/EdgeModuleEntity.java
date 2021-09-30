@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.EdgeModuleEntityInner;
 import java.util.UUID;
@@ -32,13 +31,6 @@ public interface EdgeModuleEntity {
      * @return the type value.
      */
     String type();
-
-    /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
 
     /**
      * Gets the edgeModuleId property: Internal ID generated for the instance of the Video Analyzer edge module.

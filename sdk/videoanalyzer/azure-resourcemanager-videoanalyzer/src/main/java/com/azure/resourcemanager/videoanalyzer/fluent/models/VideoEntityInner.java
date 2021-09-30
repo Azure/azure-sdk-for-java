@@ -9,24 +9,19 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.videoanalyzer.models.VideoArchival;
+import com.azure.resourcemanager.videoanalyzer.models.VideoContentUrls;
 import com.azure.resourcemanager.videoanalyzer.models.VideoFlags;
 import com.azure.resourcemanager.videoanalyzer.models.VideoMediaInfo;
-import com.azure.resourcemanager.videoanalyzer.models.VideoStreaming;
 import com.azure.resourcemanager.videoanalyzer.models.VideoType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The representation of a single video in a Video Analyzer account. */
+/** The VideoEntity model. */
 @JsonFlatten
 @Fluent
 public class VideoEntityInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoEntityInner.class);
-
-    /*
-     * The system metadata relating to this resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /*
      * Optional video title provided by the user. Value can be up to 256
@@ -43,8 +38,8 @@ public class VideoEntityInner extends ProxyResource {
     private String description;
 
     /*
-     * Type of the video archive. Different archive formats provide different
-     * capabilities.
+     * Video content type. Different content types are suitable for different
+     * applications and scenarios.
      */
     @JsonProperty(value = "properties.type", access = JsonProperty.Access.WRITE_ONLY)
     private VideoType typePropertiesType;
@@ -57,10 +52,10 @@ public class VideoEntityInner extends ProxyResource {
     private VideoFlags flags;
 
     /*
-     * Video streaming holds information about video streaming URLs.
+     * Set of URLs to the video content.
      */
-    @JsonProperty(value = "properties.streaming", access = JsonProperty.Access.WRITE_ONLY)
-    private VideoStreaming streaming;
+    @JsonProperty(value = "properties.contentUrls", access = JsonProperty.Access.WRITE_ONLY)
+    private VideoContentUrls contentUrls;
 
     /*
      * Contains information about the video and audio content.
@@ -68,14 +63,18 @@ public class VideoEntityInner extends ProxyResource {
     @JsonProperty(value = "properties.mediaInfo", access = JsonProperty.Access.WRITE_ONLY)
     private VideoMediaInfo mediaInfo;
 
-    /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
+    /*
+     * Video archival properties.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "properties.archival")
+    private VideoArchival archival;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the title property: Optional video title provided by the user. Value can be up to 256 characters long.
@@ -120,8 +119,8 @@ public class VideoEntityInner extends ProxyResource {
     }
 
     /**
-     * Get the typePropertiesType property: Type of the video archive. Different archive formats provide different
-     * capabilities.
+     * Get the typePropertiesType property: Video content type. Different content types are suitable for different
+     * applications and scenarios.
      *
      * @return the typePropertiesType value.
      */
@@ -140,12 +139,12 @@ public class VideoEntityInner extends ProxyResource {
     }
 
     /**
-     * Get the streaming property: Video streaming holds information about video streaming URLs.
+     * Get the contentUrls property: Set of URLs to the video content.
      *
-     * @return the streaming value.
+     * @return the contentUrls value.
      */
-    public VideoStreaming streaming() {
-        return this.streaming;
+    public VideoContentUrls contentUrls() {
+        return this.contentUrls;
     }
 
     /**
@@ -158,6 +157,35 @@ public class VideoEntityInner extends ProxyResource {
     }
 
     /**
+     * Get the archival property: Video archival properties.
+     *
+     * @return the archival value.
+     */
+    public VideoArchival archival() {
+        return this.archival;
+    }
+
+    /**
+     * Set the archival property: Video archival properties.
+     *
+     * @param archival the archival value to set.
+     * @return the VideoEntityInner object itself.
+     */
+    public VideoEntityInner withArchival(VideoArchival archival) {
+        this.archival = archival;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -166,11 +194,14 @@ public class VideoEntityInner extends ProxyResource {
         if (flags() != null) {
             flags().validate();
         }
-        if (streaming() != null) {
-            streaming().validate();
+        if (contentUrls() != null) {
+            contentUrls().validate();
         }
         if (mediaInfo() != null) {
             mediaInfo().validate();
+        }
+        if (archival() != null) {
+            archival().validate();
         }
     }
 }

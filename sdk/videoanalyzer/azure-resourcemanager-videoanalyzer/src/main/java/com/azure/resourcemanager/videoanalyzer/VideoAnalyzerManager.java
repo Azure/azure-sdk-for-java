@@ -9,7 +9,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -17,21 +16,44 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzerManagementClient;
 import com.azure.resourcemanager.videoanalyzer.implementation.AccessPoliciesImpl;
 import com.azure.resourcemanager.videoanalyzer.implementation.EdgeModulesImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.LivePipelineOperationStatusesImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.LivePipelinesImpl;
 import com.azure.resourcemanager.videoanalyzer.implementation.LocationsImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.OperationResultsImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.OperationStatusesImpl;
 import com.azure.resourcemanager.videoanalyzer.implementation.OperationsImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.PipelineJobOperationStatusesImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.PipelineJobsImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.PipelineTopologiesImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.videoanalyzer.implementation.VideoAnalyzerManagementClientBuilder;
+import com.azure.resourcemanager.videoanalyzer.implementation.VideoAnalyzerOperationResultsImpl;
+import com.azure.resourcemanager.videoanalyzer.implementation.VideoAnalyzerOperationStatusesImpl;
 import com.azure.resourcemanager.videoanalyzer.implementation.VideoAnalyzersImpl;
 import com.azure.resourcemanager.videoanalyzer.implementation.VideosImpl;
 import com.azure.resourcemanager.videoanalyzer.models.AccessPolicies;
 import com.azure.resourcemanager.videoanalyzer.models.EdgeModules;
+import com.azure.resourcemanager.videoanalyzer.models.LivePipelineOperationStatuses;
+import com.azure.resourcemanager.videoanalyzer.models.LivePipelines;
 import com.azure.resourcemanager.videoanalyzer.models.Locations;
+import com.azure.resourcemanager.videoanalyzer.models.OperationResults;
+import com.azure.resourcemanager.videoanalyzer.models.OperationStatuses;
 import com.azure.resourcemanager.videoanalyzer.models.Operations;
+import com.azure.resourcemanager.videoanalyzer.models.PipelineJobOperationStatuses;
+import com.azure.resourcemanager.videoanalyzer.models.PipelineJobs;
+import com.azure.resourcemanager.videoanalyzer.models.PipelineTopologies;
+import com.azure.resourcemanager.videoanalyzer.models.PrivateEndpointConnections;
+import com.azure.resourcemanager.videoanalyzer.models.PrivateLinkResources;
+import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerOperationResults;
+import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerOperationStatuses;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzers;
 import com.azure.resourcemanager.videoanalyzer.models.Videos;
 import java.time.Duration;
@@ -45,13 +67,35 @@ import java.util.Objects;
  * applications that span the edge and the cloud.
  */
 public final class VideoAnalyzerManager {
+    private EdgeModules edgeModules;
+
+    private PipelineTopologies pipelineTopologies;
+
+    private LivePipelines livePipelines;
+
+    private PipelineJobs pipelineJobs;
+
+    private LivePipelineOperationStatuses livePipelineOperationStatuses;
+
+    private PipelineJobOperationStatuses pipelineJobOperationStatuses;
+
     private Operations operations;
 
     private VideoAnalyzers videoAnalyzers;
 
-    private Locations locations;
+    private PrivateLinkResources privateLinkResources;
 
-    private EdgeModules edgeModules;
+    private PrivateEndpointConnections privateEndpointConnections;
+
+    private OperationStatuses operationStatuses;
+
+    private OperationResults operationResults;
+
+    private VideoAnalyzerOperationStatuses videoAnalyzerOperationStatuses;
+
+    private VideoAnalyzerOperationResults videoAnalyzerOperationResults;
+
+    private Locations locations;
 
     private Videos videos;
 
@@ -100,6 +144,7 @@ public final class VideoAnalyzerManager {
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
         private Duration defaultPollInterval;
 
@@ -136,6 +181,17 @@ public final class VideoAnalyzerManager {
          */
         public Configurable withPolicy(HttpPipelinePolicy policy) {
             this.policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
+            return this;
+        }
+
+        /**
+         * Adds the scope to permission sets.
+         *
+         * @param scope the scope.
+         * @return the configurable object itself.
+         */
+        public Configurable withScope(String scope) {
+            this.scopes.add(Objects.requireNonNull(scope, "'scope' cannot be null."));
             return this;
         }
 
@@ -181,7 +237,7 @@ public final class VideoAnalyzerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.videoanalyzer")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -195,6 +251,9 @@ public final class VideoAnalyzerManager {
                 userAgentBuilder.append(" (auto-generated)");
             }
 
+            if (scopes.isEmpty()) {
+                scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
+            }
             if (retryPolicy == null) {
                 retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
             }
@@ -204,10 +263,7 @@ public final class VideoAnalyzerManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -218,6 +274,56 @@ public final class VideoAnalyzerManager {
                     .build();
             return new VideoAnalyzerManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /** @return Resource collection API of EdgeModules. */
+    public EdgeModules edgeModules() {
+        if (this.edgeModules == null) {
+            this.edgeModules = new EdgeModulesImpl(clientObject.getEdgeModules(), this);
+        }
+        return edgeModules;
+    }
+
+    /** @return Resource collection API of PipelineTopologies. */
+    public PipelineTopologies pipelineTopologies() {
+        if (this.pipelineTopologies == null) {
+            this.pipelineTopologies = new PipelineTopologiesImpl(clientObject.getPipelineTopologies(), this);
+        }
+        return pipelineTopologies;
+    }
+
+    /** @return Resource collection API of LivePipelines. */
+    public LivePipelines livePipelines() {
+        if (this.livePipelines == null) {
+            this.livePipelines = new LivePipelinesImpl(clientObject.getLivePipelines(), this);
+        }
+        return livePipelines;
+    }
+
+    /** @return Resource collection API of PipelineJobs. */
+    public PipelineJobs pipelineJobs() {
+        if (this.pipelineJobs == null) {
+            this.pipelineJobs = new PipelineJobsImpl(clientObject.getPipelineJobs(), this);
+        }
+        return pipelineJobs;
+    }
+
+    /** @return Resource collection API of LivePipelineOperationStatuses. */
+    public LivePipelineOperationStatuses livePipelineOperationStatuses() {
+        if (this.livePipelineOperationStatuses == null) {
+            this.livePipelineOperationStatuses =
+                new LivePipelineOperationStatusesImpl(clientObject.getLivePipelineOperationStatuses(), this);
+        }
+        return livePipelineOperationStatuses;
+    }
+
+    /** @return Resource collection API of PipelineJobOperationStatuses. */
+    public PipelineJobOperationStatuses pipelineJobOperationStatuses() {
+        if (this.pipelineJobOperationStatuses == null) {
+            this.pipelineJobOperationStatuses =
+                new PipelineJobOperationStatusesImpl(clientObject.getPipelineJobOperationStatuses(), this);
+        }
+        return pipelineJobOperationStatuses;
     }
 
     /** @return Resource collection API of Operations. */
@@ -236,20 +342,63 @@ public final class VideoAnalyzerManager {
         return videoAnalyzers;
     }
 
+    /** @return Resource collection API of PrivateLinkResources. */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
+        }
+        return privateLinkResources;
+    }
+
+    /** @return Resource collection API of PrivateEndpointConnections. */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections =
+                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /** @return Resource collection API of OperationStatuses. */
+    public OperationStatuses operationStatuses() {
+        if (this.operationStatuses == null) {
+            this.operationStatuses = new OperationStatusesImpl(clientObject.getOperationStatuses(), this);
+        }
+        return operationStatuses;
+    }
+
+    /** @return Resource collection API of OperationResults. */
+    public OperationResults operationResults() {
+        if (this.operationResults == null) {
+            this.operationResults = new OperationResultsImpl(clientObject.getOperationResults(), this);
+        }
+        return operationResults;
+    }
+
+    /** @return Resource collection API of VideoAnalyzerOperationStatuses. */
+    public VideoAnalyzerOperationStatuses videoAnalyzerOperationStatuses() {
+        if (this.videoAnalyzerOperationStatuses == null) {
+            this.videoAnalyzerOperationStatuses =
+                new VideoAnalyzerOperationStatusesImpl(clientObject.getVideoAnalyzerOperationStatuses(), this);
+        }
+        return videoAnalyzerOperationStatuses;
+    }
+
+    /** @return Resource collection API of VideoAnalyzerOperationResults. */
+    public VideoAnalyzerOperationResults videoAnalyzerOperationResults() {
+        if (this.videoAnalyzerOperationResults == null) {
+            this.videoAnalyzerOperationResults =
+                new VideoAnalyzerOperationResultsImpl(clientObject.getVideoAnalyzerOperationResults(), this);
+        }
+        return videoAnalyzerOperationResults;
+    }
+
     /** @return Resource collection API of Locations. */
     public Locations locations() {
         if (this.locations == null) {
             this.locations = new LocationsImpl(clientObject.getLocations(), this);
         }
         return locations;
-    }
-
-    /** @return Resource collection API of EdgeModules. */
-    public EdgeModules edgeModules() {
-        if (this.edgeModules == null) {
-            this.edgeModules = new EdgeModulesImpl(clientObject.getEdgeModules(), this);
-        }
-        return edgeModules;
     }
 
     /** @return Resource collection API of Videos. */

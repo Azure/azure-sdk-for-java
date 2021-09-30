@@ -33,13 +33,6 @@ public interface VideoEntity {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
      * Gets the title property: Optional video title provided by the user. Value can be up to 256 characters long.
      *
      * @return the title value.
@@ -55,8 +48,8 @@ public interface VideoEntity {
     String description();
 
     /**
-     * Gets the typePropertiesType property: Type of the video archive. Different archive formats provide different
-     * capabilities.
+     * Gets the typePropertiesType property: Video content type. Different content types are suitable for different
+     * applications and scenarios.
      *
      * @return the typePropertiesType value.
      */
@@ -71,11 +64,11 @@ public interface VideoEntity {
     VideoFlags flags();
 
     /**
-     * Gets the streaming property: Video streaming holds information about video streaming URLs.
+     * Gets the contentUrls property: Set of URLs to the video content.
      *
-     * @return the streaming value.
+     * @return the contentUrls value.
      */
-    VideoStreaming streaming();
+    VideoContentUrls contentUrls();
 
     /**
      * Gets the mediaInfo property: Contains information about the video and audio content.
@@ -83,6 +76,20 @@ public interface VideoEntity {
      * @return the mediaInfo value.
      */
     VideoMediaInfo mediaInfo();
+
+    /**
+     * Gets the archival property: Video archival properties.
+     *
+     * @return the archival value.
+     */
+    VideoArchival archival();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.videoanalyzer.fluent.models.VideoEntityInner object.
@@ -115,7 +122,8 @@ public interface VideoEntity {
          * The stage of the VideoEntity definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTitle, DefinitionStages.WithDescription {
+        interface WithCreate
+            extends DefinitionStages.WithTitle, DefinitionStages.WithDescription, DefinitionStages.WithArchival {
             /**
              * Executes the create request.
              *
@@ -154,6 +162,16 @@ public interface VideoEntity {
              */
             WithCreate withDescription(String description);
         }
+        /** The stage of the VideoEntity definition allowing to specify archival. */
+        interface WithArchival {
+            /**
+             * Specifies the archival property: Video archival properties..
+             *
+             * @param archival Video archival properties.
+             * @return the next definition stage.
+             */
+            WithCreate withArchival(VideoArchival archival);
+        }
     }
     /**
      * Begins update for the VideoEntity resource.
@@ -163,7 +181,7 @@ public interface VideoEntity {
     VideoEntity.Update update();
 
     /** The template for VideoEntity update. */
-    interface Update extends UpdateStages.WithTitle, UpdateStages.WithDescription {
+    interface Update extends UpdateStages.WithTitle, UpdateStages.WithDescription, UpdateStages.WithArchival {
         /**
          * Executes the update request.
          *
@@ -204,6 +222,16 @@ public interface VideoEntity {
              */
             Update withDescription(String description);
         }
+        /** The stage of the VideoEntity update allowing to specify archival. */
+        interface WithArchival {
+            /**
+             * Specifies the archival property: Video archival properties..
+             *
+             * @param archival Video archival properties.
+             * @return the next definition stage.
+             */
+            Update withArchival(VideoArchival archival);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -221,24 +249,24 @@ public interface VideoEntity {
     VideoEntity refresh(Context context);
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
-    VideoStreamingToken listStreamingToken();
+    VideoContentToken listContentToken();
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
-    Response<VideoStreamingToken> listStreamingTokenWithResponse(Context context);
+    Response<VideoContentToken> listContentTokenWithResponse(Context context);
 }

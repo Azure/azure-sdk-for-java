@@ -7,10 +7,11 @@ package com.azure.resourcemanager.videoanalyzer.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerCollectionInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerInner;
-import com.azure.resourcemanager.videoanalyzer.models.SyncStorageKeysInput;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerUpdate;
 
 /** An instance of this class provides access to all the operations defined in VideoAnalyzersClient. */
@@ -77,7 +78,38 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters);
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context);
+
+    /**
+     * Create or update an instance of a Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VideoAnalyzerInner createOrUpdate(String resourceGroupName, String accountName, VideoAnalyzerInner parameters);
@@ -92,10 +124,10 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoAnalyzerInner> createOrUpdateWithResponse(
+    VideoAnalyzerInner createOrUpdate(
         String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context);
 
     /**
@@ -133,7 +165,38 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters);
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
+        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context);
+
+    /**
+     * Updates an existing instance of Video Analyzer account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The Video Analyzer account name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VideoAnalyzerInner update(String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters);
@@ -148,43 +211,14 @@ public interface VideoAnalyzersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Video Analyzer account.
+     * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoAnalyzerInner> updateWithResponse(
+    VideoAnalyzerInner update(
         String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context);
 
     /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void syncStorageKeys(String resourceGroupName, String accountName, SyncStorageKeysInput parameters);
-
-    /**
-     * Synchronizes storage account keys for a storage account associated with the Video Analyzer account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The Video Analyzer account name.
-     * @param parameters The request parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
-
-    /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -194,7 +228,7 @@ public interface VideoAnalyzersClient {
     VideoAnalyzerCollectionInner listBySubscription();
 
     /**
-     * Lists the Video Analyzer accounts in the specific subscription.
+     * List all Video Analyzer accounts in the specified subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

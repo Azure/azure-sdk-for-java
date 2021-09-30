@@ -7,10 +7,13 @@ package com.azure.resourcemanager.videoanalyzer.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.AccountEncryption;
 import com.azure.resourcemanager.videoanalyzer.models.Endpoint;
+import com.azure.resourcemanager.videoanalyzer.models.IotHub;
+import com.azure.resourcemanager.videoanalyzer.models.NetworkAccessControl;
+import com.azure.resourcemanager.videoanalyzer.models.ProvisioningState;
+import com.azure.resourcemanager.videoanalyzer.models.PublicNetworkAccess;
 import com.azure.resourcemanager.videoanalyzer.models.StorageAccount;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,21 +21,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A Video Analyzer account. */
+/** The Video Analyzer account. */
 @JsonFlatten
 @Fluent
 public class VideoAnalyzerInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoAnalyzerInner.class);
 
     /*
-     * The system data of the Video Analyzer account.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
-     * The set of managed identities associated with the Video Analyzer
-     * resource.
+     * The identities associated to the Video Analyzer resource.
      */
     @JsonProperty(value = "identity")
     private VideoAnalyzerIdentity identity;
@@ -44,7 +40,7 @@ public class VideoAnalyzerInner extends Resource {
     private List<StorageAccount> storageAccounts;
 
     /*
-     * The list of endpoints associated with this resource.
+     * The endpoints associated with this resource.
      */
     @JsonProperty(value = "properties.endpoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<Endpoint> endpoints;
@@ -55,17 +51,39 @@ public class VideoAnalyzerInner extends Resource {
     @JsonProperty(value = "properties.encryption")
     private AccountEncryption encryption;
 
-    /**
-     * Get the systemData property: The system data of the Video Analyzer account.
-     *
-     * @return the systemData value.
+    /*
+     * The IoT Hubs for this resource.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "properties.iotHubs")
+    private List<IotHub> iotHubs;
+
+    /*
+     * Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     */
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Network access control for Video Analyzer.
+     */
+    @JsonProperty(value = "properties.networkAccessControl")
+    private NetworkAccessControl networkAccessControl;
+
+    /*
+     * Provisioning state of the Video Analyzer account.
+     */
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
+
+    /*
+     * Private Endpoint Connections created under Video Analyzer account.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
-     * Get the identity property: The set of managed identities associated with the Video Analyzer resource.
+     * Get the identity property: The identities associated to the Video Analyzer resource.
      *
      * @return the identity value.
      */
@@ -74,7 +92,7 @@ public class VideoAnalyzerInner extends Resource {
     }
 
     /**
-     * Set the identity property: The set of managed identities associated with the Video Analyzer resource.
+     * Set the identity property: The identities associated to the Video Analyzer resource.
      *
      * @param identity the identity value to set.
      * @return the VideoAnalyzerInner object itself.
@@ -105,7 +123,7 @@ public class VideoAnalyzerInner extends Resource {
     }
 
     /**
-     * Get the endpoints property: The list of endpoints associated with this resource.
+     * Get the endpoints property: The endpoints associated with this resource.
      *
      * @return the endpoints value.
      */
@@ -131,6 +149,86 @@ public class VideoAnalyzerInner extends Resource {
     public VideoAnalyzerInner withEncryption(AccountEncryption encryption) {
         this.encryption = encryption;
         return this;
+    }
+
+    /**
+     * Get the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @return the iotHubs value.
+     */
+    public List<IotHub> iotHubs() {
+        return this.iotHubs;
+    }
+
+    /**
+     * Set the iotHubs property: The IoT Hubs for this resource.
+     *
+     * @param iotHubs the iotHubs value to set.
+     * @return the VideoAnalyzerInner object itself.
+     */
+    public VideoAnalyzerInner withIotHubs(List<IotHub> iotHubs) {
+        this.iotHubs = iotHubs;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for resources under the
+     * Video Analyzer account.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the VideoAnalyzerInner object itself.
+     */
+    public VideoAnalyzerInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @return the networkAccessControl value.
+     */
+    public NetworkAccessControl networkAccessControl() {
+        return this.networkAccessControl;
+    }
+
+    /**
+     * Set the networkAccessControl property: Network access control for Video Analyzer.
+     *
+     * @param networkAccessControl the networkAccessControl value to set.
+     * @return the VideoAnalyzerInner object itself.
+     */
+    public VideoAnalyzerInner withNetworkAccessControl(NetworkAccessControl networkAccessControl) {
+        this.networkAccessControl = networkAccessControl;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Video Analyzer account.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private Endpoint Connections created under Video Analyzer account.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /** {@inheritDoc} */
@@ -164,6 +262,15 @@ public class VideoAnalyzerInner extends Resource {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (iotHubs() != null) {
+            iotHubs().forEach(e -> e.validate());
+        }
+        if (networkAccessControl() != null) {
+            networkAccessControl().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

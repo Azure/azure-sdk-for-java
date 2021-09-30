@@ -29,16 +29,16 @@ public final class AccessPolicyEntityImpl
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public AccessPolicyRole role() {
         return this.innerModel().role();
     }
 
     public AuthenticationBase authentication() {
         return this.innerModel().authentication();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public AccessPolicyEntityInner innerModel() {

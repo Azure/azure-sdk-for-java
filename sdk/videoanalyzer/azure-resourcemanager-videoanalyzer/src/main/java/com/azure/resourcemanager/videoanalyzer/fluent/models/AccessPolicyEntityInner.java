@@ -14,17 +14,11 @@ import com.azure.resourcemanager.videoanalyzer.models.AuthenticationBase;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Policy that determines how a video can be accessed. */
+/** Access policies help define the authentication rules, and control access to specific video resources. */
 @JsonFlatten
 @Fluent
 public class AccessPolicyEntityInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyEntityInner.class);
-
-    /*
-     * The system metadata relating to this resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
 
     /*
      * Defines the access level granted by this policy.
@@ -38,14 +32,12 @@ public class AccessPolicyEntityInner extends ProxyResource {
     @JsonProperty(value = "properties.authentication")
     private AuthenticationBase authentication;
 
-    /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
-     * @return the systemData value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy
+     * information.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the role property: Defines the access level granted by this policy.
@@ -85,6 +77,15 @@ public class AccessPolicyEntityInner extends ProxyResource {
     public AccessPolicyEntityInner withAuthentication(AuthenticationBase authentication) {
         this.authentication = authentication;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

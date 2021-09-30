@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of Videos. */
 public interface Videos {
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -23,7 +23,7 @@ public interface Videos {
     PagedIterable<VideoEntity> list(String resourceGroupName, String accountName);
 
     /**
-     * List all existing video resources in the specified account.
+     * Retrieves a list of video resources that have been created, along with their JSON representations.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
@@ -38,29 +38,29 @@ public interface Videos {
     PagedIterable<VideoEntity> list(String resourceGroupName, String accountName, Integer top, Context context);
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     VideoEntity get(String resourceGroupName, String accountName, String videoName);
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to retrieve.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     Response<VideoEntity> getWithResponse(
         String resourceGroupName, String accountName, String videoName, Context context);
@@ -70,7 +70,7 @@ public interface Videos {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -82,7 +82,7 @@ public interface Videos {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to delete.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,55 +92,55 @@ public interface Videos {
     Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String videoName, Context context);
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
-    VideoStreamingToken listStreamingToken(String resourceGroupName, String accountName, String videoName);
+    VideoContentToken listContentToken(String resourceGroupName, String accountName, String videoName);
 
     /**
-     * Generates a streaming token used for authenticating video playback.
+     * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
+     * with the given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The Azure Video Analyzer account name.
-     * @param videoName The name of the video to generate a token for playback.
+     * @param videoName The Video name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return video streaming token grants access to the video streaming URLs which can be used by an compatible HLS or
-     *     DASH player.
+     * @return "Video content token grants access to the video content URLs.".
      */
-    Response<VideoStreamingToken> listStreamingTokenWithResponse(
+    Response<VideoContentToken> listContentTokenWithResponse(
         String resourceGroupName, String accountName, String videoName, Context context);
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     VideoEntity getById(String id);
 
     /**
-     * Retrieves an existing video resource within an account with a given name.
+     * Retrieves an existing video resource with the given name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the representation of a single video in a Video Analyzer account.
+     * @return the response.
      */
     Response<VideoEntity> getByIdWithResponse(String id, Context context);
 
