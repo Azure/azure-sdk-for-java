@@ -34,10 +34,10 @@ public class ApplicationId {
     //    b2c: for AAD B2C
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationId.class);
     public static final String VERSION = getVersion();
-    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
-    public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
-    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
-    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/";
+    public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/";
+    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/";
+    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/";
 
     public static final String AZURE_SPRING_COSMOS = "az-sp-cosmos";
     public static final String AZURE_SPRING_EVENT_HUB = "az-sc-eh/;";
