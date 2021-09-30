@@ -131,12 +131,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.spockframework</groupId>
-      <artifactId>spock-core</artifactId>
-      <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib-nodep</artifactId>
       <version>3.2.7</version> <!-- {x-version-update;cglib:cglib-nodep;external_dependency} -->
@@ -189,6 +183,14 @@
       <activation>
         <jdk>[1.8,9)</jdk>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.spockframework</groupId>
+          <artifactId>spock-core</artifactId>
+          <version>2.0-M4-groovy-2.5</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -231,6 +233,14 @@
       <activation>
         <jdk>[9,)</jdk>
       </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.spockframework</groupId>
+          <artifactId>spock-core</artifactId>
+          <version>2.0-groovy-3.0</version> <!-- {x-version-update;groovy3_org.spockframework:spock-core;external_dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <build>
         <plugins>
           <plugin>

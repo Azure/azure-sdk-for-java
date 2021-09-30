@@ -210,6 +210,7 @@ org.junit.vintage:junit-vintage-engine;5.7.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;2.0-M4-groovy-2.5
+groovy3_org.spockframework:spock-core;2.0-groovy-3.0
 org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 
