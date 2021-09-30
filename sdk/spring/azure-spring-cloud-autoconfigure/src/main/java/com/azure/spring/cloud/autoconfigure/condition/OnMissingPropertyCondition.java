@@ -40,18 +40,22 @@ class OnMissingPropertyCondition extends SpringBootCondition {
     private List<AnnotationAttributes> annotationAttributesFromMultiValueMap(
         MultiValueMap<String, Object> multiValueMap) {
         List<Map<String, Object>> maps = new ArrayList<>();
-        multiValueMap.forEach((key, value) -> {
-            for (int i = 0; i < value.size(); i++) {
-                Map<String, Object> map;
-                if (i < maps.size()) {
-                    map = maps.get(i);
-                } else {
-                    map = new HashMap<>();
-                    maps.add(map);
+
+        if (multiValueMap != null) {
+            multiValueMap.forEach((key, value) -> {
+                for (int i = 0; i < value.size(); i++) {
+                    Map<String, Object> map;
+                    if (i < maps.size()) {
+                        map = maps.get(i);
+                    } else {
+                        map = new HashMap<>();
+                        maps.add(map);
+                    }
+                    map.put(key, value.get(i));
                 }
-                map.put(key, value.get(i));
-            }
-        });
+            });
+        }
+        
         List<AnnotationAttributes> annotationAttributes = new ArrayList<>(maps.size());
         for (Map<String, Object> map : maps) {
             annotationAttributes.add(AnnotationAttributes.fromMap(map));
