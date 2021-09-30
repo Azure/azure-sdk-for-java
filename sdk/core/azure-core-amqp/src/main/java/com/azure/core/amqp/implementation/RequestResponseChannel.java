@@ -114,6 +114,8 @@ public class RequestResponseChannel implements AsyncCloseable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+     *
+     * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
     protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId,
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
