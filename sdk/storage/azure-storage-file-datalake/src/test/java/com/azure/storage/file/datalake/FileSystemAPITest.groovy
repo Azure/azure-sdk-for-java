@@ -13,17 +13,14 @@ import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.ListPathsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
-import com.azure.storage.file.datalake.models.PathDeletedItem
 import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathItem
 import com.azure.storage.file.datalake.models.PublicAccessType
-import spock.lang.ResourceLock
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
-import java.util.stream.Collectors
 
 class FileSystemAPITest extends APISpec {
 
@@ -1246,7 +1243,7 @@ class FileSystemAPITest extends APISpec {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def fsc = getFileSystemClientBuilder(fsc.getFileSystemUrl()).addPolicy(getPerCallVersionPolicy()).credential(env.dataLakeAccount.credential).buildClient()
+        def fsc = getFileSystemClientBuilder(fsc.getFileSystemUrl()).addPolicy(getPerCallVersionPolicy()).credential(environment.dataLakeAccount.credential).buildClient()
 
         when: "blob endpoint"
         def response = fsc.getPropertiesWithResponse(null, null, null)
