@@ -44,7 +44,6 @@ import com.azure.ai.formrecognizer.models.DocumentTableCellKind;
 import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
-import com.azure.ai.formrecognizer.models.StringIndexType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 
@@ -86,8 +85,6 @@ public class Transforms {
 
         AnalyzeResultHelper.setContent(analyzeResult, innerAnalyzeResult.getContent());
         AnalyzeResultHelper.setModelId(analyzeResult, innerAnalyzeResult.getModelId());
-        AnalyzeResultHelper.setStringIndexType(analyzeResult,
-            StringIndexType.fromString(innerAnalyzeResult.getStringIndexType().toString()));
 
         // add document entities
         if (!CoreUtils.isNullOrEmpty(innerAnalyzeResult.getEntities())) {

@@ -18,11 +18,6 @@ public final class AnalyzeResult {
     private String modelId;
 
     /*
-     * Method used to compute string offset and length.
-     */
-    private StringIndexType stringIndexType;
-
-    /*
      * Concatenate string representation of all textual and visual elements in
      * reading order.
      */
@@ -75,25 +70,6 @@ public final class AnalyzeResult {
      */
     void setModelId(String modelId) {
         this.modelId = modelId;
-    }
-
-    /**
-     * Get the stringIndexType property: Method used to compute string offset and length.
-     *
-     * @return the stringIndexType value.
-     */
-    public StringIndexType getStringIndexType() {
-        return this.stringIndexType;
-    }
-
-    /**
-     * Set the stringIndexType property: Method used to compute string offset and length.
-     *
-     * @param stringIndexType the stringIndexType value to set.
-     * @return the AnalyzeResult object itself.
-     */
-    void setStringIndexType(StringIndexType stringIndexType) {
-        this.stringIndexType = stringIndexType;
     }
 
     /**
@@ -234,11 +210,6 @@ public final class AnalyzeResult {
             @Override
             public void setModelId(AnalyzeResult analyzeResult, String id) {
                 analyzeResult.setModelId(id);
-            }
-
-            @Override
-            public void setStringIndexType(AnalyzeResult analyzeResult, StringIndexType stringIndexType) {
-                analyzeResult.setStringIndexType(stringIndexType);
             }
 
             @Override
