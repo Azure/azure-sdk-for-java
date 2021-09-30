@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.exception.AmqpException;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.engine.Record;
@@ -262,6 +263,9 @@ public class ReactorExecutorTest {
         verify(reactor, times(2)).process();
         verify(scheduler).dispose();
 
+        verify(exceptionHandler).onConnectionError(argThat(error -> {
+            return error instanceof AmqpException && ((AmqpException) error).isTransient();
+        }));
         verify(exceptionHandler).onConnectionShutdown(argThat(shutdown -> {
             return !shutdown.isTransient() && !shutdown.isInitiatedByClient();
         }));
