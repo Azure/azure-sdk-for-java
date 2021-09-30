@@ -1,5 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.data.cosmos.config;
 
+/**
+ * Throughput config for database creation
+ */
 public class DatabaseThroughputConfig {
 
     private final boolean autoScale;
@@ -20,10 +25,10 @@ public class DatabaseThroughputConfig {
 
     @Override
     public String toString() {
-        return "DatabaseThroughputConfig{" +
-            "autoScale=" + autoScale +
-            ", requestUnits=" + requestUnits +
-            '}';
+        return "DatabaseThroughputConfig{"
+            + "autoScale=" + autoScale
+            + ", requestUnits=" + requestUnits
+            + '}';
     }
 
 }

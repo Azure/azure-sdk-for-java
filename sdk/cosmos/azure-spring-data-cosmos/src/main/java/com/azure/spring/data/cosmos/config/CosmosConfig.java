@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.config;
 
-import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 
 import java.beans.ConstructorProperties;
