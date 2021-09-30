@@ -665,7 +665,7 @@
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
-            <doclint>none</doclint>
+            <doclint>all</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
             <doclet>${javadocDoclet}</doclet>
