@@ -182,8 +182,8 @@ Use it to annotate your Configuration class to scan a different root package by 
 
 #### Using database provisioned throughput
 
-Cosmos supports both [container](https://docs.microsoft.com/en-us/azure/cosmos-db/sql/how-to-provision-container-throughput)
-and [database](https://docs.microsoft.com/en-us/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
+Cosmos supports both [container](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
+and [database](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
 throughput.  By default, spring-data-cosmos will provision throughput for each container created.  If you prefer
 to share throughput between containers, you can enable database provisioned throughput via CosmosConfig.
 
