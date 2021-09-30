@@ -203,7 +203,7 @@ Use the `modelId` parameter to select the type of model for analysis.
 |"prebuilt-receipt"| Text extraction and prebuilt fields and values pertaining to English sales receipts
 |"{custom-model-id}"| Text extraction, selection marks, tables, labeled fields and values from your custom documents
 
-Sample code snippets to illustrate using a DocumentAnalysisClient [here].
+Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
