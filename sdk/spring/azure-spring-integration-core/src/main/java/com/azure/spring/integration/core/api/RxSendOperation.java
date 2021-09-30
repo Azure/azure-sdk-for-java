@@ -10,7 +10,12 @@ import rx.Observable;
  * Operations for sending {@link Message} to a destination in a reactive way.
  *
  * @author Warren Zhu
+ *
+ * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support will
+ * be moved to com.azure.spring.messaging.core.SendOperation.
  */
+@Deprecated
 public interface RxSendOperation {
 
     /**
@@ -20,7 +25,12 @@ public interface RxSendOperation {
      * @param partitionSupplier partition supplier
      * @param <T> payload type in message
      * @return observable instance
+     *
+     * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+     * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support will
+     * be moved to com.azure.spring.messaging.core.SendOperation.
      */
+    @Deprecated
     <T> Observable<Void> sendRx(String destination, Message<T> message, PartitionSupplier partitionSupplier);
 
     /**
@@ -29,7 +39,12 @@ public interface RxSendOperation {
      * @param message message
      * @param <T> payload type in message
      * @return observable instance
+     *
+     * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+     * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support will
+     * be moved to com.azure.spring.messaging.core.SendOperation.
      */
+    @Deprecated
     default <T> Observable<Void> sendRx(String destination, Message<T> message) {
         return sendRx(destination, message, null);
     }

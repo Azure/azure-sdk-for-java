@@ -19,7 +19,12 @@ import java.util.function.Supplier;
 
 /**
  * Rx implementation for {@link EventHubTestOperation}.
+ *
+ * @deprecated {@link rx} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * {@link EventHubTestOperation}. From version 4.0.0, the reactor API support will be moved to
+ * com.azure.spring.eventhubs.support.EventHubTestOperation.
  */
+@Deprecated
 public class RxEventHubTestOperation extends EventHubTestOperation implements EventHubRxOperation {
     private final ConcurrentHashMap<Tuple<String, String>, Observable<Message<?>>> subjectByNameAndGroup =
         new ConcurrentHashMap<>();
