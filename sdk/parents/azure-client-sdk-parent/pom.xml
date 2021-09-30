@@ -665,7 +665,7 @@
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
-            <doclint>all</doclint>
+            <doclint>none</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
             <doclet>${javadocDoclet}</doclet>
@@ -677,7 +677,7 @@
             <additionalOptions>
               <!-- '-html5' is a dummy option, as this is the default. But, unfortunately, it's needed to prevent the Javadoc plugin -->
               <!-- from throwing a NullPointerException when '${javadocDocletOptions}' is empty when using the new tooling. -->
-              <additionalOption>-html5 ${javadocDocletOptions}</additionalOption>
+              <additionalOption>-protected ${javadocDocletOptions}</additionalOption>
             </additionalOptions>
           </configuration>
         </plugin>
@@ -978,6 +978,8 @@
                     <argument>${project.basedir}/${relative.path.to.eng.folder}/eng/pipelines/scripts/generate_overview_from_readme.py</argument>
                     <argument>--rf</argument>
                     <argument>${project.basedir}/README.md</argument>
+                    <argument>--ofp</argument>
+                    <argument>${project.build.directory}${file.separator}</argument>
                     <argument>--v</argument>
                     <argument>${project.version}</argument>
                   </arguments>
@@ -991,7 +993,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration combine.children="append">
-              <overview>${project.basedir}/readme_overview.html</overview>
+              <overview>${project.build.directory}/readme_overview.html</overview>
             </configuration>
           </plugin>
         </plugins>
