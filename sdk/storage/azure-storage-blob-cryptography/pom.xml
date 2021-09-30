@@ -166,6 +166,32 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>1.13.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>addTestSources</goal>
+              <goal>generateTestStubs</goal>
+              <goal>compileTests</goal>
+              <goal>removeTestStubs</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <testSources>
+            <testSource>
+              <directory>${project.basedir}/src/test</directory>
+              <includes>
+                <include>**/*.groovy</include>
+              </includes>
+            </testSource>
+          </testSources>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
@@ -177,25 +203,10 @@
               <goal>testCompile</goal>
             </goals>
             <configuration>
-              <compilerId>groovy-eclipse-compiler</compilerId>
-              <compilerArgs>
-                <arg>-warn:-unused</arg>
-              </compilerArgs>
+              <failOnWarning>false</failOnWarning>
             </configuration>
           </execution>
         </executions>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-eclipse-compiler</artifactId>
-            <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
-          </dependency>
-          <dependency>
-            <groupId>org.codehaus.groovy</groupId>
-            <artifactId>groovy-eclipse-batch</artifactId>
-            <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>
