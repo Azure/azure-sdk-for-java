@@ -19,8 +19,7 @@ add-context-parameter: true
 context-client-method-parameter: true
 generate-sync-async-clients: true
 artifact-id: azure-analytics-purview-account
-llc-properties:
-    version: 1.0.0-beta.1
-    group-id: com.azure
-    rp-name: purview
+version: 1.0.0-beta.1
+group-id: com.azure
+rp-name: purview
 ```
