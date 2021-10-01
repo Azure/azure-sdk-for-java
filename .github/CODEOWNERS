@@ -59,7 +59,7 @@
 /sdk/digitaltwins/                                  @drwill-ms @azabbasi @johngallardo
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
