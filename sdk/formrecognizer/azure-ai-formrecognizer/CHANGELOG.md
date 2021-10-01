@@ -1,6 +1,13 @@
 # Release History
 
-## 4.0.0-beta.1 (Unreleased)
+## 4.0.0-beta.1 (2021-10-06)
+This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
+
+> Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features 
+of the Form Recognizer service. Please see the 
+[Migration Guide](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md) 
+for detailed instructions on how to update application code from client library version 3.1.X or lower to the latest version. 
+Also, please refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/README.md) for more information about the library.
 
 ### Features Added
 - Added new DocumentAnalysisClient with beginAnalyzeDocument and beginAnalyzeDocumentFromUrl methods. 
@@ -9,13 +16,17 @@ Use these methods with the latest Form Recognizer API version to analyze documen
 DocumentEntity, DocumentField, DocumentKeyValuePair, DocumentKeyValueElement, DocumentLine, DocumentPage, DocumentSelectionMark,
 DocumentSpan, DocumentStyle, DocumentTable, DocumentTableCell, DocumentWord, DocumentOperationResult.
 - Added a new model `DocumentAnalysisServiceVersion` that supports Azure Form Recognizer service version "2021-09-30-preview" and onwards.
-- Added new DocumentModelAdministrationClient with methods: beginBuildModel, beginCreateComposedModel, getCopyAuthorization,
+- Added new `DocumentModelAdministrationClient` and `DocumentModelAdministrationAsyncClient` with methods: beginBuildModel, beginCreateComposedModel, getCopyAuthorization,
 deleteModel, getAccountProperties, beginCopyModel, listModels, getModel, getOperation, listOperations.
-- Added new models to use with the new DocumentTrainingClient: DocumentModel, DocTypeInfo, DocumentFieldSchema, 
-AccountProperties, CopyAuthorization, BuildModelOptions, CopyAuthorizationOptions, CreateComposedModelOptions,
+- Added new models to use with the new `DocumentModelAdministrationClient`: DocumentModel, DocTypeInfo, DocumentFieldSchema, 
+AccountProperties, CopyAuthorization, BuildModelOptions, CopyAuthorizationOptions, CreateComposedModelOptions, DocumentAnalysisException, FormRecognizerError, InnerError,
 DocumentModelInfo, ModelOperation, ModelOperationInfo, ModelOperationStatus, ModelOperationKind.
 
 ### Breaking Changes
+- This package targets Azure Form Recognizer service API version 2021-09-30-preview and newer. It is not compatible with the older Form Recognizer service API versions (2.0 and 2.1). 
+To continue to use Form Recognizer API version 2.1, please use major version 3 of the client package (azure-ai-form-recognizer 3.1.X).
+- `FormRecognizerClient` and `FormRecognizerAsyncClient` has been replaced by `DocumentAnalysisClient` and `DocumentAnalysisAsyncClient` respectively.
+- `FormTrainingClient` and `FormTrainingAsyncClient` has been replaced by `DocumentModelAdministrationClient` and `DocumentModelAdministrationAsyncClient` respectively.
 
 ### Bugs Fixed
 
