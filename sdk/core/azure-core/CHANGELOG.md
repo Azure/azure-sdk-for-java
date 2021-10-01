@@ -18,7 +18,7 @@
 
 ### Other Changes
 
-### Dependency Updates
+#### Dependency Updates
 
 - Upgraded Jackson from `2.12.4` to `2.12.5`.
 - Upgraded Reactor from `3.4.9` to `3.4.10`.
