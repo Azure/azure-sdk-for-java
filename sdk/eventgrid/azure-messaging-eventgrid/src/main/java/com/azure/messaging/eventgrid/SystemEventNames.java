@@ -159,49 +159,79 @@ public final class SystemEventNames {
     // Keep this sorted by the name of the service publishing the events.
 
     // API management events.
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated event. */
-    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.APICreated";
+    /**
+     * indicate an event of ApiCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIDeleted event. */
-    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.APIDeleted";
+    /**
+     * indicate an event of ApiDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.ApiDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseCreated event. */
-    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.APIReleaseCreated";
+    /**
+     * indicate an event of ApiReleaseCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.ApiReleaseCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseDeleted event. */
-    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.APIReleaseDeleted";
+    /**
+     * indicate an event of ApiReleaseDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.ApiReleaseDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIReleaseUpdated event. */
-    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.APIReleaseUpdated";
+    /**
+     * indicate an event of ApiReleaseUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.ApiReleaseUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIUpdated event. */
-    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.APIUpdated";
+    /**
+     * indicate an event of ApiUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductCreated event. */
+    /**
+     * indicate an event of ProductCreated in ApiManagement.
+     */
     public static final String API_MANAGEMENT_PRODUCT_CREATED = "Microsoft.ApiManagement.ProductCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductDeleted event. */
+    /**
+     * indicate an event of ProductDeleted in ApiManagement.
+     */
     public static final String API_MANAGEMENT_PRODUCT_DELETED = "Microsoft.ApiManagement.ProductDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ProductUpdated event. */
+    /**
+     * indicate an event of ProductUpdated in ApiManagement.
+     */
     public static final String API_MANAGEMENT_PRODUCT_UPDATED = "Microsoft.ApiManagement.ProductUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.SubscriptionCreated event. */
+    /**
+     * indicate an event of SubscriptionCreated in ApiManagement.
+     */
     public static final String API_MANAGEMENT_SUBSCRIPTION_CREATED = "Microsoft.ApiManagement.SubscriptionCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.SubscriptionDeleted event. */
+    /**
+     * indicate an event of SubscriptionDeleted in ApiManagement.
+     */
     public static final String API_MANAGEMENT_SUBSCRIPTION_DELETED = "Microsoft.ApiManagement.SubscriptionDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.SubscriptionUpdated event. */
+    /**
+     * indicate an event of SubscriptionUpdated in ApiManagement.
+     */
     public static final String API_MANAGEMENT_SUBSCRIPTION_UPDATED = "Microsoft.ApiManagement.SubscriptionUpdated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserCreated event. */
+    /**
+     * indicate an event of UserCreated in ApiManagement.
+     */
     public static final String API_MANAGEMENT_USER_CREATED = "Microsoft.ApiManagement.UserCreated";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserDeleted event. */
+    /**
+     * indicate an event of UserDeleted in ApiManagement.
+     */
     public static final String API_MANAGEMENT_USER_DELETED = "Microsoft.ApiManagement.UserDeleted";
 
-    /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserUpdated event. */
+    /**
+     * indicate an event of UserUpdated in ApiManagement.
+     */
     public static final String API_MANAGEMENT_USER_UPDATED = "Microsoft.ApiManagement.UserUpdated";
 
     // AppConfiguration events.
@@ -519,7 +549,6 @@ public final class SystemEventNames {
         "Microsoft.Communication.SMSDeliveryReportReceived";
     public static final String COMMUNICATION_SMS_RECEIVED =
         "Microsoft.Communication.SMSReceived";
-
     public static final String COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD =
         "Microsoft.Communication.ChatMessageDeletedInThread";
     public static final String COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD =

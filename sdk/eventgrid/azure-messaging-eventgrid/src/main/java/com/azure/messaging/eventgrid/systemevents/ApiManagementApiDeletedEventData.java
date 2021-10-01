@@ -7,7 +7,7 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APIDeleted event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiDeleted event. */
 @Immutable
 public final class ApiManagementApiDeletedEventData {
     /*
