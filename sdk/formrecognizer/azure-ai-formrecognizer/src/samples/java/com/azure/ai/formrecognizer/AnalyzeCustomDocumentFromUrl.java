@@ -30,10 +30,10 @@ public class AnalyzeCustomDocumentFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        String formUrl = "{document-url}";
+        String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
-            client.beginAnalyzeDocumentFromUrl(modelId, formUrl);
+            client.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
         AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 

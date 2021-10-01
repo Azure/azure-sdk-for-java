@@ -180,7 +180,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 ```
 
 Analyze receipt data using 4.x.x `beginAnalyzeDocumentFromUrl`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L160-L225-->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L134-L199-->
 ```java
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
@@ -228,20 +228,20 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             List<DocumentField> receiptItems = receiptItemsField.getValueList();
             receiptItems.stream()
                 .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                .map(formField -> formField.getValueMap())
-                .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                .map(documentField -> documentField.getValueMap())
+                .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                     if ("Name".equals(key)) {
-                        if (DocumentFieldType.STRING == formField.getType()) {
-                            String name = formField.getValueString();
+                        if (DocumentFieldType.STRING == documentField.getType()) {
+                            String name = documentField.getValueString();
                             System.out.printf("Name: %s, confidence: %.2fs%n",
-                                name, formField.getConfidence());
+                                name, documentField.getConfidence());
                         }
                     }
                     if ("Quantity".equals(key)) {
-                        if (DocumentFieldType.FLOAT == formField.getType()) {
-                            Float quantity = formField.getValueFloat();
+                        if (DocumentFieldType.FLOAT == documentField.getType()) {
+                            Float quantity = documentField.getValueFloat();
                             System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                quantity, formField.getConfidence());
+                                quantity, documentField.getConfidence());
                         }
                     }
                 }));
@@ -286,14 +286,18 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 }
 ```
 
-Analyze layout using 4.x.x `beginRecognizeContent`:
+Analyze layout using 4.x.x `beginAnalyzeDocument`:
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L85-L127-->
 ```java
-SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutPoller =
-    client.beginAnalyzeDocumentFromUrl("prebuilt-layout",
-        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer/"
-            + "azure-ai-formrecognizer/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf");
+// analyze document layout using file input stream
+File layoutDocument = new File("local/file_path/filename.png");
+byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
+InputStream fileStream = new ByteArrayInputStream(fileContent);
 
-AnalyzeResult analyzeLayoutResult = analyzeLayoutPoller.getFinalResult();
+SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeLayoutResultPoller =
+    documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", fileStream, layoutDocument.length());
+
+AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
 // pages
 analyzeLayoutResult.getPages().forEach(documentPage -> {
@@ -307,12 +311,6 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
         System.out.printf("Line %s is within a bounding box %s.%n",
             documentLine.getContent(),
             documentLine.getBoundingBox().toString()));
-
-    // words
-    documentPage.getWords().forEach(documentWord ->
-        System.out.printf("Word %s has a confidence score of %.2f%n.",
-            documentWord.getContent(),
-            documentWord.getConfidence()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
@@ -363,11 +361,12 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 ```
 
 Analyze custom document using 4.x.x `beginAnalyzeDocumentFromUrl`
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L235-L287-->
 ```java
-String formUrl = "{document-url}";
+String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
-    client.beginAnalyzeDocumentFromUrl(modelId, formUrl);
+    documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
@@ -376,6 +375,13 @@ for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     System.out.printf("----------- Analyzing custom document %d -----------%n", i);
     System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
         analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+    analyzedDocument.getFields().forEach((key, documentField) -> {
+        System.out.printf("Document Field content: %s%n", documentField.getContent());
+        System.out.printf("Document Field confidence: %.2f%n", documentField.getConfidence());
+        System.out.printf("Document Field Type: %.2f%n", documentField.getType().toString());
+        System.out.printf("Document Field found within bounding region: %s%n",
+            documentField.getBoundingRegions().toString());
+    });
 }
 
 analyzeResult.getPages().forEach(documentPage -> {
@@ -396,15 +402,30 @@ analyzeResult.getPages().forEach(documentPage -> {
             documentWord.getContent(),
             documentWord.getConfidence()));
 });
+
+// tables
+List<DocumentTable> tables = analyzeResult.getTables();
+for (int i = 0; i < tables.size(); i++) {
+    DocumentTable documentTable = tables.get(i);
+    System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+        documentTable.getColumnCount());
+    documentTable.getCells().forEach(documentTableCell -> {
+        System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+            documentTableCell.getContent(),
+            documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+    });
+    System.out.println();
+}
 ```
 
 Analyzing general prebuilt document types with 4.x.x:
 > NOTE: Analyzing a document with the prebuilt-document model replaces training without labels in version 3.1.x of the library.
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L294-L357-->
 ```java
 String documentUrl = "{document-url}";
 String modelId = "prebuilt-document";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
-    client.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+    documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
 
 AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
@@ -456,7 +477,7 @@ analyzeResult.getEntities().forEach(documentEntity -> {
     System.out.printf("Entity confidence: %.2f%n", documentEntity.getConfidence());
 });
 
-// Key-value 
+// Key-value
 analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
     System.out.printf("Key content: %s%n", documentKeyValuePair.getKey().getContent());
     System.out.printf("Key content bounding region: %s%n",
@@ -517,7 +538,7 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
 ```
 
 Build a custom document model using 4.x.x `beginBuildModel`:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L293-L315 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L206-L228 -->
 ```java
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
