@@ -1,15 +1,18 @@
 # Release History
 
-## 1.0.0-beta.19 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.19 (2021-10-01)
 
 ### Breaking Changes
-- Removed `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
 
-### Bugs Fixed
+- Removed `TokenRequestContenxtExperimental` class that allows to configure TenantId Challenges.
+- Removed `TimeInterval` as it is no longer being developed.
+- Moved `HttpResponseError` to `azure-core` as `ResponseError`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
 
 ## 1.0.0-beta.18 (2021-09-07)
 
