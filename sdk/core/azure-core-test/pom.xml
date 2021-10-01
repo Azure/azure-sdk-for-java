@@ -41,6 +41,9 @@
       --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
       --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

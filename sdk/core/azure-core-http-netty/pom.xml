@@ -51,6 +51,9 @@
       --add-opens com.azure.http.netty/com.azure.core.http.netty=ALL-UNNAMED
       --add-opens com.azure.http.netty/com.azure.core.http.netty.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

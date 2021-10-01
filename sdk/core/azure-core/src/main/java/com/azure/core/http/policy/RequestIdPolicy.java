@@ -19,7 +19,11 @@ import java.util.UUID;
  *
  * <p>The default {@link HttpHeader} name can be overwritten as shown below
  * <p><strong>Code sample</strong></p>
- * {@codesnippet com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName}
+ * <!-- src_embed com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName -->
+ * <pre>
+ * new RequestIdPolicy&#40;&quot;x-ms-my-custom-request-id&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName -->
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
 

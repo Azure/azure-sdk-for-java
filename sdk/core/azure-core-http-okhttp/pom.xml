@@ -51,6 +51,9 @@
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp=ALL-UNNAMED
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

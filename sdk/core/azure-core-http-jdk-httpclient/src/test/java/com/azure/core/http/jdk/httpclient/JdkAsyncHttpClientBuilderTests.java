@@ -178,7 +178,8 @@ public class JdkAsyncHttpClientBuilderTests {
 
             Configuration configuration = new Configuration()
                 .put(Configuration.PROPERTY_HTTP_PROXY,
-                    "http://" + proxyUserInfo + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort());
+                    "http://" + proxyUserInfo + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
+                .put("java.net.useSystemProxies", "true");
 
             HttpClient httpClient = new JdkAsyncHttpClientBuilder(java.net.http.HttpClient.newBuilder())
                 .configuration(configuration)
@@ -241,14 +242,6 @@ public class JdkAsyncHttpClientBuilderTests {
                 server.shutdown();
             }
         }
-    }
-
-    @Test
-    void testDefaultRestrictedHeaders() {
-        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
-        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(new Properties());
-
-        validateRestrictedHeaders(jdkAsyncHttpClientBuilder, JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS, 5);
     }
 
     @Test

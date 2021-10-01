@@ -49,6 +49,15 @@
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.core.http.jdk.httpclient/com.azure.core.http.jdk.httpclient=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+    <additionalSurefireArgLine>
+      -Djdk.httpclient.allowRestrictedHeaders=Content-Length
+    </additionalSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
@@ -181,7 +190,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>
@@ -244,9 +253,6 @@
             <executions>
               <execution>
                 <id>default-compile</id>
-                <configuration>
-                  <release>11</release>
-                </configuration>
               </execution>
               <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is overridden.
                In parent pom, this execution entry enforces java8 release compatibility. The new http APIs are not available

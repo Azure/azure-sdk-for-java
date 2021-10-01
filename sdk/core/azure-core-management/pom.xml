@@ -49,6 +49,9 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.management/com.azure.core.management.implementation.polling=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>

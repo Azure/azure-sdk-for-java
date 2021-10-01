@@ -74,7 +74,33 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendAdd#String-Object}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
+     * <pre>
+     * &#47;*
+     *  * Add an object member to the JSON document &#123; &quot;foo&quot; : &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;bar&quot;: &quot;foo&quot;, &quot;foo&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAdd&#40;&quot;&#47;bar&quot;, &quot;foo&quot;&#41;;
+     *
+     * &#47;*
+     *  * Add an array element to the JSON document &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;fizzbuzz&quot; ] &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot; ] &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAdd&#40;&quot;&#47;foo&#47;1&quot;, &quot;buzz&quot;&#41;;
+     *
+     * &#47;*
+     *  * Add a nested member to the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;child&quot;: &#123; &quot;grandchild&quot;: &#123; &#125; &#125; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAdd&#40;&quot;&#47;child&quot;, Collections.singletonMap&#40;&quot;grandchild&quot;, Collections.emptyMap&#40;&#41;&#41;&#41;;
+     *
+     * &#47;*
+     *  * Add an array element to the JSON document &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot; ] &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot; ] &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAdd&#40;&quot;&#47;foo&#47;-&quot;, &quot;fizzbuzz&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
      *
      * @param path The path to apply the addition.
      * @param value The value that will be serialized and added to the path.
@@ -95,7 +121,33 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
+     * <pre>
+     * &#47;*
+     *  * Add an object member to the JSON document &#123; &quot;foo&quot; : &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;bar&quot;: &quot;foo&quot;, &quot;foo&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAddRaw&#40;&quot;&#47;bar&quot;, &quot;&#92;&quot;foo&#92;&quot;&quot;&#41;;
+     *
+     * &#47;*
+     *  * Add an array element to the JSON document &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;fizzbuzz&quot; ] &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot; ] &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAddRaw&#40;&quot;&#47;foo&#47;1&quot;, &quot;&#92;&quot;buzz&#92;&quot;&quot;&#41;;
+     *
+     * &#47;*
+     *  * Add a nested member to the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;child&quot;: &#123; &quot;grandchild&quot;: &#123; &#125; &#125; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAddRaw&#40;&quot;&#47;child&quot;, &quot;&#92;&quot;child&#92;&quot;: &#123; &#92;&quot;grandchild&#92;&quot;: &#123; &#125; &#125;&quot;&#41;;
+     *
+     * &#47;*
+     *  * Add an array element to the JSON document &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot; ] &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot; ] &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendAddRaw&#40;&quot;&#47;foo&#47;-&quot;, &quot;&#92;&quot;fizzbuzz&#92;&quot;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
      *
      * @param path The path to apply the addition.
      * @param rawJson The raw JSON value that will be added to the path.
@@ -119,7 +171,27 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendReplace#String-Object}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
+     * <pre>
+     * &#47;*
+     *  * Replace an object member in the JSON document &#123; &quot;bar&quot;: &quot;qux&quot;, &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;bar&quot;: &quot;foo&quot;, &quot;foo&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendReplace&#40;&quot;&#47;bar&quot;, &quot;foo&quot;&#41;;
+     *
+     * &#47;*
+     *  * Replace an object member in the JSON document &#123; &quot;foo&quot;: &quot;fizz&quot; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot; ]  &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendReplace&#40;&quot;&#47;foo&quot;, new String[] &#123;&quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot;&#125;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an invalid replace operation as the
+     *  * target path doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendReplace&#40;&quot;&#47;baz&quot;, &quot;foo&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
      *
      * @param path The path to replace.
      * @param value The value will be serialized and used as the replacement.
@@ -137,7 +209,27 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
+     * <pre>
+     * &#47;*
+     *  * Replace an object member in the JSON document &#123; &quot;bar&quot;: &quot;qux&quot;, &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;bar&quot;: &quot;foo&quot;, &quot;foo&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendReplaceRaw&#40;&quot;&#47;bar&quot;, &quot;&#92;&quot;foo&#92;&quot;&quot;&#41;;
+     *
+     * &#47;*
+     *  * Replace an object member in the JSON document &#123; &quot;foo&quot;: &quot;fizz&quot; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: [ &quot;fizz&quot;, &quot;buzz&quot;, &quot;fizzbuzz&quot; ]  &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendReplaceRaw&#40;&quot;&#47;foo&quot;, &quot;[ &#92;&quot;fizz&#92;&quot;, &#92;&quot;buzz&#92;&quot;, &#92;&quot;fizzbuzz&#92;&quot; ]&quot;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an invalid replace operation as the
+     *  * target path doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendReplaceRaw&#40;&quot;&#47;baz&quot;, &quot;&#92;&quot;foo&#92;&quot;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
      *
      * @param path The path to replace.
      * @param rawJson The raw JSON value that will be used as the replacement.
@@ -161,7 +253,27 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendCopy#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
+     * <pre>
+     * &#47;*
+     *  * Copy an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;copy&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendCopy&#40;&quot;&#47;foo&quot;, &quot;&#47;copy&quot;&#41;;
+     *
+     * &#47;*
+     *  * Copy an object member in the JSON document &#123; &quot;foo&quot;: &#123; &quot;bar&quot;: &quot;baz&quot; &#125; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &#123; &quot;bar&quot;: &quot;baz&quot; &#125;, &quot;bar&quot;: &quot;baz&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendCopy&#40;&quot;&#47;foo&#47;bar&quot;, &quot;&#47;bar&quot;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an invalid copy operation as the
+     *  * target from doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendCopy&#40;&quot;&#47;baz&quot;, &quot;&#47;fizz&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
      *
      * @param from The path to copy from.
      * @param path The path to copy to.
@@ -184,7 +296,33 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendMove#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
+     * <pre>
+     * &#47;*
+     *  * Move an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;bar&quot;: &quot;foo&quot; &#125; to get the JSON document
+     *  * &#123; &quot;bar&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendMove&#40;&quot;&#47;foo&quot;, &quot;&#47;bar&quot;&#41;;
+     *
+     * &#47;*
+     *  * Move an object member in the JSON document &#123; &quot;foo&quot;: &#123; &quot;bar&quot;: &quot;baz&quot; &#125; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &quot;baz&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendMove&#40;&quot;&#47;foo&#47;bar&quot;, &quot;&#47;foo&quot;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &#123; &quot;bar&quot;: &quot;baz&quot; &#125; &#125; the following is an example of an invalid move operation
+     *  * as the target path is a child of the target from.
+     *  *&#47;
+     * jsonPatchDocument.appendMove&#40;&quot;&#47;foo&quot;, &quot;&#47;foo&#47;bar&quot;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an invalid move operation as the
+     *  * target from doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendMove&#40;&quot;&#47;baz&quot;, &quot;&#47;fizz&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
      *
      * @param from The path to move from.
      * @param path The path to move to.
@@ -205,7 +343,27 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendRemove#String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendRemove#String -->
+     * <pre>
+     * &#47;*
+     *  * Remove an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot;, &quot;bar&quot;: &quot;foo&quot; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &quot;bar&quot; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendRemove&#40;&quot;&#47;bar&quot;&#41;;
+     *
+     * &#47;*
+     *  * Remove an object member in the JSON document &#123; &quot;foo&quot;: &#123; &quot;bar&quot;: &quot;baz&quot; &#125; &#125; to get the JSON document
+     *  * &#123; &quot;foo&quot;: &#123; &#125; &#125;.
+     *  *&#47;
+     * jsonPatchDocument.appendRemove&#40;&quot;&#47;foo&#47;bar&quot;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an invalid remove operation as the
+     *  * target from doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendRemove&#40;&quot;&#47;baz&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendRemove#String -->
      *
      * @param path The path to remove.
      * @return The updated JsonPatchDocument object.
@@ -224,7 +382,25 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendTest#String-Object}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
+     * <pre>
+     * &#47;*
+     *  * Test an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get a successful operation.
+     *  *&#47;
+     * jsonPatchDocument.appendTest&#40;&quot;&#47;foo&quot;, &quot;bar&quot;&#41;;
+     *
+     * &#47;*
+     *  * Test an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get a unsuccessful operation.
+     *  *&#47;
+     * jsonPatchDocument.appendTest&#40;&quot;&#47;foo&quot;, 42&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an unsuccessful test operation as
+     *  * the target path doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendTest&#40;&quot;&#47;baz&quot;, &quot;bar&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
      *
      * @param path The path to test.
      * @param value The value that will be serialized and used to test against.
@@ -242,7 +418,25 @@ public final class JsonPatchDocument {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String}
+     * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
+     * <pre>
+     * &#47;*
+     *  * Test an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get a successful operation.
+     *  *&#47;
+     * jsonPatchDocument.appendTestRaw&#40;&quot;&#47;foo&quot;, &quot;&#92;&quot;bar&#92;&quot;&quot;&#41;;
+     *
+     * &#47;*
+     *  * Test an object member in the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; to get a unsuccessful operation.
+     *  *&#47;
+     * jsonPatchDocument.appendTestRaw&#40;&quot;&#47;foo&quot;, &quot;42&quot;&#41;;
+     *
+     * &#47;*
+     *  * Given the JSON document &#123; &quot;foo&quot;: &quot;bar&quot; &#125; the following is an example of an unsuccessful test operation as
+     *  * the target path doesn't exist in the document.
+     *  *&#47;
+     * jsonPatchDocument.appendTestRaw&#40;&quot;&#47;baz&quot;, &quot;&#92;&quot;bar&#92;&quot;&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
      *
      * @param path The path to test.
      * @param rawJson The raw JSON value that will be used to test against.
