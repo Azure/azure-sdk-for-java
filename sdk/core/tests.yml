@@ -75,107 +75,107 @@ stages:
           groupId: com.azure
           safeName: azurecorejacksontests
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-      parameters:
-        ServiceDirectory: storage
-        Artifacts:
-          - name: azure-storage-common
-            groupId: com.azure
-            safeName: azurestoragecommon
-          - name: azure-storage-blob
-            groupId: com.azure
-            safeName: azurestorageblob
-          - name: azure-storage-blob-batch
-            groupId: com.azure
-            safeName: azurestorageblobbatch
-          - name: azure-storage-blob-changefeed
-            groupId: com.azure
-            safeName: azurestorageblobchangefeed
-          - name: azure-storage-blob-cryptography
-            groupId: com.azure
-            safeName: azurestorageblobcryptography
-          - name: azure-storage-blob-nio
-            groupId: com.azure
-            safeName: azurestorageblobnio
-          - name: azure-storage-file-share
-            groupId: com.azure
-            safeName: azurestoragefileshare
-          - name: azure-storage-file-datalake
-            groupId: com.azure
-            safeName: azurestoragefiledatalake
-          - name: azure-storage-internal-avro
-            groupId: com.azure
-            safeName: azurestorageinternalavro
-          - name: azure-storage-queue
-            groupId: com.azure
-            safeName: azurestoragequeue
-        AdditionalModules:
-          - name: perf-test-core
-            groupId: com.azure
-          - name: azure-storage-perf
-            groupId: com.azure
-        TestMode: 'LIVE'
-        TimeoutInMinutes: 60
-        Location: canadacentral
-        CloudConfig:
-          Preview:
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-          PrivatePreview:
-            SubscriptionConfiguration: $(sub-config-storage-test-resources)
-        Clouds: Preview
-        SupportedClouds: Preview
-        TestStepMavenInputs:
-          options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
-          mavenOptions: '$(DefaultTestMavenOptions)'
-        MatrixReplace:
-          # Use dedicated storage pool in canadacentral with higher memory capacity
-          - Pool=(.*)-general/$1-storage
-          - TestFromSource=(.*)/true
-        MatrixConfigs:
-          - ${{ if contains(variables['Build.DefinitionName'], 'tests-weekly') }}:
-              - Name: Storage_all_versions_live_test
-                Path: sdk/storage/platform-matrix-all-versions.json
-                Selection: sparse
-                GenerateVMJobs: true
-          - ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
-              - Name: Storage_live_test
-                Path: sdk/storage/platform-matrix.json
-                Selection: sparse
-                GenerateVMJobs: true
-        PreSteps:
-          - template: /sdk/storage/tests-install-azurite.yml
-        PostSteps:
-          - task: PowerShell@2
-            displayName: 'Run Stress Scenarios'
-            inputs:
-              targetType: 'filePath'
-              filePath: sdk/storage/azure-storage-perf/memory-stress-scenarios.ps1
-            env:
-              ${{ if eq(variables['JavaTestVersion'], '1.11') }}:
-                JAVA_HOME: $(JAVA_HOME_11_X64)
-              ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
-                JAVA_HOME: $(JAVA_HOME_8_X64)
-            condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
-          - pwsh: |
-              New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
-              Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-blob-batch/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-batch-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-blob-changefeed/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-changefeed-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-blob-cryptography/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-cryptography-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-blob-nio/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-nio-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-common/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-common-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-file-datalake/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-datalake-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-file-share/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-share-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-internal-avro/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-internal-avro-test.log -ErrorAction SilentlyContinue
-              Copy-Item sdk/storage/azure-storage-queue/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-queue-test.log -ErrorAction SilentlyContinue
-            displayName: 'Copy test logs to artifact staging'
-            condition: always()
-          - publish: $(Build.ArtifactStagingDirectory)/test-logs
-            displayName: 'Publish test logs'
-            artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-            condition: always()
-        EnvVars:
-          AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-          AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-          AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-          VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
-          VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
+    parameters:
+      ServiceDirectory: storage
+      Artifacts:
+        - name: azure-storage-common
+          groupId: com.azure
+          safeName: azurestoragecommon
+        - name: azure-storage-blob
+          groupId: com.azure
+          safeName: azurestorageblob
+        - name: azure-storage-blob-batch
+          groupId: com.azure
+          safeName: azurestorageblobbatch
+        - name: azure-storage-blob-changefeed
+          groupId: com.azure
+          safeName: azurestorageblobchangefeed
+        - name: azure-storage-blob-cryptography
+          groupId: com.azure
+          safeName: azurestorageblobcryptography
+        - name: azure-storage-blob-nio
+          groupId: com.azure
+          safeName: azurestorageblobnio
+        - name: azure-storage-file-share
+          groupId: com.azure
+          safeName: azurestoragefileshare
+        - name: azure-storage-file-datalake
+          groupId: com.azure
+          safeName: azurestoragefiledatalake
+        - name: azure-storage-internal-avro
+          groupId: com.azure
+          safeName: azurestorageinternalavro
+        - name: azure-storage-queue
+          groupId: com.azure
+          safeName: azurestoragequeue
+      AdditionalModules:
+        - name: perf-test-core
+          groupId: com.azure
+        - name: azure-storage-perf
+          groupId: com.azure
+      TestMode: 'LIVE'
+      TimeoutInMinutes: 60
+      Location: canadacentral
+      CloudConfig:
+        Preview:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+        PrivatePreview:
+          SubscriptionConfiguration: $(sub-config-storage-test-resources)
+      Clouds: Preview
+      SupportedClouds: Preview
+      TestStepMavenInputs:
+        options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
+        mavenOptions: '$(DefaultTestMavenOptions)'
+      MatrixReplace:
+        # Use dedicated storage pool in canadacentral with higher memory capacity
+        - Pool=(.*)-general/$1-storage
+        - TestFromSource=(.*)/true
+      MatrixConfigs:
+        - ${{ if contains(variables['Build.DefinitionName'], 'tests-weekly') }}:
+            - Name: Storage_all_versions_live_test
+              Path: sdk/storage/platform-matrix-all-versions.json
+              Selection: sparse
+              GenerateVMJobs: true
+        - ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+            - Name: Storage_live_test
+              Path: sdk/storage/platform-matrix.json
+              Selection: sparse
+              GenerateVMJobs: true
+      PreSteps:
+        - template: /sdk/storage/tests-install-azurite.yml
+      PostSteps:
+        - task: PowerShell@2
+          displayName: 'Run Stress Scenarios'
+          inputs:
+            targetType: 'filePath'
+            filePath: sdk/storage/azure-storage-perf/memory-stress-scenarios.ps1
+          env:
+            ${{ if eq(variables['JavaTestVersion'], '1.11') }}:
+              JAVA_HOME: $(JAVA_HOME_11_X64)
+            ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
+              JAVA_HOME: $(JAVA_HOME_8_X64)
+          condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
+        - pwsh: |
+            New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
+            Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-blob-batch/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-batch-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-blob-changefeed/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-changefeed-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-blob-cryptography/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-cryptography-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-blob-nio/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-nio-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-common/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-common-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-file-datalake/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-datalake-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-file-share/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-share-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-internal-avro/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-internal-avro-test.log -ErrorAction SilentlyContinue
+            Copy-Item sdk/storage/azure-storage-queue/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-queue-test.log -ErrorAction SilentlyContinue
+          displayName: 'Copy test logs to artifact staging'
+          condition: always()
+        - publish: $(Build.ArtifactStagingDirectory)/test-logs
+          displayName: 'Publish test logs'
+          artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+          condition: always()
+      EnvVars:
+        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+        VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
+        VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
