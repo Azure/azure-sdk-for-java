@@ -12,6 +12,8 @@
   `ApiManagementUserUpdatedEventData`. 
 - Added a new Media service system event, `MediaLiveEventChannelArchiveHeartbeatEventData`.
 - Added a new Communication service system event, `AcsUserDisconnectedEventData`.
+- Added fields `transcriptionLanguage`, `transcriptionState`, `ingestDriftValue`, `lastFragmentArrivalTime` 
+  to system event classes `MediaLiveEventIngestHeartbeatEventData`.
 
 ### Other Changes
 
