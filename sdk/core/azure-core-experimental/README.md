@@ -17,7 +17,7 @@ Azure Core Experimental contains types that are being evaluated and might eventu
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-experimental</artifactId>
-    <version>1.0.0-beta.18</version>
+    <version>1.0.0-beta.19</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
