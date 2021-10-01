@@ -40,6 +40,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens java.base/java.util=ALL-UNNAMED
       --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob.nio/com.azure.storage.blob.nio=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
