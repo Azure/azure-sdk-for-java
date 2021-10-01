@@ -35,6 +35,17 @@
     <!-- RMJacoco -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
+      --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.model.implementation=ALL-UNNAMED
+
+      --add-opens com.azure.resourcemanager.monitor/com.azure.resourcemanager.monitor=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
+      --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <developers>
@@ -122,34 +133,6 @@
         </dependency>
       </dependencies>
     </profile>
-    <profile>
-      <id>java9plus</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                <!-- tests fail without these exports. -->
-                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation=ALL-UNNAMED
-                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
-                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.models.implementation=ALL-UNNAMED
-                --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.model.implementation=ALL-UNNAMED
-
-                --add-opens com.azure.resourcemanager.monitor/com.azure.resourcemanager.monitor=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources=ALL-UNNAMED
-                --add-opens com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
   </profiles>
   <build>
     <plugins>
@@ -170,7 +153,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <excludes>
             <exclude>com/azure/resourcemanager/**/fluent/**/*</exclude>

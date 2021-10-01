@@ -570,7 +570,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>
@@ -761,6 +761,7 @@
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/extendedlocation</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>

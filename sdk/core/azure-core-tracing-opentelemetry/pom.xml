@@ -64,6 +64,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.8.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
       <scope>test</scope>
@@ -83,7 +89,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -162,10 +168,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
-          <systemPropertyVariables>
-            <!-- Parallel runs disabled due to concurrency issues when registering the global tracer. -->
-            <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
-          </systemPropertyVariables>
+          <parallel>all</parallel>
         </configuration>
       </plugin>
     </plugins>

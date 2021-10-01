@@ -167,6 +167,34 @@ public interface SqlManagedInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlManagedInstanceName);
+
+    /**
+     * Deletes a SQL Managed Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String sqlManagedInstanceName, Context context);
+
+    /**
+     * Deletes a SQL Managed Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlManagedInstanceName The name of Sql Managed Instances.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String sqlManagedInstanceName);
@@ -180,10 +208,9 @@ public interface SqlManagedInstancesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String sqlManagedInstanceName, Context context);
+    void delete(String resourceGroupName, String sqlManagedInstanceName, Context context);
 
     /**
      * Updates a SQL Managed Instance resource.

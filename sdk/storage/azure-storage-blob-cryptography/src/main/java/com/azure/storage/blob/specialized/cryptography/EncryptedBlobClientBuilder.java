@@ -551,7 +551,7 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Gets the default Storage whitelist log headers and query parameters.
+     * Gets the default Storage allowlist log headers and query parameters.
      *
      * @return the default http log options.
      */

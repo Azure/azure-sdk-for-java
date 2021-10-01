@@ -83,6 +83,10 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         PollResponse<KeyVaultRestoreOperation> restoreResponse = restorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restoreResponse.getStatus());
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 
     /**
@@ -97,9 +101,7 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
             .pipeline(getPipeline(httpClient, false))
             .buildClient();
 
-        String keyName = interceptorManager.isPlaybackMode()
-            ? "testKey"
-            : testResourceNamer.randomName("backupKey", 20);
+        String keyName = testResourceNamer.randomName("backupKey", 20);
         CreateRsaKeyOptions rsaKeyOptions = new CreateRsaKeyOptions(keyName)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
@@ -123,5 +125,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         PollResponse<KeyVaultSelectiveKeyRestoreOperation> response = selectiveKeyRestorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 }

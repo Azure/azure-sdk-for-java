@@ -9,7 +9,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-netapp</artifactId>
-  <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
+  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-netapp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for NetAppFiles Management</name>
@@ -75,7 +75,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
