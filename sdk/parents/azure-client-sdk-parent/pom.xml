@@ -675,9 +675,9 @@
               <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
             </docletArtifact>
             <additionalOptions>
-              <!-- '-protected' is a dummy option, as this is the default. But, unfortunately, it's needed to prevent the Javadoc plugin -->
+              <!-- '-html5' is a dummy option, as this is the default. But, unfortunately, it's needed to prevent the Javadoc plugin -->
               <!-- from throwing a NullPointerException when '${javadocDocletOptions}' is empty when using the new tooling. -->
-              <additionalOption>-protected ${javadocDocletOptions}</additionalOption>
+              <additionalOption>-html5 ${javadocDocletOptions}</additionalOption>
             </additionalOptions>
           </configuration>
         </plugin>

@@ -21,7 +21,6 @@ import markdown2
 import os.path
 from io import open
 import re
-import sys
 
 def generate_overview(readme_file, version, overview_file_path):
 
@@ -49,8 +48,7 @@ def generate_overview(readme_file, version, overview_file_path):
         # The toc helps the anchor link to jump to the right place.
         html_readme_content = markdown2.markdown(re.sub(pattern='@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE), extras=["fenced-code-blocks", "target-blank-links", "toc"])
 
-        # Now use BeautifulSoup to remove all 'rel' attributes from anchor ('a') tags.
-        # This attribute results in Javadoc, when targeting HTML 5 (default in Java 11+'s standard doclet), to fail.
+        # Now use BeautifulSoup to cleanup the generated HTML so that it conforms to Javadoc compliance.
         soup = BeautifulSoup(html_readme_content, features="html.parser")
 
         # Find all anchor tags with the rel attribute and remove the attribute.
@@ -65,9 +63,9 @@ def generate_overview(readme_file, version, overview_file_path):
         # This will allow this code to work for python 2 and 3
         f.write('<body>')
         f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
-        f.write('<br/>')
+        f.write('<br>')
         if (readme_exists):
-            f.write(str(soup))
+            f.write(str(soup.encode(formatter="html5").decode('utf-8')))
         f.write('</body>')
 
 
