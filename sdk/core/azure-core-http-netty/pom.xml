@@ -188,7 +188,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor.netty:reactor-netty-http:[1.0.11]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.0.11]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <include>io.netty:netty-buffer:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
                 <include>io.netty:netty-codec-http:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
                 <include>io.netty:netty-codec-http2:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
