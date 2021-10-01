@@ -13,7 +13,12 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -64,6 +69,22 @@ public final class KeyClient {
      */
     public String getVaultUrl() {
         return client.getVaultUrl();
+    }
+
+    /**
+     * Creates a {@link CryptographyClient} for a given key.
+     *
+     * @param keyName The name of the key.
+     * @param keyVersion The key version.
+     *
+     * @return An instance of {@link CryptographyClient} associated with a key with the provided name and version.
+     * If {@code keyVersion} is {@code null} or empty, the client will be created using the latest version of the key
+     * at that moment.
+     *
+     * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
+     */
+    public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
+        return client.getCryptographyClientBuilder(keyName, keyVersion).buildClient();
     }
 
     /**
