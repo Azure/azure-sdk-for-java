@@ -3,15 +3,15 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResultOperation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
+import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,6 +19,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -129,7 +130,8 @@ public final class DocumentAnalysisAsyncClient {
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(() ->
                         service.analyzeDocumentWithResponseAsync(modelId,
-                                finalAnalyzeDocumentOptions.getPages(),
+                                CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
+                                    ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
@@ -233,7 +235,8 @@ public final class DocumentAnalysisAsyncClient {
                 activationOperation(() ->
                     service.analyzeDocumentWithResponseAsync(modelId,
                             null,
-                            finalAnalyzeDocumentOptions.getPages(),
+                            CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
+                                ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,

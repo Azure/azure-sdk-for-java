@@ -506,7 +506,7 @@ customDocumentModels.forEach(documentModelInfo -> {
 // Delete Model
 documentModelAdminClient.deleteModel(modelId.get());
 ```
-For more detailed examples, refer to [samples][sample_readme].
+For more detailed examples, refer to [samples][sample_examples].
 
 ## Troubleshooting
 ### General
@@ -614,8 +614,9 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [fr_labeling_tool]: https://aka.ms/azsdk/formrecognizer/labelingtool
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
-
+[sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
+
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/
