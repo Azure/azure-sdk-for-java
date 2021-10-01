@@ -26,6 +26,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryBuilder;
@@ -78,7 +79,7 @@ public class SchemaRegistryClientBuilder {
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private SchemaRegistryVersion serviceVersion;
+    private ServiceVersion serviceVersion;
 
     /**
      * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
@@ -219,7 +220,7 @@ public class SchemaRegistryClientBuilder {
      * @param serviceVersion Service version.
      * @return The updated instance.
      */
-    public SchemaRegistryClientBuilder serviceVersion(SchemaRegistryVersion serviceVersion) {
+    public SchemaRegistryClientBuilder serviceVersion(ServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -313,7 +314,7 @@ public class SchemaRegistryClientBuilder {
                 .build();
         }
 
-        SchemaRegistryVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
+        ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
 
         AzureSchemaRegistry restService = new AzureSchemaRegistryBuilder()
             .endpoint(fullyQualifiedNamespace)
