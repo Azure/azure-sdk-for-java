@@ -159,7 +159,7 @@
     "dir": "azure-resourcemanager-eventhubs",
     "source": "specification/eventhub/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.eventhubs",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-04"
+    "args": "--payload-flattening-threshold=1 --tag=profile-hybrid-2020-09-01"
   },
   "features": {
     "dir": "azure-resourcemanager-resources",
