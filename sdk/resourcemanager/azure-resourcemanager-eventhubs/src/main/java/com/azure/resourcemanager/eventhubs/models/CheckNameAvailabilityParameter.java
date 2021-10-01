@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameter supplied to check Namespace name availability operation. */
+/**
+ * Parameter supplied to check Namespace name availability operation.
+ */
 @Fluent
 public final class CheckNameAvailabilityParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityParameter.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityParameter.class);
 
     /*
      * Name to check the namespace name availability
@@ -22,7 +27,7 @@ public final class CheckNameAvailabilityParameter {
 
     /**
      * Get the name property: Name to check the namespace name availability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,7 +36,7 @@ public final class CheckNameAvailabilityParameter {
 
     /**
      * Set the name property: Name to check the namespace name availability.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityParameter object itself.
      */
@@ -42,15 +47,12 @@ public final class CheckNameAvailabilityParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CheckNameAvailabilityParameter"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityParameter"));
         }
     }
 }

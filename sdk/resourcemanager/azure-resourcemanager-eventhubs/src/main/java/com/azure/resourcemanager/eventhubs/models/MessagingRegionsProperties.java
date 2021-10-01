@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of Messaging Region. */
+/**
+ * Properties of Messaging Region.
+ */
 @Immutable
 public final class MessagingRegionsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MessagingRegionsProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MessagingRegionsProperties.class);
 
     /*
      * Region code
@@ -28,7 +33,7 @@ public final class MessagingRegionsProperties {
 
     /**
      * Get the code property: Region code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +42,7 @@ public final class MessagingRegionsProperties {
 
     /**
      * Get the fullName property: Full name of the region.
-     *
+     * 
      * @return the fullName value.
      */
     public String fullName() {
@@ -46,7 +51,7 @@ public final class MessagingRegionsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties supplied for Subnet. */
+/**
+ * Properties supplied for Subnet.
+ */
 @Fluent
 public final class Subnet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Subnet.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Subnet.class);
 
     /*
      * Resource ID of Virtual Network Subnet
@@ -22,7 +27,7 @@ public final class Subnet {
 
     /**
      * Get the id property: Resource ID of Virtual Network Subnet.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +36,7 @@ public final class Subnet {
 
     /**
      * Set the id property: Resource ID of Virtual Network Subnet.
-     *
+     * 
      * @param id the id value to set.
      * @return the Subnet object itself.
      */
@@ -42,13 +47,12 @@ public final class Subnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model Subnet"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property id in model Subnet"));
         }
     }
 }

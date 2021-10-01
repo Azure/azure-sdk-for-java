@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.OperationDisplay;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A Event Hub REST API operation. */
+/**
+ * A Event Hub REST API operation.
+ */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
      * Operation name: {provider}/{resource}/{operation}
@@ -28,8 +33,9 @@ public final class OperationInner {
     private OperationDisplay display;
 
     /**
-     * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * Get the name property: Operation name:
+     * {provider}/{resource}/{operation}.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -47,7 +53,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: The object that represents the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -58,7 +64,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

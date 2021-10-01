@@ -6,166 +6,223 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.eventhubs.fluent.ClustersClient;
 import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventhubs.fluent.OperationsClient;
+import com.azure.resourcemanager.eventhubs.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.eventhubs.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventhubs.fluent.RegionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the EventHubManagementClientImpl type. */
+/**
+ * Initializes a new instance of the EventHubManagementClientImpl type.
+ */
 @ServiceClient(builder = EventHubManagementClientBuilder.class)
 public final class EventHubManagementClientImpl extends AzureServiceClient implements EventHubManagementClient {
     private final ClientLogger logger = new ClientLogger(EventHubManagementClientImpl.class);
 
     /**
-     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
+     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     *
+     * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
-
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
+     * The HTTP pipeline to send requests through.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The NamespacesClient object to access its operations. */
+    /**
+     * The ClustersClient object to access its operations.
+     */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     * 
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
+    /**
+     * The NamespacesClient object to access its operations.
+     */
     private final NamespacesClient namespaces;
 
     /**
      * Gets the NamespacesClient object to access its operations.
-     *
+     * 
      * @return the NamespacesClient object.
      */
     public NamespacesClient getNamespaces() {
         return this.namespaces;
     }
 
-    /** The DisasterRecoveryConfigsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     * 
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     * 
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
+     * The DisasterRecoveryConfigsClient object to access its operations.
+     */
     private final DisasterRecoveryConfigsClient disasterRecoveryConfigs;
 
     /**
      * Gets the DisasterRecoveryConfigsClient object to access its operations.
-     *
+     * 
      * @return the DisasterRecoveryConfigsClient object.
      */
     public DisasterRecoveryConfigsClient getDisasterRecoveryConfigs() {
         return this.disasterRecoveryConfigs;
     }
 
-    /** The EventHubsClient object to access its operations. */
+    /**
+     * The EventHubsClient object to access its operations.
+     */
     private final EventHubsClient eventHubs;
 
     /**
      * Gets the EventHubsClient object to access its operations.
-     *
+     * 
      * @return the EventHubsClient object.
      */
     public EventHubsClient getEventHubs() {
         return this.eventHubs;
     }
 
-    /** The ConsumerGroupsClient object to access its operations. */
+    /**
+     * The ConsumerGroupsClient object to access its operations.
+     */
     private final ConsumerGroupsClient consumerGroups;
 
     /**
      * Gets the ConsumerGroupsClient object to access its operations.
-     *
+     * 
      * @return the ConsumerGroupsClient object.
      */
     public ConsumerGroupsClient getConsumerGroups() {
         return this.consumerGroups;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The RegionsClient object to access its operations. */
+    /**
+     * The RegionsClient object to access its operations.
+     */
     private final RegionsClient regions;
 
     /**
      * Gets the RegionsClient object to access its operations.
-     *
+     * 
      * @return the RegionsClient object.
      */
     public RegionsClient getRegions() {
@@ -174,30 +231,25 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
 
     /**
      * Initializes an instance of EventHubManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials that uniquely identify a Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    EventHubManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    EventHubManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04-01";
+        this.clusters = new ClustersClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
         this.eventHubs = new EventHubsClientImpl(this);
         this.consumerGroups = new ConsumerGroupsClientImpl(this);

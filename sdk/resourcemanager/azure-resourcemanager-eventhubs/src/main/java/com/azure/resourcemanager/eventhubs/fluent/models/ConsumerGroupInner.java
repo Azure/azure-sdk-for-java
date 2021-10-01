@@ -5,87 +5,93 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Single item in List or Get Consumer group operation. */
-@JsonFlatten
+/**
+ * Single item in List or Get Consumer group operation.
+ */
 @Fluent
-public class ConsumerGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupInner.class);
+public final class ConsumerGroupInner extends ProxyResource {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConsumerGroupInner.class);
 
     /*
-     * Exact time the message was created.
+     * Single item in List or Get Consumer group operation
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "properties")
+    private ConsumerGroupProperties innerProperties;
 
-    /*
-     * The exact time the message was updated.
+    /**
+     * Get the innerProperties property: Single item in List or Get Consumer
+     * group operation.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * User Metadata is a placeholder to store user-defined string data with
-     * maximum length 1024. e.g. it can be used to store descriptive data, such
-     * as list of teams and their contact information also user-defined
-     * configuration settings can be stored.
-     */
-    @JsonProperty(value = "properties.userMetadata")
-    private String userMetadata;
+    private ConsumerGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the createdAt property: Exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
-     * Get the userMetadata property: User Metadata is a placeholder to store user-defined string data with maximum
-     * length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information
-     * also user-defined configuration settings can be stored.
-     *
+     * Get the userMetadata property: User Metadata is a placeholder to store
+     * user-defined string data with maximum length 1024. e.g. it can be used
+     * to store descriptive data, such as list of teams and their contact
+     * information also user-defined configuration settings can be stored.
+     * 
      * @return the userMetadata value.
      */
     public String userMetadata() {
-        return this.userMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().userMetadata();
     }
 
     /**
-     * Set the userMetadata property: User Metadata is a placeholder to store user-defined string data with maximum
-     * length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information
-     * also user-defined configuration settings can be stored.
-     *
+     * Set the userMetadata property: User Metadata is a placeholder to store
+     * user-defined string data with maximum length 1024. e.g. it can be used
+     * to store descriptive data, such as list of teams and their contact
+     * information also user-defined configuration settings can be stored.
+     * 
      * @param userMetadata the userMetadata value to set.
      * @return the ConsumerGroupInner object itself.
      */
     public ConsumerGroupInner withUserMetadata(String userMetadata) {
-        this.userMetadata = userMetadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConsumerGroupProperties();
+        }
+        this.innerProperties().withUserMetadata(userMetadata);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

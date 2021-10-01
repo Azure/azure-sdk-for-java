@@ -5,129 +5,129 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
 import com.azure.resourcemanager.eventhubs.models.RoleDisasterRecovery;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Single item in List or Get Alias(Disaster Recovery configuration) operation. */
-@JsonFlatten
+/**
+ * Single item in List or Get Alias(Disaster Recovery configuration) operation.
+ */
 @Fluent
-public class ArmDisasterRecoveryInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmDisasterRecoveryInner.class);
+public final class ArmDisasterRecoveryInner extends ProxyResource {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ArmDisasterRecoveryInner.class);
 
     /*
-     * Provisioning state of the Alias(Disaster Recovery configuration) -
-     * possible values 'Accepted' or 'Succeeded' or 'Failed'
+     * Properties required to the Create Or Update Alias(Disaster Recovery
+     * configurations)
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStateDR provisioningState;
-
-    /*
-     * ARM Id of the Primary/Secondary eventhub namespace name, which is part
-     * of GEO DR pairing
-     */
-    @JsonProperty(value = "properties.partnerNamespace")
-    private String partnerNamespace;
-
-    /*
-     * Alternate name specified when alias and namespace names are same.
-     */
-    @JsonProperty(value = "properties.alternateName")
-    private String alternateName;
-
-    /*
-     * role of namespace in GEO DR - possible values 'Primary' or
-     * 'PrimaryNotReplicating' or 'Secondary'
-     */
-    @JsonProperty(value = "properties.role", access = JsonProperty.Access.WRITE_ONLY)
-    private RoleDisasterRecovery role;
-
-    /*
-     * Number of entities pending to be replicated.
-     */
-    @JsonProperty(value = "properties.pendingReplicationOperationsCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long pendingReplicationOperationsCount;
+    @JsonProperty(value = "properties")
+    private ArmDisasterRecoveryProperties innerProperties;
 
     /**
-     * Get the provisioningState property: Provisioning state of the Alias(Disaster Recovery configuration) - possible
-     * values 'Accepted' or 'Succeeded' or 'Failed'.
-     *
+     * Get the innerProperties property: Properties required to the Create Or
+     * Update Alias(Disaster Recovery configurations).
+     * 
+     * @return the innerProperties value.
+     */
+    private ArmDisasterRecoveryProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the
+     * Alias(Disaster Recovery configuration) - possible values 'Accepted' or
+     * 'Succeeded' or 'Failed'.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateDR provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the partnerNamespace property: ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO
-     * DR pairing.
-     *
+     * Get the partnerNamespace property: ARM Id of the Primary/Secondary
+     * eventhub namespace name, which is part of GEO DR pairing.
+     * 
      * @return the partnerNamespace value.
      */
     public String partnerNamespace() {
-        return this.partnerNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerNamespace();
     }
 
     /**
-     * Set the partnerNamespace property: ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO
-     * DR pairing.
-     *
+     * Set the partnerNamespace property: ARM Id of the Primary/Secondary
+     * eventhub namespace name, which is part of GEO DR pairing.
+     * 
      * @param partnerNamespace the partnerNamespace value to set.
      * @return the ArmDisasterRecoveryInner object itself.
      */
     public ArmDisasterRecoveryInner withPartnerNamespace(String partnerNamespace) {
-        this.partnerNamespace = partnerNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArmDisasterRecoveryProperties();
+        }
+        this.innerProperties().withPartnerNamespace(partnerNamespace);
         return this;
     }
 
     /**
-     * Get the alternateName property: Alternate name specified when alias and namespace names are same.
-     *
+     * Get the alternateName property: Alternate name specified when alias and
+     * namespace names are same.
+     * 
      * @return the alternateName value.
      */
     public String alternateName() {
-        return this.alternateName;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateName();
     }
 
     /**
-     * Set the alternateName property: Alternate name specified when alias and namespace names are same.
-     *
+     * Set the alternateName property: Alternate name specified when alias and
+     * namespace names are same.
+     * 
      * @param alternateName the alternateName value to set.
      * @return the ArmDisasterRecoveryInner object itself.
      */
     public ArmDisasterRecoveryInner withAlternateName(String alternateName) {
-        this.alternateName = alternateName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArmDisasterRecoveryProperties();
+        }
+        this.innerProperties().withAlternateName(alternateName);
         return this;
     }
 
     /**
-     * Get the role property: role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or
-     * 'Secondary'.
-     *
+     * Get the role property: role of namespace in GEO DR - possible values
+     * 'Primary' or 'PrimaryNotReplicating' or 'Secondary'.
+     * 
      * @return the role value.
      */
     public RoleDisasterRecovery role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
-     * Get the pendingReplicationOperationsCount property: Number of entities pending to be replicated.
-     *
+     * Get the pendingReplicationOperationsCount property: Number of entities
+     * pending to be replicated.
+     * 
      * @return the pendingReplicationOperationsCount value.
      */
     public Long pendingReplicationOperationsCount() {
-        return this.pendingReplicationOperationsCount;
+        return this.innerProperties() == null ? null : this.innerProperties().pendingReplicationOperationsCount();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
