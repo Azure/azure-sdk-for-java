@@ -239,9 +239,9 @@ public final class ServerCallAsync {
             request.setRecordingStateCallbackUri(recordingStateCallbackUri);
 
             if (startRecordingOptions != null) {
-                request.setRecordingChannelType(startRecordingOptions.getRecordingChannelType());
-                request.setRecordingContentType(startRecordingOptions.getRecordingContentType());
-                request.setRecordingFormatType(startRecordingOptions.getRecordingFormatType());
+                request.setRecordingChannelType(startRecordingOptions.getRecordingChannel());
+                request.setRecordingContentType(startRecordingOptions.getRecordingContent());
+                request.setRecordingFormatType(startRecordingOptions.getRecordingFormat());
             }
 
             return withContext(contextValue -> {
