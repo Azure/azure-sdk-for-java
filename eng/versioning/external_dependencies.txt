@@ -242,7 +242,7 @@ org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
-org.apache.maven.plugins:maven-javadoc-plugin;3.1.1
+org.apache.maven.plugins:maven-javadoc-plugin;3.3.1
 org.apache.maven.plugins:maven-jxr-plugin;3.0.0
 org.apache.maven.plugins:maven-project-info-reports-plugin;3.0.0
 org.apache.maven.plugins:maven-release-plugin;2.5.3
@@ -269,6 +269,7 @@ org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than

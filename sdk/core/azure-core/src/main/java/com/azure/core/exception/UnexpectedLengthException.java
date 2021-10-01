@@ -7,7 +7,14 @@ package com.azure.core.exception;
  * This exception class represents an error when the specified input length doesn't match the data length.
  */
 public final class UnexpectedLengthException extends IllegalStateException {
+    /**
+     * Number of bytes read from the input.
+     */
     private final long bytesRead;
+
+    /**
+     * Number of bytes that were expected to be read from the input.
+     */
     private final long bytesExpected;
 
     /**
@@ -23,6 +30,8 @@ public final class UnexpectedLengthException extends IllegalStateException {
     }
 
     /**
+     * Gets the number of bytes read from the input.
+     *
      * @return the number of bytes read from the input
      */
     public long getBytesRead() {
@@ -30,6 +39,8 @@ public final class UnexpectedLengthException extends IllegalStateException {
     }
 
     /**
+     * Gets the number of bytes that were expected to be read from the input.
+     *
      * @return the number of bytes that were expected to be read from the input
      */
     public long getBytesExpected() {
