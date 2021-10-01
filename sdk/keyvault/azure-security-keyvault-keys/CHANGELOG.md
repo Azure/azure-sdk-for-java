@@ -3,10 +3,25 @@
 ## 4.4.0-beta.4 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added new functions to key clients to enable key rotation:
+  - `KeyClient`
+    - `rotateKey(String name)`
+    - `rotateKeyWithResponse(String name, Context context)`
+    - `getKeyRotationPolicy(String name)`
+    - `getKeyRotationPolicyWithResponse(String name, Context context)`
+    - `updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
+    - `updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties, Context context)`
+  - `KeyAsyncClient`
+    - `rotateKey(String name)`
+    - `rotateKeyWithResponse(String name)`
+    - `getKeyRotationPolicy(String name)`
+    - `getKeyRotationPolicyWithResponse(String name)`
+    - `updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
+    - `updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
+- Added convenience methods to create cryptography clients using key clients:
+  - `KeyClient.getCryptographyClient()`
+  - `KeyAsyncClient.getCryptographyAsyncClient()`
+- `CryptographyClientBuilder` does not require `keyIdentifier` to a include a key version. If no version is provided, cryptographic operations will be made using the latest version of the key.
 
 ### Other Changes
 
