@@ -85,7 +85,7 @@ class EventHubAuthorizationRuleImpl extends AuthorizationRuleBaseImpl<EventHubAu
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.innerModel().rights())
+                        new AuthorizationRuleInner().withRights(this.innerModel().rights()))
                 .map(innerToFluentMap(this));
     }
 
