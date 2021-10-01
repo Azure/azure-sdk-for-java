@@ -4,9 +4,10 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.RecordingChannelType;
-import com.azure.communication.callingserver.models.RecordingContentType;
-import com.azure.communication.callingserver.models.RecordingFormatType;
+import com.azure.communication.callingserver.models.RecordingChannel;
+import com.azure.communication.callingserver.models.RecordingContent;
+import com.azure.communication.callingserver.models.RecordingFormat;
+
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,19 +24,19 @@ public final class StartCallRecordingRequest {
      * Optional, audioVideo by default
      */
     @JsonProperty(value = "recordingContentType")
-    private RecordingContentType recordingContentType;
+    private RecordingContent recordingContentType;
 
     /*
      * Optional, mixed by default
      */
     @JsonProperty(value = "recordingChannelType")
-    private RecordingChannelType recordingChannelType;
+    private RecordingChannel recordingChannelType;
 
     /*
      * Optional, mp4 by default
      */
     @JsonProperty(value = "recordingFormatType")
-    private RecordingFormatType recordingFormatType;
+    private RecordingFormat recordingFormatType;
 
     /**
      * Get the recordingStateCallbackUri property: The uri to send notifications to.
@@ -62,7 +63,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the recordingContentType value.
      */
-    public RecordingContentType getRecordingContentType() {
+    public RecordingContent getRecordingContentType() {
         return this.recordingContentType;
     }
 
@@ -72,7 +73,7 @@ public final class StartCallRecordingRequest {
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setRecordingContentType(RecordingContentType recordingContentType) {
+    public StartCallRecordingRequest setRecordingContentType(RecordingContent recordingContentType) {
         this.recordingContentType = recordingContentType;
         return this;
     }
@@ -82,7 +83,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the recordingChannelType value.
      */
-    public RecordingChannelType getRecordingChannelType() {
+    public RecordingChannel getRecordingChannelType() {
         return this.recordingChannelType;
     }
 
@@ -92,7 +93,7 @@ public final class StartCallRecordingRequest {
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setRecordingChannelType(RecordingChannelType recordingChannelType) {
+    public StartCallRecordingRequest setRecordingChannelType(RecordingChannel recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
         return this;
     }
@@ -102,7 +103,7 @@ public final class StartCallRecordingRequest {
      *
      * @return the recordingFormatType value.
      */
-    public RecordingFormatType getRecordingFormatType() {
+    public RecordingFormat getRecordingFormatType() {
         return this.recordingFormatType;
     }
 
@@ -112,7 +113,7 @@ public final class StartCallRecordingRequest {
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartCallRecordingRequest setRecordingFormatType(RecordingFormatType recordingFormatType) {
+    public StartCallRecordingRequest setRecordingFormatType(RecordingFormat recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
         return this;
     }
