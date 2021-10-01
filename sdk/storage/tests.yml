@@ -61,8 +61,8 @@ stages:
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage
-        - ${{ each replace in parameters.AdditionalMaxtrixReplaces }}:
-          - ${{ replace }}
+        - ${{ each additionalReplace in parameters.AdditionalMatrixReplace }}:
+          - ${{ additionalReplace }}
       MatrixConfigs:
         - ${{ if contains(variables['Build.DefinitionName'], 'tests-weekly') }}:
           - Name: Storage_all_versions_live_test
