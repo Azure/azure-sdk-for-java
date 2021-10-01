@@ -15,7 +15,7 @@ security:
     - apim_key: []
 
 x-ms-parameterized-host:
-    hostTemplate: "{endpoint}/formrecognizer/"
+    hostTemplate: "{endpoint}/formrecognizer"
     useSchemePrefix: false
     parameters:
         - $ref: "#/parameters/Endpoint"
@@ -88,14 +88,10 @@ paths:
                 #     $ref: "#/definitions/ErrorResponse"
             x-ms-long-running-operation: true
             x-ms-examples:
-                Analyze Prebuilt Layout:
-                    $ref: "examples/analyzeDocument-PrebuiltLayout.yml"
-                Analyze Prebuilt Document:
-                    $ref: "examples/analyzeDocument-PrebuiltDocument.yml"
-                Analyze Prebuilt Invoice:
-                    $ref: "examples/analyzeDocument-PrebuiltInvoice.yml"
-                Analyze Custom Model:
-                    $ref: "examples/analyzeDocument-Custom.yml"
+                AnalyzeDocument_Url:
+                    $ref: ./examples/AnalyzeDocument_Url.json
+                AnalyzeDocument_Base64:
+                    $ref: ./examples/AnalyzeDocument_Base64.json
 
     "/documentModels/{modelId}/analyzeResults/{resultId}":
         get:
@@ -145,8 +141,8 @@ paths:
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
             x-ms-examples:
-                Get Analyze Result:
-                    $ref: "examples/analyzeDocumentResult.json"
+                GetAnalyzeDocumentResult:
+                    $ref: ./examples/GetAnalyzeDocumentResult.json
 
     "/documentModels:build":
         post:
@@ -187,6 +183,9 @@ paths:
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
             x-ms-long-running-operation: true
+            x-ms-examples:
+                BuildDocumentModel:
+                    $ref: ./examples/BuildDocumentModel.json
 
     "/documentModels:compose":
         post:
@@ -227,6 +226,9 @@ paths:
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
             x-ms-long-running-operation: true
+            x-ms-examples:
+                ComposeDocumentModel:
+                    $ref: ./examples/ComposeDocumentModel.json
 
     "/documentModels:authorizeCopy":
         post:
@@ -268,6 +270,9 @@ paths:
                 #   description: Transient error.
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
+            x-ms-examples:
+                AuthorizeCopyDocumentModel:
+                    $ref: ./examples/AuthorizeCopyDocumentModel.json
 
     "/documentModels/{modelId}:copyTo":
         post:
@@ -321,6 +326,9 @@ paths:
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
             x-ms-long-running-operation: true
+            x-ms-examples:
+                CopyDocumentModelTo:
+                    $ref: ./examples/CopyDocumentModelTo.json
 
     "/operations":
         get:
@@ -350,6 +358,9 @@ paths:
             x-ms-pageable:
                 nextLinkName: nextLink
                 itemName: value
+            x-ms-examples:
+                GetOperations:
+                    $ref: ./examples/GetOperations.json
 
     "/operations/{operationId}":
         get:
@@ -381,6 +392,9 @@ paths:
                 #   description: Internal server error.
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
+            x-ms-examples:
+                GetOperation:
+                    $ref: ./examples/GetOperation.json
 
     # [preview.2+]
     # "/operations/{operationId}:cancel":
@@ -438,6 +452,9 @@ paths:
             x-ms-pageable:
                 nextLinkName: nextLink
                 itemName: value
+            x-ms-examples:
+                GetModels:
+                    $ref: ./examples/GetModels.json
 
     "/documentModels/{modelId}":
         get:
@@ -469,6 +486,11 @@ paths:
                 #   description: Internal server error.
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
+            x-ms-examples:
+                GetModel_Prebuilt:
+                    $ref: ./examples/GetModel_Prebuilt.json
+                GetModel_Custom:
+                    $ref: ./examples/GetModel_Custom.json
 
         delete:
             summary: Delete model
@@ -493,6 +515,9 @@ paths:
                 #   description: Internal server error.
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
+            x-ms-examples:
+                DeleteModel:
+                    $ref: ./examples/DeleteModel.json
 
     "/info":
         get:
@@ -519,6 +544,9 @@ paths:
                 #   description: Internal server error.
                 #   schema:
                 #     $ref: "#/definitions/ErrorResponse"
+            x-ms-examples:
+                GetInfo:
+                    $ref: ./examples/GetInfo.json
 
 definitions:
 
@@ -617,14 +645,13 @@ definitions:
         type: object
         allOf:
             - $ref: "#/definitions/OperationInfo"
-            - type: object
-              properties:
-                  error:  # status=failed
-                      description: Encountered error.
-                      $ref: "#/definitions/Error"
-                  result:  # status=succeeded
-                      description: Operation result upon success.
-                      $ref: "#/definitions/ModelInfo"
+        properties:
+            error:  # status=failed
+                description: Encountered error.
+                $ref: "#/definitions/Error"
+            result:  # status=succeeded
+                description: Operation result upon success.
+                $ref: "#/definitions/ModelInfo"
 
     GetModelsResponse:
         description: List Models response object.
@@ -832,13 +859,12 @@ definitions:
         type: object
         allOf:
             - $ref: "#/definitions/ModelSummary"
-            - type: object
-              properties:
-                  docTypes:
-                      description: Supported document types.
-                      type: object
-                      additionalProperties:
-                          $ref: "#/definitions/DocTypeInfo"
+        properties:
+            docTypes:
+                description: Supported document types.
+                type: object
+                additionalProperties:
+                    $ref: "#/definitions/DocTypeInfo"
 
     DocTypeInfo:
         description: Document type info.
@@ -1614,11 +1640,9 @@ parameters:
         name: pages
         description: List of 1-based page numbers to analyze.  Ex. "1-3,5,7-9"
         required: false
-        type: array
+        type: string
         in: query
-        items:
-            type: string
-            pattern: "(^[0-9]+-[0-9]+$)|(^[0-9]+$)"
+        pattern: ^(\d+(-\d+)?)(,\s*(\d+(-\d+)?))*$
         x-ms-parameter-location: method
     QueryLocale:
         name: locale
