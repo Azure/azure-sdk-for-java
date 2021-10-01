@@ -190,8 +190,10 @@ class AmqpChannelProcessorTest {
     @ParameterizedTest
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
-        final Flux<TestObject> publisher = createSink(connection1, connection2);
-        final AmqpChannelProcessor<TestObject> processor = publisher.subscribeWith(channelProcessor);
+        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
+        publisher.next(connection1);
+        publisher.next(connection2);
+        final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
 
         when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
         when(retryPolicy.getMaxRetries()).thenReturn(3);
