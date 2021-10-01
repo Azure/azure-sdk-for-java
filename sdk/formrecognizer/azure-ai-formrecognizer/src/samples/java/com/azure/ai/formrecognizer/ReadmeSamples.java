@@ -300,7 +300,7 @@ public class ReadmeSamples {
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
-            System.out.printf("----------- Analyzing custom document %d -----------%n", i);
+            System.out.printf("----------- Analyzing document %d -----------%n", i);
             System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
                 analyzedDocument.getDocType(), analyzedDocument.getConfidence());
         }

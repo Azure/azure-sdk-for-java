@@ -23,7 +23,7 @@ we have been focused on learning the patterns and practices to best support deve
 customers.
 
 To improve the development experience and addressing the consistent feedback across the Form Recognizer SDK, this new 
-version of the library replaces the previously existing clients `FomRecognizerClient` and `FormTrainingClient` with
+version of the library replaces the previously existing clients `FormRecognizerClient` and `FormTrainingClient` with
 `DocumentAnalysisClient` and the `DocumentModelAdministrationClient` that provide unified methods for 
 analyzing documents and providing support for the new features added by the service in 
 API version `2021-09-30-preview` and later.
@@ -99,12 +99,10 @@ DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAd
 ```
 
 #### Analyze documents
-Analyze data from certain types of common documents (such as receipts, invoices, business cards, or identity documents) 
-using prebuilt models or from custom documents using your own custom models and extract table and structured layout data.
 
 With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl`:
 - accepts a string type `modelId` to be any of the prebuilt model IDs or a custom model ID.
-- the return type `AnalyzeResult` model now exposes document elements, such as key-value pairs, entities, tables,
+- returns the `AnalyzeResult` model now exposes document elements, such as key-value pairs, entities, tables,
   document fields and values at the top level of the returned model. As compared to the previously returned model
   `RecognizedForm` which included hierarchical relationships between `FormElements` for instance tables were an element
   of a `FormPage` and not a top-level element.
@@ -117,6 +115,7 @@ With 4.x.x, the unified method, `beginAnalyzeDocument` and `beginAnalyzeDocument
 #### Using a prebuilt model
 - In 3.x.x, `beginRecognizeReceipts` and `beginRecognizeReceiptsFromUrl` method was used to analyze receipts.
 - In 4.x.x, `beginRecognizeReceipts` and `beginRecognizeReceiptsFromUrl` has been replaced with `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` respectively.
+>NOTE: The `beginAnalyzeMethod` and `beginAnalyzeDocumentFromUrl` applies to all prebuilt models listed [here][service_supported_models].
 
 Analyze receipt using 3.x.x `beginRecognizeReceipts`:
 ```java
@@ -250,9 +249,6 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
 }
 ```
 #### Using a layout model
-- Recognize text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
-coordinates, from documents.
-
 Analyze layout using 3.x.x `beginRecognizeContent`:
 ```java
 // recognize form content using file input stream
@@ -335,9 +331,6 @@ for (int i = 0; i < tables.size(); i++) {
 ```
 
 #### Using a custom model
-- Analyze key/value pairs and table data from documents. These models are trained with your own data,
-so they're tailored to your documents.
-
 Analyze custom document using 3.x.x `beginRecognizeCustomFormsFromUrl`:
 ```java
 String formUrl = "{form_url}";
@@ -431,7 +424,7 @@ AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
 for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
     final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
-    System.out.printf("----------- Analyzing custom document %d -----------%n", i);
+    System.out.printf("----------- Analyzing document %d -----------%n", i);
     System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
         analyzedDocument.getDocType(), analyzedDocument.getConfidence());
 }
