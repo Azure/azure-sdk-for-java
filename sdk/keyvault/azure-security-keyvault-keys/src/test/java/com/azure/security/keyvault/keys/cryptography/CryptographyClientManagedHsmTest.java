@@ -13,7 +13,7 @@ public class CryptographyClientManagedHsmTest extends CryptographyClientTest {
 
     @Override
     protected void beforeTest() {
-        Assumptions.assumeTrue(isManagedHsmTest && getTestMode() != TestMode.PLAYBACK);
+        Assumptions.assumeTrue(isManagedHsmTest || getTestMode() == TestMode.PLAYBACK);
 
         super.beforeTest();
     }

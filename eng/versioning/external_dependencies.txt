@@ -15,9 +15,9 @@ com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.5
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.5
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.5
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.5
-com.github.spotbugs:spotbugs;4.2.0
-com.github.spotbugs:spotbugs-annotations;4.2.0
-com.github.spotbugs:spotbugs-maven-plugin;4.2.0
+com.github.spotbugs:spotbugs;4.2.2
+com.github.spotbugs:spotbugs-annotations;4.2.2
+com.github.spotbugs:spotbugs-maven-plugin;4.2.2
 com.google.code.gson:gson;2.8.8
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
@@ -59,6 +59,7 @@ io.netty:netty-transport-native-epoll;4.1.68.Final
 io.netty:netty-transport-native-unix-common;4.1.68.Final
 io.netty:netty-transport-native-kqueue;4.1.68.Final
 io.projectreactor.netty:reactor-netty;1.0.11
+io.projectreactor.netty:reactor-netty-http;1.0.11
 io.projectreactor:reactor-core;3.4.10
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
@@ -81,6 +82,7 @@ org.apache.qpid:proton-j;0.33.8
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
+org.codehaus.gmavenplus:gmavenplus-plugin;1.13.0
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
@@ -89,8 +91,8 @@ org.glassfish.tyrus.bundles:tyrus-standalone-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.0.Final
 org.javatuples:javatuples;1.2
 org.linguafranca.pwdb:KeePassJava2;2.1.4
-org.powermock:powermock-api-mockito2;2.0.2
-org.powermock:powermock-module-junit4;2.0.2
+org.powermock:powermock-api-mockito2;2.0.9
+org.powermock:powermock-module-junit4;2.0.9
 org.postgresql:postgresql;42.2.23
 org.slf4j:slf4j-api;1.7.32
 org.slf4j:slf4j-nop;1.7.32
@@ -209,6 +211,7 @@ org.junit.vintage:junit-vintage-engine;5.7.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;2.0-M4-groovy-2.5
+groovy3_org.spockframework:spock-core;2.0-groovy-3.0
 org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 
@@ -259,13 +262,14 @@ org.codehaus.mojo:xml-maven-plugin;1.0.2
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
-org.jacoco:jacoco-maven-plugin;0.8.5
-org.jacoco:org.jacoco.agent;0.8.5
-org.mockito:mockito-core;3.9.0
-org.mockito:mockito-inline;3.9.0
+org.jacoco:jacoco-maven-plugin;0.8.7
+org.jacoco:org.jacoco.agent;0.8.7
+org.mockito:mockito-core;3.12.4
+org.mockito:mockito-inline;3.12.4
 org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1
+org.ow2.asm:asm;9.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than

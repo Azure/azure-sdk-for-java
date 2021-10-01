@@ -362,7 +362,7 @@ class PageBlobAPITest extends APISpec {
     def "Upload page retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             bc.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getPageBlobClient()
@@ -969,7 +969,7 @@ class PageBlobAPITest extends APISpec {
     @Ignore
     def "Get page ranges diff prev snapshot url"() {
         setup:
-        BlobServiceClient managedDiskServiceClient = getServiceClient(env.managedDiskAccount)
+        BlobServiceClient managedDiskServiceClient = getServiceClient(environment.managedDiskAccount)
         BlobContainerClient managedDiskContainer = managedDiskServiceClient.getBlobContainerClient(generateContainerName())
         managedDiskContainer.create()
         PageBlobClient managedDiskBlob = managedDiskContainer.getBlobClient(generateBlobName()).getPageBlobClient()
@@ -1358,11 +1358,11 @@ class PageBlobAPITest extends APISpec {
         notThrown(Throwable)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(environment.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
             .buildPageBlobClient()
 
         when:

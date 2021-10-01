@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2021-09-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4993ca4b-749d-4898-9343-eeddf8c5c7a6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "2531",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://krpratic-form-canary-aad.cognitiveservices.azure.com/formrecognizer/operations/31533666075_587cda63-77c7-4bfe-8fbe-0b93f4beefd8?api-version=2021-09-30-preview",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "587cda63-77c7-4bfe-8fbe-0b93f4beefd8",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Mon, 27 Sep 2021 00:18:47 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/operations/31533666075_587cda63-77c7-4bfe-8fbe-0b93f4beefd8?api-version=2021-09-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6d459f47-9c18-4119-a604-e6b0b821b57e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "48",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "1fb203b5-06f6-49db-b07e-6c1f78f7884f",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"operationId\": \"31533666075_587cda63-77c7-4bfe-8fbe-0b93f4beefd8\",\n  \"kind\": \"documentModelBuild\",\n  \"status\": \"failed\",\n  \"createdDateTime\": \"2021-09-27T00:18:45Z\",\n  \"lastUpdatedDateTime\": \"2021-09-27T00:18:47Z\",\n  \"resourceLocation\": \"https://krpratic-form-canary-aad.cognitiveservices.azure.com/formrecognizer/documentModels/881dff36-c224-41e2-a689-6d404377edb5?api-version=2021-09-30-preview\",\n  \"percentCompleted\": 100,\n  \"error\": {\n    \"code\": \"InternalServerError\",\n    \"message\": \"An unexpected error occurred.\",\n    \"details\": [\n      {\n        \"code\": \"InternalServerError\",\n        \"message\": \"An unexpected error occurred.\"\n      }\n    ]\n  }\n}",
+      "Date" : "Mon, 27 Sep 2021 00:18:52 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

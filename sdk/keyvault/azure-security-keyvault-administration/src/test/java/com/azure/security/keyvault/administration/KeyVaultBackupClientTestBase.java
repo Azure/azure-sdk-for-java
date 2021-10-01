@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class KeyVaultBackupClientTestBase extends KeyVaultAdministrationClientTestBase {
     protected final String blobStorageUrl = IS_MANAGED_HSM_DEPLOYED
         ? getStorageEndpoint() + Configuration.getGlobalConfiguration().get("BLOB_CONTAINER_NAME")
-        : "https://testaccount.blob.core.windows.net/backup";
+        : "https://azsdk-tests.blob.core.windows.net/backup";
     protected final String sasToken = IS_MANAGED_HSM_DEPLOYED ? generateSasToken() : "someSasToken";
 
     protected HttpPipeline getPipeline(HttpClient httpClient, boolean forCleanup) {

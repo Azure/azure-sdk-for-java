@@ -89,17 +89,26 @@ private object CosmosRowConverter
     }
 
     def fromInternalRowToObjectNode(row: InternalRow, schema: StructType): ObjectNode = {
+      if (schema.contains(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))){
+        val rawBodyFieldIndex = schema.fieldIndex(CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
+        // Special case when the reader read the rawJson
+        val rawJson = convertRowDataToString(row.get(rawBodyFieldIndex, StringType))
+        objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
+      }
+      else
+      {
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         schema.fields.zipWithIndex.foreach({
-            case (field, i) =>
-                field.dataType match {
-                    case _: NullType  => objectNode.putNull(field.name)
-                    case _ if row.isNullAt(i) => objectNode.putNull(field.name)
-                    case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i, field.dataType)))
-                }
+          case (field, i) =>
+            field.dataType match {
+              case _: NullType => objectNode.putNull(field.name)
+              case _ if row.isNullAt(i) => objectNode.putNull(field.name)
+              case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i, field.dataType)))
+            }
         })
 
         objectNode
+      }
     }
 
     private def convertToStringKeyMap(input : Any): Map[String, _] = {
@@ -114,11 +123,20 @@ private object CosmosRowConverter
       }
     }
 
+    private def convertRowDataToString(rowData: Any) : String = {
+      if (rowData.isInstanceOf[String]) {
+        rowData.asInstanceOf[String]
+      } else if (rowData.isInstanceOf[UTF8String]) {
+        rowData.asInstanceOf[UTF8String].toString
+      } else {
+        throw new Exception(s"Cannot cast $rowData into a String.")
+      }
+    }
+
     // scalastyle:off
     private def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : JsonNode = {
         fieldType match {
-            case StringType if rowData.isInstanceOf[String] => objectMapper.convertValue(rowData.asInstanceOf[String], classOf[JsonNode])
-            case StringType if rowData.isInstanceOf[UTF8String] => objectMapper.convertValue(rowData.asInstanceOf[UTF8String].toString, classOf[JsonNode])
+            case StringType => objectMapper.convertValue(convertRowDataToString(rowData), classOf[JsonNode])
             case BinaryType => objectMapper.convertValue(rowData.asInstanceOf[Array[Byte]], classOf[JsonNode])
             case BooleanType => objectMapper.convertValue(rowData.asInstanceOf[Boolean], classOf[JsonNode])
             case DoubleType => objectMapper.convertValue(rowData.asInstanceOf[Double], classOf[JsonNode])
@@ -437,4 +455,3 @@ private object CosmosRowConverter
 }
 // scalastyle:on multiple.string.literals
 // scalastyle:on null
-

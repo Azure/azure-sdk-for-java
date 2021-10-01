@@ -48,7 +48,7 @@ class StorageSpec extends Specification {
         interceptorManager.close()
     }
 
-    protected static TestEnvironment getEnv() {
+    protected static TestEnvironment getEnvironment() {
         return ENVIRONMENT
     }
 
@@ -107,7 +107,7 @@ class StorageSpec extends Specification {
     }
 
     private static String getAuthToken() {
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken"
         }
