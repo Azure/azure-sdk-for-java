@@ -675,9 +675,10 @@
               <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
             </docletArtifact>
             <additionalOptions>
-              <!-- '-html5' is a dummy option, as this is the default. But, unfortunately, it's needed to prevent the Javadoc plugin -->
-              <!-- from throwing a NullPointerException when '${javadocDocletOptions}' is empty when using the new tooling. -->
-              <additionalOption>-html5 ${javadocDocletOptions}</additionalOption>
+              <!-- '-version' is a dummy option, it's needed to prevent the Javadoc plugin from throwing a NullPointerException when '${javadocDocletOptions}' is empty. -->
+              <!-- '${javadocDocletOptions}' will be empty when the new codesnippet tooling is being used. -->
+              <!-- '-version' will indicate to Javadoc to include '@version' tags in generation, but none of the SDKs use this, so it is a good dummy option. -->
+              <additionalOption>-version ${javadocDocletOptions}</additionalOption>
             </additionalOptions>
           </configuration>
         </plugin>
