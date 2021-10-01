@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
- * Microsoft.Media.LiveEventIngestHeartbeatEventData event.
+ * Microsoft.Media.LiveEventIngestHeartbeat event.
  */
 @Immutable
 public final class MediaLiveEventIngestHeartbeatEventData {

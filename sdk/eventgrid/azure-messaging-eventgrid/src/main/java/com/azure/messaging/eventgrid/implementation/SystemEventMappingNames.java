@@ -547,9 +547,9 @@ public final class SystemEventMappingNames {
 
     /**
      * Ingest heartbeat event data. Schema of the data property of an EventGridEvent for a
-     * Microsoft.Media.LiveEventIngestHeartbeatEventData event.
+     * Microsoft.Media.LiveEventIngestHeartbeat event.
      */
-    public static final String MEDIA_LIVE_EVENT_INGEST_HEARTBEAT = "Microsoft.Media.LiveEventIngestHeartbeatEventData";
+    public static final String MEDIA_LIVE_EVENT_INGEST_HEARTBEAT = "Microsoft.Media.LiveEventIngestHeartbeat";
 
     /**
      * Ingest track discontinuity detected event data. Schema of the data property of an EventGridEvent for a
