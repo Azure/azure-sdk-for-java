@@ -353,9 +353,6 @@ resourcemanager_com.jcraft:jsch;0.1.55
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
 
-# sdk\storage\microsoft-azure-storage-blob\pom.xml
-microsoft_azure_storage_blob_org.spockframework:spock-core;1.3-groovy-2.5
-
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
 spring_org.springframework.kafka:spring-kafka;2.6.6
