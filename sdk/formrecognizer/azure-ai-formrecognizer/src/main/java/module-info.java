@@ -6,11 +6,11 @@ module com.azure.ai.formrecognizer {
 
     exports com.azure.ai.formrecognizer;
     exports com.azure.ai.formrecognizer.models;
-    exports com.azure.ai.formrecognizer.training;
-    exports com.azure.ai.formrecognizer.training.models;
+    exports com.azure.ai.formrecognizer.administration;
+    exports com.azure.ai.formrecognizer.administration.models;
 
     opens com.azure.ai.formrecognizer.implementation to com.fasterxml.jackson.databind;
-    opens com.azure.ai.formrecognizer.models to com.fasterxml.jackson.databind;
-    opens com.azure.ai.formrecognizer.training.models to com.fasterxml.jackson.databind;
     opens com.azure.ai.formrecognizer.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.ai.formrecognizer.administration.models to com.fasterxml.jackson.databind;
+    opens com.azure.ai.formrecognizer.models to com.fasterxml.jackson.databind;
 }

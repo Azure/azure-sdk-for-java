@@ -15,9 +15,9 @@ class AzurePathTest extends APISpec {
     // Just need one fs instance for creating the paths.
     def setup() {
         def config = initializeConfigMap()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = "jtcazurepath1,jtcazurepath2"
-        fs = new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint, config)
+        fs = new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
     }
 
     def "GetFileSystem"() {

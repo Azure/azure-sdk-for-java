@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/91d62511-feb2-456f-80a0-5b17bbaa50ec?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/a8d58bc5-69e4-4ae2-b621-6f30cf9c0540?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -12,17 +12,17 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "46",
+      "x-ms-server-latency" : "42",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.114.0;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "88c49cba-aebf-11eb-8b15-000d3a31c437",
-      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/91d62511-feb2-456f-80a0-5b17bbaa50ec\",\"name\":\"91d62511-feb2-456f-80a0-5b17bbaa50ec\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"91d62511-feb2-456f-80a0-5b17bbaa50ec\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
+      "x-ms-request-id" : "6bd1387e-1dbf-11ec-afdf-000d3a9f7bf5",
+      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/a8d58bc5-69e4-4ae2-b621-6f30cf9c0540\",\"name\":\"a8d58bc5-69e4-4ae2-b621-6f30cf9c0540\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"a8d58bc5-69e4-4ae2-b621-6f30cf9c0540\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "91d62511-feb2-456f-80a0-5b17bbaa50ec" ]
+  "variables" : [ "a8d58bc5-69e4-4ae2-b621-6f30cf9c0540" ]
 }
