@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
- * Microsoft.Media.LiveEventChannelArchiveHeartbeatEventData event.
+ * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
  */
 @Immutable
 public final class MediaLiveEventChannelArchiveHeartbeatEventData {

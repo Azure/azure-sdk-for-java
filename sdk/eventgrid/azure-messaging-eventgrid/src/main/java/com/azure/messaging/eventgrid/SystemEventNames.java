@@ -86,6 +86,7 @@ import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEvent
 import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventChannelArchiveHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
@@ -158,77 +159,63 @@ import com.azure.core.models.CloudEvent;
 public final class SystemEventNames {
     // Keep this sorted by the name of the service publishing the events.
 
-    // API management events.
+    // ApiManagement events.
     /**
      * indicate an event of ApiCreated in ApiManagement.
      */
     public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
-
     /**
      * indicate an event of ApiDeleted in ApiManagement.
      */
     public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.ApiDeleted";
-
     /**
      * indicate an event of ApiReleaseCreated in ApiManagement.
      */
     public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.ApiReleaseCreated";
-
     /**
      * indicate an event of ApiReleaseDeleted in ApiManagement.
      */
     public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.ApiReleaseDeleted";
-
     /**
      * indicate an event of ApiReleaseUpdated in ApiManagement.
      */
     public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.ApiReleaseUpdated";
-
     /**
      * indicate an event of ApiUpdated in ApiManagement.
      */
     public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
-
     /**
      * indicate an event of ProductCreated in ApiManagement.
      */
     public static final String API_MANAGEMENT_PRODUCT_CREATED = "Microsoft.ApiManagement.ProductCreated";
-
     /**
      * indicate an event of ProductDeleted in ApiManagement.
      */
     public static final String API_MANAGEMENT_PRODUCT_DELETED = "Microsoft.ApiManagement.ProductDeleted";
-
     /**
      * indicate an event of ProductUpdated in ApiManagement.
      */
     public static final String API_MANAGEMENT_PRODUCT_UPDATED = "Microsoft.ApiManagement.ProductUpdated";
-
     /**
      * indicate an event of SubscriptionCreated in ApiManagement.
      */
     public static final String API_MANAGEMENT_SUBSCRIPTION_CREATED = "Microsoft.ApiManagement.SubscriptionCreated";
-
     /**
      * indicate an event of SubscriptionDeleted in ApiManagement.
      */
     public static final String API_MANAGEMENT_SUBSCRIPTION_DELETED = "Microsoft.ApiManagement.SubscriptionDeleted";
-
     /**
      * indicate an event of SubscriptionUpdated in ApiManagement.
      */
     public static final String API_MANAGEMENT_SUBSCRIPTION_UPDATED = "Microsoft.ApiManagement.SubscriptionUpdated";
-
     /**
      * indicate an event of UserCreated in ApiManagement.
      */
     public static final String API_MANAGEMENT_USER_CREATED = "Microsoft.ApiManagement.UserCreated";
-
     /**
      * indicate an event of UserDeleted in ApiManagement.
      */
     public static final String API_MANAGEMENT_USER_DELETED = "Microsoft.ApiManagement.UserDeleted";
-
     /**
      * indicate an event of UserUpdated in ApiManagement.
      */
@@ -393,11 +380,10 @@ public final class SystemEventNames {
     public static final String MEDIA_JOB_STATE_CHANGE = "Microsoft.Media.JobStateChange";
 
     /**
-     * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
-     * Microsoft.Media.LiveEventChannelArchiveHeartbeatEventData event.
+     * Media Services Live Event Channel Archive Heartbeat event.
      */
     public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
-        "Microsoft.Media.LiveEventChannelArchiveHeartbeatEventData";
+        "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
 
     /**
      * Media Services Live Event Connection Rejected event.
@@ -708,6 +694,7 @@ public final class SystemEventNames {
             put(MEDIA_JOB_PROCESSING, MediaJobProcessingEventData.class);
             put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
             put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
+            put(MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT, MediaLiveEventChannelArchiveHeartbeatEventData.class);
             put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
             put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
             put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);

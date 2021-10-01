@@ -494,10 +494,10 @@ public final class SystemEventMappingNames {
 
     /**
      * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
-     * Microsoft.Media.LiveEventChannelArchiveHeartbeatEventData event.
+     * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
      */
     public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
-            "Microsoft.Media.LiveEventChannelArchiveHeartbeatEventData";
+            "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
 
     /**
      * Encoder connection rejected event data. Schema of the data property of an EventGridEvent for a
