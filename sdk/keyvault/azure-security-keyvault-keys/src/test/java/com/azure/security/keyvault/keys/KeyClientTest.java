@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -601,7 +602,47 @@ public class KeyClientTest extends KeyClientTestBase {
         assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
     }
 
-    private DeletedKey pollOnKeyPurge(String keyName) {
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key and version using a {@link KeyClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyClientWithKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        CryptographyClient cryptographyClient =
+            client.getCryptographyClient("myKey","6A385B124DEF4096AF1361A85B16C204");
+
+        assertNotNull(cryptographyClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key using a {@link KeyClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyClientWithEmptyKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey","");
+
+        assertNotNull(cryptographyClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key using a {@link KeyClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyClientWithNullKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey",null);
+
+        assertNotNull(cryptographyClient);
+    }
+
+    private void pollOnKeyPurge(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
@@ -614,10 +655,9 @@ public class KeyClientTest extends KeyClientTestBase {
                 pendingPollCount += 1;
                 continue;
             } else {
-                return deletedKey;
+                return;
             }
         }
         System.err.printf("Deleted Key %s was not purged \n", keyName);
-        return null;
     }
 }

@@ -11,6 +11,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -666,22 +667,45 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             .verifyComplete();
     }
 
-    private void pollOnKeyDeletion(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKeyWithResponse(keyName).block().getValue();
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Key %s not found \n", keyName);
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key and version using a
+     * {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientWithKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient =
+            client.getCryptographyAsyncClient("myKey","6A385B124DEF4096AF1361A85B16C204");
+
+        assertNotNull(cryptographyAsyncClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key using a {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientWithEmptyKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey","");
+
+        assertNotNull(cryptographyAsyncClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key using a {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientWithNullKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey",null);
+
+        assertNotNull(cryptographyAsyncClient);
     }
 
     private void pollOnKeyPurge(String keyName) {
@@ -689,12 +713,13 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKeyWithResponse(keyName).block().getValue();
+                deletedKey = client.getDeletedKey(keyName).block();
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey != null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
+                continue;
             } else {
                 return;
             }
