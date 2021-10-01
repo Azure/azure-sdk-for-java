@@ -10,7 +10,7 @@ import java.util.Locale;
 /**
  * The list of all serialization types.
  */
-public class SerializationFormat extends ExpandableStringEnum<SerializationFormat> {
+public final class SerializationFormat extends ExpandableStringEnum<SerializationFormat> {
     public static final SerializationFormat AVRO = fromString("avro");
 
     /**
