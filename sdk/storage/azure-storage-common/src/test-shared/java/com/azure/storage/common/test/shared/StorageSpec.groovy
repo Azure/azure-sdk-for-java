@@ -15,6 +15,7 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.ServiceVersion
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
+import com.azure.storage.common.test.shared.policy.NoOpHttpPipelinePolicy
 import okhttp3.ConnectionPool
 import spock.lang.Specification
 
