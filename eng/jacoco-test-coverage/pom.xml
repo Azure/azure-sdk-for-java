@@ -169,7 +169,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
