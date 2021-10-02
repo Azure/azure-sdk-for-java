@@ -71,7 +71,7 @@ com.azure:azure-core-management;1.4.1;1.4.2
 com.azure:azure-core-serializer-avro-apache;1.0.0-beta.14;1.0.0-beta.15
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-core-serializer-json-gson;1.1.7;1.2.0-beta.1
-com.azure:azure-core-serializer-json-jackson;1.2.7;1.2.8
+com.azure:azure-core-serializer-json-jackson;1.2.8;1.3.0-beta.1
 com.azure:azure-core-test;1.7.2;1.8.0-beta.1
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.14;1.0.0-beta.15
 com.azure:azure-cosmos;4.19.0;4.19.1
