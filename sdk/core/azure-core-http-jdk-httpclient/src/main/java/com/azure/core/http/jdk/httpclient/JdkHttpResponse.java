@@ -33,7 +33,7 @@ final class JdkHttpResponse extends JdkHttpResponseBase {
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return FluxUtil.collectBytesFromNetworkResponse(getBody(), getHeaders());
+        return FluxUtil.collectBytesInByteBufferStream(getBody());
     }
 
     @Override
