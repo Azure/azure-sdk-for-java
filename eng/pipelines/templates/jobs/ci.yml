@@ -155,8 +155,8 @@ jobs:
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
-      - template: /eng/pipelines/templates/steps/install-java-17.yml
-        condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
+      - ${{ if contains(variables['Agent.OS'], 'linux') }}:
+        - template: /eng/pipelines/templates/steps/install-java-17.yml
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
@@ -308,8 +308,8 @@ jobs:
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
       - template: ../steps/install-reporting-tools.yml
 
-      - template: /eng/pipelines/templates/steps/install-java-17.yml
-        condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
+      - ${{ if contains(variables['Agent.OS'], 'linux') }}:
+        - template: /eng/pipelines/templates/steps/install-java-17.yml
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
