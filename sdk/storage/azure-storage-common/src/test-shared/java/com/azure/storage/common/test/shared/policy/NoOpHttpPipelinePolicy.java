@@ -9,9 +9,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
-public class NoOpHttpPipelinePolicy implements HttpPipelinePolicy {
+public final class NoOpHttpPipelinePolicy implements HttpPipelinePolicy {
 
-    public static HttpPipelinePolicy INSTANCE = new NoOpHttpPipelinePolicy();
+    public static final HttpPipelinePolicy INSTANCE = new NoOpHttpPipelinePolicy();
 
     private NoOpHttpPipelinePolicy() {
     }
