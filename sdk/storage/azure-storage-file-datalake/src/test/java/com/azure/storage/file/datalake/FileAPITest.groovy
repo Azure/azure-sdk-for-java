@@ -2658,6 +2658,8 @@ class FileAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
+    @IgnoreIf( { Runtime.version().feature() > 11 } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
@@ -3921,6 +3923,8 @@ class FileAPITest extends APISpec {
     }
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
+    // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
+    @IgnoreIf( { Runtime.version().feature() > 11 } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
