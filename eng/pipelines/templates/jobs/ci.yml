@@ -308,6 +308,7 @@ jobs:
       - template: ../steps/install-reporting-tools.yml
 
       - template: /eng/pipelines/templates/steps/install-java-17.yml
+        condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
