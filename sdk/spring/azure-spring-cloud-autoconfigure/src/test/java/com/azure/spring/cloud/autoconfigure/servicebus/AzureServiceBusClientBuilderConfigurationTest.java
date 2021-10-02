@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.StaticConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

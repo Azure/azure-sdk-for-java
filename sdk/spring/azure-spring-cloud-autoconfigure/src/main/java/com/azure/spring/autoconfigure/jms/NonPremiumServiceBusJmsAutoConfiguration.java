@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
@@ -37,10 +38,10 @@ public class NonPremiumServiceBusJmsAutoConfiguration extends AbstractServiceBus
         final String clientId = serviceBusJMSProperties.getTopicClientId();
         final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
 
-        ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
-        String host = serviceBusKey.getHost();
-        String sasKeyName = serviceBusKey.getSharedAccessKeyName();
-        String sasKey = serviceBusKey.getSharedAccessKey();
+        ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(connectionString);
+        String host = serviceBusConnectionString.getEndpointUri().getHost();
+        String sasKeyName = serviceBusConnectionString.getSharedAccessKeyName();
+        String sasKey = serviceBusConnectionString.getSharedAccessKey();
 
         String remoteUri = String.format(AMQP_URI_FORMAT, host, idleTimeout);
         JmsConnectionFactory jmsConnectionFactory = new JmsConnectionFactory();

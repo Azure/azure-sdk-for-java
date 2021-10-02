@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
-import com.azure.spring.core.StaticConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

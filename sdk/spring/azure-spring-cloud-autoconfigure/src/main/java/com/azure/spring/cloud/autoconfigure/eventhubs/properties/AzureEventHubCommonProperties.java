@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
+import com.azure.spring.core.connectionstring.implementation.EventHubConnectionString;
 
 /**
  * Azure Event Hub related properties.
@@ -18,18 +18,18 @@ public abstract class AzureEventHubCommonProperties extends AbstractAzureAmqpCon
     protected String customEndpointAddress;
     protected Integer prefetchCount;
 
-    protected String extractFQDNFromConnectionString() {
+    protected String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
             return null;
         }
-        return new ConnectionStringProperties(this.connectionString).getEndpoint().getHost();
+        return new EventHubConnectionString(this.connectionString).getFullyQualifiedNamespace();
     }
 
     protected String extractEventHubNameFromConnectionString() {
         if (this.connectionString == null) {
             return null;
         }
-        return new ConnectionStringProperties(this.connectionString).getEntityPath();
+        return new EventHubConnectionString(this.connectionString).getEntityPath();
     }
 
 
@@ -38,7 +38,7 @@ public abstract class AzureEventHubCommonProperties extends AbstractAzureAmqpCon
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-get-connection-string
     public String getFQDN() {
-        return this.namespace == null ? extractFQDNFromConnectionString() : (this.namespace + "." + domainName);
+        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 
     public String getDomainName() {

@@ -9,7 +9,7 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.ApplicationId;
-import com.azure.spring.core.StaticConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
 import org.slf4j.Logger;
