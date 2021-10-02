@@ -1,6 +1,10 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
@@ -1515,8 +1519,10 @@ class FileAPITest extends APISpec {
             .credential(environment.dataLakeAccount.credential))
             .buildFileAsyncClient()
 
-        def facDownloading = instrument(new DataLakePathClientBuilder()
-            .addPolicy({ context, next ->
+        def localData = data
+        def policy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
                     .flatMap({ r ->
                         if (counter.incrementAndGet() == 1) {
@@ -1524,12 +1530,15 @@ class FileAPITest extends APISpec {
                              * When the download begins trigger an upload to overwrite the downloading blob
                              * so that the download is able to get an ETag before it is changed.
                              */
-                            return facUploading.upload(data.defaultFlux, null, true)
+                            return facUploading.upload(localData.defaultFlux, null, true)
                                 .thenReturn(r)
                         }
                         return Mono.just(r)
                     })
-            })
+            }
+        }
+        def facDownloading = instrument(new DataLakePathClientBuilder()
+            .addPolicy(policy)
             .endpoint(fc.getPathUrl())
             .credential(environment.dataLakeAccount.credential))
             .buildFileAsyncClient()
