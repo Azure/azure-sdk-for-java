@@ -156,6 +156,7 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: /eng/pipelines/templates/steps/install-java-17.yml
+        condition: and(succeeded(), contains(variables['Agent.OS'], 'linux'))
 
       - task: Maven@3
         displayName: 'Build and Package, JDK Version: $(JavaBuildVersion)'
