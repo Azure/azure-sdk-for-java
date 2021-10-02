@@ -87,7 +87,7 @@ class StorageSpec extends Specification {
         if (ENVIRONMENT.testMode == TestMode.RECORD) {
             return interceptorManager.getRecordPolicy()
         } else {
-            return { context, next -> return next.process() }
+            return NoOpHttpPipelinePolicy.INSTANCE
         }
     }
 
