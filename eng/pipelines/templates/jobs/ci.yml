@@ -54,8 +54,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: 'Azure Pipelines'
-      vmImage: 'ubuntu-20.04'
+      name: azsdk-pool-mms-ubuntu-2004-general
 
     strategy:
       matrix:
@@ -214,8 +213,8 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      name: Azure Pipelines
-      vmImage: ubuntu-20.04
+      name: azsdk-pool-mms-ubuntu-2004-general
+      vmImage: MMSUbuntu20.04
 
     steps:
       - task: UsePythonVersion@0
