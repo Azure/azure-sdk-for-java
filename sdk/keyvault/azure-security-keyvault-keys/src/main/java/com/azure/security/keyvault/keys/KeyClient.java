@@ -72,14 +72,27 @@ public final class KeyClient {
     }
 
     /**
-     * Creates a {@link CryptographyClient} for a given key.
+     * Creates a {@link CryptographyClient} for the latest version of a given key.
+     *
+     * @param keyName The name of the key.
+     *
+     * @return An instance of {@link CryptographyClient} associated with the latest version of a key with the
+     * provided name.
+     *
+     * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
+     */
+    public CryptographyClient getCryptographyClient(String keyName) {
+        return client.getCryptographyClientBuilder(keyName, null).buildClient();
+    }
+
+    /**
+     * Creates a {@link CryptographyClient} for a given key version.
      *
      * @param keyName The name of the key.
      * @param keyVersion The key version.
      *
      * @return An instance of {@link CryptographyClient} associated with a key with the provided name and version.
-     * If {@code keyVersion} is {@code null} or empty, the client will be created using the latest version of the key
-     * at that moment.
+     * If {@code keyVersion} is {@code null} or empty, the client will use the latest version of the key.
      *
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */

@@ -19,8 +19,10 @@
     - `updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
     - `updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
 - Added convenience methods to create cryptography clients using key clients:
-  - `KeyClient.getCryptographyClient()`
-  - `KeyAsyncClient.getCryptographyAsyncClient()`
+  - `KeyClient.getCryptographyClient(String keyName)`
+  - `KeyClient.getCryptographyClient(String keyName, String keyVersion)`
+  - `KeyAsyncClient.getCryptographyAsyncClient(String keyName)`
+  - `KeyAsyncClient.getCryptographyAsyncClient(String keyName, String keyVersion)`
 - `CryptographyClientBuilder` does not require `keyIdentifier` to a include a key version. If no version is provided, cryptographic operations will be made using the latest version of the key.
 
 ### Other Changes

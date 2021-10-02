@@ -151,14 +151,27 @@ public final class KeyAsyncClient {
     }
 
     /**
-     * Creates a {@link CryptographyAsyncClient} for a given key.
+     * Creates a {@link CryptographyAsyncClient} for the latest version of a given key.
+     *
+     * @param keyName The name of the key.
+     *
+     * @return An instance of {@link CryptographyAsyncClient} associated with the latest version of a key with the
+     * provided name.
+     *
+     * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
+     */
+    public CryptographyAsyncClient getCryptographyAsyncClient(String keyName) {
+        return getCryptographyClientBuilder(keyName, null).buildAsyncClient();
+    }
+
+    /**
+     * Creates a {@link CryptographyAsyncClient} for a given key version.
      *
      * @param keyName The name of the key.
      * @param keyVersion The key version.
      *
      * @return An instance of {@link CryptographyAsyncClient} associated with a key with the provided name and version.
-     * If {@code keyVersion} is {@code null} or empty, the client will be created using the latest version of the key
-     * at that moment.
+     * If {@code keyVersion} is {@code null} or empty, the client will use the latest version of the key.
      *
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
@@ -184,13 +197,11 @@ public final class KeyAsyncClient {
             stringBuilder.append("/");
         }
 
-        stringBuilder.append("keys/");
+        stringBuilder.append("keys/").append(keyName);
 
-        keyVersion = keyVersion == null ? "" : keyVersion;
-
-        stringBuilder.append(keyName)
-            .append("/")
-            .append(keyVersion);
+        if (!CoreUtils.isNullOrEmpty(keyVersion)) {
+            stringBuilder.append("/").append(keyVersion);
+        }
 
         return stringBuilder.toString();
     }
