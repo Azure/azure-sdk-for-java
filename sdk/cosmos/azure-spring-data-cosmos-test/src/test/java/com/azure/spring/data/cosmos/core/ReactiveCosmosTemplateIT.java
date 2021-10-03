@@ -549,20 +549,20 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void createDatabaseWithThroughput() throws ClassNotFoundException {
-        final String dbName = TestConstants.DB_NAME + "-other";
-        deleteDatabaseIfExists(dbName);
+        final String configuredThroughputDbName = TestConstants.DB_NAME + "-other";
+        deleteDatabaseIfExists(configuredThroughputDbName);
 
         Integer expectedRequestUnits = 700;
         final CosmosConfig config = CosmosConfig.builder()
             .enableDatabaseThroughput(false, expectedRequestUnits)
             .build();
-        cosmosTemplate = createReactiveCosmosTemplate(config, dbName);
+        final ReactiveCosmosTemplate configuredThroughputCosmosTemplate = createReactiveCosmosTemplate(config, configuredThroughputDbName);
 
         final CosmosEntityInformation<Person, String> personInfo =
             new CosmosEntityInformation<>(Person.class);
-        cosmosTemplate.createContainerIfNotExists(personInfo).block();
+        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo).block();
 
-        final CosmosAsyncDatabase database = client.getDatabase(dbName);
+        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
     }

@@ -663,20 +663,20 @@ public class CosmosTemplateIT {
 
     @Test
     public void createDatabaseWithThroughput() throws ClassNotFoundException {
-        final String dbName = TestConstants.DB_NAME + "-other";
-        deleteDatabaseIfExists(dbName);
+        final String configuredThroughputDbName = TestConstants.DB_NAME + "-configured-throughput";
+        deleteDatabaseIfExists(configuredThroughputDbName);
 
         Integer expectedRequestUnits = 700;
         final CosmosConfig config = CosmosConfig.builder()
             .enableDatabaseThroughput(false, expectedRequestUnits)
             .build();
-        cosmosTemplate = createCosmosTemplate(config, dbName);
+        final CosmosTemplate configuredThroughputCosmosTemplate = createCosmosTemplate(config, configuredThroughputDbName);
 
         final CosmosEntityInformation<Person, String> personInfo =
             new CosmosEntityInformation<>(Person.class);
-        cosmosTemplate.createContainerIfNotExists(personInfo);
+        configuredThroughputCosmosTemplate.createContainerIfNotExists(personInfo);
 
-        final CosmosAsyncDatabase database = client.getDatabase(dbName);
+        final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
     }
