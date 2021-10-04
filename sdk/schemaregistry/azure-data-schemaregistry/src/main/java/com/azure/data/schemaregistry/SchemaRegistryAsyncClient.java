@@ -13,6 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
 import com.azure.data.schemaregistry.implementation.models.SchemaId;
+import com.azure.data.schemaregistry.implementation.models.SerializationType;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import reactor.core.publisher.Mono;
@@ -104,14 +105,11 @@ public final class SchemaRegistryAsyncClient {
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, schemaFormat, content);
 
-        return this.restService.getSchemas().registerWithResponseAsync(groupName, name,
-            com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO, content)
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, getSerialization(schemaFormat),
+            content)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
-                SchemaProperties registered = new SchemaProperties(schemaId.getId(),
-                        schemaFormat,
-                    name,
-                    content.getBytes(SCHEMA_REGISTRY_SERVICE_ENCODING));
+                SchemaProperties registered = new SchemaProperties(schemaId.getId(), schemaFormat);
 
                 SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -161,10 +159,7 @@ public final class SchemaRegistryAsyncClient {
                 }
 
                 final String schemaName = matcher.group("schemaName");
-                final SchemaProperties schemaObject = new SchemaProperties(id,
-                        schemaFormat,
-                    schemaName,
-                    response.getValue());
+                final SchemaProperties schemaObject = new SchemaProperties(id, schemaFormat);
                 final SimpleResponse<SchemaProperties> schemaResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), schemaObject);
@@ -185,8 +180,7 @@ public final class SchemaRegistryAsyncClient {
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getSchemaId(String groupName, String name, String content,
-        SchemaFormat schemaFormat) {
+    public Mono<String> getSchemaId(String groupName, String name, String content, SchemaFormat schemaFormat) {
         return getSchemaIdWithResponse(groupName, name, content, schemaFormat)
             .map(response -> response.getValue());
     }
@@ -223,7 +217,7 @@ public final class SchemaRegistryAsyncClient {
     Mono<Response<String>> getSchemaIdWithResponse(String groupName, String name, String content,
         SchemaFormat schemaFormat, Context context) {
 
-        return this.restService.getSchemas()
+        return restService.getSchemas()
             .queryIdByContentWithResponseAsync(groupName, name, getSerialization(schemaFormat), content)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
@@ -244,10 +238,9 @@ public final class SchemaRegistryAsyncClient {
      *
      * @throws UnsupportedOperationException if the serialization type is not supported.
      */
-    private static com.azure.data.schemaregistry.implementation.models.SerializationType getSerialization(
-        SchemaFormat schemaFormat) {
+    private static SerializationType getSerialization(SchemaFormat schemaFormat) {
         if (schemaFormat == SchemaFormat.AVRO) {
-            return com.azure.data.schemaregistry.implementation.models.SerializationType.AVRO;
+            return SerializationType.AVRO;
         } else {
             throw new UnsupportedOperationException("Serialization type is not supported: " + schemaFormat);
         }
