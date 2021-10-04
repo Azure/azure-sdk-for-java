@@ -99,12 +99,12 @@ class FileModelFetcher implements ModelFetcher {
                     } catch (IOException e) {
                         logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
                             path.toString(), e.getMessage()));
-                        return null;
+                        return Mono.empty();
                     }
                 }
 
                 logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, path.toString()));
-                return null;
+                return Mono.empty();
             } catch (MalformedURLException | URISyntaxException e) {
                 return Mono.error(new AzureException(e));
             }

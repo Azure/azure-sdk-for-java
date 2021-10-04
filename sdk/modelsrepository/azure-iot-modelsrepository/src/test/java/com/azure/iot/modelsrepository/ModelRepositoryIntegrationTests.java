@@ -22,13 +22,19 @@ class ModelRepositoryIntegrationTests extends ModelsRepositoryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.iot.modelsrepository.TestHelper#getTestParameters")
     public void getModelsSingleDtmiNoDependencies(HttpClient httpClient, ModelsRepositoryServiceVersion serviceVersion, String repositoryUri) throws URISyntaxException {
-        final String dtmi = "dtmi:com:example:Thermostat;1";
+        String dtmi= "";
+        if (repositoryUri == TestHelper.MODELS_REPOSITORY_NO_METADATA_ENDPOINT) {
+            dtmi = "Azure:iot;plugandplay;models:main:dtmi:com:example:abcThermostat;1";
+        } else {
+            dtmi = "dtmi:com:example:Thermostat;1";
+        }
 
+        final String DTMI = dtmi;
         ModelsRepositoryAsyncClient client = getAsyncClient(httpClient, serviceVersion, repositoryUri);
 
         StepVerifier
-            .create(client.getModels(dtmi))
-            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(dtmi)))
+            .create(client.getModels(DTMI))
+            .assertNext(model -> Assertions.assertTrue(model.keySet().size() == 1 && model.containsKey(DTMI)))
             .verifyComplete();
     }
 

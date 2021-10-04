@@ -74,13 +74,10 @@ class HttpModelFetcher implements ModelFetcher {
                     .onErrorResume(error -> {
                         logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s",
                             tryContentPath, error.getMessage()));
-                        return null;
+                        return Mono.empty();
                     })
                     .map(s -> {
                         try {
-                            if (s == null) {
-                                return null;
-                            }
                             return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
                         } catch (JsonProcessingException e) {
                             logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
