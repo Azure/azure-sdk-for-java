@@ -888,7 +888,7 @@ class SasClientTests extends APISpec {
             .setContentLanguage(language)
             .setContentType(type)
 
-        def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
+        def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId, null)
 
         def sasToken = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
@@ -952,7 +952,7 @@ class SasClientTests extends APISpec {
             .setSignedVersion(keyVersion)
             .setValue(keyValue)
 
-        def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
+        def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId, null)
 
         def sasToken = implUtil.generateUserDelegationSas(key, env.primaryAccount.name, Context.NONE)
 
@@ -991,7 +991,7 @@ class SasClientTests extends APISpec {
         setup:
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(expiryTime, new BlobSasPermission())
 
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(v, containerName, blobName, snapId, null)
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(v, containerName, blobName, snapId, null, null)
 
         expectedStringToSign = String.format(expectedStringToSign,
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiryTime),
