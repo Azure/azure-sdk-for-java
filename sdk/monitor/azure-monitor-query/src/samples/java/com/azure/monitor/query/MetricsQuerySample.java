@@ -39,7 +39,7 @@ public class MetricsQuerySample {
                 .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-                .queryWithResponse(
+                .queryResourceWithResponse(
                         "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/"
                                 + "Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
                         Arrays.asList("SuccessfulCalls"),
