@@ -36,7 +36,7 @@
     <src.dir>src/main/java</src.dir>
     <test.dir>src/test/java</test.dir>
     <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
-    <surefireXmx>6g</surefireXmx>
+    <surefireXmx>8g</surefireXmx>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
