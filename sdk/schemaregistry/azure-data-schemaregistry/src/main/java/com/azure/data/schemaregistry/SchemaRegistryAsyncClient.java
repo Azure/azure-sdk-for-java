@@ -69,15 +69,15 @@ public final class SchemaRegistryAsyncClient {
      *
      * @param groupName The schema group.
      * @param name The schema name.
-     * @param content The string representation of the schema.
+     * @param schemaDefinition The string representation of the schema.
      * @param schemaFormat The serialization type of this schema.
      *
      * @return The {@link SchemaProperties} of a successfully registered schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaProperties> registerSchema(String groupName, String name, String content,
+    public Mono<SchemaProperties> registerSchema(String groupName, String name, String schemaDefinition,
         SchemaFormat schemaFormat) {
-        return registerSchemaWithResponse(groupName, name, content, schemaFormat)
+        return registerSchemaWithResponse(groupName, name, schemaDefinition, schemaFormat)
             .map(Response::getValue);
     }
 
@@ -87,25 +87,25 @@ public final class SchemaRegistryAsyncClient {
      *
      * @param groupName The schema group.
      * @param name The schema name.
-     * @param content The string representation of the schema.
+     * @param schemaDefinition The string representation of the schema.
      * @param schemaFormat The serialization type of this schema.
      *
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
-        SchemaFormat schemaFormat) {
-        return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, content,
+    public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name,
+        String schemaDefinition, SchemaFormat schemaFormat) {
+        return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, schemaDefinition,
                 schemaFormat, context));
     }
 
-    Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String content,
+    Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
         SchemaFormat schemaFormat, Context context) {
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
-            groupName, name, schemaFormat, content);
+            groupName, name, schemaFormat, schemaDefinition);
 
         return restService.getSchemas().registerWithResponseAsync(groupName, name, getSerialization(schemaFormat),
-            content)
+            schemaDefinition)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
                 SchemaProperties registered = new SchemaProperties(schemaId.getId(), schemaFormat);
@@ -163,16 +163,16 @@ public final class SchemaRegistryAsyncClient {
      *
      * @param groupName The schema group.
      * @param name The schema name.
-     * @param content The string representation of the schema.
+     * @param schemaDefinition The string representation of the schema.
      * @param schemaFormat The serialization type of this schema.
      *
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaProperties> getSchemaProperties(String groupName, String name, String content,
+    public Mono<SchemaProperties> getSchemaProperties(String groupName, String name, String schemaDefinition,
         SchemaFormat schemaFormat) {
 
-        return getSchemaPropertiesWithResponse(groupName, name, content, schemaFormat)
+        return getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, schemaFormat)
             .map(response -> response.getValue());
     }
 
@@ -181,17 +181,17 @@ public final class SchemaRegistryAsyncClient {
      *
      * @param groupName The schema group.
      * @param name The schema name.
-     * @param content The string representation of the schema.
+     * @param schemaDefinition The string representation of the schema.
      * @param schemaFormat The serialization type of this schema.
      *
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name,
-        String content, SchemaFormat schemaFormat) {
+        String schemaDefinition, SchemaFormat schemaFormat) {
 
         return FluxUtil.withContext(context ->
-            getSchemaPropertiesWithResponse(groupName, name, content, schemaFormat, context));
+            getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, schemaFormat, context));
     }
 
     /**
@@ -199,17 +199,17 @@ public final class SchemaRegistryAsyncClient {
      *
      * @param groupName The schema group.
      * @param name The schema name.
-     * @param content The string representation of the schema.
+     * @param schemaDefinition The string representation of the schema.
      * @param schemaFormat The serialization type of this schema.
      * @param context Context to pass along with this request.
      *
      * @return A mono that completes with the schema id.
      */
-    Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name, String content,
-        SchemaFormat schemaFormat, Context context) {
+    Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name,
+        String schemaDefinition, SchemaFormat schemaFormat, Context context) {
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, getSerialization(schemaFormat), content)
+            .queryIdByContentWithResponseAsync(groupName, name, getSerialization(schemaFormat), schemaDefinition)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
                 SchemaProperties properties = new SchemaProperties(schemaId.getId(), schemaFormat);
