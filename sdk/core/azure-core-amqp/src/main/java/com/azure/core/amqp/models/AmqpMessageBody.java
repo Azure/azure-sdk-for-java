@@ -19,7 +19,29 @@ import java.util.Objects;
  * corresponding to the type of the body throws exception.</b></p>
  *
  * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
- * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+ * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+ * <pre>
+ * Object amqpValue;
+ * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+ *
+ * switch &#40;bodyType&#41; &#123;
+ *     case DATA:
+ *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+ *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+ *         break;
+ *     case SEQUENCE:
+ *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+ *         sequenceData.forEach&#40;System.out::println&#41;;
+ *         break;
+ *     case VALUE:
+ *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+ *         System.out.println&#40;amqpValue&#41;;
+ *         break;
+ *     default:
+ *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
  *
  * @see AmqpMessageBodyType
  * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
@@ -104,7 +126,29 @@ public final class AmqpMessageBody {
     /**
      * Gets the {@link AmqpMessageBodyType} of the message.
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return AmqpBodyType type of the message.
      */
     public AmqpMessageBodyType getBodyType() {
@@ -119,7 +163,29 @@ public final class AmqpMessageBody {
      * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return data set on {@link AmqpMessageBody}.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
@@ -142,7 +208,29 @@ public final class AmqpMessageBody {
      * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return data set on {@link AmqpMessageBody}.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
@@ -166,7 +254,29 @@ public final class AmqpMessageBody {
      * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return sequence of this {@link AmqpMessageBody} instance.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not
@@ -193,7 +303,29 @@ public final class AmqpMessageBody {
      * methods not corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
+     * <pre>
+     * Object amqpValue;
+     * AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody&#40;&#41;.getBodyType&#40;&#41;;
+     *
+     * switch &#40;bodyType&#41; &#123;
+     *     case DATA:
+     *         byte[] payload = amqpAnnotatedMessage.getBody&#40;&#41;.getFirstData&#40;&#41;;
+     *         System.out.println&#40;new String&#40;payload&#41;&#41;;
+     *         break;
+     *     case SEQUENCE:
+     *         List&lt;Object&gt; sequenceData = amqpAnnotatedMessage.getBody&#40;&#41;.getSequence&#40;&#41;;
+     *         sequenceData.forEach&#40;System.out::println&#41;;
+     *         break;
+     *     case VALUE:
+     *         amqpValue = amqpAnnotatedMessage.getBody&#40;&#41;.getValue&#40;&#41;;
+     *         System.out.println&#40;amqpValue&#41;;
+     *         break;
+     *     default:
+     *         throw new RuntimeException&#40;String.format&#40;Locale.US, &quot;Body type [%s] is not valid.&quot;, bodyType&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
      * @return value of this {@link AmqpMessageBody} instance.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#VALUE VALUE}.

@@ -14,6 +14,7 @@ import java.util.Objects;
 public class TokenRequestContext {
     private final List<String> scopes;
     private String claims;
+    private String tenantId;
 
     /**
      * Creates a token request instance.
@@ -76,5 +77,25 @@ public class TokenRequestContext {
      */
     public String getClaims() {
         return this.claims;
+    }
+
+    /**
+     * Set the tenant id to be used for the authentication request.
+     *
+     * @param tenantId the tenant to be used when requesting the token.
+     * @return the updated TokenRequestContext itself
+     */
+    public TokenRequestContext setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
+    }
+
+    /**
+     * Get the tenant id to be used for the authentication request.
+     *
+     * @return the configured tenant id.
+     */
+    public String getTenantId() {
+        return this.tenantId;
     }
 }

@@ -18,7 +18,6 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.StorageSpec
 import com.azure.storage.common.test.shared.TestAccount
-import com.azure.storage.common.test.shared.policy.MockDownloadHttpResponse
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions
 import com.azure.storage.file.datalake.models.PathAccessControlEntry
@@ -72,8 +71,8 @@ class APISpec extends StorageSpec {
     def fileSystemName
 
     def setup() {
-        primaryDataLakeServiceClient = getServiceClient(env.dataLakeAccount)
-        primaryDataLakeServiceAsyncClient = getServiceAsyncClient(env.dataLakeAccount)
+        primaryDataLakeServiceClient = getServiceClient(environment.dataLakeAccount)
+        primaryDataLakeServiceAsyncClient = getServiceAsyncClient(environment.dataLakeAccount)
 
         fileSystemName = generateFileSystemName()
         fsc = primaryDataLakeServiceClient.getFileSystemClient(fileSystemName)
@@ -82,11 +81,11 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new DataLakeServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.dataLakeAccount.credential)
-                .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+                .credential(environment.dataLakeAccount.credential)
+                .endpoint(environment.dataLakeAccount.dataLakeEndpoint)
                 .buildClient()
 
             def options = new ListFileSystemsOptions().setPrefix(namer.getResourcePrefix())
@@ -109,16 +108,16 @@ class APISpec extends StorageSpec {
 
     def getOAuthServiceClient() {
         DataLakeServiceClientBuilder builder = new DataLakeServiceClientBuilder()
-            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
+            .endpoint(environment.dataLakeAccount.dataLakeEndpoint)
 
         instrument(builder)
 
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(env.dataLakeAccount.credential).buildClient()
+            return builder.credential(environment.dataLakeAccount.credential).buildClient()
         }
     }
 
@@ -168,7 +167,7 @@ class APISpec extends StorageSpec {
     DataLakeServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
         int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
         retryTimeout = Math.max(60, retryTimeout)
-        return getServiceClientBuilder(env.dataLakeAccount)
+        return getServiceClientBuilder(environment.dataLakeAccount)
             .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
             .buildAsyncClient()
     }
@@ -495,7 +494,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }
@@ -526,7 +525,7 @@ class APISpec extends StorageSpec {
     }
 
     def sleepIfLive(long milliseconds) {
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             return
         }
         sleep(milliseconds)

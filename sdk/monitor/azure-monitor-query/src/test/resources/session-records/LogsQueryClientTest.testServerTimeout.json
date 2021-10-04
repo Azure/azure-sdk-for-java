@@ -1,33 +1,9 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.monitor.azure.com/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
+    "Uri" : "https://REDACTED.loganalytics.io/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-query/1.0.0-beta.2 (11.0.11; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : null,
-    "Exception" : {
-      "ClassName" : "java.util.concurrent.TimeoutException",
-      "ErrorMessage" : "Channel response timed out after 10000 milliseconds."
-    }
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.monitor.azure.com/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-query/1.0.0-beta.2 (11.0.11; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : null,
-    "Exception" : {
-      "ClassName" : "java.util.concurrent.TimeoutException",
-      "ErrorMessage" : "Channel response timed out after 10000 milliseconds."
-    }
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.monitor.azure.com/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-monitor-query/1.0.0-beta.2 (11.0.11; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-monitor-query/1.0.0-beta.5 (14.0.2; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -37,12 +13,12 @@
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "504",
-      "Date" : "Thu, 29 Jul 2021 06:11:41 GMT",
-      "via" : "1.1 draft-oms-7dd896cb54-wd9ck",
+      "Date" : "Mon, 04 Oct 2021 18:31:25 GMT",
+      "via" : "1.1 draft-oms-7fbfd9875f-797zn",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
       "Vary" : "Accept-Encoding",
-      "Body" : "{\"error\":{\"message\":\"Gateway timeout\",\"code\":\"GatewayTimeout\",\"correlationId\":\"e10702da-5701-479f-b86a-dfbe66d982fd\",\"innererror\":{\"code\":\"GatewayTimeout\",\"message\":\"Kusto query timed out\"}}}",
+      "Body" : "{\"error\":{\"message\":\"Gateway timeout\",\"code\":\"GatewayTimeout\",\"correlationId\":\"3a2743f6-ba1c-44fa-a4a4-1ad2a1189c10\",\"innererror\":{\"code\":\"GatewayTimeout\",\"message\":\"Kusto query timed out\"}}}",
       "Preference-Applied" : "wait=5",
       "Content-Type" : "application/json; charset=utf-8"
     },

@@ -53,6 +53,7 @@ public final class KeyVaultJcaProvider extends Provider {
     /**
      * Initialize the provider.
      */
+    @SuppressWarnings("removal")
     private void initialize() {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(

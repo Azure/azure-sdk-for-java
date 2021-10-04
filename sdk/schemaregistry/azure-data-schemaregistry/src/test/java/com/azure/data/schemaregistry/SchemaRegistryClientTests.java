@@ -10,8 +10,8 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
+import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -67,7 +67,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         builder = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .endpoint(endpoint);
+            .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -93,7 +93,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client2 = builder.buildClient();
 
         // Act
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
 
         // Assert
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
@@ -123,13 +123,13 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act & Assert
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SerializationType.AVRO);
+            SchemaFormat.AVRO);
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
         final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
-            SerializationType.AVRO);
+            SchemaFormat.AVRO);
         assertSchemaProperties(response2, null, schemaName, schemaContentModified);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -153,7 +153,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act & Assert
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SerializationType.AVRO);
+            SchemaFormat.AVRO);
         assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -162,7 +162,7 @@ public class SchemaRegistryClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        final String schemaId = client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO);
+        final String schemaId = client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
         assertEquals(schemaIdToGet, schemaId);
     }
 
@@ -178,33 +178,10 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act
         final ServiceErrorResponseException exception = assertThrows(ServiceErrorResponseException.class,
-            () -> client1.registerSchema(schemaGroup, schemaName, invalidContent, SerializationType.AVRO));
+            () -> client1.registerSchema(schemaGroup, schemaName, invalidContent, SchemaFormat.AVRO));
 
         // Assert
         assertEquals(400, exception.getResponse().getStatusCode());
-    }
-
-    /**
-     * Verifies that we can register a schema and then get it by its schemaId.
-     */
-    @Test
-    public void registerAndGetCachedSchema() {
-        // Arrange
-        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
-        final SchemaRegistryClient client1 = builder.buildClient();
-
-        // Act & Assert
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SerializationType.AVRO);
-        assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
-
-        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
-        // cached, so it won't make a network call when getting the schema.
-        final String schemaIdToGet = response.getSchemaId();
-
-        // Act & Assert
-        final SchemaProperties response2 = client1.getSchema(schemaIdToGet);
-        assertSchemaProperties(response2, schemaIdToGet, schemaName, SCHEMA_CONTENT);
     }
 
     /**
@@ -233,7 +210,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act & Assert
         final ResourceNotFoundException error = assertThrows(ResourceNotFoundException.class,
-            () -> client1.getSchemaId("at", "bar", SCHEMA_CONTENT, SerializationType.AVRO));
+            () -> client1.getSchemaId("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
 
         assertEquals(404, error.getResponse().getStatusCode());
     }

@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Flow;
 
@@ -95,8 +96,7 @@ class JdkAsyncHttpClient implements HttpClient {
                 for (HttpHeader header : headers) {
                     final String headerName = header.getName();
                     if (!restrictedHeaders.contains(headerName)) {
-                        final String headerValue = header.getValue();
-                        builder.setHeader(headerName, headerValue);
+                        header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
                     } else {
                         logger.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
                             + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
@@ -134,7 +134,7 @@ class JdkAsyncHttpClient implements HttpClient {
         } else {
             long contentLengthLong = Long.parseLong(contentLength);
             if (contentLengthLong < 1) {
-                return fromPublisher(bbFlowPublisher);
+                return noBody();
             } else {
                 return fromPublisher(bbFlowPublisher, contentLengthLong);
             }
@@ -186,13 +186,12 @@ class JdkAsyncHttpClient implements HttpClient {
     static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders();
 
-        for (final String key : headers.map().keySet()) {
-            final List<String> values = headers.allValues(key);
-            if (CoreUtils.isNullOrEmpty(values)) {
+        for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
+            if (CoreUtils.isNullOrEmpty(kvp.getValue())) {
                 continue;
             }
 
-            httpHeaders.set(key, values);
+            httpHeaders.set(kvp.getKey(), kvp.getValue());
         }
 
         return httpHeaders;

@@ -437,9 +437,16 @@ public class ReactorConnection implements AmqpConnection {
             if (dispatcher != null) {
                 try {
                     dispatcher.invoke(() -> closeConnectionWork());
-                } catch (IOException | RejectedExecutionException e) {
-                    logger.warning("connectionId[{}] Error while scheduling closeConnection work. Manually disposing.",
-                        connectionId, e);
+                } catch (IOException e) {
+                    logger.warning("connectionId[{}] IOException while scheduling closeConnection work. Manually "
+                            + "disposing.", connectionId, e);
+
+                    closeConnectionWork();
+                } catch (RejectedExecutionException e) {
+                    // Not logging error here again because we have to log the exception when we throw it.
+                    logger.info("connectionId[{}] Could not schedule closeConnection work. Manually disposing.",
+                        connectionId);
+
                     closeConnectionWork();
                 }
             } else {
@@ -479,6 +486,8 @@ public class ReactorConnection implements AmqpConnection {
         final ArrayList<Mono<Void>> closingSessions = new ArrayList<>();
         sessionMap.values().forEach(link -> closingSessions.add(link.isClosed()));
 
+        // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
+        // remaining work after OperationTimeout has elapsed and closes afterwards.
         final Mono<Void> closedExecutor = executor != null ? Mono.defer(() -> {
             synchronized (this) {
                 logger.info("connectionId[{}] Closing executor.", connectionId);
@@ -486,11 +495,11 @@ public class ReactorConnection implements AmqpConnection {
             }
         }) : Mono.empty();
 
-        // Close all the children.
-        final Mono<Void> closeSessionsMono = Mono.when(closingSessions)
+        // Close all the children and the ReactorExecutor.
+        final Mono<Void> closeSessionAndExecutorMono = Mono.when(closingSessions)
             .timeout(operationTimeout)
             .onErrorResume(error -> {
-                logger.warning("connectionId[{}]: Timed out waiting for all sessions to close.", connectionId);
+                logger.info("connectionId[{}]: Timed out waiting for all sessions to close.", connectionId);
                 return Mono.empty();
             })
             .then(closedExecutor)
@@ -504,7 +513,7 @@ public class ReactorConnection implements AmqpConnection {
                 subscriptions.dispose();
             }));
 
-        subscriptions.add(closeSessionsMono.subscribe());
+        subscriptions.add(closeSessionAndExecutorMono.subscribe());
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
@@ -551,6 +560,9 @@ public class ReactorConnection implements AmqpConnection {
                     return executor.closeAsync();
                 }
             });
+
+            // We shouldn't need to add a timeout to this operation because executorCloseMono schedules its last
+            // remaining work after OperationTimeout has elapsed and closes afterwards.
             reactorProvider.getReactorDispatcher().getShutdownSignal()
                 .flatMap(signal -> {
                     logger.info("Shutdown signal received from reactor provider.");

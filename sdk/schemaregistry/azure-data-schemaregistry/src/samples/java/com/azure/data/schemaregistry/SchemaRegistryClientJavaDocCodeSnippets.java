@@ -7,8 +7,8 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationType;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -28,7 +28,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
             .build();
         SchemaRegistryClient client = new SchemaRegistryClientBuilder()
-            .endpoint("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+            .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
             .credential(azureCredential)
             .buildClient();
         // END: com.azure.data.schemaregistry.schemaregistryclient.instantiation
@@ -43,7 +43,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
             .build();
         SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .endpoint("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+            .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
             .credential(azureCredential)
             .buildAsyncClient();
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.instantiation
@@ -63,7 +63,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(5, Duration.ofSeconds(30)));
         SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
-            .endpoint("https://<your-schema-registry-endpoint>.servicebus.windows.net")
+            .fullyQualifiedNamespace("https://<your-schema-registry-endpoint>.servicebus.windows.net")
             .httpLogOptions(httpLogOptions)
             .retryPolicy(retryPolicy)
             .credential(azureCredential)
@@ -80,7 +80,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.registerschema
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         SchemaProperties schemaProperties = client.registerSchema("{schema-group}", "{schema-name}", schema,
-            SerializationType.AVRO);
+            SchemaFormat.AVRO);
 
         System.out.printf("Schema id: %s, schema name: %s%n", schemaProperties.getSchemaId(),
             schemaProperties.getSchemaName());
@@ -95,7 +95,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
-        client.registerSchema("{schema-group}", "{schema-name}", schema, SerializationType.AVRO)
+        client.registerSchema("{schema-group}", "{schema-name}", schema, SchemaFormat.AVRO)
             .subscribe(schemaProperties -> {
                 System.out.printf("Schema id: %s, schema name: %s%n", schemaProperties.getSchemaId(),
                     schemaProperties.getSchemaName());
@@ -146,7 +146,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getSchemaId
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         String schemaId = client.getSchemaId("{schema-group}", "{schema-name}", schema,
-            SerializationType.AVRO);
+            SchemaFormat.AVRO);
 
         System.out.println("The schema id: " + schemaId);
         // END: com.azure.data.schemaregistry.schemaregistryclient.getSchemaId
@@ -161,7 +161,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaId
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         client.getSchemaId("{schema-group}", "{schema-name}", schema,
-            SerializationType.AVRO).subscribe(schemaId -> {
+            SchemaFormat.AVRO).subscribe(schemaId -> {
                 System.out.println("The schema id: " + schemaId);
             });
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaId
@@ -169,14 +169,14 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
     private static SchemaRegistryAsyncClient buildAsyncClient() {
         return new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint}")
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
     }
 
     private static SchemaRegistryClient buildClient() {
         return new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint}")
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     }
