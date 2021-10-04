@@ -158,7 +158,7 @@ public class SchemaRegistryAvroSerializerTest {
             .assertNext(schema -> {
                 assertNotNull(schema.getProperties());
 
-                assertEquals(playingClassSchema, schema.getContent());
+                assertEquals(playingClassSchema, schema.getSchemaDefinition());
                 assertEquals(MOCK_GUID, schema.getProperties().getSchemaId());
             })
             .verifyComplete();

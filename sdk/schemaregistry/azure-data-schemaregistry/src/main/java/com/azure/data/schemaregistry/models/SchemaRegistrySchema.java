@@ -22,11 +22,11 @@ public final class SchemaRegistrySchema {
      * Creates a new instance.
      *
      * @param properties Schema's properties.
-     * @param content The content of the schema.
+     * @param schemaDefinition The definition of the schema.
      */
-    public SchemaRegistrySchema(SchemaProperties properties, String content) {
+    public SchemaRegistrySchema(SchemaProperties properties, String schemaDefinition) {
         this.properties = properties;
-        this.content = content;
+        this.content = schemaDefinition;
     }
 
     /**
@@ -43,7 +43,7 @@ public final class SchemaRegistrySchema {
      *
      * @return The content of the schema.
      */
-    public String getContent() {
+    public String getSchemaDefinition() {
         return content;
     }
 }

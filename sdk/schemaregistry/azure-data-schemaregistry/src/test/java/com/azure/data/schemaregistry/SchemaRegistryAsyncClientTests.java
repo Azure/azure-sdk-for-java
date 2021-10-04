@@ -121,7 +121,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
                 assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
 
                 // Replace white space.
-                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getContent()).replaceAll("");
+                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getSchemaDefinition()).replaceAll("");
                 assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
             })
             .verifyComplete();
@@ -267,7 +267,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         }
 
         // Replace white space.
-        final String actualContents = WHITESPACE_PATTERN.matcher(actual.getContent()).replaceAll("");
+        final String actualContents = WHITESPACE_PATTERN.matcher(actual.getSchemaDefinition()).replaceAll("");
         final String expectedContentsNoWhitespace = WHITESPACE_PATTERN.matcher(actualContents).replaceAll("");
 
         assertEquals(expectedContentsNoWhitespace, actualContents);

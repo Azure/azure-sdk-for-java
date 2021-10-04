@@ -113,7 +113,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getSchemaId(),
             schema.getProperties().getFormat());
-        System.out.println("Schema contents: " + schema.getContent());
+        System.out.println("Schema contents: " + schema.getSchemaDefinition());
         // END: com.azure.data.schemaregistry.schemaregistryclient.getSchema
     }
 
@@ -127,7 +127,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         client.getSchema("{schema-id}").subscribe(schema -> {
             System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getSchemaId(),
                 schema.getProperties().getFormat());
-            System.out.println("Schema contents: " + schema.getContent());
+            System.out.println("Schema contents: " + schema.getSchemaDefinition());
         });
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema
     }

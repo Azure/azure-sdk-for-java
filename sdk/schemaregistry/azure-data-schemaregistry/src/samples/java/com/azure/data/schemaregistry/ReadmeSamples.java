@@ -86,7 +86,7 @@ public class ReadmeSamples {
         SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
         System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getSchemaId(),
-            schema.getContent());
+            schema.getSchemaDefinition());
     }
 
     /**

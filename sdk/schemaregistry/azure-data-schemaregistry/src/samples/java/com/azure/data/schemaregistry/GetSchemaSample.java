@@ -30,7 +30,7 @@ public class GetSchemaSample {
             .getSchema("{schema-id}")
             .subscribe(schema -> {
                 System.out.println("Successfully retrieved schema.");
-                System.out.printf("Id: %s%nContents: %s%n", schema.getProperties().getSchemaId(), schema.getContent());
+                System.out.printf("Id: %s%nContents: %s%n", schema.getProperties().getSchemaId(), schema.getSchemaDefinition());
 
                 countDownLatch.countDown();
             });
