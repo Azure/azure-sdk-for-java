@@ -25,6 +25,9 @@ public final class MetricsQueryClientAudience extends ExpandableStringEnum<Metri
     /** Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for MetricsQueryClientAudience. */
     public static final MetricsQueryClientAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://management.azure.com");
 
+    /** Static default audience that uses Azure public cloud. */
+    public static final MetricsQueryClientAudience DEFAULT = fromString("https://management.azure.com");
+
     /**
      * Creates or finds a MetricsQueryClientAudience from its string representation.
      * @param name a name to look for.
