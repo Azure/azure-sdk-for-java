@@ -20,7 +20,7 @@ public class GetSchemaSample {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildAsyncClient();
 

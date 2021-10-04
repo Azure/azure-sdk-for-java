@@ -355,6 +355,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         }
     }
 
+    @SuppressWarnings("removal")
     private void setAccessible(final Field field) {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             field.setAccessible(true);
@@ -372,6 +373,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return the manager instance
      * @throws RuntimeException when field cannot be found or set.
      */
+    @SuppressWarnings("removal")
     protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
             Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());

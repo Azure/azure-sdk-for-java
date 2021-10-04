@@ -71,7 +71,7 @@ This table shows the relationship between SDK versions and supported API version
 |4.0.0-beta.1 - Latest beta release| 2021-09-30-preview (default)
 
 > Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features
-> of the Form Recognizer service. Please see the Migration Guide for detailed instructions on how to update application
+> of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
 > code from client library version 3.1.X or lower to the latest version. Additionally, see the [Changelog][changelog] for more detailed information.
 > The below table describes the relationship of each client and its supported API version(s):
 
@@ -473,7 +473,7 @@ for (int i = 0; i < tables.size(); i++) {
 
 ### Manage your models
 Manage the models in your Form Recognizer account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L294-L323 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L364-L393 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 
@@ -515,7 +515,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L330-L334 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L400-L404 -->
 ```java
 try {
     documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
@@ -554,7 +554,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `DocumentAnalysisAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L341-L344 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L411-L414 -->
 ```java
 DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -616,6 +616,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
+[migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
 
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java

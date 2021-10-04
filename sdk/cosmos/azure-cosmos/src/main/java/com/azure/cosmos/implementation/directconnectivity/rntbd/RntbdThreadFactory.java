@@ -21,6 +21,7 @@ class RntbdThreadFactory implements ThreadFactory {
     private final ThreadGroup threadGroup;
     private final AtomicInteger threadCount;
 
+    @SuppressWarnings("removal")
     RntbdThreadFactory(final String name, final boolean daemon, final int priority) {
 
         final SecurityManager securityManager = System.getSecurityManager();

@@ -113,20 +113,20 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
      */
     public void beginAnalyzeDocument() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-Flux-long
-        File form = new File("{local/file_path/fileName.jpg}");
+        File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer =
-            Utility.toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+            Utility.toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, form.length())
+        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, document.length())
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeResult ->
                 analyzeResult.getDocuments()
                     .stream()
-                    .forEach(document ->
-                        document.getFields()
+                    .forEach(analyzedDocument ->
+                        analyzedDocument.getFields()
                             .forEach((key, documentField) -> {
                                 System.out.printf("Field text: %s%n", key);
                                 System.out.printf("Field value data content: %s%n", documentField.getContent());
@@ -144,14 +144,14 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-Flux-long-AnalyzeDocumentOptions
-        File form = new File("{local/file_path/fileName.jpg}");
+        File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{model_id}";
 
         // Utility method to convert input stream to Byte buffer
         Flux<ByteBuffer> buffer =
-            Utility.toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(form.toPath())));
+            Utility.toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(document.toPath())));
 
-        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, form.length(),
+        documentAnalysisAsyncClient.beginAnalyzeDocument(modelId, buffer, document.length(),
                 new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
@@ -159,8 +159,8 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()
                     .stream()
-                    .forEach(document ->
-                        document.getFields()
+                    .forEach(analyzedDocument ->
+                        analyzedDocument.getFields()
                             .forEach((key, documentField) -> {
                                 System.out.printf("Field text: %s%n", key);
                                 System.out.printf("Field value data content: %s%n", documentField.getContent());
