@@ -16,7 +16,7 @@ import com.azure.data.schemaregistry.SchemaRegistryClient;
 @Immutable
 public final class SchemaRegistrySchema {
     private final SchemaProperties properties;
-    private final String content;
+    private final String schemaDefinition;
 
     /**
      * Creates a new instance.
@@ -26,7 +26,7 @@ public final class SchemaRegistrySchema {
      */
     public SchemaRegistrySchema(SchemaProperties properties, String schemaDefinition) {
         this.properties = properties;
-        this.content = schemaDefinition;
+        this.schemaDefinition = schemaDefinition;
     }
 
     /**
@@ -44,6 +44,6 @@ public final class SchemaRegistrySchema {
      * @return The content of the schema.
      */
     public String getSchemaDefinition() {
-        return content;
+        return schemaDefinition;
     }
 }
