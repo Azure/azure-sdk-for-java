@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-okhttp</artifactId>
   <packaging>jar</packaging>
-  <version>1.7.4</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+  <version>1.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
 
   <name>Microsoft Azure OkHttp HTTP Client Library</name>
   <description>This package contains the OkHttp HTTP client plugin for azure-core.</description>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -80,20 +80,20 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.2</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.8.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.2</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.8.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
