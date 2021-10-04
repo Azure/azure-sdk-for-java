@@ -2,7 +2,7 @@
 
 This guide is intended to assist in the migration to `azure-ai-formrecognizer (4.0.0-beta.1 - above)` from `azure-ai-formrecognizer (3.1.x - below)`. It will focus on side-by-side comparisons for similar operations between the two package versions.
 
-We assume that you are familiar with the previous SDK `azure-ai-formrecognizer (3.1.x - below)`. If not, please refer to the new SDK README for [azure-ai-formrecognizer][README] directly rather than this migration guide.
+We assume that you are familiar with the previous SDK `azure-ai-formrecognizer (3.1.x - below)`. If you are new to this library, please refer to the SDK README for [azure-ai-formrecognizer][README] directly rather than this migration guide.
 
 ## Table of contents
 - [Migration benefits](#migration-benefits)
@@ -22,10 +22,10 @@ doing so would be. As Azure Form Recognizer has matured and been embraced by a m
 we have been focused on learning the patterns and practices to best support developer productivity and add value to our 
 customers.
 
-To improve the development experience and addressing the consistent feedback across the Form Recognizer SDK, this new 
+To improve the development experience and address the consistent feedback across the Form Recognizer SDK, this new 
 version of the library replaces the previously existing clients `FormRecognizerClient` and `FormTrainingClient` with
 `DocumentAnalysisClient` and the `DocumentModelAdministrationClient` that provide unified methods for 
-analyzing documents and providing support for the new features added by the service in 
+analyzing documents and provide support for the new features added by the service in 
 API version `2021-09-30-preview` and later.
 
 The below table describes the relationship of each client and its supported API version(s):
@@ -44,7 +44,7 @@ The newly introduced method return type `AnalyzeResult` removes hierarchical dep
 and move them to a more top level and easily accessible position such as `AnalyzeResult.tables` instead of `RecognizedForm.pages.tables`.
 The service has further matured to define cross-page elements by using the `BoundingRegion` model and by specifying the content and span information on document fields.
 - A unified return type `DocumentModel` indicating the document types the model can analyze and the specific fields it can analyze along with the estimated confidence for each field.
-- Specifying a modelId instead of the generated GUID when creating custom models, along with an optional description. See [here][service_supported_models], for the supported model types.
+- Specifying a modelId instead of the generated GUID when creating models, copying or composing models along with an optional description. See [here][service_supported_models], for the supported model types.
 - Modified `Generate Copy Authorization operation` response to return the target resource information so that it could be used directly when copying custom models method instead of needed to be provided by the user.
 - List Models operation now returns a paged list of prebuilt in addition to custom models that are built successfully. 
 Also, when using the `getModel()` model, users can get the field schema (field names and types that the model can extract) for the model they specified, including for prebuilt models.
@@ -485,6 +485,7 @@ analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
 - In 3.x.x, creating a custom model required specifying `useTrainingLabels` to indicate whether to use labeled data when creating the custom model with the `beginTraining` method.
 - In 4.x.x, we introduced the new general document model (prebuilt-document) to replace the train without labels 
 functionality from 3.x.x which extracts entities, key-value pairs, and layout from a document with the `beginBuildModel` method.
+In  4.x.x the `beginBuildModel` always returns labeled data otherwise.
 
 Train a custom model using 3.x.x `beginTraining`:
 ```java
