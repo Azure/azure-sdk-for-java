@@ -6,6 +6,7 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
@@ -67,6 +68,7 @@ public class ReadmeSamples {
             + "}";
         SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
             schemaContent, SchemaFormat.AVRO);
+
         System.out.println("Registered schema: " + schemaProperties.getSchemaId());
     }
 
@@ -81,8 +83,10 @@ public class ReadmeSamples {
             .credential(tokenCredential)
             .buildClient();
 
-        SchemaProperties schemaProperties = schemaRegistryClient.getSchema("{schema-id}");
-        System.out.println("Retrieved schema: " + schemaProperties.getSchemaName());
+        SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
+
+        System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getSchemaId(),
+            schema.getContent());
     }
 
     /**
@@ -109,8 +113,9 @@ public class ReadmeSamples {
             + "        }\n"
             + "    ]\n"
             + "}";
-        String schemaId = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
+        SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
             schemaContent, SchemaFormat.AVRO);
-        System.out.println("Retreived schema id: " + schemaId);
+
+        System.out.println("Retrieved schema id: " + properties.getSchemaId());
     }
 }

@@ -12,6 +12,7 @@ import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -24,6 +25,7 @@ import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEM
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_ENDPOINT;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_GROUP;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaProperties;
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.assertSchemaRegistrySchema;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -91,22 +93,23 @@ public class SchemaRegistryClientTests extends TestBase {
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryClient client1 = builder.buildClient();
         final SchemaRegistryClient client2 = builder.buildClient();
+        final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act
-        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
+        final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
 
         // Assert
-        assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
+        assertSchemaProperties(response, null, schemaFormat);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
         final String schemaIdToGet = response.getSchemaId();
 
         // Act
-        final SchemaProperties schema1 = client2.getSchema(schemaIdToGet);
+        final SchemaRegistrySchema schema1 = client2.getSchema(schemaIdToGet);
 
         // Assert
-        assertSchemaProperties(schema1, schemaIdToGet, schemaName, SCHEMA_CONTENT);
+        assertSchemaRegistrySchema(schema1, schemaIdToGet, SchemaFormat.AVRO, SCHEMA_CONTENT);
     }
 
     /**
@@ -120,25 +123,26 @@ public class SchemaRegistryClientTests extends TestBase {
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryClient client1 = builder.buildClient();
         final SchemaRegistryClient client2 = builder.buildClient();
+        final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act & Assert
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
             SchemaFormat.AVRO);
-        assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
+        assertSchemaProperties(response, null, schemaFormat);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
         final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
             SchemaFormat.AVRO);
-        assertSchemaProperties(response2, null, schemaName, schemaContentModified);
+        assertSchemaProperties(response2, null, schemaFormat);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
         assertNotEquals(response.getSchemaId(), response2.getSchemaId());
 
         // Act & Assert
-        final SchemaProperties response3 = client2.getSchema(response2.getSchemaId());
-        assertSchemaProperties(response3, response2.getSchemaId(), schemaName, schemaContentModified);
+        final SchemaRegistrySchema response3 = client2.getSchema(response2.getSchemaId());
+        assertSchemaRegistrySchema(response3, response2.getSchemaId(), schemaFormat, schemaContentModified);
     }
 
     /**
@@ -150,11 +154,12 @@ public class SchemaRegistryClientTests extends TestBase {
         final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
         final SchemaRegistryClient client1 = builder.buildClient();
         final SchemaRegistryClient client2 = builder.buildClient();
+        final SchemaFormat schemaFormat = SchemaFormat.AVRO;
 
         // Act & Assert
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
-            SchemaFormat.AVRO);
-        assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
+            schemaFormat);
+        assertSchemaProperties(response, null, schemaFormat);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -162,8 +167,11 @@ public class SchemaRegistryClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        final String schemaId = client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
-        assertEquals(schemaIdToGet, schemaId);
+        final SchemaProperties schemaProperties = client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT,
+            schemaFormat);
+
+        assertEquals(schemaIdToGet, schemaProperties.getSchemaId());
+        assertEquals(schemaFormat, schemaProperties.getFormat());
     }
 
     /**
