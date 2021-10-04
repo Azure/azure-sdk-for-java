@@ -96,6 +96,7 @@ public final class SchemaRegistryClient {
      * Gets the schema properties of the schema associated with the unique schema id.
      *
      * @param id The unique identifier of the schema.
+     * @param context The context to pass to the Http pipeline.
      *
      * @return The {@link SchemaProperties} associated with the given {@code id} and its HTTP response.
      */
@@ -105,7 +106,7 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Gets the schema identifier associated with the given schema.
+     * Gets the schema properties associated with the given schema id.
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -120,7 +121,6 @@ public final class SchemaRegistryClient {
         return this.asyncClient.getSchemaProperties(groupName, name, content, schemaFormat).block();
     }
 
-
     /**
      * Gets the schema identifier associated with the given schema.
      *
@@ -128,6 +128,7 @@ public final class SchemaRegistryClient {
      * @param name The schema name.
      * @param content The string representation of the schema.
      * @param schemaFormat The serialization type of this schema.
+     * @param context The context to pass to the Http pipeline.
      *
      * @return The unique identifier for this schema.
      */
