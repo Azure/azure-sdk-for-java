@@ -73,7 +73,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample for getting the schema from a schema id.
+     * Sample for getting the schema's properties from a schema.
      */
     public void getSchema() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();

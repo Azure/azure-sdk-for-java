@@ -63,7 +63,7 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 ```
 
 ##### Sync client
-<!-- embedme ./src/samples/java/com/azure//data/schemaregistry/ReadmeSamples.java#L36-L41 -->
+<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L36-L41 -->
 ```java
 ic void createSyncClient() {
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -96,9 +96,9 @@ SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 
 ### Register a schema
 Register a schema to be stored in the Azure Schema Registry.
-<!-- embedme ./src/samples/java/com/azure//data/schemaregistry/ReadmeSamples.java#L48-L70 -->
+
+<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L49-L72 -->
 ```java
-ic void registerSchema() {
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
@@ -121,32 +121,33 @@ String schemaContent = "{\n"
     + "}";
 SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
     schemaContent, SchemaFormat.AVRO);
+
+System.out.println("Registered schema: " + schemaProperties.getSchemaId());
 ```
 
-### Retrieve a schema ID
-Retrieve a previously registered schema ID from the Azure Schema Registry.
+### Retrieve a schema's properties
+Retrieve a previously registered schema's properties from the Azure Schema Registry.
 
-<!-- embedme ./src/samples/java/com/azure//data/schemaregistry/ReadmeSamples.java#L77-L85 -->
+<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L79-L89 -->
 ```java
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
+SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("{schema-registry-endpoint")
+    .credential(tokenCredential)
+    .buildClient();
 
+SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
-
-
-
-
-
-
+System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getSchemaId(),
+    schema.getSchemaDefinition());
 ```
+
 ### Retrieve a schema
-Retrieve a previously registered schema's content from the Azure Schema Registry.
+Retrieve a previously registered schema's content and properties from the Azure Schema Registry.
 
-<!-- embedme ./src/samples/java/com/azure//data/schemaregistry/ReadmeSamples.java#L92-L114 -->
+<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L96-L119 -->
 ```java
-
-ample for getting the schema id of a registered schema.
-
-ic void getSchemaId() {
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
@@ -166,6 +167,11 @@ String schemaContent = "{\n"
     + "            \"name\" : \"LastName\", \"type\" : \"string\" \n"
     + "        }\n"
     + "    ]\n"
+    + "}";
+SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
+    schemaContent, SchemaFormat.AVRO);
+
+System.out.println("Retrieved schema id: " + properties.getSchemaId());
 ```
 
 ## Troubleshooting
