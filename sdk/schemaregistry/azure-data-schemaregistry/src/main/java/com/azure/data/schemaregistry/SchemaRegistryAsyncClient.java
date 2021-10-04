@@ -19,11 +19,9 @@ import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -149,23 +147,13 @@ public final class SchemaRegistryAsyncClient {
             .handle((response, sink) -> {
                 final SchemaFormat schemaFormat =
                     SchemaFormat.fromString(response.getDeserializedHeaders().getSchemaType());
-                final URI location = URI.create(response.getDeserializedHeaders().getLocation());
-                final Matcher matcher = SCHEMA_PATTERN.matcher(location.getPath());
-
-                if (!matcher.lookingAt()) {
-                    sink.error(new IllegalArgumentException("Response location does not contain schema group or"
-                        + " schema name. Location: " + location.getPath()));
-
-                    return;
-                }
-
-                final String schemaName = matcher.group("schemaName");
                 final SchemaProperties schemaObject = new SchemaProperties(id, schemaFormat);
-                final SimpleResponse<SchemaProperties> schemaResponse = new SimpleResponse<>(
+                final String schemaDefinition = new String(response.getValue(), SCHEMA_REGISTRY_SERVICE_ENCODING);
+                final SimpleResponse<SchemaRegistrySchema> schemaRegistryResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), schemaObject);
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schemaDefinition));
 
-                sink.next(schemaResponse);
+                sink.next(schemaRegistryResponse);
             });
     }
 
@@ -224,9 +212,10 @@ public final class SchemaRegistryAsyncClient {
             .queryIdByContentWithResponseAsync(groupName, name, getSerialization(schemaFormat), content)
             .handle((response, sink) -> {
                 SchemaId schemaId = response.getValue();
-                SimpleResponse<String> schemaIdResponse = new SimpleResponse<>(
+                SchemaProperties properties = new SchemaProperties(schemaId.getId(), schemaFormat);
+                SimpleResponse<SchemaProperties> schemaIdResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), schemaId.getId());
+                    response.getHeaders(), properties);
 
                 sink.next(schemaIdResponse);
             });
