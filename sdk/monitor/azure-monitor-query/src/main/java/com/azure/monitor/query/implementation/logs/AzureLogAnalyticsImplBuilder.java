@@ -207,7 +207,7 @@ public final class AzureLogAnalyticsImplBuilder {
      */
     public AzureLogAnalyticsImpl buildClient() {
         if (host == null) {
-            this.host = "https://api.loganalytics.io/v1";
+            this.host = "https://api.loganalytics.io";
         }
         String hostVersion = this.host + "/v1";
         if (pipeline == null) {
