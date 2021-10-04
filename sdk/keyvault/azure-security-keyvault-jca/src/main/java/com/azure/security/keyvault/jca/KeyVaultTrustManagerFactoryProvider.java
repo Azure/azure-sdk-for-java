@@ -43,6 +43,7 @@ public final class KeyVaultTrustManagerFactoryProvider extends Provider {
     /**
      * Initialize the provider.
      */
+    @SuppressWarnings("removal")
     private void initialize() {
         AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
             putService(
