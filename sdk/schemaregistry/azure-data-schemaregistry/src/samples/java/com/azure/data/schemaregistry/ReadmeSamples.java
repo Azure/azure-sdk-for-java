@@ -109,7 +109,7 @@ public class ReadmeSamples {
             + "        }\n"
             + "    ]\n"
             + "}";
-        String schemaId = schemaRegistryClient.getSchemaId("{schema-group}", "{schema-name}",
+        String schemaId = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
             schemaContent, SchemaFormat.AVRO);
         System.out.println("Retreived schema id: " + schemaId);
     }

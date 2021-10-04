@@ -16,6 +16,7 @@ import com.azure.data.schemaregistry.implementation.models.SchemaId;
 import com.azure.data.schemaregistry.implementation.models.SerializationType;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -126,7 +127,7 @@ public final class SchemaRegistryAsyncClient {
      * @return The {@link SchemaProperties} associated with the given {@code id}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaProperties> getSchema(String id) {
+    public Mono<SchemaRegistrySchema> getSchema(String id) {
         return getSchemaWithResponse(id).map(Response::getValue);
     }
 
@@ -138,11 +139,11 @@ public final class SchemaRegistryAsyncClient {
      * @return The {@link SchemaProperties} associated with the given {@code id} along with the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SchemaProperties>> getSchemaWithResponse(String id) {
+    public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String id) {
         return FluxUtil.withContext(context -> getSchemaWithResponse(id, context));
     }
 
-    Mono<Response<SchemaProperties>> getSchemaWithResponse(String id, Context context) {
+    Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String id, Context context) {
         Objects.requireNonNull(id, "'id' should not be null");
         return this.restService.getSchemas().getByIdWithResponseAsync(id)
             .handle((response, sink) -> {
@@ -180,8 +181,10 @@ public final class SchemaRegistryAsyncClient {
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getSchemaId(String groupName, String name, String content, SchemaFormat schemaFormat) {
-        return getSchemaIdWithResponse(groupName, name, content, schemaFormat)
+    public Mono<SchemaProperties> getSchemaProperties(String groupName, String name, String content,
+        SchemaFormat schemaFormat) {
+
+        return getSchemaPropertiesWithResponse(groupName, name, content, schemaFormat)
             .map(response -> response.getValue());
     }
 
@@ -196,11 +199,11 @@ public final class SchemaRegistryAsyncClient {
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> getSchemaIdWithResponse(String groupName, String name, String content,
-        SchemaFormat schemaFormat) {
+    public Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name,
+        String content, SchemaFormat schemaFormat) {
 
         return FluxUtil.withContext(context ->
-            getSchemaIdWithResponse(groupName, name, content, schemaFormat, context));
+            getSchemaPropertiesWithResponse(groupName, name, content, schemaFormat, context));
     }
 
     /**
@@ -214,7 +217,7 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return A mono that completes with the schema id.
      */
-    Mono<Response<String>> getSchemaIdWithResponse(String groupName, String name, String content,
+    Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name, String content,
         SchemaFormat schemaFormat, Context context) {
 
         return restService.getSchemas()

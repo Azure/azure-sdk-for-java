@@ -162,7 +162,7 @@ public class SchemaRegistryClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        final String schemaId = client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
+        final String schemaId = client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO);
         assertEquals(schemaIdToGet, schemaId);
     }
 
@@ -210,7 +210,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act & Assert
         final ResourceNotFoundException error = assertThrows(ResourceNotFoundException.class,
-            () -> client1.getSchemaId("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
+            () -> client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
 
         assertEquals(404, error.getResponse().getStatusCode());
     }

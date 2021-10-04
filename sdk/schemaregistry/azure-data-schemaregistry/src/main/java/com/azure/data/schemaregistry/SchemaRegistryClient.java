@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -87,8 +88,20 @@ public final class SchemaRegistryClient {
      * @return The {@link SchemaProperties} associated with the given {@code id}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaProperties getSchema(String id) {
+    public SchemaRegistrySchema getSchema(String id) {
         return this.asyncClient.getSchema(id).block();
+    }
+
+    /**
+     * Gets the schema properties of the schema associated with the unique schema id.
+     *
+     * @param id The unique identifier of the schema.
+     *
+     * @return The {@link SchemaProperties} associated with the given {@code id} and its HTTP response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaRegistrySchema> getSchemaWithResponse(String id, Context context) {
+        return this.asyncClient.getSchemaWithResponse(id, context).block();
     }
 
     /**
@@ -102,7 +115,26 @@ public final class SchemaRegistryClient {
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String getSchemaId(String groupName, String name, String content, SchemaFormat schemaFormat) {
-        return this.asyncClient.getSchemaId(groupName, name, content, schemaFormat).block();
+    public SchemaProperties getSchemaProperties(String groupName, String name, String content,
+        SchemaFormat schemaFormat) {
+        return this.asyncClient.getSchemaProperties(groupName, name, content, schemaFormat).block();
+    }
+
+
+    /**
+     * Gets the schema identifier associated with the given schema.
+     *
+     * @param groupName The schema group.
+     * @param name The schema name.
+     * @param content The string representation of the schema.
+     * @param schemaFormat The serialization type of this schema.
+     *
+     * @return The unique identifier for this schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaProperties> getSchemaPropertiesWithResponse(String groupName, String name, String content,
+        SchemaFormat schemaFormat, Context context) {
+        return this.asyncClient.getSchemaPropertiesWithResponse(groupName, name, content, schemaFormat, context)
+            .block();
     }
 }

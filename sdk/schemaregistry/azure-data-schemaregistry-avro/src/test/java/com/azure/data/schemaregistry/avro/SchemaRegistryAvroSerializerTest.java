@@ -91,7 +91,7 @@ public class SchemaRegistryAvroSerializerTest {
         final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO,
             playingClassSchema.getFullName(), schemaBytes);
 
-        when(client.getSchemaId(MOCK_SCHEMA_GROUP, registered.getSchemaName(), playingClassSchema.toString(),
+        when(client.getSchemaProperties(MOCK_SCHEMA_GROUP, registered.getSchemaName(), playingClassSchema.toString(),
             SchemaFormat.AVRO)).thenReturn(Mono.just(MOCK_GUID));
 
         final SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(client, avroSerializer,

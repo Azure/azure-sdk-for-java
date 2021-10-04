@@ -145,7 +145,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getSchemaId
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
-        String schemaId = client.getSchemaId("{schema-group}", "{schema-name}", schema,
+        String schemaId = client.getSchemaProperties("{schema-group}", "{schema-name}", schema,
             SchemaFormat.AVRO);
 
         System.out.println("The schema id: " + schemaId);
@@ -160,7 +160,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaId
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
-        client.getSchemaId("{schema-group}", "{schema-name}", schema,
+        client.getSchemaProperties("{schema-group}", "{schema-name}", schema,
             SchemaFormat.AVRO).subscribe(schemaId -> {
                 System.out.println("The schema id: " + schemaId);
             });

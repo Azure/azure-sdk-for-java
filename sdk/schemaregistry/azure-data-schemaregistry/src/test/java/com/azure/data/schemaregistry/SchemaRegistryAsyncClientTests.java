@@ -197,7 +197,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        StepVerifier.create(client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
+        StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(schema -> assertEquals(schemaIdToGet, schema))
             .verifyComplete();
     }
@@ -249,7 +249,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.getSchemaId("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
+        StepVerifier.create(client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
