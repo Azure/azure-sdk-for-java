@@ -10,7 +10,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Represents the version of {@link SentimentSkill}.
  */
 public enum SentimentSkillVersion {
+    /**
+     * Version 1 of {@link SentimentSkill}.
+     */
     V1("#Microsoft.Skills.Text.SentimentSkill"),
+
+    /**
+     * Version 3 of {@link SentimentSkill}.
+     */
     V3("#Microsoft.Skills.Text.V3.SentimentSkill");
 
     @JsonValue
