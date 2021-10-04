@@ -107,6 +107,7 @@ You can obtain your api-key from the [Azure portal](https://portal.azure.com/) o
 
 ```bash
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
+```
 
 **Note:**
 
