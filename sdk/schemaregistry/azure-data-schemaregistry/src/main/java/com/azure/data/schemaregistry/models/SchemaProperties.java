@@ -3,38 +3,31 @@
 
 package com.azure.data.schemaregistry.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
 
-import java.util.Arrays;
-
 /**
- * Stores all relevant information returned from {@link SchemaRegistryClient}/{@link SchemaRegistryAsyncClient} layer.
+ * Stores properties of a schema stored in Schema Registry.
+ *
+ * @see SchemaRegistryAsyncClient
+ * @see SchemaRegistryClient
  */
+@Immutable
 public final class SchemaProperties {
 
     private final String schemaId;
     private final SchemaFormat schemaFormat;
-    private final byte[] schemaBytes;
-    private final String schemaName;
 
     /**
-     * Initializes SchemaRegistryObject instance.
+     * Initializes a new instance.
      *
-     * @param schemaId the schema id
-     * @param schemaFormat type of schema, e.g. avro, json
-     * @param schemaName name of the schema.
-     * @param schemaByteArray byte payload representing schema, returned from Azure Schema Registry
+     * @param schemaId The schema id.
+     * @param schemaFormat The type of schema, e.g. avro, json.
      */
-    public SchemaProperties(
-        String schemaId,
-        SchemaFormat schemaFormat,
-        String schemaName,
-        byte[] schemaByteArray) {
+    public SchemaProperties(String schemaId, SchemaFormat schemaFormat) {
         this.schemaId = schemaId;
         this.schemaFormat = schemaFormat;
-        this.schemaBytes = schemaByteArray.clone();
-        this.schemaName = schemaName;
     }
 
     /**
@@ -53,25 +46,4 @@ public final class SchemaProperties {
     public SchemaFormat getFormat() {
         return schemaFormat;
     }
-
-    /**
-     * The name of the schema.
-     * @return the schema name.
-     */
-    public String getSchemaName() {
-        return this.schemaName;
-    }
-
-    /**
-     *  Schema bytes returned from Schema Registry.
-     *
-     *  @return The byte content of this schema.
-     */
-    public byte[] getSchema() {
-        if (schemaBytes == null) {
-            return new byte[0];
-        }
-        return Arrays.copyOf(this.schemaBytes, this.schemaBytes.length);
-    }
-
 }
