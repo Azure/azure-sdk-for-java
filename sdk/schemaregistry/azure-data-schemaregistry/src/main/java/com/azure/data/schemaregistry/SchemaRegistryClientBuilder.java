@@ -26,6 +26,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryBuilder;
@@ -70,8 +71,7 @@ public class SchemaRegistryClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private String endpoint;
-    private String host;
+    private String fullyQualifiedNamespace;
     private HttpClient httpClient;
     private TokenCredential credential;
     private ClientOptions clientOptions;
@@ -79,6 +79,7 @@ public class SchemaRegistryClientBuilder {
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
+    private ServiceVersion serviceVersion;
 
     /**
      * Constructor for CachedSchemaRegistryClientBuilder.  Supplies client defaults.
@@ -95,28 +96,22 @@ public class SchemaRegistryClientBuilder {
     }
 
     /**
-     * Sets the service endpoint for the Azure Schema Registry instance.
+     * Sets the fully qualified namespace for the Azure Schema Registry instance. This is likely to be
+     * similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
      *
-     * @param endpoint The URL of the Azure Schema Registry instance
+     * @param fullyQualifiedNamespace The fully qualified namespace of the Azure Schema Registry instance.
      * @return The updated {@link SchemaRegistryClientBuilder} object.
-     * @throws NullPointerException if {@code endpoint} is null
-     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL
+     * @throws NullPointerException if {@code fullyQualifiedNamespace} is null
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} cannot be parsed into a valid URL
      */
-    public SchemaRegistryClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
+    public SchemaRegistryClientBuilder fullyQualifiedNamespace(String fullyQualifiedNamespace) {
+        Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         try {
-            URL url = new URL(endpoint);
-            this.host = url.getHost();
+            URL url = new URL(fullyQualifiedNamespace);
+            this.fullyQualifiedNamespace = url.getHost();
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(
-                new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
-        }
-
-        if (endpoint.endsWith("/")) {
-            this.endpoint = endpoint.substring(0, endpoint.length() - 1);
-        } else {
-            this.endpoint = endpoint;
+            logger.verbose("Fully qualified namespace did not contain protocol.");
+            this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         }
 
         return this;
@@ -220,6 +215,17 @@ public class SchemaRegistryClientBuilder {
     }
 
     /**
+     * Sets the service version to use.
+     *
+     * @param serviceVersion Service version.
+     * @return The updated instance.
+     */
+    public SchemaRegistryClientBuilder serviceVersion(ServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
@@ -245,13 +251,21 @@ public class SchemaRegistryClientBuilder {
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored.
      *
      * @return A {@link SchemaRegistryAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} and {@link #credential(TokenCredential)
-     * credential} are not set.
+     * @throws NullPointerException if {@link #fullyQualifiedNamespace(String) fullyQualifiedNamespace} and
+     *      {@link #credential(TokenCredential) credential} are not set.
+     * @throws IllegalArgumentException if {@link #fullyQualifiedNamespace(String) fullyQualifiedNamespace} is an empty
+     *      string.
      */
     public SchemaRegistryAsyncClient buildAsyncClient() {
         Objects.requireNonNull(credential,
             "'credential' cannot be null and must be set via builder.credential(TokenCredential)");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null and must be set in the builder.endpoint(String)");
+        Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null and must be set via builder.fullyQualifiedNamespace(String)");
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'fullyQualifiedNamespace' cannot be an empty string."));
+        }
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -300,8 +314,11 @@ public class SchemaRegistryClientBuilder {
                 .build();
         }
 
+        ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
+
         AzureSchemaRegistry restService = new AzureSchemaRegistryBuilder()
-            .endpoint(host)
+            .endpoint(fullyQualifiedNamespace)
+            .apiVersion(version.getVersion())
             .pipeline(buildPipeline)
             .buildClient();
 
@@ -312,7 +329,7 @@ public class SchemaRegistryClientBuilder {
      * Creates synchronous {@link SchemaRegistryClient} instance. See async builder method for options validation.
      *
      * @return {@link SchemaRegistryClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} and {@link #credential(TokenCredential)
+     * @throws NullPointerException if {@link #fullyQualifiedNamespace(String) endpoint} and {@link #credential(TokenCredential)
      * credential} are not set.
      */
     public SchemaRegistryClient buildClient() {
