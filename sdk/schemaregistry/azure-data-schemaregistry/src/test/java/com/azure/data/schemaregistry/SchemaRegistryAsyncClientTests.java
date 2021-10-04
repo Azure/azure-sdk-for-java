@@ -123,7 +123,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client2.getSchema(schemaIdToGet))
             .assertNext(schema -> {
                 assertEquals(schemaIdToGet, schema.getSchemaId());
-                assertEquals(SchemaFormat.AVRO, schema.getSerializationFormat());
+                assertEquals(SchemaFormat.AVRO, schema.getFormat());
 
                 // Replace white space.
                 final String contents = new String(schema.getSchema(), StandardCharsets.UTF_8);
@@ -263,7 +263,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotEquals(expectedContents, "'expectedContents' should not be null.");
 
         assertEquals(expectedSchemaName, actual.getSchemaName());
-        assertEquals(SchemaFormat.AVRO, actual.getSerializationFormat());
+        assertEquals(SchemaFormat.AVRO, actual.getFormat());
 
         assertNotNull(actual.getSchemaId());
 

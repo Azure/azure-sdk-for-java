@@ -47,10 +47,10 @@ public final class SchemaProperties {
     }
 
     /**
-     * The serialization type of this schema.
+     * The schema format of this schema.
      * @return schema type associated with the schema payload
      */
-    public SchemaFormat getSerializationFormat() {
+    public SchemaFormat getFormat() {
         return schemaFormat;
     }
 

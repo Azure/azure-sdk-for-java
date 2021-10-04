@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Locale;
 
 /**
- * The list of all serialization types.
+ * The list of all formats supported by Schema Registry.
  */
 public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
     public static final SchemaFormat AVRO = fromString("avro");
