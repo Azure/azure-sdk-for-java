@@ -151,7 +151,20 @@ public final class SearchAsyncClient {
      *
      * <p> Upload dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.uploadDocuments#Iterable}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.uploadDocuments#Iterable -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;,
+     *                 indexingResult.getKey&#40;&#41;, indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.uploadDocuments#Iterable -->
      *
      * @param documents collection of documents to upload to the target Index.
      * @return The result of the document indexing actions.
@@ -175,7 +188,21 @@ public final class SearchAsyncClient {
      *
      * <p> Upload dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.uploadDocumentsWithResponse&#40;Collections.singletonList&#40;searchDocument&#41;, null&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *         for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.uploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to upload to the target Index.
      * @param options Options that allow specifying document indexing behavior.
@@ -213,7 +240,19 @@ public final class SearchAsyncClient {
      *
      * <p> Merge dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;merge&quot;&#41;;
+     * searchAsyncClient.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable -->
      *
      * @param documents collection of documents to be merged
      * @return document index result
@@ -244,7 +283,20 @@ public final class SearchAsyncClient {
      *
      * <p> Merge dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.mergeDocumentsWithResponse&#40;Collections.singletonList&#40;searchDocument&#41;, null&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *         for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to be merged
      * @param options Options that allow specifying document indexing behavior.
@@ -283,7 +335,20 @@ public final class SearchAsyncClient {
      *
      * <p> Merge or upload dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocuments#Iterable}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocuments#Iterable -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;,
+     *                 indexingResult.getKey&#40;&#41;, indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocuments#Iterable -->
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @return document index result
@@ -315,7 +380,21 @@ public final class SearchAsyncClient {
      *
      * <p> Merge or upload dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.mergeOrUploadDocumentsWithResponse&#40;Collections.singletonList&#40;searchDocument&#41;, null&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *         for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;,
+     *                 indexingResult.getKey&#40;&#41;, indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.mergeOrUploadDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
      * @param options Options that allow specifying document indexing behavior.
@@ -347,7 +426,20 @@ public final class SearchAsyncClient {
      *
      * <p> Delete dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.deleteDocuments#Iterable}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.deleteDocuments#Iterable -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.deleteDocuments#Iterable -->
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @return document index result.
@@ -371,7 +463,21 @@ public final class SearchAsyncClient {
      *
      * <p> Delete dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
+     * <pre>
+     * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
+     * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
+     * searchAsyncClient.deleteDocumentsWithResponse&#40;Collections.singletonList&#40;searchDocument&#41;, null&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *         for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.deleteDocumentsWithResponse#Iterable-IndexDocumentsOptions -->
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
      * @param options Options that allow specifying document indexing behavior.
@@ -402,7 +508,26 @@ public final class SearchAsyncClient {
      *
      * <p> Index batch operation on dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch -->
+     * <pre>
+     * SearchDocument searchDocument1 = new SearchDocument&#40;&#41;;
+     * searchDocument1.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument1.put&#40;&quot;hotelName&quot;, &quot;test1&quot;&#41;;
+     * SearchDocument searchDocument2 = new SearchDocument&#40;&#41;;
+     * searchDocument2.put&#40;&quot;hotelId&quot;, &quot;2&quot;&#41;;
+     * searchDocument2.put&#40;&quot;hotelName&quot;, &quot;test2&quot;&#41;;
+     * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
+     * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
+     * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
+     * searchAsyncClient.indexDocuments&#40;indexDocumentsBatch&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.indexDocuments#IndexDocumentsBatch -->
      *
      * @param batch The batch of index actions
      * @return Response containing the status of operations for all actions in the batch.
@@ -426,7 +551,27 @@ public final class SearchAsyncClient {
      *
      * <p> Index batch operation on dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions -->
+     * <pre>
+     * SearchDocument searchDocument1 = new SearchDocument&#40;&#41;;
+     * searchDocument1.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
+     * searchDocument1.put&#40;&quot;hotelName&quot;, &quot;test1&quot;&#41;;
+     * SearchDocument searchDocument2 = new SearchDocument&#40;&#41;;
+     * searchDocument2.put&#40;&quot;hotelId&quot;, &quot;2&quot;&#41;;
+     * searchDocument2.put&#40;&quot;hotelName&quot;, &quot;test2&quot;&#41;;
+     * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
+     * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
+     * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
+     * searchAsyncClient.indexDocumentsWithResponse&#40;indexDocumentsBatch, null&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *         for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
+     *                 indexingResult.isSucceeded&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.indexDocumentsWithResponse#IndexDocumentsBatch-IndexDocumentsOptions -->
      *
      * @param batch The batch of index actions
      * @param options Options that allow specifying document indexing behavior.
@@ -466,7 +611,17 @@ public final class SearchAsyncClient {
      *
      * <p> Get dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class -->
+     * <pre>
+     * searchAsyncClient.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;
+     *     .subscribe&#40;result -&gt; &#123;
+     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : result.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                 keyValuePair.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class -->
      *
      * @param key The key of the document to retrieve.
      * @param modelClass The model class converts to.
@@ -489,7 +644,18 @@ public final class SearchAsyncClient {
      *
      * <p> Get dynamic SearchDocument. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List -->
+     * <pre>
+     * searchAsyncClient.getDocumentWithResponse&#40;&quot;hotelId&quot;, SearchDocument.class, null&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
+     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                 keyValuePair.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List -->
      *
      * @param <T> Convert document to the generic type.
      * @param key The key of the document to retrieve.
@@ -537,7 +703,12 @@ public final class SearchAsyncClient {
      *
      * <p> Get document count. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentCount}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentCount -->
+     * <pre>
+     * searchAsyncClient.getDocumentCount&#40;&#41;
+     *     .subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are %d documents in service.&quot;, count&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.getDocumentCount -->
      *
      * @return the number of documents.
      */
@@ -553,7 +724,15 @@ public final class SearchAsyncClient {
      *
      * <p> Get document count. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse -->
+     * <pre>
+     * searchAsyncClient.getDocumentCountWithResponse&#40;&#41;
+     *     .subscribe&#40;countResponse -&gt; &#123;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + countResponse.getStatusCode&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;There are %d documents in service.&quot;, countResponse.getValue&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse -->
      *
      * @return response containing the number of documents.
      */
@@ -584,7 +763,23 @@ public final class SearchAsyncClient {
      *
      * <p> Search text from documents in service. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.search#String}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String -->
+     * <pre>
+     * SearchPagedFlux searchPagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;&#41;;
+     * searchPagedFlux.getTotalCount&#40;&#41;.subscribe&#40;
+     *     count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;
+     * &#41;;
+     * searchPagedFlux.byPage&#40;&#41;
+     *     .subscribe&#40;resultResponse -&gt; &#123;
+     *         for &#40;SearchResult result: resultResponse.getValue&#40;&#41;&#41; &#123;
+     *             SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
+     *             for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
+     *                 System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
+     *             &#125;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.search#String -->
      *
      * @param searchText A full-text search query expression.
      * @return A {@link SearchPagedFlux} that iterates over {@link SearchResult} objects and provides access to the
@@ -608,7 +803,23 @@ public final class SearchAsyncClient {
      *
      * <p> Search text from documents in service with option. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
+     * <pre>
+     * SearchPagedFlux pagedFlux = searchAsyncClient.search&#40;&quot;searchText&quot;,
+     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;;
+     *
+     * pagedFlux.getTotalCount&#40;&#41;.subscribe&#40;count -&gt; System.out.printf&#40;&quot;There are around %d results.&quot;, count&#41;&#41;;
+     *
+     * pagedFlux.byPage&#40;&#41;
+     *     .subscribe&#40;searchResultResponse -&gt; searchResultResponse.getValue&#40;&#41;.forEach&#40;searchDocument -&gt; &#123;
+     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair
+     *             : searchDocument.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                 keyValuePair.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions -->
      *
      * @param searchText A full-text search query expression.
      * @param searchOptions Parameters to further refine the search query
@@ -689,7 +900,17 @@ public final class SearchAsyncClient {
      *
      * <p> Suggest text from documents in service. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.suggest#String-String}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.suggest#String-String -->
+     * <pre>
+     * searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
+     *     .subscribe&#40;results -&gt; &#123;
+     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: results.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                 keyValuePair.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.suggest#String-String -->
      *
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
@@ -710,7 +931,18 @@ public final class SearchAsyncClient {
      *
      * <p> Suggest text from documents in service with option. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions -->
+     * <pre>
+     * searchAsyncClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;&#41;
+     *     .subscribe&#40;results -&gt; &#123;
+     *         for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: results.getDocument&#40;SearchDocument.class&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;Document key %s, document value %s&quot;, keyValuePair.getKey&#40;&#41;,
+     *                 keyValuePair.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions -->
      *
      * @param searchText The search text on which to base suggestions
      * @param suggesterName The name of the suggester as specified in the suggesters collection that's part of the index
@@ -759,7 +991,12 @@ public final class SearchAsyncClient {
      *
      * <p> Autocomplete text from documents in service. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.autocomplete#String-String}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
+     * <pre>
+     * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;
+     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.autocomplete#String-String -->
      *
      * @param searchText search text
      * @param suggesterName suggester name
@@ -777,7 +1014,15 @@ public final class SearchAsyncClient {
      *
      * <p> Autocomplete text from documents in service with option. </p>
      *
-     * {@codesnippet com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions}
+     * <!-- src_embed com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions -->
+     * <pre>
+     * searchAsyncClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     *     new AutocompleteOptions&#40;&#41;.setAutocompleteMode&#40;AutocompleteMode.ONE_TERM_WITH_CONTEXT&#41;&#41;
+     *     .subscribe&#40;result -&gt;
+     *         System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions -->
      *
      * @param searchText search text
      * @param suggesterName suggester name

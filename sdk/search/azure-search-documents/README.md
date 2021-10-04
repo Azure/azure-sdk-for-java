@@ -107,7 +107,6 @@ You can obtain your api-key from the [Azure portal](https://portal.azure.com/) o
 
 ```bash
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
-```
 
 **Note:**
 
@@ -128,8 +127,7 @@ The SDK provides three clients.
 To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L66-L69 -->
-```java
+```java readme-sample-createIndexClient
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -138,8 +136,7 @@ SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L73-L76 -->
-```java
+```java readme-sample-createIndexAsyncClient
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -151,8 +148,7 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L80-L83 -->
-```java
+```java readme-sample-createIndexerClient
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -161,8 +157,7 @@ SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L87-L90 -->
-```java
+```java readme-sample-createIndexerAsyncClient
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -174,8 +169,7 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 Once you have the values of the Azure Cognitive Search service URL endpoint and
 admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L50-L54 -->
-```java
+```java readme-sample-createSearchClient
 SearchClient searchClient = new SearchClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(adminKey))
@@ -185,8 +179,7 @@ SearchClient searchClient = new SearchClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L58-L62 -->
-```java
+```java readme-sample-createAsyncSearchClient
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(adminKey))
@@ -252,8 +245,7 @@ Let's explore them with a search for a "luxury" hotel.
 `SearchDocument` is the default type returned from queries when you don't provide your own.  Here we perform the search,
 enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L122-L127 -->
-```java
+```java readme-sample-searchWithDynamicType
 for (SearchResult searchResult : searchClient.search("luxury")) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
     String id = (String) doc.get("hotelId");
@@ -266,8 +258,7 @@ for (SearchResult searchResult : searchClient.search("luxury")) {
 
 Define a `Hotel` class.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L130-L151 -->
-```java
+```java readme-sample-hotelclass
 public class Hotel {
     private String id;
     private String name;
@@ -294,8 +285,7 @@ public class Hotel {
 
 Use it in place of `SearchDocument` when querying.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L154-L159 -->
-```java
+```java readme-sample-searchWithStronglyType
 for (SearchResult searchResult : searchClient.search("luxury")) {
     Hotel doc = searchResult.getDocument(Hotel.class);
     String id = doc.getId();
@@ -312,8 +302,7 @@ The `SearchOptions` provide powerful control over the behavior of our queries.
 
 Let's search for the top 5 luxury hotels with a good rating.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L163-L168 -->
-```java
+```java readme-sample-searchWithSearchOptions
 SearchOptions options = new SearchOptions()
     .setFilter("rating ge 4")
     .setOrderBy("rating desc")
@@ -332,16 +321,14 @@ There are multiple ways of preparing search fields for a search index. For basic
 `List<SearchField>`. There are three annotations `SimpleFieldProperty`, `SearchFieldProperty` and `FieldBuilderIgnore`
 to configure the field of model class.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L242-L243 -->
-```java
+```java readme-sample-createIndexUseFieldBuilder
 List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
 searchIndexClient.createIndex(new SearchIndex("index", searchFields));
 ```
 
 For advanced scenarios, we can build search fields using `SearchField` directly.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L192-L238 -->
-```java
+```java readme-sample-createIndex
 List<SearchField> searchFieldList = new ArrayList<>();
 searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
     .setKey(true)
@@ -397,8 +384,7 @@ In addition to querying for documents using keywords and optional filters, you c
 your index if you already know the key. You could get the key from a query, for example, and want to show more
 information about it or navigate your customer to that document.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L180-L181 -->
-```java
+```java readme-sample-retrieveDocuments
 Hotel hotel = searchClient.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
@@ -409,8 +395,7 @@ You can `Upload`, `Merge`, `MergeOrUpload`, and `Delete` multiple documents from
 There are [a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
 to be aware of.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L185-L188 -->
-```java
+```java readme-sample-batchDocumentsOperations
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<>();
 batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
 batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
@@ -426,8 +411,7 @@ to `false` to get a successful response with an `IndexDocumentsResult` for inspe
 The examples so far have been using synchronous APIs, but we provide full support for async APIs as well. You'll need
 to use [SearchAsyncClient](#create-a-searchclient).
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L172-L176 -->
-```java
+```java readme-sample-searchWithAsyncClient
 searchAsyncClient.search("luxury")
     .subscribe(result -> {
         Hotel hotel = result.getDocument(Hotel.class);
@@ -448,8 +432,7 @@ error if you try to retrieve a document that doesn't exist in your index.
 Any Search API operation that fails will throw an [`HttpResponseException`][HttpResponseException] with helpful
 [`Status codes`][status_codes]. Many of these errors are recoverable.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L110-L118 -->
-```java
+```java readme-sample-handleErrorsWithSyncClient
 try {
     Iterable<SearchResult> results = searchClient.search("hotel");
 } catch (HttpResponseException ex) {

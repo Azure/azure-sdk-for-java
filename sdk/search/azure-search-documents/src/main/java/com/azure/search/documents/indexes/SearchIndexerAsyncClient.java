@@ -106,7 +106,16 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
+     * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
+     *
+     * SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection&#40;dataSource&#41;;
+     * System.out.printf&#40;&quot;The dataSource name is %s. The container name of dataSource is %s.%n&quot;,
+     *     updateDataSource.getName&#40;&#41;, updateDataSource.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @return the data source that was created or updated.
@@ -124,7 +133,19 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
+     * <pre>
+     * searchIndexerAsyncClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
+     *     .flatMap&#40;dataSource -&gt; &#123;
+     *         dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse&#40;dataSource, true&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;updateDataSource -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe dataSource name is %s. &quot;
+     *             + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
+     *         updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
@@ -145,7 +166,22 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions -->
+     * <pre>
+     * searchIndexerAsyncClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
+     *     .flatMap&#40;dataSource -&gt; &#123;
+     *         dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse&#40;
+     *             new CreateOrUpdateDataSourceConnectionOptions&#40;dataSource&#41;
+     *                 .setOnlyIfUnchanged&#40;true&#41;
+     *                 .setCacheResetRequirementsIgnored&#40;true&#41;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;updateDataSource -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe dataSource name is %s. &quot;
+     *                 + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
+     *             updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions -->
      *
      * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
      * connection}.
@@ -191,7 +227,17 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer data source connection named "dataSource".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection&#40;&quot;dataSource&quot;,
+     *     com.azure.search.documents.indexes.models.SearchIndexerDataSourceType.AZURE_BLOB, &quot;&#123;connectionString&#125;&quot;,
+     *     new com.azure.search.documents.indexes.models.SearchIndexerDataContainer&#40;&quot;container&quot;&#41;&#41;;
+     * searchIndexerAsyncClient.createDataSourceConnection&#40;dataSource&#41;
+     *     .subscribe&#40;dataSourceFromService -&gt;
+     *         System.out.printf&#40;&quot;The data source name is %s. The ETag of data source is %s.%n&quot;,
+     *             dataSourceFromService.getName&#40;&#41;, dataSourceFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection -->
      *
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
@@ -209,7 +255,17 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection -->
+     * <pre>
+     * SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection&#40;&quot;dataSource&quot;,
+     *     SearchIndexerDataSourceType.AZURE_BLOB, &quot;&#123;connectionString&#125;&quot;,
+     *     new SearchIndexerDataContainer&#40;&quot;container&quot;&#41;&#41;;
+     * searchIndexerAsyncClient.createDataSourceConnectionWithResponse&#40;dataSource&#41;
+     *     .subscribe&#40;dataSourceFromService -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The data source name is %s.%n&quot;,
+     *         dataSourceFromService.getStatusCode&#40;&#41;, dataSourceFromService.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection -->
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create.
      * @return a Mono which performs the network request upon subscription.
@@ -239,7 +295,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
+     *     .subscribe&#40;dataSource -&gt;
+     *         System.out.printf&#40;&quot;The dataSource name is %s. The ETag of dataSource is %s.%n&quot;, dataSource.getName&#40;&#41;,
+     *         dataSource.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String -->
      *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return the DataSource.
@@ -256,7 +319,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getDataSourceConnectionWithResponse&#40;&quot;dataSource&quot;&#41;
+     *     .subscribe&#40;dataSource -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The data source name is %s.%n&quot;,
+     *         dataSource.getStatusCode&#40;&#41;, dataSource.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String -->
      *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return a response containing the DataSource.
@@ -286,7 +356,15 @@ public class SearchIndexerAsyncClient {
      *
      * <p> List all search indexer data source connections. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections -->
+     * <pre>
+     * searchIndexerAsyncClient.listDataSourceConnections&#40;&#41;
+     *     .subscribe&#40;dataSource -&gt;
+     *         System.out.printf&#40;&quot;The dataSource name is %s. The ETag of dataSource is %s.%n&quot;,
+     *             dataSource.getName&#40;&#41;, dataSource.getETag&#40;&#41;&#41;
+     *     &#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections -->
      *
      * @return a list of DataSources
      */
@@ -317,7 +395,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> List all search indexer data source connection names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames -->
+     * <pre>
+     * searchIndexerAsyncClient.listDataSourceConnectionNames&#40;&#41;
+     *     .subscribe&#40;dataSourceName -&gt; System.out.printf&#40;&quot;The dataSource name is %s.%n&quot;, dataSourceName&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames -->
      *
      * @return a list of DataSource names
      */
@@ -355,7 +438,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete the search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String -->
+     * <pre>
+     * searchIndexerAsyncClient.deleteDataSourceConnection&#40;&quot;dataSource&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String -->
      *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} for deletion
      * @return a void Mono
@@ -373,7 +461,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete the search indexer data source connection named "dataSource". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
+     * <pre>
+     * searchIndexerAsyncClient.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
+     *     .flatMap&#40;dataSource -&gt; searchIndexerAsyncClient.deleteDataSourceConnectionWithResponse&#40;dataSource, true&#41;&#41;
+     *     .subscribe&#40;deleteResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
      *
      * @param dataSource The {@link SearchIndexerDataSourceConnection} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
@@ -408,7 +503,16 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer -->
+     * <pre>
+     * SearchIndexer searchIndexer = new SearchIndexer&#40;&quot;searchIndexer&quot;, &quot;dataSource&quot;,
+     *     &quot;searchIndex&quot;&#41;;
+     * searchIndexerAsyncClient.createIndexer&#40;searchIndexer&#41;
+     *     .subscribe&#40;indexerFromService -&gt;
+     *         System.out.printf&#40;&quot;The indexer name is %s. The ETag of indexer is %s.%n&quot;, indexerFromService.getName&#40;&#41;,
+     *         indexerFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer -->
      *
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
@@ -425,7 +529,16 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer -->
+     * <pre>
+     * SearchIndexer searchIndexer = new SearchIndexer&#40;&quot;searchIndexer&quot;, &quot;dataSource&quot;,
+     *     &quot;searchIndex&quot;&#41;;
+     * searchIndexerAsyncClient.createIndexerWithResponse&#40;searchIndexer&#41;
+     *     .subscribe&#40;indexerFromServiceResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The indexer name is %s.%n&quot;,
+     *             indexerFromServiceResponse.getStatusCode&#40;&#41;, indexerFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer -->
      *
      * @param indexer definition of the indexer to create
      * @return a response containing the created Indexer.
@@ -453,7 +566,19 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
+     *         searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
+     *             new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateIndexer&#40;searchIndexerFromService&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;updatedIndexer -&gt;
+     *         System.out.printf&#40;&quot;The indexer name is %s. The target field name of indexer is %s.%n&quot;,
+     *         updatedIndexer.getName&#40;&#41;, updatedIndexer.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer -->
      *
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
@@ -470,7 +595,21 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
+     *         searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
+     *             new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateIndexerWithResponse&#40;searchIndexerFromService, true&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;indexerFromService -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer name is %s. &quot;
+     *             + &quot;The target field name of indexer is %s.%n&quot;, indexerFromService.getStatusCode&#40;&#41;,
+     *         indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
+     *         indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean -->
      *
      * @param indexer the definition of the {@link SearchIndexer} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
@@ -490,7 +629,25 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
+     *         searchIndexerFromService.setFieldMappings&#40;Collections.singletonList&#40;
+     *             new FieldMapping&#40;&quot;hotelName&quot;&#41;.setTargetFieldName&#40;&quot;HotelName&quot;&#41;&#41;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateIndexerWithResponse&#40;
+     *             new CreateOrUpdateIndexerOptions&#40;searchIndexerFromService&#41;
+     *                 .setOnlyIfUnchanged&#40;true&#41;
+     *                 .setCacheReprocessingChangeDetectionDisabled&#40;false&#41;
+     *                 .setCacheResetRequirementsIgnored&#40;true&#41;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;indexerFromService -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer name is %s. &quot;
+     *                 + &quot;The target field name of indexer is %s.%n&quot;, indexerFromService.getStatusCode&#40;&#41;,
+     *             indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
+     *             indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions -->
      *
      * @param options The options used to create or update the {@link SearchIndexer indexer}.
      * @return a response containing the created Indexer.
@@ -531,7 +688,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer with name "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;indexerFromService -&gt;
+     *         System.out.printf&#40;&quot;The indexer name is %s. The ETag of indexer is %s.%n&quot;, indexerFromService.getName&#40;&#41;,
+     *             indexerFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String -->
      *
      * @param indexerName the name of the indexer to retrieve
      * @return the indexer.
@@ -548,7 +712,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer with name "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexerWithResponse&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;indexerFromServiceResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The indexer name is %s.%n&quot;,
+     *         indexerFromServiceResponse.getStatusCode&#40;&#41;, indexerFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String -->
      *
      * @param indexerName the name of the indexer to retrieve
      * @return a response containing the indexer.
@@ -576,7 +747,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> List all search indexers. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers -->
+     * <pre>
+     * searchIndexerAsyncClient.listIndexers&#40;&#41;
+     *     .subscribe&#40;indexer -&gt;
+     *         System.out.printf&#40;&quot;The indexer name is %s. The ETag of indexer is %s.%n&quot;, indexer.getName&#40;&#41;,
+     *         indexer.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers -->
      *
      * @return a response containing all Indexers from the Search service.
      */
@@ -607,7 +785,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> List all search indexer names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames -->
+     * <pre>
+     * searchIndexerAsyncClient.listIndexerNames&#40;&#41;
+     *     .subscribe&#40;indexerName -&gt; System.out.printf&#40;&quot;The indexer name is %s.%n&quot;, indexerName&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames -->
      *
      * @return a response containing all Indexers from the Search service.
      */
@@ -644,7 +827,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete search indexer named "searchIndexer". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String -->
+     * <pre>
+     * searchIndexerAsyncClient.deleteIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String -->
      *
      * @param indexerName the name of the indexer to delete
      * @return a response signalling completion.
@@ -662,7 +850,15 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .flatMap&#40;searchIndexer -&gt;
+     *         searchIndexerAsyncClient.deleteIndexerWithResponse&#40;searchIndexer, true&#41;&#41;
+     *     .subscribe&#40;deleteResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean -->
      *
      * @param indexer the {@link SearchIndexer} to delete
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
@@ -704,7 +900,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Reset search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String -->
+     * <pre>
+     * searchIndexerAsyncClient.resetIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String -->
      *
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
@@ -721,7 +922,13 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Reset search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String -->
+     * <pre>
+     * searchIndexerAsyncClient.resetIndexerWithResponse&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String -->
      *
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
@@ -749,7 +956,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Run search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String -->
+     * <pre>
+     * searchIndexerAsyncClient.runIndexer&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String -->
      *
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
@@ -766,7 +978,13 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Run search indexer named "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String -->
+     * <pre>
+     * searchIndexerAsyncClient.runIndexerWithResponse&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.println&#40;&quot;The status code of the response is &quot; + response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String -->
      *
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
@@ -793,7 +1011,13 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get status for search indexer "searchIndexer".  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexerStatus&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;indexerStatus -&gt;
+     *         System.out.printf&#40;&quot;The indexer status is %s.%n&quot;, indexerStatus.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String -->
      *
      * @param indexerName the name of the indexer for which to retrieve status
      * @return the indexer execution info.
@@ -810,7 +1034,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer status.  </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getIndexerStatusWithResponse&#40;&quot;searchIndexer&quot;&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer status is %s.%n&quot;,
+     *         response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getStatus&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String -->
      *
      * @param indexerName the name of the indexer for which to retrieve status
      * @return a response with the indexer execution info.
@@ -837,7 +1068,32 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset -->
+     * <pre>
+     * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
+     *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
+     *         .setSource&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+     * &#41;;
+     *
+     * List&lt;OutputFieldMappingEntry&gt; outputs = Arrays.asList&#40;
+     *     new OutputFieldMappingEntry&#40;&quot;text&quot;&#41;
+     *         .setTargetName&#40;&quot;mytext&quot;&#41;,
+     *     new OutputFieldMappingEntry&#40;&quot;layoutText&quot;&#41;
+     *         .setTargetName&#40;&quot;myLayoutText&quot;&#41;
+     * &#41;;
+     * SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset&#40;&quot;searchIndexerSkillset&quot;,
+     *     Collections.singletonList&#40;new OcrSkill&#40;inputs, outputs&#41;
+     *         .setShouldDetectOrientation&#40;true&#41;
+     *         .setDefaultLanguageCode&#40;null&#41;
+     *         .setName&#40;&quot;myocr&quot;&#41;
+     *         .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;
+     *         .setContext&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;&#41;&#41;;
+     * searchIndexerAsyncClient.createSkillset&#40;searchIndexerSkillset&#41;
+     *     .subscribe&#40;skillset -&gt;
+     *         System.out.printf&#40;&quot;The indexer skillset name is %s. The ETag of indexer skillset is %s.%n&quot;,
+     *         skillset.getName&#40;&#41;, skillset.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset -->
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
@@ -854,7 +1110,32 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset -->
+     * <pre>
+     * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
+     *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
+     *         .setSource&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;
+     * &#41;;
+     *
+     * List&lt;OutputFieldMappingEntry&gt; outputs = Arrays.asList&#40;
+     *     new OutputFieldMappingEntry&#40;&quot;text&quot;&#41;
+     *         .setTargetName&#40;&quot;mytext&quot;&#41;,
+     *     new OutputFieldMappingEntry&#40;&quot;layoutText&quot;&#41;
+     *         .setTargetName&#40;&quot;myLayoutText&quot;&#41;
+     * &#41;;
+     * SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset&#40;&quot;searchIndexerSkillset&quot;,
+     *     Collections.singletonList&#40;new OcrSkill&#40;inputs, outputs&#41;
+     *         .setShouldDetectOrientation&#40;true&#41;
+     *         .setDefaultLanguageCode&#40;null&#41;
+     *         .setName&#40;&quot;myocr&quot;&#41;
+     *         .setDescription&#40;&quot;Extracts text &#40;plain and structured&#41; from image.&quot;&#41;
+     *         .setContext&#40;&quot;&#47;document&#47;normalized_images&#47;*&quot;&#41;&#41;&#41;;
+     * searchIndexerAsyncClient.createSkillsetWithResponse&#40;searchIndexerSkillset&#41;
+     *     .subscribe&#40;skillsetWithResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The indexer skillset name is %s.%n&quot;,
+     *         skillsetWithResponse.getStatusCode&#40;&#41;, skillsetWithResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset -->
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return a response containing the created Skillset.
@@ -884,7 +1165,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .subscribe&#40;indexerSkillset -&gt;
+     *         System.out.printf&#40;&quot;The indexer skillset name is %s. The ETag of indexer skillset is %s.%n&quot;,
+     *         indexerSkillset.getName&#40;&#41;, indexerSkillset.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String -->
      *
      * @param skillsetName the name of the skillset to retrieve
      * @return the Skillset.
@@ -901,7 +1189,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String -->
+     * <pre>
+     * searchIndexerAsyncClient.getSkillsetWithResponse&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .subscribe&#40;skillsetWithResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The indexer skillset name is %s.%n&quot;,
+     *         skillsetWithResponse.getStatusCode&#40;&#41;, skillsetWithResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String -->
      *
      * @param skillsetName the name of the skillset to retrieve
      * @return a response containing the Skillset.
@@ -928,7 +1223,14 @@ public class SearchIndexerAsyncClient {
      *
      * <p> List all search indexer skillsets. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets -->
+     * <pre>
+     * searchIndexerAsyncClient.listSkillsets&#40;&#41;
+     *     .subscribe&#40;skillset -&gt;
+     *         System.out.printf&#40;&quot;The skillset name is %s. The ETag of skillset is %s.%n&quot;, skillset.getName&#40;&#41;,
+     *         skillset.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets -->
      *
      * @return a reactive response emitting the list of skillsets.
      */
@@ -959,7 +1261,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> List all search indexer skillset names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames -->
+     * <pre>
+     * searchIndexerAsyncClient.listSkillsetNames&#40;&#41;
+     *     .subscribe&#40;skillsetName -&gt; System.out.printf&#40;&quot;The indexer skillset name is %s.%n&quot;, skillsetName&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames -->
      *
      * @return a reactive response emitting the list of skillset names.
      */
@@ -996,7 +1303,17 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset -->
+     * <pre>
+     * searchIndexerAsyncClient.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .flatMap&#40;indexerSkillset -&gt; &#123;
+     *         indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateSkillset&#40;indexerSkillset&#41;;
+     *     &#125;&#41;.subscribe&#40;updateSkillset -&gt;
+     *         System.out.printf&#40;&quot;The indexer skillset name is %s. The description of indexer skillset is %s.%n&quot;,
+     *         updateSkillset.getName&#40;&#41;, updateSkillset.getDescription&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset -->
      *
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
@@ -1013,7 +1330,20 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean -->
+     * <pre>
+     * searchIndexerAsyncClient.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .flatMap&#40;indexerSkillset -&gt; &#123;
+     *         indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse&#40;indexerSkillset, true&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;updateSkillsetResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer skillset name is %s. &quot;
+     *             + &quot;The description of indexer skillset is %s.%n&quot;, updateSkillsetResponse.getStatusCode&#40;&#41;,
+     *         updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *         updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean -->
      *
      * @param skillset the definition of the skillset to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
@@ -1034,7 +1364,24 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions -->
+     * <pre>
+     * searchIndexerAsyncClient.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .flatMap&#40;indexerSkillset -&gt; &#123;
+     *         indexerSkillset.setDescription&#40;&quot;This is new description!&quot;&#41;;
+     *         return searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse&#40;
+     *             new CreateOrUpdateSkillsetOptions&#40;indexerSkillset&#41;
+     *                 .setOnlyIfUnchanged&#40;true&#41;
+     *                 .setCacheReprocessingChangeDetectionDisabled&#40;false&#41;
+     *                 .setCacheResetRequirementsIgnored&#40;true&#41;&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;updateSkillsetResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%nThe indexer skillset name is %s. &quot;
+     *             + &quot;The description of indexer skillset is %s.%n&quot;, updateSkillsetResponse.getStatusCode&#40;&#41;,
+     *             updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions -->
      *
      * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
      * @return a response containing the skillset that was created or updated.
@@ -1076,7 +1423,12 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String -->
+     * <pre>
+     * searchIndexerAsyncClient.deleteSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String -->
      *
      * @param skillsetName the name of the skillset to delete
      * @return a response signalling completion.
@@ -1094,7 +1446,15 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean -->
+     * <pre>
+     * searchIndexerAsyncClient.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
+     *     .flatMap&#40;searchIndexerSkillset -&gt;
+     *         searchIndexerAsyncClient.deleteSkillsetWithResponse&#40;searchIndexerSkillset, true&#41;&#41;
+     *     .subscribe&#40;deleteResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean -->
      *
      * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.
