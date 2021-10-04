@@ -104,12 +104,12 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      */
     public void beginAnalyzeDocument() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long
-        File form = new File("{local/file_path/fileName.jpg}");
+        File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
-        byte[] fileContent = Files.readAllBytes(form.toPath());
+        byte[] fileContent = Files.readAllBytes(document.toPath());
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
 
-            documentAnalysisClient.beginAnalyzeDocument(modelId, targetStream, form.length())
+            documentAnalysisClient.beginAnalyzeDocument(modelId, targetStream, document.length())
                 .getFinalResult()
                 .getDocuments().stream()
                 .map(AnalyzedDocument::getFields)
@@ -130,12 +130,12 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
      */
     public void beginAnalyzeDocumentWithOptions() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long-AnalyzeDocumentOptions-Context
-        File form = new File("{local/file_path/fileName.jpg}");
+        File document = new File("{local/file_path/fileName.jpg}");
         String modelId = "{custom_trained_model_id}";
-        byte[] fileContent = Files.readAllBytes(form.toPath());
+        byte[] fileContent = Files.readAllBytes(document.toPath());
 
         try (InputStream targetStream = new ByteArrayInputStream(fileContent)) {
-            documentAnalysisClient.beginAnalyzeDocument(modelId, targetStream, form.length(),
+            documentAnalysisClient.beginAnalyzeDocument(modelId, targetStream, document.length(),
                     new AnalyzeDocumentOptions().setPages(Arrays.asList("1", "3")), Context.NONE)
                 .getFinalResult()
                 .getDocuments().stream()

@@ -71,7 +71,7 @@ This table shows the relationship between SDK versions and supported API version
 |4.0.0-beta.1 - Latest beta release| 2021-09-30-preview (default)
 
 > Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features
-> of the Form Recognizer service. Please see the Migration Guide for detailed instructions on how to update application
+> of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
 > code from client library version 3.1.X or lower to the latest version. Additionally, see the [Changelog][changelog] for more detailed information.
 > The below table describes the relationship of each client and its supported API version(s):
 
@@ -616,6 +616,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
+[migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md
 
 [create_composed_model]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModel.java
 [create_composed_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/CreateComposedModelAsync.java
