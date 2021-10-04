@@ -3,7 +3,6 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,8 +19,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -268,11 +265,9 @@ public class JacksonMemberNameConverterTests {
         assertNull(jacksonJsonSerializer.convertMemberName(constructors[0]));
     }
 
-    @SuppressWarnings("removal")
     @ParameterizedTest
     @MethodSource("classConversionSupplier")
-    public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected)
-        throws Exception {
+    public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected) {
         Set<String> actual = getAllDeclaredMembers(object.getClass())
             .map(converter::convertMemberName)
             .filter(Objects::nonNull)
@@ -280,13 +275,7 @@ public class JacksonMemberNameConverterTests {
 
         assertEquals(expected, actual);
 
-        Field field = JacksonJsonSerializer.class.getDeclaredField("mapper");
-        AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            field.setAccessible(true);
-            return null;
-        });
-
-        ObjectNode objectNode = ((ObjectMapperShim) field.get(converter)).valueToTree(object);
+        ObjectNode objectNode = converter.mapper.valueToTree(object);
 
         for (String name : actual) {
             assertTrue(objectNode.has(name));

@@ -25,7 +25,7 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     private boolean closed;
     private long lastReadMillis;
-    private ScheduledFuture<?> readTimeoutWatcher;
+    ScheduledFuture<?> readTimeoutWatcher;
 
     /**
      * Constructs a channel handler that watches channel read operations to ensure they aren't timing out.
@@ -56,7 +56,7 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
         disposeWatcher();
     }
 
-    private void readTimeoutRunnable(ChannelHandlerContext ctx) {
+    void readTimeoutRunnable(ChannelHandlerContext ctx) {
         // Channel has completed a read operation since the last time the timeout event fired.
         if ((timeoutMillis - (System.currentTimeMillis() - lastReadMillis)) > 0) {
             return;
