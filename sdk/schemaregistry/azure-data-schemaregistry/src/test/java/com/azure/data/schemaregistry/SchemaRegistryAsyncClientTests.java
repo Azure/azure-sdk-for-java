@@ -183,7 +183,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertSchemaProperties(response, response.getSchemaId(), SchemaFormat.AVRO);
+                assertSchemaProperties(response, null, SchemaFormat.AVRO);
                 schemaId.set(response.getSchemaId());
             }).verifyComplete();
 
@@ -194,7 +194,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
-            .assertNext(schema -> assertEquals(schemaIdToGet, schema))
+            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getSchemaId()))
             .verifyComplete();
     }
 
@@ -275,7 +275,11 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
     static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat) {
         assertNotNull(actual);
-        assertEquals(expectedSchemaId, actual.getSchemaId());
+
+        if (expectedSchemaId != null) {
+            assertEquals(expectedSchemaId, actual.getSchemaId());
+        }
+
         assertEquals(schemaFormat, actual.getFormat());
     }
 }
