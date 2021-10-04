@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource model definition for an Azure Resource Manager resource with an etag. */
+/** Entity Resource The resource model definition for an Azure Resource Manager resource with an etag. */
 @Immutable
 public class AzureEntityResource extends Resource {
     /*

@@ -1,96 +1,141 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks?api-version=2021-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks?api-version=2020-12-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
-      "x-ms-client-request-id" : "b9af5d40-b44f-434c-9758-7480632380ac"
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "5a32a5b5-a51a-4905-9646-30ab0ee319b5"
     },
     "Response" : {
+      "content-length" : "7351",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Server" : "Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
-      "Content-Length" : "2425",
       "StatusCode" : "200",
-      "x-ms-request-id" : "06cd952d-144e-4433-ab29-47bd2f2a7afb",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/notebooks/Notebook 1\",\"name\":\"Notebook 1\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"10003327-0000-0100-0000-5e031adb0000\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":1},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/bigDataPools/testsparkpool\",\"name\":\"testsparkpool\",\"type\":\"Spark\",\"endpoint\":\"https://testsynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool\",\"auth\":{\"type\":\"AAD\",\"authResource\":\"https://dev.azuresynapse.net\"},\"sparkVersion\":\"2.4\",\"nodeCount\":41,\"cores\":8,\"memory\":56,\"extraHeader\":{}}},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"print(\\\"hello from portal\\\")\"],\"attachments\":{},\"outputs\":[],\"execution_count\":null}]}},{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/notebooks/dongwwaTestNotebook\",\"name\":\"dongwwaTestNotebook\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"0100d5a0-0000-0100-0000-5ecba4720000\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"sessionKeepAliveTimeout\":30},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"print('hello')\"],\"attachments\":{},\"outputs\":[],\"execution_count\":null}]}},{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/notebooks/dongwwaNb2\",\"name\":\"dongwwaNb2\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"0100f6a0-0000-0100-0000-5ecba61e0000\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"sessionKeepAliveTimeout\":30},\"cells\":[]}}]}",
-      "Date" : "Mon, 15 Jun 2020 14:50:13 GMT",
+      "x-ms-request-id" : "c25a9ead-f8df-4103-9c28-d145d679e7f7",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/Notebook 1\",\"name\":\"Notebook 1\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"63015fd8-0000-0800-0000-5fd018790000\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":{\"spark.dynamicAllocation.enabled\":\"false\",\"spark.dynamicAllocation.minExecutors\":\"2\",\"spark.dynamicAllocation.maxExecutors\":\"2\"}},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/bigDataPools/testsparkpool\",\"name\":\"testsparkpool\",\"type\":\"Spark\",\"endpoint\":\"https://xysynapsetest.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool\",\"auth\":{\"type\":\"AAD\",\"authResource\":\"https://dev.azuresynapse.net\"},\"sparkVersion\":\"2.4\",\"nodeCount\":10,\"cores\":4,\"memory\":28,\"extraHeader\":null},\"sessionKeepAliveTimeout\":30,\"saveOutput\":true},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"from azureml.opendatasets import NycTlcYellow\\n\",\"\\n\",\"data = NycTlcYellow()\\n\",\"df = data.to_spark_dataframe()\\n\",\"# Display 10 rows\\n\",\"display(df.limit(10))\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null}},{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/demo_notebook\",\"name\":\"demo_notebook\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"79015c4f-0000-0800-0000-5fd1639f0000\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":null,\"sessionProperties\":null,\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"from azureml.opendatasets import NycTlcYellow\\n\",\"\\n\",\"data = NycTlcYellow()\\n\",\"df = data.to_spark_dataframe()\\n\",\"# Display 10 rows\\n\",\"display(df.limit(10))\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null}},{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/jianghao_notebook\",\"name\":\"jianghao_notebook\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"92051b0e-0000-0800-0000-600f7f8d0000\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"jianghaospool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":{\"spark.dynamicAllocation.enabled\":\"false\",\"spark.dynamicAllocation.minExecutors\":\"2\",\"spark.dynamicAllocation.maxExecutors\":\"2\"}},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/bigDataPools/jianghaospool\",\"name\":\"jianghaospool\",\"type\":\"Spark\",\"endpoint\":\"https://xysynapsetest.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/jianghaospool\",\"auth\":{\"type\":\"AAD\",\"authResource\":\"https://dev.azuresynapse.net\"},\"sparkVersion\":\"2.4\",\"nodeCount\":3,\"cores\":4,\"memory\":28,\"extraHeader\":null},\"sessionKeepAliveTimeout\":30,\"saveOutput\":true,\"kernelspec\":{\"name\":\"synapse_pyspark\",\"display_name\":\"Synapse PySpark\"}},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\r\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\r\\n\",\"demo_df.show()\"],\"attachments\":null,\"outputs\":[{\"output_type\":\"display_data\",\"data\":{\"application/vnd.livy.statement-meta+json\":{\"spark_pool\":null,\"session_id\":null,\"statement_id\":null,\"state\":\"session_starting\",\"livy_statement_state\":null,\"queued_time\":\"2021-01-26T02:33:32.090252Z\",\"execution_start_time\":null,\"execution_finish_time\":null},\"text/plain\":\"StatementMeta(, , , SessionStarting, )\"},\"metadata\":{}}],\"execution_count\":1}],\"folder\":null}},{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/notebook-410678e1\",\"name\":\"notebook-410678e1\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"530694ca-0000-0800-0000-60105a130000\",\"properties\":{\"nbformat\":0,\"nbformat_minor\":0,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":null},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":null,\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\n\",\"demo_df.show()\\n\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null}},{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/notebook-68037f94\",\"name\":\"notebook-68037f94\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"5506abc3-0000-0800-0000-60105c2f0000\",\"properties\":{\"nbformat\":0,\"nbformat_minor\":0,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":null},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":null,\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\n\",\"demo_df.show()\\n\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null}},{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/notebook-72999002\",\"name\":\"notebook-72999002\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"etag\":\"56060b07-0000-0800-0000-60105c790000\",\"properties\":{\"nbformat\":0,\"nbformat_minor\":0,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":null},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":null,\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\n\",\"demo_df.show()\\n\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null}}]}",
+      "Date" : "Mon, 04 Oct 2021 22:06:33 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/Notebook%201?api-version=2021-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/Notebook%201?api-version=2020-12-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
-      "x-ms-client-request-id" : "31025ff0-a8a8-4176-990f-e6ce775439f6"
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "1b02ddac-d09f-4299-9ff9-bec9df99b7c9"
     },
     "Response" : {
-      "Server" : "Microsoft-IIS/10.0 Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 15 Jun 2020 14:50:13 GMT",
-      "x-ms-correlation-request-id" : "7bac6474-0b87-45cc-9791-055d4cba375c",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "Expires" : "-1",
-      "Content-Length" : "1212",
-      "x-ms-request-id" : "255e8274-274e-41ab-88ef-39ef99addb40",
-      "Body" : "{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/notebooks/Notebook 1\",\"name\":\"Notebook 1\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":1},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/bigDataPools/testsparkpool\",\"name\":\"testsparkpool\",\"type\":\"Spark\",\"endpoint\":\"https://testsynapseworkspace.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool\",\"auth\":{\"type\":\"AAD\",\"authResource\":\"https://dev.azuresynapse.net\"},\"sparkVersion\":\"2.4\",\"nodeCount\":41,\"cores\":8,\"memory\":56,\"extraHeader\":{}}},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"print(\\\"hello from portal\\\")\"],\"attachments\":{},\"outputs\":[],\"execution_count\":null}]},\"etag\":\"10003327-0000-0100-0000-5e031adb0000\"}",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-request-id" : "2d290c49-b24e-4c71-9c30-a7a22b4e2124",
+      "Body" : "{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/Notebook 1\",\"name\":\"Notebook 1\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":{\"spark.dynamicAllocation.enabled\":\"false\",\"spark.dynamicAllocation.minExecutors\":\"2\",\"spark.dynamicAllocation.maxExecutors\":\"2\"}},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/bigDataPools/testsparkpool\",\"name\":\"testsparkpool\",\"type\":\"Spark\",\"endpoint\":\"https://xysynapsetest.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool\",\"auth\":{\"type\":\"AAD\",\"authResource\":\"https://dev.azuresynapse.net\"},\"sparkVersion\":\"2.4\",\"nodeCount\":10,\"cores\":4,\"memory\":28,\"extraHeader\":null},\"sessionKeepAliveTimeout\":30,\"saveOutput\":true},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"from azureml.opendatasets import NycTlcYellow\\n\",\"\\n\",\"data = NycTlcYellow()\\n\",\"df = data.to_spark_dataframe()\\n\",\"# Display 10 rows\\n\",\"display(df.limit(10))\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null},\"etag\":\"63015fd8-0000-0800-0000-5fd018790000\"}",
+      "Date" : "Mon, 04 Oct 2021 22:06:33 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/dongwwaTestNotebook?api-version=2021-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/demo_notebook?api-version=2020-12-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
-      "x-ms-client-request-id" : "cc6a583c-02e8-4c00-9e22-f0e5480f373d"
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "5cf650dd-fb26-4443-a7c5-b698c7c7285c"
     },
     "Response" : {
-      "Server" : "Microsoft-IIS/10.0 Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 15 Jun 2020 14:50:13 GMT",
-      "x-ms-correlation-request-id" : "602570df-518e-45ce-bbfd-5a6d62dac00e",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "Expires" : "-1",
-      "Content-Length" : "666",
-      "x-ms-request-id" : "37395d16-12bb-4a3e-bfa9-a56fd65c183e",
-      "Body" : "{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/notebooks/dongwwaTestNotebook\",\"name\":\"dongwwaTestNotebook\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"sessionKeepAliveTimeout\":30},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"print('hello')\"],\"attachments\":{},\"outputs\":[],\"execution_count\":null}]},\"etag\":\"0100d5a0-0000-0100-0000-5ecba4720000\"}",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-request-id" : "f6ea7796-4942-44f9-994f-6b3cc89406d3",
+      "Body" : "{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/demo_notebook\",\"name\":\"demo_notebook\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":null,\"sessionProperties\":null,\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"from azureml.opendatasets import NycTlcYellow\\n\",\"\\n\",\"data = NycTlcYellow()\\n\",\"df = data.to_spark_dataframe()\\n\",\"# Display 10 rows\\n\",\"display(df.limit(10))\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null},\"etag\":\"79015c4f-0000-0800-0000-5fd1639f0000\"}",
+      "Date" : "Mon, 04 Oct 2021 22:06:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/dongwwaNb2?api-version=2021-06-01-preview",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/jianghao_notebook?api-version=2020-12-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.1 (1.8.0_251; Windows Server 2019 10.0)",
-      "x-ms-client-request-id" : "96f631f3-6c2f-4a06-9540-087e5a2b39fe"
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "8f7ad016-46b3-4961-bad6-5899e0214079"
     },
     "Response" : {
-      "Server" : "Microsoft-IIS/10.0 Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 15 Jun 2020 14:50:13 GMT",
-      "x-ms-correlation-request-id" : "bb269309-5832-4171-af1d-54563dce1262",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "Expires" : "-1",
-      "Content-Length" : "533",
-      "x-ms-request-id" : "ccb50d9f-aae6-4ac0-b378-18e652e319a3",
-      "Body" : "{\"id\":\"/subscriptions/051ddeca-1ed6-4d8b-ba6f-1ff561e5f3b3/resourceGroups/zzy-test-rg/providers/Microsoft.Synapse/workspaces/testsynapseworkspace/notebooks/dongwwaNb2\",\"name\":\"dongwwaNb2\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"sessionKeepAliveTimeout\":30},\"cells\":[]},\"etag\":\"0100f6a0-0000-0100-0000-5ecba61e0000\"}",
-      "X-Powered-By" : "ASP.NET",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-request-id" : "b66bc0e9-77cd-4ec7-9ae6-d187a0772679",
+      "Body" : "{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/jianghao_notebook\",\"name\":\"jianghao_notebook\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":4,\"nbformat_minor\":2,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"jianghaospool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":{\"spark.dynamicAllocation.enabled\":\"false\",\"spark.dynamicAllocation.minExecutors\":\"2\",\"spark.dynamicAllocation.maxExecutors\":\"2\"}},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/bigDataPools/jianghaospool\",\"name\":\"jianghaospool\",\"type\":\"Spark\",\"endpoint\":\"https://xysynapsetest.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/jianghaospool\",\"auth\":{\"type\":\"AAD\",\"authResource\":\"https://dev.azuresynapse.net\"},\"sparkVersion\":\"2.4\",\"nodeCount\":3,\"cores\":4,\"memory\":28,\"extraHeader\":null},\"sessionKeepAliveTimeout\":30,\"saveOutput\":true,\"kernelspec\":{\"name\":\"synapse_pyspark\",\"display_name\":\"Synapse PySpark\"}},\"cells\":[{\"cell_type\":\"code\",\"metadata\":{},\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\r\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\r\\n\",\"demo_df.show()\"],\"attachments\":null,\"outputs\":[{\"output_type\":\"display_data\",\"data\":{\"application/vnd.livy.statement-meta+json\":{\"spark_pool\":null,\"session_id\":null,\"statement_id\":null,\"state\":\"session_starting\",\"livy_statement_state\":null,\"queued_time\":\"2021-01-26T02:33:32.090252Z\",\"execution_start_time\":null,\"execution_finish_time\":null},\"text/plain\":\"StatementMeta(, , , SessionStarting, )\"},\"metadata\":{}}],\"execution_count\":1}],\"folder\":null},\"etag\":\"92051b0e-0000-0800-0000-600f7f8d0000\"}",
+      "Date" : "Mon, 04 Oct 2021 22:06:34 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/notebook-410678e1?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "5b7fe188-1889-4967-b750-8f2eb820e017"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7d740ec7-6f36-434b-bb5e-cd98c4ba0f35",
+      "Body" : "{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/notebook-410678e1\",\"name\":\"notebook-410678e1\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":0,\"nbformat_minor\":0,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":null},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":null,\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\n\",\"demo_df.show()\\n\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null},\"etag\":\"530694ca-0000-0800-0000-60105a130000\"}",
+      "Date" : "Mon, 04 Oct 2021 22:06:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/notebook-68037f94?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "8c2de5fc-7c6a-4d2e-aae5-2a28e0a4f02a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "fbb3b511-2e33-4960-8759-0ada6e649ea3",
+      "Body" : "{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/notebook-68037f94\",\"name\":\"notebook-68037f94\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":0,\"nbformat_minor\":0,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":null},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":null,\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\n\",\"demo_df.show()\\n\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null},\"etag\":\"5506abc3-0000-0800-0000-60105c2f0000\"}",
+      "Date" : "Mon, 04 Oct 2021 22:06:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/notebooks/notebook-72999002?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-artifacts/1.0.0-beta.6 (1.8.0_302; Mac OS X; 10.16)",
+      "x-ms-client-request-id" : "6b8bd1a1-f4bb-46a1-b236-9d933a5a7456"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d0b81d1a-d8cb-49cd-a39f-1d1f60008662",
+      "Body" : "{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/xiangyan/providers/Microsoft.Synapse/workspaces/xysynapsetest/notebooks/notebook-72999002\",\"name\":\"notebook-72999002\",\"type\":\"Microsoft.Synapse/workspaces/notebooks\",\"properties\":{\"nbformat\":0,\"nbformat_minor\":0,\"entityState\":null,\"renameOperationDetails\":null,\"bigDataPool\":{\"referenceName\":\"testsparkpool\",\"type\":\"BigDataPoolReference\"},\"sessionProperties\":{\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2,\"conf\":null},\"metadata\":{\"language_info\":{\"name\":\"python\"},\"a365ComputeOptions\":null,\"sessionKeepAliveTimeout\":0},\"cells\":[{\"cell_type\":\"code\",\"metadata\":null,\"source\":[\"new_rows = [('CA',22, 45000),(\\\"WA\\\",35,65000) ,(\\\"WA\\\",50,85000)]\\n\",\"demo_df = spark.createDataFrame(new_rows, ['state', 'age', 'salary'])\\n\",\"demo_df.show()\\n\"],\"attachments\":null,\"outputs\":[],\"execution_count\":null}],\"folder\":null},\"etag\":\"56060b07-0000-0800-0000-60105c790000\"}",
+      "Date" : "Mon, 04 Oct 2021 22:06:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
     },
     "Exception" : null
   } ],

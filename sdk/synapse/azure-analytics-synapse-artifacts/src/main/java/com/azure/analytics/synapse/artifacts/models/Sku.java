@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SQL pool SKU. */
+/** Sku SQL pool SKU. */
 @Fluent
 public final class Sku {
     /*

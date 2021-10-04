@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auto-pausing properties of a Big Data pool powered by Apache Spark. */
+/** Spark pool auto-pausing properties Auto-pausing properties of a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class AutoPauseProperties {
     /*

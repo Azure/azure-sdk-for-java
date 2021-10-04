@@ -82,6 +82,14 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private Object azureCloudType;
 
     /*
+     * Specify the kind of your storage account. Allowed values are: Storage
+     * (general purpose v1), StorageV2 (general purpose v2), BlobStorage, or
+     * BlockBlobStorage. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.accountKind")
+    private String accountKind;
+
+    /*
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -282,6 +290,30 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      */
     public AzureBlobStorageLinkedService setAzureCloudType(Object azureCloudType) {
         this.azureCloudType = azureCloudType;
+        return this;
+    }
+
+    /**
+     * Get the accountKind property: Specify the kind of your storage account. Allowed values are: Storage (general
+     * purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with
+     * resultType string).
+     *
+     * @return the accountKind value.
+     */
+    public String getAccountKind() {
+        return this.accountKind;
+    }
+
+    /**
+     * Set the accountKind property: Specify the kind of your storage account. Allowed values are: Storage (general
+     * purpose v1), StorageV2 (general purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with
+     * resultType string).
+     *
+     * @param accountKind the accountKind value to set.
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService setAccountKind(String accountKind) {
+        this.accountKind = accountKind;
         return this;
     }
 

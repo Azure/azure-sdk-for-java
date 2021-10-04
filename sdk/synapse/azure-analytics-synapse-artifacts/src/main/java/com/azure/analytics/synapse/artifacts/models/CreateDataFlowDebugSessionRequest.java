@@ -11,158 +11,112 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CreateDataFlowDebugSessionRequest {
     /*
-     * The name of the data flow.
+     * Compute type of the cluster. The value will be overwritten by the same
+     * setting in integration runtime if provided.
      */
-    @JsonProperty(value = "dataFlowName")
-    private String dataFlowName;
+    @JsonProperty(value = "computeType")
+    private String computeType;
 
     /*
-     * The ID of existing Databricks cluster.
+     * Core count of the cluster. The value will be overwritten by the same
+     * setting in integration runtime if provided.
      */
-    @JsonProperty(value = "existingClusterId")
-    private String existingClusterId;
+    @JsonProperty(value = "coreCount")
+    private Integer coreCount;
 
     /*
-     * Timeout setting for Databricks cluster.
+     * Time to live setting of the cluster in minutes.
      */
-    @JsonProperty(value = "clusterTimeout")
-    private Integer clusterTimeout;
+    @JsonProperty(value = "timeToLive")
+    private Integer timeToLive;
 
     /*
-     * The name of new Databricks cluster.
+     * Set to use integration runtime setting for data flow debug session.
      */
-    @JsonProperty(value = "newClusterName")
-    private String newClusterName;
-
-    /*
-     * The type of new Databricks cluster.
-     */
-    @JsonProperty(value = "newClusterNodeType")
-    private String newClusterNodeType;
-
-    /*
-     * Data bricks linked service.
-     */
-    @JsonProperty(value = "dataBricksLinkedService")
-    private LinkedServiceResource dataBricksLinkedService;
+    @JsonProperty(value = "integrationRuntime")
+    private IntegrationRuntimeDebugResource integrationRuntime;
 
     /**
-     * Get the dataFlowName property: The name of the data flow.
+     * Get the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
+     * integration runtime if provided.
      *
-     * @return the dataFlowName value.
+     * @return the computeType value.
      */
-    public String getDataFlowName() {
-        return this.dataFlowName;
+    public String getComputeType() {
+        return this.computeType;
     }
 
     /**
-     * Set the dataFlowName property: The name of the data flow.
+     * Set the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
+     * integration runtime if provided.
      *
-     * @param dataFlowName the dataFlowName value to set.
+     * @param computeType the computeType value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
-    public CreateDataFlowDebugSessionRequest setDataFlowName(String dataFlowName) {
-        this.dataFlowName = dataFlowName;
+    public CreateDataFlowDebugSessionRequest setComputeType(String computeType) {
+        this.computeType = computeType;
         return this;
     }
 
     /**
-     * Get the existingClusterId property: The ID of existing Databricks cluster.
+     * Get the coreCount property: Core count of the cluster. The value will be overwritten by the same setting in
+     * integration runtime if provided.
      *
-     * @return the existingClusterId value.
+     * @return the coreCount value.
      */
-    public String getExistingClusterId() {
-        return this.existingClusterId;
+    public Integer getCoreCount() {
+        return this.coreCount;
     }
 
     /**
-     * Set the existingClusterId property: The ID of existing Databricks cluster.
+     * Set the coreCount property: Core count of the cluster. The value will be overwritten by the same setting in
+     * integration runtime if provided.
      *
-     * @param existingClusterId the existingClusterId value to set.
+     * @param coreCount the coreCount value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
-    public CreateDataFlowDebugSessionRequest setExistingClusterId(String existingClusterId) {
-        this.existingClusterId = existingClusterId;
+    public CreateDataFlowDebugSessionRequest setCoreCount(Integer coreCount) {
+        this.coreCount = coreCount;
         return this;
     }
 
     /**
-     * Get the clusterTimeout property: Timeout setting for Databricks cluster.
+     * Get the timeToLive property: Time to live setting of the cluster in minutes.
      *
-     * @return the clusterTimeout value.
+     * @return the timeToLive value.
      */
-    public Integer getClusterTimeout() {
-        return this.clusterTimeout;
+    public Integer getTimeToLive() {
+        return this.timeToLive;
     }
 
     /**
-     * Set the clusterTimeout property: Timeout setting for Databricks cluster.
+     * Set the timeToLive property: Time to live setting of the cluster in minutes.
      *
-     * @param clusterTimeout the clusterTimeout value to set.
+     * @param timeToLive the timeToLive value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
-    public CreateDataFlowDebugSessionRequest setClusterTimeout(Integer clusterTimeout) {
-        this.clusterTimeout = clusterTimeout;
+    public CreateDataFlowDebugSessionRequest setTimeToLive(Integer timeToLive) {
+        this.timeToLive = timeToLive;
         return this;
     }
 
     /**
-     * Get the newClusterName property: The name of new Databricks cluster.
+     * Get the integrationRuntime property: Set to use integration runtime setting for data flow debug session.
      *
-     * @return the newClusterName value.
+     * @return the integrationRuntime value.
      */
-    public String getNewClusterName() {
-        return this.newClusterName;
+    public IntegrationRuntimeDebugResource getIntegrationRuntime() {
+        return this.integrationRuntime;
     }
 
     /**
-     * Set the newClusterName property: The name of new Databricks cluster.
+     * Set the integrationRuntime property: Set to use integration runtime setting for data flow debug session.
      *
-     * @param newClusterName the newClusterName value to set.
+     * @param integrationRuntime the integrationRuntime value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
-    public CreateDataFlowDebugSessionRequest setNewClusterName(String newClusterName) {
-        this.newClusterName = newClusterName;
-        return this;
-    }
-
-    /**
-     * Get the newClusterNodeType property: The type of new Databricks cluster.
-     *
-     * @return the newClusterNodeType value.
-     */
-    public String getNewClusterNodeType() {
-        return this.newClusterNodeType;
-    }
-
-    /**
-     * Set the newClusterNodeType property: The type of new Databricks cluster.
-     *
-     * @param newClusterNodeType the newClusterNodeType value to set.
-     * @return the CreateDataFlowDebugSessionRequest object itself.
-     */
-    public CreateDataFlowDebugSessionRequest setNewClusterNodeType(String newClusterNodeType) {
-        this.newClusterNodeType = newClusterNodeType;
-        return this;
-    }
-
-    /**
-     * Get the dataBricksLinkedService property: Data bricks linked service.
-     *
-     * @return the dataBricksLinkedService value.
-     */
-    public LinkedServiceResource getDataBricksLinkedService() {
-        return this.dataBricksLinkedService;
-    }
-
-    /**
-     * Set the dataBricksLinkedService property: Data bricks linked service.
-     *
-     * @param dataBricksLinkedService the dataBricksLinkedService value to set.
-     * @return the CreateDataFlowDebugSessionRequest object itself.
-     */
-    public CreateDataFlowDebugSessionRequest setDataBricksLinkedService(LinkedServiceResource dataBricksLinkedService) {
-        this.dataBricksLinkedService = dataBricksLinkedService;
+    public CreateDataFlowDebugSessionRequest setIntegrationRuntime(IntegrationRuntimeDebugResource integrationRuntime) {
+        this.integrationRuntime = integrationRuntime;
         return this;
     }
 }

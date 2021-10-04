@@ -80,9 +80,9 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync() {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context));
     }
 
     /**
@@ -96,8 +96,9 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponseAsync(Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -179,15 +180,10 @@ public final class IntegrationRuntimesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(String integrationRuntimeName) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                integrationRuntimeName,
-                                accept,
-                                context));
+                context -> service.get(this.client.getEndpoint(), apiVersion, integrationRuntimeName, accept, context));
     }
 
     /**
@@ -203,9 +199,9 @@ public final class IntegrationRuntimesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponseAsync(
             String integrationRuntimeName, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.get(
-                this.client.getEndpoint(), this.client.getApiVersion(), integrationRuntimeName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, integrationRuntimeName, accept, context);
     }
 
     /**

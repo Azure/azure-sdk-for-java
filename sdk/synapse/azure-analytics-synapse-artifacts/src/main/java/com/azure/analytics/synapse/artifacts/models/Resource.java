@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Common fields that are returned in the response for all Azure Resource Manager resources. */
+/** Resource Common fields that are returned in the response for all Azure Resource Manager resources. */
 @Immutable
 public class Resource {
     /*

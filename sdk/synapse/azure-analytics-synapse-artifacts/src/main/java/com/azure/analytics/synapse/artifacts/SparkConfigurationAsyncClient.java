@@ -12,7 +12,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
@@ -28,18 +27,6 @@ public final class SparkConfigurationAsyncClient {
      */
     SparkConfigurationAsyncClient(SparkConfigurationsImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Lists sparkconfigurations.
-     *
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceSinglePage() {
-        return this.serviceClient.getSparkConfigurationsByWorkspaceSinglePageAsync();
     }
 
     /**
@@ -212,20 +199,5 @@ public final class SparkConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSparkConfiguration(String sparkConfigurationName, ArtifactRenameRequest request) {
         return this.serviceClient.renameSparkConfigurationAsync(sparkConfigurationName, request);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceNextSinglePage(
-            String nextLink) {
-        return this.serviceClient.getSparkConfigurationsByWorkspaceNextSinglePageAsync(nextLink);
     }
 }

@@ -15,13 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class DatasetZipDeflateCompression extends DatasetCompression {
     /*
-     * The ZipDeflate compression level.
+     * The ZipDeflate compression level. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "level")
     private Object level;
 
     /**
-     * Get the level property: The ZipDeflate compression level.
+     * Get the level property: The ZipDeflate compression level. Type: string (or Expression with resultType string).
      *
      * @return the level value.
      */
@@ -30,7 +31,7 @@ public final class DatasetZipDeflateCompression extends DatasetCompression {
     }
 
     /**
-     * Set the level property: The ZipDeflate compression level.
+     * Set the level property: The ZipDeflate compression level. Type: string (or Expression with resultType string).
      *
      * @param level the level value to set.
      * @return the DatasetZipDeflateCompression object itself.
