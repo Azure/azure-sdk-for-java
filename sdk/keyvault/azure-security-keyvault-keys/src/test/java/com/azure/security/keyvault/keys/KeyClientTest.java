@@ -611,7 +611,7 @@ public class KeyClientTest extends KeyClientTestBase {
         createKeyClient(httpClient, serviceVersion);
 
         CryptographyClient cryptographyClient =
-            client.getCryptographyClient("myKey","6A385B124DEF4096AF1361A85B16C204");
+            client.getCryptographyClient("myKey", "6A385B124DEF4096AF1361A85B16C204");
 
         assertNotNull(cryptographyClient);
     }
@@ -624,7 +624,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getCryptographyClientWithEmptyKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey","");
+        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey", "");
 
         assertNotNull(cryptographyClient);
     }
@@ -637,7 +637,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void getCryptographyClientWithNullKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey",null);
+        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey", null);
 
         assertNotNull(cryptographyClient);
     }

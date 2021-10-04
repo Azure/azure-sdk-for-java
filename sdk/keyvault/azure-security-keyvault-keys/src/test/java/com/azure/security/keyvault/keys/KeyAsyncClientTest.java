@@ -677,7 +677,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         createKeyAsyncClient(httpClient, serviceVersion);
 
         CryptographyAsyncClient cryptographyAsyncClient =
-            client.getCryptographyAsyncClient("myKey","6A385B124DEF4096AF1361A85B16C204");
+            client.getCryptographyAsyncClient("myKey", "6A385B124DEF4096AF1361A85B16C204");
 
         assertNotNull(cryptographyAsyncClient);
     }
@@ -690,7 +690,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void getCryptographyAsyncClientWithEmptyKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
 
-        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey","");
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey", "");
 
         assertNotNull(cryptographyAsyncClient);
     }
@@ -703,7 +703,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void getCryptographyAsyncClientWithNullKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
 
-        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey",null);
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey", null);
 
         assertNotNull(cryptographyAsyncClient);
     }
