@@ -5,7 +5,6 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder;
-import com.azure.communication.callingserver.implementation.RedirectPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -19,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
