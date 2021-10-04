@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class SchemaProperties {
 
     private final String schemaId;
-    private final SerializationFormat serializationFormat;
+    private final SchemaFormat schemaFormat;
     private final byte[] schemaBytes;
     private final String schemaName;
 
@@ -22,17 +22,17 @@ public final class SchemaProperties {
      * Initializes SchemaRegistryObject instance.
      *
      * @param schemaId the schema id
-     * @param serializationFormat type of schema, e.g. avro, json
+     * @param schemaFormat type of schema, e.g. avro, json
      * @param schemaName name of the schema.
      * @param schemaByteArray byte payload representing schema, returned from Azure Schema Registry
      */
     public SchemaProperties(
         String schemaId,
-        SerializationFormat serializationFormat,
+        SchemaFormat schemaFormat,
         String schemaName,
         byte[] schemaByteArray) {
         this.schemaId = schemaId;
-        this.serializationFormat = serializationFormat;
+        this.schemaFormat = schemaFormat;
         this.schemaBytes = schemaByteArray.clone();
         this.schemaName = schemaName;
     }
@@ -50,8 +50,8 @@ public final class SchemaProperties {
      * The serialization type of this schema.
      * @return schema type associated with the schema payload
      */
-    public SerializationFormat getSerializationFormat() {
-        return serializationFormat;
+    public SchemaFormat getSerializationFormat() {
+        return schemaFormat;
     }
 
     /**

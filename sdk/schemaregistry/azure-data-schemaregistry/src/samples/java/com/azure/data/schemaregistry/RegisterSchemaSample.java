@@ -4,7 +4,7 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.data.schemaregistry.models.SerializationFormat;
+import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.concurrent.CountDownLatch;
@@ -28,7 +28,7 @@ public class RegisterSchemaSample {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         // Register a schema
         schemaRegistryAsyncClient
-            .registerSchema("{group-name}", "{schema-name}", "{schema-string}", SerializationFormat.AVRO)
+            .registerSchema("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
             .subscribe(schemaProperties -> {
                 System.out.println("Successfully registered a schema with id " + schemaProperties.getSchemaId());
                 countDownLatch.countDown();

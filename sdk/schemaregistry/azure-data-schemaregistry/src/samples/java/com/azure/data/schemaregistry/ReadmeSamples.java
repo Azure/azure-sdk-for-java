@@ -4,8 +4,8 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
@@ -66,7 +66,7 @@ public class ReadmeSamples {
             + "    ]\n"
             + "}";
         SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
-            schemaContent, SerializationFormat.AVRO);
+            schemaContent, SchemaFormat.AVRO);
         System.out.println("Registered schema: " + schemaProperties.getSchemaId());
     }
 
@@ -110,7 +110,7 @@ public class ReadmeSamples {
             + "    ]\n"
             + "}";
         String schemaId = schemaRegistryClient.getSchemaId("{schema-group}", "{schema-name}",
-            schemaContent, SerializationFormat.AVRO);
+            schemaContent, SchemaFormat.AVRO);
         System.out.println("Retreived schema id: " + schemaId);
     }
 }

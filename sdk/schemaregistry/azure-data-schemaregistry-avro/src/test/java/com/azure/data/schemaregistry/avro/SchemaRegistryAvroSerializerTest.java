@@ -7,8 +7,8 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
 import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
+import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationFormat;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.io.DecoderFactory;
@@ -88,11 +88,11 @@ public class SchemaRegistryAvroSerializerTest {
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
         final byte[] schemaBytes = playingClassSchema.toString().getBytes(StandardCharsets.UTF_8);
-        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SerializationFormat.AVRO,
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO,
             playingClassSchema.getFullName(), schemaBytes);
 
         when(client.getSchemaId(MOCK_SCHEMA_GROUP, registered.getSchemaName(), playingClassSchema.toString(),
-            SerializationFormat.AVRO)).thenReturn(Mono.just(MOCK_GUID));
+            SchemaFormat.AVRO)).thenReturn(Mono.just(MOCK_GUID));
 
         final SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(client, avroSerializer,
             MOCK_SCHEMA_GROUP, false);
@@ -145,7 +145,7 @@ public class SchemaRegistryAvroSerializerTest {
             DECODER_FACTORY);
         final PlayingCard playingCard = new PlayingCard(true, 10, PlayingCardSuit.DIAMONDS);
         final Schema playingClassSchema = PlayingCard.getClassSchema();
-        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SerializationFormat.AVRO,
+        final SchemaProperties registered = new SchemaProperties(MOCK_GUID, SchemaFormat.AVRO,
             playingClassSchema.getFullName(), playingClassSchema.toString().getBytes(StandardCharsets.UTF_8));
         final SchemaRegistryAvroSerializer serializer = new SchemaRegistryAvroSerializer(client, decoder,
             MOCK_SCHEMA_GROUP, true);
