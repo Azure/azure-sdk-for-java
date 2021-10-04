@@ -20,7 +20,7 @@ class AzureDirectoryStreamTest extends APISpec {
     @Unroll
     def "List files"() {
         setup:
-        if (numFiles > 50 && env.testMode != TestMode.LIVE) {
+        if (numFiles > 50 && environment.testMode != TestMode.LIVE) {
             return // Skip large data set in record and playback
         }
         def rootName = absolute ? getNonDefaultRootDir(fs) : ""

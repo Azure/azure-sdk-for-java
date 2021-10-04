@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -352,15 +353,37 @@ public class EventHubConsumerAsyncClient implements Closeable {
             getEventHubName(), consumerGroup, partitionId);
 
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
-        final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor
+
+        // The Mono, when subscribed, creates a AmqpReceiveLink in the AmqpConnection emitted by the connectionProcessor
+        //
+        final Mono<AmqpReceiveLink> receiveLinkMono = connectionProcessor
             .flatMap(connection -> {
                 logger.info("connectionId[{}] linkName[{}] Creating receive consumer for partition '{}'",
                     connection.getId(), linkName, partitionId);
                 return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
-            })
-            .repeat();
+            });
 
-        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkMono.subscribeWith(
+        // A Mono that resubscribes to 'receiveLinkMono' to retry the creation of AmqpReceiveLink.
+        //
+        // The scenarios where this retry helps are -
+        // [1]. When we try to create a link on a session being disposed but connection is healthy, the retry can
+        //      eventually create a new session then the link.
+        // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
+        //      the retry can eventually receives a new connection and then proceed with creating session and link.
+        //
+        final Mono<AmqpReceiveLink> retriableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono,
+            connectionProcessor.getRetryOptions(),
+            "Failed to create receive link " + linkName,
+            true);
+
+        // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
+        // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
+        // It also requests a new link (i.e. retry) when the current link it holds gets terminated
+        // (e.g., when the service decides to close that link).
+        //
+        final Flux<AmqpReceiveLink> receiveLinkFlux = retriableReceiveLinkMono.repeat();
+
+        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
             new AmqpReceiveLinkProcessor(entityPath, prefetchCount, connectionProcessor));
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),

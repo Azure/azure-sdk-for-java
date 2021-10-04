@@ -51,6 +51,9 @@
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp=ALL-UNNAMED
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
@@ -64,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -77,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -97,7 +100,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.10</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

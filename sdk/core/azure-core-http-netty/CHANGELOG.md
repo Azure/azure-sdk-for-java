@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 1.11.1 (2021-10-01)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpResponse.close` wouldn't drain the response stream if it wasn't already consumed. ([#23855](https://github.com/Azure/azure-sdk-for-java/pull/23855)) 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded Netty from `4.1.67.Final` to `4.1.60.Final`.
+- Upgraded Reactor Netty from `1.0.10` to `1.0.11`.
+- 
 ## 1.11.0 (2021-09-07)
 
 ### Features Added

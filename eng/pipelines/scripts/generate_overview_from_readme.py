@@ -16,13 +16,13 @@
 
 import argparse
 from bs4 import BeautifulSoup
+import pdb
 import markdown2
 import os.path
 from io import open
 import re
-import sys
 
-def generate_overview(readme_file, version):
+def generate_overview(readme_file, version, overview_file_path):
 
     readme_exists = False
     if os.path.exists(readme_file) and os.path.isfile(readme_file):
@@ -33,7 +33,10 @@ def generate_overview(readme_file, version):
         # allow processing to continue without failing the build the way a raise would.
         print('{} does not exist'.format(readme_file))
 
-    html_overview_file = str(readme_file).lower().replace('readme.md', 'readme_overview.html')
+    if overview_file_path:
+        html_overview_file = overview_file_path + 'readme_overview.html'
+    else:
+        html_overview_file = str(readme_file).lower().replace('readme.md', 'readme_overview.html')
 
     if (readme_exists):
         with open(readme_file, 'r', encoding='utf-8') as f:
@@ -45,6 +48,14 @@ def generate_overview(readme_file, version):
         # The toc helps the anchor link to jump to the right place.
         html_readme_content = markdown2.markdown(re.sub(pattern='@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE), extras=["fenced-code-blocks", "target-blank-links", "toc"])
 
+        # Now use BeautifulSoup to cleanup the generated HTML so that it conforms to Javadoc compliance.
+        soup = BeautifulSoup(html_readme_content, features="html.parser")
+
+        # Find all anchor tags with the rel attribute and remove the attribute.
+        anchors_with_rel = soup.find_all(name='a', attrs={'rel':'noopener'})
+        for anchor in anchors_with_rel:
+            del anchor['rel']
+
     # The html_readme_content needs to be encapsulated inside of <body> tags in order
     # for the content to correctly be added to the landing page
     with open(html_overview_file, 'w', encoding='utf-8') as f:
@@ -52,20 +63,21 @@ def generate_overview(readme_file, version):
         # This will allow this code to work for python 2 and 3
         f.write('<body>')
         f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
-        f.write('<br/>')
+        f.write('<br>')
         if (readme_exists):
-            f.write(str(html_readme_content))
+            f.write(str(soup.encode(formatter="html5").decode('utf-8')))
         f.write('</body>')
 
 
 def main():
     parser = argparse.ArgumentParser(description='Generate a readme_overview.html from a README.md.')
     parser.add_argument('--readme-file', '--rf', help='path to the README.md file to readme_generate the overview.html file from.', required=True)
+    parser.add_argument('--overview-file-path', '--ofp', help='path to the overview.html file.')
     parser.add_argument('--version', '--v', help='Version, used on the landing page to identify the version.', required=True)
     args = parser.parse_args()
     # verify the argument is a readme.md file
     if str(args.readme_file).lower().endswith('readme.md'):
-        generate_overview(args.readme_file, args.version)
+        generate_overview(args.readme_file, args.version, args.overview_file_path)
     else:
         raise ValueError('{} is not a readmefile. The --readme-file argument must be a readme.md file.'.format(args.readme_file))
 

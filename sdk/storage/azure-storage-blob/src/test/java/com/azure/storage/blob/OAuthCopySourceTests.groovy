@@ -41,7 +41,7 @@ class OAuthCopySourceTests extends APISpec {
     }
 
     // RBAC replication lag
-    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 30, condition = { environment.testMode == TestMode.LIVE })
     def "Append blob append block from URL source oauth"() {
         setup:
         def sourceBlob = cc.getBlobClient(generateBlobName())
@@ -75,7 +75,7 @@ class OAuthCopySourceTests extends APISpec {
     }
 
     // RBAC replication lag
-    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 30, condition = { environment.testMode == TestMode.LIVE })
     def "Block blob upload from URL source oauth"() {
         setup:
         def oauthHeader = getAuthToken()
@@ -107,7 +107,7 @@ class OAuthCopySourceTests extends APISpec {
     }
 
     // RBAC replication lag
-    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 30, condition = { environment.testMode == TestMode.LIVE })
     def "Block blob stage block from URL source oauth"() {
         setup:
         def oauthHeader = getAuthToken()
@@ -142,7 +142,7 @@ class OAuthCopySourceTests extends APISpec {
     }
 
     // RBAC replication lag
-    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 30, condition = { environment.testMode == TestMode.LIVE })
     def "Upload pages from URL source oauth"() {
         setup:
         def pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1)

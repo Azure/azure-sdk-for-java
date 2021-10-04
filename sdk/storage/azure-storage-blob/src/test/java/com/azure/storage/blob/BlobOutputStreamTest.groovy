@@ -1,5 +1,8 @@
 package com.azure.storage.blob
 
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
@@ -93,12 +96,19 @@ class BlobOutputStreamTest extends APISpec {
         def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
         def endpoint = "https://account.blob.core.windows.net/"
         def data = getRandomByteArray(10 * Constants.MB)
+        def ex = (Exception) exception
+        def httpClient = new HttpClient() {
+            @Override
+            Mono<HttpResponse> send(HttpRequest httpRequest) {
+                return Mono.error(ex)
+            }
+        }
         def blockBlobClient = new SpecializedBlobClientBuilder()
             .endpoint(endpoint)
             .containerName("container")
             .blobName("blob")
             .credential(credentials)
-            .httpClient({ httpRequest -> return Mono.error(exception) })
+            .httpClient(httpClient)
             .buildBlockBlobClient()
 
         when:

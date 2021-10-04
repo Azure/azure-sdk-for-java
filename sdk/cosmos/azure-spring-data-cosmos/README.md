@@ -180,6 +180,24 @@ public CosmosConfig cosmosConfig() {
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
 
+#### Using database provisioned throughput
+
+Cosmos supports both [container](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
+and [database](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
+throughput.  By default, spring-data-cosmos will provision throughput for each container created.  If you prefer
+to share throughput between containers, you can enable database provisioned throughput via CosmosConfig.
+
+```java
+@Override
+public CosmosConfig cosmosConfig() {
+    int autoscale = false; 
+    int initialRequestUnits = 400;
+    return CosmosConfig.builder()
+                       .enableDatabaseThroughput(autoscale, initialRequestUnits) 
+                       .build();
+}
+```
+
 ### Define an entity
 - Define a simple entity as item in Azure Cosmos DB.
 

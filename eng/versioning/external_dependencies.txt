@@ -7,18 +7,18 @@
 
 # Format;
 # groupId:artifactId;dependency-version
-com.fasterxml.jackson.core:jackson-annotations;2.12.4
-com.fasterxml.jackson.core:jackson-core;2.12.4
-com.fasterxml.jackson.core:jackson-databind;2.12.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.4
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.4
-com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.4
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.4
-com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.4
+com.fasterxml.jackson.core:jackson-annotations;2.12.5
+com.fasterxml.jackson.core:jackson-core;2.12.5
+com.fasterxml.jackson.core:jackson-databind;2.12.5
+com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.12.5
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.12.5
+com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.12.5
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.12.5
+com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.5
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
-com.google.code.gson:gson;2.8.7
+com.google.code.gson:gson;2.8.8
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
@@ -46,20 +46,21 @@ io.github.bonigarcia:webdrivermanager;4.3.1
 io.micrometer:micrometer-core;1.7.3
 io.micrometer:micrometer-registry-azure-monitor;1.7.3
 io.micrometer:micrometer-registry-graphite;1.7.3
-io.netty:netty-buffer;4.1.67.Final
-io.netty:netty-common;4.1.67.Final
-io.netty:netty-codec-http;4.1.67.Final
-io.netty:netty-codec-http2;4.1.67.Final
-io.netty:netty-transport;4.1.67.Final
-io.netty:netty-handler;4.1.67.Final
-io.netty:netty-handler-proxy;4.1.67.Final
-io.netty:netty-tcnative;2.0.40.Final
-io.netty:netty-tcnative-boringssl-static;2.0.40.Final
-io.netty:netty-transport-native-epoll;4.1.67.Final
-io.netty:netty-transport-native-unix-common;4.1.67.Final
-io.netty:netty-transport-native-kqueue;4.1.67.Final
-io.projectreactor.netty:reactor-netty;1.0.10
-io.projectreactor:reactor-core;3.4.9
+io.netty:netty-buffer;4.1.68.Final
+io.netty:netty-common;4.1.68.Final
+io.netty:netty-codec-http;4.1.68.Final
+io.netty:netty-codec-http2;4.1.68.Final
+io.netty:netty-transport;4.1.68.Final
+io.netty:netty-handler;4.1.68.Final
+io.netty:netty-handler-proxy;4.1.68.Final
+io.netty:netty-tcnative;2.0.43.Final
+io.netty:netty-tcnative-boringssl-static;2.0.43.Final
+io.netty:netty-transport-native-epoll;4.1.68.Final
+io.netty:netty-transport-native-unix-common;4.1.68.Final
+io.netty:netty-transport-native-kqueue;4.1.68.Final
+io.projectreactor.netty:reactor-netty;1.0.11
+io.projectreactor.netty:reactor-netty-http;1.0.11
+io.projectreactor:reactor-core;3.4.10
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
 javax.json:javax.json-api;1.1.4
@@ -81,6 +82,7 @@ org.apache.qpid:proton-j;0.33.8
 org.apache.qpid:qpid-jms-client;0.53.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
+org.codehaus.gmavenplus:gmavenplus-plugin;1.13.0
 org.codehaus.groovy:groovy-eclipse-batch;2.5.8-01
 org.codehaus.groovy:groovy-eclipse-compiler;3.4.0-01
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
@@ -175,7 +177,7 @@ io.opentelemetry:opentelemetry-api;1.0.0
 io.opentelemetry:opentelemetry-sdk;1.0.0
 io.opentelemetry:opentelemetry-exporter-logging;1.0.0
 io.opentelemetry:opentelemetry-exporter-jaeger;1.0.0
-io.projectreactor:reactor-test;3.4.9
+io.projectreactor:reactor-test;3.4.10
 junit:junit;4.13.2
 commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
@@ -209,6 +211,7 @@ org.junit.vintage:junit-vintage-engine;5.7.2
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;2.0-M4-groovy-2.5
+groovy3_org.spockframework:spock-core;2.0-groovy-3.0
 org.testng:testng;7.3.0
 uk.org.lidalia:slf4j-test;1.2.0
 
@@ -240,7 +243,7 @@ org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
-org.apache.maven.plugins:maven-javadoc-plugin;3.1.1
+org.apache.maven.plugins:maven-javadoc-plugin;3.3.1
 org.apache.maven.plugins:maven-jxr-plugin;3.0.0
 org.apache.maven.plugins:maven-project-info-reports-plugin;3.0.0
 org.apache.maven.plugins:maven-release-plugin;2.5.3
@@ -267,6 +270,7 @@ org.revapi:revapi-java;0.20.0
 org.revapi:revapi-maven-plugin;0.11.2
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.ow2.asm:asm;9.1
+com.azure.tools:codesnippet-maven-plugin;1.0.0-beta.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
@@ -285,7 +289,7 @@ org.ow2.asm:asm;9.1
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
-cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.12.2
+cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.12.5
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_com.microsoft.data.encryption:cryptography;0.2.2.jre8-preview
 cosmos_com.microsoft.data.encryption:azure-key-vault-keystoreprovider;0.2.2.jre8-preview
@@ -349,9 +353,6 @@ resourcemanager_com.jcraft:jsch;0.1.55
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
 storage_com.microsoft.azure:azure-storage;8.4.0
-
-# sdk\storage\microsoft-azure-storage-blob\pom.xml
-microsoft_azure_storage_blob_org.spockframework:spock-core;1.3-groovy-2.5
 
 # sdk\spring\azure-spring-boot\pom.xml
 spring_com.microsoft.azure:azure;1.34.0
