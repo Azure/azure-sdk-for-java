@@ -26,7 +26,7 @@ public final class SparkStatement {
      * The state property.
      */
     @JsonProperty(value = "state")
-    private String state;
+    private LivyStatementStates state;
 
     /*
      * The output property.
@@ -79,7 +79,7 @@ public final class SparkStatement {
      *
      * @return the state value.
      */
-    public String getState() {
+    public LivyStatementStates getState() {
         return this.state;
     }
 
@@ -89,7 +89,7 @@ public final class SparkStatement {
      * @param state the state value to set.
      * @return the SparkStatement object itself.
      */
-    public SparkStatement setState(String state) {
+    public SparkStatement setState(LivyStatementStates state) {
         this.state = state;
         return this;
     }

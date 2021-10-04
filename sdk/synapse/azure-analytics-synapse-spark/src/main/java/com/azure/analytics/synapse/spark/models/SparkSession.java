@@ -109,10 +109,10 @@ public final class SparkSession {
     private Map<String, String> appInfo;
 
     /*
-     * The state property.
+     * The session state.
      */
     @JsonProperty(value = "state")
-    private String state;
+    private LivyStates state;
 
     /*
      * The log property.
@@ -441,21 +441,21 @@ public final class SparkSession {
     }
 
     /**
-     * Get the state property: The state property.
+     * Get the state property: The session state.
      *
      * @return the state value.
      */
-    public String getState() {
+    public LivyStates getState() {
         return this.state;
     }
 
     /**
-     * Set the state property: The state property.
+     * Set the state property: The session state.
      *
      * @param state the state value to set.
      * @return the SparkSession object itself.
      */
-    public SparkSession setState(String state) {
+    public SparkSession setState(LivyStates state) {
         this.state = state;
         return this;
     }
