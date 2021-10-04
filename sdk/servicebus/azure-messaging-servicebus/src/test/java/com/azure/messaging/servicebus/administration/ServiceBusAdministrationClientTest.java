@@ -66,7 +66,7 @@ class ServiceBusAdministrationClientTest {
 
     @AfterEach
     void afterEach() {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test

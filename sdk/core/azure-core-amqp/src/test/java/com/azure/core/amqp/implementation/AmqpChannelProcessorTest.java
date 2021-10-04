@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
@@ -44,6 +45,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link AmqpChannelProcessor}.
  */
+@Isolated("StepVerifier.setDefaultTimeout")
 class AmqpChannelProcessorTest {
     private final TestObject connection1 = new TestObject();
     private final TestObject connection2 = new TestObject();
@@ -77,7 +79,7 @@ class AmqpChannelProcessorTest {
     void teardown() throws Exception {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -188,8 +190,10 @@ class AmqpChannelProcessorTest {
     @ParameterizedTest
     void newConnectionOnRetriableError(Throwable exception) {
         // Arrange
-        final Flux<TestObject> publisher = createSink(connection1, connection2);
-        final AmqpChannelProcessor<TestObject> processor = publisher.subscribeWith(channelProcessor);
+        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
+        publisher.next(connection1);
+        publisher.next(connection2);
+        final AmqpChannelProcessor<TestObject> processor = publisher.flux().subscribeWith(channelProcessor);
 
         when(retryPolicy.calculateRetryDelay(exception, 1)).thenReturn(Duration.ofSeconds(1));
         when(retryPolicy.getMaxRetries()).thenReturn(3);

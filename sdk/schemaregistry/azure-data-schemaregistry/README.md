@@ -119,7 +119,7 @@ String schemaContent = "{\n"
     + "    ]\n"
     + "}";
 SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
-    schemaContent, SerializationType.AVRO);
+    schemaContent, SerializationFormat.AVRO);
 System.out.println("Registered schema: " + schemaProperties.getSchemaId());
 ```
 
@@ -164,7 +164,7 @@ String schemaContent = "{\n"
     + "    ]\n"
     + "}";
 String schemaId = schemaRegistryClient.getSchemaId("{schema-group}", "{schema-name}",
-    schemaContent, SerializationType.AVRO);
+    schemaContent, SerializationFormat.AVRO);
 System.out.println("Retreived schema id: " + schemaId);
 ```
 

@@ -403,9 +403,15 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
-            } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
                     + " manually. And completing close.", handler.getConnectionId(), entityPath, getLinkName(), e);
+
+                closeWork.run();
+                handleClose();
+            } catch (RejectedExecutionException e) {
+                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: RejectedExecutionException scheduling close"
+                    + " work. And completing close.", handler.getConnectionId(), entityPath, getLinkName());
 
                 closeWork.run();
                 handleClose();
@@ -624,7 +630,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
-            logger.error("Error scheduling work on reactor.", e);
+            logger.warning("connectionId[{}] linkName[{}]: Error scheduling work on reactor.",
+                handler.getConnectionId(), getLinkName(), e);
+        } catch (RejectedExecutionException e) {
+            logger.info("connectionId[{}] linkName[{}]: Error scheduling work on reactor because of"
+                + " RejectedExecutionException.", handler.getConnectionId(), getLinkName());
         }
     }
 

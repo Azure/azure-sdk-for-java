@@ -15,9 +15,9 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -167,6 +167,19 @@ public final class AzureSchemaRegistryBuilder {
         return this;
     }
 
+    private String apiVersion;
+
+    /**
+     * Sets the API version for the service.
+     *
+     * @param apiVersion The service API version.
+     * @return the AzureSchemaRegistryBuilder.
+     */
+    public AzureSchemaRegistryBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
     /**
      * Builds an instance of AzureSchemaRegistry with the provided parameters.
      *
@@ -179,7 +192,8 @@ public final class AzureSchemaRegistryBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureSchemaRegistry client = new AzureSchemaRegistry(pipeline, serializerAdapter, endpoint);
+
+        AzureSchemaRegistry client = new AzureSchemaRegistry(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

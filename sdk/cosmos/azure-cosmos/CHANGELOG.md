@@ -1,14 +1,17 @@
 ## Release History
 
-### 4.20.0-beta.1 (Unreleased)
-
+### 4.19.1 (2021-09-24)
 #### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
 
-#### Breaking Changes
+#### Key Bug Fixes
+* Fixed ReadMany Api on partition split.
+* Removed full exception trace from 404 error on open telemetry.
+* Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
 
-#### Bugs Fixed
-
-#### Other Changes
+### 4.20.0-beta.1 (2021-09-22)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
 
 ### 4.19.0 (2021-09-09)
 #### New Features

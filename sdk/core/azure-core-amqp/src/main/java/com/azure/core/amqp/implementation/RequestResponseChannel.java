@@ -114,6 +114,8 @@ public class RequestResponseChannel implements AsyncCloseable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+     *
+     * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
     protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId,
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
@@ -210,7 +212,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 this.sendLink.open();
                 this.receiveLink.open();
             });
-        } catch (IOException e) {
+        } catch (IOException | RejectedExecutionException e) {
             throw logger.logExceptionAsError(new RuntimeException(String.format(
                 "connectionId[%s], linkName[%s]: Unable to open send and receive link.", connectionId, linkName), e));
         }
@@ -342,7 +344,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                         delivery.settle();
                         sendLink.advance();
                     });
-                } catch (IOException e) {
+                } catch (IOException | RejectedExecutionException e) {
                     sink.error(e);
                 }
             }));

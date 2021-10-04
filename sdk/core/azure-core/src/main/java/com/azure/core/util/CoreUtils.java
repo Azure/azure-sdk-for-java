@@ -181,7 +181,9 @@ public final class CoreUtils {
      * @param content The function which fetches items from the next page.
      * @param <T> The type of the item being returned by the paged response.
      * @return The publisher holding all the generic items combined.
+     * @deprecated Use localized implementation.
      */
+    @Deprecated
     public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
         BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();

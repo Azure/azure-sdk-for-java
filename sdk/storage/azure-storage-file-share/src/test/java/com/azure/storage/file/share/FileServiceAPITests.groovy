@@ -23,7 +23,6 @@ import com.azure.storage.file.share.models.SmbMultichannel
 import com.azure.storage.file.share.options.ShareCreateOptions
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions
 import spock.lang.IgnoreIf
-import spock.lang.Requires
 import spock.lang.ResourceLock
 import spock.lang.Unroll
 
@@ -55,7 +54,7 @@ class FileServiceAPITests extends APISpec {
 
     def "Get file service URL"() {
         given:
-        def accountName = StorageSharedKeyCredential.fromConnectionString(env.primaryAccount.connectionString).getAccountName()
+        def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
         def expectURL = String.format("https://%s.file.core.windows.net", accountName)
         when:
         def fileServiceURL = primaryFileServiceClient.getFileServiceUrl()
@@ -396,10 +395,10 @@ class FileServiceAPITests extends APISpec {
         thrown(ShareStorageException.class)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(env.primaryAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(environment.primaryAccount.credential, primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy())
 
         when:
         def response = serviceClient.getPropertiesWithResponse(null, null)

@@ -13,6 +13,7 @@ import java.security.PrivilegedAction;
  * {@link WriteTimeoutHandlerTests}.
  */
 public class TimeoutTestHelpers {
+    @SuppressWarnings("removal")
     public static Method getInvokableMethod(Object obj, String methodName, Class<?>... parameters) throws Exception {
         Method method = obj.getClass().getDeclaredMethod(methodName, parameters);
 
@@ -24,6 +25,7 @@ public class TimeoutTestHelpers {
         return method;
     }
 
+    @SuppressWarnings("removal")
     public static <T> T getFieldValue(Object obj, String fieldName, Class<T> type)
         throws Exception {
         Field field = obj.getClass().getDeclaredField(fieldName);

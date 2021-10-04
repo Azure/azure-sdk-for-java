@@ -41,6 +41,8 @@ a `Response` type to get access to the `AttestationToken` returned from the atte
  * Converted the `AttestationToken` and `AttestationSigner` types to interfaces since there are no scenarios where customers
 will instantiate them directly (`AttestationToken` will be instantiated via the `AttestationPolicyToken` class which will 
 be introduced later.)
+ * Renamed `buildAttestationClient` to `buildClient` and `buildAsyncAttestationClient` to `buildAsyncClient` to match API
+design guidelines.
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.
