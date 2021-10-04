@@ -17,10 +17,28 @@ public final class StartCallRecordingWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The request payload for start call recording operation.
+     * The uri to send notifications to.
      */
-    @JsonProperty(value = "startCallRecordingRequest", required = true)
-    private StartCallRecordingRequest startCallRecordingRequest;
+    @JsonProperty(value = "recordingStateCallbackUri")
+    private String recordingStateCallbackUri;
+
+    /*
+     * Content type of call recording.
+     */
+    @JsonProperty(value = "recordingContentType")
+    private RecordingContentType recordingContentType;
+
+    /*
+     * Channel type of call recording.
+     */
+    @JsonProperty(value = "recordingChannelType")
+    private RecordingChannelType recordingChannelType;
+
+    /*
+     * Format type of call recording.
+     */
+    @JsonProperty(value = "recordingFormatType")
+    private RecordingFormatType recordingFormatType;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,23 +61,82 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Get the startCallRecordingRequest property: The request payload for start call recording operation.
+     * Get the recordingStateCallbackUri property: The uri to send notifications to.
      *
-     * @return the startCallRecordingRequest value.
+     * @return the recordingStateCallbackUri value.
      */
-    public StartCallRecordingRequest getStartCallRecordingRequest() {
-        return this.startCallRecordingRequest;
+    public String getRecordingStateCallbackUri() {
+        return this.recordingStateCallbackUri;
     }
 
     /**
-     * Set the startCallRecordingRequest property: The request payload for start call recording operation.
+     * Set the recordingStateCallbackUri property: The uri to send notifications to.
      *
-     * @param startCallRecordingRequest the startCallRecordingRequest value to set.
+     * @param recordingStateCallbackUri the recordingStateCallbackUri value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.
      */
-    public StartCallRecordingWithCallLocatorRequest setStartCallRecordingRequest(
-            StartCallRecordingRequest startCallRecordingRequest) {
-        this.startCallRecordingRequest = startCallRecordingRequest;
+    public StartCallRecordingWithCallLocatorRequest setRecordingStateCallbackUri(String recordingStateCallbackUri) {
+        this.recordingStateCallbackUri = recordingStateCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the recordingContentType property: Content type of call recording.
+     *
+     * @return the recordingContentType value.
+     */
+    public RecordingContentType getRecordingContentType() {
+        return this.recordingContentType;
+    }
+
+    /**
+     * Set the recordingContentType property: Content type of call recording.
+     *
+     * @param recordingContentType the recordingContentType value to set.
+     * @return the StartCallRecordingWithCallLocatorRequest object itself.
+     */
+    public StartCallRecordingWithCallLocatorRequest setRecordingContentType(RecordingContentType recordingContentType) {
+        this.recordingContentType = recordingContentType;
+        return this;
+    }
+
+    /**
+     * Get the recordingChannelType property: Channel type of call recording.
+     *
+     * @return the recordingChannelType value.
+     */
+    public RecordingChannelType getRecordingChannelType() {
+        return this.recordingChannelType;
+    }
+
+    /**
+     * Set the recordingChannelType property: Channel type of call recording.
+     *
+     * @param recordingChannelType the recordingChannelType value to set.
+     * @return the StartCallRecordingWithCallLocatorRequest object itself.
+     */
+    public StartCallRecordingWithCallLocatorRequest setRecordingChannelType(RecordingChannelType recordingChannelType) {
+        this.recordingChannelType = recordingChannelType;
+        return this;
+    }
+
+    /**
+     * Get the recordingFormatType property: Format type of call recording.
+     *
+     * @return the recordingFormatType value.
+     */
+    public RecordingFormatType getRecordingFormatType() {
+        return this.recordingFormatType;
+    }
+
+    /**
+     * Set the recordingFormatType property: Format type of call recording.
+     *
+     * @param recordingFormatType the recordingFormatType value to set.
+     * @return the StartCallRecordingWithCallLocatorRequest object itself.
+     */
+    public StartCallRecordingWithCallLocatorRequest setRecordingFormatType(RecordingFormatType recordingFormatType) {
+        this.recordingFormatType = recordingFormatType;
         return this;
     }
 }

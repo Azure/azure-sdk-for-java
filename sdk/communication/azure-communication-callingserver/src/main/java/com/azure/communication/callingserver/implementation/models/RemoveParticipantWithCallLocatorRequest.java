@@ -17,10 +17,10 @@ public final class RemoveParticipantWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The remove participant by identifier request.
+     * The identifier of the participant to be removed from the call.
      */
-    @JsonProperty(value = "removeParticipantRequest", required = true)
-    private RemoveParticipantRequest removeParticipantRequest;
+    @JsonProperty(value = "identifier", required = true)
+    private CommunicationIdentifierModel identifier;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,23 +43,22 @@ public final class RemoveParticipantWithCallLocatorRequest {
     }
 
     /**
-     * Get the removeParticipantRequest property: The remove participant by identifier request.
+     * Get the identifier property: The identifier of the participant to be removed from the call.
      *
-     * @return the removeParticipantRequest value.
+     * @return the identifier value.
      */
-    public RemoveParticipantRequest getRemoveParticipantRequest() {
-        return this.removeParticipantRequest;
+    public CommunicationIdentifierModel getIdentifier() {
+        return this.identifier;
     }
 
     /**
-     * Set the removeParticipantRequest property: The remove participant by identifier request.
+     * Set the identifier property: The identifier of the participant to be removed from the call.
      *
-     * @param removeParticipantRequest the removeParticipantRequest value to set.
+     * @param identifier the identifier value to set.
      * @return the RemoveParticipantWithCallLocatorRequest object itself.
      */
-    public RemoveParticipantWithCallLocatorRequest setRemoveParticipantRequest(
-            RemoveParticipantRequest removeParticipantRequest) {
-        this.removeParticipantRequest = removeParticipantRequest;
+    public RemoveParticipantWithCallLocatorRequest setIdentifier(CommunicationIdentifierModel identifier) {
+        this.identifier = identifier;
         return this;
     }
 }

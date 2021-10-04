@@ -33,7 +33,7 @@ To update generated files for calling service, run the following command
 ``` yaml
 tag: package-2021-11-15-preview
 require:
-    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/f34504721cc42ad0c07aa20d333f9cb7fbbe31ef/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/694c933e3eb62c87a7932763c747181c0f8608e8/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL

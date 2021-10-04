@@ -17,10 +17,10 @@ public final class CancelMediaOperationWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The request payload for stopping a media operation.
+     * The operationId of the media operation to cancel
      */
-    @JsonProperty(value = "cancelMediaOperationRequest", required = true)
-    private CancelMediaOperationRequest cancelMediaOperationRequest;
+    @JsonProperty(value = "mediaOperationId", required = true)
+    private String mediaOperationId;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,23 +43,22 @@ public final class CancelMediaOperationWithCallLocatorRequest {
     }
 
     /**
-     * Get the cancelMediaOperationRequest property: The request payload for stopping a media operation.
+     * Get the mediaOperationId property: The operationId of the media operation to cancel.
      *
-     * @return the cancelMediaOperationRequest value.
+     * @return the mediaOperationId value.
      */
-    public CancelMediaOperationRequest getCancelMediaOperationRequest() {
-        return this.cancelMediaOperationRequest;
+    public String getMediaOperationId() {
+        return this.mediaOperationId;
     }
 
     /**
-     * Set the cancelMediaOperationRequest property: The request payload for stopping a media operation.
+     * Set the mediaOperationId property: The operationId of the media operation to cancel.
      *
-     * @param cancelMediaOperationRequest the cancelMediaOperationRequest value to set.
+     * @param mediaOperationId the mediaOperationId value to set.
      * @return the CancelMediaOperationWithCallLocatorRequest object itself.
      */
-    public CancelMediaOperationWithCallLocatorRequest setCancelMediaOperationRequest(
-            CancelMediaOperationRequest cancelMediaOperationRequest) {
-        this.cancelMediaOperationRequest = cancelMediaOperationRequest;
+    public CancelMediaOperationWithCallLocatorRequest setMediaOperationId(String mediaOperationId) {
+        this.mediaOperationId = mediaOperationId;
         return this;
     }
 }

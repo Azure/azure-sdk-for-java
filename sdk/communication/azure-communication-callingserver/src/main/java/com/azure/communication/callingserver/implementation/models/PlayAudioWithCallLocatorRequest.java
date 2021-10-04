@@ -17,10 +17,40 @@ public final class PlayAudioWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The request payload for playing audio.
+     * The media resource uri of the play audio request.
+     * Currently only Wave file (.wav) format audio prompts are supported.
+     * More specifically, the audio content in the wave file must be mono
+     * (single-channel),
+     * 16-bit samples with a 16,000 (16KHz) sampling rate.
      */
-    @JsonProperty(value = "playAudioRequest", required = true)
-    private PlayAudioRequest playAudioRequest;
+    @JsonProperty(value = "audioFileUri")
+    private String audioFileUri;
+
+    /*
+     * The flag indicating whether audio file needs to be played in loop or
+     * not.
+     */
+    @JsonProperty(value = "loop", required = true)
+    private boolean loop;
+
+    /*
+     * The value to identify context of the operation.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
+     * An id for the media in the AudioFileUri, using which we cache the media
+     * resource.
+     */
+    @JsonProperty(value = "audioFileId")
+    private String audioFileId;
+
+    /*
+     * The callback Uri to receive PlayAudio status notifications.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,22 +73,106 @@ public final class PlayAudioWithCallLocatorRequest {
     }
 
     /**
-     * Get the playAudioRequest property: The request payload for playing audio.
+     * Get the audioFileUri property: The media resource uri of the play audio request. Currently only Wave file (.wav)
+     * format audio prompts are supported. More specifically, the audio content in the wave file must be mono
+     * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
-     * @return the playAudioRequest value.
+     * @return the audioFileUri value.
      */
-    public PlayAudioRequest getPlayAudioRequest() {
-        return this.playAudioRequest;
+    public String getAudioFileUri() {
+        return this.audioFileUri;
     }
 
     /**
-     * Set the playAudioRequest property: The request payload for playing audio.
+     * Set the audioFileUri property: The media resource uri of the play audio request. Currently only Wave file (.wav)
+     * format audio prompts are supported. More specifically, the audio content in the wave file must be mono
+     * (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      *
-     * @param playAudioRequest the playAudioRequest value to set.
+     * @param audioFileUri the audioFileUri value to set.
      * @return the PlayAudioWithCallLocatorRequest object itself.
      */
-    public PlayAudioWithCallLocatorRequest setPlayAudioRequest(PlayAudioRequest playAudioRequest) {
-        this.playAudioRequest = playAudioRequest;
+    public PlayAudioWithCallLocatorRequest setAudioFileUri(String audioFileUri) {
+        this.audioFileUri = audioFileUri;
+        return this;
+    }
+
+    /**
+     * Get the loop property: The flag indicating whether audio file needs to be played in loop or not.
+     *
+     * @return the loop value.
+     */
+    public boolean isLoop() {
+        return this.loop;
+    }
+
+    /**
+     * Set the loop property: The flag indicating whether audio file needs to be played in loop or not.
+     *
+     * @param loop the loop value to set.
+     * @return the PlayAudioWithCallLocatorRequest object itself.
+     */
+    public PlayAudioWithCallLocatorRequest setLoop(boolean loop) {
+        this.loop = loop;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The value to identify context of the operation.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the PlayAudioWithCallLocatorRequest object itself.
+     */
+    public PlayAudioWithCallLocatorRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
+     *
+     * @return the audioFileId value.
+     */
+    public String getAudioFileId() {
+        return this.audioFileId;
+    }
+
+    /**
+     * Set the audioFileId property: An id for the media in the AudioFileUri, using which we cache the media resource.
+     *
+     * @param audioFileId the audioFileId value to set.
+     * @return the PlayAudioWithCallLocatorRequest object itself.
+     */
+    public PlayAudioWithCallLocatorRequest setAudioFileId(String audioFileId) {
+        this.audioFileId = audioFileId;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback Uri to receive PlayAudio status notifications.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the PlayAudioWithCallLocatorRequest object itself.
+     */
+    public PlayAudioWithCallLocatorRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

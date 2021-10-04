@@ -103,7 +103,7 @@ public class CallConnectionAsyncUnitTests {
         CallConnectionAsync callConnectionAsync = getAddParticipantCallConnection();
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        Response<AddParticipantResult> addParticipantResultResponse = callConnectionAsync.addParticipantWithResponse(user, "alternateCallerId", "operationContext", Context.NONE).block();
+        Response<AddParticipantResult> addParticipantResultResponse = callConnectionAsync.addParticipantWithResponse(user, "alternateCallerId", "operationContext", URI.create("https://callbackUri.local"), Context.NONE).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
         assertEquals(user.getId(), addParticipantResult.getParticipantId());
@@ -114,7 +114,7 @@ public class CallConnectionAsyncUnitTests {
         CallConnectionAsync callConnectionAsync = getAddParticipantCallConnection();
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(user, "alternateCallerId", "operationContext").block();
+        AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(user, "alternateCallerId", "operationContext", URI.create("https://callbackUri.local")).block();
         assertEquals(user.getId(), addParticipantResult.getParticipantId());
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallParticipant;
@@ -14,8 +15,6 @@ import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
-import com.azure.communication.callingserver.models.StartHoldMusicResult;
-import com.azure.communication.callingserver.models.StopHoldMusicResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -638,75 +637,66 @@ public final class CallingServerClient {
     }
 
     /**
-     * Hold the participant and play custom audio.
+     * Redirect the call.
      *
-     * @param callLocator The server call id.
-     * @param participant The identifier of the participant.
-     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
-     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
-     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param incomingCallContext the incomingCallContext value to set.
+     * @param targets the targets value to set.
+     * @param callbackUrl the callbackUrl value to set.
+     * @param timeout the timeout value to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResult startHoldMusic(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
-        return startHoldMusicWithResponse(callLocator, participant, audioFileUri, audioFileId, callbackUri, operationContext, Context.NONE).getValue();
+    public void redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout) {
+        redirectCallWithResponse(incomingCallContext, targets, callbackUri, timeout, Context.NONE);
     }
 
     /**
-     * Hold the participant and play custom audio.
+     * Redirect the call.
      *
-     * @param callLocator The server call id.
-     * @param participant The identifier of the participant.
-     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
-     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
-     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
+     * @param incomingCallContext the incomingCallContext value to set.
+     * @param targets the targets value to set.
+     * @param callbackUrl the callbackUrl value to set.
+     * @param timeout the timeout value to set.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for start hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
-        return callingServerAsyncClient.startHoldMusicWithResponse(callLocator, participant, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
+    public Response<Void> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout, Context context) {
+        return callingServerAsyncClient.redirectCallWithResponseInternal(incomingCallContext, targets, callbackUri, timeout, context).block();
     }
 
     /**
-     * Remove participant from the hold and stop playing audio.
+     * Redirect the call.
      *
-     * @param callLocator The server call id.
-     * @param participant The identifier of the participant.
-     * @param startHoldMusicOperationId The id of the start hold music operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param incomingCallContext the incomingCallContext value to set.
+     * @param callbackUrl the callbackUrl value to set.
+     * @param rejectReason the call reject reason value to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for stop hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopHoldMusicResult stopHoldMusic(CallLocator callLocator, CommunicationIdentifier participant, String startHoldMusicOperationId) {
-        return stopHoldMusicWithResponse( callLocator, participant, startHoldMusicOperationId, Context.NONE).getValue();
+    public void rejectCall(String incomingCallContext, URI callbackUri, CallRejectReason callRejectReason) {
+        rejectCallWithResponse(incomingCallContext, callbackUri, callRejectReason, Context.NONE);
     }
 
     /**
-     * Remove participant from the hold and stop playing audio.
+     * Redirect the call.
      *
-     * @param callLocator The server call id.
-     * @param participant The identifier of the participant.
-     * @param startHoldMusicOperationId The id of the start hold music operation.
+     * @param incomingCallContext the incomingCallContext value to set.
+     * @param callbackUrl the callbackUrl value to set.
+     * @param rejectReason the call reject reason value to set.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for stop hold music operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(CallLocator callLocator, CommunicationIdentifier participant,
-    String startHoldMusicOperationId, Context context) {
-        return callingServerAsyncClient.stopHoldMusicWithResponse( callLocator, participant, startHoldMusicOperationId, context).block();
+    public Response<Void> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason callRejectReason, Context context) {
+        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callbackUri, callRejectReason, context).block();
     }
 }
-
-

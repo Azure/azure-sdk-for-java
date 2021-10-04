@@ -17,10 +17,10 @@ public final class GetParticipantWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The get participant by identifier request.
+     * The identifier of the participant.
      */
-    @JsonProperty(value = "getParticipantRequest", required = true)
-    private GetParticipantRequest getParticipantRequest;
+    @JsonProperty(value = "identifier", required = true)
+    private CommunicationIdentifierModel identifier;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,22 +43,22 @@ public final class GetParticipantWithCallLocatorRequest {
     }
 
     /**
-     * Get the getParticipantRequest property: The get participant by identifier request.
+     * Get the identifier property: The identifier of the participant.
      *
-     * @return the getParticipantRequest value.
+     * @return the identifier value.
      */
-    public GetParticipantRequest getGetParticipantRequest() {
-        return this.getParticipantRequest;
+    public CommunicationIdentifierModel getIdentifier() {
+        return this.identifier;
     }
 
     /**
-     * Set the getParticipantRequest property: The get participant by identifier request.
+     * Set the identifier property: The identifier of the participant.
      *
-     * @param getParticipantRequest the getParticipantRequest value to set.
+     * @param identifier the identifier value to set.
      * @return the GetParticipantWithCallLocatorRequest object itself.
      */
-    public GetParticipantWithCallLocatorRequest setGetParticipantRequest(GetParticipantRequest getParticipantRequest) {
-        this.getParticipantRequest = getParticipantRequest;
+    public GetParticipantWithCallLocatorRequest setIdentifier(CommunicationIdentifierModel identifier) {
+        this.identifier = identifier;
         return this;
     }
 }

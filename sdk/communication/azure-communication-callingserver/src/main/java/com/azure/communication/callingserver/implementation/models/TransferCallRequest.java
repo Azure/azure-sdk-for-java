@@ -17,6 +17,13 @@ public final class TransferCallRequest {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
+     * The call connection id to replace the current call with. This parameter
+     * should be used for consultative transfer.
+     */
+    @JsonProperty(value = "targetCallConnectionId")
+    private String targetCallConnectionId;
+
+    /*
      * The user to user information.
      */
     @JsonProperty(value = "userToUserInformation")
@@ -39,6 +46,28 @@ public final class TransferCallRequest {
      */
     public TransferCallRequest setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
+        return this;
+    }
+
+    /**
+     * Get the targetCallConnectionId property: The call connection id to replace the current call with. This parameter
+     * should be used for consultative transfer.
+     *
+     * @return the targetCallConnectionId value.
+     */
+    public String getTargetCallConnectionId() {
+        return this.targetCallConnectionId;
+    }
+
+    /**
+     * Set the targetCallConnectionId property: The call connection id to replace the current call with. This parameter
+     * should be used for consultative transfer.
+     *
+     * @param targetCallConnectionId the targetCallConnectionId value to set.
+     * @return the TransferCallRequest object itself.
+     */
+    public TransferCallRequest setTargetCallConnectionId(String targetCallConnectionId) {
+        this.targetCallConnectionId = targetCallConnectionId;
         return this;
     }
 

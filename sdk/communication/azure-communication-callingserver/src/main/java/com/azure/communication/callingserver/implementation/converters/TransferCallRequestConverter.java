@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 
 /**
@@ -17,15 +16,17 @@ public final class TransferCallRequestConverter {
      */
     public static TransferCallRequest convert(
         CommunicationIdentifier targetParticipant,
+        String targetCallConnectionId,
         String userToUserInformation) {
-            
+
         if (targetParticipant == null) {
             return null;
         }
 
         return new TransferCallRequest()
             .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-            .setUserToUserInformation(userToUserInformation);
+            .setUserToUserInformation(userToUserInformation)
+            .setTargetCallConnectionId(targetCallConnectionId);
     }
 
     private TransferCallRequestConverter() {

@@ -24,12 +24,9 @@ import com.azure.communication.callingserver.implementation.models.PlayAudioResu
 import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
-import com.azure.communication.callingserver.implementation.models.StartHoldMusicRequest;
-import com.azure.communication.callingserver.implementation.models.StartHoldMusicResultInternal;
-import com.azure.communication.callingserver.implementation.models.StopHoldMusicRequest;
-import com.azure.communication.callingserver.implementation.models.StopHoldMusicResultInternal;
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -78,7 +75,7 @@ public final class CallConnectionsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCa")
     private interface CallConnectionsService {
-        @Post("/calling/callConnections/{callConnectionId}/audioRoutingGroups/{audioRoutingGroupId}")
+        @Get("/calling/callConnections/{callConnectionId}/audioRoutingGroups/{audioRoutingGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<AudioRoutingGroupResult>> getAudioRoutingGroups(
@@ -108,7 +105,7 @@ public final class CallConnectionsImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @PathParam("audioRoutingGroupId") String audioRoutingGroupId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AudioRoutingGroupRequest audioRoutingGroupRequest,
+                @BodyParam("application/json") UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -246,28 +243,6 @@ public final class CallConnectionsImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") GetParticipantRequest getParticipantRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/calling/callConnections/{callConnectionId}/participants:startHoldMusic")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<StartHoldMusicResultInternal>> startHoldMusic(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartHoldMusicRequest request,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/calling/callConnections/{callConnectionId}/participants:stopHoldMusic")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<StopHoldMusicResultInternal>> stopHoldMusic(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StopHoldMusicRequest stopHoldMusicRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -583,11 +558,11 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Update audio routing group from a call.
+     * Update audio routing group.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupId The audio routing group id.
-     * @param audioRoutingGroupRequest The audio routing group request.
+     * @param updateAudioRoutingGroupRequest The update audio routing group request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -595,7 +570,9 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateAudioRoutingGroupWithResponseAsync(
-            String callConnectionId, String audioRoutingGroupId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
+            String callConnectionId,
+            String audioRoutingGroupId,
+            UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -604,17 +581,17 @@ public final class CallConnectionsImpl {
                                 callConnectionId,
                                 audioRoutingGroupId,
                                 this.client.getApiVersion(),
-                                audioRoutingGroupRequest,
+                                updateAudioRoutingGroupRequest,
                                 accept,
                                 context));
     }
 
     /**
-     * Update audio routing group from a call.
+     * Update audio routing group.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupId The audio routing group id.
-     * @param audioRoutingGroupRequest The audio routing group request.
+     * @param updateAudioRoutingGroupRequest The update audio routing group request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -625,7 +602,7 @@ public final class CallConnectionsImpl {
     public Mono<Response<Void>> updateAudioRoutingGroupWithResponseAsync(
             String callConnectionId,
             String audioRoutingGroupId,
-            AudioRoutingGroupRequest audioRoutingGroupRequest,
+            UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest,
             Context context) {
         final String accept = "application/json";
         return service.updateAudioRoutingGroup(
@@ -633,17 +610,17 @@ public final class CallConnectionsImpl {
                 callConnectionId,
                 audioRoutingGroupId,
                 this.client.getApiVersion(),
-                audioRoutingGroupRequest,
+                updateAudioRoutingGroupRequest,
                 accept,
                 context);
     }
 
     /**
-     * Update audio routing group from a call.
+     * Update audio routing group.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupId The audio routing group id.
-     * @param audioRoutingGroupRequest The audio routing group request.
+     * @param updateAudioRoutingGroupRequest The update audio routing group request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -651,17 +628,20 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAudioRoutingGroupAsync(
-            String callConnectionId, String audioRoutingGroupId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
-        return updateAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupId, audioRoutingGroupRequest)
+            String callConnectionId,
+            String audioRoutingGroupId,
+            UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest) {
+        return updateAudioRoutingGroupWithResponseAsync(
+                        callConnectionId, audioRoutingGroupId, updateAudioRoutingGroupRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Update audio routing group from a call.
+     * Update audio routing group.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupId The audio routing group id.
-     * @param audioRoutingGroupRequest The audio routing group request.
+     * @param updateAudioRoutingGroupRequest The update audio routing group request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -672,35 +652,37 @@ public final class CallConnectionsImpl {
     public Mono<Void> updateAudioRoutingGroupAsync(
             String callConnectionId,
             String audioRoutingGroupId,
-            AudioRoutingGroupRequest audioRoutingGroupRequest,
+            UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest,
             Context context) {
         return updateAudioRoutingGroupWithResponseAsync(
-                        callConnectionId, audioRoutingGroupId, audioRoutingGroupRequest, context)
+                        callConnectionId, audioRoutingGroupId, updateAudioRoutingGroupRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Update audio routing group from a call.
+     * Update audio routing group.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupId The audio routing group id.
-     * @param audioRoutingGroupRequest The audio routing group request.
+     * @param updateAudioRoutingGroupRequest The update audio routing group request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateAudioRoutingGroup(
-            String callConnectionId, String audioRoutingGroupId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
-        updateAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupId, audioRoutingGroupRequest).block();
+            String callConnectionId,
+            String audioRoutingGroupId,
+            UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest) {
+        updateAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupId, updateAudioRoutingGroupRequest).block();
     }
 
     /**
-     * Update audio routing group from a call.
+     * Update audio routing group.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupId The audio routing group id.
-     * @param audioRoutingGroupRequest The audio routing group request.
+     * @param updateAudioRoutingGroupRequest The update audio routing group request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -711,10 +693,10 @@ public final class CallConnectionsImpl {
     public Response<Void> updateAudioRoutingGroupWithResponse(
             String callConnectionId,
             String audioRoutingGroupId,
-            AudioRoutingGroupRequest audioRoutingGroupRequest,
+            UpdateAudioRoutingGroupRequest updateAudioRoutingGroupRequest,
             Context context) {
         return updateAudioRoutingGroupWithResponseAsync(
-                        callConnectionId, audioRoutingGroupId, audioRoutingGroupRequest, context)
+                        callConnectionId, audioRoutingGroupId, updateAudioRoutingGroupRequest, context)
                 .block();
     }
 
@@ -2202,262 +2184,6 @@ public final class CallConnectionsImpl {
     public Response<List<CallParticipantInternal>> getParticipantWithResponse(
             String callConnectionId, GetParticipantRequest getParticipantRequest, Context context) {
         return getParticipantWithResponseAsync(callConnectionId, getParticipantRequest, context).block();
-    }
-
-    /**
-     * Play hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param request The start hold music request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartHoldMusicResultInternal>> startHoldMusicWithResponseAsync(
-            String callConnectionId, StartHoldMusicRequest request) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.startHoldMusic(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                request,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Play hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param request The start hold music request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartHoldMusicResultInternal>> startHoldMusicWithResponseAsync(
-            String callConnectionId, StartHoldMusicRequest request, Context context) {
-        final String accept = "application/json";
-        return service.startHoldMusic(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), request, accept, context);
-    }
-
-    /**
-     * Play hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param request The start hold music request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartHoldMusicResultInternal> startHoldMusicAsync(
-            String callConnectionId, StartHoldMusicRequest request) {
-        return startHoldMusicWithResponseAsync(callConnectionId, request)
-                .flatMap(
-                        (Response<StartHoldMusicResultInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Play hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param request The start hold music request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StartHoldMusicResultInternal> startHoldMusicAsync(
-            String callConnectionId, StartHoldMusicRequest request, Context context) {
-        return startHoldMusicWithResponseAsync(callConnectionId, request, context)
-                .flatMap(
-                        (Response<StartHoldMusicResultInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Play hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param request The start hold music request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResultInternal startHoldMusic(String callConnectionId, StartHoldMusicRequest request) {
-        return startHoldMusicAsync(callConnectionId, request).block();
-    }
-
-    /**
-     * Play hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param request The start hold music request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResultInternal> startHoldMusicWithResponse(
-            String callConnectionId, StartHoldMusicRequest request, Context context) {
-        return startHoldMusicWithResponseAsync(callConnectionId, request, context).block();
-    }
-
-    /**
-     * Stop hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param stopHoldMusicRequest The stop hold music request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StopHoldMusicResultInternal>> stopHoldMusicWithResponseAsync(
-            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.stopHoldMusic(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                this.client.getApiVersion(),
-                                stopHoldMusicRequest,
-                                accept,
-                                context));
-    }
-
-    /**
-     * Stop hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param stopHoldMusicRequest The stop hold music request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StopHoldMusicResultInternal>> stopHoldMusicWithResponseAsync(
-            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest, Context context) {
-        final String accept = "application/json";
-        return service.stopHoldMusic(
-                this.client.getEndpoint(),
-                callConnectionId,
-                this.client.getApiVersion(),
-                stopHoldMusicRequest,
-                accept,
-                context);
-    }
-
-    /**
-     * Stop hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param stopHoldMusicRequest The stop hold music request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopHoldMusicResultInternal> stopHoldMusicAsync(
-            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
-        return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest)
-                .flatMap(
-                        (Response<StopHoldMusicResultInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Stop hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param stopHoldMusicRequest The stop hold music request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StopHoldMusicResultInternal> stopHoldMusicAsync(
-            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest, Context context) {
-        return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context)
-                .flatMap(
-                        (Response<StopHoldMusicResultInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Stop hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param stopHoldMusicRequest The stop hold music request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopHoldMusicResultInternal stopHoldMusic(
-            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest) {
-        return stopHoldMusicAsync(callConnectionId, stopHoldMusicRequest).block();
-    }
-
-    /**
-     * Stop hold music to a participant.
-     *
-     * @param callConnectionId The callConnectionId.
-     * @param stopHoldMusicRequest The stop hold music request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResultInternal> stopHoldMusicWithResponse(
-            String callConnectionId, StopHoldMusicRequest stopHoldMusicRequest, Context context) {
-        return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context).block();
     }
 
     /**

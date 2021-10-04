@@ -17,10 +17,28 @@ public final class AddParticipantWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The add participant request.
+     * The alternate identity of source participant.
      */
-    @JsonProperty(value = "addParticipantRequest", required = true)
-    private AddParticipantRequest addParticipantRequest;
+    @JsonProperty(value = "alternateCallerId")
+    private PhoneNumberIdentifierModel alternateCallerId;
+
+    /*
+     * The participant to be added to the call.
+     */
+    @JsonProperty(value = "participant")
+    private CommunicationIdentifierModel participant;
+
+    /*
+     * The operation context.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
+     * The callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,22 +61,82 @@ public final class AddParticipantWithCallLocatorRequest {
     }
 
     /**
-     * Get the addParticipantRequest property: The add participant request.
+     * Get the alternateCallerId property: The alternate identity of source participant.
      *
-     * @return the addParticipantRequest value.
+     * @return the alternateCallerId value.
      */
-    public AddParticipantRequest getAddParticipantRequest() {
-        return this.addParticipantRequest;
+    public PhoneNumberIdentifierModel getAlternateCallerId() {
+        return this.alternateCallerId;
     }
 
     /**
-     * Set the addParticipantRequest property: The add participant request.
+     * Set the alternateCallerId property: The alternate identity of source participant.
      *
-     * @param addParticipantRequest the addParticipantRequest value to set.
+     * @param alternateCallerId the alternateCallerId value to set.
      * @return the AddParticipantWithCallLocatorRequest object itself.
      */
-    public AddParticipantWithCallLocatorRequest setAddParticipantRequest(AddParticipantRequest addParticipantRequest) {
-        this.addParticipantRequest = addParticipantRequest;
+    public AddParticipantWithCallLocatorRequest setAlternateCallerId(PhoneNumberIdentifierModel alternateCallerId) {
+        this.alternateCallerId = alternateCallerId;
+        return this;
+    }
+
+    /**
+     * Get the participant property: The participant to be added to the call.
+     *
+     * @return the participant value.
+     */
+    public CommunicationIdentifierModel getParticipant() {
+        return this.participant;
+    }
+
+    /**
+     * Set the participant property: The participant to be added to the call.
+     *
+     * @param participant the participant value to set.
+     * @return the AddParticipantWithCallLocatorRequest object itself.
+     */
+    public AddParticipantWithCallLocatorRequest setParticipant(CommunicationIdentifierModel participant) {
+        this.participant = participant;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The operation context.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The operation context.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the AddParticipantWithCallLocatorRequest object itself.
+     */
+    public AddParticipantWithCallLocatorRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the AddParticipantWithCallLocatorRequest object itself.
+     */
+    public AddParticipantWithCallLocatorRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

@@ -17,10 +17,16 @@ public final class CancelParticipantMediaOperationWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
-     * The request payload for stopping a media operation.
+     * The identifier of the participant.
      */
-    @JsonProperty(value = "cancelParticipantMediaOperationRequest", required = true)
-    private CancelParticipantMediaOperationRequest cancelParticipantMediaOperationRequest;
+    @JsonProperty(value = "identifier", required = true)
+    private CommunicationIdentifierModel identifier;
+
+    /*
+     * The operationId of the media operation to cancel
+     */
+    @JsonProperty(value = "mediaOperationId", required = true)
+    private String mediaOperationId;
 
     /**
      * Get the callLocator property: The call locator.
@@ -43,23 +49,43 @@ public final class CancelParticipantMediaOperationWithCallLocatorRequest {
     }
 
     /**
-     * Get the cancelParticipantMediaOperationRequest property: The request payload for stopping a media operation.
+     * Get the identifier property: The identifier of the participant.
      *
-     * @return the cancelParticipantMediaOperationRequest value.
+     * @return the identifier value.
      */
-    public CancelParticipantMediaOperationRequest getCancelParticipantMediaOperationRequest() {
-        return this.cancelParticipantMediaOperationRequest;
+    public CommunicationIdentifierModel getIdentifier() {
+        return this.identifier;
     }
 
     /**
-     * Set the cancelParticipantMediaOperationRequest property: The request payload for stopping a media operation.
+     * Set the identifier property: The identifier of the participant.
      *
-     * @param cancelParticipantMediaOperationRequest the cancelParticipantMediaOperationRequest value to set.
+     * @param identifier the identifier value to set.
      * @return the CancelParticipantMediaOperationWithCallLocatorRequest object itself.
      */
-    public CancelParticipantMediaOperationWithCallLocatorRequest setCancelParticipantMediaOperationRequest(
-            CancelParticipantMediaOperationRequest cancelParticipantMediaOperationRequest) {
-        this.cancelParticipantMediaOperationRequest = cancelParticipantMediaOperationRequest;
+    public CancelParticipantMediaOperationWithCallLocatorRequest setIdentifier(
+            CommunicationIdentifierModel identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    /**
+     * Get the mediaOperationId property: The operationId of the media operation to cancel.
+     *
+     * @return the mediaOperationId value.
+     */
+    public String getMediaOperationId() {
+        return this.mediaOperationId;
+    }
+
+    /**
+     * Set the mediaOperationId property: The operationId of the media operation to cancel.
+     *
+     * @param mediaOperationId the mediaOperationId value to set.
+     * @return the CancelParticipantMediaOperationWithCallLocatorRequest object itself.
+     */
+    public CancelParticipantMediaOperationWithCallLocatorRequest setMediaOperationId(String mediaOperationId) {
+        this.mediaOperationId = mediaOperationId;
         return this;
     }
 }

@@ -174,7 +174,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
                 addedUser,
                 null,
-                operationContext).block();
+                operationContext,
+                URI.create(CALLBACK_URI)).block();
 
             assert addParticipantResult != null;
             callConnectionAsync.removeParticipant(addedUser).block();
@@ -224,7 +225,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
                 callConnectionAsync.addParticipantWithResponse(
                     addedUser,
                     null,
-                    operationContext).block();
+                    operationContext,
+                    URI.create(CALLBACK_URI)).block();
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 
             assert addParticipantResponse != null;

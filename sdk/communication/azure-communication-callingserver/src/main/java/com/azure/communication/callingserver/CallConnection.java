@@ -142,6 +142,7 @@ public final class CallConnection {
      * @param alternateCallerId Phone number to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @param callBackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -150,8 +151,9 @@ public final class CallConnection {
     public AddParticipantResult addParticipant(
         CommunicationIdentifier participant,
         String alternateCallerId,
-        String operationContext) {
-        return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext).block();
+        String operationContext,
+        URI callbackUri) {
+        return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext, callbackUri).block();
     }
 
     /**
@@ -161,6 +163,7 @@ public final class CallConnection {
      * @param alternateCallerId Phone number to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
+     * @param callBackUri callBackUri to get notifications.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -171,9 +174,10 @@ public final class CallConnection {
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
+        URI callbackUri,
         Context context) {
         return callConnectionAsync
-            .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
+            .addParticipantWithResponse(participant, alternateCallerId, operationContext, callbackUri, context).block();
     }
 
     /**
@@ -206,20 +210,22 @@ public final class CallConnection {
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
+     * @param targetCallConnectionId The target call connection id to transfer to.
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void transferToParticipant(CommunicationIdentifier targetParticipant, String userToUserInformation) {
-        callConnectionAsync.transferToParticipant(targetParticipant, userToUserInformation).block();
+    public void transferToParticipant(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+        callConnectionAsync.transferCall(targetParticipant, targetCallConnectionId, userToUserInformation).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
      * @param targetParticipant The identifier of the participant.
+     * @param targetCallConnectionId The target call connection id to transfer to.
      * @param userToUserInformation The user to user information.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -227,8 +233,8 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String userToUserInformation, Context context) {
-        return callConnectionAsync.transferToParticipantWithResponse(targetParticipant, userToUserInformation, context).block();
+    public Response<Void> transferToParticipantWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+        return callConnectionAsync.transferCallWithResponse(targetParticipant, targetCallConnectionId, userToUserInformation, context).block();
     }
 
     /**
@@ -306,70 +312,6 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier participant, Context context) {
         return callConnectionAsync.getParticipantWithResponse(participant, context).block();
-    }
-
-    /**
-     * Hold the participant and play default music.
-     *
-     * @param participant The identifier of the participant.
-     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
-     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
-     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StartHoldMusicResult startHoldMusic(CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext) {
-        return callConnectionAsync.startHoldMusic(participant, audioFileUri, audioFileId, callbackUri, operationContext).block();
-    }
-
-    /**
-     * Hold the participant and play default music.
-     *
-     * @param participant The identifier of the participant.
-     * @param audioFileUri The uri of the audio file. If none is passed, default music will be played.
-     * @param audioFileId The id for the media in the AudioFileUri, using which we cache the media resource. Needed only if audioFileUri is passed.
-     * @param callbackUri The callback Uri to receive StartHoldMusic status notifications.
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for start hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartHoldMusicResult> startHoldMusicWithResponse(CommunicationIdentifier participant, URI audioFileUri, String audioFileId, URI callbackUri, String operationContext, Context context) {
-        return callConnectionAsync.startHoldMusicWithResponse(participant, audioFileUri, audioFileId, callbackUri, operationContext, context).block();
-    }
-
-    /**
-     * Remove participant from the hold and stop playing audio.
-     *
-     * @param participant The identifier of the participant.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for stop hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopHoldMusicResult stopHoldMusic(CommunicationIdentifier participant) {
-        return callConnectionAsync.stopHoldMusic(participant).block();
-    }
-
-    /**
-     * Remove participant from the hold and stop playing audio.
-     *
-     * @param participant The identifier of the participant.
-     * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for stop hold music operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StopHoldMusicResult> stopHoldMusicWithResponse(CommunicationIdentifier participant, Context context) {
-        return callConnectionAsync.stopHoldMusicWithResponse(participant, context).block();
     }
 
     /**

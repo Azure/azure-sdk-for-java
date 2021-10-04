@@ -88,7 +88,8 @@ public class ReadmeSamples {
         CallingServerClient callingServerClient = createCallingServerClient();
         CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
-        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
+        String callbackUri = "<callback-uri-for-notification>";
+        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>", URI.create(callbackUri));
     }
 
     /**

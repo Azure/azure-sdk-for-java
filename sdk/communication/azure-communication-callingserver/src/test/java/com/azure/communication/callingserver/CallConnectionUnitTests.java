@@ -91,7 +91,7 @@ public class CallConnectionUnitTests {
         CallConnection callConnection = getAddParticipantCallConnection();
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        Response<AddParticipantResult> addParticipantResultResponse = callConnection.addParticipantWithResponse(user, "alternateCallerId", "operationContext", Context.NONE);
+        Response<AddParticipantResult> addParticipantResultResponse = callConnection.addParticipantWithResponse(user, "alternateCallerId", "operationContext", URI.create("https://callbackUri"), Context.NONE);
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
         assertEquals(user.getId(), addParticipantResult.getParticipantId());
@@ -102,7 +102,7 @@ public class CallConnectionUnitTests {
         CallConnection callConnection = getAddParticipantCallConnection();
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
-        AddParticipantResult addParticipantResult = callConnection.addParticipant(user, "alternateCallerId", "operationContext");
+        AddParticipantResult addParticipantResult = callConnection.addParticipant(user, "alternateCallerId", "operationContext", URI.create("https://callbackUri"));
         assertEquals(user.getId(), addParticipantResult.getParticipantId());
     }
 
