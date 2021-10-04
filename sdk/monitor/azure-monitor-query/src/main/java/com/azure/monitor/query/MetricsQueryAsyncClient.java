@@ -6,6 +6,7 @@ package com.azure.monitor.query;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -13,6 +14,7 @@ import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
+import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.Metric;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
 import com.azure.monitor.query.implementation.metrics.models.MetadataValue;
@@ -72,8 +74,8 @@ public final class MetricsQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsQueryResult> query(String resourceUri, List<String> metricsNames) {
-        return queryWithResponse(resourceUri, metricsNames, new MetricsQueryOptions()).map(Response::getValue);
+    public Mono<MetricsQueryResult> queryResource(String resourceUri, List<String> metricsNames) {
+        return queryResourceWithResponse(resourceUri, metricsNames, new MetricsQueryOptions()).map(Response::getValue);
     }
 
     /**
@@ -84,9 +86,9 @@ public final class MetricsQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsQueryResult>> queryWithResponse(String resourceUri, List<String> metricsNames,
-                                                                MetricsQueryOptions options) {
-        return withContext(context -> queryWithResponse(resourceUri, metricsNames, options, context));
+    public Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
+                                                                        MetricsQueryOptions options) {
+        return withContext(context -> queryResourceWithResponse(resourceUri, metricsNames, options, context));
     }
 
     /**
@@ -160,7 +162,7 @@ public final class MetricsQueryAsyncClient {
     PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime, Context context) {
         return metricsNamespaceClient
                 .getMetricNamespaces()
-                .listAsync(resourceUri, startTime.toString(), context)
+                .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
                 .mapPage(this::mapMetricNamespace);
     }
 
@@ -181,8 +183,8 @@ public final class MetricsQueryAsyncClient {
                 .mapPage(this::mapToMetricDefinition);
     }
 
-    Mono<Response<MetricsQueryResult>> queryWithResponse(String resourceUri, List<String> metricsNames,
-                                                         MetricsQueryOptions options, Context context) {
+    Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
+                                                                 MetricsQueryOptions options, Context context) {
         String aggregation = null;
         if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
             aggregation = options.getAggregations()
@@ -197,7 +199,11 @@ public final class MetricsQueryAsyncClient {
                 .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
                         String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
                         options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context)
-                .map(response -> convertToMetricsQueryResult(response));
+                .map(response -> convertToMetricsQueryResult(response))
+                .onErrorMap(ErrorResponseException.class, ex -> {
+                    return new HttpResponseException(ex.getMessage(), ex.getResponse(),
+                            new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
+                });
     }
 
     private Response<MetricsQueryResult> convertToMetricsQueryResult(Response<MetricsResponse> response) {
