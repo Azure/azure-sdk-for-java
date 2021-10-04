@@ -6,6 +6,7 @@ package com.azure.communication.callingserver;
 import java.net.URI;
 import java.util.List;
 
+import com.azure.communication.callingserver.implementation.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallParticipant;
@@ -347,19 +348,16 @@ public final class CallConnection {
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
-     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResult PlayAudioToParticipant(
+    public PlayAudioResult playAudioToParticipant(
         CommunicationIdentifier participant,
         URI audioFileUri,
-        PlayAudioOptions playAudioOptions,
-        Context context
-    ) {
-        return callConnectionAsync.PlayAudioToParticipantInternal(participant, audioFileUri, playAudioOptions, context).block();
+        PlayAudioOptions playAudioOptions) {
+        return playAudioToParticipantWithResponse(participant, audioFileUri, playAudioOptions, Context.NONE).getValue();
     }
 
     /**
@@ -376,13 +374,13 @@ public final class CallConnection {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlayAudioResult> PlayAudioToParticipantWithResponse(
+    public Response<PlayAudioResult> playAudioToParticipantWithResponse(
         CommunicationIdentifier participant,
         URI audioFileUri,
         PlayAudioOptions playAudioOptions,
         Context context
     ) {
-        return callConnectionAsync.PlayAudioToParticipantWithResponseInternal(participant, audioFileUri, playAudioOptions, context).block();
+        return callConnectionAsync.playAudioToParticipantWithResponseInternal(participant, audioFileUri, playAudioOptions, context).block();
     }
 
     /**
@@ -398,10 +396,8 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void CancelParticipantMediaOperation(
         CommunicationIdentifier participant,
-        String mediaOperationId,
-        Context context
-    ) {
-        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participant, mediaOperationId, context).block().getValue();
+        String mediaOperationId) {
+        return cancelParticipantMediaOperationWithResponse(participant, mediaOperationId, Context.NONE).getValue();
     }
 
     /**
@@ -415,10 +411,228 @@ public final class CallConnection {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> CancelParticipantMediaOperationWithResponse(
+    public Response<Void> cancelParticipantMediaOperationWithResponse(
         CommunicationIdentifier participant,
         String mediaOperationId,
         Context context) {
-        return callConnectionAsync.CancelParticipantMediaOperationWithResponseInternal(participant, mediaOperationId, context).block();
+        return callConnectionAsync.cancelParticipantMediaOperationWithResponseInternal(participant, mediaOperationId, context).block();
+    }
+
+    /**
+     * Mute Participant.
+     *
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void muteParticipant(
+        CommunicationIdentifier participant) {
+        return muteParticipantWithResponse(participant, Context.NONE).getValue();
+    }
+
+    /**
+     * Mute Participant.
+     *
+     * @param participant The identifier of the participant.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> muteParticipantWithResponse(
+        CommunicationIdentifier participant,
+        Context context) {
+        return callConnectionAsync.muteParticipantWithResponseInternal(participant, context).block();
+    }
+
+    /**
+     * Unmute Participant.
+     *
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void unmuteParticipant(
+        CommunicationIdentifier participant) {
+        return unmuteParticipantWithResponse(participant, Context.NONE).getValue();
+    }
+
+    /**
+     * Unmute Participant.
+     *
+     * @param participant The identifier of the participant.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> unmuteParticipantWithResponse(
+        CommunicationIdentifier participant,
+        Context context) {
+        return callConnectionAsync.unmuteParticipantWithResponseInternal(participant, context).block();
+    }
+
+    /**
+     * Hold Participant's meeting audio.
+     *
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void holdParticipantMeetingAudio(
+        CommunicationIdentifier participant) {
+        return holdParticipantMeetingAudioWithResponse(participant, Context.NONE).getValue();
+    }
+
+    /**
+     * Hold Participant's meeting audio.
+     *
+     * @param participant The identifier of the participant.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> holdParticipantMeetingAudioWithResponse(
+        CommunicationIdentifier participant,
+        Context context) {
+        return callConnectionAsync.holdParticipantMeetingAudioWithResponseInternal(participant, context).block();
+    }
+
+    /**
+     * Resume Participant's meeting audio.
+     *
+     * @param participant The identifier of the participant.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void resumeParticipantMeetingAudio(
+        CommunicationIdentifier participant) {
+        return resumeParticipantMeetingAudioWithResponse(participant, Context.NONE).getValue();
+    }
+
+    /**
+     * Resume Participant's meeting audio.
+     *
+     * @param participant The identifier of the participant.
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response payload for play audio operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resumeParticipantMeetingAudioWithResponse(
+        CommunicationIdentifier participant,
+        Context context) {
+        return callConnectionAsync.resumeParticipantMeetingAudioWithResponseInternal(participant, context).block();
+    }
+
+    /**
+     * Create Audio Routing Group.
+     *
+     * @param audioRoutingMode The audio routing group mode.
+     * @param targets the targets value to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createAudioRoutingGroup(
+        AudioRoutingMode audioRoutingMode,
+        List<CommunicationIdentifier> targets) {
+        createAudioRoutingGroupWithResponse(audioRoutingMode,targets, Context.NONE).getValue();
+    }
+
+    /**
+     * Create Audio Routing Group.
+     *
+     * @param audioRoutingMode The audio routing group mode.
+     * @param targets the targets value to set.
+     * @param context A {@link Context} representing the request context.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createAudioRoutingGroupWithResponse(
+        AudioRoutingMode audioRoutingMode,
+        List<CommunicationIdentifier> targets,
+        Context context) {
+        return callConnectionAsync.createAudioRoutingGroupWithResponseInternal(audioRoutingMode, targets, context).block();
+    }
+
+    /**
+     * Update Audio Routing Group.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @param targets the targets value to set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateAudioRoutingGroup(
+        String audioRoutingGroupId,
+        List<CommunicationIdentifier> targets) {
+            updateAudioRoutingGroupWithResponse(audioRoutingGroupId, targets, Context.NONE).getValue();
+    }
+
+    /**
+     * Update Audio Routing Group.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @param targets the targets value to set.
+     * @param context A {@link Context} representing the request context.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateAudioRoutingGroupWithResponse(
+        String audioRoutingGroupId,
+        List<CommunicationIdentifier> targets,
+        Context context) {
+        return callConnectionAsync.updateAudioRoutingGroupWithResponseInternal(audioRoutingGroupId, targets, context).block();
+    }
+
+    /**
+     * Delete Audio Routing Group.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateAudioRoutingGroup(
+        String audioRoutingGroupId) {
+            deleteAudioRoutingGroupWithResponse(audioRoutingGroupId, Context.NONE).getValue();
+    }
+
+    /**
+     * Delete Audio Routing Group.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @param context A {@link Context} representing the request context.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAudioRoutingGroupWithResponse(
+        String audioRoutingGroupId,
+        Context context) {
+        return callConnectionAsync.deleteAudioRoutingGroupWithResponseInternal(audioRoutingGroupId, context).block();
     }
 }

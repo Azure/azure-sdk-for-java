@@ -1347,15 +1347,15 @@ public final class CallingServerAsyncClient {
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
      * @param callbackUrl the callbackUrl value to set.
-     * @param timeout the timeout value to set.
+     * @param timeoutInSeconds the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout) {
+    public Mono<Void> redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
         try {
-            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeout);
+            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeoutInSeconds);
 
             return serverCallInternal.redirectCallAsync(request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1365,13 +1365,13 @@ public final class CallingServerAsyncClient {
     }
 
     private RedirectCallRequest getRedirectCallRequest(String incomingCallContext, List<CommunicationIdentifier> targets,
-            URI callbackUri, Integer timeout) {
+            URI callbackUri, Integer timeoutInSeconds) {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         Objects.requireNonNull(targets, "'targets' cannot be null.");
         RedirectCallRequest request = new RedirectCallRequest()
             .setCallbackUrl(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
-            .setTimeout(timeout)
+            .setTimeout(timeoutInSeconds)
             .setTargets(targets
                 .stream()
                 .map(CommunicationIdentifierConverter::convert)
@@ -1385,19 +1385,19 @@ public final class CallingServerAsyncClient {
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
      * @param callbackUrl the callbackUrl value to set.
-     * @param timeout the timeout value to set.
+     * @param timeoutInSeconds the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout) {
-        return redirectCallWithResponseInternal(incomingCallContext, targets, callbackUri, timeout, Context.NONE);
+    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
+        return redirectCallWithResponseInternal(incomingCallContext, targets, callbackUri, timeoutInSeconds, Context.NONE);
     }
 
-    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout, Context context) {
+    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds, Context context) {
         try {
-            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeout);
+            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeoutInSeconds);
             return serverCallInternal.redirectCallWithResponseAsync(request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
@@ -1406,7 +1406,7 @@ public final class CallingServerAsyncClient {
     }
 
    /**
-     * Redirect the call.
+     * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param callbackUrl the callbackUrl value to set.
@@ -1437,7 +1437,7 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Redirect the call.
+     * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param callbackUrl the callbackUrl value to set.
