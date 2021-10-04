@@ -29,7 +29,7 @@ public class GetSchemaIdSample {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         // Register a schema
         schemaRegistryAsyncClient
-            .getSchemaId("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
+            .getSchemaProperties("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
             .subscribe(schemaId -> {
                 System.out.println("Successfully retrieved the schema id: " + schemaId);
                 countDownLatch.countDown();
