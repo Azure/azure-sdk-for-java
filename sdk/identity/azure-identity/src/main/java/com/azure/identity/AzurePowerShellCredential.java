@@ -22,11 +22,11 @@ public class AzurePowerShellCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final ClientLogger logger = new ClientLogger(AzurePowerShellCredential.class);
 
-    AzurePowerShellCredential(IdentityClientOptions options) {
+    AzurePowerShellCredential(String tenantId, IdentityClientOptions options) {
         identityClient = new IdentityClientBuilder()
             .identityClientOptions(options)
+            .tenantId(tenantId)
             .build();
-
     }
 
     @Override

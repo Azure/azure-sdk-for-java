@@ -31,6 +31,6 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      * @return a {@link AzurePowerShellCredential} with the current configurations.
      */
     public AzurePowerShellCredential build() {
-        return new AzurePowerShellCredential(identityClientOptions);
+        return new AzurePowerShellCredential(tenantId, identityClientOptions);
     }
 }

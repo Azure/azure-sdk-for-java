@@ -89,16 +89,4 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         this.identityClientOptions.setHttpClient(client);
         return (T) this;
     }
-
-    /**
-     * Allows to override the tenant being used in the authentication request
-     * via {@link com.azure.core.credential.TokenRequestContext#setTenantId(String)}.
-     *
-     * @return An updated instance of this builder.
-     */
-    @SuppressWarnings("unchecked")
-    public T allowMultiTenantAuthentication() {
-        this.identityClientOptions.setAllowMultiTenantAuthentication(true);
-        return (T) this;
-    }
 }

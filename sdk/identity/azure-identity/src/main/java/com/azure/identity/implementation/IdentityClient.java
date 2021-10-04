@@ -418,8 +418,9 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        if (!CoreUtils.isNullOrEmpty(tenantId)) {
-            azCommand.append("--tenant " + tenantId);
+        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        if (!CoreUtils.isNullOrEmpty(tenant)) {
+            azCommand.append("--tenant " + tenant);
         }
 
         AccessToken token = null;
@@ -435,7 +436,7 @@ public class IdentityClient {
                 switcher = LINUX_MAC_SWITCHER;
             }
 
-            ProcessBuilder builder = new ProcessBuilder(starter, switcher, command.toString());
+            ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
             String workingDirectory = getSafeWorkingDirectory();
             if (workingDirectory != null) {
                 builder.directory(new File(workingDirectory));
@@ -585,6 +586,10 @@ public class IdentityClient {
                     }
                     StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
                     accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
+                    String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+                    if (!CoreUtils.isNullOrEmpty(tenant)) {
+                        accessTokenCommand.append("-TenantId " + tenant);
+                    }
                     accessTokenCommand.append(" | ConvertTo-Json");
                     return manager.runCommand(accessTokenCommand.toString())
                         .flatMap(out -> {

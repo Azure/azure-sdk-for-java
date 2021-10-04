@@ -25,17 +25,23 @@ public final class IdentityUtil {
 
         String contextTenantId = requestContext.getTenantId();
 
-        if (!options.isMultiTenantAuthenticationAllowed()) {
-            if (contextTenantId != null && !currentTenantId.equals(contextTenantId)
-                && !options.isLegacyTenantSelectionEnabled()) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The TenantId received from a"
-                    + " challenge did not match the configured TenantId and AllowMultiTenantAuthentication is false.",
+        if (contextTenantId != null && currentTenantId != null && !currentTenantId.equals(contextTenantId)) {
+            if (options.isMultiTenantAuthenticationDisabled()) {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The Multi Tenant Authentication "
+                    + "is disabled. An updated Tenant Id provided via TokenRequestContext cannot be used in this "
+                    + "scenario. To resolve this issue, set the env var AZURE_IDENTITY_DISABLE_MULTITENANTAUTH"
+                    + " to false ",
                     null));
+            } else if (currentTenantId.equals("adfs")) {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The credential is configured with" +
+                    "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
+                    + "TokenRequestContext class. ", null));
             }
-            return CoreUtils.isNullOrEmpty(currentTenantId) ? contextTenantId : currentTenantId;
+            return CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
+                : contextTenantId;
         }
 
-        return CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
-                : contextTenantId;
+        return currentTenantId;
+
     }
 }
