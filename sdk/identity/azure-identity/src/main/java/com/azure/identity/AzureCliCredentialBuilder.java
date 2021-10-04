@@ -31,6 +31,6 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      * @return a {@link AzureCliCredential} with the current configurations.
      */
     public AzureCliCredential build() {
-        return new AzureCliCredential(identityClientOptions);
+        return new AzureCliCredential(tenantId, identityClientOptions);
     }
 }

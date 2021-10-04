@@ -405,10 +405,8 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticateWithAzureCli(TokenRequestContext request) {
-        String azCommand = "az account get-access-token --output json --resource ";
 
-        StringBuilder command = new StringBuilder();
-        command.append(azCommand);
+        StringBuilder azCommand = new StringBuilder("az account get-access-token --output json --resource ");
 
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
 
@@ -418,7 +416,11 @@ public class IdentityClient {
             return Mono.error(logger.logExceptionAsError(ex));
         }
 
-        command.append(scopes);
+        azCommand.append(scopes);
+
+        if (!CoreUtils.isNullOrEmpty(tenantId)) {
+            azCommand.append("--tenant " + tenantId);
+        }
 
         AccessToken token = null;
         BufferedReader reader = null;
