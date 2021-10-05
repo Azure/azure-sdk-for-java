@@ -69,7 +69,7 @@ public final class RepositoryHandler {
             return Flux.empty();
         }
 
-        String targetDtmi = remainingWork.poll();
+        //String targetDtmi = remainingWork.poll();
         Mono<Boolean> tryFromExpanded = Mono.just(false);
 
         // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
@@ -93,15 +93,18 @@ public final class RepositoryHandler {
             }
         }
 
-        logger.info(String.format(StatusStrings.PROCESSING_DTMIS, targetDtmi));
+        logger.info(String.format(StatusStrings.PROCESSING_DTMIS, remainingWork.peek()));
 
         return tryFromExpanded
-            .flatMap(tryExpanded -> modelFetcher.fetchModelAsync(targetDtmi, repositoryUri, tryExpanded, context))
+            .flatMap(tryExpanded -> modelFetcher.fetchModelAsync(remainingWork.peek(), repositoryUri, tryExpanded, context))
             .map(result -> new IntermediateFetchModelResult(result, currentResults))
-            .expand(customType -> {
+            .expandDeep(customType -> {
+                if (remainingWork.isEmpty()) {
+                    return Flux.empty();
+                }
                 Map<String, String> results = customType.getMap();
                 FetchModelResult response = customType.getFetchModelResult();
-
+                String targetDtmi = remainingWork.poll();
                 if (response.isFromExpanded()) {
                     try {
                         Map<String, String> expanded = new ModelsQuery(response.getDefinition()).listToMap();
