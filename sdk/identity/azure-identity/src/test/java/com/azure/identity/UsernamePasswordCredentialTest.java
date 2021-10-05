@@ -38,7 +38,7 @@ public class UsernamePasswordCredentialTest {
     public void testValidUserCredential() throws Exception {
         // setup
         String username = "testuser";
-        String password = "P@ssw0rd";
+        String password = "testPassword";//"P@ssw0rd";
         String token1 = "token1";
         String token2 = "token2";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
