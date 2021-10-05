@@ -392,14 +392,15 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(keyOptions);
     }
 
-    void createOctKeyRunner(Consumer<CreateOctKeyOptions> testRunner) {
+    void createOctKeyRunner(Integer keySize, Consumer<CreateOctKeyOptions> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("foo", "baz");
 
-        final CreateOctKeyOptions keyOptions = new CreateOctKeyOptions(testResourceNamer.randomName("testRsaKey", 20))
+        final CreateOctKeyOptions keyOptions = new CreateOctKeyOptions(testResourceNamer.randomName("testOctKey", 20))
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setKeySize(keySize)
             .setTags(tags);
 
         if (runManagedHsmTest) {
