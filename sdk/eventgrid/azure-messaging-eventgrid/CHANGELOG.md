@@ -1,6 +1,6 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.7.0 (2021-10-06)
 
 ### Features Added
 - Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
@@ -16,6 +16,10 @@
   to system event classes `MediaLiveEventIngestHeartbeatEventData`.
 
 ### Other Changes
+
+#### Dependency Updates
+- Update `azure-core` dependency to `1.21.0`.
+- Update `azure-core-http-netty` dependency to `1.11.1`.
 
 ## 4.6.1 (2021-09-10)
 
