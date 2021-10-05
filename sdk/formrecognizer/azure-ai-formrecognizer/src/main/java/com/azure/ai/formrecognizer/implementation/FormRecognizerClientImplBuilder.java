@@ -56,12 +56,12 @@ public final class FormRecognizerClientImplBuilder {
     }
 
     /*
-     * Api Version
+     * Form Recognizer API version.
      */
     private String apiVersion;
 
     /**
-     * Sets Api Version.
+     * Sets Form Recognizer API version.
      *
      * @param apiVersion the apiVersion value.
      * @return the FormRecognizerClientImplBuilder.
@@ -191,9 +191,6 @@ public final class FormRecognizerClientImplBuilder {
      * @return an instance of FormRecognizerClientImpl.
      */
     public FormRecognizerClientImpl buildClient() {
-        if (apiVersion == null) {
-            this.apiVersion = "2021-09-30-preview";
-        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
