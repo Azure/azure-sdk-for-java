@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -16,8 +17,9 @@ import java.math.BigInteger;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class KeyClientManagedHsmTest extends KeyClientTest {
+public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientManagedHsmTestBase {
     public KeyClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
         this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
@@ -60,13 +62,13 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
     }
 
     /**
-     * Tests that a symmetric key is created.
+     * Tests that a symmetric key of a default is created.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void createOctKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+    public void createOctKeyWithDefaultSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        createOctKeyRunner((createOctKeyOptions) -> {
+        createOctKeyRunner(null, (createOctKeyOptions) -> {
             KeyVaultKey octKey = client.createOctKey(createOctKeyOptions);
 
             assertEquals(createOctKeyOptions.getName(), octKey.getName());
@@ -75,6 +77,35 @@ public class KeyClientManagedHsmTest extends KeyClientTest {
             assertEquals(createOctKeyOptions.getNotBefore(), octKey.getProperties().getNotBefore());
             assertEquals(createOctKeyOptions.getTags(), octKey.getProperties().getTags());
         });
+    }
+
+    /**
+     * Tests that a symmetric key of a valid size is created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createOctKeyWithValidSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+        createOctKeyRunner(256, (createOctKeyOptions) -> {
+            KeyVaultKey octKey = client.createOctKey(createOctKeyOptions);
+
+            assertEquals(createOctKeyOptions.getName(), octKey.getName());
+            assertEquals(KeyType.OCT_HSM, octKey.getKey().getKeyType());
+            assertEquals(createOctKeyOptions.getExpiresOn(), octKey.getProperties().getExpiresOn());
+            assertEquals(createOctKeyOptions.getNotBefore(), octKey.getProperties().getNotBefore());
+            assertEquals(createOctKeyOptions.getTags(), octKey.getProperties().getTags());
+        });
+    }
+
+    /**
+     * Tests that a symmetric key of an invalid size cannot be created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createOctKeyWithInvalidSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+        createOctKeyRunner(64, (createOctKeyOptions) ->
+            assertThrows(ResourceModifiedException.class, () -> client.createOctKey(createOctKeyOptions)));
     }
 
     /**
