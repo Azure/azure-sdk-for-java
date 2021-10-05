@@ -22,8 +22,8 @@ import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
  * <p><strong>Get a schema</strong></p>
  * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchema}
  *
- * <p><strong>Get a schema id</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchemaId}
+ * <p><strong>Get a schema's properties</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchemaProperties}
  *
  * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */
@@ -54,6 +54,9 @@ public final class SchemaRegistryClient {
      * @param format The serialization type of this schema.
      *
      * @return The schema properties on successful registration of the schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
+     *     {@code schemaDefinition} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties registerSchema(String groupName, String name, String schemaDefinition,
@@ -72,6 +75,9 @@ public final class SchemaRegistryClient {
      * @param context The context to pass to the Http pipeline.
      *
      * @return The schema properties on successful registration of the schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
+     *     {@code schemaDefinition} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
@@ -86,6 +92,8 @@ public final class SchemaRegistryClient {
      * @param schemaId The unique identifier of the schema.
      *
      * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
+     *
+     * @throws NullPointerException if {@code schemaId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistrySchema getSchema(String schemaId) {
@@ -99,6 +107,8 @@ public final class SchemaRegistryClient {
      * @param context The context to pass to the Http pipeline.
      *
      * @return The {@link SchemaProperties} associated with the given {@code id} and its HTTP response.
+     *
+     * @throws NullPointerException if {@code schemaId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistrySchema> getSchemaWithResponse(String schemaId, Context context) {
@@ -131,6 +141,9 @@ public final class SchemaRegistryClient {
      * @param context The context to pass to the Http pipeline.
      *
      * @return The unique identifier for this schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
+     *     {@code schemaDefinition} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> getSchemaPropertiesWithResponse(String groupName, String name,

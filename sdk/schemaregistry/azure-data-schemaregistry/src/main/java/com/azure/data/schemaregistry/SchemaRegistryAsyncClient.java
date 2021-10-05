@@ -35,13 +35,13 @@ import java.util.Objects;
  * <p><strong>Get a schema</strong></p>
  * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema}
  *
- * <p><strong>Get a schema id</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryclient.getSchemaId}
+ * <p><strong>Get a schema's properties</strong></p>
+ * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties}
  *
  * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class, isAsync = true)
-public final class  SchemaRegistryAsyncClient {
+public final class SchemaRegistryAsyncClient {
 
     static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
 
@@ -71,6 +71,9 @@ public final class  SchemaRegistryAsyncClient {
      * @param format The serialization type of this schema.
      *
      * @return The {@link SchemaProperties} of a successfully registered schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
+     *     {@code schemaDefinition} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaProperties> registerSchema(String groupName, String name, String schemaDefinition,
@@ -89,16 +92,32 @@ public final class  SchemaRegistryAsyncClient {
      * @param format The serialization type of this schema.
      *
      * @return The schema properties on successful registration of the schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
+     *     {@code schemaDefinition} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name,
         String schemaDefinition, SchemaFormat format) {
         return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, schemaDefinition,
-                format, context));
+            format, context));
     }
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
         SchemaFormat format, Context context) {
+
+        if (Objects.isNull(groupName)) {
+            return FluxUtil.monoError(logger, new NullPointerException("'groupName' should not be null."));
+        } else if (Objects.isNull(name)) {
+            return FluxUtil.monoError(logger, new NullPointerException("'name' should not be null."));
+        } else if (Objects.isNull(schemaDefinition)) {
+            return FluxUtil.monoError(logger, new NullPointerException("'schemaDefinition' should not be null."));
+        } else if (Objects.isNull(format)) {
+            return FluxUtil.monoError(logger, new NullPointerException("'format' should not be null."));
+        } else if (Objects.isNull(context)) {
+            return FluxUtil.monoError(logger, new NullPointerException("'context' should not be null."));
+        }
+
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, format, schemaDefinition);
 
@@ -121,6 +140,8 @@ public final class  SchemaRegistryAsyncClient {
      * @param schemaId The unique identifier of the schema.
      *
      * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
+     *
+     * @throws IllegalArgumentException if {@code schemaId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaRegistrySchema> getSchema(String schemaId) {
@@ -133,6 +154,8 @@ public final class  SchemaRegistryAsyncClient {
      * @param schemaId The unique identifier of the schema.
      *
      * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP response.
+     *
+     * @throws NullPointerException if {@code schemaId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId) {
@@ -140,7 +163,10 @@ public final class  SchemaRegistryAsyncClient {
     }
 
     Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId, Context context) {
-        Objects.requireNonNull(schemaId, "'id' should not be null");
+        if (Objects.isNull(schemaId)) {
+            return FluxUtil.monoError(logger, new NullPointerException("'schemaId' should not be null."));
+        }
+
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
                 final SchemaFormat schemaFormat =
