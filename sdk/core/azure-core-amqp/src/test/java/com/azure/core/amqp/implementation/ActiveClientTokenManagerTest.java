@@ -9,13 +9,10 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.exception.AzureException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -30,8 +27,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@Isolated("StepVerifier.setDefaultTimeout")
 class ActiveClientTokenManagerTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private static final String AUDIENCE = "an-audience-test";
     private static final String SCOPES = "scopes-test";
     private static final Duration DEFAULT_DURATION = Duration.ofSeconds(20);
@@ -39,16 +36,6 @@ class ActiveClientTokenManagerTest {
     @Mock
     private ClaimsBasedSecurityNode cbsNode;
     private AutoCloseable mocksCloseable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -82,7 +69,7 @@ class ActiveClientTokenManagerTest {
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -115,7 +102,7 @@ class ActiveClientTokenManagerTest {
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(expiryDuration)
             .expectError(IllegalArgumentException.class)
-            .verifyThenAssertThat()
+            .verifyThenAssertThat(VERIFY_TIMEOUT)
             .hasNotDroppedElements()
             .hasNotDroppedElements()
             .hasNotDroppedErrors();
@@ -136,7 +123,7 @@ class ActiveClientTokenManagerTest {
         // Act & Assert
         StepVerifier.create(tokenManager.authorize())
             .expectError(AzureException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -165,7 +152,7 @@ class ActiveClientTokenManagerTest {
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -193,7 +180,7 @@ class ActiveClientTokenManagerTest {
                 Assertions.assertTrue(throwable instanceof AmqpException);
                 Assertions.assertFalse(((AmqpException) throwable).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     private Mono<OffsetDateTime> getNextExpiration(Duration duration) {
