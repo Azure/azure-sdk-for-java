@@ -57,6 +57,20 @@ public class CryptographyClientBuilderTest {
     }
 
     @Test
+    public void buildSyncClientWithoutKeyVersionTest() {
+        String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
+
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(versionlessKeyIdentifier)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .buildClient();
+
+        assertNotNull(cryptographyClient);
+        assertEquals(CryptographyClient.class.getSimpleName(), cryptographyClient.getClass().getSimpleName());
+    }
+
+    @Test
     public void buildAsyncClientTest() {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier(keyIdentifier)
@@ -72,6 +86,19 @@ public class CryptographyClientBuilderTest {
     public void buildAsyncClientUsingDefaultApiVersionTest() {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier(keyIdentifier)
+            .credential(new TestUtils.TestCredential())
+            .buildAsyncClient();
+
+        assertNotNull(cryptographyAsyncClient);
+        assertEquals(CryptographyAsyncClient.class.getSimpleName(), cryptographyAsyncClient.getClass().getSimpleName());
+    }
+
+    @Test
+    public void buildAsyncClientWithoutKeyVersionTest() {
+        String versionlessKeyIdentifier = "https://key-vault-url.vault.azure.net/keys/TestKey";
+
+        CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
+            .keyIdentifier(versionlessKeyIdentifier)
             .credential(new TestUtils.TestCredential())
             .buildAsyncClient();
 

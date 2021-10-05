@@ -13,6 +13,9 @@ import java.time.Duration;
  */
 public interface RetryStrategy {
 
+    /**
+     * HTTP response status code for {@code Too Many Requests}.
+     */
     int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     /**

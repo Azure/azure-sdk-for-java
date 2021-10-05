@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testRsaKey/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testrsakey4898139/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "425",
+      "content-length" : "436",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "293",
+      "x-ms-server-latency" : "155",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.106.72;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "18a50996-ce6e-11eb-840d-000d3a967c02",
-      "Body" : "{\"attributes\":{\"created\":1623825782,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":90,\"recoveryLevel\":\"Recoverable+Purgeable\",\"updated\":1623825782},\"key\":{\"key_ops\":[\"wrapKey\",\"unwrapKey\",\"decrypt\",\"encrypt\"],\"kid\":\"https://vicolinakvtr2hsm.managedhsm.azure.net/keys/testRsaKey/10b140a8d8360c8eac74767d2b644857\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
+      "x-ms-request-id" : "562f5060-257a-11ec-8fbf-000d3a42b875",
+      "Body" : "{\"attributes\":{\"created\":1633396790,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633396790},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/testrsakey4898139/190d47032a924b1c2a96b7d438168ea9\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
     },
     "Exception" : null
   } ],
-  "variables" : [ ]
+  "variables" : [ "testrsakey4898139" ]
 }

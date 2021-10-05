@@ -41,7 +41,13 @@ import java.util.stream.Collectors;
  * </p>
  *
  * <p><strong>Creating an instance of DynamicRequest using the constructor</strong></p>
- * {@codesnippet com.azure.core.experimental.http.dynamicrequest.instantiation}
+ * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.instantiation -->
+ * <pre>
+ * ObjectSerializer serializer = JsonSerializerProviders.createInstance&#40;true&#41;;
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;.build&#40;&#41;;
+ * DynamicRequest dynamicRequest = new DynamicRequest&#40;serializer, pipeline&#41;;
+ * </pre>
+ * <!-- end com.azure.core.experimental.http.dynamicrequest.instantiation -->
  *
  * <p>An Azure service client may provide methods that are specific to the service which returns an instance
  * {@link DynamicRequest} that comes preconfigured with some request components like the endpoint, required path
@@ -52,7 +58,14 @@ import java.util.stream.Collectors;
  * <a href="https://petstore.swagger.io/#/pet/getPetById">HTTP GET call
  * to the pet service</a> and setting the pet id in path param as shown in the sample below.
  *
- * {@codesnippet com.azure.core.experimental.http.dynamicrequest.getrequest}
+ * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.getrequest -->
+ * <pre>
+ * DynamicResponse response = dynamicRequest
+ *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&#47;&#123;petId&#125;&quot;&#41; &#47;&#47; may already be set if request is created from a client
+ *     .setPathParam&#40;&quot;petId&quot;, &quot;2343245&quot;&#41;
+ *     .send&#40;&#41;; &#47;&#47; makes the service call
+ * </pre>
+ * <!-- end com.azure.core.experimental.http.dynamicrequest.getrequest -->
  *
  * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, a HTTP POST call should
@@ -84,11 +97,48 @@ import java.util.stream.Collectors;
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other Json building library can be used to achieve similar results.
  *
- * {@codesnippet com.azure.core.experimental.http.dynamicrequest.createjsonrequest}
+ * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.createjsonrequest -->
+ * <pre>
+ * JsonArray photoUrls = Json.createArrayBuilder&#40;&#41;
+ *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet1&quot;&#41;
+ *     .add&#40;&quot;https:&#47;&#47;imgur.com&#47;pet2&quot;&#41;
+ *     .build&#40;&#41;;
+ *
+ * JsonArray tags = Json.createArrayBuilder&#40;&#41;
+ *     .add&#40;Json.createObjectBuilder&#40;&#41;
+ *         .add&#40;&quot;id&quot;, 0&#41;
+ *         .add&#40;&quot;name&quot;, &quot;Labrador&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .add&#40;Json.createObjectBuilder&#40;&#41;
+ *         .add&#40;&quot;id&quot;, 1&#41;
+ *         .add&#40;&quot;name&quot;, &quot;2021&quot;&#41;
+ *         .build&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ *
+ * JsonObject requestBody = Json.createObjectBuilder&#40;&#41;
+ *     .add&#40;&quot;id&quot;, 0&#41;
+ *     .add&#40;&quot;name&quot;, &quot;foo&quot;&#41;
+ *     .add&#40;&quot;status&quot;, &quot;available&quot;&#41;
+ *     .add&#40;&quot;category&quot;, Json.createObjectBuilder&#40;&#41;.add&#40;&quot;id&quot;, 0&#41;.add&#40;&quot;name&quot;, &quot;dog&quot;&#41;&#41;
+ *     .add&#40;&quot;photoUrls&quot;, photoUrls&#41;
+ *     .add&#40;&quot;tags&quot;, tags&#41;
+ *     .build&#40;&#41;;
+ *
+ * String requestBodyStr = requestBody.toString&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.experimental.http.dynamicrequest.createjsonrequest -->
  *
  * Now, this string representation of the JSON request can be set as body of DynamicRequest
  *
- * {@codesnippet com.azure.core.experimental.http.dynamicrequest.postrequest}
+ * <!-- src_embed com.azure.core.experimental.http.dynamicrequest.postrequest -->
+ * <pre>
+ * DynamicResponse response = dynamicRequest
+ *     .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41; &#47;&#47; may already be set if request is created from a client
+ *     .addHeader&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;
+ *     .setBody&#40;requestBodyStr&#41;
+ *     .send&#40;&#41;; &#47;&#47; makes the service call
+ * </pre>
+ * <!-- end com.azure.core.experimental.http.dynamicrequest.postrequest -->
  */
 public final class DynamicRequest {
     private final ClientLogger logger = new ClientLogger(DynamicRequest.class);

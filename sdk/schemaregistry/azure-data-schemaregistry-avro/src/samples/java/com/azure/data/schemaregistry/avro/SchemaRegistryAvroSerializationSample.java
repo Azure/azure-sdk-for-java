@@ -29,7 +29,7 @@ public class SchemaRegistryAvroSerializationSample {
         // Create the schema registry async client
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .endpoint("{schema-registry-endpoint}")
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
         // Create the serializer instance by configuring the serializer with the schema registry client and

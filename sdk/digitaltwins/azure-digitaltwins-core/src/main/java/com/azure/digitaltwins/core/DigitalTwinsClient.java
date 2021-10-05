@@ -756,7 +756,7 @@ public final class DigitalTwinsClient {
      *
      * Note that there may be a delay between before changes in your instance are reflected in queries.
      * For more details on query limitations, see
-     * <a href="https://docs.microsoft.com/en-us/azure/digital-twins/how-to-query-graph#query-limitations">Query limitations</a>
+     * <a href="https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations">Query limitations</a>
      *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all
@@ -784,7 +784,7 @@ public final class DigitalTwinsClient {
      *
      * Note that there may be a delay between before changes in your instance are reflected in queries.
      * For more details on query limitations, see
-     * <a href="https://docs.microsoft.com/en-us/azure/digital-twins/how-to-query-graph#query-limitations">Query limitations</a>
+     * <a href="https://docs.microsoft.com/azure/digital-twins/how-to-query-graph#query-limitations">Query limitations</a>
      *
      * @param query The query string, in SQL-like syntax.
      * @param clazz The model class to deserialize each queried digital twin into. Since the queried twins may not all

@@ -171,19 +171,10 @@
         "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
       },
       {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.azure.data.schemaregistry.SchemaRegistryAsyncClient",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.azure.data.schemaregistry.models.SchemaProperties",
-        "justification": "This is a preview release"
-      },
-      {
-        "code": "java.class.externalClassExposedInAPI",
-        "new": "class com.azure.data.schemaregistry.models.SerializationType",
-        "justification": "This is a preview release"
+        "regex": true,
+        "code": "java\\.class\\.externalClassExposedInAPI",
+        "new": "(class|enum) com\\.azure\\.data\\.schemaregistry\\..+",
+        "justification": "azure-data-schemaregistry-avro depends on the schema registry classes."
       },
       {
         "regex": true,
@@ -357,9 +348,9 @@
         "justification": "New getter added in azure-core."
       },
       {
-          "code": "java.method.defaultMethodAddedToInterface",
-          "new": "method boolean com.azure.core.http.policy.RetryStrategy::shouldRetryException(java.lang.Throwable)",
-          "justification": "New default method added in azure-core."
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method boolean com.azure.core.http.policy.RetryStrategy::shouldRetryException(java.lang.Throwable)",
+        "justification": "New default method added in azure-core."
       },
       {
         "code": "java.method.added",
@@ -370,6 +361,51 @@
         "code": "java.method.added",
         "new": "method void com.azure.core.util.logging.ClientLogger::log(com.azure.core.util.logging.LogLevel, java.util.function.Supplier<java.lang.String>, java.lang.Throwable)",
         "justification": "New default method added in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Long com.azure.core.util.BinaryData::getLength()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Flux<java.nio.ByteBuffer> com.azure.core.util.BinaryData::toFluxByteBuffer()",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.util.BinaryData> com.azure.core.util.BinaryData::fromFlux(reactor.core.publisher.Flux<java.nio.ByteBuffer>, java.lang.Long)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.util.BinaryData com.azure.core.util.BinaryData::fromFile(java.nio.file.Path, int)",
+        "justification": "New method added to BinaryData in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.http.HttpHeaders com.azure.core.http.HttpHeaders::add(java.lang.String, java.lang.String)",
+        "justification": "New method added to HttpHeaders in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method reactor.core.publisher.Mono<java.io.InputStream> com.azure.core.http.HttpResponse::getBodyAsInputStream()",
+        "justification": "New default method added to HttpResponse in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.core.credential.TokenRequestContext::getTenantId()",
+        "justification": "New method added to TokenRequestContext in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setTenantId(java.lang.String)",
+        "justification": "New method added to TokenRequestContext in azure-core."
       }
     ]
   }

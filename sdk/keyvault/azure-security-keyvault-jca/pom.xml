@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            <version>2.12.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <!-- SLF4j -->
@@ -55,13 +55,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
+            <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-test</artifactId>
-            <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+            <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
             <scope>test</scope>
         </dependency>
         <!-- JUnit -->
@@ -175,7 +175,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+                <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
@@ -200,7 +200,7 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.apache.httpcomponents:httpclient:[4.5.13]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                                 <include>org.slf4j:slf4j-nop:[1.7.32]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->

@@ -48,7 +48,7 @@ public interface SqlPoolMetadataSyncConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     MetadataSyncConfig create(
         String resourceGroupName,
@@ -67,7 +67,7 @@ public interface SqlPoolMetadataSyncConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration for metadata sync.
+     * @return metadata sync configuration.
      */
     Response<MetadataSyncConfig> createWithResponse(
         String resourceGroupName,

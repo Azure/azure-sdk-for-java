@@ -5,23 +5,24 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.TopicUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Properties of the Topic update. */
-@JsonFlatten
 @Fluent
-public class TopicUpdateParameters {
+public final class TopicUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicUpdateParameters.class);
 
     /*
      * Tags of the Topic resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -31,35 +32,16 @@ public class TopicUpdateParameters {
     private IdentityInfo identity;
 
     /*
+     * Properties of the Topic resource.
+     */
+    @JsonProperty(value = "properties")
+    private TopicUpdateParameterProperties innerProperties;
+
+    /*
      * The Sku pricing tier for the topic.
      */
     @JsonProperty(value = "sku")
     private ResourceSku sku;
-
-    /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules"
-     * />
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-     */
-    @JsonProperty(value = "properties.inboundIpRules")
-    private List<InboundIpRule> inboundIpRules;
-
-    /*
-     * This boolean is used to enable or disable local auth. Default value is
-     * false. When the property is set to true, only AAD token will be used to
-     * authenticate if user is allowed to publish to the topic.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
 
     /**
      * Get the tags property: Tags of the Topic resource.
@@ -102,6 +84,15 @@ public class TopicUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Properties of the Topic resource.
+     *
+     * @return the innerProperties value.
+     */
+    private TopicUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sku property: The Sku pricing tier for the topic.
      *
      * @return the sku value.
@@ -130,7 +121,7 @@ public class TopicUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -143,7 +134,10 @@ public class TopicUpdateParameters {
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -154,7 +148,7 @@ public class TopicUpdateParameters {
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
-        return this.inboundIpRules;
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
     }
 
     /**
@@ -165,7 +159,10 @@ public class TopicUpdateParameters {
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inboundIpRules = inboundIpRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withInboundIpRules(inboundIpRules);
         return this;
     }
 
@@ -177,7 +174,7 @@ public class TopicUpdateParameters {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -189,7 +186,10 @@ public class TopicUpdateParameters {
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TopicUpdateParameterProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -202,11 +202,11 @@ public class TopicUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (inboundIpRules() != null) {
-            inboundIpRules().forEach(e -> e.validate());
         }
     }
 }

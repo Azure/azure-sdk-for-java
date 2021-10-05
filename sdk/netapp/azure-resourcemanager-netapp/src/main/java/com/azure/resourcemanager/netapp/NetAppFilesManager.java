@@ -26,6 +26,7 @@ import com.azure.resourcemanager.netapp.implementation.AccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
+import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourcesImpl;
 import com.azure.resourcemanager.netapp.implementation.OperationsImpl;
 import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
@@ -37,6 +38,7 @@ import com.azure.resourcemanager.netapp.models.AccountBackups;
 import com.azure.resourcemanager.netapp.models.Accounts;
 import com.azure.resourcemanager.netapp.models.BackupPolicies;
 import com.azure.resourcemanager.netapp.models.Backups;
+import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.Operations;
 import com.azure.resourcemanager.netapp.models.Pools;
@@ -55,6 +57,8 @@ public final class NetAppFilesManager {
     private Operations operations;
 
     private NetAppResources netAppResources;
+
+    private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
     private Accounts accounts;
 
@@ -210,7 +214,7 @@ public final class NetAppFilesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -263,6 +267,15 @@ public final class NetAppFilesManager {
             this.netAppResources = new NetAppResourcesImpl(clientObject.getNetAppResources(), this);
         }
         return netAppResources;
+    }
+
+    /** @return Resource collection API of NetAppResourceQuotaLimits. */
+    public NetAppResourceQuotaLimits netAppResourceQuotaLimits() {
+        if (this.netAppResourceQuotaLimits == null) {
+            this.netAppResourceQuotaLimits =
+                new NetAppResourceQuotaLimitsImpl(clientObject.getNetAppResourceQuotaLimits(), this);
+        }
+        return netAppResourceQuotaLimits;
     }
 
     /** @return Resource collection API of Accounts. */

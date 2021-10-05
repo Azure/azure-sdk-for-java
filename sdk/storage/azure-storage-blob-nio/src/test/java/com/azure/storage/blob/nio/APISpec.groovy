@@ -24,14 +24,12 @@ import com.azure.storage.common.test.shared.TestAccount
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
-import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystem
 import java.nio.file.Path
 import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
-import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
 class APISpec extends StorageSpec {
@@ -67,9 +65,9 @@ class APISpec extends StorageSpec {
     }
 
     def setup() {
-        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        alternateBlobServiceClient = getServiceClient(env.secondaryAccount)
+        primaryBlobServiceClient = getServiceClient(environment.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
+        alternateBlobServiceClient = getServiceClient(environment.secondaryAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -77,11 +75,11 @@ class APISpec extends StorageSpec {
     }
 
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.primaryAccount.credential)
-                .endpoint(env.primaryAccount.blobEndpoint)
+                .credential(environment.primaryAccount.credential)
+                .endpoint(environment.primaryAccount.blobEndpoint)
                 .buildClient()
             def options = new ListBlobContainersOptions().setPrefix(namer.getResourcePrefix())
             for (BlobContainerItem container : cleanupClient.listBlobContainers(options, Duration.ofSeconds(120))) {
@@ -161,7 +159,7 @@ class APISpec extends StorageSpec {
     }
 
     def getFileSystemUri() {
-        return new URI("azb://?endpoint=" + env.primaryAccount.blobEndpoint)
+        return new URI("azb://?endpoint=" + environment.primaryAccount.blobEndpoint)
     }
 
     def generateContainerName() {
@@ -178,9 +176,9 @@ class APISpec extends StorageSpec {
 
     def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
 
-        return new AzureFileSystem(new AzureFileSystemProvider(), env.primaryAccount.blobEndpoint, config)
+        return new AzureFileSystem(new AzureFileSystemProvider(), environment.primaryAccount.blobEndpoint, config)
     }
 
     byte[] getRandomByteArray(int size) {
@@ -268,7 +266,7 @@ class APISpec extends StorageSpec {
 
     // Only sleep if test is running in live mode
     def sleepIfRecord(long milliseconds) {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
         }
     }

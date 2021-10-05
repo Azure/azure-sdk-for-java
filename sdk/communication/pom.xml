@@ -31,32 +31,32 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-chat</artifactId>
-          <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+          <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-common</artifactId>
-          <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+          <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-identity</artifactId>
-          <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
+          <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-identity;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-phonenumbers</artifactId>
-          <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-networktraversal</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
+          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-communication-networktraversal;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-sms</artifactId>
-          <version>1.0.4</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+          <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
         </dependency>
       </dependencies>
 
@@ -65,7 +65,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <includes>
                 <include>com/azure/communication/callingserver/*.class</include>

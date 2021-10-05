@@ -1,7 +1,11 @@
 ## Release History
 
-## 4.4.0-beta.1 (Unreleased)
+### 4.4.0-beta.1 (Unreleased)
 
+### 4.3.1 (2021-09-13)
+#### Key Bug Fixes
+* Fixed issue resulting in option `spark.cosmos.read.maxItemCount` not always being honored
+* Fixed issue resulting in dropping some events when using Spark Streaming when config option `spark.cosmos.changeFeed.itemCountPerTriggerHint` is configured.
 
 ### 4.3.0 (2021-08-11)
 #### Configuration Changes
@@ -50,7 +54,7 @@
 
 #### Key Bug Fixes
 * Added validation for all config-settings with a name starting with "spark.cosmos."
-* Fixed a bug in bulk write causing hang.
+* Fixed a bug in bulk write causing nonresponse.
 
 ### 4.0.0-beta.2 (2021-04-19)
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.2` Release.

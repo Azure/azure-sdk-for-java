@@ -93,7 +93,7 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL = "AZURE_POD_IDENTITY_TOKEN_URL";
 
-    /*
+    /**
      * Name of Azure AAD regional authority.
      */
     public static final String PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME = "AZURE_REGIONAL_AUTHORITY_NAME";

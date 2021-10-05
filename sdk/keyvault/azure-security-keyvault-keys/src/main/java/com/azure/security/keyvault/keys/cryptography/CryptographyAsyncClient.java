@@ -53,19 +53,15 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  *
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation}
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation}
  *
  * @see CryptographyClientBuilder
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
-    static final String SECRETS_COLLECTION = "secrets";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    static final String SECRETS_COLLECTION = "secrets";
 
     JsonWebKey key;
 
@@ -794,7 +790,7 @@ public class CryptographyAsyncClient {
 
     private void unpackAndValidateId(String keyId) {
         if (CoreUtils.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Key Id is invalid"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
         }
 
         try {
@@ -802,7 +798,6 @@ public class CryptographyAsyncClient {
             String[] tokens = url.getPath().split("/");
             String endpoint = url.getProtocol() + "://" + url.getHost();
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
-            String version = (tokens.length >= 4 ? tokens[3] : null);
             this.keyCollection = (tokens.length >= 2 ? tokens[1] : null);
 
             if (Strings.isNullOrEmpty(endpoint)) {
@@ -811,9 +806,6 @@ public class CryptographyAsyncClient {
             } else if (Strings.isNullOrEmpty(keyName)) {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Key name in key identifier is invalid."));
-            } else if (Strings.isNullOrEmpty(version)) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Key version in key identifier is invalid."));
             }
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed.", e));

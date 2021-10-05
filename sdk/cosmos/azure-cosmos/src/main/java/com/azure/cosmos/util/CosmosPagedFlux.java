@@ -68,18 +68,24 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     private final Consumer<FeedResponse<T>> feedResponseConsumer;
     private ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor cosmosDiagnosticsAccessor;
+    private final int defaultPageSize;
 
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction) {
-        this.optionsFluxFunction = optionsFluxFunction;
-        this.feedResponseConsumer = null;
-        this.cosmosDiagnosticsAccessor = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+        this(optionsFluxFunction, null, -1);
     }
 
     CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
                     Consumer<FeedResponse<T>> feedResponseConsumer) {
+        this(optionsFluxFunction, feedResponseConsumer, -1);
+    }
+
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
+                    Consumer<FeedResponse<T>> feedResponseConsumer,
+                    int defaultPageSize) {
         this.optionsFluxFunction = optionsFluxFunction;
         this.feedResponseConsumer = feedResponseConsumer;
         this.cosmosDiagnosticsAccessor = ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
+        this.defaultPageSize = defaultPageSize;
     }
 
     /**
@@ -100,27 +106,27 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
 
     @Override
     public Flux<FeedResponse<T>> byPage() {
-        CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
+        CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
-        CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
+        CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
-        CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
+        CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken, int preferredPageSize) {
-        CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
+        CosmosPagedFluxOptions cosmosPagedFluxOptions = this.createCosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
         return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
@@ -144,6 +150,20 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         }).subscribe(coreSubscriber);
     }
 
+    CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
+        return new CosmosPagedFlux<T>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
+    }
+
+    private CosmosPagedFluxOptions createCosmosPagedFluxOptions() {
+        CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
+
+        if (this.defaultPageSize > 0) {
+            cosmosPagedFluxOptions.setMaxItemCount(this.defaultPageSize);
+        }
+
+        return cosmosPagedFluxOptions;
+    }
+
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
         final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         AtomicReference<Instant> startTime = new AtomicReference<>();
@@ -164,15 +184,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) &&
                 throwable instanceof CosmosException) {
                 CosmosException cosmosException = (CosmosException) throwable;
-                if (isTracerEnabled(pagedFluxOptions) && this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
-                    try {
-                        addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                            cosmosException.getDiagnostics(), parentContext.get());
-                    } catch (JsonProcessingException ex) {
-                        LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                    }
-                }
-
+                // not adding diagnostics on trace event for exception as this information is already there as
+                // part of exception message
                 if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
                     fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
                         pagedFluxOptions.getDatabaseId(),

@@ -3,7 +3,6 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -13,6 +12,7 @@ import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -39,13 +39,13 @@ public class MetricsQuerySample {
                 .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-                .queryWithResponse(
+                .queryResourceWithResponse(
                         "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/"
                                 + "Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
                         Arrays.asList("SuccessfulCalls"),
                         new MetricsQueryOptions()
                                 .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                                .setTimeInterval(new TimeInterval(Duration.ofDays(30)))
+                                .setTimeInterval(new QueryTimeInterval(Duration.ofDays(30)))
                                 .setGranularity(Duration.ofHours(1))
                                 .setTop(100)
                                 .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),

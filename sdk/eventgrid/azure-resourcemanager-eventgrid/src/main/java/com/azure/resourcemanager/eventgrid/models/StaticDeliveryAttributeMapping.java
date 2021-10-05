@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.StaticDeliveryAttributeMappingProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,22 +15,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Static delivery attribute mapping details. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Static")
-@JsonFlatten
 @Fluent
-public class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
+public final class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticDeliveryAttributeMapping.class);
 
     /*
-     * Value of the delivery attribute.
+     * Properties of static delivery attribute mapping.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
+    @JsonProperty(value = "properties")
+    private StaticDeliveryAttributeMappingProperties innerProperties;
 
-    /*
-     * Boolean flag to tell if the attribute contains sensitive information .
+    /**
+     * Get the innerProperties property: Properties of static delivery attribute mapping.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.isSecret")
-    private Boolean isSecret;
+    private StaticDeliveryAttributeMappingProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StaticDeliveryAttributeMapping withName(String name) {
+        super.withName(name);
+        return this;
+    }
 
     /**
      * Get the value property: Value of the delivery attribute.
@@ -38,7 +47,7 @@ public class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -48,7 +57,10 @@ public class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
      * @return the StaticDeliveryAttributeMapping object itself.
      */
     public StaticDeliveryAttributeMapping withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticDeliveryAttributeMappingProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -58,7 +70,7 @@ public class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
      * @return the isSecret value.
      */
     public Boolean isSecret() {
-        return this.isSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().isSecret();
     }
 
     /**
@@ -68,14 +80,10 @@ public class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
      * @return the StaticDeliveryAttributeMapping object itself.
      */
     public StaticDeliveryAttributeMapping withIsSecret(Boolean isSecret) {
-        this.isSecret = isSecret;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticDeliveryAttributeMapping withName(String name) {
-        super.withName(name);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticDeliveryAttributeMappingProperties();
+        }
+        this.innerProperties().withIsSecret(isSecret);
         return this;
     }
 
@@ -87,5 +95,8 @@ public class StaticDeliveryAttributeMapping extends DeliveryAttributeMapping {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
