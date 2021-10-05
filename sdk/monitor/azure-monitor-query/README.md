@@ -51,16 +51,6 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .buildClient();
 ```
 
-### Create Logs query async client
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L44-L46 -->
-```java
-LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAsyncClient();
-```
-### Create Metrics query client
-
 <!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L53-L55 -->
 ```java
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()

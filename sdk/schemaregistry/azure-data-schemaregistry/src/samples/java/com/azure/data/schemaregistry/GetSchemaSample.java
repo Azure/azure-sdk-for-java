@@ -28,8 +28,10 @@ public class GetSchemaSample {
         // Register a schema
         schemaRegistryAsyncClient
             .getSchema("{schema-id}")
-            .subscribe(schemaProperties -> {
-                System.out.println("Successfully retrieved the schema " + schemaProperties.getSchemaName());
+            .subscribe(schema -> {
+                System.out.println("Successfully retrieved schema.");
+                System.out.printf("Id: %s%nContents: %s%n", schema.getProperties().getSchemaId(), schema.getSchemaDefinition());
+
                 countDownLatch.countDown();
             });
 
