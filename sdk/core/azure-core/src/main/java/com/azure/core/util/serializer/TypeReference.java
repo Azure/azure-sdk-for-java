@@ -41,6 +41,7 @@ public abstract class TypeReference<T> {
     private static final Map<Class<?>, TypeReference<?>> CACHE = new ConcurrentHashMap<>();
 
     private final Type javaType;
+    private Class<T> clazz;
 
     /**
      * Constructs a new {@link TypeReference} which maintains generic information.
@@ -58,6 +59,7 @@ public abstract class TypeReference<T> {
 
     private TypeReference(Class<T> clazz) {
         this.javaType = clazz;
+        this.clazz = clazz;
     }
 
     /**
@@ -87,5 +89,15 @@ public abstract class TypeReference<T> {
          * compute function wildcards to T type which causes the type system to breakdown.
          */
         return (TypeReference<T>) CACHE.computeIfAbsent(clazz, c -> new TypeReference<T>(clazz) { });
+    }
+
+    /**
+     * Returns the {@link Class} representing instance of the {@link TypeReference} created.
+     *
+     * @return The {@link Class} representing instance of the {@link TypeReference} created
+     * using the {@link TypeReference#createInstance(Class)}, otherwise returns {@code null}.
+     */
+    public Class<T> getClazz() {
+        return this.clazz;
     }
 }
