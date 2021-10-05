@@ -161,7 +161,7 @@ jobs:
       - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Credential Scan'
-    - ${{if eq(variables['Build.Reason'], 'PullRequest')}}:
+    condition: eq(variables['Build.Reason'], 'PullRequest')
     variables:
       - template: ../variables/globals.yml
 
