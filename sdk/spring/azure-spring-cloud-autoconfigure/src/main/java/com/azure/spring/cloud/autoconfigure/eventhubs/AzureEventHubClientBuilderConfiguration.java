@@ -16,8 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 
 /**
  * Configuration for Event Hub client builder, which provides {@link EventHubClientBuilder}.
@@ -46,8 +44,6 @@ class AzureEventHubClientBuilderConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    @Order(Ordered.HIGHEST_PRECEDENCE + 100)
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
     public StaticConnectionStringProvider<AzureServiceType.EventHub> eventHubStaticConnectionStringProvider(
         AzureEventHubProperties eventHubProperties) {

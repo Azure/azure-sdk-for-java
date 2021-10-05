@@ -16,6 +16,9 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties {
 
     private ShareServiceVersion serviceVersion;
 
+    private String shareName;
+    private String fileName;
+
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }
@@ -30,5 +33,21 @@ public class AzureStorageFileShareProperties extends AzureStorageProperties {
 
     public void setServiceVersion(ShareServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+    }
+
+    public String getShareName() {
+        return shareName;
+    }
+
+    public void setShareName(String shareName) {
+        this.shareName = shareName;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

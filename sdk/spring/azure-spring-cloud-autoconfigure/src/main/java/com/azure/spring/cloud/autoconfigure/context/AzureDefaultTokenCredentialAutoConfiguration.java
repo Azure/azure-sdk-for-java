@@ -6,6 +6,11 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,4 +42,25 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         return new AzureCredentialBuilderFactory<>(azureGlobalProperties, new DefaultAzureCredentialBuilder());
     }
 
+    @Bean
+    public AzureServiceClientBuilderFactoryPostProcessor builderFactoryBeanPostProcessor() {
+        return new AzureServiceClientBuilderFactoryPostProcessor();
+    }
+
+    static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor {
+
+        @Autowired
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
+        private TokenCredential tokenCredential;
+
+        @SuppressWarnings("rawtypes")
+        @Override
+        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+            if (bean instanceof AbstractAzureServiceClientBuilderFactory) {
+                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(tokenCredential);
+            }
+            return bean;
+        }
+    }
+    
 }

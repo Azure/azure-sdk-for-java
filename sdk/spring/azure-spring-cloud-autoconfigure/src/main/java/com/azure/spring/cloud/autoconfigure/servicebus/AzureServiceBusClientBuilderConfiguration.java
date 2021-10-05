@@ -17,8 +17,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusClientBuilder.class)
@@ -51,8 +49,6 @@ class AzureServiceBusClientBuilderConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    @Order(Ordered.HIGHEST_PRECEDENCE + 100)
     @ConditionalOnProperty("spring.cloud.azure.servicebus.connection-string")
     public StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider() {
 

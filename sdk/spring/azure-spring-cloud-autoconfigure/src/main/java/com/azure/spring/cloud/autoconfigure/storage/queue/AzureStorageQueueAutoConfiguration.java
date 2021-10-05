@@ -18,8 +18,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 
 /**
  * Auto-configuration for a {@link QueueServiceClientBuilder} and queue service clients.
@@ -67,8 +65,7 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    @Order(Ordered.HIGHEST_PRECEDENCE + 100)
+    @ConditionalOnProperty("spring.cloud.azure.storage.queue.connection-string")
     public StaticConnectionStringProvider<AzureServiceType.StorageQueue> staticStorageQueueConnectionStringProvider(
         AzureStorageQueueProperties storageQueueProperties) {
 

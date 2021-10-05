@@ -99,6 +99,9 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
             mapper.from(((AzureEventHubProperties) this.eventHubProperties).getSharedConnection())
                   .whenTrue()
                   .to(t -> builder.shareConnection());
+
+            mapper.from(((AzureEventHubProperties) this.eventHubProperties).getConsumer().getConsumerGroup())
+                .to(builder::consumerGroup);
         }
 
         if (this.eventHubProperties instanceof AzureEventHubConsumerProperties) {

@@ -60,6 +60,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private String applicationId; // end-user
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
+    private boolean credentialConfigured = false;
 
     /**
      * 1. create a builder instance 2. configure builder 2.1 configure azure core level configuration 2.1.1 configure
@@ -83,6 +84,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         configureProxy(builder);
         configureCredential(builder);
         configureConnectionString(builder);
+        configureDefaultCredential(builder);
     }
 
     protected void configureAzureEnvironment(T builder) {
@@ -96,8 +98,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
         AzureCredentialProvider<?> azureCredentialProvider = resolveAzureCredential(getAzureProperties(), descriptors);
         if (azureCredentialProvider == null) {
-            LOGGER.warn("No authentication credential configured");
-            consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
+            LOGGER.warn("No authentication credential configured for class {}.", builder.getClass());
             return;
         }
 
@@ -110,12 +111,21 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
 
         consumer.accept(azureCredentialProvider);
+        credentialConfigured = true;
     }
 
     protected void configureConnectionString(T builder) {
         if (this.connectionStringProvider != null
                 && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
             consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
+            credentialConfigured = true;
+        }
+    }
+
+    protected void configureDefaultCredential(T builder) {
+        if (!credentialConfigured) {
+            LOGGER.info("Will configure the default credential for {}.", builder.getClass());
+            consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
         }
     }
 
