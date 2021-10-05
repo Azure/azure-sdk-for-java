@@ -15,12 +15,14 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.ErrorResponseException;
@@ -96,6 +98,8 @@ public final class MetricDefinitionsImpl {
                                         metricnamespace,
                                         accept,
                                         context))
+                .onErrorMap(ErrorResponseException.class, ex -> new HttpResponseException(ex.getMessage(),
+                        ex.getResponse(), new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage())))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -136,6 +140,8 @@ public final class MetricDefinitionsImpl {
                         metricnamespace,
                         accept,
                         context)
+                .onErrorMap(ErrorResponseException.class, ex -> new HttpResponseException(ex.getMessage(),
+                        ex.getResponse(), new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage())))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
