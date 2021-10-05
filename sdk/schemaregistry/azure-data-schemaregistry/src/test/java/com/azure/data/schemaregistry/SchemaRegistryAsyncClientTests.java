@@ -12,13 +12,13 @@ import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -103,14 +103,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertEquals(schemaName, response.getSchemaName());
                 assertNotNull(response.getSchemaId());
                 schemaId.set(response.getSchemaId());
-
-                // Replace white space.
-                final String contents = new String(response.getSchema(), StandardCharsets.UTF_8);
-                final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
-                assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
             }).verifyComplete();
 
 
@@ -122,12 +116,12 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client2.getSchema(schemaIdToGet))
             .assertNext(schema -> {
-                assertEquals(schemaIdToGet, schema.getSchemaId());
-                assertEquals(SchemaFormat.AVRO, schema.getFormat());
+                assertNotNull(schema.getProperties());
+                assertEquals(schemaIdToGet, schema.getProperties().getSchemaId());
+                assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
 
                 // Replace white space.
-                final String contents = new String(schema.getSchema(), StandardCharsets.UTF_8);
-                final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
+                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getSchemaDefinition()).replaceAll("");
                 assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
             })
             .verifyComplete();
@@ -151,13 +145,15 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
+                assertEquals(SchemaFormat.AVRO, response.getFormat());
+                assertNotNull(response.getSchemaId());
                 schemaId.set(response.getSchemaId());
             }).verifyComplete();
 
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContentModified, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertSchemaProperties(response, null, schemaName, schemaContentModified);
+                assertEquals(SchemaFormat.AVRO, response.getFormat());
+                assertNotNull(response.getSchemaId());
                 schemaId2.set(response.getSchemaId());
             }).verifyComplete();
 
@@ -168,7 +164,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         final String schemaIdToGet = schemaId2.get();
         StepVerifier.create(client2.getSchema(schemaIdToGet))
-            .assertNext(schema -> assertSchemaProperties(schema, schemaIdToGet, schemaName, SCHEMA_CONTENT))
+            .assertNext(schema -> assertSchemaRegistrySchema(schema, schemaIdToGet, SchemaFormat.AVRO, SCHEMA_CONTENT))
             .verifyComplete();
     }
 
@@ -187,7 +183,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
+                assertSchemaProperties(response, null, SchemaFormat.AVRO);
                 schemaId.set(response.getSchemaId());
             }).verifyComplete();
 
@@ -197,8 +193,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
-        StepVerifier.create(client2.getSchemaId(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
-            .assertNext(schema -> assertEquals(schemaIdToGet, schema))
+        StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
+            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getSchemaId()))
             .verifyComplete();
     }
 
@@ -249,7 +245,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.getSchemaId("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
+        StepVerifier.create(client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
@@ -257,25 +253,33 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .verify();
     }
 
-    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, String expectedSchemaName,
+    static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
         String expectedContents) {
 
         assertNotEquals(expectedContents, "'expectedContents' should not be null.");
 
-        assertEquals(expectedSchemaName, actual.getSchemaName());
-        assertEquals(SchemaFormat.AVRO, actual.getFormat());
+        assertEquals(format, actual.getProperties().getFormat());
 
-        assertNotNull(actual.getSchemaId());
+        assertNotNull(actual.getProperties().getSchemaId());
+
+        if (expectedSchemaId != null) {
+            assertEquals(expectedSchemaId, actual.getProperties().getSchemaId());
+        }
+
+        // Replace white space.
+        final String actualContents = WHITESPACE_PATTERN.matcher(actual.getSchemaDefinition()).replaceAll("");
+        final String expectedContentsNoWhitespace = WHITESPACE_PATTERN.matcher(actualContents).replaceAll("");
+
+        assertEquals(expectedContentsNoWhitespace, actualContents);
+    }
+
+    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat) {
+        assertNotNull(actual);
 
         if (expectedSchemaId != null) {
             assertEquals(expectedSchemaId, actual.getSchemaId());
         }
 
-        // Replace white space.
-        final String contents = new String(actual.getSchema(), StandardCharsets.UTF_8);
-        final String actualContents = WHITESPACE_PATTERN.matcher(contents).replaceAll("");
-
-        final String expectedContentsNoWhitespace = WHITESPACE_PATTERN.matcher(actualContents).replaceAll("");
-        assertEquals(expectedContentsNoWhitespace, actualContents);
+        assertEquals(schemaFormat, actual.getFormat());
     }
 }
