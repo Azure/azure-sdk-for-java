@@ -796,7 +796,11 @@ public class CryptographyAsyncClient {
         try {
             URL url = new URL(keyId);
             String[] tokens = url.getPath().split("/");
-            String endpoint = url.getProtocol() + "://" + url.getAuthority();
+            String endpoint = url.getProtocol() + "://" + url.getHost();
+
+            if (url.getPort() != -1) {
+                endpoint += ":" + url.getPort();
+            }
 
             String keyName = (tokens.length >= 3 ? tokens[2] : null);
             this.keyCollection = (tokens.length >= 2 ? tokens[1] : null);
