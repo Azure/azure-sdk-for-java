@@ -11,9 +11,9 @@ import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificRecord;
 
 /**
- * The builder implementation for building {@link SchemaRegistryAvroSerializer}.
+ * The builder implementation for building {@link SchemaRegistryApacheAvroSerializer}.
  *
- * @see SchemaRegistryAvroSerializer
+ * @see SchemaRegistryApacheAvroSerializer
  */
 public final class SchemaRegistryAvroSerializerBuilder {
     private static final boolean AVRO_SPECIFIC_READER_DEFAULT = false;
@@ -95,13 +95,13 @@ public final class SchemaRegistryAvroSerializerBuilder {
     /**
      * Instantiates SchemaRegistry Avro serializer.
      *
-     * @return {@link SchemaRegistryAvroSerializer} instance
+     * @return {@link SchemaRegistryApacheAvroSerializer} instance
      *
      * @throws NullPointerException if {@link #schemaRegistryAsyncClient(SchemaRegistryAsyncClient)} is {@code null}
      *     or {@link #schemaGroup(String) schemaGroup} is {@code null}.
      * @throws IllegalArgumentException if credential is not set.
      */
-    public SchemaRegistryAvroSerializer buildSerializer() {
+    public SchemaRegistryApacheAvroSerializer buildSerializer() {
         final boolean isAutoRegister = autoRegisterSchemas != null && autoRegisterSchemas;
         final boolean useAvroSpecificReader = avroSpecificReader == null
             ? AVRO_SPECIFIC_READER_DEFAULT : avroSpecificReader;
@@ -109,6 +109,6 @@ public final class SchemaRegistryAvroSerializerBuilder {
         final AvroSerializer codec = new AvroSerializer(useAvroSpecificReader, parser,
             EncoderFactory.get(), DecoderFactory.get());
 
-        return new SchemaRegistryAvroSerializer(schemaRegistryAsyncClient, codec, schemaGroup, isAutoRegister);
+        return new SchemaRegistryApacheAvroSerializer(schemaRegistryAsyncClient, codec, schemaGroup, isAutoRegister);
     }
 }

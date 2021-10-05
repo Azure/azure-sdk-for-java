@@ -26,13 +26,13 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Schema Registry-based serializer implementation for Avro data format.
  */
-public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
+public final class SchemaRegistryApacheAvroSerializer implements ObjectSerializer {
 
     static final byte[] RECORD_FORMAT_INDICATOR = new byte[]{0x00, 0x00, 0x00, 0x00};
     static final int SCHEMA_ID_SIZE = 32;
     static final int RECORD_FORMAT_INDICATOR_SIZE = 4;
 
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializer.class);
     private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSerializer avroSerializer;
     private final String schemaGroup;
@@ -46,7 +46,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
      * @param schemaGroup Optional schema group.
      * @param autoRegisterSchemas {@code true} to register schema if none was found. Otherwise, {@code false}.
      */
-    SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
+    SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         AvroSerializer avroSerializer, String schemaGroup, boolean autoRegisterSchemas) {
         this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
             "'schemaRegistryClient' cannot be null.");
