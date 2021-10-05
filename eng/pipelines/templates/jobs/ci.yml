@@ -171,8 +171,9 @@ jobs:
       vmImage: MMS2019
       steps:
       - template: /eng/common/pipelines/templates/steps/credscan-pr.yml
-        Url: ${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}
-        Branch: ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
+        parameters:
+          Url: ${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}
+          Branch: ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
