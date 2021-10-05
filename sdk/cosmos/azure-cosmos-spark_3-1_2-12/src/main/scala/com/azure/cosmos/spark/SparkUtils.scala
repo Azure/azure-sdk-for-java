@@ -7,10 +7,9 @@ import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.spark.diagnostics.ILogger
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.slf4j.LoggerFactory
 
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.ThreadFactory
+import java.util.concurrent.atomic.AtomicInteger
 
 private object SparkUtils {
 
@@ -47,20 +46,11 @@ private object SparkUtils {
   }
 
   private class DaemonThreadFactory extends ThreadFactory {
-    private val securityManager = System.getSecurityManager
-    private val threadGroup = Option.apply(securityManager) match {
-      case Some(s) => s.getThreadGroup
-      case None => Thread.currentThread.getThreadGroup
-    }
     private val threadNumber = new AtomicInteger(1)
     private val namePrefix = "cosmos-spark-daemon-pool-" + DaemonThreadFactory.poolNumber.getAndIncrement + "-thread-"
 
     override def newThread(r: Runnable): Thread = {
-      val t = new Thread(
-        threadGroup,
-        r,
-        namePrefix + threadNumber.getAndIncrement,
-        0)
+      val t = new Thread(r, namePrefix + threadNumber.getAndIncrement)
       if (!t.isDaemon) t.setDaemon(true)
       if (t.getPriority != Thread.NORM_PRIORITY) t.setPriority(Thread.NORM_PRIORITY)
       t
