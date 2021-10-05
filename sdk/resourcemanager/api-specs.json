@@ -316,7 +316,7 @@
     "dir": "azure-resourcemanager-storage",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.storage",
-    "args": "--payload-flattening-threshold=2 --tag=package-2021-04"
+    "args": "--payload-flattening-threshold=2 --tag=profile-hybrid-2020-09-01"
   },
   "storsimple8000series": {
     "dir": "azure-resourcemanager-storsimple8000series",
