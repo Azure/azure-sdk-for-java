@@ -22,6 +22,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.query.LogsQueryClientBuilder;
+import com.azure.monitor.query.models.LogsQueryClientAudience;
+import com.azure.monitor.query.models.MetricsQueryClientAudience;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -235,10 +237,12 @@ public final class AzureLogAnalyticsImplBuilder {
 
         String resolvedAudience = this.audience;
         if (resolvedAudience == null) {
-            resolvedAudience = "/.default";
+            resolvedAudience = LogsQueryClientAudience.AZURE_PUBLIC_CLOUD.toString();
         }
+        resolvedAudience += "/.default";
         BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                this.host + resolvedAudience);
+                resolvedAudience);
+
         policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());

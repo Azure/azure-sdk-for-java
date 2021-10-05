@@ -21,6 +21,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.monitor.query.models.MetricsQueryClientAudience;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -252,10 +253,11 @@ public final class MetricsDefinitionsClientImplBuilder {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         String resolvedAudience = this.audience;
         if (resolvedAudience == null) {
-            resolvedAudience = "/.default";
+            resolvedAudience = MetricsQueryClientAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD.toString();
         }
+        resolvedAudience += "/.default";
         BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                host + resolvedAudience);
+                resolvedAudience);
         policies.add(tokenPolicy);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
