@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 public final class StorageSharedKeyCredential {
     private final ClientLogger logger = new ClientLogger(StorageSharedKeyCredential.class);
 
-    private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
@@ -114,7 +113,7 @@ public final class StorageSharedKeyCredential {
         boolean logStringToSign) {
         String signature = StorageImplUtils.computeHMac256(accountKey,
             buildStringToSign(requestURL, httpMethod, headers, logStringToSign));
-        return String.format(AUTHORIZATION_HEADER_FORMAT, accountName, signature);
+        return "SharedKey " + accountName + ":" + signature;
     }
 
     /**
