@@ -61,10 +61,8 @@ class ActiveClientTokenManagerTest {
         when(cbsNode.authorize(any(), any())).thenReturn(getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
@@ -81,28 +79,25 @@ class ActiveClientTokenManagerTest {
         // Arrange
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final IllegalArgumentException error = new IllegalArgumentException("Some error");
-        final Duration expiryDuration = Duration.ofSeconds(20);
 
         final AtomicInteger invocations = new AtomicInteger();
         when(cbsNode.authorize(any(), any())).thenAnswer(invocationOnMock -> {
             if (invocations.incrementAndGet() < 3) {
-                return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(20));
+                return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plus(DEFAULT_DURATION));
             } else {
                 return Mono.error(error);
             }
         });
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
-            .thenAwait(expiryDuration)
+            .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
-            .thenAwait(expiryDuration)
+            .thenAwait(DEFAULT_DURATION)
             .expectError(IllegalArgumentException.class)
-            .verifyThenAssertThat(VERIFY_TIMEOUT);
+            .verifyThenAssertThat(VERIFY_TIMEOUT.multipliedBy(2));
     }
 
     /**
@@ -138,10 +133,8 @@ class ActiveClientTokenManagerTest {
             getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
 
@@ -149,7 +142,7 @@ class ActiveClientTokenManagerTest {
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenCancel()
-            .verify(VERIFY_TIMEOUT);
+            .verify(VERIFY_TIMEOUT.multipliedBy(2));
     }
 
     /**
@@ -167,10 +160,8 @@ class ActiveClientTokenManagerTest {
             getNextExpiration(DEFAULT_DURATION));
 
         // Act & Assert
-        StepVerifier.withVirtualTime(() -> {
-            final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-            return tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults());
-        })
+        final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
+        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
             .expectErrorSatisfies(throwable -> {
