@@ -153,6 +153,15 @@ public final class KeyAsyncClient {
     /**
      * Creates a {@link CryptographyAsyncClient} for the latest version of a given key.
      *
+     * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+     * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} created for the specific key
+     * version that was used for the corresponding inverse operation: {@code Encrypt}, {@code Wrap}, or
+     * {@code Sign}, respectively.</p>
+     *
+     * <p>You can provide a key version either via {@link KeyAsyncClient#getCryptographyAsyncClient(String, String)} or
+     * by ensuring it is included in the {@code keyIdentifier} passed to
+     * {@link CryptographyClientBuilder#keyIdentifier(String)} before building a client.</p>
+     *
      * @param keyName The name of the key.
      *
      * @return An instance of {@link CryptographyAsyncClient} associated with the latest version of a key with the

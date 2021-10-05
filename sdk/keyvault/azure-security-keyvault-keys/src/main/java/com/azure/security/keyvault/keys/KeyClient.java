@@ -15,6 +15,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -69,6 +70,15 @@ public final class KeyClient {
 
     /**
      * Creates a {@link CryptographyClient} for the latest version of a given key.
+     *
+     * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+     * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key
+     * version that was used for the corresponding inverse operation: {@code Encrypt}, {@code Wrap}, or
+     * {@code Sign}, respectively.</p>
+     *
+     * <p>You can provide a key version either via {@link KeyClient#getCryptographyClient(String, String)} or by
+     * ensuring it is included in the {@code keyIdentifier} passed to
+     * {@link CryptographyClientBuilder#keyIdentifier(String)} before building a client.</p>
      *
      * @param keyName The name of the key.
      *
