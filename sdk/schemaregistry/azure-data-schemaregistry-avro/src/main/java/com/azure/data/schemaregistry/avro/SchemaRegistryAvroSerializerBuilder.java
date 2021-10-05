@@ -32,7 +32,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
     }
 
     /**
-     * Specifies schema group for interacting with Azure Schema Registry service.
+     * Specifies schema group for interacting with Azure Schema Registry service. This is optional unless
+     * {@link #autoRegisterSchema(boolean) autoRegisterSchema} is set to {@code true}.
      *
      * If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
      * request schema ID for matching data schema under specified group.

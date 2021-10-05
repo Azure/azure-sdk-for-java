@@ -51,14 +51,14 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param schemaDefinition The string representation of the schema.
-     * @param schemaFormat The serialization type of this schema.
+     * @param format The serialization type of this schema.
      *
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties registerSchema(String groupName, String name, String schemaDefinition,
-        SchemaFormat schemaFormat) {
-        return this.asyncClient.registerSchema(groupName, name, schemaDefinition, schemaFormat).block();
+        SchemaFormat format) {
+        return this.asyncClient.registerSchema(groupName, name, schemaDefinition, format).block();
     }
 
     /**
@@ -68,15 +68,15 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param schemaDefinition The string representation of the schema.
-     * @param schemaFormat The serialization type of this schema.
+     * @param format The serialization type of this schema.
      * @param context The context to pass to the Http pipeline.
      *
      * @return The schema properties on successful registration of the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
-        SchemaFormat schemaFormat, Context context) {
-        return this.asyncClient.registerSchemaWithResponse(groupName, name, schemaDefinition, schemaFormat,
+        SchemaFormat format, Context context) {
+        return this.asyncClient.registerSchemaWithResponse(groupName, name, schemaDefinition, format,
             context).block();
     }
 
@@ -111,14 +111,14 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param schemaDefinition The string representation of the schema.
-     * @param schemaFormat The serialization type of this schema.
+     * @param format The serialization type of this schema.
      *
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties getSchemaProperties(String groupName, String name, String schemaDefinition,
-        SchemaFormat schemaFormat) {
-        return this.asyncClient.getSchemaProperties(groupName, name, schemaDefinition, schemaFormat).block();
+        SchemaFormat format) {
+        return this.asyncClient.getSchemaProperties(groupName, name, schemaDefinition, format).block();
     }
 
     /**
@@ -127,15 +127,15 @@ public final class SchemaRegistryClient {
      * @param groupName The schema group.
      * @param name The schema name.
      * @param schemaDefinition The string representation of the schema.
-     * @param schemaFormat The serialization type of this schema.
+     * @param format The serialization type of this schema.
      * @param context The context to pass to the Http pipeline.
      *
      * @return The unique identifier for this schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> getSchemaPropertiesWithResponse(String groupName, String name,
-        String schemaDefinition, SchemaFormat schemaFormat, Context context) {
-        return this.asyncClient.getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, schemaFormat, context)
+        String schemaDefinition, SchemaFormat format, Context context) {
+        return this.asyncClient.getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, format, context)
             .block();
     }
 }

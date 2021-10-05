@@ -38,14 +38,22 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     private final String schemaGroup;
     private final boolean autoRegisterSchemas;
 
+    /**
+     * Creates a new instance.
+     *
+     * @param schemaRegistryClient Client that interacts with Schema Registry.
+     * @param avroSerializer Serializer implemented using Apache Avro.
+     * @param schemaGroup Optional schema group.
+     * @param autoRegisterSchemas {@code true} to register schema if none was found. Otherwise, {@code false}.
+     */
     SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
         AvroSerializer avroSerializer, String schemaGroup, boolean autoRegisterSchemas) {
         this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
             "'schemaRegistryClient' cannot be null.");
         this.avroSerializer = Objects.requireNonNull(avroSerializer,
             "'avroSchemaRegistryUtils' cannot be null.");
-        this.schemaGroup = Objects.requireNonNull(schemaGroup, "'schemaGroup' cannot be null.");
         this.autoRegisterSchemas = autoRegisterSchemas;
+        this.schemaGroup = schemaGroup;
     }
 
     /**
