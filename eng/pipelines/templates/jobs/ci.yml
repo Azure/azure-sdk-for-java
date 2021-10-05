@@ -161,7 +161,7 @@ jobs:
       - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Credential Scan'
-    condition: eq(variables['Build.Reason'], 'PullRequest')
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
     variables:
       - template: ../variables/globals.yml
 
@@ -173,6 +173,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/credscan-pr.yml
         Url: ${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}
         Branch: ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
+
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
