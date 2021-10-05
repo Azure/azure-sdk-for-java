@@ -681,6 +681,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName, partitionKeyValue);
     }
 
+    @Override
+    public <T> Slice<T> runSliceQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
+        final String containerName = getContainerName(domainType);
+        final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, pageable.getSort());
+        return sliceQuery(sortedQuerySpec, pageable, pageable.getSort(), returnType, containerName, Optional.empty());
+    }
+
     private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
                                        Pageable pageable, Sort sort,
                                        Class<T> returnType, String containerName,
