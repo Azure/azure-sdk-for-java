@@ -118,34 +118,34 @@ public final class  SchemaRegistryAsyncClient {
     /**
      * Gets the schema properties of the schema associated with the unique schema id.
      *
-     * @param id The unique identifier of the schema.
+     * @param schemaId The unique identifier of the schema.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code id}.
+     * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SchemaRegistrySchema> getSchema(String id) {
-        return getSchemaWithResponse(id).map(Response::getValue);
+    public Mono<SchemaRegistrySchema> getSchema(String schemaId) {
+        return getSchemaWithResponse(schemaId).map(Response::getValue);
     }
 
     /**
      * Gets the schema properties of the schema associated with the unique schema id.
      *
-     * @param id The unique identifier of the schema.
+     * @param schemaId The unique identifier of the schema.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code id} along with the HTTP response.
+     * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String id) {
-        return FluxUtil.withContext(context -> getSchemaWithResponse(id, context));
+    public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId) {
+        return FluxUtil.withContext(context -> getSchemaWithResponse(schemaId, context));
     }
 
-    Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String id, Context context) {
-        Objects.requireNonNull(id, "'id' should not be null");
-        return this.restService.getSchemas().getByIdWithResponseAsync(id)
+    Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId, Context context) {
+        Objects.requireNonNull(schemaId, "'id' should not be null");
+        return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
             .handle((response, sink) -> {
                 final SchemaFormat schemaFormat =
                     SchemaFormat.fromString(response.getDeserializedHeaders().getSchemaType());
-                final SchemaProperties schemaObject = new SchemaProperties(id, schemaFormat);
+                final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat);
                 final String schemaDefinition = new String(response.getValue(), SCHEMA_REGISTRY_SERVICE_ENCODING);
                 final SimpleResponse<SchemaRegistrySchema> schemaRegistryResponse = new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),

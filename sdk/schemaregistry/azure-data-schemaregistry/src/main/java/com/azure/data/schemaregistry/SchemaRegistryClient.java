@@ -83,26 +83,26 @@ public final class SchemaRegistryClient {
     /**
      * Gets the schema properties of the schema associated with the unique schema id.
      *
-     * @param id The unique identifier of the schema.
+     * @param schemaId The unique identifier of the schema.
      *
-     * @return The {@link SchemaProperties} associated with the given {@code id}.
+     * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaRegistrySchema getSchema(String id) {
-        return this.asyncClient.getSchema(id).block();
+    public SchemaRegistrySchema getSchema(String schemaId) {
+        return this.asyncClient.getSchema(schemaId).block();
     }
 
     /**
-     * Gets the schema properties of the schema associated with the unique schema id.
+     * Gets the schema properties of the schema associated with the unique schema schemaId.
      *
-     * @param id The unique identifier of the schema.
+     * @param schemaId The unique identifier of the schema.
      * @param context The context to pass to the Http pipeline.
      *
      * @return The {@link SchemaProperties} associated with the given {@code id} and its HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaRegistrySchema> getSchemaWithResponse(String id, Context context) {
-        return this.asyncClient.getSchemaWithResponse(id, context).block();
+    public Response<SchemaRegistrySchema> getSchemaWithResponse(String schemaId, Context context) {
+        return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
 
     /**
