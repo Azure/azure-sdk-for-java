@@ -9,10 +9,17 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Container Registry supported by this client library.
  */
 public enum ContainerRegistryServiceVersion implements ServiceVersion {
+    /**
+     * The api-version of 2021-07-01.
+     */
     V2021_07_01("2021-07-01");
 
     private final String version;
 
+    /**
+     * The service version.
+     * @param version The service version.
+     */
     ContainerRegistryServiceVersion(String version) {
         this.version = version;
     }
