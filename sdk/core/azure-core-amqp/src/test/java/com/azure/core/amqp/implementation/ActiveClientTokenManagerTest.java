@@ -102,10 +102,7 @@ class ActiveClientTokenManagerTest {
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(expiryDuration)
             .expectError(IllegalArgumentException.class)
-            .verifyThenAssertThat(VERIFY_TIMEOUT)
-            .hasNotDroppedElements()
-            .hasNotDroppedElements()
-            .hasNotDroppedErrors();
+            .verifyThenAssertThat(VERIFY_TIMEOUT);
     }
 
     /**
