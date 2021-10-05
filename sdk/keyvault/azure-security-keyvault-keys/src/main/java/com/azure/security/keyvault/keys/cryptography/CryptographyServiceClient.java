@@ -306,6 +306,11 @@ class CryptographyServiceClient {
                 URL url = new URL(keyId);
                 String[] tokens = url.getPath().split("/");
                 this.vaultUrl = url.getProtocol() + "://" + url.getHost();
+
+                if (url.getPort() != -1) {
+                    this.vaultUrl += ":" + url.getPort();
+                }
+
                 this.keyName = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : "");
             } catch (MalformedURLException e) {
