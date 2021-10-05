@@ -37,7 +37,7 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
             context.getHttpRequest().getHttpMethod().toString(),
-            context.getHttpRequest().getHeaders().toMap(),
+            context.getHttpRequest().getHeaders(),
             Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
         return next.process();
