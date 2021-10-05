@@ -41,6 +41,10 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*InteractiveBrowserCredentialBuilder.java"/>
 
+  <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.training.models.CopyAuthorization"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.FieldValue"/>
+
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
 
@@ -573,6 +577,12 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Text Analytics -->
   <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
             files="com.azure.ai.textanalytics.(models|util).*\.java"/>
+
+  <!-- Suppress for the OnlyFinalFieldsForImmutableClass on Form Recognizer -->
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.training.models.(TrainingDocumentInfo|CustomFormSubmodel|CustomFormModelProperties|CustomFormModelInfo|CustomFormModel).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClass"
+            files="com.azure.ai.formrecognizer.models.(TextAppearance|RecognizedForm|FormTable|FormSelectionMark|FormPage|FormLine).java"/>
 
   <!-- Suppress checks on AutoRest generated Video Analyzer code -->
   <suppress checks="WhitespaceAround" files="com.azure.media.videoanalyzer.edge.models.CertificateSource"/>
