@@ -40,12 +40,15 @@ def generate_overview(readme_file, version, overview_file_path):
 
     if (readme_exists):
         with open(readme_file, 'r', encoding='utf-8') as f:
-            readme_content = f.read()
+            readme_content_lines = f.readlines()
 
         # Before passing the README contents to markdown2 clean out the codesnippet tags on the java code fences.
         # Clean ```java com.azure.core.aCodeSnippetTag to ```java, without doing this markdown2 won't properly process
         # the contents of the code fence.
-        readme_content = re.sub(pattern="```\s*java\s+[a-zA-Z0-9.#\-_]*", repl="```java", string=readme_content, flags=re.MULTILINE)
+        for line in readme_content_lines:
+            line = re.sub(pattern="```\s*java\s+[a-zA-Z0-9.#\-_]*", repl="```java", string=line)
+
+        readme_content = ''.join(readme_content_lines)
 
         # markdown2.markdown will create html from the readme.md file. The fenced-code-blocks
         # extras being passed into the markdown call is necessary to deal with the embedded
