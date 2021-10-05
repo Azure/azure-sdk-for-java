@@ -39,6 +39,7 @@ public class UsernamePasswordCredentialTest {
         // setup
         String username = "testuser";
         String password = "testPassword";//"P@ssw0rd";
+        String AmazonWebServicesSecretTokenDefault = "abcdefghijklmnopqrst0123456789/+ABCDEFGH";
         String token1 = "token1";
         String token2 = "token2";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
