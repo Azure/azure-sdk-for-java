@@ -14,10 +14,8 @@ import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,6 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.core.amqp.AmqpTestUtils.verifyWithTimeout;
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_AUDIENCE;
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_EXPIRY;
 import static com.azure.core.amqp.implementation.ClaimsBasedSecurityChannel.PUT_TOKEN_TYPE;
@@ -49,6 +48,8 @@ import static org.mockito.Mockito.when;
  * Tests for {@link ClaimsBasedSecurityChannel}.
  */
 class ClaimsBasedSecurityChannelTest {
+    private static final Duration TIMEOUT = Duration.ofSeconds(10);
+
     private final AmqpRetryOptions options = new AmqpRetryOptions()
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(45))
@@ -69,16 +70,6 @@ class ClaimsBasedSecurityChannelTest {
     private Message acceptedResponse;
     private Message unauthorizedResponse;
     private AutoCloseable mocksCloseable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     public void setup() {
@@ -122,10 +113,9 @@ class ClaimsBasedSecurityChannelTest {
             .thenReturn(Mono.just(accessToken));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+        verifyWithTimeout(StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
             .expectNext(accessToken.getExpiresAt())
-            .expectComplete()
-            .verify();
+            .expectComplete(), TIMEOUT);
 
         // Assert
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());
@@ -154,10 +144,9 @@ class ClaimsBasedSecurityChannelTest {
             .thenReturn(Mono.just(accessToken));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+        verifyWithTimeout(StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
             .expectNext(accessToken.getExpiresAt())
-            .expectComplete()
-            .verify();
+            .expectComplete(), TIMEOUT);
 
         // Assert
         verify(requestResponseChannel).sendWithAck(messageArgumentCaptor.capture());
@@ -184,12 +173,11 @@ class ClaimsBasedSecurityChannelTest {
         when(requestResponseChannel.sendWithAck(any())).thenReturn(Mono.just(unauthorizedResponse));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+        verifyWithTimeout(StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, ((AmqpException) error).getErrorCondition());
-            })
-            .verify();
+            }), TIMEOUT);
     }
 
     /**
@@ -208,12 +196,11 @@ class ClaimsBasedSecurityChannelTest {
         when(requestResponseChannel.sendWithAck(any())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+        verifyWithTimeout(StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
                 assertTrue(((AmqpException) error).isTransient());
-            })
-            .verify();
+            }), TIMEOUT);
     }
 
     /**
@@ -229,9 +216,8 @@ class ClaimsBasedSecurityChannelTest {
         when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(cbsChannel.closeAsync())
-            .expectComplete()
-            .verify();
+        verifyWithTimeout(StepVerifier.create(cbsChannel.closeAsync())
+            .expectComplete(), TIMEOUT);
 
         verify(requestResponseChannel).closeAsync();
     }
