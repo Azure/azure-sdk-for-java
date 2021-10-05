@@ -71,6 +71,21 @@ public class CryptographyClientBuilderTest {
     }
 
     @Test
+    public void buildSyncClientWithPortInKeyIdentifierTest() {
+        String keyIdentifierWithPort = "https://key-vault-url.vault.azure.net:443/keys/TestKey";
+
+        CryptographyClient cryptographyClient = new CryptographyClientBuilder()
+            .keyIdentifier(keyIdentifierWithPort)
+            .serviceVersion(serviceVersion)
+            .credential(new TestUtils.TestCredential())
+            .buildClient();
+
+        assertNotNull(cryptographyClient);
+        assertEquals(CryptographyClient.class.getSimpleName(), cryptographyClient.getClass().getSimpleName());
+        assertTrue(cryptographyClient.getServiceClient().getVaultUrl().contains(":443"));
+    }
+
+    @Test
     public void buildAsyncClientTest() {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier(keyIdentifier)
