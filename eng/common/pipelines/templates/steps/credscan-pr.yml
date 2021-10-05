@@ -33,6 +33,6 @@ steps:
   workingDirectory: '$(System.DefaultWorkingDirectory)'
 - pwsh: |
     New-Item -Path "./eng" -Name "temp" -ItemType "directory"
-    $(credScanToolPath) -I ./ -O ./eng/temp -c $(TargetBranchCommitId)
+    $(credScanToolPath) -I ./ -O ./eng/temp -c $(TargetBranchCommitId) -sp ./eng/CredScanSuppression.json
   displayName: 'Run CredScan'
   condition: succeededOrFailed()
