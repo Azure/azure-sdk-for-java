@@ -1,0 +1,38 @@
+parameters:
+  Url: '${env:SYSTEM_PULLREQUEST_SOURCEREPOSITORYURI}'
+  Branch: '${env:SYSTEM_PULLREQUEST_TARGETBRANCH}'
+steps:
+- pwsh: |
+    # Have a temp folder for the tool
+    New-Item -Path "./eng" -Name "credscan" -ItemType "directory"
+    # Download from CredScan portal. More details: https://strikecommunity.azurewebsites.net/articles/4114/credential-scanner-overview.html
+    Invoke-WebRequest -Uri https://aka.ms/credscan-release-nuget -OutFile ./eng/credscan
+    $executeFilePath = "./eng/credscan"
+    cd $executeFilePath
+    # Rename the download nuget to zip
+    Get-ChildItem *.nuget | Rename-Item -NewName { $_.Name -replace '.nuget','.zip' }
+    # Unzip the package
+    New-Item -Path $executeFilePath -Name "package" -ItemType "directory"
+    $executeFilePath = $executeFilePath + "/package"
+    Expand-Archive *.zip -DestinationPath $executeFilePath
+    $executeFilePath = $executeFilePath + (Get-ChildItem $executeFilePath + "/lib")[0]
+    $credScanToolPath = $executeFilePath + "CredentialScanner.exe"
+    echo "##vso[task.setvariable variable=CredScanToolPath]$credScanToolPath"
+  displayName: 'Download Credential Scanner tool'
+- pwsh: |
+    Write-Host $Url
+    Write-Host $Branch
+    $commitId = git ls-remote ${{parameters.Url}} ${{parameters.Branch}}
+    Write-Host $commitId
+    echo "##vso[task.setvariable variable=TargetBranchCommitId]$commitId"
+    # $jsonContent = Get-Content ./eng/CredScanBaseline.json | ConvertTo-Json
+    # Write-Host $jsonContent
+    # $jsonContent.PreviousCommitId = $commitId
+    # Set-Content -Path ./eng/CredScanBaseline.json -Value $jsonContent 
+  displayName: Write base branch commit into CredScanBaseline File
+  workingDirectory: '$(System.DefaultWorkingDirectory)'
+- pwsh: |
+    New-Item -Path "./eng" -Name "temp" -ItemType "directory"
+    $(credScanToolPath) -I ./ -O ./eng/temp -c $(TargetBranchCommitId)
+  displayName: 'Run CredScan'
+  condition: succeededOrFailed()
