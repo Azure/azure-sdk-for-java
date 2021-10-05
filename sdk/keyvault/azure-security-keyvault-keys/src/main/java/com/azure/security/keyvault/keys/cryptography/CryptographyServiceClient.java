@@ -61,6 +61,10 @@ class CryptographyServiceClient {
         apiVersion = serviceVersion.getVersion();
     }
 
+    String getVaultUrl() {
+        return vaultUrl;
+    }
+
     Mono<Response<KeyVaultKey>> getKey(Context context) {
         if (version == null) {
             version = "";
