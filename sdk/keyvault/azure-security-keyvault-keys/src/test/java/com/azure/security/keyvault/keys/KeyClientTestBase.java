@@ -139,7 +139,7 @@ public abstract class KeyClientTestBase extends TestBase {
         tags.put("foo", "baz");
 
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), keyType)
+        final CreateKeyOptions keyOptions = new CreateKeyOptions(testResourceNamer.randomName(KEY_NAME, 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
@@ -155,10 +155,11 @@ public abstract class KeyClientTestBase extends TestBase {
 
         tags.put("foo", "baz");
 
-        final CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(generateResourceId(KEY_NAME))
-            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
-            .setTags(tags);
+        final CreateRsaKeyOptions createRsaKeyOptions =
+            new CreateRsaKeyOptions(testResourceNamer.randomName(KEY_NAME, 20))
+                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+                .setTags(tags);
 
         if (runManagedHsmTest) {
             createRsaKeyOptions.setHardwareProtected(true);
@@ -191,7 +192,7 @@ public abstract class KeyClientTestBase extends TestBase {
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
 
-        final String keyName = generateResourceId("testKey1");
+        final String keyName = testResourceNamer.randomName("testKey1", 20);
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         final CreateKeyOptions originalKey = new CreateKeyOptions(keyName, keyType)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -208,7 +209,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void updateDisabledKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
-        final String keyName = generateResourceId("testKey2");
+        final String keyName = testResourceNamer.randomName("testKey2", 20);
         final KeyType keyType = isHsmEnabled ? KeyType.EC_HSM : KeyType.EC;
         final CreateKeyOptions originalKey = new CreateKeyOptions(keyName, keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
@@ -224,7 +225,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void getKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions originalKey = new CreateKeyOptions(generateResourceId("testKey4"), keyType)
+        final CreateKeyOptions originalKey = new CreateKeyOptions(testResourceNamer.randomName("testKey4", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(originalKey);
@@ -234,7 +235,7 @@ public abstract class KeyClientTestBase extends TestBase {
     public abstract void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void getKeySpecificVersionRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
-        final String keyName = generateResourceId("testKey3");
+        final String keyName = testResourceNamer.randomName("testKey3", 20);
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         final CreateKeyOptions key = new CreateKeyOptions(keyName, keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
@@ -252,7 +253,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void deleteKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToDelete = new CreateKeyOptions(generateResourceId("testKey5"), keyType)
+        final CreateKeyOptions keyToDelete = new CreateKeyOptions(testResourceNamer.randomName("testKey5", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDelete);
@@ -266,8 +267,9 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void getDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToDeleteAndGet = new CreateKeyOptions(generateResourceId("testKey6"), keyType)
-            .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+        final CreateKeyOptions keyToDeleteAndGet =
+            new CreateKeyOptions(testResourceNamer.randomName("testKey6", 20), keyType)
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDeleteAndGet);
     }
@@ -280,7 +282,8 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void recoverDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToDeleteAndRecover = new CreateKeyOptions(generateResourceId("testKey7"), keyType)
+        final CreateKeyOptions keyToDeleteAndRecover =
+            new CreateKeyOptions(testResourceNamer.randomName("testKey7", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDeleteAndRecover);
@@ -294,7 +297,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void backupKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToBackup = new CreateKeyOptions(generateResourceId("testKey8"), keyType)
+        final CreateKeyOptions keyToBackup = new CreateKeyOptions(testResourceNamer.randomName("testKey8", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToBackup);
@@ -308,8 +311,9 @@ public abstract class KeyClientTestBase extends TestBase {
 
     void restoreKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToBackupAndRestore = new CreateKeyOptions(generateResourceId("testKey9"), keyType)
-            .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+        final CreateKeyOptions keyToBackupAndRestore =
+            new CreateKeyOptions(testResourceNamer.randomName("testKey9", 20), keyType)
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToBackupAndRestore);
     }
@@ -326,7 +330,7 @@ public abstract class KeyClientTestBase extends TestBase {
         String keyName;
 
         for (int i = 0; i < 2; i++) {
-            keyName = generateResourceId("listKey" + i);
+            keyName = testResourceNamer.randomName("listKey" + i, 20);
             CreateKeyOptions key =  new CreateKeyOptions(keyName, keyType)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
@@ -342,7 +346,7 @@ public abstract class KeyClientTestBase extends TestBase {
     void listKeyVersionsRunner(Consumer<List<CreateKeyOptions>> testRunner) {
         final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         List<CreateKeyOptions> keys = new ArrayList<>();
-        String keyName = generateResourceId("listKeyVersion");
+        String keyName = testResourceNamer.randomName("listKeyVersion", 20);
 
         for (int i = 1; i < 5; i++) {
             keys.add(new CreateKeyOptions(keyName, keyType)
@@ -361,7 +365,7 @@ public abstract class KeyClientTestBase extends TestBase {
         String keyName;
 
         for (int i = 0; i < 3; i++) {
-            keyName = generateResourceId("listDeletedKeysTest" + i);
+            keyName = testResourceNamer.randomName("listDeletedKeysTest" + i, 20);
 
             keys.put(keyName, new CreateKeyOptions(keyName, keyType)
                 .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -394,7 +398,7 @@ public abstract class KeyClientTestBase extends TestBase {
 
         tags.put("foo", "baz");
 
-        final CreateOctKeyOptions keyOptions = new CreateOctKeyOptions(generateResourceId("testRsaKey"))
+        final CreateOctKeyOptions keyOptions = new CreateOctKeyOptions(testResourceNamer.randomName("testRsaKey", 20))
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
@@ -474,10 +478,8 @@ public abstract class KeyClientTestBase extends TestBase {
 
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
         KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
-            .setTimeAfterCreate("P7D")
-            .setTimeBeforeExpiry("P7D");
+            .setTimeAfterCreate("P7D");
         KeyRotationLifetimeAction notifyLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY)
-            .setTimeAfterCreate("P7D")
             .setTimeBeforeExpiry("P7D");
 
         keyRotationLifetimeActionList.add(rotateLifetimeAction);
@@ -492,16 +494,6 @@ public abstract class KeyClientTestBase extends TestBase {
 
     @Test
     public abstract void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
-
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-
-        String id = UUID.randomUUID().toString();
-
-        return suffix.length() > 0 ? id + "-" + suffix : id;
-    }
 
     /**
      * Helper method to verify that the Response matches what was expected. This method assumes a response status of 200.

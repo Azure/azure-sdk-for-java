@@ -223,14 +223,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
     }
 
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
-    }
-
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
             ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")

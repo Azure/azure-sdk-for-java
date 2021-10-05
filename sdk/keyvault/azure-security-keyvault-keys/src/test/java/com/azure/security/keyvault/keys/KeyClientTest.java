@@ -11,6 +11,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -409,9 +411,9 @@ public class KeyClientTest extends KeyClientTestBase {
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        /*if (!interceptorManager.isPlaybackMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             return;
-        }*/
+        }
 
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
@@ -534,6 +536,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -556,6 +561,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyClient(httpClient, serviceVersion);
         updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
             client.createRsaKey(new CreateRsaKeyOptions(keyName));
@@ -574,6 +582,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyClient(httpClient, serviceVersion);
         updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
             client.createRsaKey(new CreateRsaKeyOptions(keyName));
@@ -592,6 +603,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -600,6 +614,43 @@ public class KeyClientTest extends KeyClientTestBase {
 
         assertEquals(createdKey.getName(), rotatedKey.getName());
         assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
+    }
+
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key and version using a {@link KeyClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        CryptographyClient cryptographyClient = client.getCryptographyClient("myKey");
+
+        assertNotNull(cryptographyClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key using a {@link KeyClient}. Also tests
+     * that cryptographic operations can be performed with said cryptography client.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyClientAndEncryptDecrypt(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+
+        setKeyRunner((createKeyOptions) -> {
+            assertKeyEquals(createKeyOptions, client.createKey(createKeyOptions));
+
+            CryptographyClient cryptographyClient = client.getCryptographyClient(createKeyOptions.getName());
+
+            assertNotNull(cryptographyClient);
+
+            byte[] plaintext = "myPlaintext".getBytes();
+            byte[] ciphertext = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext).getCipherText();
+            byte[] decryptedText = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertext).getPlainText();
+
+            assertArrayEquals(plaintext, decryptedText);
+        });
     }
 
     /**

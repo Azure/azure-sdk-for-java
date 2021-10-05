@@ -12,15 +12,15 @@
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1",
+      "x-ms-server-latency" : "46",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.181.107.174;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5b1c4ccc-f71c-11eb-aed8-000d3aa6a10f",
-      "Body" : "{\"value\":\"elRYsOT3gyU3DqMq\"}"
+      "x-ms-request-id" : "56c7d380-257a-11ec-8e93-000d3a42b875",
+      "Body" : "{\"value\":\"3BYFwMtfYXRmgycL\"}"
     },
     "Exception" : null
   } ],

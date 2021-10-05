@@ -12,6 +12,10 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -32,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -139,9 +144,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();
 
-            KeyVaultKey keyToUpdate = client.getKey(original.getName()).block();
-
-            StepVerifier.create(client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn())))
+            StepVerifier.create(client.getKey(original.getName())
+                    .flatMap(keyToUpdate ->
+                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
                 .assertNext(response -> {
                     assertNotNull(response);
                     assertEquals(original.getName(), response.getName());
@@ -164,9 +169,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(client.createKey(original))
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();
-            KeyVaultKey keyToUpdate = client.getKey(original.getName()).block();
 
-            StepVerifier.create(client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn())))
+            StepVerifier.create(client.getKey(original.getName())
+                    .flatMap(keyToUpdate ->
+                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
                 .assertNext(response -> {
                     assertNotNull(response);
                     assertEquals(original.getName(), response.getName());
@@ -584,6 +590,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -610,6 +619,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
         updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
             StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
@@ -630,6 +642,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
         updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
             StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
@@ -650,6 +665,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -665,6 +683,49 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
             })
             .verifyComplete();
+    }
+
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key using a {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey");
+
+        assertNotNull(cryptographyAsyncClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key using a {@link KeyClient}. Also tests
+     * that cryptographic operations can be performed with said cryptography client.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientAndEncryptDecrypt(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        setKeyRunner((createKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions))
+                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
+                .verifyComplete();
+
+            CryptographyAsyncClient cryptographyAsyncClient =
+                client.getCryptographyAsyncClient(createKeyOptions.getName());
+
+            assertNotNull(cryptographyAsyncClient);
+
+            byte[] plaintext = "myPlaintext".getBytes();
+
+            StepVerifier.create(cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
+                    .map(EncryptResult::getCipherText)
+                    .flatMap(ciphertext -> cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertext)
+                        .map(DecryptResult::getPlainText)))
+                .assertNext(decryptedText -> assertArrayEquals(plaintext, decryptedText))
+                .verifyComplete();
+        });
     }
 
     /**
