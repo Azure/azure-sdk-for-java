@@ -160,7 +160,7 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
-  - job: 'Credential Scan'
+  - job: 'Credential_Scan'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
     variables:
       - template: ../variables/globals.yml
