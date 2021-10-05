@@ -620,10 +620,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties
         List<KeyRotationLifetimeAction> lifetimeActions = new ArrayList<>();
         KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
-            .setTimeAfterCreate("P90D")
-            .setTimeBeforeExpiry("P45D");
+            .setTimeAfterCreate("P90D");
         KeyRotationLifetimeAction notifyLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY)
-            .setTimeAfterCreate("P90D")
             .setTimeBeforeExpiry("P45D");
 
         lifetimeActions.add(rotateLifetimeAction);
@@ -641,10 +639,8 @@ public final class KeyAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties
         List<KeyRotationLifetimeAction> myLifetimeActions = new ArrayList<>();
         KeyRotationLifetimeAction myRotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
-            .setTimeAfterCreate("P90D")
-            .setTimeBeforeExpiry("P45D");
+            .setTimeAfterCreate("P90D");
         KeyRotationLifetimeAction myNotifyLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.NOTIFY)
-            .setTimeAfterCreate("P90D")
             .setTimeBeforeExpiry("P45D");
 
         myLifetimeActions.add(myRotateLifetimeAction);

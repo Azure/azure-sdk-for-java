@@ -210,6 +210,7 @@
                 "purge",
                 "recover",
                 "restore",
+                "rotate",
                 "sign",
                 "unwrapKey",
                 "update",
@@ -247,8 +248,8 @@
             }
           },
           {
-            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "tenantId": "[parameters('tenantId')]",
+            "objectId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName')), '2018-11-30').principalId]",
             "permissions": {
               "keys": [
                 "backup",
@@ -262,6 +263,7 @@
                 "purge",
                 "recover",
                 "restore",
+                "rotate",
                 "sign",
                 "unwrapKey",
                 "update",
@@ -324,14 +326,7 @@
         "enableSoftDelete": true,
         "softDeleteRetentionInDays": 7,
         "publicNetworkAccess": "Enabled",
-        "networkAcls": {
-          "bypass": "None",
-          "virtualNetworkRules": [
-          ],
-          "ipRules": [
-          ],
-          "defaultAction": "Allow"
-        }
+        "networkAcls": "[variables('networkAcls')]"
       }
     },
     {

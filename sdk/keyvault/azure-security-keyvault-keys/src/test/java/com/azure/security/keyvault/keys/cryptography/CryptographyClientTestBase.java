@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -221,14 +220,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
         keyOperations.add(KeyOperation.DECRYPT);
 
         return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
-    }
-
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     public String getEndpoint() {
