@@ -57,7 +57,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.8.0</version>
+    <version>5.10.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -98,7 +98,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.3</version>
+    <version>1.3.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

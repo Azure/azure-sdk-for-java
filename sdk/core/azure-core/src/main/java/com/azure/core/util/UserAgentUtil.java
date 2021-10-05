@@ -12,6 +12,10 @@ public final class UserAgentUtil {
     private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
+
+    /**
+     * Default {@code UserAgent} header.
+     */
     public static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
 
     // From the design guidelines, the platform info format is:

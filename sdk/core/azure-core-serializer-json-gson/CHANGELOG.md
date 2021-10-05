@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.7 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded `gson` from `2.8.7` to `2.8.8`.
+
 ## 1.1.6 (2021-09-07)
 
 ### Other Changes

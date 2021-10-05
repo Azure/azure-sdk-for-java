@@ -19,6 +19,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -38,6 +41,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated("Mutates global ProxySelector")
 public class WebSocketsProxyConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";
@@ -58,8 +63,9 @@ public class WebSocketsProxyConnectionHandlerTest {
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2192);
 
     private ProxySelector originalProxySelector;
-    private ProxySelector proxySelector;
 
+    @Mock
+    private ProxySelector proxySelector;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -93,7 +99,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         }
 
         ProxySelector.setDefault(originalProxySelector);
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
             mocksCloseable.close();

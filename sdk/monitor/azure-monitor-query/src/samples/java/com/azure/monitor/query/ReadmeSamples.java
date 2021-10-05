@@ -3,21 +3,22 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResult;
-import com.azure.monitor.query.models.LogsBatchQueryResults;
+import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
+import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricValue;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import com.azure.monitor.query.models.QueryTimeInterval;
 import com.azure.monitor.query.models.TimeSeriesElement;
 
 import java.time.Duration;
@@ -66,8 +67,8 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-                new TimeInterval(Duration.ofDays(2)));
+        LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
+                new QueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
@@ -98,8 +99,8 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
-                new TimeInterval(Duration.ofDays(2)), CustomLogModel.class);
+        List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
+                new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
@@ -115,11 +116,11 @@ public class ReadmeSamples {
                 .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new TimeInterval(Duration.ofDays(2)));
-        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new TimeInterval(Duration.ofDays(30)));
-        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new TimeInterval(Duration.ofDays(10)));
+        String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
-        LogsBatchQueryResults batchResults = logsQueryClient
+        LogsBatchQueryResultCollection batchResults = logsQueryClient
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
 
         LogsBatchQueryResult query1Result = batchResults.getResult(query1);
@@ -133,7 +134,7 @@ public class ReadmeSamples {
         }
 
         LogsBatchQueryResult query3Result = batchResults.getResult(query3);
-        if (query3Result.hasFailed()) {
+        if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
             System.out.println(query3Result.getError().getMessage());
         }
     }
@@ -151,8 +152,8 @@ public class ReadmeSamples {
         LogsQueryOptions options = new LogsQueryOptions()
             .setServerTimeout(Duration.ofMinutes(10));
 
-        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
-                "{kusto-query}", new TimeInterval(Duration.ofDays(2)), options, Context.NONE);
+        Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
+                "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
     }
 
     /**
@@ -163,8 +164,8 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
-                new TimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
+        Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
+                new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
                 Context.NONE);
         LogsQueryResult result = response.getValue();
@@ -179,7 +180,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        MetricsQueryResult metricsQueryResult = metricsQueryClient.query("{resource-uri}",
+        MetricsQueryResult metricsQueryResult = metricsQueryClient.queryResource("{resource-uri}",
                 Arrays.asList("SuccessfulCalls", "TotalCalls"));
 
         for (MetricResult metric : metricsQueryResult.getMetrics()) {
@@ -202,7 +203,7 @@ public class ReadmeSamples {
             .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-            .queryWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
+            .queryResourceWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
                 new MetricsQueryOptions()
                     .setGranularity(Duration.ofHours(1))
                     .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),

@@ -4,7 +4,6 @@
 package com.azure.monitor.query.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
 import com.azure.monitor.query.implementation.logs.models.BatchQueryRequest;
@@ -49,8 +48,8 @@ public final class LogsBatchQuery {
      * @param timeInterval The time period for which the logs should be queried.
      * @return The index of the query in the batch.
      */
-    public String addQuery(String workspaceId, String query, TimeInterval timeInterval) {
-        return addQuery(workspaceId, query, timeInterval, new LogsQueryOptions());
+    public String addWorkspaceQuery(String workspaceId, String query, QueryTimeInterval timeInterval) {
+        return addWorkspaceQuery(workspaceId, query, timeInterval, new LogsQueryOptions());
     }
 
     /**
@@ -62,14 +61,14 @@ public final class LogsBatchQuery {
      * statistics and rendering information in response.
      * @return The index of the query in the batch.
      */
-    public String addQuery(String workspaceId, String query, TimeInterval timeInterval,
-                                   LogsQueryOptions logsQueryOptions) {
+    public String addWorkspaceQuery(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                    LogsQueryOptions logsQueryOptions) {
         Objects.requireNonNull(query, "'query' cannot be null.");
         Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");
         index++;
         QueryBody queryBody = new QueryBody(query)
                 .setWorkspaces(logsQueryOptions == null ? null : logsQueryOptions.getAdditionalWorkspaces())
-                .setTimespan(timeInterval == null ? null : timeInterval.toIso8601Format());
+                .setTimespan(timeInterval == null ? null : LogsQueryHelper.toIso8601Format(timeInterval));
 
         String preferHeader = buildPreferHeaderString(logsQueryOptions);
         if (logsQueryOptions != null && logsQueryOptions.getServerTimeout() != null) {

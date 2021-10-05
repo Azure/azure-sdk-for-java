@@ -191,7 +191,7 @@ class ServiceAPITest extends APISpec {
     @ResourceLock("ServiceProperties")
     def "Set props error"() {
         when:
-        getServiceClient(env.dataLakeAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.dataLakeAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new DataLakeServiceProperties())
 
         then:
@@ -207,7 +207,7 @@ class ServiceAPITest extends APISpec {
     @ResourceLock("ServiceProperties")
     def "Get props error"() {
         when:
-        getServiceClient(env.dataLakeAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.dataLakeAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -402,10 +402,10 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null)
@@ -505,7 +505,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
         def blobName = generatePathName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
@@ -536,7 +536,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
         def blobName = generatePathName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))

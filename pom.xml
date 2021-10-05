@@ -160,7 +160,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+              <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
               <configuration>
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -570,7 +570,7 @@
           <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>4.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
             <configuration>
               <effort>max</effort>
               <threshold>Low</threshold>
@@ -586,7 +586,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <reportSets>
               <reportSet>
                 <id>non-aggregate</id>
@@ -725,6 +725,7 @@
         <module>sdk/azurearcdata</module>
         <module>sdk/azurestack</module>
         <module>sdk/azurestackhci</module>
+        <module>sdk/baremetalinfrastructure</module>
         <module>sdk/batch</module>
         <module>sdk/batchai</module>
         <module>sdk/billing</module>
@@ -760,6 +761,7 @@
         <module>sdk/elastic</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
+        <module>sdk/extendedlocation</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/frontdoor</module>
         <module>sdk/hanaonazure</module>
@@ -791,6 +793,7 @@
         <module>sdk/modelsrepository</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/mysqlflexibleserver</module>
         <module>sdk/netapp</module>
         <module>sdk/notificationhubs</module>
         <module>sdk/operationsmanagement</module>
@@ -801,6 +804,7 @@
         <module>sdk/powerbidedicated</module>
         <module>sdk/purview</module>
         <module>sdk/quantum</module>
+        <module>sdk/quota</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/recoveryservicesbackup</module>
         <module>sdk/redisenterprise</module>

@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-search-documents</artifactId>
-  <version>11.5.0-beta.3</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
+  <version>11.5.0-beta.4</version> <!-- {x-version-update;com.azure:azure-search-documents;current} -->
   <packaging>jar</packaging>
 
   <properties>
@@ -24,23 +24,39 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED
+      --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=com.fasterxml.jackson.databind
+      --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=ALL-UNNAMED
+      --add-reads com.azure.core=ALL-UNNAMED
+      --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-reads com.azure.core.http.netty=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.20.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.21.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.2.7</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.2.8</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -57,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -81,48 +97,14 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.10</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>is.jdk.11</id>
-      <activation>
-        <jdk>[9,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.search.documents/com.azure.search.documents=ALL-UNNAMED
-                --add-opens com.azure.search.documents/com.azure.search.documents.indexes=ALL-UNNAMED
-                --add-opens com.azure.search.documents/com.azure.search.documents.models=ALL-UNNAMED
-                --add-opens com.azure.search.documents/com.azure.search.documents.implementation=ALL-UNNAMED
-                --add-opens com.azure.search.documents/com.azure.search.documents.implementation.models=ALL-UNNAMED
-                --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=com.fasterxml.jackson.databind
-                --add-opens com.azure.search.documents/com.azure.search.documents.test.environment.models=ALL-UNNAMED
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.http.netty=ALL-UNNAMED
-              </argLine>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

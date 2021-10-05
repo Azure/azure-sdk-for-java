@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-integration-storage-queue</artifactId>
-  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+  <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
 
   <name>Azure Spring Integration Storage Queue</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -27,18 +27,18 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-core</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+      <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-test</artifactId>
-      <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-test;current} -->
+      <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.

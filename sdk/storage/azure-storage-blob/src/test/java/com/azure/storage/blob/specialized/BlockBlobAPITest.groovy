@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -181,7 +183,7 @@ class BlockBlobAPITest extends APISpec {
     def "Stage block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -1161,7 +1163,7 @@ class BlockBlobAPITest extends APISpec {
     def "Upload retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getBlockBlobClient()
@@ -1449,7 +1451,7 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getBlobAsyncClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobAsyncClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1485,7 +1487,7 @@ class BlockBlobAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             blobClient.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -1792,16 +1794,20 @@ class BlockBlobAPITest extends APISpec {
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return collectBytesInBuffer(context.getHttpRequest().getBody())
-                .map({ it == data.defaultData })
-                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
+        def localData = data.defaultData
+        def mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return collectBytesInBuffer(context.getHttpRequest().getBody())
+                    .map({ it == localData })
+                    .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) }) as Mono<HttpResponse>
+            }
         }
 
         // Build the pipeline
         blobAsyncClient = new BlobServiceClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .retryOptions(new RequestRetryOptions(null, 3, null, 500, 1500, null))
             .addPolicy(mockPolicy).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName()).getBlobAsyncClient(generateBlobName())
@@ -1944,11 +1950,11 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(environment.primaryAccount.credential, blockBlobClient.getBlobUrl(), getPerCallVersionPolicy())
             .buildBlockBlobClient()
 
         when:

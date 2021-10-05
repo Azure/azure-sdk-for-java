@@ -3,8 +3,11 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncContainer
+import com.azure.cosmos.spark.diagnostics.ILogger
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.slf4j.LoggerFactory
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.ThreadFactory
@@ -23,6 +26,20 @@ private object SparkUtils {
 
   def getNumberOfHostCPUCores: Int = {
     Runtime.getRuntime.availableProcessors
+  }
+
+  def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: ILogger): Unit = {
+    safeOpenConnectionInitCaches(container, (msg, exception) => logger.logWarning(msg, exception))
+  }
+
+  def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String, Exception) => Unit): Unit = {
+    try {
+      container.openConnectionsAndInitCaches().block()
+    } catch {
+      case e: Exception => {
+        logger("ignoring openConnectionsAndInitCaches failure", e)
+      }
+    }
   }
 
   private object DaemonThreadFactory {

@@ -3,14 +3,13 @@
 
 package com.azure.tools.bomgenerator;
 
+import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import static com.azure.tools.bomgenerator.Utils.ANALYZE_MODE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTFILE;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_INPUTDIRECTORY;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTDIRECTORY;
 import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_MODE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_OUTPUTFILE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_POMFILE;
-import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_REPORTFILE;
+import static com.azure.tools.bomgenerator.Utils.COMMANDLINE_REGEX;
 import static com.azure.tools.bomgenerator.Utils.GENERATE_MODE;
 import static com.azure.tools.bomgenerator.Utils.validateNotNullOrEmpty;
 import static com.azure.tools.bomgenerator.Utils.validateValues;
@@ -18,71 +17,55 @@ import static com.azure.tools.bomgenerator.Utils.validateValues;
 public class Main {
 
     public static void main(String[] args) {
-        BomGenerator generator = new BomGenerator();
-        parseCommandLine(args, generator);
-        generator.run();
+        BomGenerator generator = null;
+        try {
+            generator = parseCommandLine(args);
+            if(!generator.run()) {
+                System.exit(1);
+            }
+
+            System.out.println("Completed successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error occurred.");
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
-    private static void parseCommandLine(String[] args, BomGenerator generator) {
+    private static BomGenerator parseCommandLine(String[] args) throws FileNotFoundException {
+        String inputDir = null, outputDir = null, mode = null;
         for (String arg : args) {
-            Matcher matcher = Utils.COMMANDLINE_REGEX.matcher(arg);
+            Matcher matcher = COMMANDLINE_REGEX.matcher(arg);
             if (matcher.matches()) {
                 if (matcher.groupCount() == 2) {
                     String argName = matcher.group(1);
                     String argValue = matcher.group(2);
 
                     switch (argName.toLowerCase()) {
-                        case COMMANDLINE_INPUTFILE:
+                        case COMMANDLINE_INPUTDIRECTORY:
                             validateNotNullOrEmpty(argName, argValue);
-                            generator.setInputFileName(argValue);
+                            inputDir = argValue;
                             break;
 
-                        case COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE:
+                        case COMMANDLINE_OUTPUTDIRECTORY:
                             validateNotNullOrEmpty(argName, argValue);
-                            generator.setOverriddenInputDependenciesFileName(argValue);
-                            break;
-
-                        case COMMANDLINE_OUTPUTFILE:
-                            validateNotNullOrEmpty(argName, argValue);
-                            generator.setOutputFileName(argValue);
-                            break;
-
-                        case COMMANDLINE_POMFILE:
-                            validateNotNullOrEmpty(argName, argValue);
-                            generator.setPomFileName(argValue);
-                            break;
-
-                        case COMMANDLINE_REPORTFILE:
-                            validateNotNullOrEmpty(argName, argValue);
-                            generator.setReportFileName(argValue);
+                            outputDir = argValue;
                             break;
 
                         case COMMANDLINE_MODE:
                             validateNotNullOrEmpty(argName, argValue);
                             validateValues(argName, argValue, GENERATE_MODE, ANALYZE_MODE);
-                            generator.setMode(argValue);
+                            mode = argValue;
                             break;
                     }
                 }
+
             }
         }
 
-        validateOptions(generator);
-    }
-
-    private static void validateOptions(BomGenerator generator) {
-        switch (generator.getMode()) {
-            case ANALYZE_MODE:
-                // In analyze mode, we should ensure that the pom file is set.
-                validateNotNullOrEmpty(generator.getPomFileName(), "pomFile");
-                break;
-
-            case GENERATE_MODE:
-                // In generate mode, we should have the inputFile, outputFile and the pomFile.
-                validateNotNullOrEmpty(generator.getPomFileName(), "pomFile");
-                validateNotNullOrEmpty(generator.getInputFileName(), "inputFileName");
-                validateNotNullOrEmpty(generator.getOutputFileName(), "outputFileName");
-                break;
-        }
+        validateNotNullOrEmpty(inputDir, "inputDir");
+        validateNotNullOrEmpty(outputDir, "outputDir");
+        BomGenerator generator = new BomGenerator(inputDir, outputDir, mode);
+        return generator;
     }
 }

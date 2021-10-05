@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.0 (2021-09-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.10.1`.
+- Update `azure-storage-blob` to `12.14.0`.
 
 ## 1.9.0 (2021-08-19)
 
@@ -105,7 +114,7 @@
 - Updated version of `azure-messaging-eventhubs` to `5.1.0-beta.1` that supports receiving events in batches.
 
 ## 1.0.3 (2020-04-08)
-- Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
+- Fix bug where processor would not respond after a reconnect due to being unable to load balance partitions.
 
 ## 1.0.2 (2020-02-12)
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.

@@ -853,7 +853,7 @@ public class CosmosContainer {
      * @param <TContext> The context for the bulk processing.
      * @param operations list of operation which will be executed by this container.
      *
-     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
@@ -868,7 +868,7 @@ public class CosmosContainer {
      * get the exception.
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> List<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+    public <TContext> Iterable<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Iterable<com.azure.cosmos.models.CosmosItemOperation> operations) {
 
         return this.blockBulkResponse(asyncContainer.executeBulkOperations(Flux.fromIterable(operations)));
@@ -960,7 +960,7 @@ public class CosmosContainer {
      * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
      *                    concurrency, batching size, interval and context.
      *
-     * @return A list of {@link com.azure.cosmos.models.CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * @return An Iterable of {@link com.azure.cosmos.models.CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
      *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
@@ -975,7 +975,7 @@ public class CosmosContainer {
      * get the exception.
      */
     @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <TContext> List<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+    public <TContext> Iterable<com.azure.cosmos.models.CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Iterable<com.azure.cosmos.models.CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
 

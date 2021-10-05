@@ -244,7 +244,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.withcontext}
+     * <!-- src_embed com.azure.core.implementation.util.fluxutil.withcontext -->
+     * <pre>
+     * String prefix = &quot;Hello, &quot;;
+     * Mono&lt;String&gt; response = FluxUtil
+     *     .withContext&#40;context -&gt; serviceCallReturnsSingle&#40;prefix, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.implementation.util.fluxutil.withcontext -->
      *
      * @param serviceCall The lambda function that makes the service call into which azure context will be passed
      * @param <T> The type of response returned from the service call
@@ -342,7 +348,13 @@ public final class FluxUtil {
      * </p>
      *
      * <p><strong>Code samples</strong></p>
-     * {@codesnippet com.azure.core.implementation.util.fluxutil.fluxcontext}
+     * <!-- src_embed com.azure.core.implementation.util.fluxutil.fluxcontext -->
+     * <pre>
+     * String prefix = &quot;Hello, &quot;;
+     * Flux&lt;String&gt; response = FluxUtil
+     *     .fluxContext&#40;context -&gt; serviceCallReturnsCollection&#40;prefix, context&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.implementation.util.fluxutil.fluxcontext -->
      *
      * @param serviceCall The lambda function that makes the service call into which the context will be passed
      * @param <T> The type of response returned from the service call

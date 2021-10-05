@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -13,19 +12,20 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +33,7 @@ import java.util.List;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.spy;
@@ -47,7 +48,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
         client = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -89,21 +90,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        if (isManagedHsmTest && interceptorManager.isPlaybackMode()) {
-            // Setting a key with an empty name returns 500 in MHSM, we don't currently produce a recording for that the
-            // way things are set.
-            return;
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        final KeyType keyType;
+
+        if (runManagedHsmTest) {
+            keyType = KeyType.RSA_HSM;
+        } else {
+            keyType = KeyType.RSA;
         }
 
-        createKeyAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.createKey("", KeyType.RSA))
-            .verifyErrorSatisfies(ex -> {
-                if (isManagedHsmTest) {
-                    assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_SERVER_ERROR);
-                } else {
-                    assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST);
-                }
-            });
+        StepVerifier.create(client.createKey("", keyType)).verifyErrorSatisfies(ex ->
+            assertRestException(ex, ResourceModifiedException.class, HttpURLConnection.HTTP_BAD_REQUEST));
     }
 
     /**
@@ -520,7 +518,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // TODO: Remove assumption once Key Vault allows for creating exportable keys.
-        Assumptions.assumeTrue(isManagedHsmTest);
+        Assumptions.assumeTrue(runManagedHsmTest);
 
         createKeyAsyncClient(httpClient, serviceVersion);
         releaseKeyRunner((keyToRelease, attestationUrl) -> {
@@ -551,19 +549,121 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     /**
      * Tests that an RSA key with a public exponent can be created in the key vault.
      */
-    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
         createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) ->
             StepVerifier.create(client.createRsaKey(createRsaKeyOptions))
-                .assertNext(rsaKey -> assertKeyEquals(createRsaKeyOptions, rsaKey))
                 .assertNext(rsaKey -> {
-                    ByteBuffer wrappedArray = ByteBuffer.wrap(rsaKey.getKey().getE()); // Big-endian by default
-                    assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
+                    assertKeyEquals(createRsaKeyOptions, rsaKey);
+                    // TODO: Investigate why the KV service sets the JWK's "e" parameter to "AQAB" instead of "Aw".
+                    /*assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
+                        toBigInteger(rsaKey.getKey().getE()));*/
+                    assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
                 })
                 .verifyComplete());
+    }
+
+    /**
+     * Tests that fetching the key rotation policy of a non-existent key throws.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        StepVerifier.create(client.getKeyRotationPolicy(testResourceNamer.randomName("nonExistentKey", 20)))
+            .verifyErrorSatisfies(ex ->
+                assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+    }
+
+    /**
+     * Tests that fetching the key rotation policy of a non-existent key throws.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        String keyName = testResourceNamer.randomName("rotateKey", 20);
+
+        StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+
+        StepVerifier.create(client.getKeyRotationPolicy(keyName))
+            .assertNext(keyRotationPolicy -> {
+                assertNotNull(keyRotationPolicy);
+                assertNull(keyRotationPolicy.getId());
+                assertNull(keyRotationPolicy.getCreatedOn());
+                assertNull(keyRotationPolicy.getUpdatedOn());
+                assertNull(keyRotationPolicy.getExpiryTime());
+                assertNull(keyRotationPolicy.getLifetimeActions());
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Tests that fetching the key rotation policy of a non-existent key throws.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
+            StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
+                .assertNext(Assertions::assertNotNull)
+                .verifyComplete();
+
+            StepVerifier.create(client.updateKeyRotationPolicy(keyName, keyRotationPolicyProperties)
+                    .flatMap(updatedKeyRotationPolicy -> Mono.zip(Mono.just(updatedKeyRotationPolicy),
+                        client.getKeyRotationPolicy(keyName))))
+                .assertNext(tuple -> assertKeyVaultRotationPolicyEquals(tuple.getT1(), tuple.getT2()))
+                .verifyComplete();
+        });
+    }
+
+    /**
+     * Tests that an key rotation policy can be updated with all possible properties, then retrieves it.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
+            StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
+                .assertNext(Assertions::assertNotNull)
+                .verifyComplete();
+
+            StepVerifier.create(client.updateKeyRotationPolicy(keyName, keyRotationPolicyProperties)
+                    .flatMap(updatedKeyRotationPolicy -> Mono.zip(Mono.just(updatedKeyRotationPolicy),
+                        client.getKeyRotationPolicy(keyName))))
+                .assertNext(tuple -> assertKeyVaultRotationPolicyEquals(tuple.getT1(), tuple.getT2()))
+                .verifyComplete();
+        });
+    }
+
+    /**
+     * Tests that a key can be rotated.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        String keyName = testResourceNamer.randomName("rotateKey", 20);
+
+        StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName))
+                .flatMap(createdKey -> Mono.zip(Mono.just(createdKey),
+                    client.rotateKey(keyName))))
+            .assertNext(tuple -> {
+                KeyVaultKey createdKey = tuple.getT1();
+                KeyVaultKey rotatedKey = tuple.getT2();
+
+                assertEquals(createdKey.getName(), rotatedKey.getName());
+                assertEquals(createdKey.getProperties().getTags(), rotatedKey.getProperties().getTags());
+            })
+            .verifyComplete();
     }
 
     private void pollOnKeyDeletion(String keyName) {

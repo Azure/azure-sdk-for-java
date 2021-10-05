@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -267,6 +268,7 @@ public class JacksonMemberNameConverterTests {
         assertNull(jacksonJsonSerializer.convertMemberName(constructors[0]));
     }
 
+    @SuppressWarnings("removal")
     @ParameterizedTest
     @MethodSource("classConversionSupplier")
     public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected)
@@ -284,7 +286,7 @@ public class JacksonMemberNameConverterTests {
             return null;
         });
 
-        ObjectNode objectNode = ((ObjectMapper) field.get(converter)).valueToTree(object);
+        ObjectNode objectNode = ((ObjectMapperShim) field.get(converter)).valueToTree(object);
 
         for (String name : actual) {
             assertTrue(objectNode.has(name));

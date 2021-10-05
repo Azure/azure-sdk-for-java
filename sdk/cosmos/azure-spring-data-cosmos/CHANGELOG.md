@@ -1,6 +1,19 @@
 ## Release History
 
-## 3.11.0-beta.2 (Unreleased)
+### 3.12.0 (2021-09-24)
+#### New Features
+* Added support for UUID id type to spring data cosmos SDK.
+* Updated `azure-cosmos` to version 4.19.1.
+
+### 3.11.0 (2021-09-09)
+#### New Features
+* Added Spring `ApplicationEventListener` support.
+* Updated `Spring Boot` to version 2.5.4.
+* Updated `azure-cosmos` to version 4.19.0.
+
+#### Key Bug Fixes
+* Fixed spring data cosmos query plan caching.
+* Fixed query parameter name generation for nested properties containing space.
 
 ### 3.11.0-beta.1 (2021-09-02)
 #### New Features
