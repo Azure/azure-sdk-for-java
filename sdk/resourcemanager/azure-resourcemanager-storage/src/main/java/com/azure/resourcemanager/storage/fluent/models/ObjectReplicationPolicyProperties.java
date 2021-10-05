@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The Storage Account ObjectReplicationPolicy properties. */
+/**
+ * The Storage Account ObjectReplicationPolicy properties.
+ */
 @Fluent
 public final class ObjectReplicationPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyProperties.class);
 
     /*
      * A unique id for object replication policy.
@@ -30,15 +35,13 @@ public final class ObjectReplicationPolicyProperties {
     private OffsetDateTime enabledTime;
 
     /*
-     * Required. Source account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
+     * Required. Source account name.
      */
     @JsonProperty(value = "sourceAccount", required = true)
     private String sourceAccount;
 
     /*
-     * Required. Destination account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
+     * Required. Destination account name.
      */
     @JsonProperty(value = "destinationAccount", required = true)
     private String destinationAccount;
@@ -51,7 +54,7 @@ public final class ObjectReplicationPolicyProperties {
 
     /**
      * Get the policyId property: A unique id for object replication policy.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -59,8 +62,9 @@ public final class ObjectReplicationPolicyProperties {
     }
 
     /**
-     * Get the enabledTime property: Indicates when the policy is enabled on the source account.
-     *
+     * Get the enabledTime property: Indicates when the policy is enabled on
+     * the source account.
+     * 
      * @return the enabledTime value.
      */
     public OffsetDateTime enabledTime() {
@@ -68,9 +72,8 @@ public final class ObjectReplicationPolicyProperties {
     }
 
     /**
-     * Get the sourceAccount property: Required. Source account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
-     *
+     * Get the sourceAccount property: Required. Source account name.
+     * 
      * @return the sourceAccount value.
      */
     public String sourceAccount() {
@@ -78,9 +81,8 @@ public final class ObjectReplicationPolicyProperties {
     }
 
     /**
-     * Set the sourceAccount property: Required. Source account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
-     *
+     * Set the sourceAccount property: Required. Source account name.
+     * 
      * @param sourceAccount the sourceAccount value to set.
      * @return the ObjectReplicationPolicyProperties object itself.
      */
@@ -90,9 +92,8 @@ public final class ObjectReplicationPolicyProperties {
     }
 
     /**
-     * Get the destinationAccount property: Required. Destination account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
-     *
+     * Get the destinationAccount property: Required. Destination account name.
+     * 
      * @return the destinationAccount value.
      */
     public String destinationAccount() {
@@ -100,9 +101,8 @@ public final class ObjectReplicationPolicyProperties {
     }
 
     /**
-     * Set the destinationAccount property: Required. Destination account name. It should be full resource id if
-     * allowCrossTenantReplication set to false.
-     *
+     * Set the destinationAccount property: Required. Destination account name.
+     * 
      * @param destinationAccount the destinationAccount value to set.
      * @return the ObjectReplicationPolicyProperties object itself.
      */
@@ -113,7 +113,7 @@ public final class ObjectReplicationPolicyProperties {
 
     /**
      * Get the rules property: The storage account object replication rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<ObjectReplicationPolicyRule> rules() {
@@ -122,7 +122,7 @@ public final class ObjectReplicationPolicyProperties {
 
     /**
      * Set the rules property: The storage account object replication rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ObjectReplicationPolicyProperties object itself.
      */
@@ -133,21 +133,15 @@ public final class ObjectReplicationPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceAccount() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceAccount in model ObjectReplicationPolicyProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sourceAccount in model ObjectReplicationPolicyProperties"));
         }
         if (destinationAccount() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationAccount in model ObjectReplicationPolicyProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destinationAccount in model ObjectReplicationPolicyProperties"));
         }
         if (rules() != null) {
             rules().forEach(e -> e.validate());

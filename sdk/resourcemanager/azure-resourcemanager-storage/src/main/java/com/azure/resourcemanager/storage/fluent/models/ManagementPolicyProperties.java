@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Storage Account ManagementPolicy properties. */
+/**
+ * The Storage Account ManagementPolicy properties.
+ */
 @Fluent
 public final class ManagementPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagementPolicyProperties.class);
 
     /*
      * Returns the date and time the ManagementPolicies was last modified.
@@ -31,8 +36,9 @@ public final class ManagementPolicyProperties {
     private ManagementPolicySchema policy;
 
     /**
-     * Get the lastModifiedTime property: Returns the date and time the ManagementPolicies was last modified.
-     *
+     * Get the lastModifiedTime property: Returns the date and time the
+     * ManagementPolicies was last modified.
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -40,9 +46,10 @@ public final class ManagementPolicyProperties {
     }
 
     /**
-     * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
+     * Get the policy property: The Storage Account ManagementPolicy, in JSON
+     * format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @return the policy value.
      */
     public ManagementPolicySchema policy() {
@@ -50,9 +57,10 @@ public final class ManagementPolicyProperties {
     }
 
     /**
-     * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
+     * Set the policy property: The Storage Account ManagementPolicy, in JSON
+     * format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the ManagementPolicyProperties object itself.
      */
@@ -63,15 +71,12 @@ public final class ManagementPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policy() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policy in model ManagementPolicyProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property policy in model ManagementPolicyProperties"));
         } else {
             policy().validate();
         }

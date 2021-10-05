@@ -5,14 +5,20 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Actions are applied to the filtered blobs when the execution condition is met. */
+/**
+ * Actions are applied to the filtered blobs when the execution condition is
+ * met.
+ */
 @Fluent
 public final class ManagementPolicyAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyAction.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagementPolicyAction.class);
 
     /*
      * The management policy action for base blob
@@ -34,7 +40,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Get the baseBlob property: The management policy action for base blob.
-     *
+     * 
      * @return the baseBlob value.
      */
     public ManagementPolicyBaseBlob baseBlob() {
@@ -43,7 +49,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Set the baseBlob property: The management policy action for base blob.
-     *
+     * 
      * @param baseBlob the baseBlob value to set.
      * @return the ManagementPolicyAction object itself.
      */
@@ -54,7 +60,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Get the snapshot property: The management policy action for snapshot.
-     *
+     * 
      * @return the snapshot value.
      */
     public ManagementPolicySnapShot snapshot() {
@@ -63,7 +69,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Set the snapshot property: The management policy action for snapshot.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the ManagementPolicyAction object itself.
      */
@@ -74,7 +80,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Get the version property: The management policy action for version.
-     *
+     * 
      * @return the version value.
      */
     public ManagementPolicyVersion version() {
@@ -83,7 +89,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Set the version property: The management policy action for version.
-     *
+     * 
      * @param version the version value to set.
      * @return the ManagementPolicyAction object itself.
      */
@@ -94,7 +100,7 @@ public final class ManagementPolicyAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

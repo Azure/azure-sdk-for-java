@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Bypass. */
+/**
+ * Defines values for Bypass.
+ */
 public final class Bypass extends ExpandableStringEnum<Bypass> {
-    /** Static value None for Bypass. */
+    /**
+     * Static value None for Bypass.
+     */
     public static final Bypass NONE = fromString("None");
 
-    /** Static value Logging for Bypass. */
+    /**
+     * Static value Logging for Bypass.
+     */
     public static final Bypass LOGGING = fromString("Logging");
 
-    /** Static value Metrics for Bypass. */
+    /**
+     * Static value Metrics for Bypass.
+     */
     public static final Bypass METRICS = fromString("Metrics");
 
-    /** Static value AzureServices for Bypass. */
+    /**
+     * Static value AzureServices for Bypass.
+     */
     public static final Bypass AZURE_SERVICES = fromString("AzureServices");
 
     /**
      * Creates or finds a Bypass from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Bypass.
      */
@@ -33,7 +43,9 @@ public final class Bypass extends ExpandableStringEnum<Bypass> {
         return fromString(name, Bypass.class);
     }
 
-    /** @return known Bypass values. */
+    /**
+     * @return known Bypass values.
+     */
     public static Collection<Bypass> values() {
         return values(Bypass.class);
     }

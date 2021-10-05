@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Management policy action for base blob. */
+/**
+ * Management policy action for base blob.
+ */
 @Fluent
 public final class ManagementPolicyBaseBlob {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyBaseBlob.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagementPolicyBaseBlob.class);
 
     /*
      * The function to tier blobs to cool storage. Support blobs currently at
@@ -43,8 +48,9 @@ public final class ManagementPolicyBaseBlob {
     private Boolean enableAutoTierToHotFromCool;
 
     /**
-     * Get the tierToCool property: The function to tier blobs to cool storage. Support blobs currently at Hot tier.
-     *
+     * Get the tierToCool property: The function to tier blobs to cool storage.
+     * Support blobs currently at Hot tier.
+     * 
      * @return the tierToCool value.
      */
     public DateAfterModification tierToCool() {
@@ -52,8 +58,9 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Set the tierToCool property: The function to tier blobs to cool storage. Support blobs currently at Hot tier.
-     *
+     * Set the tierToCool property: The function to tier blobs to cool storage.
+     * Support blobs currently at Hot tier.
+     * 
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -63,9 +70,9 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Get the tierToArchive property: The function to tier blobs to archive storage. Support blobs currently at Hot or
-     * Cool tier.
-     *
+     * Get the tierToArchive property: The function to tier blobs to archive
+     * storage. Support blobs currently at Hot or Cool tier.
+     * 
      * @return the tierToArchive value.
      */
     public DateAfterModification tierToArchive() {
@@ -73,9 +80,9 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Set the tierToArchive property: The function to tier blobs to archive storage. Support blobs currently at Hot or
-     * Cool tier.
-     *
+     * Set the tierToArchive property: The function to tier blobs to archive
+     * storage. Support blobs currently at Hot or Cool tier.
+     * 
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -86,7 +93,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Get the delete property: The function to delete the blob.
-     *
+     * 
      * @return the delete value.
      */
     public DateAfterModification delete() {
@@ -95,7 +102,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Set the delete property: The function to delete the blob.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -105,9 +112,10 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Get the enableAutoTierToHotFromCool property: This property enables auto tiering of a blob from cool to hot on a
-     * blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
-     *
+     * Get the enableAutoTierToHotFromCool property: This property enables auto
+     * tiering of a blob from cool to hot on a blob access. This property
+     * requires tierToCool.daysAfterLastAccessTimeGreaterThan.
+     * 
      * @return the enableAutoTierToHotFromCool value.
      */
     public Boolean enableAutoTierToHotFromCool() {
@@ -115,10 +123,12 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Set the enableAutoTierToHotFromCool property: This property enables auto tiering of a blob from cool to hot on a
-     * blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
-     *
-     * @param enableAutoTierToHotFromCool the enableAutoTierToHotFromCool value to set.
+     * Set the enableAutoTierToHotFromCool property: This property enables auto
+     * tiering of a blob from cool to hot on a blob access. This property
+     * requires tierToCool.daysAfterLastAccessTimeGreaterThan.
+     * 
+     * @param enableAutoTierToHotFromCool the enableAutoTierToHotFromCool value
+     * to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
     public ManagementPolicyBaseBlob withEnableAutoTierToHotFromCool(Boolean enableAutoTierToHotFromCool) {
@@ -128,7 +138,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

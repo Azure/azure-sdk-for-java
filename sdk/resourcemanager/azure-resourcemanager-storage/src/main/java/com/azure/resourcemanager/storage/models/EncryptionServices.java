@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A list of services that support encryption. */
+/**
+ * A list of services that support encryption.
+ */
 @Fluent
 public final class EncryptionServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionServices.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionServices.class);
 
     /*
      * The encryption function of the blob storage service.
@@ -39,8 +44,9 @@ public final class EncryptionServices {
     private EncryptionService queue;
 
     /**
-     * Get the blob property: The encryption function of the blob storage service.
-     *
+     * Get the blob property: The encryption function of the blob storage
+     * service.
+     * 
      * @return the blob value.
      */
     public EncryptionService blob() {
@@ -48,8 +54,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Set the blob property: The encryption function of the blob storage service.
-     *
+     * Set the blob property: The encryption function of the blob storage
+     * service.
+     * 
      * @param blob the blob value to set.
      * @return the EncryptionServices object itself.
      */
@@ -59,8 +66,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Get the file property: The encryption function of the file storage service.
-     *
+     * Get the file property: The encryption function of the file storage
+     * service.
+     * 
      * @return the file value.
      */
     public EncryptionService file() {
@@ -68,8 +76,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Set the file property: The encryption function of the file storage service.
-     *
+     * Set the file property: The encryption function of the file storage
+     * service.
+     * 
      * @param file the file value to set.
      * @return the EncryptionServices object itself.
      */
@@ -79,8 +88,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Get the table property: The encryption function of the table storage service.
-     *
+     * Get the table property: The encryption function of the table storage
+     * service.
+     * 
      * @return the table value.
      */
     public EncryptionService table() {
@@ -88,8 +98,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Set the table property: The encryption function of the table storage service.
-     *
+     * Set the table property: The encryption function of the table storage
+     * service.
+     * 
      * @param table the table value to set.
      * @return the EncryptionServices object itself.
      */
@@ -99,8 +110,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Get the queue property: The encryption function of the queue storage service.
-     *
+     * Get the queue property: The encryption function of the queue storage
+     * service.
+     * 
      * @return the queue value.
      */
     public EncryptionService queue() {
@@ -108,8 +120,9 @@ public final class EncryptionServices {
     }
 
     /**
-     * Set the queue property: The encryption function of the queue storage service.
-     *
+     * Set the queue property: The encryption function of the queue storage
+     * service.
+     * 
      * @param queue the queue value to set.
      * @return the EncryptionServices object itself.
      */
@@ -120,7 +133,7 @@ public final class EncryptionServices {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

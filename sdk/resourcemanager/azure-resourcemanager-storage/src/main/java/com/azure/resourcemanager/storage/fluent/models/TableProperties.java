@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableProperties model. */
+/**
+ * The TableProperties model.
+ */
 @Immutable
 public final class TableProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TableProperties.class);
 
     /*
      * Table name under the specified account
@@ -22,7 +27,7 @@ public final class TableProperties {
 
     /**
      * Get the tableName property: Table name under the specified account.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -31,7 +36,7 @@ public final class TableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagementPolicyName. */
+/**
+ * Defines values for ManagementPolicyName.
+ */
 public final class ManagementPolicyName extends ExpandableStringEnum<ManagementPolicyName> {
-    /** Static value default for ManagementPolicyName. */
+    /**
+     * Static value default for ManagementPolicyName.
+     */
     public static final ManagementPolicyName DEFAULT = fromString("default");
 
     /**
      * Creates or finds a ManagementPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagementPolicyName.
      */
@@ -24,7 +28,9 @@ public final class ManagementPolicyName extends ExpandableStringEnum<ManagementP
         return fromString(name, ManagementPolicyName.class);
     }
 
-    /** @return known ManagementPolicyName values. */
+    /**
+     * @return known ManagementPolicyName values.
+     */
     public static Collection<ManagementPolicyName> values() {
         return values(ManagementPolicyName.class);
     }

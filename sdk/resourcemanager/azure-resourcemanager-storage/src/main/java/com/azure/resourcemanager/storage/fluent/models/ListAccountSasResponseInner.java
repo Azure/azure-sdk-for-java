@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The List SAS credentials operation response. */
+/**
+ * The List SAS credentials operation response.
+ */
 @Immutable
 public final class ListAccountSasResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListAccountSasResponseInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListAccountSasResponseInner.class);
 
     /*
      * List SAS credentials of storage account.
@@ -21,8 +26,9 @@ public final class ListAccountSasResponseInner {
     private String accountSasToken;
 
     /**
-     * Get the accountSasToken property: List SAS credentials of storage account.
-     *
+     * Get the accountSasToken property: List SAS credentials of storage
+     * account.
+     * 
      * @return the accountSasToken value.
      */
     public String accountSasToken() {
@@ -31,7 +37,7 @@ public final class ListAccountSasResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

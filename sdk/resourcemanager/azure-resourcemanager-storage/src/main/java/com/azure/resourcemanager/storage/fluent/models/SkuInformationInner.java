@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.Restriction;
 import com.azure.resourcemanager.storage.models.SkuCapability;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.SkuTier;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Storage SKU and its properties. */
+/**
+ * Storage SKU and its properties.
+ */
 @Fluent
 public final class SkuInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInformationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SkuInformationInner.class);
 
     /*
      * The SKU name. Required for account creation; optional for update. Note
@@ -68,9 +73,10 @@ public final class SkuInformationInner {
     private List<Restriction> restrictions;
 
     /**
-     * Get the name property: The SKU name. Required for account creation; optional for update. Note that in older
-     * versions, SKU name was called accountType.
-     *
+     * Get the name property: The SKU name. Required for account creation;
+     * optional for update. Note that in older versions, SKU name was called
+     * accountType.
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -78,9 +84,10 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Set the name property: The SKU name. Required for account creation; optional for update. Note that in older
-     * versions, SKU name was called accountType.
-     *
+     * Set the name property: The SKU name. Required for account creation;
+     * optional for update. Note that in older versions, SKU name was called
+     * accountType.
+     * 
      * @param name the name value to set.
      * @return the SkuInformationInner object itself.
      */
@@ -91,7 +98,7 @@ public final class SkuInformationInner {
 
     /**
      * Get the tier property: The SKU tier. This is based on the SKU name.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -99,8 +106,9 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Get the resourceType property: The type of the resource, usually it is 'storageAccounts'.
-     *
+     * Get the resourceType property: The type of the resource, usually it is
+     * 'storageAccounts'.
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -109,7 +117,7 @@ public final class SkuInformationInner {
 
     /**
      * Get the kind property: Indicates the type of storage account.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -117,9 +125,10 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Get the locations property: The set of locations that the SKU is available. This will be supported and registered
-     * Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
-     *
+     * Get the locations property: The set of locations that the SKU is
+     * available. This will be supported and registered Azure Geo Regions (e.g.
+     * West US, East US, Southeast Asia, etc.).
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -127,9 +136,10 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Get the capabilities property: The capability information in the specified SKU, including file encryption,
-     * network ACLs, change notification, etc.
-     *
+     * Get the capabilities property: The capability information in the
+     * specified SKU, including file encryption, network ACLs, change
+     * notification, etc.
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -137,9 +147,9 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Get the restrictions property: The restrictions because of which SKU cannot be used. This is empty if there are
-     * no restrictions.
-     *
+     * Get the restrictions property: The restrictions because of which SKU
+     * cannot be used. This is empty if there are no restrictions.
+     * 
      * @return the restrictions value.
      */
     public List<Restriction> restrictions() {
@@ -147,9 +157,9 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Set the restrictions property: The restrictions because of which SKU cannot be used. This is empty if there are
-     * no restrictions.
-     *
+     * Set the restrictions property: The restrictions because of which SKU
+     * cannot be used. This is empty if there are no restrictions.
+     * 
      * @param restrictions the restrictions value to set.
      * @return the SkuInformationInner object itself.
      */
@@ -160,14 +170,12 @@ public final class SkuInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
         }
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());

@@ -5,16 +5,22 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ListQueue model. */
+/**
+ * The ListQueue model.
+ */
 @Fluent
 public final class ListQueueInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueueInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListQueueInner.class);
 
     /*
      * List Queue resource properties.
@@ -24,7 +30,7 @@ public final class ListQueueInner extends ProxyResource {
 
     /**
      * Get the innerQueueProperties property: List Queue resource properties.
-     *
+     * 
      * @return the innerQueueProperties value.
      */
     private ListQueueProperties innerQueueProperties() {
@@ -32,8 +38,9 @@ public final class ListQueueInner extends ProxyResource {
     }
 
     /**
-     * Get the metadata property: A name-value pair that represents queue metadata.
-     *
+     * Get the metadata property: A name-value pair that represents queue
+     * metadata.
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -41,8 +48,9 @@ public final class ListQueueInner extends ProxyResource {
     }
 
     /**
-     * Set the metadata property: A name-value pair that represents queue metadata.
-     *
+     * Set the metadata property: A name-value pair that represents queue
+     * metadata.
+     * 
      * @param metadata the metadata value to set.
      * @return the ListQueueInner object itself.
      */
@@ -56,7 +64,7 @@ public final class ListQueueInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

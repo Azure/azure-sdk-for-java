@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RuleType. */
+/**
+ * Defines values for RuleType.
+ */
 public final class RuleType extends ExpandableStringEnum<RuleType> {
-    /** Static value Lifecycle for RuleType. */
+    /**
+     * Static value Lifecycle for RuleType.
+     */
     public static final RuleType LIFECYCLE = fromString("Lifecycle");
 
     /**
      * Creates or finds a RuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RuleType.
      */
@@ -24,7 +28,9 @@ public final class RuleType extends ExpandableStringEnum<RuleType> {
         return fromString(name, RuleType.class);
     }
 
-    /** @return known RuleType values. */
+    /**
+     * @return known RuleType values.
+     */
     public static Collection<RuleType> values() {
         return values(RuleType.class);
     }

@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreProgressStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Blob restore status. */
+/**
+ * Blob restore status.
+ */
 @Immutable
 public final class BlobRestoreStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobRestoreStatusInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BlobRestoreStatusInner.class);
 
     /*
      * The status of blob restore progress. Possible values are: - InProgress:
@@ -44,10 +49,11 @@ public final class BlobRestoreStatusInner {
     private BlobRestoreParameters parameters;
 
     /**
-     * Get the status property: The status of blob restore progress. Possible values are: - InProgress: Indicates that
-     * blob restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed:
-     * Indicates that blob restore is failed.
-     *
+     * Get the status property: The status of blob restore progress. Possible
+     * values are: - InProgress: Indicates that blob restore is ongoing. -
+     * Complete: Indicates that blob restore has been completed successfully. -
+     * Failed: Indicates that blob restore is failed.
+     * 
      * @return the status value.
      */
     public BlobRestoreProgressStatus status() {
@@ -55,8 +61,9 @@ public final class BlobRestoreStatusInner {
     }
 
     /**
-     * Get the failureReason property: Failure reason when blob restore is failed.
-     *
+     * Get the failureReason property: Failure reason when blob restore is
+     * failed.
+     * 
      * @return the failureReason value.
      */
     public String failureReason() {
@@ -65,7 +72,7 @@ public final class BlobRestoreStatusInner {
 
     /**
      * Get the restoreId property: Id for tracking blob restore request.
-     *
+     * 
      * @return the restoreId value.
      */
     public String restoreId() {
@@ -74,7 +81,7 @@ public final class BlobRestoreStatusInner {
 
     /**
      * Get the parameters property: Blob restore request parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public BlobRestoreParameters parameters() {
@@ -83,7 +90,7 @@ public final class BlobRestoreStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,38 +8,33 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for DefaultAction.
+ * Defines values for GetShareExpand.
  */
-public enum DefaultAction {
+public enum GetShareExpand {
     /**
-     * Enum value Allow.
+     * Enum value stats.
      */
-    ALLOW("Allow"),
+    STATS("stats");
 
     /**
-     * Enum value Deny.
-     */
-    DENY("Deny");
-
-    /**
-     * The actual serialized value for a DefaultAction instance.
+     * The actual serialized value for a GetShareExpand instance.
      */
     private final String value;
 
-    DefaultAction(String value) {
+    GetShareExpand(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a DefaultAction instance.
+     * Parses a serialized value to a GetShareExpand instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed DefaultAction object, or null if unable to parse.
+     * @return the parsed GetShareExpand object, or null if unable to parse.
      */
     @JsonCreator
-    public static DefaultAction fromString(String value) {
-        DefaultAction[] items = DefaultAction.values();
-        for (DefaultAction item : items) {
+    public static GetShareExpand fromString(String value) {
+        GetShareExpand[] items = GetShareExpand.values();
+        for (GetShareExpand item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

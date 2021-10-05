@@ -35,165 +35,106 @@ import com.azure.resourcemanager.storage.models.ObjectReplicationPolicies;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in ObjectReplicationPoliciesOperationsClient.
+ * An instance of this class provides access to all the operations defined in
+ * ObjectReplicationPoliciesOperationsClient.
  */
 public final class ObjectReplicationPoliciesOperationsClientImpl implements ObjectReplicationPoliciesOperationsClient {
     private final ClientLogger logger = new ClientLogger(ObjectReplicationPoliciesOperationsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ObjectReplicationPoliciesOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageManagementClientImpl client;
 
     /**
      * Initializes an instance of ObjectReplicationPoliciesOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ObjectReplicationPoliciesOperationsClientImpl(StorageManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ObjectReplicationPoliciesOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ObjectReplicationPoliciesOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageManagementClientObjectReplicationPoliciesOperations to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for
+     * StorageManagementClientObjectReplicationPoliciesOperations to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     private interface ObjectReplicationPoliciesOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ObjectReplicationPolicies>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ObjectReplicationPolicies>> list(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ObjectReplicationPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ObjectReplicationPolicyInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ObjectReplicationPolicyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
-            @BodyParam("application/json") ObjectReplicationPolicyInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ObjectReplicationPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId, @BodyParam("application/json") ObjectReplicationPolicyInner properties, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List the object replication policies associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list storage account object replication policies.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ObjectReplicationPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ObjectReplicationPolicyInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the object replication policies associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -201,51 +142,36 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return list storage account object replication policies.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
      * List the object replication policies associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,16 +179,15 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ObjectReplicationPolicyInner> listAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, accountName));
     }
 
     /**
      * List the object replication policies associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,18 +195,16 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return list storage account object replication policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ObjectReplicationPolicyInner> listAsync(
-        String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, context));
+    private PagedFlux<ObjectReplicationPolicyInner> listAsync(String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * List the object replication policies associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -294,11 +217,9 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
 
     /**
      * List the object replication policies associated with the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,83 +227,49 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return list storage account object replication policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ObjectReplicationPolicyInner> list(
-        String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<ObjectReplicationPolicyInner> list(String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+    public Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (objectReplicationPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter objectReplicationPolicyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter objectReplicationPolicyId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            objectReplicationPolicyId,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), objectReplicationPolicyId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,110 +277,72 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
+    private Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (objectReplicationPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter objectReplicationPolicyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter objectReplicationPolicyId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                objectReplicationPolicyId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), objectReplicationPolicyId, accept, context);
     }
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ObjectReplicationPolicyInner> getAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+    public Mono<ObjectReplicationPolicyInner> getAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ObjectReplicationPolicyInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ObjectReplicationPolicyInner get(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+    public ObjectReplicationPolicyInner get(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return getAsync(resourceGroupName, accountName, objectReplicationPolicyId).block();
     }
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -501,59 +350,38 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ObjectReplicationPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
+    public Response<ObjectReplicationPolicyInner> getWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context).block();
     }
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties) {
+    public Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (objectReplicationPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter objectReplicationPolicyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter objectReplicationPolicyId is required and cannot be null."));
         }
         if (properties == null) {
             return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
@@ -561,36 +389,17 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
             properties.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            objectReplicationPolicyId,
-                            properties,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), objectReplicationPolicyId, properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -598,36 +407,21 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties,
-        Context context) {
+    private Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (objectReplicationPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter objectReplicationPolicyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter objectReplicationPolicyId is required and cannot be null."));
         }
         if (properties == null) {
             return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
@@ -636,94 +430,57 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                objectReplicationPolicyId,
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), objectReplicationPolicyId, properties, accept, context);
     }
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties) {
+    public Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ObjectReplicationPolicyInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ObjectReplicationPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties) {
+    public ObjectReplicationPolicyInner createOrUpdate(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties) {
         return createOrUpdateAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties).block();
     }
 
     /**
      * Create or update the object replication policy of the storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
-     *     absent.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -731,89 +488,49 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String objectReplicationPolicyId,
-        ObjectReplicationPolicyInner properties,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, objectReplicationPolicyId, properties, context)
-            .block();
+    public Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties, context).block();
     }
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (objectReplicationPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter objectReplicationPolicyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter objectReplicationPolicyId is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            objectReplicationPolicyId,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), objectReplicationPolicyId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -821,58 +538,33 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (objectReplicationPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter objectReplicationPolicyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter objectReplicationPolicyId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                objectReplicationPolicyId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), objectReplicationPolicyId, accept, context);
     }
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -886,15 +578,10 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -906,15 +593,10 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param objectReplicationPolicyId For the destination account, provide the value 'default'. Configure the policy
-     *     on the destination account first. For the source account, provide the value of the policy ID that is returned
-     *     when you download the policy that was defined on the destination account. The policy is downloaded as a JSON
-     *     file.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -922,8 +604,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, context).block();
     }
 }

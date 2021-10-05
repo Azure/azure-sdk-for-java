@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ServiceSpecification;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of operation, include metric specifications. */
+/**
+ * Properties of operation, include metric specifications.
+ */
 @Fluent
 public final class OperationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationProperties.class);
 
     /*
      * One property of operation, include metric specifications.
@@ -22,8 +27,9 @@ public final class OperationProperties {
     private ServiceSpecification serviceSpecification;
 
     /**
-     * Get the serviceSpecification property: One property of operation, include metric specifications.
-     *
+     * Get the serviceSpecification property: One property of operation,
+     * include metric specifications.
+     * 
      * @return the serviceSpecification value.
      */
     public ServiceSpecification serviceSpecification() {
@@ -31,8 +37,9 @@ public final class OperationProperties {
     }
 
     /**
-     * Set the serviceSpecification property: One property of operation, include metric specifications.
-     *
+     * Set the serviceSpecification property: One property of operation,
+     * include metric specifications.
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationProperties object itself.
      */
@@ -43,7 +50,7 @@ public final class OperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

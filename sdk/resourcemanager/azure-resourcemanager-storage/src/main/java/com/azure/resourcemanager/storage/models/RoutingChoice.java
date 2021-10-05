@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingChoice. */
+/**
+ * Defines values for RoutingChoice.
+ */
 public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
-    /** Static value MicrosoftRouting for RoutingChoice. */
+    /**
+     * Static value MicrosoftRouting for RoutingChoice.
+     */
     public static final RoutingChoice MICROSOFT_ROUTING = fromString("MicrosoftRouting");
 
-    /** Static value InternetRouting for RoutingChoice. */
+    /**
+     * Static value InternetRouting for RoutingChoice.
+     */
     public static final RoutingChoice INTERNET_ROUTING = fromString("InternetRouting");
 
     /**
      * Creates or finds a RoutingChoice from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoutingChoice.
      */
@@ -27,7 +33,9 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
         return fromString(name, RoutingChoice.class);
     }
 
-    /** @return known RoutingChoice values. */
+    /**
+     * @return known RoutingChoice values.
+     */
     public static Collection<RoutingChoice> values() {
         return values(RoutingChoice.class);
     }

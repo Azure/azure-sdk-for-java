@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Name. */
+/**
+ * Defines values for Name.
+ */
 public final class Name extends ExpandableStringEnum<Name> {
-    /** Static value AccessTimeTracking for Name. */
+    /**
+     * Static value AccessTimeTracking for Name.
+     */
     public static final Name ACCESS_TIME_TRACKING = fromString("AccessTimeTracking");
 
     /**
      * Creates or finds a Name from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Name.
      */
@@ -24,7 +28,9 @@ public final class Name extends ExpandableStringEnum<Name> {
         return fromString(name, Name.class);
     }
 
-    /** @return known Name values. */
+    /**
+     * @return known Name values.
+     */
     public static Collection<Name> values() {
         return values(Name.class);
     }

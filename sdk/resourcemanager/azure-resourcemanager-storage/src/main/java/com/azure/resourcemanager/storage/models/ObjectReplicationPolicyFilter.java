@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Filters limit replication to a subset of blobs within the storage account. A logical OR is performed on values in the
- * filter. If multiple filters are defined, a logical AND is performed on all filters.
+ * Filters limit replication to a subset of blobs within the storage account. A
+ * logical OR is performed on values in the filter. If multiple filters are
+ * defined, a logical AND is performed on all filters.
  */
 @Fluent
 public final class ObjectReplicationPolicyFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyFilter.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyFilter.class);
 
     /*
      * Optional. Filters the results to replicate only blobs whose names begin
@@ -34,9 +38,9 @@ public final class ObjectReplicationPolicyFilter {
     private String minCreationTime;
 
     /**
-     * Get the prefixMatch property: Optional. Filters the results to replicate only blobs whose names begin with the
-     * specified prefix.
-     *
+     * Get the prefixMatch property: Optional. Filters the results to replicate
+     * only blobs whose names begin with the specified prefix.
+     * 
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -44,9 +48,9 @@ public final class ObjectReplicationPolicyFilter {
     }
 
     /**
-     * Set the prefixMatch property: Optional. Filters the results to replicate only blobs whose names begin with the
-     * specified prefix.
-     *
+     * Set the prefixMatch property: Optional. Filters the results to replicate
+     * only blobs whose names begin with the specified prefix.
+     * 
      * @param prefixMatch the prefixMatch value to set.
      * @return the ObjectReplicationPolicyFilter object itself.
      */
@@ -56,9 +60,10 @@ public final class ObjectReplicationPolicyFilter {
     }
 
     /**
-     * Get the minCreationTime property: Blobs created after the time will be replicated to the destination. It must be
-     * in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z.
-     *
+     * Get the minCreationTime property: Blobs created after the time will be
+     * replicated to the destination. It must be in datetime format
+     * 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z.
+     * 
      * @return the minCreationTime value.
      */
     public String minCreationTime() {
@@ -66,9 +71,10 @@ public final class ObjectReplicationPolicyFilter {
     }
 
     /**
-     * Set the minCreationTime property: Blobs created after the time will be replicated to the destination. It must be
-     * in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z.
-     *
+     * Set the minCreationTime property: Blobs created after the time will be
+     * replicated to the destination. It must be in datetime format
+     * 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z.
+     * 
      * @param minCreationTime the minCreationTime value to set.
      * @return the ObjectReplicationPolicyFilter object itself.
      */
@@ -79,7 +85,7 @@ public final class ObjectReplicationPolicyFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The storage account blob inventory policy. */
+/**
+ * The storage account blob inventory policy.
+ */
 @Fluent
 public final class BlobInventoryPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyInner.class);
 
     /*
      * Returns the storage account blob inventory policy rules.
@@ -31,8 +36,9 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     private SystemData systemData;
 
     /**
-     * Get the innerProperties property: Returns the storage account blob inventory policy rules.
-     *
+     * Get the innerProperties property: Returns the storage account blob
+     * inventory policy rules.
+     * 
      * @return the innerProperties value.
      */
     private BlobInventoryPolicyProperties innerProperties() {
@@ -40,8 +46,9 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * Get the systemData property: Metadata pertaining to creation and last
+     * modification of the resource.
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,8 +56,9 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModifiedTime property: Returns the last modified date and time of the blob inventory policy.
-     *
+     * Get the lastModifiedTime property: Returns the last modified date and
+     * time of the blob inventory policy.
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -58,8 +66,9 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the policy property: The storage account blob inventory policy object. It is composed of policy rules.
-     *
+     * Get the policy property: The storage account blob inventory policy
+     * object. It is composed of policy rules.
+     * 
      * @return the policy value.
      */
     public BlobInventoryPolicySchema policy() {
@@ -67,8 +76,9 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the policy property: The storage account blob inventory policy object. It is composed of policy rules.
-     *
+     * Set the policy property: The storage account blob inventory policy
+     * object. It is composed of policy rules.
+     * 
      * @param policy the policy value to set.
      * @return the BlobInventoryPolicyInner object itself.
      */
@@ -82,7 +92,7 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

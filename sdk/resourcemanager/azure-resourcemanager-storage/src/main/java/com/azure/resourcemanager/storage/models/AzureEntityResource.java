@@ -4,16 +4,22 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Entity Resource The resource model definition for an Azure Resource Manager resource with an etag. */
+/**
+ * Entity Resource The resource model definition for an Azure Resource Manager
+ * resource with an etag.
+ */
 @Immutable
 public class AzureEntityResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureEntityResource.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureEntityResource.class);
 
     /*
      * Resource Etag.
@@ -23,7 +29,7 @@ public class AzureEntityResource extends ProxyResource {
 
     /**
      * Get the etag property: Resource Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -32,7 +38,7 @@ public class AzureEntityResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

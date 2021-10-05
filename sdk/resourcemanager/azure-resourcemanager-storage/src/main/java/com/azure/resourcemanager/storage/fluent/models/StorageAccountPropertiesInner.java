@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
@@ -13,23 +14,24 @@ import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
-import com.azure.resourcemanager.storage.models.KeyCreationTime;
-import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
-import com.azure.resourcemanager.storage.models.SasPolicy;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of the storage account. */
+/**
+ * Properties of the storage account.
+ */
 @Fluent
 public final class StorageAccountPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesInner.class);
 
     /*
      * Gets the status of the storage account at the time the operation was
@@ -95,24 +97,6 @@ public final class StorageAccountPropertiesInner {
      */
     @JsonProperty(value = "customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
-
-    /*
-     * SasPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "sasPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private SasPolicy sasPolicy;
-
-    /*
-     * KeyPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "keyPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private KeyPolicy keyPolicy;
-
-    /*
-     * Storage account keys creation time.
-     */
-    @JsonProperty(value = "keyCreationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private KeyCreationTime keyCreationTime;
 
     /*
      * Gets the URLs that are used to perform a retrieval of a public blob,
@@ -224,22 +208,10 @@ public final class StorageAccountPropertiesInner {
     @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
 
-    /*
-     * NFS 3.0 protocol support enabled if set to true.
-     */
-    @JsonProperty(value = "isNfsV3Enabled")
-    private Boolean enableNfsV3;
-
-    /*
-     * Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     */
-    @JsonProperty(value = "allowCrossTenantReplication")
-    private Boolean allowCrossTenantReplication;
-
     /**
-     * Get the provisioningState property: Gets the status of the storage account at the time the operation was called.
-     *
+     * Get the provisioningState property: Gets the status of the storage
+     * account at the time the operation was called.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -247,9 +219,10 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the primaryEndpoints property: Gets the URLs that are used to perform a retrieval of a public blob, queue, or
-     * table object. Note that Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
-     *
+     * Get the primaryEndpoints property: Gets the URLs that are used to
+     * perform a retrieval of a public blob, queue, or table object. Note that
+     * Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
+     * 
      * @return the primaryEndpoints value.
      */
     public Endpoints primaryEndpoints() {
@@ -257,8 +230,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the primaryLocation property: Gets the location of the primary data center for the storage account.
-     *
+     * Get the primaryLocation property: Gets the location of the primary data
+     * center for the storage account.
+     * 
      * @return the primaryLocation value.
      */
     public String primaryLocation() {
@@ -266,9 +240,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the statusOfPrimary property: Gets the status indicating whether the primary location of the storage account
-     * is available or unavailable.
-     *
+     * Get the statusOfPrimary property: Gets the status indicating whether the
+     * primary location of the storage account is available or unavailable.
+     * 
      * @return the statusOfPrimary value.
      */
     public AccountStatus statusOfPrimary() {
@@ -276,10 +250,12 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the lastGeoFailoverTime property: Gets the timestamp of the most recent instance of a failover to the
-     * secondary location. Only the most recent timestamp is retained. This element is not returned if there has never
-     * been a failover instance. Only available if the accountType is Standard_GRS or Standard_RAGRS.
-     *
+     * Get the lastGeoFailoverTime property: Gets the timestamp of the most
+     * recent instance of a failover to the secondary location. Only the most
+     * recent timestamp is retained. This element is not returned if there has
+     * never been a failover instance. Only available if the accountType is
+     * Standard_GRS or Standard_RAGRS.
+     * 
      * @return the lastGeoFailoverTime value.
      */
     public OffsetDateTime lastGeoFailoverTime() {
@@ -287,9 +263,10 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the secondaryLocation property: Gets the location of the geo-replicated secondary for the storage account.
-     * Only available if the accountType is Standard_GRS or Standard_RAGRS.
-     *
+     * Get the secondaryLocation property: Gets the location of the
+     * geo-replicated secondary for the storage account. Only available if the
+     * accountType is Standard_GRS or Standard_RAGRS.
+     * 
      * @return the secondaryLocation value.
      */
     public String secondaryLocation() {
@@ -297,9 +274,11 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the statusOfSecondary property: Gets the status indicating whether the secondary location of the storage
-     * account is available or unavailable. Only available if the SKU name is Standard_GRS or Standard_RAGRS.
-     *
+     * Get the statusOfSecondary property: Gets the status indicating whether
+     * the secondary location of the storage account is available or
+     * unavailable. Only available if the SKU name is Standard_GRS or
+     * Standard_RAGRS.
+     * 
      * @return the statusOfSecondary value.
      */
     public AccountStatus statusOfSecondary() {
@@ -307,8 +286,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the creationTime property: Gets the creation date and time of the storage account in UTC.
-     *
+     * Get the creationTime property: Gets the creation date and time of the
+     * storage account in UTC.
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -316,8 +296,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the customDomain property: Gets the custom domain the user assigned to this storage account.
-     *
+     * Get the customDomain property: Gets the custom domain the user assigned
+     * to this storage account.
+     * 
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -325,37 +306,11 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @return the sasPolicy value.
-     */
-    public SasPolicy sasPolicy() {
-        return this.sasPolicy;
-    }
-
-    /**
-     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @return the keyPolicy value.
-     */
-    public KeyPolicy keyPolicy() {
-        return this.keyPolicy;
-    }
-
-    /**
-     * Get the keyCreationTime property: Storage account keys creation time.
-     *
-     * @return the keyCreationTime value.
-     */
-    public KeyCreationTime keyCreationTime() {
-        return this.keyCreationTime;
-    }
-
-    /**
-     * Get the secondaryEndpoints property: Gets the URLs that are used to perform a retrieval of a public blob, queue,
-     * or table object from the secondary location of the storage account. Only available if the SKU name is
-     * Standard_RAGRS.
-     *
+     * Get the secondaryEndpoints property: Gets the URLs that are used to
+     * perform a retrieval of a public blob, queue, or table object from the
+     * secondary location of the storage account. Only available if the SKU
+     * name is Standard_RAGRS.
+     * 
      * @return the secondaryEndpoints value.
      */
     public Endpoints secondaryEndpoints() {
@@ -363,9 +318,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the encryption property: Gets the encryption settings on the account. If unspecified, the account is
-     * unencrypted.
-     *
+     * Get the encryption property: Gets the encryption settings on the
+     * account. If unspecified, the account is unencrypted.
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -373,9 +328,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
-     *
+     * Get the accessTier property: Required for storage accounts where kind =
+     * BlobStorage. The access tier used for billing.
+     * 
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -383,9 +338,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
-     * Azure Files.
-     *
+     * Get the azureFilesIdentityBasedAuthentication property: Provides the
+     * identity based authentication settings for Azure Files.
+     * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -393,21 +348,22 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
-     * Azure Files.
-     *
-     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
+     * Set the azureFilesIdentityBasedAuthentication property: Provides the
+     * identity based authentication settings for Azure Files.
+     * 
+     * @param azureFilesIdentityBasedAuthentication the
+     * azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
-    public StorageAccountPropertiesInner withAzureFilesIdentityBasedAuthentication(
-        AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountPropertiesInner withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 
     /**
-     * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * Get the enableHttpsTrafficOnly property: Allows https traffic only to
+     * storage service if sets to true.
+     * 
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -415,8 +371,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
-     *
+     * Set the enableHttpsTrafficOnly property: Allows https traffic only to
+     * storage service if sets to true.
+     * 
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -427,7 +384,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -435,8 +392,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
-     *
+     * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if
+     * sets to true.
+     * 
      * @return the isHnsEnabled value.
      */
     public Boolean isHnsEnabled() {
@@ -444,8 +402,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
-     *
+     * Set the isHnsEnabled property: Account HierarchicalNamespace enabled if
+     * sets to true.
+     * 
      * @param isHnsEnabled the isHnsEnabled value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -456,7 +415,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the geoReplicationStats property: Geo Replication Stats.
-     *
+     * 
      * @return the geoReplicationStats value.
      */
     public GeoReplicationStats geoReplicationStats() {
@@ -464,9 +423,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the failoverInProgress property: If the failover is in progress, the value will be true, otherwise, it will
-     * be null.
-     *
+     * Get the failoverInProgress property: If the failover is in progress, the
+     * value will be true, otherwise, it will be null.
+     * 
      * @return the failoverInProgress value.
      */
     public Boolean failoverInProgress() {
@@ -474,9 +433,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
-     * is enabled.
-     *
+     * Get the largeFileSharesState property: Allow large file shares if sets
+     * to Enabled. It cannot be disabled once it is enabled.
+     * 
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -484,9 +443,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
-     * is enabled.
-     *
+     * Set the largeFileSharesState property: Allow large file shares if sets
+     * to Enabled. It cannot be disabled once it is enabled.
+     * 
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -496,9 +455,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
-     * storage account.
-     *
+     * Get the privateEndpointConnections property: List of private endpoint
+     * connection associated with the specified storage account.
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -506,9 +465,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
-     * data transfer.
-     *
+     * Get the routingPreference property: Maintains information about the
+     * network routing choice opted by the user for data transfer.
+     * 
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -516,9 +475,9 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
-     * data transfer.
-     *
+     * Set the routingPreference property: Maintains information about the
+     * network routing choice opted by the user for data transfer.
+     * 
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -529,7 +488,7 @@ public final class StorageAccountPropertiesInner {
 
     /**
      * Get the blobRestoreStatus property: Blob restore status.
-     *
+     * 
      * @return the blobRestoreStatus value.
      */
     public BlobRestoreStatusInner blobRestoreStatus() {
@@ -537,9 +496,10 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
-     *
+     * Get the allowBlobPublicAccess property: Allow or disallow public access
+     * to all blobs or containers in the storage account. The default
+     * interpretation is true for this property.
+     * 
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
@@ -547,9 +507,10 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
-     * account. The default interpretation is true for this property.
-     *
+     * Set the allowBlobPublicAccess property: Allow or disallow public access
+     * to all blobs or containers in the storage account. The default
+     * interpretation is true for this property.
+     * 
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -559,9 +520,10 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
-     *
+     * Get the minimumTlsVersion property: Set the minimum TLS version to be
+     * permitted on requests to storage. The default interpretation is TLS 1.0
+     * for this property.
+     * 
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -569,9 +531,10 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
-     *
+     * Set the minimumTlsVersion property: Set the minimum TLS version to be
+     * permitted on requests to storage. The default interpretation is TLS 1.0
+     * for this property.
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -581,10 +544,12 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
-     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
-     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * Get the allowSharedKeyAccess property: Indicates whether the storage
+     * account permits requests to be authorized with the account access key
+     * via Shared Key. If false, then all requests, including shared access
+     * signatures, must be authorized with Azure Active Directory (Azure AD).
+     * The default value is null, which is equivalent to true.
+     * 
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
@@ -592,10 +557,12 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
-     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
-     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
-     *
+     * Set the allowSharedKeyAccess property: Indicates whether the storage
+     * account permits requests to be authorized with the account access key
+     * via Shared Key. If false, then all requests, including shared access
+     * signatures, must be authorized with Azure Active Directory (Azure AD).
+     * The default value is null, which is equivalent to true.
+     * 
      * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
      * @return the StorageAccountPropertiesInner object itself.
      */
@@ -605,50 +572,8 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @return the enableNfsV3 value.
-     */
-    public Boolean enableNfsV3() {
-        return this.enableNfsV3;
-    }
-
-    /**
-     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @param enableNfsV3 the enableNfsV3 value to set.
-     * @return the StorageAccountPropertiesInner object itself.
-     */
-    public StorageAccountPropertiesInner withEnableNfsV3(Boolean enableNfsV3) {
-        this.enableNfsV3 = enableNfsV3;
-        return this;
-    }
-
-    /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @return the allowCrossTenantReplication value.
-     */
-    public Boolean allowCrossTenantReplication() {
-        return this.allowCrossTenantReplication;
-    }
-
-    /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
-     * @return the StorageAccountPropertiesInner object itself.
-     */
-    public StorageAccountPropertiesInner withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
-        this.allowCrossTenantReplication = allowCrossTenantReplication;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -657,15 +582,6 @@ public final class StorageAccountPropertiesInner {
         }
         if (customDomain() != null) {
             customDomain().validate();
-        }
-        if (sasPolicy() != null) {
-            sasPolicy().validate();
-        }
-        if (keyPolicy() != null) {
-            keyPolicy().validate();
-        }
-        if (keyCreationTime() != null) {
-            keyCreationTime().validate();
         }
         if (secondaryEndpoints() != null) {
             secondaryEndpoints().validate();

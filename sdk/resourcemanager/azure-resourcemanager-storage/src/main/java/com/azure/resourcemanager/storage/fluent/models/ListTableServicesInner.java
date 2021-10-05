@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListTableServices model. */
+/**
+ * The ListTableServices model.
+ */
 @Immutable
 public final class ListTableServicesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListTableServicesInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListTableServicesInner.class);
 
     /*
      * List of table services returned.
@@ -23,7 +28,7 @@ public final class ListTableServicesInner {
 
     /**
      * Get the value property: List of table services returned.
-     *
+     * 
      * @return the value value.
      */
     public List<TableServicePropertiesInner> value() {
@@ -32,7 +37,7 @@ public final class ListTableServicesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

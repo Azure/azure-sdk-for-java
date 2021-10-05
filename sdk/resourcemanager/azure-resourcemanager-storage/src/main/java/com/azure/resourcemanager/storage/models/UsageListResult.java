@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.UsageInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List Usages operation. */
+/**
+ * The response from the List Usages operation.
+ */
 @Fluent
 public final class UsageListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageListResult.class);
 
     /*
      * Gets or sets the list of Storage Resource Usages.
@@ -23,8 +28,9 @@ public final class UsageListResult {
     private List<UsageInner> value;
 
     /**
-     * Get the value property: Gets or sets the list of Storage Resource Usages.
-     *
+     * Get the value property: Gets or sets the list of Storage Resource
+     * Usages.
+     * 
      * @return the value value.
      */
     public List<UsageInner> value() {
@@ -32,8 +38,9 @@ public final class UsageListResult {
     }
 
     /**
-     * Set the value property: Gets or sets the list of Storage Resource Usages.
-     *
+     * Set the value property: Gets or sets the list of Storage Resource
+     * Usages.
+     * 
      * @param value the value value to set.
      * @return the UsageListResult object itself.
      */
@@ -44,7 +51,7 @@ public final class UsageListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

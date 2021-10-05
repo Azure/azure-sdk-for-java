@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.EncryptionScopeKeyVaultProperties;
 import com.azure.resourcemanager.storage.models.EncryptionScopeSource;
 import com.azure.resourcemanager.storage.models.EncryptionScopeState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of the encryption scope. */
+/**
+ * Properties of the encryption scope.
+ */
 @Fluent
 public final class EncryptionScopeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionScopeProperties.class);
 
     /*
      * The provider for the encryption scope. Possible values
@@ -26,7 +31,7 @@ public final class EncryptionScopeProperties {
     private EncryptionScopeSource source;
 
     /*
-     * The state of the encryption scope. Possible values (case-insensitive):
+     * The state of the encryption scope. Possible values (case-insensitive): 
      * Enabled, Disabled.
      */
     @JsonProperty(value = "state")
@@ -52,17 +57,10 @@ public final class EncryptionScopeProperties {
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionScopeKeyVaultProperties keyVaultProperties;
 
-    /*
-     * A boolean indicating whether or not the service applies a secondary
-     * layer of encryption with platform managed keys for data at rest.
-     */
-    @JsonProperty(value = "requireInfrastructureEncryption")
-    private Boolean requireInfrastructureEncryption;
-
     /**
-     * Get the source property: The provider for the encryption scope. Possible values (case-insensitive):
-     * Microsoft.Storage, Microsoft.KeyVault.
-     *
+     * Get the source property: The provider for the encryption scope. Possible
+     * values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
+     * 
      * @return the source value.
      */
     public EncryptionScopeSource source() {
@@ -70,9 +68,9 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Set the source property: The provider for the encryption scope. Possible values (case-insensitive):
-     * Microsoft.Storage, Microsoft.KeyVault.
-     *
+     * Set the source property: The provider for the encryption scope. Possible
+     * values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
+     * 
      * @param source the source value to set.
      * @return the EncryptionScopeProperties object itself.
      */
@@ -82,8 +80,9 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Get the state property: The state of the encryption scope. Possible values (case-insensitive): Enabled, Disabled.
-     *
+     * Get the state property: The state of the encryption scope. Possible
+     * values (case-insensitive):  Enabled, Disabled.
+     * 
      * @return the state value.
      */
     public EncryptionScopeState state() {
@@ -91,8 +90,9 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Set the state property: The state of the encryption scope. Possible values (case-insensitive): Enabled, Disabled.
-     *
+     * Set the state property: The state of the encryption scope. Possible
+     * values (case-insensitive):  Enabled, Disabled.
+     * 
      * @param state the state value to set.
      * @return the EncryptionScopeProperties object itself.
      */
@@ -102,8 +102,9 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Get the creationTime property: Gets the creation date and time of the encryption scope in UTC.
-     *
+     * Get the creationTime property: Gets the creation date and time of the
+     * encryption scope in UTC.
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -111,8 +112,9 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Get the lastModifiedTime property: Gets the last modification date and time of the encryption scope in UTC.
-     *
+     * Get the lastModifiedTime property: Gets the last modification date and
+     * time of the encryption scope in UTC.
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -120,9 +122,10 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Get the keyVaultProperties property: The key vault properties for the encryption scope. This is a required field
-     * if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
-     *
+     * Get the keyVaultProperties property: The key vault properties for the
+     * encryption scope. This is a required field if encryption scope 'source'
+     * attribute is set to 'Microsoft.KeyVault'.
+     * 
      * @return the keyVaultProperties value.
      */
     public EncryptionScopeKeyVaultProperties keyVaultProperties() {
@@ -130,9 +133,10 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Set the keyVaultProperties property: The key vault properties for the encryption scope. This is a required field
-     * if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
-     *
+     * Set the keyVaultProperties property: The key vault properties for the
+     * encryption scope. This is a required field if encryption scope 'source'
+     * attribute is set to 'Microsoft.KeyVault'.
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionScopeProperties object itself.
      */
@@ -142,30 +146,8 @@ public final class EncryptionScopeProperties {
     }
 
     /**
-     * Get the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
-     * secondary layer of encryption with platform managed keys for data at rest.
-     *
-     * @return the requireInfrastructureEncryption value.
-     */
-    public Boolean requireInfrastructureEncryption() {
-        return this.requireInfrastructureEncryption;
-    }
-
-    /**
-     * Set the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
-     * secondary layer of encryption with platform managed keys for data at rest.
-     *
-     * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
-     * @return the EncryptionScopeProperties object itself.
-     */
-    public EncryptionScopeProperties withRequireInfrastructureEncryption(Boolean requireInfrastructureEncryption) {
-        this.requireInfrastructureEncryption = requireInfrastructureEncryption;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

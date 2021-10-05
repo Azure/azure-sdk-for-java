@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List Storage Accounts operation. */
+/**
+ * The response from the List Storage Accounts operation.
+ */
 @Immutable
 public final class StorageAccountListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(StorageAccountListResult.class);
 
     /*
      * Gets the list of storage accounts and their properties.
@@ -31,8 +36,9 @@ public final class StorageAccountListResult {
     private String nextLink;
 
     /**
-     * Get the value property: Gets the list of storage accounts and their properties.
-     *
+     * Get the value property: Gets the list of storage accounts and their
+     * properties.
+     * 
      * @return the value value.
      */
     public List<StorageAccountInner> value() {
@@ -40,9 +46,10 @@ public final class StorageAccountListResult {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next page of storage accounts. Returned when
-     * total number of requested storage accounts exceed maximum page size.
-     *
+     * Get the nextLink property: Request URL that can be used to query next
+     * page of storage accounts. Returned when total number of requested
+     * storage accounts exceed maximum page size.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +58,7 @@ public final class StorageAccountListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

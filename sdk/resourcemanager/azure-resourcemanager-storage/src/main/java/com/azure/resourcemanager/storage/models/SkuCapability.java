@@ -4,17 +4,21 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
+ * The capability information in the specified SKU, including file encryption,
+ * network ACLs, change notification, etc.
  */
 @Immutable
 public final class SkuCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapability.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SkuCapability.class);
 
     /*
      * The name of capability, The capability information in the specified SKU,
@@ -31,9 +35,10 @@ public final class SkuCapability {
     private String value;
 
     /**
-     * Get the name property: The name of capability, The capability information in the specified SKU, including file
-     * encryption, network ACLs, change notification, etc.
-     *
+     * Get the name property: The name of capability, The capability
+     * information in the specified SKU, including file encryption, network
+     * ACLs, change notification, etc.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,8 +46,9 @@ public final class SkuCapability {
     }
 
     /**
-     * Get the value property: A string value to indicate states of given capability. Possibly 'true' or 'false'.
-     *
+     * Get the value property: A string value to indicate states of given
+     * capability. Possibly 'true' or 'false'.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -51,7 +57,7 @@ public final class SkuCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of key vault. */
+/**
+ * Properties of key vault.
+ */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
 
     /*
      * The name of KeyVault key.
@@ -47,7 +52,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyName property: The name of KeyVault key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -56,7 +61,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyName property: The name of KeyVault key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -67,7 +72,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVersion property: The version of KeyVault key.
-     *
+     * 
      * @return the keyVersion value.
      */
     public String keyVersion() {
@@ -76,7 +81,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVersion property: The version of KeyVault key.
-     *
+     * 
      * @param keyVersion the keyVersion value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -87,7 +92,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -96,7 +101,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -106,9 +111,9 @@ public final class KeyVaultProperties {
     }
 
     /**
-     * Get the currentVersionedKeyIdentifier property: The object identifier of the current versioned Key Vault Key in
-     * use.
-     *
+     * Get the currentVersionedKeyIdentifier property: The object identifier of
+     * the current versioned Key Vault Key in use.
+     * 
      * @return the currentVersionedKeyIdentifier value.
      */
     public String currentVersionedKeyIdentifier() {
@@ -116,8 +121,9 @@ public final class KeyVaultProperties {
     }
 
     /**
-     * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of the Key Vault Key.
-     *
+     * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of
+     * the Key Vault Key.
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -126,7 +132,7 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

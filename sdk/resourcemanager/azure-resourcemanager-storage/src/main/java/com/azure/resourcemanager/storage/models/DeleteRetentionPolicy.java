@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The service properties for soft delete. */
+/**
+ * The service properties for soft delete.
+ */
 @Fluent
 public final class DeleteRetentionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteRetentionPolicy.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeleteRetentionPolicy.class);
 
     /*
      * Indicates whether DeleteRetentionPolicy is enabled.
@@ -28,8 +33,9 @@ public final class DeleteRetentionPolicy {
     private Integer days;
 
     /**
-     * Get the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
-     *
+     * Get the enabled property: Indicates whether DeleteRetentionPolicy is
+     * enabled.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -37,8 +43,9 @@ public final class DeleteRetentionPolicy {
     }
 
     /**
-     * Set the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
-     *
+     * Set the enabled property: Indicates whether DeleteRetentionPolicy is
+     * enabled.
+     * 
      * @param enabled the enabled value to set.
      * @return the DeleteRetentionPolicy object itself.
      */
@@ -48,9 +55,10 @@ public final class DeleteRetentionPolicy {
     }
 
     /**
-     * Get the days property: Indicates the number of days that the deleted item should be retained. The minimum
-     * specified value can be 1 and the maximum value can be 365.
-     *
+     * Get the days property: Indicates the number of days that the deleted
+     * item should be retained. The minimum specified value can be 1 and the
+     * maximum value can be 365.
+     * 
      * @return the days value.
      */
     public Integer days() {
@@ -58,9 +66,10 @@ public final class DeleteRetentionPolicy {
     }
 
     /**
-     * Set the days property: Indicates the number of days that the deleted item should be retained. The minimum
-     * specified value can be 1 and the maximum value can be 365.
-     *
+     * Set the days property: Indicates the number of days that the deleted
+     * item should be retained. The minimum specified value can be 1 and the
+     * maximum value can be 365.
+     * 
      * @param days the days value to set.
      * @return the DeleteRetentionPolicy object itself.
      */
@@ -71,7 +80,7 @@ public final class DeleteRetentionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

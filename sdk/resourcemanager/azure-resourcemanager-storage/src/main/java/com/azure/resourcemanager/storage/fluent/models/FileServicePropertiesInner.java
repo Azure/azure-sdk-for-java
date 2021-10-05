@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
-import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.azure.resourcemanager.storage.models.Sku;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of File services in storage account. */
+/**
+ * The properties of File services in storage account.
+ */
 @Fluent
 public final class FileServicePropertiesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServicePropertiesInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileServicePropertiesInner.class);
 
     /*
      * The properties of File services in storage account.
@@ -32,8 +36,9 @@ public final class FileServicePropertiesInner extends ProxyResource {
     private Sku sku;
 
     /**
-     * Get the innerFileServiceProperties property: The properties of File services in storage account.
-     *
+     * Get the innerFileServiceProperties property: The properties of File
+     * services in storage account.
+     * 
      * @return the innerFileServiceProperties value.
      */
     private FileServicePropertiesProperties innerFileServiceProperties() {
@@ -42,7 +47,7 @@ public final class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Get the sku property: Sku name and tier.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -50,10 +55,11 @@ public final class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
-     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     * will be disabled for the File service.
-     *
+     * Get the cors property: Specifies CORS rules for the File service. You
+     * can include up to five CorsRule elements in the request. If no CorsRule
+     * elements are included in the request body, all CORS rules will be
+     * deleted, and CORS will be disabled for the File service.
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -61,10 +67,11 @@ public final class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
-     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
-     * will be disabled for the File service.
-     *
+     * Set the cors property: Specifies CORS rules for the File service. You
+     * can include up to five CorsRule elements in the request. If no CorsRule
+     * elements are included in the request body, all CORS rules will be
+     * deleted, and CORS will be disabled for the File service.
+     * 
      * @param cors the cors value to set.
      * @return the FileServicePropertiesInner object itself.
      */
@@ -77,20 +84,21 @@ public final class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
-     *
+     * Get the shareDeleteRetentionPolicy property: The file service properties
+     * for share soft delete.
+     * 
      * @return the shareDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
-        return this.innerFileServiceProperties() == null
-            ? null
-            : this.innerFileServiceProperties().shareDeleteRetentionPolicy();
+        return this.innerFileServiceProperties() == null ? null : this.innerFileServiceProperties().shareDeleteRetentionPolicy();
     }
 
     /**
-     * Set the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
-     *
-     * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value to set.
+     * Set the shareDeleteRetentionPolicy property: The file service properties
+     * for share soft delete.
+     * 
+     * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value
+     * to set.
      * @return the FileServicePropertiesInner object itself.
      */
     public FileServicePropertiesInner withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
@@ -102,31 +110,8 @@ public final class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the protocolSettings property: Protocol settings for file service.
-     *
-     * @return the protocolSettings value.
-     */
-    public ProtocolSettings protocolSettings() {
-        return this.innerFileServiceProperties() == null ? null : this.innerFileServiceProperties().protocolSettings();
-    }
-
-    /**
-     * Set the protocolSettings property: Protocol settings for file service.
-     *
-     * @param protocolSettings the protocolSettings value to set.
-     * @return the FileServicePropertiesInner object itself.
-     */
-    public FileServicePropertiesInner withProtocolSettings(ProtocolSettings protocolSettings) {
-        if (this.innerFileServiceProperties() == null) {
-            this.innerFileServiceProperties = new FileServicePropertiesProperties();
-        }
-        this.innerFileServiceProperties().withProtocolSettings(protocolSettings);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,14 +8,20 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.UsageInner;
+import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * UsagesClient.
+ */
 public interface UsagesClient {
     /**
      * Gets the current usage count and the limit for the resources of the location under the subscription.
-     *
+     * 
      * @param location The location of the Azure Storage resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +33,7 @@ public interface UsagesClient {
 
     /**
      * Gets the current usage count and the limit for the resources of the location under the subscription.
-     *
+     * 
      * @param location The location of the Azure Storage resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +45,7 @@ public interface UsagesClient {
 
     /**
      * Gets the current usage count and the limit for the resources of the location under the subscription.
-     *
+     * 
      * @param location The location of the Azure Storage resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

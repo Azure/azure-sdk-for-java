@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LargeFileSharesState. */
+/**
+ * Defines values for LargeFileSharesState.
+ */
 public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSharesState> {
-    /** Static value Disabled for LargeFileSharesState. */
+    /**
+     * Static value Disabled for LargeFileSharesState.
+     */
     public static final LargeFileSharesState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for LargeFileSharesState. */
+    /**
+     * Static value Enabled for LargeFileSharesState.
+     */
     public static final LargeFileSharesState ENABLED = fromString("Enabled");
 
     /**
      * Creates or finds a LargeFileSharesState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LargeFileSharesState.
      */
@@ -27,7 +33,9 @@ public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSh
         return fromString(name, LargeFileSharesState.class);
     }
 
-    /** @return known LargeFileSharesState values. */
+    /**
+     * @return known LargeFileSharesState values.
+     */
     public static Collection<LargeFileSharesState> values() {
         return values(LargeFileSharesState.class);
     }

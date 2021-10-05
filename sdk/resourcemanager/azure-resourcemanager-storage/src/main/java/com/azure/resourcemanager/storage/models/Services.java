@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Services. */
+/**
+ * Defines values for Services.
+ */
 public final class Services extends ExpandableStringEnum<Services> {
-    /** Static value b for Services. */
+    /**
+     * Static value b for Services.
+     */
     public static final Services B = fromString("b");
 
-    /** Static value q for Services. */
+    /**
+     * Static value q for Services.
+     */
     public static final Services Q = fromString("q");
 
-    /** Static value t for Services. */
+    /**
+     * Static value t for Services.
+     */
     public static final Services T = fromString("t");
 
-    /** Static value f for Services. */
+    /**
+     * Static value f for Services.
+     */
     public static final Services F = fromString("f");
 
     /**
      * Creates or finds a Services from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Services.
      */
@@ -33,7 +43,9 @@ public final class Services extends ExpandableStringEnum<Services> {
         return fromString(name, Services.class);
     }
 
-    /** @return known Services values. */
+    /**
+     * @return known Services values.
+     */
     public static Collection<Services> values() {
         return values(Services.class);
     }

@@ -7,12 +7,18 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ListKeyExpand. */
+/**
+ * Defines values for ListKeyExpand.
+ */
 public enum ListKeyExpand {
-    /** Enum value kerb. */
+    /**
+     * Enum value kerb.
+     */
     KERB("kerb");
 
-    /** The actual serialized value for a ListKeyExpand instance. */
+    /**
+     * The actual serialized value for a ListKeyExpand instance.
+     */
     private final String value;
 
     ListKeyExpand(String value) {
@@ -21,7 +27,7 @@ public enum ListKeyExpand {
 
     /**
      * Parses a serialized value to a ListKeyExpand instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ListKeyExpand object, or null if unable to parse.
      */

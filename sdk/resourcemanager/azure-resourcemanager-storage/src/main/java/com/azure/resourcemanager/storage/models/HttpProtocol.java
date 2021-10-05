@@ -7,15 +7,23 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for HttpProtocol. */
+/**
+ * Defines values for HttpProtocol.
+ */
 public enum HttpProtocol {
-    /** Enum value https,http. */
+    /**
+     * Enum value https,http.
+     */
     HTTPS_HTTP("https,http"),
 
-    /** Enum value https. */
+    /**
+     * Enum value https.
+     */
     HTTPS("https");
 
-    /** The actual serialized value for a HttpProtocol instance. */
+    /**
+     * The actual serialized value for a HttpProtocol instance.
+     */
     private final String value;
 
     HttpProtocol(String value) {
@@ -24,7 +32,7 @@ public enum HttpProtocol {
 
     /**
      * Parses a serialized value to a HttpProtocol instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HttpProtocol object, or null if unable to parse.
      */

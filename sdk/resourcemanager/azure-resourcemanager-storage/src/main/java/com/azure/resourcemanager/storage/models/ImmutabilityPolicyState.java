@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImmutabilityPolicyState. */
+/**
+ * Defines values for ImmutabilityPolicyState.
+ */
 public final class ImmutabilityPolicyState extends ExpandableStringEnum<ImmutabilityPolicyState> {
-    /** Static value Locked for ImmutabilityPolicyState. */
+    /**
+     * Static value Locked for ImmutabilityPolicyState.
+     */
     public static final ImmutabilityPolicyState LOCKED = fromString("Locked");
 
-    /** Static value Unlocked for ImmutabilityPolicyState. */
+    /**
+     * Static value Unlocked for ImmutabilityPolicyState.
+     */
     public static final ImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
 
     /**
      * Creates or finds a ImmutabilityPolicyState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImmutabilityPolicyState.
      */
@@ -27,7 +33,9 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
         return fromString(name, ImmutabilityPolicyState.class);
     }
 
-    /** @return known ImmutabilityPolicyState values. */
+    /**
+     * @return known ImmutabilityPolicyState values.
+     */
     public static Collection<ImmutabilityPolicyState> values() {
         return values(ImmutabilityPolicyState.class);
     }
