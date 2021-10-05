@@ -37,8 +37,13 @@ import java.util.Map;
  * It constructs an instance of the desired client.
  *
  * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to build
- * {@link CryptographyAsyncClient} are {@link JsonWebKey jsonWebKey} or {@link String Azure Key Vault key identifier}
- * and {@link TokenCredential credential}.</p>
+ * a {@link CryptographyAsyncClient} or a {@link CryptographyClient} are a {@link TokenCredential credential} and either
+ * a {@link JsonWebKey JSON Web Key} or a {@code Azure Key Vault key identifier}.</p>
+ *
+ * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+ * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
+ * for the specific key version that was used for the corresponding inverse operation: {@code Encrypt},
+ * {@code Wrap}, or {@code Sign}, respectively.</p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation}
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation}
@@ -226,6 +231,11 @@ public final class CryptographyClientBuilder {
 
     /**
      * Sets the Azure Key Vault key identifier of the JSON Web Key to be used for cryptography operations.
+     *
+     * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+     * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
+     * for the specific key version that was used for the corresponding inverse operation: {@code Encrypt}
+     * {@code Wrap}, or {@code Sign}, respectively.</p>
      *
      * @param keyId The Azure Key Vault key identifier of the JSON Web Key stored in the key vault.
      *

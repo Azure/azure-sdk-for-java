@@ -86,7 +86,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.3.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -34,14 +34,14 @@ public class LogsBatchQueryTest extends ServiceTest<PerfStressOptions> {
     @Override
     public void run() {
         LogsBatchQuery batchQuery = new LogsBatchQuery();
-        LOGS_BATCH_QUERIES.forEach(query -> batchQuery.addQuery(workspaceId, query, null));
+        LOGS_BATCH_QUERIES.forEach(query -> batchQuery.addWorkspaceQuery(workspaceId, query, null));
         logsQueryClient.queryBatch(batchQuery);
     }
 
     @Override
     public Mono<Void> runAsync() {
         LogsBatchQuery batchQuery = new LogsBatchQuery();
-        LOGS_BATCH_QUERIES.forEach(query -> batchQuery.addQuery(workspaceId, query, null));
+        LOGS_BATCH_QUERIES.forEach(query -> batchQuery.addWorkspaceQuery(workspaceId, query, null));
         return logsQueryAsyncClient.queryBatch(batchQuery).then();
     }
 }

@@ -31,6 +31,9 @@ To continue to use Form Recognizer API version 2.1, please use major version 3 o
 ### Bugs Fixed
 
 ### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.21.0
+- Upgraded `azure-identity` dependency to 1.3.7
 
 ## 3.1.4 (2021-09-09)
 ### Other Changes

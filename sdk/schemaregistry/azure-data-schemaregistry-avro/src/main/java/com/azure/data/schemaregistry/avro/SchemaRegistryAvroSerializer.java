@@ -114,7 +114,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
 
                 return this.schemaRegistryClient.getSchema(schemaId)
                     .handle((registryObject, sink) -> {
-                        byte[] payloadSchema = registryObject.getSchema();
+                        byte[] payloadSchema = registryObject.getSchemaDefinition().getBytes(StandardCharsets.UTF_8);
                         int start = buffer.position() + buffer.arrayOffset();
                         int length = buffer.limit() - SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
@@ -201,8 +201,8 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
                 .registerSchema(schemaGroup, schemaName, schemaString, SchemaFormat.AVRO)
                 .map(SchemaProperties::getSchemaId);
         } else {
-            return this.schemaRegistryClient.getSchemaId(
-                schemaGroup, schemaName, schemaString, SchemaFormat.AVRO);
+            return this.schemaRegistryClient.getSchemaProperties(
+                schemaGroup, schemaName, schemaString, SchemaFormat.AVRO).map(properties -> properties.getSchemaId());
         }
     }
 

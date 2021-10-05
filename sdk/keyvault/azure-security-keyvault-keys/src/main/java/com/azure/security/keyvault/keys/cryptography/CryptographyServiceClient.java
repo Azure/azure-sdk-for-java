@@ -55,6 +55,7 @@ class CryptographyServiceClient {
     CryptographyServiceClient(String keyId, CryptographyService service, CryptographyServiceVersion serviceVersion) {
         Objects.requireNonNull(keyId);
         unpackId(keyId);
+
         this.keyId = keyId;
         this.service = service;
         apiVersion = serviceVersion.getVersion();
@@ -64,13 +65,15 @@ class CryptographyServiceClient {
         if (version == null) {
             version = "";
         }
+
         return getKey(keyName, version, context);
     }
 
     private Mono<Response<KeyVaultKey>> getKey(String name, String version, Context context) {
         context = context == null ? Context.NONE : context;
+
         return service.getKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Retrieving key - {}", name))
             .doOnSuccess(response -> logger.verbose("Retrieved key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to get key - {}", name, error));
@@ -78,41 +81,42 @@ class CryptographyServiceClient {
 
     Mono<Response<JsonWebKey>> getSecretKey(Context context) {
         return service.getSecret(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-           .doOnRequest(ignored -> logger.verbose("Retrieving key - {}", keyName))
-           .doOnSuccess(response -> logger.verbose("Retrieved key - {}", response.getValue().getName()))
-           .doOnError(error -> logger.warning("Failed to get key - {}", keyName, error))
-           .flatMap((stringResponse -> {
-               KeyVaultKey key = null;
-               try {
-                   return Mono.just(new SimpleResponse<>(stringResponse.getRequest(),
-                       stringResponse.getStatusCode(),
-                       stringResponse.getHeaders(), transformSecretKey(stringResponse.getValue())));
-               } catch (JsonProcessingException e) {
-                   return Mono.error(e);
-               }
-           }));
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.verbose("Retrieving key - {}", keyName))
+            .doOnSuccess(response -> logger.verbose("Retrieved key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to get key - {}", keyName, error))
+            .flatMap((stringResponse -> {
+                try {
+                    return Mono.just(new SimpleResponse<>(stringResponse.getRequest(),
+                        stringResponse.getStatusCode(),
+                        stringResponse.getHeaders(), transformSecretKey(stringResponse.getValue())));
+                } catch (JsonProcessingException e) {
+                    return Mono.error(e);
+                }
+            }));
     }
 
     Mono<Response<SecretKey>> setSecretKey(SecretKey secret, Context context) {
-        context = context == null ? Context.NONE : context;
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
+
         SecretRequestParameters parameters = new SecretRequestParameters()
-                                                 .setValue(secret.getValue())
-                                                 .setTags(secret.getProperties().getTags())
-                                                 .setContentType(secret.getProperties().getContentType())
-                                                 .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
+            .setValue(secret.getValue())
+            .setTags(secret.getProperties().getTags())
+            .setContentType(secret.getProperties().getContentType())
+            .setSecretAttributes(new SecretRequestAttributes(secret.getProperties()));
+        context = context == null ? Context.NONE : context;
 
         return service.setSecret(vaultUrl, secret.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                   .doOnRequest(ignored -> logger.verbose("Setting secret - {}", secret.getName()))
-                   .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
-                   .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", secret.getName()))
+            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
     JsonWebKey transformSecretKey(SecretKey secretKey) throws JsonProcessingException {
         ObjectNode rootNode = MAPPER.createObjectNode();
         ArrayNode a = MAPPER.createArrayNode();
+
         a.add(KeyOperation.WRAP_KEY.toString());
         a.add(KeyOperation.UNWRAP_KEY.toString());
         a.add(KeyOperation.ENCRYPT.toString());
@@ -135,33 +139,28 @@ class CryptographyServiceClient {
             .setValue(plaintext);
         context = context == null ? Context.NONE : context;
 
-        return service.encrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Encrypting content with algorithm - {}", algorithm))
-            .doOnSuccess(response -> logger.verbose("Retrieved encrypted content with algorithm - {}", algorithm))
-            .doOnError(error -> logger.warning("Failed to encrypt content with algorithm - {}", algorithm, error))
-            .map(keyOperationResultResponse -> {
-                KeyOperationResult keyOperationResult = keyOperationResultResponse.getValue();
-
-                return new EncryptResult(keyOperationResult.getResult(), algorithm, keyId,
-                    keyOperationResult.getIv(), keyOperationResult.getAuthenticationTag(),
-                    keyOperationResult.getAdditionalAuthenticatedData());
-            });
+        return encrypt(parameters, context);
     }
 
     Mono<EncryptResult> encrypt(EncryptParameters encryptParameters, Context context) {
         Objects.requireNonNull(encryptParameters, "'encryptParameters' cannot be null.");
 
-        EncryptionAlgorithm algorithm = encryptParameters.getAlgorithm();
         KeyOperationParameters parameters = new KeyOperationParameters()
-            .setAlgorithm(algorithm)
+            .setAlgorithm(encryptParameters.getAlgorithm())
             .setValue(encryptParameters.getPlainText())
             .setIv(encryptParameters.getIv())
             .setAdditionalAuthenticatedData(encryptParameters.getAdditionalAuthenticatedData());
         context = context == null ? Context.NONE : context;
 
-        return service.encrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+        return encrypt(parameters, context);
+    }
+
+    private Mono<EncryptResult> encrypt(KeyOperationParameters keyOperationParameters, Context context) {
+        EncryptionAlgorithm algorithm = keyOperationParameters.getAlgorithm();
+        context = context == null ? Context.NONE : context;
+
+        return service.encrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, keyOperationParameters,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Encrypting content with algorithm - {}", algorithm))
             .doOnSuccess(response -> logger.verbose("Retrieved encrypted content with algorithm - {}", algorithm))
             .doOnError(error -> logger.warning("Failed to encrypt content with algorithm - {}", algorithm, error))
@@ -183,29 +182,31 @@ class CryptographyServiceClient {
             .setValue(ciphertext);
         context = context == null ? Context.NONE : context;
 
-        return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.verbose("Decrypting content with algorithm - {}", algorithm))
-            .doOnSuccess(response -> logger.verbose("Retrieved decrypted content with algorithm - {}", algorithm))
-            .doOnError(error -> logger.warning("Failed to decrypt content with algorithm - {}", algorithm, error))
-            .flatMap(keyOperationResultResponse -> Mono.just(
-                new DecryptResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
+        return decrypt(parameters, context);
     }
 
     Mono<DecryptResult> decrypt(DecryptParameters decryptParameters, Context context) {
         Objects.requireNonNull(decryptParameters, "'decryptParameters' cannot be null.");
 
-        EncryptionAlgorithm algorithm = decryptParameters.getAlgorithm();
         KeyOperationParameters parameters = new KeyOperationParameters()
-            .setAlgorithm(algorithm)
+            .setAlgorithm(decryptParameters.getAlgorithm())
             .setValue(decryptParameters.getCipherText())
             .setIv(decryptParameters.getIv())
             .setAdditionalAuthenticatedData(decryptParameters.getAdditionalAuthenticatedData())
             .setAuthenticationTag(decryptParameters.getAuthenticationTag());
         context = context == null ? Context.NONE : context;
 
-        return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+        return decrypt(parameters, context);
+    }
+
+    private Mono<DecryptResult> decrypt(KeyOperationParameters keyOperationParameters, Context context) {
+        Objects.requireNonNull(keyOperationParameters, "'decryptParameters' cannot be null.");
+
+        EncryptionAlgorithm algorithm = keyOperationParameters.getAlgorithm();
+        context = context == null ? Context.NONE : context;
+
+        return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, keyOperationParameters,
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Decrypting content with algorithm - {}", algorithm))
             .doOnSuccess(response -> logger.verbose("Retrieved decrypted content with algorithm - {}", algorithm))
             .doOnError(error -> logger.warning("Failed to decrypt content with algorithm - {}", algorithm, error))
@@ -214,10 +215,13 @@ class CryptographyServiceClient {
     }
 
     Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        KeySignRequest parameters = new KeySignRequest().setAlgorithm(algorithm).setValue(digest);
+        KeySignRequest parameters = new KeySignRequest()
+            .setAlgorithm(algorithm)
+            .setValue(digest);
         context = context == null ? Context.NONE : context;
+
         return service.sign(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Signing content with algorithm - {}", algorithm))
             .doOnSuccess(response -> logger.verbose("Retrieved signed content with algorithm - {}", algorithm))
             .doOnError(error -> logger.warning("Failed to sign content with algorithm - {}", algorithm, error))
@@ -226,13 +230,14 @@ class CryptographyServiceClient {
     }
 
     Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-
-        KeyVerifyRequest parameters =
-            new KeyVerifyRequest().setAlgorithm(algorithm).setDigest(digest).setSignature(signature);
+        KeyVerifyRequest parameters = new KeyVerifyRequest()
+            .setAlgorithm(algorithm)
+            .setDigest(digest)
+            .setSignature(signature);
         context = context == null ? Context.NONE : context;
 
         return service.verify(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Verifying content with algorithm - {}", algorithm))
             .doOnSuccess(response -> logger.verbose("Retrieved verified content with algorithm - {}", algorithm))
             .doOnError(error -> logger.warning("Failed to verify content with algorithm - {}", algorithm, error))
@@ -246,7 +251,7 @@ class CryptographyServiceClient {
         context = context == null ? Context.NONE : context;
 
         return service.wrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Wrapping key content with algorithm - {}", algorithm))
             .doOnSuccess(response -> logger.verbose("Retrieved wrapped key content with algorithm - {}", algorithm))
             .doOnError(error -> logger.warning("Failed to verify content with algorithm - {}", algorithm, error))
@@ -261,7 +266,7 @@ class CryptographyServiceClient {
         context = context == null ? Context.NONE : context;
 
         return service.unwrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
-            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.verbose("Unwrapping key content with algorithm - {}", algorithm))
             .doOnSuccess(response -> logger.verbose("Retrieved unwrapped key content with algorithm - {}", algorithm))
             .doOnError(error -> logger.warning("Failed to unwrap key content with algorithm - {}", algorithm, error))
@@ -275,12 +280,12 @@ class CryptographyServiceClient {
             MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
             md.update(data);
             byte[] digest = md.digest();
+
             return sign(algorithm, digest, context);
         } catch (NoSuchAlgorithmException e) {
             return Mono.error(e);
         }
     }
-
 
     Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         try {
@@ -288,6 +293,7 @@ class CryptographyServiceClient {
             MessageDigest md = MessageDigest.getInstance(hashAlgorithm.toString());
             md.update(data);
             byte[] digest = md.digest();
+
             return verify(algorithm, digest, signature, context);
         } catch (NoSuchAlgorithmException e) {
             return Mono.error(e);
@@ -301,7 +307,7 @@ class CryptographyServiceClient {
                 String[] tokens = url.getPath().split("/");
                 this.vaultUrl = url.getProtocol() + "://" + url.getHost();
                 this.keyName = (tokens.length >= 3 ? tokens[2] : null);
-                this.version = (tokens.length >= 4 ? tokens[3] : null);
+                this.version = (tokens.length >= 4 ? tokens[3] : "");
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

@@ -1,111 +1,111 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey285768?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey73145e?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "330",
+      "content-length" : "335",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "201",
+      "x-ms-server-latency" : "386",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "9cd72096-1a63-11ec-b856-000d3a9f7bf5",
-      "Body" : "{\"attributes\":{\"created\":1632177567,\"enabled\":true,\"exportable\":false,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1632177567},\"key\":{\"key_ops\":[\"wrapKey\",\"unwrapKey\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9\",\"kty\":\"oct-HSM\"}}"
+      "x-ms-request-id" : "55cb2eaa-257a-11ec-9954-000d3aa57175",
+      "Body" : "{\"attributes\":{\"created\":1633396789,\"enabled\":true,\"exportable\":false,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633396789},\"key\":{\"key_ops\":[\"wrapKey\",\"unwrapKey\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51\",\"kty\":\"oct-HSM\"}}"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "330",
+      "content-length" : "335",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210809-1-5b391b3f-develop",
+      "x-ms-build-version" : "1.0.20210907-1-d3b7f466-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "52",
+      "x-ms-server-latency" : "57",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "9d035166-1a63-11ec-b856-000d3a9f7bf5",
-      "Body" : "{\"attributes\":{\"created\":1632177567,\"enabled\":true,\"exportable\":false,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1632177567},\"key\":{\"key_ops\":[\"unwrapKey\",\"wrapKey\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9\",\"kty\":\"oct-HSM\"}}"
+      "x-ms-request-id" : "560eae5a-257a-11ec-9c18-000d3a4326f9",
+      "Body" : "{\"attributes\":{\"created\":1633396789,\"enabled\":true,\"exportable\":false,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633396789},\"key\":{\"key_ops\":[\"unwrapKey\",\"wrapKey\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51\",\"kty\":\"oct-HSM\"}}"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9/wrapkey?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51/wrapkey?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "169",
+      "content-length" : "174",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "52",
+      "x-ms-server-latency" : "69",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "9d41c16c-1a63-11ec-95c4-000d3a980532",
-      "Body" : "{\"alg\":\"A128KW\",\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9\",\"value\":\"H6aLCoEStEeu80vY-1p7gp0-hiNx0s_l\"}"
+      "x-ms-request-id" : "561fc0aa-257a-11ec-8e93-000d3a42b875",
+      "Body" : "{\"alg\":\"A128KW\",\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51\",\"value\":\"H6aLCoEStEeu80vY-1p7gp0-hiNx0s_l\"}"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "330",
+      "content-length" : "335",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210809-1-5b391b3f-develop",
+      "x-ms-build-version" : "1.0.20210907-1-d3b7f466-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "62",
+      "x-ms-server-latency" : "0",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "9d53265a-1a63-11ec-89ae-000d3aa45960",
-      "Body" : "{\"attributes\":{\"created\":1632177567,\"enabled\":true,\"exportable\":false,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1632177567},\"key\":{\"key_ops\":[\"unwrapKey\",\"wrapKey\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9\",\"kty\":\"oct-HSM\"}}"
+      "x-ms-request-id" : "5632472a-257a-11ec-8294-000d3a42b875",
+      "Body" : "{\"attributes\":{\"created\":1633396789,\"enabled\":true,\"exportable\":false,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633396789},\"key\":{\"key_ops\":[\"unwrapKey\",\"wrapKey\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51\",\"kty\":\"oct-HSM\"}}"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9/unwrapkey?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51/unwrapkey?api-version=7.3-preview",
     "Headers" : {
-      "User-Agent" : "KEKClientTestBase azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "159",
+      "content-length" : "164",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
@@ -117,10 +117,10 @@
       "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "9d64b7b2-1a63-11ec-b856-000d3a9f7bf5",
-      "Body" : "{\"alg\":\"A128KW\",\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey285768/be81850186f10aa0bd313c0f54c3c8c9\",\"value\":\"ABEiM0RVZneImaq7zN3u_w\"}"
+      "x-ms-request-id" : "566b4c8c-257a-11ec-9888-000d3a4326f9",
+      "Body" : "{\"alg\":\"A128KW\",\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/symmetrickey73145e/966564dec64846c886b899cb5106cc51\",\"value\":\"ABEiM0RVZneImaq7zN3u_w\"}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "symmetrickey285768" ]
+  "variables" : [ "symmetrickey73145e" ]
 }

@@ -38,10 +38,8 @@ import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -81,6 +79,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class ReactorConnectionTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String SESSION_NAME = "test-session-name";
     private static final Duration TEST_DURATION = Duration.ofSeconds(3);
@@ -128,16 +127,6 @@ class ReactorConnectionTest {
     private Event connectionEvent;
     @Mock
     private Event sessionEvent;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() throws IOException {
@@ -248,7 +237,9 @@ class ReactorConnectionTest {
                 Assertions.assertEquals(SESSION_NAME, s.getSessionName());
                 assertTrue(s instanceof ReactorSession);
                 Assertions.assertSame(session, ((ReactorSession) s).session());
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         // Assert that the same instance is obtained and we don't get a new session with the same name.
         StepVerifier.create(connection.createSession(SESSION_NAME))
@@ -257,7 +248,9 @@ class ReactorConnectionTest {
                 Assertions.assertEquals(SESSION_NAME, s.getSessionName());
                 assertTrue(s instanceof ReactorSession);
                 Assertions.assertSame(session, ((ReactorSession) s).session());
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
@@ -282,7 +275,7 @@ class ReactorConnectionTest {
                 assertTrue(error instanceof AmqpException);
                 assertTrue(((AmqpException) error).isTransient());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -308,7 +301,8 @@ class ReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.getSessionName())))
             .expectNext(true)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
@@ -334,7 +328,8 @@ class ReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession("does-not-exist")))
             .expectNext(false)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
@@ -348,7 +343,7 @@ class ReactorConnectionTest {
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -370,7 +365,7 @@ class ReactorConnectionTest {
             // getConnectionStates is distinct. We don't expect to see another event with the same status.
             .then(() -> connectionHandler.onConnectionRemoteOpen(event))
             .thenCancel()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -386,7 +381,8 @@ class ReactorConnectionTest {
         // Act and Assert
         StepVerifier.create(this.connection.getClaimsBasedSecurityNode())
             .assertNext(node -> assertTrue(node instanceof ClaimsBasedSecurityChannel))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -446,7 +442,7 @@ class ReactorConnectionTest {
                 assertNotNull(amqpException.getContext());
                 assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -472,11 +468,13 @@ class ReactorConnectionTest {
             .then(() -> connectionHandler.onConnectionRemoteClose(closeEvent))
             .expectNext(AmqpEndpointState.CLOSED)
             .then(() -> connectionHandler.onConnectionFinal(finalEvent))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(connection.getEndpointStates())
             .expectNext(AmqpEndpointState.CLOSED)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -503,7 +501,7 @@ class ReactorConnectionTest {
                 AmqpException amqpExp = (AmqpException) error;
                 return amqpExp.isTransient();
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -539,7 +537,8 @@ class ReactorConnectionTest {
                 assertFalse(signal.isInitiatedByClient());
                 assertFalse(signal.isTransient());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -572,7 +571,8 @@ class ReactorConnectionTest {
                 assertFalse(signal.isInitiatedByClient());
                 assertFalse(signal.isTransient());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -615,20 +615,20 @@ class ReactorConnectionTest {
         // Act & Assert
         StepVerifier.create(connection.getClaimsBasedSecurityNode())
             .expectErrorSatisfies(assertException)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(connection.getReactorConnection())
             .expectErrorSatisfies(assertException)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(connection.createRequestResponseChannel(SESSION_NAME, "test-link-name",
             "test-entity-path"))
             .expectError(IllegalStateException.class)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         StepVerifier.create(connection.createSession(SESSION_NAME))
             .expectErrorSatisfies(assertException)
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         verify(transport, times(1)).unbind();
     }
@@ -691,12 +691,14 @@ class ReactorConnectionTest {
 
         // Act and Assert
         StepVerifier.create(connection2.closeAsync(signal))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         assertTrue(connection2.isDisposed());
 
         StepVerifier.create(connection2.closeAsync(signal))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -794,6 +796,7 @@ class ReactorConnectionTest {
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))
             .assertNext(node -> assertTrue(node instanceof ManagementChannel))
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 }

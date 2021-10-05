@@ -44,44 +44,34 @@ An authenticated client is required to query Logs or Metrics. The library includ
 
 #### Synchronous clients
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L39-L41 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L40-L42 -->
 ```java
-public void createLogsClients() {
-    LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
-        .credential(new DefaultAzureCredentialBuilder().build())
-```
-
-### Create Logs query async client
-
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
-```java
-
-LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
+LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
-### Create Metrics query client
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L52-L54 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L53-L55 -->
 ```java
-public void createMetricsClients() {
-    MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
-        .credential(new DefaultAzureCredentialBuilder().build())
+MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 #### Asynchronous clients
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L43-L45 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L44-L46 -->
 ```java
 LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L56-L58 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L57-L59 -->
 ```java
-
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 ```
 
 ### Execute the query
@@ -120,50 +110,50 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Logs query
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L65-L74 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L66-L75 -->
 ```java
-ic void queryLogs() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
         new QueryTimeInterval(Duration.ofDays(2)));
 
 for (LogsTableRow row : queryResults.getTable().getRows()) {
     System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
+}
 ```
 
 #### Map logs query results to a model
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L80-L91 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L81-L92 -->
 ```java
+public class CustomLogModel {
+    private String resourceGroup;
+    private String operationName;
 
-ic class CustomLogModel {
-private String resourceGroup;
-private String operationName;
+    public String getResourceGroup() {
+        return resourceGroup;
+    }
 
-public String getResourceGroup() {
-    return resourceGroup;
-}
-
-public String getOperationName() {
-    return operationName;
+    public String getOperationName() {
+        return operationName;
+    }
 }
 ```
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L97-L106 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L98-L107 -->
 ```java
-ic void queryLogsAsModel() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
         new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
 for (CustomLogModel customLogModel : customLogModels) {
     System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
+}
 ```
 
 #### Handle logs query response
@@ -189,17 +179,16 @@ LogsQueryResult / LogsBatchQueryResult
 
 ### Batch logs query
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L113-L138 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L114-L139 -->
 ```java
-ic void queryBatch() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
 LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
-String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
-String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
+String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
 LogsBatchQueryResultCollection batchResults = logsQueryClient
         .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -217,15 +206,15 @@ for (CustomLogModel customLogModel : customLogModels) {
 LogsBatchQueryResult query3Result = batchResults.getResult(query3);
 if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
     System.out.println(query3Result.getError().getMessage());
+}
 ```
 
 ### Advanced logs query scenarios
 
 #### Set logs query timeout
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L146-L155 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L147-L156 -->
 ```java
-ic void getLogsWithServerTimeout() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -234,7 +223,8 @@ LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
 LogsQueryOptions options = new LogsQueryOptions()
     .setServerTimeout(Duration.ofMinutes(10));
 
-Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
+Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
+        "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
 ```
 
 #### Query multiple workspaces
@@ -246,17 +236,17 @@ workspace from which it was retrieved. To identify the workspace of a row in the
 "TenantId" column in the result table. If this column is not in the table, then you may have to update your query string
 to include this column.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L162-L170 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L163-L171 -->
 ```java
-ic void getLogsQueryFromMultipleWorkspaces() {
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
+Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
         new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                 .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
         Context.NONE);
+LogsQueryResult result = response.getValue();
 ```
 
 ### Metrics query
@@ -267,14 +257,13 @@ A resource ID, as denoted by the `{resource-id}` placeholder in the sample below
 2. From the **Overview** blade, select the **JSON View** link.
 3. In the resulting JSON, copy the value of the `id` property.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L178-L193 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L179-L194 -->
 ```java
-ic void getMetrics() {
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-MetricsQueryResult metricsQueryResult = metricsQueryClient.query("{resource-uri}",
+MetricsQueryResult metricsQueryResult = metricsQueryClient.queryResource("{resource-uri}",
         Arrays.asList("SuccessfulCalls", "TotalCalls"));
 
 for (MetricResult metric : metricsQueryResult.getMetrics()) {
@@ -285,6 +274,7 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
         }
     }
+}
 ```
 
 #### Handle metrics query response
@@ -316,15 +306,14 @@ MetricsQueryResult
 
 #### Get average and count metrics
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L200-L221 -->
+<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L201-L222 -->
 ```java
-ic void getMetricsWithOptions() {
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
 Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-    .queryWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
+    .queryResourceWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
         new MetricsQueryOptions()
             .setGranularity(Duration.ofHours(1))
             .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
@@ -340,6 +329,7 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
             System.out.println(metricValue.getTimeStamp() + " " + metricValue.getTotal());
         }
     }
+}
 ```
 
 ## Troubleshooting
