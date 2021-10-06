@@ -15,10 +15,10 @@ import java.util.Collection;
 final class LogsQueryClientAudience extends ExpandableStringEnum<LogsQueryClientAudience> {
 
     /** Static audience for Azure public cloud. */
-    public static final LogsQueryClientAudience AZURE_PUBLIC_CLOUD = fromString("https://api.monitor.azure.com");
+    public static final LogsQueryClientAudience AZURE_PUBLIC_CLOUD = fromString("https://api.loganalytics.io");
 
     /** Static default audience that uses Azure public cloud. */
-    public static final LogsQueryClientAudience DEFAULT = fromString("https://api.monitor.azure.com");
+    public static final LogsQueryClientAudience DEFAULT = fromString("https://api.loganalytics.io");
 
     /**
      * Creates or finds a LogsQueryClientAudience from its string representation.
