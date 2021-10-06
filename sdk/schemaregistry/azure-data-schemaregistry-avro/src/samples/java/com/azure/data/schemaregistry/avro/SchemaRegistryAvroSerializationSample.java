@@ -34,7 +34,7 @@ public class SchemaRegistryAvroSerializationSample {
 
         // Create the serializer instance by configuring the serializer with the schema registry client and
         // enabling auto registering of new schemas
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAvroSerializerBuilder()
+        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)

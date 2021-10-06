@@ -36,7 +36,7 @@ public class ReadmeSamples {
             .credential(tokenCredential)
             .buildAsyncClient();
 
-        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAvroSerializerBuilder()
+        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildSerializer();

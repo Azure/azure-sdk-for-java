@@ -15,7 +15,7 @@ import org.apache.avro.specific.SpecificRecord;
  *
  * @see SchemaRegistryApacheAvroSerializer
  */
-public final class SchemaRegistryAvroSerializerBuilder {
+public final class SchemaRegistryApacheAvroSerializerBuilder {
     private static final boolean AVRO_SPECIFIC_READER_DEFAULT = false;
     private static final int MAX_CACHE_SIZE = 128;
 
@@ -27,7 +27,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
     /**
      * Instantiates instance of Builder class. Supplies client defaults.
      */
-    public SchemaRegistryAvroSerializerBuilder() {
+    public SchemaRegistryApacheAvroSerializerBuilder() {
         this.autoRegisterSchemas = false;
         this.avroSpecificReader = false;
     }
@@ -41,9 +41,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
      *
      * @param schemaGroup Azure Schema Registry schema group
      *
-     * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance
+     * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance
      */
-    public SchemaRegistryAvroSerializerBuilder schemaGroup(String schemaGroup) {
+    public SchemaRegistryApacheAvroSerializerBuilder schemaGroup(String schemaGroup) {
         this.schemaGroup = schemaGroup;
         return this;
     }
@@ -59,9 +59,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
      *
      * @param autoRegisterSchemas flag for schema auto-registration
      *
-     * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance
+     * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance
      */
-    public SchemaRegistryAvroSerializerBuilder autoRegisterSchema(boolean autoRegisterSchemas) {
+    public SchemaRegistryApacheAvroSerializerBuilder autoRegisterSchema(boolean autoRegisterSchemas) {
         this.autoRegisterSchemas = autoRegisterSchemas;
         return this;
     }
@@ -73,9 +73,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @param avroSpecificReader {@code true} to deserialize into {@link SpecificRecord} via {@link
      *     SpecificDatumReader}; {@code false} otherwise.
      *
-     * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance.
+     * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance.
      */
-    public SchemaRegistryAvroSerializerBuilder avroSpecificReader(boolean avroSpecificReader) {
+    public SchemaRegistryApacheAvroSerializerBuilder avroSpecificReader(boolean avroSpecificReader) {
         this.avroSpecificReader = avroSpecificReader;
         return this;
     }
@@ -85,9 +85,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
      *
      * @param schemaRegistryAsyncClient The {@link SchemaRegistryAsyncClient}.
      *
-     * @return updated {@link SchemaRegistryAvroSerializerBuilder} instance.
+     * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance.
      */
-    public SchemaRegistryAvroSerializerBuilder schemaRegistryAsyncClient(
+    public SchemaRegistryApacheAvroSerializerBuilder schemaRegistryAsyncClient(
         SchemaRegistryAsyncClient schemaRegistryAsyncClient) {
         this.schemaRegistryAsyncClient = schemaRegistryAsyncClient;
         return this;
