@@ -63,7 +63,7 @@ public class ResponseTimeoutHandlerTests {
         responseTimeoutHandler.handlerAdded(ctx);
         responseTimeoutHandler.handlerRemoved(ctx);
 
-        assertNull(responseTimeoutHandler.responseTimeoutWatcher);
+        assertNull(responseTimeoutHandler.getResponseTimeoutWatcher());
     }
 
     @Test

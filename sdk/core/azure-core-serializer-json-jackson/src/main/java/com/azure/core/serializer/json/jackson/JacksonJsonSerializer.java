@@ -23,7 +23,7 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
 
     private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
 
-    final ObjectMapperShim mapper;
+    private final ObjectMapperShim mapper;
 
     /**
      * Constructs a {@link JsonSerializer} using the passed Jackson serializer.
@@ -32,6 +32,10 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
      */
     JacksonJsonSerializer(ObjectMapperShim mapper) {
         this.mapper = mapper;
+    }
+
+    ObjectMapperShim getMapper() {
+        return mapper;
     }
 
     @Override

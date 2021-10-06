@@ -63,7 +63,7 @@ public class ReadTimeoutHandlerTests {
         readTimeoutHandler.handlerAdded(ctx);
         readTimeoutHandler.handlerRemoved(ctx);
 
-        assertNull(readTimeoutHandler.readTimeoutWatcher);
+        assertNull(readTimeoutHandler.getReadTimeoutWatcher());
     }
 
     @Test

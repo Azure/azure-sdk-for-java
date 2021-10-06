@@ -68,7 +68,7 @@ public class WriteTimeoutHandlerTests {
         writeTimeoutHandler.handlerRemoved(ctx);
 
         // When the handler is removed the timer is nulled out.
-        assertNull(writeTimeoutHandler.writeTimeoutWatcher);
+        assertNull(writeTimeoutHandler.getWriteTimeoutWatcher());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class WriteTimeoutHandlerTests {
         writeTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before after a write operation happened.
-        writeTimeoutHandler.writeListener.operationComplete(null);
+        writeTimeoutHandler.getWriteListener().operationComplete(null);
         writeTimeoutHandler.writeTimeoutRunnable(ctx);
 
         writeTimeoutHandler.handlerRemoved(ctx);

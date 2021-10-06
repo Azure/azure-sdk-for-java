@@ -24,14 +24,14 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
 
     private static final String WRITE_TIMED_OUT_MESSAGE = "Channel write operation timed out after %d milliseconds.";
 
-    final ChannelFutureListener writeListener = (future) -> this.lastWriteMillis = System.currentTimeMillis();
+    private final ChannelFutureListener writeListener = (future) -> this.lastWriteMillis = System.currentTimeMillis();
 
     private final long timeoutMillis;
 
     private boolean closed;
     private long lastWriteMillis;
     private long lastWriteProgress;
-    ScheduledFuture<?> writeTimeoutWatcher;
+    private ScheduledFuture<?> writeTimeoutWatcher;
 
     /**
      * Constructs a channel handler that watches channel write operations to ensure they aren't timing out.
@@ -41,6 +41,14 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
      */
     public WriteTimeoutHandler(long timeoutMillis) {
         this.timeoutMillis = timeoutMillis;
+    }
+
+    ChannelFutureListener getWriteListener() {
+        return writeListener;
+    }
+
+    ScheduledFuture<?> getWriteTimeoutWatcher() {
+        return writeTimeoutWatcher;
     }
 
     @Override

@@ -275,7 +275,7 @@ public class JacksonMemberNameConverterTests {
 
         assertEquals(expected, actual);
 
-        ObjectNode objectNode = converter.mapper.valueToTree(object);
+        ObjectNode objectNode = converter.getMapper().valueToTree(object);
 
         for (String name : actual) {
             assertTrue(objectNode.has(name));
