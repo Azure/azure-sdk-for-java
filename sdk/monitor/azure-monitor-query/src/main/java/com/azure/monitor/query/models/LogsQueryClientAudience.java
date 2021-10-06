@@ -12,7 +12,7 @@ import java.util.Collection;
 /**
  * Cloud audiences available for {@link LogsQueryClient}.
  */
-public final class LogsQueryClientAudience extends ExpandableStringEnum<LogsQueryClientAudience> {
+final class LogsQueryClientAudience extends ExpandableStringEnum<LogsQueryClientAudience> {
 
     /** Static audience for Azure public cloud. */
     public static final LogsQueryClientAudience AZURE_PUBLIC_CLOUD = fromString("https://api.monitor.azure.com");
