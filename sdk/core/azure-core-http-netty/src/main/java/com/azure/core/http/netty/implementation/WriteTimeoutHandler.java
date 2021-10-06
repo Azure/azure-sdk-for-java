@@ -43,6 +43,14 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
         this.timeoutMillis = timeoutMillis;
     }
 
+    ChannelFutureListener getWriteListener() {
+        return writeListener;
+    }
+
+    ScheduledFuture<?> getWriteTimeoutWatcher() {
+        return writeTimeoutWatcher;
+    }
+
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
         ctx.write(msg, promise.unvoid()).addListener(writeListener);
@@ -61,7 +69,7 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
         disposeWatcher();
     }
 
-    private void writeTimeoutRunnable(ChannelHandlerContext ctx) {
+    void writeTimeoutRunnable(ChannelHandlerContext ctx) {
         // Channel has completed a write operation since the last time the timeout event fired.
         if ((timeoutMillis - (System.currentTimeMillis() - lastWriteMillis)) > 0) {
             return;

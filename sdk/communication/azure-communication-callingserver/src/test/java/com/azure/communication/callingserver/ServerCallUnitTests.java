@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.AbstractMap.SimpleEntry;
 
-import com.azure.communication.callingserver.models.RecordingChannelType;
-import com.azure.communication.callingserver.models.RecordingContentType;
-import com.azure.communication.callingserver.models.RecordingFormatType;
+import com.azure.communication.callingserver.models.RecordingChannel;
+import com.azure.communication.callingserver.models.RecordingContent;
+import com.azure.communication.callingserver.models.RecordingFormat;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
 import com.azure.communication.callingserver.models.AddParticipantResult;
@@ -47,9 +47,9 @@ public class ServerCallUnitTests {
     @Test
     public void startRecordingWithRecordingParamsRelativeUriFails() {
         StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
-        startRecordingOptions.setRecordingChannelType(RecordingChannelType.MIXED);
-        startRecordingOptions.setRecordingContentType(RecordingContentType.AUDIO_VIDEO);
-        startRecordingOptions.setRecordingFormatType(RecordingFormatType.MP4);
+        startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
+        startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
+        startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
 
         ServerCall serverCall = new CallingServerClientBuilder()
             .httpClient(new NoOpHttpClient())
@@ -105,9 +105,9 @@ public class ServerCallUnitTests {
     @Test
     public void startRecordingWithRecordingParamsAsyncFails() {
         StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
-        startRecordingOptions.setRecordingChannelType(RecordingChannelType.MIXED);
-        startRecordingOptions.setRecordingContentType(RecordingContentType.AUDIO_VIDEO);
-        startRecordingOptions.setRecordingFormatType(RecordingFormatType.MP4);
+        startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
+        startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
+        startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
 
         ServerCallAsync serverCall = new CallingServerClientBuilder()
             .httpClient(new NoOpHttpClient())
