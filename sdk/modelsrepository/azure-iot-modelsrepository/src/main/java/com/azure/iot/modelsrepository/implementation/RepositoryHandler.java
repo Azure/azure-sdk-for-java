@@ -36,8 +36,8 @@ public final class RepositoryHandler {
 
         if (this.repositoryUri.getScheme() != null
             && this.repositoryUri.getScheme()
-                .toLowerCase(Locale.getDefault())
-                .startsWith(ModelsRepositoryConstants.HTTP)) {
+            .toLowerCase(Locale.getDefault())
+            .startsWith(ModelsRepositoryConstants.HTTP)) {
             this.modelFetcher = new HttpModelFetcher(protocolLayer);
         } else {
             this.modelFetcher = new FileModelFetcher();
@@ -69,42 +69,23 @@ public final class RepositoryHandler {
             return Flux.empty();
         }
 
-        //String targetDtmi = remainingWork.poll();
-        Mono<Boolean> tryFromExpanded = Mono.just(false);
-
-        // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
-        // metadata.json content from the target repository. The metadata object includes supported features
-        // of the repository.
-        // If the metadata indicates expanded models are available. The client will try to fetch pre-computed model
-        // dependencies using .expanded.json.
-        // If the model expanded form does not exist fall back to computing model dependencies just-in-time.
-        if (resolutionOption == ModelDependencyResolution.ENABLED) {
-            Mono<FetchMetadataResult> repositoryMetadata = modelFetcher.fetchMetadataAsync(repositoryUri, context);
-
-            if (repositoryMetadata != null) {
-                tryFromExpanded = repositoryMetadata
-                    .map(repo -> (
-                        repo != null && repo.getDefinition() != null
-                        && repo.getDefinition().getFeatures() != null
-                        && repo.getDefinition().getFeatures().isExpanded()
-                        )
-                    )
-                    .defaultIfEmpty(false);
-            }
-        }
-
         logger.info(String.format(StatusStrings.PROCESSING_DTMIS, remainingWork.peek()));
 
-        return tryFromExpanded
-            .flatMap(tryExpanded -> modelFetcher.fetchModelAsync(remainingWork.peek(), repositoryUri, tryExpanded, context))
+        return isFromExpanded(resolutionOption, context)
+            .flatMap(tryExpanded -> {
+                logger.info("Try from expanded is " + tryExpanded);
+                return modelFetcher.fetchModelAsync(remainingWork.peek(), repositoryUri, tryExpanded, context);
+            })
             .map(result -> new IntermediateFetchModelResult(result, currentResults))
             .expandDeep(customType -> {
                 if (remainingWork.isEmpty()) {
                     return Flux.empty();
                 }
+
                 Map<String, String> results = customType.getMap();
                 FetchModelResult response = customType.getFetchModelResult();
                 String targetDtmi = remainingWork.poll();
+
                 if (response.isFromExpanded()) {
                     try {
                         Map<String, String> expanded = new ModelsQuery(response.getDefinition()).listToMap();
@@ -161,5 +142,30 @@ public final class RepositoryHandler {
         }
 
         return modelsToProcess;
+    }
+
+    private Mono<Boolean> isFromExpanded(ModelDependencyResolution resolutionOption, Context context) {
+        // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
+        // metadata.json content from the target repository. The metadata object includes supported features
+        // of the repository.
+        // If the metadata indicates expanded models are available. The client will try to fetch pre-computed model
+        // dependencies using .expanded.json.
+        // If the model expanded form does not exist fall back to computing model dependencies just-in-time.
+        if (resolutionOption == ModelDependencyResolution.ENABLED) {
+            return modelFetcher.fetchMetadataAsync(repositoryUri, context)
+                .onErrorResume(error -> Mono.just(new FetchMetadataResult()))
+                .flatMap(result -> {
+                    Boolean tryFromExpanded = false;
+                    if (result != null) {
+                        logger.error("got me some results: " + result);
+                        tryFromExpanded = result != null && result.getDefinition() != null
+                            && result.getDefinition().getFeatures() != null
+                            && result.getDefinition().getFeatures().isExpanded();
+                    }
+                    return Mono.just(tryFromExpanded);
+                });
+        }
+
+        return Mono.just(false);
     }
 }

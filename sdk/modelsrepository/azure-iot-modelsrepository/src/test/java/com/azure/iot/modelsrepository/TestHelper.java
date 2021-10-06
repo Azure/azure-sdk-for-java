@@ -24,7 +24,7 @@ class TestHelper {
     private static final String AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS = "AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS";
     private static final String LOCAL_TEST_REPOSITORY_PATH_WITH_METADATA = (System.getProperty("user.dir") + "/src/test/resources/TestModelRepo/metadataModelsrepo/").replace("\\", "/");
     private static final String LOCAL_TEST_REPOSITORY_NO_METADATA_PATH = (System.getProperty("user.dir") + "/src/test/resources/TestModelRepo/").replace("\\", "/");
-    public static final String MODELS_REPOSITORY_NO_METADATA_ENDPOINT = "https://raw.githubusercontent.com";
+    public static final String MODELS_REPOSITORY_NO_METADATA_ENDPOINT = "https://raw.githubusercontent.com/Azure/iot-plugandplay-models/main";
 
     private static final String SERVICE_VERSION_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_IOT_MODELSREPOSITORY_TEST_SERVICE_VERSIONS);

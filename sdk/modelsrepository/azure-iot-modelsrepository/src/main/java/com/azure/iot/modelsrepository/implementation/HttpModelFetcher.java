@@ -64,30 +64,28 @@ class HttpModelFetcher implements ModelFetcher {
 
     @Override
     public Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context) {
-        return Mono.defer(() -> {
-            try {
-                String tryContentPath = getMetadataPath(repositoryUri);
+        try {
+            String tryContentPath = getMetadataPath(repositoryUri);
 
-                logger.info(StatusStrings.FETCHING_METADATA_CONTENT, tryContentPath);
+            logger.info(StatusStrings.FETCHING_METADATA_CONTENT, tryContentPath);
 
-                return evaluatePath(tryContentPath, context)
-                    .onErrorResume(error -> {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s",
-                            tryContentPath, error.getMessage()));
-                        return Mono.empty();
-                    })
-                    .map(s -> {
-                        try {
-                            return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
-                        } catch (JsonProcessingException e) {
-                            logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
-                            return null;
-                        }
-                    });
-            } catch (MalformedURLException | URISyntaxException e) {
-                return Mono.error(new AzureException(e));
-            }
-        });
+            return evaluatePath(tryContentPath, context)
+                .onErrorResume(error -> {
+                    logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s",
+                        tryContentPath, error.getMessage()));
+                    return Mono.error(error);
+                })
+                .map(s -> {
+                    try {
+                        return new FetchMetadataResult().setPath(tryContentPath).setDefinition(s);
+                    } catch (JsonProcessingException e) {
+                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, tryContentPath));
+                        return null;
+                    }
+                });
+        } catch (MalformedURLException | URISyntaxException e) {
+            return Mono.error(new AzureException(e));
+        }
     }
 
     private Mono<String> evaluatePath(String tryContentPath, Context context) {
@@ -101,7 +99,7 @@ class HttpModelFetcher implements ModelFetcher {
     }
 
     private String getModelPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException {
-        return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded).getPath();
+        return DtmiConventions.getModelPath(dtmi, expanded);
     }
 
     private String getMetadataPath(URI repositoryUri) throws URISyntaxException, MalformedURLException {

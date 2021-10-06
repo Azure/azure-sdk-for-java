@@ -82,33 +82,30 @@ class FileModelFetcher implements ModelFetcher {
 
     @Override
     public Mono<FetchMetadataResult> fetchMetadataAsync(URI repositoryUri, Context context) {
-        return Mono.defer(() -> {
+        try {
+            String tryContentPath = getMetadataPath(repositoryUri);
+            Path path = Paths.get(new File(tryContentPath).getPath());
 
-            try {
-                String tryContentPath = getMetadataPath(repositoryUri);
-                Path path = Paths.get(new File(tryContentPath).getPath());
+            logger.info(StatusStrings.FETCHING_METADATA_CONTENT, path);
 
-                logger.info(StatusStrings.FETCHING_METADATA_CONTENT, path);
-
-                if (Files.exists(path)) {
-                    try {
-                        return Mono.just(
-                            new FetchMetadataResult()
-                                .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
-                                .setPath(tryContentPath));
-                    } catch (IOException e) {
-                        logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
-                            path.toString(), e.getMessage()));
-                        return Mono.empty();
-                    }
+            if (Files.exists(path)) {
+                try {
+                    return Mono.just(
+                        new FetchMetadataResult()
+                            .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
+                            .setPath(tryContentPath));
+                } catch (IOException e) {
+                    logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
+                        path.toString(), e.getMessage()));
+                    return Mono.empty();
                 }
-
-                logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, path.toString()));
-                return Mono.empty();
-            } catch (MalformedURLException | URISyntaxException e) {
-                return Mono.error(new AzureException(e));
             }
-        });
+
+            logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT, path.toString()));
+            return Mono.just(new FetchMetadataResult());
+        } catch (MalformedURLException | URISyntaxException e) {
+            return Mono.error(new AzureException(e));
+        }
     }
 
     private String getModelPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {
