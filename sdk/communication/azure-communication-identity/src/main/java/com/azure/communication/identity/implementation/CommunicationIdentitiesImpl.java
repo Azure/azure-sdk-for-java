@@ -9,6 +9,7 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.TeamsUserAccessTokenRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -27,31 +28,33 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunicationIdentity. */
-public final class CommunicationIdentityImpl {
+/** An instance of this class provides access to all the operations defined in CommunicationIdentities. */
+public final class CommunicationIdentitiesImpl {
     /** The proxy service used to perform REST calls. */
-    private final CommunicationIdentityService service;
+    private final CommunicationIdentitiesService service;
 
     /** The service client containing this operation class. */
     private final CommunicationIdentityClientImpl client;
 
     /**
-     * Initializes an instance of CommunicationIdentityImpl.
+     * Initializes an instance of CommunicationIdentitiesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CommunicationIdentityImpl(CommunicationIdentityClientImpl client) {
-        this.service = RestProxy.create(CommunicationIdentityService.class, client.getHttpPipeline());
+    CommunicationIdentitiesImpl(CommunicationIdentityClientImpl client) {
+        this.service =
+                RestProxy.create(
+                        CommunicationIdentitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CommunicationIdentityClientCommunicationIdentity to be used by the
+     * The interface defining all the services for CommunicationIdentityClientCommunicationIdentities to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CommunicationIdentity")
-    private interface CommunicationIdentityService {
+    @ServiceInterface(name = "CommunicationIdentit")
+    private interface CommunicationIdentitiesService {
         @Post("/identities")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -79,6 +82,15 @@ public final class CommunicationIdentityImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
+        @Post("/teamsUser/:exchangeAccessToken")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessToken(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") TeamsUserAccessTokenRequest body,
+                Context context);
+
         @Post("/identities/{id}/:issueAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -91,9 +103,10 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Create a new identity.
+     * Create a new identity, and optionally, an access token.
      *
-     * @param body The body parameter.
+     * @param body If specified, creates also a Communication Identity access token associated with the identity and
+     *     containing the requested scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,9 +120,10 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Create a new identity.
+     * Create a new identity, and optionally, an access token.
      *
-     * @param body The body parameter.
+     * @param body If specified, creates also a Communication Identity access token associated with the identity and
+     *     containing the requested scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -123,9 +137,10 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Create a new identity.
+     * Create a new identity, and optionally, an access token.
      *
-     * @param body The body parameter.
+     * @param body If specified, creates also a Communication Identity access token associated with the identity and
+     *     containing the requested scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -145,9 +160,10 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Create a new identity.
+     * Create a new identity, and optionally, an access token.
      *
-     * @param body The body parameter.
+     * @param body If specified, creates also a Communication Identity access token associated with the identity and
+     *     containing the requested scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -169,9 +185,10 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Create a new identity.
+     * Create a new identity, and optionally, an access token.
      *
-     * @param body The body parameter.
+     * @param body If specified, creates also a Communication Identity access token associated with the identity and
+     *     containing the requested scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -183,9 +200,10 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Create a new identity.
+     * Create a new identity, and optionally, an access token.
      *
-     * @param body The body parameter.
+     * @param body If specified, creates also a Communication Identity access token associated with the identity and
+     *     containing the requested scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -372,10 +390,121 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     *
+     * @param body AAD access token of a Teams user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
+            TeamsUserAccessTokenRequest body) {
+        return FluxUtil.withContext(
+                context ->
+                        service.exchangeTeamsUserAccessToken(
+                                this.client.getEndpoint(), this.client.getApiVersion(), body, context));
+    }
+
+    /**
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     *
+     * @param body AAD access token of a Teams user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationIdentityAccessToken>> exchangeTeamsUserAccessTokenWithResponseAsync(
+            TeamsUserAccessTokenRequest body, Context context) {
+        return service.exchangeTeamsUserAccessToken(
+                this.client.getEndpoint(), this.client.getApiVersion(), body, context);
+    }
+
+    /**
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     *
+     * @param body AAD access token of a Teams user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(TeamsUserAccessTokenRequest body) {
+        return exchangeTeamsUserAccessTokenWithResponseAsync(body)
+                .flatMap(
+                        (Response<CommunicationIdentityAccessToken> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     *
+     * @param body AAD access token of a Teams user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationIdentityAccessToken> exchangeTeamsUserAccessTokenAsync(
+            TeamsUserAccessTokenRequest body, Context context) {
+        return exchangeTeamsUserAccessTokenWithResponseAsync(body, context)
+                .flatMap(
+                        (Response<CommunicationIdentityAccessToken> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     *
+     * @param body AAD access token of a Teams user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessToken exchangeTeamsUserAccessToken(TeamsUserAccessTokenRequest body) {
+        return exchangeTeamsUserAccessTokenAsync(body).block();
+    }
+
+    /**
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     *
+     * @param body AAD access token of a Teams user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessToken exchangeTeamsUserAccessToken(
+            TeamsUserAccessTokenRequest body, Context context) {
+        return exchangeTeamsUserAccessTokenAsync(body, context).block();
+    }
+
+    /**
      * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body Requested scopes for the new token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -394,7 +523,7 @@ public final class CommunicationIdentityImpl {
      * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body Requested scopes for the new token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -411,7 +540,7 @@ public final class CommunicationIdentityImpl {
      * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body Requested scopes for the new token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +564,7 @@ public final class CommunicationIdentityImpl {
      * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body Requested scopes for the new token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -460,7 +589,7 @@ public final class CommunicationIdentityImpl {
      * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body Requested scopes for the new token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -475,7 +604,7 @@ public final class CommunicationIdentityImpl {
      * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body Requested scopes for the new token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

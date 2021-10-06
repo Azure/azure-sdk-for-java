@@ -8,12 +8,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.*;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -32,11 +29,11 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
-    private final CommunicationIdentityImpl client;
+    private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
     CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
-        client = communicationIdentityClient.getCommunicationIdentity();
+        client = communicationIdentityClient.getCommunicationIdentities();
     }
 
     /**
@@ -225,4 +222,43 @@ public final class CommunicationIdentityClient {
         return new CommunicationUserIdentifierAndToken(user, token);
 
     }
+
+    /**
+     * Exchanges a teams token for a new ACS access token.
+     *
+     * @param teamsToken Teams token to acquire a new ACS access token.
+     * @return the token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessToken exchangeTeamsToken(String teamsToken) {
+        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
+        requestBody.setToken(teamsToken);
+        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
+        return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
+    }
+
+    /**
+     * Exchanges a teams token for a new ACS access token.
+     *
+     * @param teamsToken Teams token to acquire a new ACS access token.
+     * @return the token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessToken> exchangeTeamsTokenWithResponse(String teamsToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
+        requestBody.setToken(teamsToken);
+        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
+            .block();
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+        }
+
+        return new SimpleResponse<AccessToken>(
+            response,
+            new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+    }
+
+
+
 }

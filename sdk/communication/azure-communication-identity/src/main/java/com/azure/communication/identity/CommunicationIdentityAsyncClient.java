@@ -3,14 +3,10 @@
 
 package com.azure.communication.identity;
 
+import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
 import com.azure.communication.identity.implementation.converters.IdentityErrorConverter;
-import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.*;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.IdentityError;
@@ -40,11 +36,11 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = true)
 public final class CommunicationIdentityAsyncClient {
 
-    private final CommunicationIdentityImpl client;
+    private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityAsyncClient.class);
 
     CommunicationIdentityAsyncClient(CommunicationIdentityClientImpl communicationIdentityServiceClient) {
-        client = communicationIdentityServiceClient.getCommunicationIdentity();
+        client = communicationIdentityServiceClient.getCommunicationIdentities();
     }
 
     /**
@@ -281,4 +277,48 @@ public final class CommunicationIdentityAsyncClient {
         }
         return new IdentityErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
+
+    /**
+     * Exchanges a teams token for a new ACS access token.
+     *
+     * @param teamsToken Teams token to acquire a new ACS access token.
+     * @return The access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AccessToken> exchangeTeamsToken(String teamsToken) {
+        try {
+            TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
+            requestBody.setToken(teamsToken);
+            return client.exchangeTeamsUserAccessTokenAsync(requestBody)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .flatMap((CommunicationIdentityAccessToken rawToken) -> {
+                    return Mono.just(new AccessToken(rawToken.getToken(), rawToken.getExpiresOn()));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exchanges a teams token for a new ACS access token.
+     *
+     * @param teamsToken Teams token to acquire a new ACS access token.
+     * @return The access token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AccessToken>> exchangeTeamsTokenWithResponse(String teamsToken) {
+        try {
+            TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
+            requestBody.setToken(teamsToken);
+            return client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody)
+                .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
+                    AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
+                    return Mono.just(new SimpleResponse<AccessToken>(response, token));
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
 }

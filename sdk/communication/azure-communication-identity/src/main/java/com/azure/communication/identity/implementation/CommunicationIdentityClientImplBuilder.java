@@ -10,6 +10,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the CommunicationIdentityClient type. */
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClientImpl.class})
@@ -47,6 +49,22 @@ public final class CommunicationIdentityClientImplBuilder {
         return this;
     }
 
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the CommunicationIdentityClientImplBuilder.
+     */
+    public CommunicationIdentityClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
     /**
      * Builds an instance of CommunicationIdentityClientImpl with the provided parameters.
      *
@@ -59,7 +77,11 @@ public final class CommunicationIdentityClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        CommunicationIdentityClientImpl client = new CommunicationIdentityClientImpl(pipeline, endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        CommunicationIdentityClientImpl client =
+                new CommunicationIdentityClientImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 }
