@@ -169,8 +169,8 @@ public class RequestResponseChannel implements AsyncCloseable {
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
-                    logger.verbose("connectionId[{}], linkName[{}]: Settling message: {}", connectionId, linkName,
-                        message.getCorrelationId());
+                    logger.verbose("connectionId[{}], linkName[{}] messageId[{}]: Settling message.", connectionId,
+                        linkName, message.getCorrelationId());
 
                     settleMessage(message);
                 }),
@@ -214,7 +214,7 @@ public class RequestResponseChannel implements AsyncCloseable {
             });
         } catch (IOException | RejectedExecutionException e) {
             throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "connectionId[%s], linkName[%s]: Unable to open send and receive link.", connectionId, linkName), e));
+                "connectionId[%s] linkName[%s]: Unable to open send and receive link.", connectionId, linkName), e));
         }
     }
 
@@ -235,7 +235,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 return Mono.fromRunnable(() -> {
                     logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete"
                             + " closing. Manually closing.",
-                        connectionId, linkName, error);
+                        connectionId, linkName);
 
                     onTerminalState("SendLinkHandler");
                     onTerminalState("ReceiveLinkHandler");
@@ -319,7 +319,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
             .then(Mono.create(sink -> {
                 try {
-                    logger.verbose("connectionId[{}], linkName[{}]: Scheduling on dispatcher. MessageId[{}]",
+                    logger.verbose("connectionId[{}], linkName[{}] messageId[{}]: Scheduling on dispatcher. ",
                         connectionId, linkName, messageId);
                     unconfirmedSends.putIfAbsent(messageId, sink);
 
@@ -381,9 +381,9 @@ public class RequestResponseChannel implements AsyncCloseable {
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
-            int size = unconfirmedSends.size();
-            logger.warning("connectionId[{}] linkName[{}] Received delivery without pending messageId[{}]. size[{}]",
-                connectionId, linkName, id, size);
+            logger.warning(
+                "connectionId[{}] linkName[{}] messageId[{}] Received delivery without pending message.",
+                connectionId, linkName, id);
             return;
         }
 
