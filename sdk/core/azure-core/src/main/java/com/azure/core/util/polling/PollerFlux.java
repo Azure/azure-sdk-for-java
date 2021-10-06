@@ -164,10 +164,72 @@ import java.util.function.Supplier;
  * <!-- end com.azure.core.util.polling.poller.cancelOperation -->
  *
  * <p><strong>Instantiating and subscribing to PollerFlux from a known polling strategy</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy}
+ * <!-- src_embed com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
+ * <pre>
+ * &#47;&#47; Create poller instance
+ * PollerFlux&lt;BinaryData, String&gt; poller = PollerFlux.create&#40;
+ *     Duration.ofMillis&#40;100&#41;,
+ *     &#47;&#47; pass in your custom activation operation
+ *     &#40;&#41; -&gt; Mono.just&#40;new SimpleResponse&lt;Void&gt;&#40;new HttpRequest&#40;
+ *         HttpMethod.POST,
+ *         &quot;http:&#47;&#47;httpbin.org&quot;&#41;,
+ *         202,
+ *         new HttpHeaders&#40;&#41;.set&#40;&quot;Operation-Location&quot;, &quot;http:&#47;&#47;httpbin.org&quot;&#41;,
+ *         null&#41;&#41;,
+ *     new OperationResourcePollingStrategy&lt;&gt;&#40;new HttpPipelineBuilder&#40;&#41;.build&#40;&#41;&#41;,
+ *     TypeReference.createInstance&#40;BinaryData.class&#41;,
+ *     TypeReference.createInstance&#40;String.class&#41;&#41;;
+ *
+ * &#47;&#47; Listen to poll responses
+ * poller.subscribe&#40;response -&gt; &#123;
+ *     &#47;&#47; Process poll response
+ *     System.out.printf&#40;&quot;Got response. Status: %s, Value: %s%n&quot;, response.getStatus&#40;&#41;, response.getValue&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * &#47;&#47; Do something else
+ *
+ * </pre>
+ * <!-- end com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
  *
  * <p><strong>Instantiating and subscribing to PollerFlux from a custom polling strategy</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy}
+ * <!-- src_embed com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
+ * <pre>
+ *
+ * &#47;&#47; Create custom polling strategy based on OperationResourcePollingStrategy
+ * PollingStrategy&lt;BinaryData, String&gt; strategy = new OperationResourcePollingStrategy&lt;BinaryData, String&gt;&#40;
+ *         new HttpPipelineBuilder&#40;&#41;.build&#40;&#41;&#41; &#123;
+ *     &#47;&#47; override any interface method to customize the polling behavior
+ *     &#64;Override
+ *     public Mono&lt;PollResponse&lt;BinaryData&gt;&gt; poll&#40;PollingContext&lt;BinaryData&gt; context,
+ *                                                TypeReference&lt;BinaryData&gt; pollResponseType&#41; &#123;
+ *         return Mono.just&#40;new PollResponse&lt;&gt;&#40;
+ *             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+ *             BinaryData.fromString&#40;&quot;&quot;&#41;&#41;&#41;;
+ *     &#125;
+ * &#125;;
+ *
+ * &#47;&#47; Create poller instance
+ * PollerFlux&lt;BinaryData, String&gt; poller = PollerFlux.create&#40;
+ *     Duration.ofMillis&#40;100&#41;,
+ *     &#47;&#47; pass in your custom activation operation
+ *     &#40;&#41; -&gt; Mono.just&#40;new SimpleResponse&lt;Void&gt;&#40;new HttpRequest&#40;
+ *         HttpMethod.POST,
+ *         &quot;http:&#47;&#47;httpbin.org&quot;&#41;,
+ *         202,
+ *         new HttpHeaders&#40;&#41;.set&#40;&quot;Operation-Location&quot;, &quot;http:&#47;&#47;httpbin.org&quot;&#41;,
+ *         null&#41;&#41;,
+ *     strategy,
+ *     TypeReference.createInstance&#40;BinaryData.class&#41;,
+ *     TypeReference.createInstance&#40;String.class&#41;&#41;;
+ *
+ * &#47;&#47; Listen to poll responses
+ * poller.subscribe&#40;response -&gt; &#123;
+ *     &#47;&#47; Process poll response
+ *     System.out.printf&#40;&quot;Got response. Status: %s, Value: %s%n&quot;, response.getStatus&#40;&#41;, response.getValue&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * &#47;&#47; Do something else
+ *
+ * </pre>
+ * <!-- end com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long running operation.

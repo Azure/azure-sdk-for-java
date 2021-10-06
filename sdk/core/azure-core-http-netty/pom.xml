@@ -67,11 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-<<<<<<< HEAD
       <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
-=======
-      <version>1.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
->>>>>>> upstream/feature/jianghao/requestoptions
     </dependency>
 
     <dependency>
