@@ -189,7 +189,7 @@ class ReactorExecutor implements AsyncCloseable {
     }
 
     private void close(String reason, boolean initiatedByClient) {
-        logger.verbose(LOG_MESSAGE, connectionId, "Completing close and disposing scheduler. {})", reason);
+        logger.verbose(LOG_MESSAGE, connectionId, "Completing close and disposing scheduler. {}", reason);
         scheduler.dispose();
         isClosedMono.emitEmpty((signalType, emitResult) -> {
             logger.verbose("connectionId[{}] signalType[{}] emitResult[{}]: Unable to emit close event on reactor",
