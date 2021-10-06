@@ -5,12 +5,16 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Desired outbound IP resources for the cluster load balancer. */
+/**
+ * Desired outbound IP resources for the cluster load balancer.
+ */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileOutboundIPs {
     @JsonIgnore
@@ -24,7 +28,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
 
     /**
      * Get the publicIPs property: A list of public IP resources.
-     *
+     * 
      * @return the publicIPs value.
      */
     public List<ResourceReference> publicIPs() {
@@ -33,7 +37,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
 
     /**
      * Set the publicIPs property: A list of public IP resources.
-     *
+     * 
      * @param publicIPs the publicIPs value to set.
      * @return the ManagedClusterLoadBalancerProfileOutboundIPs object itself.
      */
@@ -44,7 +48,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

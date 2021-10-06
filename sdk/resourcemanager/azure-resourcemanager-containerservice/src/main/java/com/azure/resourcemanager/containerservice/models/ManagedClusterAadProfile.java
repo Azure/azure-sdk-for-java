@@ -5,18 +5,20 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * AADProfile specifies attributes for Azure Active Directory integration. For more details see [managed AAD on
- * AKS](https://docs.microsoft.com/azure/aks/managed-aad).
+ * AADProfile specifies attributes for Azure Active Directory integration.
  */
 @Fluent
 public final class ManagedClusterAadProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAadProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterAadProfile.class);
 
     /*
      * Whether to enable managed AAD.
@@ -31,8 +33,7 @@ public final class ManagedClusterAadProfile {
     private Boolean enableAzureRbac;
 
     /*
-     * The list of AAD group object IDs that will have admin role of the
-     * cluster.
+     * AAD group object IDs that will have admin role of the cluster.
      */
     @JsonProperty(value = "adminGroupObjectIDs")
     private List<String> adminGroupObjectIDs;
@@ -64,7 +65,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the managed property: Whether to enable managed AAD.
-     *
+     * 
      * @return the managed value.
      */
     public Boolean managed() {
@@ -73,7 +74,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the managed property: Whether to enable managed AAD.
-     *
+     * 
      * @param managed the managed value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -83,8 +84,9 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the enableAzureRbac property: Whether to enable Azure RBAC for Kubernetes authorization.
-     *
+     * Get the enableAzureRbac property: Whether to enable Azure RBAC for
+     * Kubernetes authorization.
+     * 
      * @return the enableAzureRbac value.
      */
     public Boolean enableAzureRbac() {
@@ -92,8 +94,9 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the enableAzureRbac property: Whether to enable Azure RBAC for Kubernetes authorization.
-     *
+     * Set the enableAzureRbac property: Whether to enable Azure RBAC for
+     * Kubernetes authorization.
+     * 
      * @param enableAzureRbac the enableAzureRbac value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -103,8 +106,9 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the adminGroupObjectIDs property: The list of AAD group object IDs that will have admin role of the cluster.
-     *
+     * Get the adminGroupObjectIDs property: AAD group object IDs that will
+     * have admin role of the cluster.
+     * 
      * @return the adminGroupObjectIDs value.
      */
     public List<String> adminGroupObjectIDs() {
@@ -112,8 +116,9 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the adminGroupObjectIDs property: The list of AAD group object IDs that will have admin role of the cluster.
-     *
+     * Set the adminGroupObjectIDs property: AAD group object IDs that will
+     * have admin role of the cluster.
+     * 
      * @param adminGroupObjectIDs the adminGroupObjectIDs value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -124,7 +129,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the clientAppId property: The client AAD application ID.
-     *
+     * 
      * @return the clientAppId value.
      */
     public String clientAppId() {
@@ -133,7 +138,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the clientAppId property: The client AAD application ID.
-     *
+     * 
      * @param clientAppId the clientAppId value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -144,7 +149,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the serverAppId property: The server AAD application ID.
-     *
+     * 
      * @return the serverAppId value.
      */
     public String serverAppId() {
@@ -153,7 +158,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the serverAppId property: The server AAD application ID.
-     *
+     * 
      * @param serverAppId the serverAppId value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -164,7 +169,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Get the serverAppSecret property: The server AAD application secret.
-     *
+     * 
      * @return the serverAppSecret value.
      */
     public String serverAppSecret() {
@@ -173,7 +178,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Set the serverAppSecret property: The server AAD application secret.
-     *
+     * 
      * @param serverAppSecret the serverAppSecret value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -183,9 +188,9 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the tenantId property: The AAD tenant ID to use for authentication. If not specified, will use the tenant of
-     * the deployment subscription.
-     *
+     * Get the tenantId property: The AAD tenant ID to use for authentication.
+     * If not specified, will use the tenant of the deployment subscription.
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -193,9 +198,9 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the tenantId property: The AAD tenant ID to use for authentication. If not specified, will use the tenant of
-     * the deployment subscription.
-     *
+     * Set the tenantId property: The AAD tenant ID to use for authentication.
+     * If not specified, will use the tenant of the deployment subscription.
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ManagedClusterAadProfile object itself.
      */
@@ -206,7 +211,7 @@ public final class ManagedClusterAadProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

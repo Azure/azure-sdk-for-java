@@ -5,44 +5,44 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
- * A pod identity exception, which allows pods with certain labels to access the Azure Instance Metadata Service (IMDS)
- * endpoint without being intercepted by the node-managed identity (NMI) server. See [disable AAD Pod Identity for a
- * specific Pod/Application](https://azure.github.io/aad-pod-identity/docs/configure/application_exception/) for more
- * details.
+ * The ManagedClusterPodIdentityException model.
  */
 @Fluent
 public final class ManagedClusterPodIdentityException {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityException.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityException.class);
 
     /*
-     * The name of the pod identity exception.
+     * Name of the pod identity exception.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * The namespace of the pod identity exception.
+     * Namespace of the pod identity exception.
      */
     @JsonProperty(value = "namespace", required = true)
     private String namespace;
 
     /*
-     * The pod labels to match.
+     * Pod labels to match.
      */
     @JsonProperty(value = "podLabels", required = true)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> podLabels;
 
     /**
-     * Get the name property: The name of the pod identity exception.
-     *
+     * Get the name property: Name of the pod identity exception.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,8 +50,8 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Set the name property: The name of the pod identity exception.
-     *
+     * Set the name property: Name of the pod identity exception.
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterPodIdentityException object itself.
      */
@@ -61,8 +61,8 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Get the namespace property: The namespace of the pod identity exception.
-     *
+     * Get the namespace property: Namespace of the pod identity exception.
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -70,8 +70,8 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Set the namespace property: The namespace of the pod identity exception.
-     *
+     * Set the namespace property: Namespace of the pod identity exception.
+     * 
      * @param namespace the namespace value to set.
      * @return the ManagedClusterPodIdentityException object itself.
      */
@@ -81,8 +81,8 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Get the podLabels property: The pod labels to match.
-     *
+     * Get the podLabels property: Pod labels to match.
+     * 
      * @return the podLabels value.
      */
     public Map<String, String> podLabels() {
@@ -90,8 +90,8 @@ public final class ManagedClusterPodIdentityException {
     }
 
     /**
-     * Set the podLabels property: The pod labels to match.
-     *
+     * Set the podLabels property: Pod labels to match.
+     * 
      * @param podLabels the podLabels value to set.
      * @return the ManagedClusterPodIdentityException object itself.
      */
@@ -102,27 +102,18 @@ public final class ManagedClusterPodIdentityException {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ManagedClusterPodIdentityException"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model ManagedClusterPodIdentityException"));
         }
         if (namespace() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property namespace in model ManagedClusterPodIdentityException"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property namespace in model ManagedClusterPodIdentityException"));
         }
         if (podLabels() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property podLabels in model ManagedClusterPodIdentityException"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property podLabels in model ManagedClusterPodIdentityException"));
         }
     }
 }

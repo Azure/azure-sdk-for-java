@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The profile of an orchestrator and its available versions. */
+/**
+ * The profile of an orchestrator and its available versions.
+ */
 @Fluent
 public final class OrchestratorVersionProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfile.class);
 
     /*
      * Orchestrator type.
@@ -47,7 +52,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Get the orchestratorType property: Orchestrator type.
-     *
+     * 
      * @return the orchestratorType value.
      */
     public String orchestratorType() {
@@ -56,7 +61,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Set the orchestratorType property: Orchestrator type.
-     *
+     * 
      * @param orchestratorType the orchestratorType value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -66,8 +71,9 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the orchestratorVersion property: Orchestrator version (major, minor, patch).
-     *
+     * Get the orchestratorVersion property: Orchestrator version (major,
+     * minor, patch).
+     * 
      * @return the orchestratorVersion value.
      */
     public String orchestratorVersion() {
@@ -75,8 +81,9 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the orchestratorVersion property: Orchestrator version (major, minor, patch).
-     *
+     * Set the orchestratorVersion property: Orchestrator version (major,
+     * minor, patch).
+     * 
      * @param orchestratorVersion the orchestratorVersion value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -86,8 +93,9 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the defaultProperty property: Installed by default if version is not specified.
-     *
+     * Get the defaultProperty property: Installed by default if version is not
+     * specified.
+     * 
      * @return the defaultProperty value.
      */
     public Boolean defaultProperty() {
@@ -95,8 +103,9 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the defaultProperty property: Installed by default if version is not specified.
-     *
+     * Set the defaultProperty property: Installed by default if version is not
+     * specified.
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -106,8 +115,9 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * Get the isPreview property: Whether Kubernetes version is currently in
+     * preview.
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -115,8 +125,9 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * Set the isPreview property: Whether Kubernetes version is currently in
+     * preview.
+     * 
      * @param isPreview the isPreview value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -127,7 +138,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Get the upgrades property: The list of available upgrade versions.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<OrchestratorProfile> upgrades() {
@@ -136,7 +147,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Set the upgrades property: The list of available upgrade versions.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -147,21 +158,15 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestratorType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestratorType in model OrchestratorVersionProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property orchestratorType in model OrchestratorVersionProfile"));
         }
         if (orchestratorVersion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());

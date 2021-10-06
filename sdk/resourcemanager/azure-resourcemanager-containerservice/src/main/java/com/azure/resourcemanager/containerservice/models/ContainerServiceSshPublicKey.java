@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains information about SSH certificate public key data. */
+/**
+ * Contains information about SSH certificate public key data.
+ */
 @Fluent
 public final class ContainerServiceSshPublicKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceSshPublicKey.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ContainerServiceSshPublicKey.class);
 
     /*
      * Certificate public key used to authenticate with VMs through SSH. The
@@ -22,9 +27,10 @@ public final class ContainerServiceSshPublicKey {
     private String keyData;
 
     /**
-     * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
-     * be in PEM format with or without headers.
-     *
+     * Get the keyData property: Certificate public key used to authenticate
+     * with VMs through SSH. The certificate must be in PEM format with or
+     * without headers.
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -32,9 +38,10 @@ public final class ContainerServiceSshPublicKey {
     }
 
     /**
-     * Set the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
-     * be in PEM format with or without headers.
-     *
+     * Set the keyData property: Certificate public key used to authenticate
+     * with VMs through SSH. The certificate must be in PEM format with or
+     * without headers.
+     * 
      * @param keyData the keyData value to set.
      * @return the ContainerServiceSshPublicKey object itself.
      */
@@ -45,15 +52,12 @@ public final class ContainerServiceSshPublicKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyData() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyData in model ContainerServiceSshPublicKey"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property keyData in model ContainerServiceSshPublicKey"));
         }
     }
 }

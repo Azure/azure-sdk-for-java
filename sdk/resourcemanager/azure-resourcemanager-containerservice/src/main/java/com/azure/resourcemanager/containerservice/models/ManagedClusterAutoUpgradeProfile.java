@@ -5,28 +5,29 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auto upgrade profile for a managed cluster. */
+/**
+ * Auto upgrade profile for a managed cluster.
+ */
 @Fluent
 public final class ManagedClusterAutoUpgradeProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAutoUpgradeProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterAutoUpgradeProfile.class);
 
     /*
-     * The upgrade channel for auto upgrade. The default is 'none'. For more
-     * information see [setting the AKS cluster auto-upgrade
-     * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
+     * upgrade channel for auto upgrade.
      */
     @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
     /**
-     * Get the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'. For more
-     * information see [setting the AKS cluster auto-upgrade
-     * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
-     *
+     * Get the upgradeChannel property: upgrade channel for auto upgrade.
+     * 
      * @return the upgradeChannel value.
      */
     public UpgradeChannel upgradeChannel() {
@@ -34,10 +35,8 @@ public final class ManagedClusterAutoUpgradeProfile {
     }
 
     /**
-     * Set the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'. For more
-     * information see [setting the AKS cluster auto-upgrade
-     * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
-     *
+     * Set the upgradeChannel property: upgrade channel for auto upgrade.
+     * 
      * @param upgradeChannel the upgradeChannel value to set.
      * @return the ManagedClusterAutoUpgradeProfile object itself.
      */
@@ -48,7 +47,7 @@ public final class ManagedClusterAutoUpgradeProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

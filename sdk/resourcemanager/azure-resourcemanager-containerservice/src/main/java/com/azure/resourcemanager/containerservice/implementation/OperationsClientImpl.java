@@ -30,131 +30,134 @@ import com.azure.resourcemanager.containerservice.fluent.models.OperationValueIn
 import com.azure.resourcemanager.containerservice.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
     private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(ContainerServiceManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ContainerServiceManagementClientOperations to be used by the proxy
+     * The interface defining all the services for
+     * ContainerServiceManagementClientOperations to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface OperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ContainerService/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Gets a list of operations.
-     *
+     * Gets a list of compute operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations.
+     * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationValueInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
-            .<PagedResponse<OperationValueInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
+            .<PagedResponse<OperationValueInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of operations.
-     *
+     * Gets a list of compute operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations.
+     * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OperationValueInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
-     * Gets a list of operations.
-     *
+     * Gets a list of compute operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations.
+     * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationValueInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync());
+        return new PagedFlux<>(
+            () -> listSinglePageAsync());
     }
 
     /**
-     * Gets a list of operations.
-     *
+     * Gets a list of compute operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations.
+     * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<OperationValueInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(context));
     }
 
     /**
-     * Gets a list of operations.
-     *
+     * Gets a list of compute operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations.
+     * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationValueInner> list() {
@@ -162,13 +165,13 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Gets a list of operations.
-     *
+     * Gets a list of compute operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations.
+     * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationValueInner> list(Context context) {

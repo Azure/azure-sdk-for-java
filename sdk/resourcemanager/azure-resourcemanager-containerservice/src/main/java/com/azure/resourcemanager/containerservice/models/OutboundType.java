@@ -8,23 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OutboundType. */
+/**
+ * Defines values for OutboundType.
+ */
 public final class OutboundType extends ExpandableStringEnum<OutboundType> {
-    /** Static value loadBalancer for OutboundType. */
+    /**
+     * Static value loadBalancer for OutboundType.
+     */
     public static final OutboundType LOAD_BALANCER = fromString("loadBalancer");
 
-    /** Static value userDefinedRouting for OutboundType. */
+    /**
+     * Static value userDefinedRouting for OutboundType.
+     */
     public static final OutboundType USER_DEFINED_ROUTING = fromString("userDefinedRouting");
-
-    /** Static value managedNATGateway for OutboundType. */
-    public static final OutboundType MANAGED_NATGATEWAY = fromString("managedNATGateway");
-
-    /** Static value userAssignedNATGateway for OutboundType. */
-    public static final OutboundType USER_ASSIGNED_NATGATEWAY = fromString("userAssignedNATGateway");
 
     /**
      * Creates or finds a OutboundType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OutboundType.
      */
@@ -33,7 +33,9 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
         return fromString(name, OutboundType.class);
     }
 
-    /** @return known OutboundType values. */
+    /**
+     * @return known OutboundType values.
+     */
     public static Collection<OutboundType> values() {
         return values(OutboundType.class);
     }

@@ -5,24 +5,29 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint which a connection belongs to. */
+/**
+ * Private endpoint which a connection belongs to.
+ */
 @Fluent
 public final class PrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
 
     /*
-     * The resource ID of the private endpoint
+     * The resource Id for private endpoint
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Get the id property: The resource ID of the private endpoint.
-     *
+     * Get the id property: The resource Id for private endpoint.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -30,8 +35,8 @@ public final class PrivateEndpoint {
     }
 
     /**
-     * Set the id property: The resource ID of the private endpoint.
-     *
+     * Set the id property: The resource Id for private endpoint.
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpoint object itself.
      */
@@ -42,7 +47,7 @@ public final class PrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

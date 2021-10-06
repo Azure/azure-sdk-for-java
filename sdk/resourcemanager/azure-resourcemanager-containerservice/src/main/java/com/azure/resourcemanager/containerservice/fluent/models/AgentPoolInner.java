@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
-import com.azure.resourcemanager.containerservice.models.CreationData;
-import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
-import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.PowerState;
-import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
-import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Agent Pool. */
+/**
+ * Agent Pool.
+ */
 @Fluent
 public final class AgentPoolInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AgentPoolInner.class);
 
     /*
      * Properties of an agent pool.
@@ -54,7 +55,7 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of an agent pool.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedClusterAgentPoolProfileProperties innerProperties() {
@@ -62,9 +63,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
-     * access the resource.
-     *
+     * Get the name property: The name of the resource that is unique within a
+     * resource group. This name can be used to access the resource.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,14 +74,16 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AgentPoolInner withId(String id) {
         super.withId(id);
@@ -88,10 +91,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
-     * value is 1.
-     *
+     * Get the count property: Number of agents (VMs) to host docker
+     * containers. Allowed values must be in the range of 0 to 100 (inclusive)
+     * for user pools and in the range of 1 to 100 (inclusive) for system
+     * pools. The default value is 1.
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -99,10 +103,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
-     * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
-     * value is 1.
-     *
+     * Set the count property: Number of agents (VMs) to host docker
+     * containers. Allowed values must be in the range of 0 to 100 (inclusive)
+     * for user pools and in the range of 1 to 100 (inclusive) for system
+     * pools. The default value is 1.
+     * 
      * @param count the count value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -115,25 +120,21 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the vmSize property: The size of the agent pool VMs. VM size availability varies by region. If a node
-     * contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on
-     * restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions.
-     *
+     * Get the vmSize property: Size of agent VMs.
+     * 
      * @return the vmSize value.
      */
-    public String vmSize() {
+    public ContainerServiceVMSizeTypes vmSize() {
         return this.innerProperties() == null ? null : this.innerProperties().vmSize();
     }
 
     /**
-     * Set the vmSize property: The size of the agent pool VMs. VM size availability varies by region. If a node
-     * contains insufficient compute resources (memory, cpu, etc) pods might fail to run correctly. For more details on
-     * restricted VM sizes, see: https://docs.microsoft.com/azure/aks/quotas-skus-regions.
-     *
+     * Set the vmSize property: Size of agent VMs.
+     * 
      * @param vmSize the vmSize value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withVmSize(String vmSize) {
+    public AgentPoolInner withVmSize(ContainerServiceVMSizeTypes vmSize) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
@@ -142,9 +143,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osDiskSizeGB property: OS Disk Size in GB to be used to specify the disk size for every machine in the
-     * master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
-     *
+     * Get the osDiskSizeGB property: OS Disk Size in GB to be used to specify
+     * the disk size for every machine in this master/agent pool. If you
+     * specify 0, it will apply the default osDisk size according to the vmSize
+     * specified.
+     * 
      * @return the osDiskSizeGB value.
      */
     public Integer osDiskSizeGB() {
@@ -152,9 +155,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osDiskSizeGB property: OS Disk Size in GB to be used to specify the disk size for every machine in the
-     * master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
-     *
+     * Set the osDiskSizeGB property: OS Disk Size in GB to be used to specify
+     * the disk size for every machine in this master/agent pool. If you
+     * specify 0, it will apply the default osDisk size according to the vmSize
+     * specified.
+     * 
      * @param osDiskSizeGB the osDiskSizeGB value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -167,11 +172,12 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osDiskType property: The OS disk type to be used for machines in the agent pool. The default is
-     * 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
-     * defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
-     * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
-     *
+     * Get the osDiskType property: OS disk type to be used for machines in a
+     * given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If
+     * unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS
+     * and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
+     * defaults to 'Managed'. May not be changed after creation.
+     * 
      * @return the osDiskType value.
      */
     public OSDiskType osDiskType() {
@@ -179,11 +185,12 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osDiskType property: The OS disk type to be used for machines in the agent pool. The default is
-     * 'Ephemeral' if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
-     * defaults to 'Managed'. May not be changed after creation. For more information see [Ephemeral
-     * OS](https://docs.microsoft.com/azure/aks/cluster-configuration#ephemeral-os).
-     *
+     * Set the osDiskType property: OS disk type to be used for machines in a
+     * given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If
+     * unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS
+     * and has a cache disk larger than the requested OSDiskSizeGB. Otherwise,
+     * defaults to 'Managed'. May not be changed after creation.
+     * 
      * @param osDiskType the osDiskType value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -196,59 +203,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the kubeletDiskType property: Determines the placement of emptyDir volumes, container runtime data root, and
-     * Kubelet ephemeral storage.
-     *
-     * @return the kubeletDiskType value.
-     */
-    public KubeletDiskType kubeletDiskType() {
-        return this.innerProperties() == null ? null : this.innerProperties().kubeletDiskType();
-    }
-
-    /**
-     * Set the kubeletDiskType property: Determines the placement of emptyDir volumes, container runtime data root, and
-     * Kubelet ephemeral storage.
-     *
-     * @param kubeletDiskType the kubeletDiskType value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withKubeletDiskType(KubeletDiskType kubeletDiskType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withKubeletDiskType(kubeletDiskType);
-        return this;
-    }
-
-    /**
-     * Get the workloadRuntime property: Determines the type of workload a node can run.
-     *
-     * @return the workloadRuntime value.
-     */
-    public WorkloadRuntime workloadRuntime() {
-        return this.innerProperties() == null ? null : this.innerProperties().workloadRuntime();
-    }
-
-    /**
-     * Set the workloadRuntime property: Determines the type of workload a node can run.
-     *
-     * @param workloadRuntime the workloadRuntime value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withWorkloadRuntime(workloadRuntime);
-        return this;
-    }
-
-    /**
-     * Get the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
-     * startup. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified,
-     * this applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
-     *
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet
+     * identifier for nodes and maybe pods.
+     * 
      * @return the vnetSubnetId value.
      */
     public String vnetSubnetId() {
@@ -256,11 +213,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the vnetSubnetId property: The ID of the subnet which agent pool nodes and optionally pods will join on
-     * startup. If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified,
-     * this applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
-     *
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet
+     * identifier for nodes and maybe pods.
+     * 
      * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -273,10 +228,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
-     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
-     *
+     * Get the podSubnetId property: Pod SubnetID specifies the VNet's subnet
+     * identifier for pods.
+     * 
      * @return the podSubnetId value.
      */
     public String podSubnetId() {
@@ -284,10 +238,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the podSubnetId property: The ID of the subnet which pods will join when launched. If omitted, pod IPs are
-     * statically assigned on the node subnet (see vnetSubnetID for more details). This is of the form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
-     *
+     * Set the podSubnetId property: Pod SubnetID specifies the VNet's subnet
+     * identifier for pods.
+     * 
      * @param podSubnetId the podSubnetId value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -300,8 +253,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the maxPods property: The maximum number of pods that can run on a node.
-     *
+     * Get the maxPods property: Maximum number of pods that can run on a node.
+     * 
      * @return the maxPods value.
      */
     public Integer maxPods() {
@@ -309,8 +262,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the maxPods property: The maximum number of pods that can run on a node.
-     *
+     * Set the maxPods property: Maximum number of pods that can run on a node.
+     * 
      * @param maxPods the maxPods value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -323,8 +276,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * Get the osType property: OsType to be used to specify os type. Choose
+     * from Linux and Windows. Default to Linux.
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -332,8 +286,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * Set the osType property: OsType to be used to specify os type. Choose
+     * from Linux and Windows. Default to Linux.
+     * 
      * @param osType the osType value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -346,31 +301,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
-     *
-     * @return the osSku value.
-     */
-    public Ossku osSku() {
-        return this.innerProperties() == null ? null : this.innerProperties().osSku();
-    }
-
-    /**
-     * Set the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
-     *
-     * @param osSku the osSku value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withOsSku(Ossku osSku) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withOsSku(osSku);
-        return this;
-    }
-
-    /**
-     * Get the maxCount property: The maximum number of nodes for auto-scaling.
-     *
+     * Get the maxCount property: Maximum number of nodes for auto-scaling.
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -378,8 +310,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the maxCount property: The maximum number of nodes for auto-scaling.
-     *
+     * Set the maxCount property: Maximum number of nodes for auto-scaling.
+     * 
      * @param maxCount the maxCount value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -392,8 +324,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the minCount property: The minimum number of nodes for auto-scaling.
-     *
+     * Get the minCount property: Minimum number of nodes for auto-scaling.
+     * 
      * @return the minCount value.
      */
     public Integer minCount() {
@@ -401,8 +333,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the minCount property: The minimum number of nodes for auto-scaling.
-     *
+     * Set the minCount property: Minimum number of nodes for auto-scaling.
+     * 
      * @param minCount the minCount value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -416,7 +348,7 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Get the enableAutoScaling property: Whether to enable auto-scaler.
-     *
+     * 
      * @return the enableAutoScaling value.
      */
     public Boolean enableAutoScaling() {
@@ -425,7 +357,7 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Set the enableAutoScaling property: Whether to enable auto-scaler.
-     *
+     * 
      * @param enableAutoScaling the enableAutoScaling value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -438,33 +370,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the scaleDownMode property: This also effects the cluster autoscaler behavior. If not specified, it defaults
-     * to Delete.
-     *
-     * @return the scaleDownMode value.
-     */
-    public ScaleDownMode scaleDownMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().scaleDownMode();
-    }
-
-    /**
-     * Set the scaleDownMode property: This also effects the cluster autoscaler behavior. If not specified, it defaults
-     * to Delete.
-     *
-     * @param scaleDownMode the scaleDownMode value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withScaleDownMode(ScaleDownMode scaleDownMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withScaleDownMode(scaleDownMode);
-        return this;
-    }
-
-    /**
-     * Get the type property: The type of Agent Pool.
-     *
+     * Get the type property: AgentPoolType represents types of an agent pool.
+     * 
      * @return the type value.
      */
     public AgentPoolType typePropertiesType() {
@@ -472,8 +379,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the type property: The type of Agent Pool.
-     *
+     * Set the type property: AgentPoolType represents types of an agent pool.
+     * 
      * @param type the type value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -486,10 +393,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the mode property: The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all
-     * times. For additional information on agent pool restrictions and best practices, see:
-     * https://docs.microsoft.com/azure/aks/use-system-pools.
-     *
+     * Get the mode property: AgentPoolMode represents mode of an agent pool.
+     * 
      * @return the mode value.
      */
     public AgentPoolMode mode() {
@@ -497,10 +402,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the mode property: The mode of an agent pool. A cluster must have at least one 'System' Agent Pool at all
-     * times. For additional information on agent pool restrictions and best practices, see:
-     * https://docs.microsoft.com/azure/aks/use-system-pools.
-     *
+     * Set the mode property: AgentPoolMode represents mode of an agent pool.
+     * 
      * @param mode the mode value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -513,13 +416,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
-     *
+     * Get the orchestratorVersion property: Version of orchestrator specified
+     * when creating the managed cluster.
+     * 
      * @return the orchestratorVersion value.
      */
     public String orchestratorVersion() {
@@ -527,13 +426,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the orchestratorVersion property: The version of Kubernetes running on the Agent Pool. As a best practice,
-     * you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must
-     * have the same major version as the control plane. The node pool minor version must be within two minor versions
-     * of the control plane version. The node pool version cannot be greater than the control plane version. For more
-     * information see [upgrading a node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#upgrade-a-node-pool).
-     *
+     * Set the orchestratorVersion property: Version of orchestrator specified
+     * when creating the managed cluster.
+     * 
      * @param orchestratorVersion the orchestratorVersion value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -546,8 +441,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
-     *
+     * Get the nodeImageVersion property: Version of node image.
+     * 
      * @return the nodeImageVersion value.
      */
     public String nodeImageVersion() {
@@ -556,7 +451,7 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Get the upgradeSettings property: Settings for upgrading the agentpool.
-     *
+     * 
      * @return the upgradeSettings value.
      */
     public AgentPoolUpgradeSettings upgradeSettings() {
@@ -565,7 +460,7 @@ public final class AgentPoolInner extends SubResource {
 
     /**
      * Set the upgradeSettings property: Settings for upgrading the agentpool.
-     *
+     * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -578,8 +473,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The current deployment or provisioning state.
-     *
+     * Get the provisioningState property: The current deployment or
+     * provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -587,8 +483,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
-     *
+     * Get the powerState property: Describes whether the Agent Pool is Running
+     * or Stopped.
+     * 
      * @return the powerState value.
      */
     public PowerState powerState() {
@@ -596,9 +493,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the availabilityZones property: The list of Availability zones to use for nodes. This can only be specified
-     * if the AgentPoolType property is 'VirtualMachineScaleSets'.
-     *
+     * Get the availabilityZones property: Availability zones for nodes. Must
+     * use VirtualMachineScaleSets AgentPoolType.
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -606,9 +503,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the availabilityZones property: The list of Availability zones to use for nodes. This can only be specified
-     * if the AgentPoolType property is 'VirtualMachineScaleSets'.
-     *
+     * Set the availabilityZones property: Availability zones for nodes. Must
+     * use VirtualMachineScaleSets AgentPoolType.
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -621,13 +518,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the enableNodePublicIp property: Whether each node is allocated its own public IP. Some scenarios may require
-     * nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming
-     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For
-     * more information see [assigning a public IP per
-     * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
-     * The default is false.
-     *
+     * Get the enableNodePublicIp property: Enable public IP for nodes.
+     * 
      * @return the enableNodePublicIp value.
      */
     public Boolean enableNodePublicIp() {
@@ -635,13 +527,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the enableNodePublicIp property: Whether each node is allocated its own public IP. Some scenarios may require
-     * nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming
-     * workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For
-     * more information see [assigning a public IP per
-     * node](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools).
-     * The default is false.
-     *
+     * Set the enableNodePublicIp property: Enable public IP for nodes.
+     * 
      * @param enableNodePublicIp the enableNodePublicIp value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -654,36 +541,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the nodePublicIpPrefixId property: The public IP prefix ID which VM nodes should use IPs from. This is of the
-     * form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
-     *
-     * @return the nodePublicIpPrefixId value.
-     */
-    public String nodePublicIpPrefixId() {
-        return this.innerProperties() == null ? null : this.innerProperties().nodePublicIpPrefixId();
-    }
-
-    /**
-     * Set the nodePublicIpPrefixId property: The public IP prefix ID which VM nodes should use IPs from. This is of the
-     * form:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPPrefixes/{publicIPPrefixName}.
-     *
-     * @param nodePublicIpPrefixId the nodePublicIpPrefixId value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withNodePublicIpPrefixId(nodePublicIpPrefixId);
-        return this;
-    }
-
-    /**
-     * Get the scaleSetPriority property: The Virtual Machine Scale Set priority. If not specified, the default is
-     * 'Regular'.
-     *
+     * Get the scaleSetPriority property: ScaleSetPriority to be used to
+     * specify virtual machine scale set priority. Default to regular.
+     * 
      * @return the scaleSetPriority value.
      */
     public ScaleSetPriority scaleSetPriority() {
@@ -691,9 +551,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the scaleSetPriority property: The Virtual Machine Scale Set priority. If not specified, the default is
-     * 'Regular'.
-     *
+     * Set the scaleSetPriority property: ScaleSetPriority to be used to
+     * specify virtual machine scale set priority. Default to regular.
+     * 
      * @param scaleSetPriority the scaleSetPriority value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -706,9 +566,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the scaleSetEvictionPolicy property: The Virtual Machine Scale Set eviction policy. This cannot be specified
-     * unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
-     *
+     * Get the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be
+     * used to specify eviction policy for Spot virtual machine scale set.
+     * Default to Delete.
+     * 
      * @return the scaleSetEvictionPolicy value.
      */
     public ScaleSetEvictionPolicy scaleSetEvictionPolicy() {
@@ -716,9 +577,10 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the scaleSetEvictionPolicy property: The Virtual Machine Scale Set eviction policy. This cannot be specified
-     * unless the scaleSetPriority is 'Spot'. If not specified, the default is 'Delete'.
-     *
+     * Set the scaleSetEvictionPolicy property: ScaleSetEvictionPolicy to be
+     * used to specify eviction policy for Spot virtual machine scale set.
+     * Default to Delete.
+     * 
      * @param scaleSetEvictionPolicy the scaleSetEvictionPolicy value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -731,12 +593,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the spotMaxPrice property: The max price (in US Dollars) you are willing to pay for spot instances. Possible
-     * values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
-     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
-     * on-demand price. For more details on spot pricing, see [spot VMs
-     * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).
-     *
+     * Get the spotMaxPrice property: SpotMaxPrice to be used to specify the
+     * maximum price you are willing to pay in US Dollars. Possible values are
+     * any decimal value greater than zero or -1 which indicates default price
+     * to be up-to on-demand.
+     * 
      * @return the spotMaxPrice value.
      */
     public Float spotMaxPrice() {
@@ -744,12 +605,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the spotMaxPrice property: The max price (in US Dollars) you are willing to pay for spot instances. Possible
-     * values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
-     * Possible values are any decimal value greater than zero or -1 which indicates the willingness to pay any
-     * on-demand price. For more details on spot pricing, see [spot VMs
-     * pricing](https://docs.microsoft.com/azure/virtual-machines/spot-vms#pricing).
-     *
+     * Set the spotMaxPrice property: SpotMaxPrice to be used to specify the
+     * maximum price you are willing to pay in US Dollars. Possible values are
+     * any decimal value greater than zero or -1 which indicates default price
+     * to be up-to on-demand.
+     * 
      * @param spotMaxPrice the spotMaxPrice value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -762,8 +622,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the tags property: The tags to be persisted on the agent pool virtual machine scale set.
-     *
+     * Get the tags property: Agent pool tags to be persisted on the agent pool
+     * virtual machine scale set.
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -771,8 +632,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the tags property: The tags to be persisted on the agent pool virtual machine scale set.
-     *
+     * Set the tags property: Agent pool tags to be persisted on the agent pool
+     * virtual machine scale set.
+     * 
      * @param tags the tags value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -785,8 +647,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the nodeLabels property: The node labels to be persisted across all nodes in agent pool.
-     *
+     * Get the nodeLabels property: Agent pool node labels to be persisted
+     * across all nodes in agent pool.
+     * 
      * @return the nodeLabels value.
      */
     public Map<String, String> nodeLabels() {
@@ -794,8 +657,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the nodeLabels property: The node labels to be persisted across all nodes in agent pool.
-     *
+     * Set the nodeLabels property: Agent pool node labels to be persisted
+     * across all nodes in agent pool.
+     * 
      * @param nodeLabels the nodeLabels value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -808,9 +672,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the nodeTaints property: The taints added to new nodes during node pool create and scale. For example,
-     * key=value:NoSchedule.
-     *
+     * Get the nodeTaints property: Taints added to new nodes during node pool
+     * create and scale. For example, key=value:NoSchedule.
+     * 
      * @return the nodeTaints value.
      */
     public List<String> nodeTaints() {
@@ -818,9 +682,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the nodeTaints property: The taints added to new nodes during node pool create and scale. For example,
-     * key=value:NoSchedule.
-     *
+     * Set the nodeTaints property: Taints added to new nodes during node pool
+     * create and scale. For example, key=value:NoSchedule.
+     * 
      * @param nodeTaints the nodeTaints value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -833,8 +697,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the proximityPlacementGroupId property: The ID for Proximity Placement Group.
-     *
+     * Get the proximityPlacementGroupId property: The ID for Proximity
+     * Placement Group.
+     * 
      * @return the proximityPlacementGroupId value.
      */
     public String proximityPlacementGroupId() {
@@ -842,9 +707,11 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the proximityPlacementGroupId property: The ID for Proximity Placement Group.
-     *
-     * @param proximityPlacementGroupId the proximityPlacementGroupId value to set.
+     * Set the proximityPlacementGroupId property: The ID for Proximity
+     * Placement Group.
+     * 
+     * @param proximityPlacementGroupId the proximityPlacementGroupId value to
+     * set.
      * @return the AgentPoolInner object itself.
      */
     public AgentPoolInner withProximityPlacementGroupId(String proximityPlacementGroupId) {
@@ -856,9 +723,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the kubeletConfig property: Kubelet configurations of agent nodes. The Kubelet configuration on the agent
-     * pool nodes.
-     *
+     * Get the kubeletConfig property: KubeletConfig specifies the
+     * configuration of kubelet on agent nodes.
+     * 
      * @return the kubeletConfig value.
      */
     public KubeletConfig kubeletConfig() {
@@ -866,9 +733,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the kubeletConfig property: Kubelet configurations of agent nodes. The Kubelet configuration on the agent
-     * pool nodes.
-     *
+     * Set the kubeletConfig property: KubeletConfig specifies the
+     * configuration of kubelet on agent nodes.
+     * 
      * @param kubeletConfig the kubeletConfig value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -881,9 +748,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the linuxOSConfig property: OS configurations of Linux agent nodes. The OS configuration of Linux agent
-     * nodes.
-     *
+     * Get the linuxOSConfig property: LinuxOSConfig specifies the OS
+     * configuration of linux agent nodes.
+     * 
      * @return the linuxOSConfig value.
      */
     public LinuxOSConfig linuxOSConfig() {
@@ -891,9 +758,9 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the linuxOSConfig property: OS configurations of Linux agent nodes. The OS configuration of Linux agent
-     * nodes.
-     *
+     * Set the linuxOSConfig property: LinuxOSConfig specifies the OS
+     * configuration of linux agent nodes.
+     * 
      * @param linuxOSConfig the linuxOSConfig value to set.
      * @return the AgentPoolInner object itself.
      */
@@ -906,135 +773,8 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the enableEncryptionAtHost property: Whether to enable host based OS and data drive encryption. This is only
-     * supported on certain VM sizes and in certain Azure regions. For more information, see:
-     * https://docs.microsoft.com/azure/aks/enable-host-encryption.
-     *
-     * @return the enableEncryptionAtHost value.
-     */
-    public Boolean enableEncryptionAtHost() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableEncryptionAtHost();
-    }
-
-    /**
-     * Set the enableEncryptionAtHost property: Whether to enable host based OS and data drive encryption. This is only
-     * supported on certain VM sizes and in certain Azure regions. For more information, see:
-     * https://docs.microsoft.com/azure/aks/enable-host-encryption.
-     *
-     * @param enableEncryptionAtHost the enableEncryptionAtHost value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withEnableEncryptionAtHost(enableEncryptionAtHost);
-        return this;
-    }
-
-    /**
-     * Get the enableUltraSsd property: Whether to enable UltraSSD.
-     *
-     * @return the enableUltraSsd value.
-     */
-    public Boolean enableUltraSsd() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableUltraSsd();
-    }
-
-    /**
-     * Set the enableUltraSsd property: Whether to enable UltraSSD.
-     *
-     * @param enableUltraSsd the enableUltraSsd value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withEnableUltraSsd(Boolean enableUltraSsd) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withEnableUltraSsd(enableUltraSsd);
-        return this;
-    }
-
-    /**
-     * Get the enableFips property: Whether to use a FIPS-enabled OS. See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
-     * details.
-     *
-     * @return the enableFips value.
-     */
-    public Boolean enableFips() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableFips();
-    }
-
-    /**
-     * Set the enableFips property: Whether to use a FIPS-enabled OS. See [Add a FIPS-enabled node
-     * pool](https://docs.microsoft.com/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more
-     * details.
-     *
-     * @param enableFips the enableFips value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withEnableFips(Boolean enableFips) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withEnableFips(enableFips);
-        return this;
-    }
-
-    /**
-     * Get the gpuInstanceProfile property: GPUInstanceProfile to be used to specify GPU MIG instance profile for
-     * supported GPU VM SKU.
-     *
-     * @return the gpuInstanceProfile value.
-     */
-    public GpuInstanceProfile gpuInstanceProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().gpuInstanceProfile();
-    }
-
-    /**
-     * Set the gpuInstanceProfile property: GPUInstanceProfile to be used to specify GPU MIG instance profile for
-     * supported GPU VM SKU.
-     *
-     * @param gpuInstanceProfile the gpuInstanceProfile value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withGpuInstanceProfile(gpuInstanceProfile);
-        return this;
-    }
-
-    /**
-     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
-     * created/upgraded using a snapshot.
-     *
-     * @return the creationData value.
-     */
-    public CreationData creationData() {
-        return this.innerProperties() == null ? null : this.innerProperties().creationData();
-    }
-
-    /**
-     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
-     * created/upgraded using a snapshot.
-     *
-     * @param creationData the creationData value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withCreationData(CreationData creationData) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
-        }
-        this.innerProperties().withCreationData(creationData);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

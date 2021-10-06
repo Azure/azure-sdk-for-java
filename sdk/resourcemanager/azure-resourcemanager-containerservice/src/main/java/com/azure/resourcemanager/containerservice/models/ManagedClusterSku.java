@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SKU of a Managed Cluster. */
+/**
+ * The ManagedClusterSku model.
+ */
 @Fluent
 public final class ManagedClusterSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterSku.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterSku.class);
 
     /*
-     * The name of a managed cluster SKU.
+     * Name of a managed cluster SKU.
      */
     @JsonProperty(value = "name")
     private ManagedClusterSkuName name;
 
     /*
-     * The tier of a managed cluster SKU. If not specified, the default is
-     * 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * Tier of a managed cluster SKU.
      */
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;
 
     /**
-     * Get the name property: The name of a managed cluster SKU.
-     *
+     * Get the name property: Name of a managed cluster SKU.
+     * 
      * @return the name value.
      */
     public ManagedClusterSkuName name() {
@@ -38,8 +41,8 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Set the name property: The name of a managed cluster SKU.
-     *
+     * Set the name property: Name of a managed cluster SKU.
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterSku object itself.
      */
@@ -49,9 +52,8 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Get the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
-     *
+     * Get the tier property: Tier of a managed cluster SKU.
+     * 
      * @return the tier value.
      */
     public ManagedClusterSkuTier tier() {
@@ -59,9 +61,8 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Set the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
-     *
+     * Set the tier property: Tier of a managed cluster SKU.
+     * 
      * @param tier the tier value to set.
      * @return the ManagedClusterSku object itself.
      */
@@ -72,7 +73,7 @@ public final class ManagedClusterSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

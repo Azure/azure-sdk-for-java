@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sysctl settings for Linux agent nodes. */
+/**
+ * Sysctl settings for Linux agent nodes.
+ */
 @Fluent
 public final class SysctlConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SysctlConfig.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SysctlConfig.class);
 
     /*
      * Sysctl setting net.core.somaxconn.
@@ -27,22 +32,10 @@ public final class SysctlConfig {
     private Integer netCoreNetdevMaxBacklog;
 
     /*
-     * Sysctl setting net.core.rmem_default.
-     */
-    @JsonProperty(value = "netCoreRmemDefault")
-    private Integer netCoreRmemDefault;
-
-    /*
      * Sysctl setting net.core.rmem_max.
      */
     @JsonProperty(value = "netCoreRmemMax")
     private Integer netCoreRmemMax;
-
-    /*
-     * Sysctl setting net.core.wmem_default.
-     */
-    @JsonProperty(value = "netCoreWmemDefault")
-    private Integer netCoreWmemDefault;
 
     /*
      * Sysctl setting net.core.wmem_max.
@@ -91,6 +84,18 @@ public final class SysctlConfig {
      */
     @JsonProperty(value = "netIpv4TcpkeepaliveIntvl")
     private Integer netIpv4TcpkeepaliveIntvl;
+
+    /*
+     * Sysctl setting net.ipv4.tcp_rmem.
+     */
+    @JsonProperty(value = "netIpv4TcpRmem")
+    private Integer netIpv4TcpRmem;
+
+    /*
+     * Sysctl setting net.ipv4.tcp_wmem.
+     */
+    @JsonProperty(value = "netIpv4TcpWmem")
+    private Integer netIpv4TcpWmem;
 
     /*
      * Sysctl setting net.ipv4.tcp_tw_reuse.
@@ -184,7 +189,7 @@ public final class SysctlConfig {
 
     /**
      * Get the netCoreSomaxconn property: Sysctl setting net.core.somaxconn.
-     *
+     * 
      * @return the netCoreSomaxconn value.
      */
     public Integer netCoreSomaxconn() {
@@ -193,7 +198,7 @@ public final class SysctlConfig {
 
     /**
      * Set the netCoreSomaxconn property: Sysctl setting net.core.somaxconn.
-     *
+     * 
      * @param netCoreSomaxconn the netCoreSomaxconn value to set.
      * @return the SysctlConfig object itself.
      */
@@ -203,8 +208,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netCoreNetdevMaxBacklog property: Sysctl setting net.core.netdev_max_backlog.
-     *
+     * Get the netCoreNetdevMaxBacklog property: Sysctl setting
+     * net.core.netdev_max_backlog.
+     * 
      * @return the netCoreNetdevMaxBacklog value.
      */
     public Integer netCoreNetdevMaxBacklog() {
@@ -212,8 +218,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netCoreNetdevMaxBacklog property: Sysctl setting net.core.netdev_max_backlog.
-     *
+     * Set the netCoreNetdevMaxBacklog property: Sysctl setting
+     * net.core.netdev_max_backlog.
+     * 
      * @param netCoreNetdevMaxBacklog the netCoreNetdevMaxBacklog value to set.
      * @return the SysctlConfig object itself.
      */
@@ -223,28 +230,8 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netCoreRmemDefault property: Sysctl setting net.core.rmem_default.
-     *
-     * @return the netCoreRmemDefault value.
-     */
-    public Integer netCoreRmemDefault() {
-        return this.netCoreRmemDefault;
-    }
-
-    /**
-     * Set the netCoreRmemDefault property: Sysctl setting net.core.rmem_default.
-     *
-     * @param netCoreRmemDefault the netCoreRmemDefault value to set.
-     * @return the SysctlConfig object itself.
-     */
-    public SysctlConfig withNetCoreRmemDefault(Integer netCoreRmemDefault) {
-        this.netCoreRmemDefault = netCoreRmemDefault;
-        return this;
-    }
-
-    /**
      * Get the netCoreRmemMax property: Sysctl setting net.core.rmem_max.
-     *
+     * 
      * @return the netCoreRmemMax value.
      */
     public Integer netCoreRmemMax() {
@@ -253,7 +240,7 @@ public final class SysctlConfig {
 
     /**
      * Set the netCoreRmemMax property: Sysctl setting net.core.rmem_max.
-     *
+     * 
      * @param netCoreRmemMax the netCoreRmemMax value to set.
      * @return the SysctlConfig object itself.
      */
@@ -263,28 +250,8 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netCoreWmemDefault property: Sysctl setting net.core.wmem_default.
-     *
-     * @return the netCoreWmemDefault value.
-     */
-    public Integer netCoreWmemDefault() {
-        return this.netCoreWmemDefault;
-    }
-
-    /**
-     * Set the netCoreWmemDefault property: Sysctl setting net.core.wmem_default.
-     *
-     * @param netCoreWmemDefault the netCoreWmemDefault value to set.
-     * @return the SysctlConfig object itself.
-     */
-    public SysctlConfig withNetCoreWmemDefault(Integer netCoreWmemDefault) {
-        this.netCoreWmemDefault = netCoreWmemDefault;
-        return this;
-    }
-
-    /**
      * Get the netCoreWmemMax property: Sysctl setting net.core.wmem_max.
-     *
+     * 
      * @return the netCoreWmemMax value.
      */
     public Integer netCoreWmemMax() {
@@ -293,7 +260,7 @@ public final class SysctlConfig {
 
     /**
      * Set the netCoreWmemMax property: Sysctl setting net.core.wmem_max.
-     *
+     * 
      * @param netCoreWmemMax the netCoreWmemMax value to set.
      * @return the SysctlConfig object itself.
      */
@@ -304,7 +271,7 @@ public final class SysctlConfig {
 
     /**
      * Get the netCoreOptmemMax property: Sysctl setting net.core.optmem_max.
-     *
+     * 
      * @return the netCoreOptmemMax value.
      */
     public Integer netCoreOptmemMax() {
@@ -313,7 +280,7 @@ public final class SysctlConfig {
 
     /**
      * Set the netCoreOptmemMax property: Sysctl setting net.core.optmem_max.
-     *
+     * 
      * @param netCoreOptmemMax the netCoreOptmemMax value to set.
      * @return the SysctlConfig object itself.
      */
@@ -323,8 +290,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpMaxSynBacklog property: Sysctl setting net.ipv4.tcp_max_syn_backlog.
-     *
+     * Get the netIpv4TcpMaxSynBacklog property: Sysctl setting
+     * net.ipv4.tcp_max_syn_backlog.
+     * 
      * @return the netIpv4TcpMaxSynBacklog value.
      */
     public Integer netIpv4TcpMaxSynBacklog() {
@@ -332,8 +300,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpMaxSynBacklog property: Sysctl setting net.ipv4.tcp_max_syn_backlog.
-     *
+     * Set the netIpv4TcpMaxSynBacklog property: Sysctl setting
+     * net.ipv4.tcp_max_syn_backlog.
+     * 
      * @param netIpv4TcpMaxSynBacklog the netIpv4TcpMaxSynBacklog value to set.
      * @return the SysctlConfig object itself.
      */
@@ -343,8 +312,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpMaxTwBuckets property: Sysctl setting net.ipv4.tcp_max_tw_buckets.
-     *
+     * Get the netIpv4TcpMaxTwBuckets property: Sysctl setting
+     * net.ipv4.tcp_max_tw_buckets.
+     * 
      * @return the netIpv4TcpMaxTwBuckets value.
      */
     public Integer netIpv4TcpMaxTwBuckets() {
@@ -352,8 +322,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpMaxTwBuckets property: Sysctl setting net.ipv4.tcp_max_tw_buckets.
-     *
+     * Set the netIpv4TcpMaxTwBuckets property: Sysctl setting
+     * net.ipv4.tcp_max_tw_buckets.
+     * 
      * @param netIpv4TcpMaxTwBuckets the netIpv4TcpMaxTwBuckets value to set.
      * @return the SysctlConfig object itself.
      */
@@ -363,8 +334,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpFinTimeout property: Sysctl setting net.ipv4.tcp_fin_timeout.
-     *
+     * Get the netIpv4TcpFinTimeout property: Sysctl setting
+     * net.ipv4.tcp_fin_timeout.
+     * 
      * @return the netIpv4TcpFinTimeout value.
      */
     public Integer netIpv4TcpFinTimeout() {
@@ -372,8 +344,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpFinTimeout property: Sysctl setting net.ipv4.tcp_fin_timeout.
-     *
+     * Set the netIpv4TcpFinTimeout property: Sysctl setting
+     * net.ipv4.tcp_fin_timeout.
+     * 
      * @param netIpv4TcpFinTimeout the netIpv4TcpFinTimeout value to set.
      * @return the SysctlConfig object itself.
      */
@@ -383,8 +356,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpKeepaliveTime property: Sysctl setting net.ipv4.tcp_keepalive_time.
-     *
+     * Get the netIpv4TcpKeepaliveTime property: Sysctl setting
+     * net.ipv4.tcp_keepalive_time.
+     * 
      * @return the netIpv4TcpKeepaliveTime value.
      */
     public Integer netIpv4TcpKeepaliveTime() {
@@ -392,8 +366,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpKeepaliveTime property: Sysctl setting net.ipv4.tcp_keepalive_time.
-     *
+     * Set the netIpv4TcpKeepaliveTime property: Sysctl setting
+     * net.ipv4.tcp_keepalive_time.
+     * 
      * @param netIpv4TcpKeepaliveTime the netIpv4TcpKeepaliveTime value to set.
      * @return the SysctlConfig object itself.
      */
@@ -403,8 +378,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpKeepaliveProbes property: Sysctl setting net.ipv4.tcp_keepalive_probes.
-     *
+     * Get the netIpv4TcpKeepaliveProbes property: Sysctl setting
+     * net.ipv4.tcp_keepalive_probes.
+     * 
      * @return the netIpv4TcpKeepaliveProbes value.
      */
     public Integer netIpv4TcpKeepaliveProbes() {
@@ -412,9 +388,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpKeepaliveProbes property: Sysctl setting net.ipv4.tcp_keepalive_probes.
-     *
-     * @param netIpv4TcpKeepaliveProbes the netIpv4TcpKeepaliveProbes value to set.
+     * Set the netIpv4TcpKeepaliveProbes property: Sysctl setting
+     * net.ipv4.tcp_keepalive_probes.
+     * 
+     * @param netIpv4TcpKeepaliveProbes the netIpv4TcpKeepaliveProbes value to
+     * set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetIpv4TcpKeepaliveProbes(Integer netIpv4TcpKeepaliveProbes) {
@@ -423,8 +401,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpkeepaliveIntvl property: Sysctl setting net.ipv4.tcp_keepalive_intvl.
-     *
+     * Get the netIpv4TcpkeepaliveIntvl property: Sysctl setting
+     * net.ipv4.tcp_keepalive_intvl.
+     * 
      * @return the netIpv4TcpkeepaliveIntvl value.
      */
     public Integer netIpv4TcpkeepaliveIntvl() {
@@ -432,9 +411,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpkeepaliveIntvl property: Sysctl setting net.ipv4.tcp_keepalive_intvl.
-     *
-     * @param netIpv4TcpkeepaliveIntvl the netIpv4TcpkeepaliveIntvl value to set.
+     * Set the netIpv4TcpkeepaliveIntvl property: Sysctl setting
+     * net.ipv4.tcp_keepalive_intvl.
+     * 
+     * @param netIpv4TcpkeepaliveIntvl the netIpv4TcpkeepaliveIntvl value to
+     * set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetIpv4TcpkeepaliveIntvl(Integer netIpv4TcpkeepaliveIntvl) {
@@ -443,8 +424,49 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4TcpTwReuse property: Sysctl setting net.ipv4.tcp_tw_reuse.
-     *
+     * Get the netIpv4TcpRmem property: Sysctl setting net.ipv4.tcp_rmem.
+     * 
+     * @return the netIpv4TcpRmem value.
+     */
+    public Integer netIpv4TcpRmem() {
+        return this.netIpv4TcpRmem;
+    }
+
+    /**
+     * Set the netIpv4TcpRmem property: Sysctl setting net.ipv4.tcp_rmem.
+     * 
+     * @param netIpv4TcpRmem the netIpv4TcpRmem value to set.
+     * @return the SysctlConfig object itself.
+     */
+    public SysctlConfig withNetIpv4TcpRmem(Integer netIpv4TcpRmem) {
+        this.netIpv4TcpRmem = netIpv4TcpRmem;
+        return this;
+    }
+
+    /**
+     * Get the netIpv4TcpWmem property: Sysctl setting net.ipv4.tcp_wmem.
+     * 
+     * @return the netIpv4TcpWmem value.
+     */
+    public Integer netIpv4TcpWmem() {
+        return this.netIpv4TcpWmem;
+    }
+
+    /**
+     * Set the netIpv4TcpWmem property: Sysctl setting net.ipv4.tcp_wmem.
+     * 
+     * @param netIpv4TcpWmem the netIpv4TcpWmem value to set.
+     * @return the SysctlConfig object itself.
+     */
+    public SysctlConfig withNetIpv4TcpWmem(Integer netIpv4TcpWmem) {
+        this.netIpv4TcpWmem = netIpv4TcpWmem;
+        return this;
+    }
+
+    /**
+     * Get the netIpv4TcpTwReuse property: Sysctl setting
+     * net.ipv4.tcp_tw_reuse.
+     * 
      * @return the netIpv4TcpTwReuse value.
      */
     public Boolean netIpv4TcpTwReuse() {
@@ -452,8 +474,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4TcpTwReuse property: Sysctl setting net.ipv4.tcp_tw_reuse.
-     *
+     * Set the netIpv4TcpTwReuse property: Sysctl setting
+     * net.ipv4.tcp_tw_reuse.
+     * 
      * @param netIpv4TcpTwReuse the netIpv4TcpTwReuse value to set.
      * @return the SysctlConfig object itself.
      */
@@ -463,8 +486,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4IpLocalPortRange property: Sysctl setting net.ipv4.ip_local_port_range.
-     *
+     * Get the netIpv4IpLocalPortRange property: Sysctl setting
+     * net.ipv4.ip_local_port_range.
+     * 
      * @return the netIpv4IpLocalPortRange value.
      */
     public String netIpv4IpLocalPortRange() {
@@ -472,8 +496,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4IpLocalPortRange property: Sysctl setting net.ipv4.ip_local_port_range.
-     *
+     * Set the netIpv4IpLocalPortRange property: Sysctl setting
+     * net.ipv4.ip_local_port_range.
+     * 
      * @param netIpv4IpLocalPortRange the netIpv4IpLocalPortRange value to set.
      * @return the SysctlConfig object itself.
      */
@@ -483,8 +508,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4NeighDefaultGcThresh1 property: Sysctl setting net.ipv4.neigh.default.gc_thresh1.
-     *
+     * Get the netIpv4NeighDefaultGcThresh1 property: Sysctl setting
+     * net.ipv4.neigh.default.gc_thresh1.
+     * 
      * @return the netIpv4NeighDefaultGcThresh1 value.
      */
     public Integer netIpv4NeighDefaultGcThresh1() {
@@ -492,9 +518,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4NeighDefaultGcThresh1 property: Sysctl setting net.ipv4.neigh.default.gc_thresh1.
-     *
-     * @param netIpv4NeighDefaultGcThresh1 the netIpv4NeighDefaultGcThresh1 value to set.
+     * Set the netIpv4NeighDefaultGcThresh1 property: Sysctl setting
+     * net.ipv4.neigh.default.gc_thresh1.
+     * 
+     * @param netIpv4NeighDefaultGcThresh1 the netIpv4NeighDefaultGcThresh1
+     * value to set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetIpv4NeighDefaultGcThresh1(Integer netIpv4NeighDefaultGcThresh1) {
@@ -503,8 +531,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4NeighDefaultGcThresh2 property: Sysctl setting net.ipv4.neigh.default.gc_thresh2.
-     *
+     * Get the netIpv4NeighDefaultGcThresh2 property: Sysctl setting
+     * net.ipv4.neigh.default.gc_thresh2.
+     * 
      * @return the netIpv4NeighDefaultGcThresh2 value.
      */
     public Integer netIpv4NeighDefaultGcThresh2() {
@@ -512,9 +541,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4NeighDefaultGcThresh2 property: Sysctl setting net.ipv4.neigh.default.gc_thresh2.
-     *
-     * @param netIpv4NeighDefaultGcThresh2 the netIpv4NeighDefaultGcThresh2 value to set.
+     * Set the netIpv4NeighDefaultGcThresh2 property: Sysctl setting
+     * net.ipv4.neigh.default.gc_thresh2.
+     * 
+     * @param netIpv4NeighDefaultGcThresh2 the netIpv4NeighDefaultGcThresh2
+     * value to set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetIpv4NeighDefaultGcThresh2(Integer netIpv4NeighDefaultGcThresh2) {
@@ -523,8 +554,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netIpv4NeighDefaultGcThresh3 property: Sysctl setting net.ipv4.neigh.default.gc_thresh3.
-     *
+     * Get the netIpv4NeighDefaultGcThresh3 property: Sysctl setting
+     * net.ipv4.neigh.default.gc_thresh3.
+     * 
      * @return the netIpv4NeighDefaultGcThresh3 value.
      */
     public Integer netIpv4NeighDefaultGcThresh3() {
@@ -532,9 +564,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netIpv4NeighDefaultGcThresh3 property: Sysctl setting net.ipv4.neigh.default.gc_thresh3.
-     *
-     * @param netIpv4NeighDefaultGcThresh3 the netIpv4NeighDefaultGcThresh3 value to set.
+     * Set the netIpv4NeighDefaultGcThresh3 property: Sysctl setting
+     * net.ipv4.neigh.default.gc_thresh3.
+     * 
+     * @param netIpv4NeighDefaultGcThresh3 the netIpv4NeighDefaultGcThresh3
+     * value to set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetIpv4NeighDefaultGcThresh3(Integer netIpv4NeighDefaultGcThresh3) {
@@ -543,8 +577,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netNetfilterNfConntrackMax property: Sysctl setting net.netfilter.nf_conntrack_max.
-     *
+     * Get the netNetfilterNfConntrackMax property: Sysctl setting
+     * net.netfilter.nf_conntrack_max.
+     * 
      * @return the netNetfilterNfConntrackMax value.
      */
     public Integer netNetfilterNfConntrackMax() {
@@ -552,9 +587,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netNetfilterNfConntrackMax property: Sysctl setting net.netfilter.nf_conntrack_max.
-     *
-     * @param netNetfilterNfConntrackMax the netNetfilterNfConntrackMax value to set.
+     * Set the netNetfilterNfConntrackMax property: Sysctl setting
+     * net.netfilter.nf_conntrack_max.
+     * 
+     * @param netNetfilterNfConntrackMax the netNetfilterNfConntrackMax value
+     * to set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetNetfilterNfConntrackMax(Integer netNetfilterNfConntrackMax) {
@@ -563,8 +600,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the netNetfilterNfConntrackBuckets property: Sysctl setting net.netfilter.nf_conntrack_buckets.
-     *
+     * Get the netNetfilterNfConntrackBuckets property: Sysctl setting
+     * net.netfilter.nf_conntrack_buckets.
+     * 
      * @return the netNetfilterNfConntrackBuckets value.
      */
     public Integer netNetfilterNfConntrackBuckets() {
@@ -572,9 +610,11 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the netNetfilterNfConntrackBuckets property: Sysctl setting net.netfilter.nf_conntrack_buckets.
-     *
-     * @param netNetfilterNfConntrackBuckets the netNetfilterNfConntrackBuckets value to set.
+     * Set the netNetfilterNfConntrackBuckets property: Sysctl setting
+     * net.netfilter.nf_conntrack_buckets.
+     * 
+     * @param netNetfilterNfConntrackBuckets the netNetfilterNfConntrackBuckets
+     * value to set.
      * @return the SysctlConfig object itself.
      */
     public SysctlConfig withNetNetfilterNfConntrackBuckets(Integer netNetfilterNfConntrackBuckets) {
@@ -583,8 +623,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the fsInotifyMaxUserWatches property: Sysctl setting fs.inotify.max_user_watches.
-     *
+     * Get the fsInotifyMaxUserWatches property: Sysctl setting
+     * fs.inotify.max_user_watches.
+     * 
      * @return the fsInotifyMaxUserWatches value.
      */
     public Integer fsInotifyMaxUserWatches() {
@@ -592,8 +633,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the fsInotifyMaxUserWatches property: Sysctl setting fs.inotify.max_user_watches.
-     *
+     * Set the fsInotifyMaxUserWatches property: Sysctl setting
+     * fs.inotify.max_user_watches.
+     * 
      * @param fsInotifyMaxUserWatches the fsInotifyMaxUserWatches value to set.
      * @return the SysctlConfig object itself.
      */
@@ -604,7 +646,7 @@ public final class SysctlConfig {
 
     /**
      * Get the fsFileMax property: Sysctl setting fs.file-max.
-     *
+     * 
      * @return the fsFileMax value.
      */
     public Integer fsFileMax() {
@@ -613,7 +655,7 @@ public final class SysctlConfig {
 
     /**
      * Set the fsFileMax property: Sysctl setting fs.file-max.
-     *
+     * 
      * @param fsFileMax the fsFileMax value to set.
      * @return the SysctlConfig object itself.
      */
@@ -624,7 +666,7 @@ public final class SysctlConfig {
 
     /**
      * Get the fsAioMaxNr property: Sysctl setting fs.aio-max-nr.
-     *
+     * 
      * @return the fsAioMaxNr value.
      */
     public Integer fsAioMaxNr() {
@@ -633,7 +675,7 @@ public final class SysctlConfig {
 
     /**
      * Set the fsAioMaxNr property: Sysctl setting fs.aio-max-nr.
-     *
+     * 
      * @param fsAioMaxNr the fsAioMaxNr value to set.
      * @return the SysctlConfig object itself.
      */
@@ -644,7 +686,7 @@ public final class SysctlConfig {
 
     /**
      * Get the fsNrOpen property: Sysctl setting fs.nr_open.
-     *
+     * 
      * @return the fsNrOpen value.
      */
     public Integer fsNrOpen() {
@@ -653,7 +695,7 @@ public final class SysctlConfig {
 
     /**
      * Set the fsNrOpen property: Sysctl setting fs.nr_open.
-     *
+     * 
      * @param fsNrOpen the fsNrOpen value to set.
      * @return the SysctlConfig object itself.
      */
@@ -664,7 +706,7 @@ public final class SysctlConfig {
 
     /**
      * Get the kernelThreadsMax property: Sysctl setting kernel.threads-max.
-     *
+     * 
      * @return the kernelThreadsMax value.
      */
     public Integer kernelThreadsMax() {
@@ -673,7 +715,7 @@ public final class SysctlConfig {
 
     /**
      * Set the kernelThreadsMax property: Sysctl setting kernel.threads-max.
-     *
+     * 
      * @param kernelThreadsMax the kernelThreadsMax value to set.
      * @return the SysctlConfig object itself.
      */
@@ -684,7 +726,7 @@ public final class SysctlConfig {
 
     /**
      * Get the vmMaxMapCount property: Sysctl setting vm.max_map_count.
-     *
+     * 
      * @return the vmMaxMapCount value.
      */
     public Integer vmMaxMapCount() {
@@ -693,7 +735,7 @@ public final class SysctlConfig {
 
     /**
      * Set the vmMaxMapCount property: Sysctl setting vm.max_map_count.
-     *
+     * 
      * @param vmMaxMapCount the vmMaxMapCount value to set.
      * @return the SysctlConfig object itself.
      */
@@ -704,7 +746,7 @@ public final class SysctlConfig {
 
     /**
      * Get the vmSwappiness property: Sysctl setting vm.swappiness.
-     *
+     * 
      * @return the vmSwappiness value.
      */
     public Integer vmSwappiness() {
@@ -713,7 +755,7 @@ public final class SysctlConfig {
 
     /**
      * Set the vmSwappiness property: Sysctl setting vm.swappiness.
-     *
+     * 
      * @param vmSwappiness the vmSwappiness value to set.
      * @return the SysctlConfig object itself.
      */
@@ -723,8 +765,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Get the vmVfsCachePressure property: Sysctl setting vm.vfs_cache_pressure.
-     *
+     * Get the vmVfsCachePressure property: Sysctl setting
+     * vm.vfs_cache_pressure.
+     * 
      * @return the vmVfsCachePressure value.
      */
     public Integer vmVfsCachePressure() {
@@ -732,8 +775,9 @@ public final class SysctlConfig {
     }
 
     /**
-     * Set the vmVfsCachePressure property: Sysctl setting vm.vfs_cache_pressure.
-     *
+     * Set the vmVfsCachePressure property: Sysctl setting
+     * vm.vfs_cache_pressure.
+     * 
      * @param vmVfsCachePressure the vmVfsCachePressure value to set.
      * @return the SysctlConfig object itself.
      */
@@ -744,7 +788,7 @@ public final class SysctlConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

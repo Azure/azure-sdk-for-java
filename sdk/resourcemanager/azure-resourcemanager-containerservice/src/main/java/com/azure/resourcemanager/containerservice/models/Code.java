@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Code. */
+/**
+ * Defines values for Code.
+ */
 public final class Code extends ExpandableStringEnum<Code> {
-    /** Static value Running for Code. */
+    /**
+     * Static value Running for Code.
+     */
     public static final Code RUNNING = fromString("Running");
 
-    /** Static value Stopped for Code. */
+    /**
+     * Static value Stopped for Code.
+     */
     public static final Code STOPPED = fromString("Stopped");
 
     /**
      * Creates or finds a Code from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Code.
      */
@@ -27,7 +33,9 @@ public final class Code extends ExpandableStringEnum<Code> {
         return fromString(name, Code.class);
     }
 
-    /** @return known Code values. */
+    /**
+     * @return known Code values.
+     */
     public static Collection<Code> values() {
         return values(Code.class);
     }
