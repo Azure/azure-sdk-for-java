@@ -2,18 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager.feature.filters;
 
-import com.azure.spring.cloud.feature.manager.FeatureFilter;
-import com.azure.spring.cloud.feature.manager.TargetingException;
-import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
-import com.azure.spring.cloud.feature.manager.targeting.Audience;
-import com.azure.spring.cloud.feature.manager.targeting.GroupRollout;
-import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
-import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
-import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
-import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -23,10 +11,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TargetingFilter implements FeatureFilter {
+import com.azure.spring.cloud.feature.manager.FeatureFilter;
+import com.azure.spring.cloud.feature.manager.TargetingException;
+import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssigner;
+import com.azure.spring.cloud.feature.manager.targeting.Audience;
+import com.azure.spring.cloud.feature.manager.targeting.GroupRollout;
+import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
+import com.azure.spring.cloud.feature.manager.targeting.TargetingFilterSettings;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import reactor.core.publisher.Mono;
+
+public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TargetingFilter.class);
 
@@ -39,9 +45,12 @@ public class TargetingFilter implements FeatureFilter {
     private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     private static final String REQUIRED_PARAMETER = "Value cannot be null.";
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+
     private final ITargetingContextAccessor contextAccessor;
+
     private final TargetingEvaluationOptions options;
 
     public TargetingFilter(ITargetingContextAccessor contextAccessor) {
@@ -91,8 +100,7 @@ public class TargetingFilter implements FeatureFilter {
         if (targetingContext.getUserId() != null
             && audience.getUsers() != null
             && audience.getUsers().stream()
-                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))
-        ) {
+                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
             return true;
         }
 
@@ -116,7 +124,7 @@ public class TargetingFilter implements FeatureFilter {
         return isTargeted(defaultContextId, settings.getAudience().getDefaultRolloutPercentage());
     }
 
-    private boolean isTargeted(String contextId, double percentage) {
+    private double isTargetedPercentage(String contextId) {
         byte[] hash = null;
 
         try {
@@ -133,8 +141,11 @@ public class TargetingFilter implements FeatureFilter {
         ByteBuffer wrapped = ByteBuffer.wrap(hash);
         int contextMarker = Math.abs(wrapped.getInt());
 
-        double contextPercentage = (contextMarker / (double) Integer.MAX_VALUE) * 100;
-        return contextPercentage < percentage;
+        return (contextMarker / (double) Integer.MAX_VALUE) * 100;
+    }
+
+    private boolean isTargeted(String contextId, double percentage) {
+        return isTargetedPercentage(contextId) < percentage;
     }
 
     private void tryValidateSettings(TargetingFilterSettings settings) {
@@ -185,5 +196,80 @@ public class TargetingFilter implements FeatureFilter {
             List<T> toType = ((Map<String, T>) objectMap).values().stream().collect(Collectors.toList());
             parameters.put(key, toType);
         }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) {
+        TargetingContext targetingContext = contextAccessor.getContextAsync().block();
+
+        if (targetingContext == null) {
+            LOGGER.warn("No targeting context available for targeting evaluation.");
+            return null;
+        }
+
+        TargetingFilterSettings settings = new TargetingFilterSettings();
+
+        List<FeatureVariant> variants = featureDefinition.getVariants();
+
+        double totalAudiencePercentage = 0;
+        double totalDefaultPercentage = 0;
+
+        for (FeatureVariant variant : variants) {
+
+            LinkedHashMap<String, Object> parameters = variant.getAssignmentParameters();
+
+            if (parameters != null) {
+                Object audienceObject = parameters.get(AUDIENCE);
+                if (audienceObject != null) {
+                    parameters = (LinkedHashMap<String, Object>) audienceObject;
+                }
+
+                this.<String>updateValueFromMapToList(parameters, USERS);
+                updateValueFromMapToList(parameters, GROUPS);
+
+                settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
+            }
+
+            tryValidateSettings(settings);
+
+            Audience audience = settings.getAudience();
+
+            if (targetingContext.getUserId() != null
+                && audience.getUsers() != null
+                && audience.getUsers().stream()
+                    .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
+                return Mono.just(variant);
+            }
+
+            if (targetingContext.getGroups() != null && audience.getGroups() != null) {
+                for (String group : targetingContext.getGroups()) {
+                    Optional<GroupRollout> groupRollout = audience.getGroups().stream()
+                        .filter(g -> compairStrings(g.getName(), group)).findFirst();
+
+                    if (groupRollout.isPresent()) {
+                        String audienceContextId = targetingContext.getUserId() + "\n" + featureDefinition.getName()
+                            + "\n"
+                            + group;
+
+                        if (isTargetedPercentage(audienceContextId) < groupRollout.get().getRolloutPercentage() +
+                            totalAudiencePercentage) {
+                            return Mono.just(variant);
+                        }
+                        totalAudiencePercentage += groupRollout.get().getRolloutPercentage();
+                    }
+                }
+            }
+
+            String defaultContextId = targetingContext.getUserId() + "\n" + featureDefinition.getName();
+
+            if (isTargetedPercentage(defaultContextId) < settings.getAudience().getDefaultRolloutPercentage() +
+                totalDefaultPercentage) {
+                return Mono.just(variant);
+            }
+            totalDefaultPercentage += settings.getAudience().getDefaultRolloutPercentage();
+        }
+
+        return null;
     }
 }
