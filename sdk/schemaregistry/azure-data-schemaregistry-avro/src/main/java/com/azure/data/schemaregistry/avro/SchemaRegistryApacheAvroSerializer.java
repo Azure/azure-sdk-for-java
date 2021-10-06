@@ -35,25 +35,22 @@ public final class SchemaRegistryApacheAvroSerializer implements ObjectSerialize
     private final ClientLogger logger = new ClientLogger(SchemaRegistryApacheAvroSerializer.class);
     private final SchemaRegistryAsyncClient schemaRegistryClient;
     private final AvroSerializer avroSerializer;
-    private final String schemaGroup;
-    private final boolean autoRegisterSchemas;
+    private final SerializerOptions serializerOptions;
 
     /**
      * Creates a new instance.
      *
      * @param schemaRegistryClient Client that interacts with Schema Registry.
      * @param avroSerializer Serializer implemented using Apache Avro.
-     * @param schemaGroup Optional schema group.
-     * @param autoRegisterSchemas {@code true} to register schema if none was found. Otherwise, {@code false}.
+     * @param serializerOptions Options to configure the serializer with.
      */
     SchemaRegistryApacheAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
-        AvroSerializer avroSerializer, String schemaGroup, boolean autoRegisterSchemas) {
+        AvroSerializer avroSerializer, SerializerOptions serializerOptions) {
         this.schemaRegistryClient = Objects.requireNonNull(schemaRegistryClient,
             "'schemaRegistryClient' cannot be null.");
         this.avroSerializer = Objects.requireNonNull(avroSerializer,
             "'avroSchemaRegistryUtils' cannot be null.");
-        this.autoRegisterSchemas = autoRegisterSchemas;
-        this.schemaGroup = schemaGroup;
+        this.serializerOptions = Objects.requireNonNull(serializerOptions, "'serializerOptions' cannot be null.");
     }
 
     /**
@@ -174,7 +171,7 @@ public final class SchemaRegistryApacheAvroSerializer implements ObjectSerialize
             return monoError(logger, exception);
         }
 
-        return this.maybeRegisterSchema(this.schemaGroup, schema.getFullName(), schema.toString())
+        return this.maybeRegisterSchema(serializerOptions.getSchemaGroup(), schema.getFullName(), schema.toString())
             .handle((id, sink) -> {
                 ByteBuffer recordFormatIndicatorBuffer = ByteBuffer
                     .allocate(RECORD_FORMAT_INDICATOR_SIZE)
@@ -204,7 +201,7 @@ public final class SchemaRegistryApacheAvroSerializer implements ObjectSerialize
      * @return string representation of schema ID
      */
     private Mono<String> maybeRegisterSchema(String schemaGroup, String schemaName, String schemaString) {
-        if (this.autoRegisterSchemas) {
+        if (serializerOptions.autoRegisterSchemas()) {
             return this.schemaRegistryClient
                 .registerSchema(schemaGroup, schemaName, schemaString, SchemaFormat.AVRO)
                 .map(SchemaProperties::getId);

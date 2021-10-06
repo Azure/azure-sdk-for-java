@@ -17,6 +17,7 @@ import org.apache.avro.specific.SpecificRecord;
  */
 public final class SchemaRegistryAvroSerializerBuilder {
     private static final boolean AVRO_SPECIFIC_READER_DEFAULT = false;
+    private static final int MAX_CACHE_SIZE = 128;
 
     private Boolean autoRegisterSchemas;
     private Boolean avroSpecificReader;
@@ -93,9 +94,9 @@ public final class SchemaRegistryAvroSerializerBuilder {
     }
 
     /**
-     * Instantiates SchemaRegistry Avro serializer.
+     * Creates a new instance of Schema Registry serializer.
      *
-     * @return {@link SchemaRegistryApacheAvroSerializer} instance
+     * @return A new instance of {@link SchemaRegistryApacheAvroSerializer}.
      *
      * @throws NullPointerException if {@link #schemaRegistryAsyncClient(SchemaRegistryAsyncClient)} is {@code null}
      *     or {@link #schemaGroup(String) schemaGroup} is {@code null}.
@@ -108,7 +109,8 @@ public final class SchemaRegistryAvroSerializerBuilder {
         final Schema.Parser parser = new Schema.Parser();
         final AvroSerializer codec = new AvroSerializer(useAvroSpecificReader, parser,
             EncoderFactory.get(), DecoderFactory.get());
+        final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, MAX_CACHE_SIZE);
 
-        return new SchemaRegistryApacheAvroSerializer(schemaRegistryAsyncClient, codec, schemaGroup, isAutoRegister);
+        return new SchemaRegistryApacheAvroSerializer(schemaRegistryAsyncClient, codec, options);
     }
 }
