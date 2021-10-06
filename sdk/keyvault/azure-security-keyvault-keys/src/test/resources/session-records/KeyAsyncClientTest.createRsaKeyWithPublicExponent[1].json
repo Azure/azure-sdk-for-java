@@ -1,30 +1,30 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/testrsakey4201071/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/testrsakey75546da/create?api-version=7.3-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "742",
+      "content-length" : "753",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 29 Sep 2021 09:55:16 GMT",
+      "Date" : "Tue, 05 Oct 2021 01:54:23 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-region" : "centralus",
       "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "5847881c-a00c-466b-8c1f-494b171849e2",
-      "x-ms-keyvault-service-version" : "1.9.79.2",
-      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey4201071/27f37a6709854f53bbc7bc7ab993b4f6\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"zUJ2F5u7EBEzx313jw0Ib9tV2Y4VZTA7HF51ZQA-rZ24bPwOcqeFzil2tr9tUD1AfWE_vg5p0UAN2zr4_Cji-NgofXeTsBi5gF5pmRdP26IcrpBHXCQ-dz580vUrEhTHZ0x5UxkUE6qdPfAIppXur672T0pSAOeSZcV7giQCcJYjArqyYrPfVpFF0ZM_JaB8X5ovwPtbWf-KZX2xmUbhKDFWWbb0b9tqWr87ViNckplr5V2yTvleOexS0ftvnn9icEPldqTJEZepvSiiD03lD1EF-20EiWOM4ESPaTt0P1CEphFbGbo9pNXUom99MFfHahuNr0NRDl5Ttvc5a6a1kQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1632909315,\"updated\":1632909315,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90},\"tags\":{\"foo\":\"baz\"}}",
+      "x-ms-request-id" : "cfe3ca63-8536-4855-a93d-4e361ca04a2d",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/testrsakey75546da/f4c1a07cedc14cb08c5b013efd1a03e1\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"vIMc6Lw2W-vxUngQMjdw5ddS9Zb-HH-Eyk-TFSWra1ZbBE6dMhB1IFCYnVgYJJ-h9ocv1_mzfLw7fsyWf7QKGgDhiWFjJsWBjqviteITtXRWuXxKBe_E79CM-4vn5FOY8aPqyY7xa2B178crQYpEtyN2Vv0r2O-Xd7e0YcRNkEvcWrzpZjnhZETljiu_pa3f1j798bFIYhao7KK84itSF8cuq81ltOc8WaDNhVmPOPwe140VRFk5pWijNjbFLQKZhJKvsxc3D6T5HtkD_nKK6kX9lJUmD7cBn2izRVsP_Zf5fBjts_BAnJgCwl8wZ7TWVNRgVYxUMgIXsEh-XP4D4Q\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1633398863,\"updated\":1633398863,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}}",
       "Content-Type" : "application/json; charset=utf-8",
       "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testrsakey4201071" ]
+  "variables" : [ "testrsakey75546da" ]
 }
