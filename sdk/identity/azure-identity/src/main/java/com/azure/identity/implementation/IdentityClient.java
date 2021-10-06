@@ -58,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -130,6 +131,8 @@ public class IdentityClient {
     private HttpPipelineAdapter httpPipelineAdapter;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
+    private final SynchronizedAccessor<String> clientAssertionAccessor;
+
 
     /**
      * Creates an IdentityClient with the given options.
@@ -142,12 +145,12 @@ public class IdentityClient {
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
-     * @param confidentialClientCacheTimeout the cache time out to use for confidential client.
+     * @param clientAssertionTimeout the time out to use for the client assertion.
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
                    String clientAssertionFilePath, InputStream certificate, String certificatePassword,
-                   boolean isSharedTokenCacheCredential, Duration confidentialClientCacheTimeout,
+                   boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -167,9 +170,12 @@ public class IdentityClient {
         this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
-        this.confidentialClientApplicationAccessor = confidentialClientCacheTimeout == null
-            ? new SynchronizedAccessor<>(() -> getConfidentialClientApplication())
-            : new SynchronizedAccessor<>(() -> getConfidentialClientApplication(), confidentialClientCacheTimeout);
+        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
+            getConfidentialClientApplication());
+
+        this.clientAssertionAccessor = clientAssertionTimeout == null
+            ? new SynchronizedAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
+                : new SynchronizedAccessor<>(() -> parseClientAssertion(), clientAssertionTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
@@ -210,15 +216,6 @@ public class IdentityClient {
                 } catch (IOException | GeneralSecurityException e) {
                     return Mono.error(logger.logExceptionAsError(new RuntimeException(
                         "Failed to parse the certificate for the credential: " + e.getMessage(), e)));
-                }
-            } else if (clientAssertionFilePath != null) {
-                try {
-                    credential = ClientCredentialFactory
-                        .createFromClientAssertion(parseClientAssertion(clientAssertionFilePath));
-                } catch (IOException e) {
-                    return Mono.error(logger.logExceptionAsError(new RuntimeException(
-                        "Failed to parse the client assertion from the provided file: " + clientAssertionFilePath
-                            + ". " + e.getMessage(), e)));
                 }
             } else {
                 return Mono.error(logger.logExceptionAsError(
@@ -271,9 +268,19 @@ public class IdentityClient {
         });
     }
 
-    private String parseClientAssertion(String clientAssertionFilePath) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
-        return new String(encoded, StandardCharsets.UTF_8);
+    private Mono<String> parseClientAssertion() {
+        return Mono.fromCallable(() -> {
+            if (clientAssertionFilePath != null) {
+                byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+                return new String(encoded, StandardCharsets.UTF_8);
+            } else {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Client Assertion File Path is not provided."
+                        + " It should be provided to authenticate with client assertion."
+                ));
+            }
+
+        });
     }
 
     private Mono<PublicClientApplication> getPublicClientApplication(boolean sharedTokenCacheCredential) {
@@ -1038,7 +1045,52 @@ public class IdentityClient {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> authenticatewithExchangeToken(TokenRequestContext request) {
-        return authenticateWithConfidentialClient(request);
+
+        return clientAssertionAccessor.getValue()
+            .flatMap(assertionToken -> Mono.fromCallable(() -> {
+                String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "")
+                    + "/" + tenantId + "/oauth2/v2.0/token";
+
+                StringBuilder urlParametersBuilder  = new StringBuilder();
+                urlParametersBuilder.append("client_assertion=");
+                urlParametersBuilder.append(assertionToken);
+                urlParametersBuilder.append("&client_assertion_type=urn:ietf:params:oauth:client-assertion-type"
+                    + ":jwt-bearer");
+                urlParametersBuilder.append("&client_id=");
+                urlParametersBuilder.append(clientId);
+                urlParametersBuilder.append("&grant_type=client_credentials");
+                urlParametersBuilder.append("&scope=");
+                urlParametersBuilder.append(URLEncoder.encode(request.getScopes().get(0), "UTF-8"));
+
+                String urlParams = urlParametersBuilder.toString();
+
+                byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+
+                HttpURLConnection connection = null;
+
+                URL url = new URL(authorityUrl);
+
+                try {
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                    connection.setDoOutput(true);
+                    try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                        outputStream.write(postData);
+                    }
+                    connection.connect();
+
+                    Scanner s = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                    String result = s.hasNext() ? s.next() : "";
+                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+            }));
     }
 
     /**
@@ -1054,7 +1106,6 @@ public class IdentityClient {
                                                                                 String thumbprint,
                                                                                 TokenRequestContext request) {
         return Mono.fromCallable(() -> {
-
             HttpsURLConnection connection = null;
             String endpoint = identityEndpoint;
             String headerValue = identityHeader;

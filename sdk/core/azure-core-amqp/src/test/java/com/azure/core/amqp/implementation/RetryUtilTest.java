@@ -65,15 +65,16 @@ public class RetryUtilTest {
     void withRetryFlux() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
-        final Duration timeout = Duration.ofMillis(500);
+        final Duration timeout = Duration.ofMillis(1500);
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
             .setTryTimeout(timeout);
-        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
+        final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds())
+            .plus(timeout);
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final Flux<AmqpTransportType> neverFlux = TestPublisher.<AmqpTransportType>create().flux()
+        final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert

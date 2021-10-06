@@ -21,6 +21,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
@@ -60,12 +61,22 @@ public final class ConfigurationAsyncClient {
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
-
     private static final String ETAG_ANY = "*";
+
+    private static final SerializerAdapter SERIALIZER_ADAPTER;
+
     private final String serviceEndpoint;
     private final ConfigurationService service;
     private final String apiVersion;
     private final SyncTokenPolicy syncTokenPolicy;
+
+    static {
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
+        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
+
+        SERIALIZER_ADAPTER = jacksonAdapter;
+    }
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
@@ -79,11 +90,7 @@ public final class ConfigurationAsyncClient {
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version,
         SyncTokenPolicy syncTokenPolicy) {
 
-        final JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonSerializer.getModule());
-        jacksonAdapter.serializer().registerModule(ConfigurationSettingJsonDeserializer.getModule());
-
-        this.service = RestProxy.create(ConfigurationService.class, pipeline, jacksonAdapter);
+        this.service = RestProxy.create(ConfigurationService.class, pipeline, SERIALIZER_ADAPTER);
         this.serviceEndpoint = serviceEndpoint;
         this.apiVersion = version.getVersion();
         this.syncTokenPolicy = syncTokenPolicy;

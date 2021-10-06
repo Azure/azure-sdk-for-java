@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -40,7 +39,7 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
         KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -82,13 +81,16 @@ public class KeyClientTest extends KeyClientTestBase {
     public void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        if (isManagedHsmTest) {
-            assertRestException(() -> client.createKey("", KeyType.RSA_HSM), HttpResponseException.class,
-                HttpURLConnection.HTTP_SERVER_ERROR);
+        final KeyType keyType;
+
+        if (runManagedHsmTest) {
+            keyType = KeyType.RSA_HSM;
         } else {
-            assertRestException(() -> client.createKey("", KeyType.RSA), ResourceModifiedException.class,
-                HttpURLConnection.HTTP_BAD_REQUEST);
+            keyType = KeyType.RSA;
         }
+
+        assertRestException(() -> client.createKey("", keyType), ResourceModifiedException.class,
+            HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     /**
@@ -389,7 +391,6 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-
     /**
      * Tests that deleted keys can be listed in the key vault.
      */
@@ -398,9 +399,9 @@ public class KeyClientTest extends KeyClientTestBase {
     public void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        /*if (!interceptorManager.isPlaybackMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             return;
-        }*/
+        }
 
         listDeletedKeysRunner((keys) -> {
             HashMap<String, CreateKeyOptions> keysToDelete = keys;
@@ -453,7 +454,25 @@ public class KeyClientTest extends KeyClientTestBase {
         });
     }
 
-    private DeletedKey pollOnKeyPurge(String keyName) {
+    /**
+     * Tests that an RSA key with a public exponent can be created in the key vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion);
+        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
+            KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
+
+            assertKeyEquals(createRsaKeyOptions, rsaKey);
+            // TODO: Investigate why the KV service sets the JWK's "e" parameter to "AQAB" instead of "Aw".
+            /*assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
+                toBigInteger(rsaKey.getKey().getE()));*/
+            assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
+        });
+    }
+
+    private void pollOnKeyPurge(String keyName) {
         int pendingPollCount = 0;
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
@@ -466,10 +485,9 @@ public class KeyClientTest extends KeyClientTestBase {
                 pendingPollCount += 1;
                 continue;
             } else {
-                return deletedKey;
+                return;
             }
         }
         System.err.printf("Deleted Key %s was not purged \n", keyName);
-        return null;
     }
 }

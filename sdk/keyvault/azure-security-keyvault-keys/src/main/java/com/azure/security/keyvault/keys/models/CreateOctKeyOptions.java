@@ -32,6 +32,53 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
     }
 
     /**
+     * Sets the key size in bits, such as 128, 192, or 256. If {@code null}, the service default is used.
+     *
+     * @param keySize The key size in bits to set.
+     *
+     * @return The updated {@link CreateOctKeyOptions} object.
+     */
+    public CreateOctKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
+    }
+
+    /**
+     * Gets the key size in bits, such as 128, 192, or 256.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Set whether the key being created is of HSM type or not.
+     *
+     * @param hardwareProtected The HSM value to set.
+     *
+     * @return The updated {@link CreateOctKeyOptions} object.
+     */
+    public CreateOctKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        KeyType keyType = hardwareProtected ? KeyType.OCT_HSM : KeyType.OCT;
+
+        setKeyType(keyType);
+
+        return this;
+    }
+
+    /**
+     * Get the HSM value of the key being created.
+     *
+     * @return the HSM value.
+     */
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
+    }
+
+    /**
      * Set the key operations.
      *
      * @param keyOperations The key operations to set.
@@ -98,52 +145,5 @@ public class CreateOctKeyOptions extends CreateKeyOptions {
         super.setEnabled(enabled);
 
         return this;
-    }
-
-    /**
-     * Set the key size in bits.
-     *
-     * @param keySize The key size to set.
-     *
-     * @return The updated {@link CreateOctKeyOptions} object.
-     */
-    public CreateOctKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
-
-        return this;
-    }
-
-    /**
-     * Get the key size in bits.
-     *
-     * @return The key size in bits.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
-     * Set whether the key being created is of HSM type or not.
-     *
-     * @param hardwareProtected The HSM value to set.
-     *
-     * @return The updated {@link CreateOctKeyOptions} object.
-     */
-    public CreateOctKeyOptions setHardwareProtected(Boolean hardwareProtected) {
-        this.hardwareProtected = hardwareProtected;
-        KeyType keyType = hardwareProtected ? KeyType.OCT_HSM : KeyType.OCT;
-
-        setKeyType(keyType);
-
-        return this;
-    }
-
-    /**
-     * Get the HSM value of the key being created.
-     *
-     * @return the HSM value.
-     */
-    public Boolean isHardwareProtected() {
-        return this.hardwareProtected;
     }
 }

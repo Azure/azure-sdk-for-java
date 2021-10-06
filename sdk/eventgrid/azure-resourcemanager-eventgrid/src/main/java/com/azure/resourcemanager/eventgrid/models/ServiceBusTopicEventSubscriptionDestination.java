@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.ServiceBusTopicEventSubscriptionDestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,23 +16,24 @@ import java.util.List;
 /** Information about the service bus topic destination for an event subscription. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
 @JsonTypeName("ServiceBusTopic")
-@JsonFlatten
 @Fluent
-public class ServiceBusTopicEventSubscriptionDestination extends EventSubscriptionDestination {
+public final class ServiceBusTopicEventSubscriptionDestination extends EventSubscriptionDestination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusTopicEventSubscriptionDestination.class);
 
     /*
-     * The Azure Resource Id that represents the endpoint of the Service Bus
-     * Topic destination of an event subscription.
+     * Service Bus Topic Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    @JsonProperty(value = "properties")
+    private ServiceBusTopicEventSubscriptionDestinationProperties innerProperties;
 
-    /*
-     * Delivery attribute details.
+    /**
+     * Get the innerProperties property: Service Bus Topic Properties of the event subscription destination.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.deliveryAttributeMappings")
-    private List<DeliveryAttributeMapping> deliveryAttributeMappings;
+    private ServiceBusTopicEventSubscriptionDestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Service Bus Topic
@@ -41,7 +42,7 @@ public class ServiceBusTopicEventSubscriptionDestination extends EventSubscripti
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -52,7 +53,10 @@ public class ServiceBusTopicEventSubscriptionDestination extends EventSubscripti
      * @return the ServiceBusTopicEventSubscriptionDestination object itself.
      */
     public ServiceBusTopicEventSubscriptionDestination withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceBusTopicEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -62,7 +66,7 @@ public class ServiceBusTopicEventSubscriptionDestination extends EventSubscripti
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
-        return this.deliveryAttributeMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().deliveryAttributeMappings();
     }
 
     /**
@@ -73,7 +77,10 @@ public class ServiceBusTopicEventSubscriptionDestination extends EventSubscripti
      */
     public ServiceBusTopicEventSubscriptionDestination withDeliveryAttributeMappings(
         List<DeliveryAttributeMapping> deliveryAttributeMappings) {
-        this.deliveryAttributeMappings = deliveryAttributeMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceBusTopicEventSubscriptionDestinationProperties();
+        }
+        this.innerProperties().withDeliveryAttributeMappings(deliveryAttributeMappings);
         return this;
     }
 
@@ -85,8 +92,8 @@ public class ServiceBusTopicEventSubscriptionDestination extends EventSubscripti
     @Override
     public void validate() {
         super.validate();
-        if (deliveryAttributeMappings() != null) {
-            deliveryAttributeMappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

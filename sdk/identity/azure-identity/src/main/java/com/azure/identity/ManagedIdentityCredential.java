@@ -14,6 +14,8 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * The base class for Managed Service Identity token based credentials.
  */
@@ -24,7 +26,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
-    static final String TOKEN_FILE_PATH = "TOKEN_FILE_PATH";
+    static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
 
 
     /**
@@ -53,13 +55,15 @@ public final class ManagedIdentityCredential implements TokenCredential {
             } else {
                 managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
             }
-        } else if (configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
-            && configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
-            && configuration.get(TOKEN_FILE_PATH) != null) {
+        } else if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+                && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
+            String clientIdentifier = clientId == null
+                ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : clientId;
+            clientBuilder.clientId(clientIdentifier);
             clientBuilder.tenantId(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID));
-            clientBuilder.clientAssertionPath(configuration.get(TOKEN_FILE_PATH));
-            managedIdentityServiceCredential = new ClientAssertionCredential(clientId, clientBuilder.build());
-
+            clientBuilder.clientAssertionPath(configuration.get(AZURE_FEDERATED_TOKEN_FILE));
+            clientBuilder.clientAssertionTimeout(Duration.ofMinutes(5));
+            managedIdentityServiceCredential = new ClientAssertionCredential(clientIdentifier, clientBuilder.build());
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
         }

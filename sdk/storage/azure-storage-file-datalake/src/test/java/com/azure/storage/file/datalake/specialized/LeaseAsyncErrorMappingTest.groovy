@@ -7,7 +7,7 @@ import reactor.test.StepVerifier
 
 class LeaseAsyncErrorMappingTest extends APISpec {
     private DataLakeFileAsyncClient createPathAsyncClient() {
-        def fac = getServiceAsyncClient(env.dataLakeAccount)
+        def fac = getServiceAsyncClient(environment.dataLakeAccount)
             .createFileSystem(generateFileSystemName()).block()
             .getFileAsyncClient(generatePathName())
         return fac

@@ -360,12 +360,15 @@ public class EncryptionProcessor {
         return decrypt(itemJObj);
     }
 
-    public Mono<byte[]> decrypt(ObjectNode itemJObj) {
-        return decryptObjectNode(itemJObj).map(decryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode));
+    public Mono<byte[]> decrypt(JsonNode itemJObj) {
+        return decryptJsonNode(itemJObj).map(decryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode));
     }
 
-    public Mono<ObjectNode> decryptObjectNode(ObjectNode itemJObj) {
+    public Mono<JsonNode> decryptJsonNode(JsonNode itemJObj) {
         assert (itemJObj != null);
+        if (itemJObj.isValueNode()) {
+            return Mono.just(itemJObj);
+        }
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 if (StringUtils.isEmpty(includedPath.getPath()) || includedPath.getPath().charAt(0) != '/' || includedPath.getPath().lastIndexOf('/') != 0) {
@@ -399,7 +402,7 @@ public class EncryptionProcessor {
         }));
     }
 
-    public void decryptAndSerializeProperty(EncryptionSettings encryptionSettings, ObjectNode objectNode,
+    public void decryptAndSerializeProperty(EncryptionSettings encryptionSettings, JsonNode objectNode,
                                             JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
 
         if (propertyValueHolder.isObject()) {
@@ -447,7 +450,7 @@ public class EncryptionProcessor {
             }
 
         } else {
-            decryptAndSerializeValue(encryptionSettings, objectNode, propertyValueHolder, propertyName);
+            decryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }
     }
 

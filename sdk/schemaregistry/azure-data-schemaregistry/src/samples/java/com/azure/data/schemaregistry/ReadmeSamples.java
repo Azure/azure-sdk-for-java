@@ -4,8 +4,9 @@
 package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
-import com.azure.data.schemaregistry.models.SerializationType;
+import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
@@ -24,7 +25,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildAsyncClient();
     }
@@ -36,7 +37,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
     }
@@ -48,7 +49,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
 
@@ -66,23 +67,26 @@ public class ReadmeSamples {
             + "    ]\n"
             + "}";
         SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
-            schemaContent, SerializationType.AVRO);
+            schemaContent, SchemaFormat.AVRO);
+
         System.out.println("Registered schema: " + schemaProperties.getSchemaId());
     }
 
     /**
-     * Sample for getting the schema from a schema id.
+     * Sample for getting the schema's properties from a schema.
      */
     public void getSchema() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
 
-        SchemaProperties schemaProperties = schemaRegistryClient.getSchema("{schema-id}");
-        System.out.println("Retrieved schema: " + schemaProperties.getSchemaName());
+        SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
+
+        System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getSchemaId(),
+            schema.getSchemaDefinition());
     }
 
     /**
@@ -92,7 +96,7 @@ public class ReadmeSamples {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .endpoint("{schema-registry-endpoint")
+            .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
 
@@ -109,8 +113,9 @@ public class ReadmeSamples {
             + "        }\n"
             + "    ]\n"
             + "}";
-        String schemaId = schemaRegistryClient.getSchemaId("{schema-group}", "{schema-name}",
-            schemaContent, SerializationType.AVRO);
-        System.out.println("Retreived schema id: " + schemaId);
+        SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
+            schemaContent, SchemaFormat.AVRO);
+
+        System.out.println("Retrieved schema id: " + properties.getSchemaId());
     }
 }

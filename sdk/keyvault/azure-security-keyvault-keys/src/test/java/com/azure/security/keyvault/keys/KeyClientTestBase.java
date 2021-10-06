@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -23,31 +22,31 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.provider.Arguments;
 
 import java.math.BigInteger;
 import java.time.Duration;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import org.junit.jupiter.api.Test;
-
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import org.junit.jupiter.params.provider.Arguments;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -60,7 +59,9 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
-    protected boolean isManagedHsmTest = false;
+    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    protected boolean isHsmEnabled = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -70,7 +71,7 @@ public abstract class KeyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+    HttpPipeline getHttpPipeline(HttpClient httpClient) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -89,15 +90,14 @@ public abstract class KeyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), serviceVersion));
+        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential,
-                isManagedHsmTest ? KeyAsyncClient.MHSM_SCOPE : KeyAsyncClient.KEY_VAULT_SCOPE));
+            policies.add(new KeyVaultCredentialPolicy(credential));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -116,15 +116,15 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void setKeyRunner(Consumer<CreateKeyOptions> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("foo", "baz");
 
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), keyType)
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions keyOptions = new CreateKeyOptions(testResourceNamer.randomName(KEY_NAME, 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags);
@@ -133,19 +133,20 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void createRsaKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void createRsaKeyRunner(Consumer<CreateRsaKeyOptions> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("foo", "baz");
 
-        final CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(generateResourceId(KEY_NAME))
-            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
-            .setTags(tags);
+        final CreateRsaKeyOptions createRsaKeyOptions =
+            new CreateRsaKeyOptions(testResourceNamer.randomName(KEY_NAME, 20))
+                .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+                .setTags(tags);
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             createRsaKeyOptions.setHardwareProtected(true);
         }
 
@@ -153,10 +154,10 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void setKeyEmptyName(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void setKeyNullType(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void setKeyNullType(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void setKeyEmptyValueRunner(Consumer<CreateKeyOptions> testRunner) {
         CreateKeyOptions key = new CreateKeyOptions(KEY_NAME, null);
@@ -164,11 +165,11 @@ public abstract class KeyClientTestBase extends TestBase {
         testRunner.accept(key);
     }
 
-    @Test public abstract void setKeyNull(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    @Test public abstract void setKeyNull(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
 
     @Test
-    public abstract void updateKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void updateKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
         final Map<String, String> tags = new HashMap<>();
@@ -176,8 +177,8 @@ public abstract class KeyClientTestBase extends TestBase {
         tags.put("first tag", "first value");
         tags.put("second tag", "second value");
 
-        final String keyName = generateResourceId("testKey1");
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
+        final String keyName = testResourceNamer.randomName("testKey1", 20);
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         final CreateKeyOptions originalKey = new CreateKeyOptions(keyName, keyType)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
                 .setTags(tags);
@@ -190,11 +191,11 @@ public abstract class KeyClientTestBase extends TestBase {
 
 
     @Test
-    public abstract void updateDisabledKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void updateDisabledKeyRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
-        final String keyName = generateResourceId("testKey2");
-        final KeyType keyType = isManagedHsmTest ? KeyType.EC_HSM : KeyType.EC;
+        final String keyName = testResourceNamer.randomName("testKey2", 20);
+        final KeyType keyType = isHsmEnabled ? KeyType.EC_HSM : KeyType.EC;
         final CreateKeyOptions originalKey = new CreateKeyOptions(keyName, keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC))
             .setEnabled(false);
@@ -205,22 +206,22 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void getKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void getKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions originalKey = new CreateKeyOptions(generateResourceId("testKey4"), keyType)
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions originalKey = new CreateKeyOptions(testResourceNamer.randomName("testKey4", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(originalKey);
     }
 
     @Test
-    public abstract void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void getKeySpecificVersion(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void getKeySpecificVersionRunner(BiConsumer<CreateKeyOptions, CreateKeyOptions> testRunner) {
-        final String keyName = generateResourceId("testKey3");
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
+        final String keyName = testResourceNamer.randomName("testKey3", 20);
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         final CreateKeyOptions key = new CreateKeyOptions(keyName, keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
         final CreateKeyOptions keyWithNewVal = new CreateKeyOptions(keyName, keyType)
@@ -230,88 +231,91 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void getKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void deleteKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void deleteKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToDelete = new CreateKeyOptions(generateResourceId("testKey5"), keyType)
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions keyToDelete = new CreateKeyOptions(testResourceNamer.randomName("testKey5", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDelete);
     }
 
     @Test
-    public abstract void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void deleteKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void getDeletedKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void getDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void getDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToDeleteAndGet = new CreateKeyOptions(generateResourceId("testKey6"), keyType)
-            .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions keyToDeleteAndGet =
+            new CreateKeyOptions(testResourceNamer.randomName("testKey6", 20), keyType)
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDeleteAndGet);
     }
 
     @Test
-    public abstract void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void getDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void recoverDeletedKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void recoverDeletedKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToDeleteAndRecover = new CreateKeyOptions(generateResourceId("testKey7"), keyType)
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions keyToDeleteAndRecover =
+            new CreateKeyOptions(testResourceNamer.randomName("testKey7", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToDeleteAndRecover);
     }
 
     @Test
-    public abstract void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void recoverDeletedKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void backupKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void backupKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void backupKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToBackup = new CreateKeyOptions(generateResourceId("testKey8"), keyType)
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions keyToBackup = new CreateKeyOptions(testResourceNamer.randomName("testKey8", 20), keyType)
             .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToBackup);
     }
 
     @Test
-    public abstract void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void backupKeyNotFound(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void restoreKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void restoreKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void restoreKeyRunner(Consumer<CreateKeyOptions> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
-        final CreateKeyOptions keyToBackupAndRestore = new CreateKeyOptions(generateResourceId("testKey9"), keyType)
-            .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
+        final CreateKeyOptions keyToBackupAndRestore =
+            new CreateKeyOptions(testResourceNamer.randomName("testKey9", 20), keyType)
+                .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
         testRunner.accept(keyToBackupAndRestore);
     }
 
     @Test
-    public abstract void restoreKeyFromMalformedBackup(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void restoreKeyFromMalformedBackup(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
-    public abstract void listKeys(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void listKeys(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void listKeysRunner(Consumer<HashMap<String, CreateKeyOptions>> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
 
         for (int i = 0; i < 2; i++) {
-            keyName = generateResourceId("listKey" + i);
+            keyName = testResourceNamer.randomName("listKey" + i, 20);
             CreateKeyOptions key =  new CreateKeyOptions(keyName, keyType)
                 .setExpiresOn(OffsetDateTime.of(2050, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC));
 
@@ -322,12 +326,12 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listKeyVersions(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void listKeyVersions(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void listKeyVersionsRunner(Consumer<List<CreateKeyOptions>> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         List<CreateKeyOptions> keys = new ArrayList<>();
-        String keyName = generateResourceId("listKeyVersion");
+        String keyName = testResourceNamer.randomName("listKeyVersion", 20);
 
         for (int i = 1; i < 5; i++) {
             keys.add(new CreateKeyOptions(keyName, keyType)
@@ -338,15 +342,15 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void listDeletedKeys(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+    public abstract void listDeletedKeys(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     void listDeletedKeysRunner(Consumer<HashMap<String, CreateKeyOptions>> testRunner) {
-        final KeyType keyType = isManagedHsmTest ? KeyType.RSA_HSM : KeyType.RSA;
+        final KeyType keyType = isHsmEnabled ? KeyType.RSA_HSM : KeyType.RSA;
         HashMap<String, CreateKeyOptions> keys = new HashMap<>();
         String keyName;
 
         for (int i = 0; i < 3; i++) {
-            keyName = generateResourceId("listDeletedKeysTest" + i);
+            keyName = testResourceNamer.randomName("listDeletedKeysTest" + i, 20);
 
             keys.put(keyName, new CreateKeyOptions(keyName, keyType)
                 .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
@@ -360,45 +364,36 @@ public abstract class KeyClientTestBase extends TestBase {
 
         tags.put("foo", "baz");
 
-        final CreateRsaKeyOptions keyOptions = new CreateRsaKeyOptions(generateResourceId("testRsaKey"))
+        final CreateRsaKeyOptions keyOptions = new CreateRsaKeyOptions(testResourceNamer.randomName("testRsaKey", 20))
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
             .setTags(tags)
             .setKeySize(2048)
             .setPublicExponent(3);
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             keyOptions.setHardwareProtected(true);
         }
 
         testRunner.accept(keyOptions);
     }
 
-    void createOctKeyRunner(Consumer<CreateOctKeyOptions> testRunner) {
+    void createOctKeyRunner(Integer keySize, Consumer<CreateOctKeyOptions> testRunner) {
         final Map<String, String> tags = new HashMap<>();
 
         tags.put("foo", "baz");
 
-        final CreateOctKeyOptions keyOptions = new CreateOctKeyOptions(generateResourceId("testRsaKey"))
+        final CreateOctKeyOptions keyOptions = new CreateOctKeyOptions(testResourceNamer.randomName("testOctKey", 20))
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setKeySize(keySize)
             .setTags(tags);
 
-        if (isManagedHsmTest) {
+        if (runManagedHsmTest) {
             keyOptions.setHardwareProtected(true);
         }
 
         testRunner.accept(keyOptions);
-    }
-
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-
-        String id = UUID.randomUUID().toString();
-
-        return suffix.length() > 0 ? id + "-" + suffix : id;
     }
 
     /**
@@ -439,7 +434,7 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     public String getEndpoint() {
-        final String endpoint = isManagedHsmTest
+        final String endpoint = isHsmEnabled
             ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
             : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
 

@@ -13,7 +13,10 @@ public enum ResourceIdentityType {
     NONE("None"),
 
     /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned");
+    SYSTEM_ASSIGNED("SystemAssigned"),
+
+    /** Enum value SystemAssigned,UserAssigned. */
+    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned,UserAssigned");
 
     /** The actual serialized value for a ResourceIdentityType instance. */
     private final String value;
