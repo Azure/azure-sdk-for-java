@@ -152,6 +152,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     assertEquals(original.getName(), response.getName());
                 }).verifyComplete();
 
+            sleepIfRunningAgainstService(1500);
+
             StepVerifier.create(client.getKey(original.getName()))
                 .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
                 .verifyComplete();
@@ -177,6 +179,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     assertNotNull(response);
                     assertEquals(original.getName(), response.getName());
                 }).verifyComplete();
+
+            sleepIfRunningAgainstService(1500);
 
             StepVerifier.create(client.getKey(original.getName()))
                 .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
