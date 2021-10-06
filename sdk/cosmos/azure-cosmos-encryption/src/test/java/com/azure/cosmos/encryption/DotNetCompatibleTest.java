@@ -107,7 +107,7 @@ public class DotNetCompatibleTest extends TestSuiteBase {
     private CosmosClientEncryptionKeyProperties getEncryptionPropertiesFromJsonFile(String filePath) throws IOException {
         JsonNode node = MAPPER.readTree(new File(filePath));
         String clientEncryptionKey = node.get("id").asText();
-        String algorithm = node.get("encryptionAlgorithmId").asText();
+        String algorithm = node.get("encryptionAlgorithm").asText();
         byte[] wrappedDataEncryptionKey = MAPPER.treeToValue(node.get("wrappedDataEncryptionKey"), byte[].class);
         ObjectNode objectNode = (ObjectNode) node.get("keyWrapMetadata");
         EncryptionKeyWrapMetadata keyWrapMetadata = MAPPER.convertValue(objectNode, EncryptionKeyWrapMetadata.class);

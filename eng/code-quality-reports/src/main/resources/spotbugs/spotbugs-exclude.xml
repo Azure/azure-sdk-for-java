@@ -153,6 +153,13 @@
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+ <!--False positive: https://github.com/spotbugs/spotbugs/issues/1219-->
+  <Match>
+    <Class name="com.azure.core.implementation.jackson.ObjectMapperShim"/>
+    <Method name="createJsonMapper"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
   <!-- Suppress non-null warning in the case that we change the code and it is possible for
   KeyVaultCredentials.getAuthenticationCredentials to return null. -->
   <Match>
@@ -167,7 +174,7 @@
   <!-- Suppress Redundant nullcheck error for JreCertificates$JREKeyStore.loadKeyStore(KeyStore). -->
   <Match>
     <Or>
-      <Class name="com.azure.security.keyvault.jca.implementation.certificates.JreCertificates$JREKeyStore"/> <!-- false positive -->
+      <Class name="com.azure.security.keyvault.jca.implementation.JREKeyStoreFactory"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
@@ -661,10 +668,10 @@
   <!-- Serializers define non-transient non-serializable instance field -->
   <Match>
     <Or>
-      <Class name="com.azure.core.util.serializer.FlatteningSerializer"/>
-      <Class name="com.azure.core.util.serializer.FlatteningDeserializer"/>
-      <Class name="com.azure.core.util.serializer.AdditionalPropertiesSerializer"/>
-      <Class name="com.azure.core.util.serializer.AdditionalPropertiesDeserializer"/>
+      <Class name="com.azure.core.implementation.jackson.FlatteningSerializer"/>
+      <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer"/>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer"/>
+      <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesDeserializer"/>
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -1261,83 +1268,11 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- FormRecognizerException fields re serializable -->
+  <!-- DocumentAnalysisException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
-    <Field name="errorInformationList"/>
+    <Class name="com.azure.ai.formrecognizer.models.DocumentAnalysisException"/>
+    <Field name="errorInformation"/>
     <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel"/>
-    <Field name="modelName"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel"/>
-    <Field name="customFormModelProperties"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo"/>
-    <Field name="modelName"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo"/>
-    <Field name="customFormModelProperties"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties"/>
-    <Field name="isComposed"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm"/>
-    <Field name="formTypeConfidence"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark"/>
-    <Field name="confidence"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark"/>
-    <Field name="state"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormPage"/>
-    <Field name="selectionMarks"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
 
   <!-- TextAnalyticsException fields re serializable -->

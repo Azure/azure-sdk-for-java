@@ -2,17 +2,29 @@
 // Licensed under the MIT License.
 package com.azure.security.attestation.implementation.models;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nimbusds.jose.util.JSONObjectUtils;
 
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 
 public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata {
+    @JsonProperty(value = "jwks_uri")
     private String jwksUri;
+
+    @JsonProperty(value = "issuer")
     private String issuer;
+
+    @JsonProperty(value = "response_types_supported")
     private String[] responseTypesSupported;
+    @JsonProperty(value = "id_token_signing_alg_values_supported")
     private String[] tokenSigningAlgorithmsSupported;
+    @JsonProperty(value = "claims_supported")
     private String[] supportedClaims;
 
     @Override public String getJsonWebKeySetUrl() {
@@ -34,52 +46,18 @@ public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata 
     }
 
     public static AttestationOpenIdMetadata fromGenerated(Object generated) {
-        if (!(generated instanceof LinkedHashMap)) {
-            throw new InvalidParameterException("generated OpenId metadata must be a hash map.");
-        }
 
-        @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> metadataConfig = (LinkedHashMap<String, Object>) generated;
-        AttestationOpenIdMetadataImpl returnValue = new AttestationOpenIdMetadataImpl();
+        ClientLogger logger = new ClientLogger(AttestationOpenIdMetadataImpl.class);
+        SerializerAdapter serializerAdapter = new JacksonAdapter();
+        AttestationOpenIdMetadataImpl metadataImpl;
 
-        if (metadataConfig.containsKey("issuer")) {
-            returnValue.issuer = (String) metadataConfig.get("issuer");
-        }
-
-        if (metadataConfig.containsKey("jwks_uri")) {
-            returnValue.jwksUri = (String) metadataConfig.get("jwks_uri");
-        }
-
-        if (metadataConfig.containsKey("response_types_supported")) {
-            Object responseTypesObject = metadataConfig.get("response_types_supported");
-            if (!(responseTypesObject instanceof ArrayList)) {
-                throw new InvalidParameterException("generated ResponseTypes must be an array list.");
-            }
+        try {
             @SuppressWarnings("unchecked")
-            ArrayList<Object> supportedTypes = (ArrayList<Object>) responseTypesObject;
-            returnValue.responseTypesSupported = supportedTypes.stream().map(type -> (String) type).toArray(String[]::new);
+            String generatedString = JSONObjectUtils.toJSONString((LinkedHashMap<String, Object>) generated);
+            metadataImpl = serializerAdapter.deserialize(generatedString, AttestationOpenIdMetadataImpl.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-
-        if (metadataConfig.containsKey("id_token_signing_alg_values_supported")) {
-            Object signingAlgObject = metadataConfig.get("id_token_signing_alg_values_supported");
-            if (!(signingAlgObject instanceof ArrayList)) {
-                throw new InvalidParameterException("generated Signing Algorithms Supported must be an array list.");
-            }
-            @SuppressWarnings("unchecked")
-            ArrayList<Object> signingAlgorithms = (ArrayList<Object>) signingAlgObject;
-            returnValue.tokenSigningAlgorithmsSupported = signingAlgorithms.stream().map(type -> (String) type).toArray(String[]::new);
-        }
-
-        if (metadataConfig.containsKey("claims_supported")) {
-            Object supportedClaimsObject = metadataConfig.get("claims_supported");
-            if (!(supportedClaimsObject instanceof ArrayList)) {
-                throw new InvalidParameterException("generated Supported Claims must be an array list.");
-            }
-            @SuppressWarnings("unchecked")
-            ArrayList<Object> supportedClaims = (ArrayList<Object>) supportedClaimsObject;
-            returnValue.supportedClaims = supportedClaims.stream().map(type -> (String) type).toArray(String[]::new);
-        }
-
-        return returnValue;
+        return metadataImpl;
     }
 }

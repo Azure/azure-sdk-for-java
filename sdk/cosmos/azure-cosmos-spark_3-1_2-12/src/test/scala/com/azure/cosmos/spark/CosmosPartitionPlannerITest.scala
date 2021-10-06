@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal, TestConfigurations, Utils}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, FeedRange}
 import com.azure.cosmos.spark.CosmosPartitionPlanner.{createInputPartitions, getPartitionMetadata}
 import com.azure.cosmos.util.CosmosPagedFlux
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
+import org.mockito.Mockito.mock
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import org.mockito.{ArgumentMatchers, Mockito}
 import org.scalatest.Assertion
 
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util
 import java.util.UUID
 import java.util.concurrent.atomic.{AtomicInteger, AtomicLong}

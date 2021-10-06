@@ -1,5 +1,22 @@
 # Release History
 
+## 4.7.0-beta.1 (Unreleased)
+
+### Features Added
+- Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
+  `ApiManagementApiReleaseCreatedEventData`, `ApiManagementApiReleaseDeletedEventData`, 
+  `ApiManagementApiReleaseUpdatedEventData`, `ApiManagementApiUpdatedEventData`, `ApiManagementProductCreatedEventData`,
+  `ApiManagementProductDeletedEventData`, `ApiManagementProductUpdatedEventData`,
+  `ApiManagementSubscriptionCreatedEventData`, `ApiManagementSubscriptionDeletedEventData`,
+  `ApiManagementSubscriptionUpdatedEventData`,`ApiManagementUserCreatedEventData`, `ApiManagementUserDeletedEventData`,
+  `ApiManagementUserUpdatedEventData`. 
+- Added a new Media service system event, `MediaLiveEventChannelArchiveHeartbeatEventData`.
+- Added a new Communication service system event, `AcsUserDisconnectedEventData`.
+- Added fields `transcriptionLanguage`, `transcriptionState`, `ingestDriftValue`, `lastFragmentArrivalTime` 
+  to system event classes `MediaLiveEventIngestHeartbeatEventData`.
+
+### Other Changes
+
 ## 4.6.1 (2021-09-10)
 
 ### Other Changes

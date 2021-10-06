@@ -10,6 +10,7 @@ import com.azure.resourcemanager.resources.models.ManagedByTenant;
 import com.azure.resourcemanager.resources.models.SubscriptionPolicies;
 import com.azure.resourcemanager.resources.models.SubscriptionState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,7 @@ public final class SubscriptionInner {
      * The tags attached to the subscription.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**

@@ -17,7 +17,7 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a response saying whether the workspace name is available.
+     * @return check name availability response.
      */
     CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest request);
 
@@ -29,7 +29,7 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a response saying whether the workspace name is available.
+     * @return check name availability response.
      */
     Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
         CheckNameAvailabilityRequest request, Context context);

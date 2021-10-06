@@ -8,7 +8,7 @@ To build the SDK for Server Calling Client, simply Install AutoRest and in this 
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -31,14 +31,14 @@ To update generated files for calling service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-06-15-preview
+tag: package-2021-08-30-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b4b5fa5ee23f8cce9e1ade4a82076b4c34b25651/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3893616381e816729ef9cdd768e87fb2845e189d/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType
+custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
@@ -94,5 +94,32 @@ directive:
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                        
+    to: ToneInfoInternal                                            
+```
+
+### Rename RecordingChannelType to RecordingChannel
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingChannelType
+    transform: >
+      $["x-ms-enum"].name = "RecordingChannel";
+```
+
+### Rename RecordingContentType to RecordingContent
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingContentType
+    transform: >
+      $["x-ms-enum"].name = "RecordingContent";
+```
+
+### Rename RecordingFormatType to RecordingFormat
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingFormatType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingFormat";
 ```

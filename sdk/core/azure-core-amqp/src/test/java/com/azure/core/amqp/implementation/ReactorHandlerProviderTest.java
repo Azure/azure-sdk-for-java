@@ -24,6 +24,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -56,6 +59,8 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link ReactorHandlerProvider}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated("Mutates global ProxySelector")
 public class ReactorHandlerProviderTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String FULLY_QUALIFIED_DOMAIN_NAME = "my-hostname.windows.com";
@@ -81,10 +86,11 @@ public class ReactorHandlerProviderTest {
     private TokenCredential tokenCredential;
     @Mock
     private Scheduler scheduler;
+    @Mock
+    private ProxySelector proxySelector;
 
     private ReactorHandlerProvider provider;
     private ProxySelector originalProxySelector;
-    private ProxySelector proxySelector;
     private AutoCloseable mocksCloseable;
 
     public static Stream<ProxyOptions> getProxyConfigurations() {
@@ -111,7 +117,7 @@ public class ReactorHandlerProviderTest {
 
     @AfterEach
     public void teardown() throws Exception {
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
         ProxySelector.setDefault(originalProxySelector);
 
         if (mocksCloseable != null) {

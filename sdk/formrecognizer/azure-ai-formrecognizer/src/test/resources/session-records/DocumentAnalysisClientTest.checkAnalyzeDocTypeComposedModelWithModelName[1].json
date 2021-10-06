@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:build?api-version=2021-09-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "88d98f6a-fb0a-4d1e-8e0f-335e36cd2139",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "345",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "524a6fbb-43e7-4184-8036-6149067e7775",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "Body" : "{\n  \"error\": {\n    \"code\": \"Conflict\",\n    \"message\": \"The request could not be completed due to a conflict with the current state of the target resource.\",\n    \"innererror\": {\n      \"code\": \"ModelExists\",\n      \"message\": \"A model with the provided name already exists.\"\n    }\n  }\n}",
+      "Date" : "Mon, 27 Sep 2021 00:18:48 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

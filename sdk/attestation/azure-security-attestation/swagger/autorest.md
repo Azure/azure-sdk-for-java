@@ -39,9 +39,11 @@ context-client-method-parameter: true
 #generate-sync-async-clients: true
 required-fields-as-ctor-args: true
 v3: true
-add-credentials: true
-credential-types: tokencredential
-credential-scopes: 'https://attest.azure.net/.default'
+
+#add-credentials: false
+#credential-types: tokencredential
+#credential-scopes: 'https://attest.azure.net/.default'
+
 #required-parameter-client-methods: true
 
 ```

@@ -105,7 +105,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
         final boolean useAvroSpecificReader = avroSpecificReader == null
             ? AVRO_SPECIFIC_READER_DEFAULT : avroSpecificReader;
         final Schema.Parser parser = new Schema.Parser();
-        final AvroSchemaRegistryUtils codec = new AvroSchemaRegistryUtils(useAvroSpecificReader, parser,
+        final AvroSerializer codec = new AvroSerializer(useAvroSpecificReader, parser,
             EncoderFactory.get(), DecoderFactory.get());
 
         return new SchemaRegistryAvroSerializer(schemaRegistryAsyncClient, codec, schemaGroup, isAutoRegister);

@@ -1,7 +1,47 @@
 # Release History
 
-## 4.4.0-beta.3 (Unreleased)
+## 4.4.0-beta.4 (Unreleased)
 
+### Features Added
+- Added new functions to key clients to enable key rotation:
+  - `KeyClient`
+    - `rotateKey(String name)`
+    - `rotateKeyWithResponse(String name, Context context)`
+    - `getKeyRotationPolicy(String name)`
+    - `getKeyRotationPolicyWithResponse(String name, Context context)`
+    - `updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
+    - `updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties, Context context)`
+  - `KeyAsyncClient`
+    - `rotateKey(String name)`
+    - `rotateKeyWithResponse(String name)`
+    - `getKeyRotationPolicy(String name)`
+    - `getKeyRotationPolicyWithResponse(String name)`
+    - `updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
+    - `updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties)`
+- Added convenience methods to create cryptography clients using key clients:
+  - `KeyClient.getCryptographyClient(String keyName)`
+  - `KeyClient.getCryptographyClient(String keyName, String keyVersion)`
+  - `KeyAsyncClient.getCryptographyAsyncClient(String keyName)`
+  - `KeyAsyncClient.getCryptographyAsyncClient(String keyName, String keyVersion)`
+- `CryptographyClientBuilder` does not require `keyIdentifier` to a include a key version. If no version is provided, cryptographic operations will be made using the latest version of the key.
+
+### Other Changes
+
+## 4.4.0-beta.3 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
+
+## 4.3.3 (2021-09-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.20.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.0`
 
 ## 4.4.0-beta.2 (2021-08-13)
 
@@ -11,6 +51,14 @@
   - `ImportKeyOptions`
   - `KeyProperties`
 - Added `releaseKey()` and `releaseKeyWithResponse()` operations to `KeyClient` and `KeyAsyncClient` to securely release a key for Key Vault and Managed HSM.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.19.0`
+- Upgraded `azure-core-http-netty` dependency to `1.10.2`
+
+## 4.3.2 (2021-08-12)
 
 ### Other Changes
 

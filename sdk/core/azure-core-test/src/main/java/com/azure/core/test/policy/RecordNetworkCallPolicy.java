@@ -103,7 +103,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         if (urlBuilder.getQuery().containsKey(SIG)) {
             urlBuilder.setQueryParameter(SIG, "REDACTED");
         }
-        networkCallRecord.setUri(urlBuilder.toString().replaceAll("\\?$", ""));
+        String uriString = urlBuilder.toString();
+        networkCallRecord.setUri(uriString.endsWith("?") ? uriString.substring(0, uriString.length() - 2) : uriString);
 
         return next.process()
             .doOnError(throwable -> {

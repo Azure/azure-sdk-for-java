@@ -59,6 +59,7 @@ steps:
     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
     ShouldPublish: ${{ parameters.ShouldPublish }}
     StageOnly: ${{ parameters.StageOnly }}
-- publish: $(Artifacts)
-  artifact: packages-mavencentral
-  displayName: 'Store gpg signed packages in packages-mavencentral artifact'
+- template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+  parameters:
+    ArtifactName: packages-mavencentral-$(System.JobAttempt)
+    ArtifactPath: $(Artifacts)

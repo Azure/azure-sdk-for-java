@@ -1668,8 +1668,8 @@ class ContainerAPITest extends APISpec {
         }
 
         AppendBlobClient bc = instrument(new BlobClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .blobName("rootblob"))
             .buildClient().getAppendBlobClient()
 
@@ -1694,8 +1694,8 @@ class ContainerAPITest extends APISpec {
 
         when:
         cc = instrument(new BlobContainerClientBuilder()
-            .credential(env.primaryAccount.credential)
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .containerName(null))
             .buildClient()
 
@@ -1798,7 +1798,7 @@ class ContainerAPITest extends APISpec {
     def "Per call policy"() {
         setup:
         def cc = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(env.primaryAccount.credential)
+            .credential(environment.primaryAccount.credential)
             .addPolicy(getPerCallVersionPolicy())
             .buildClient()
 

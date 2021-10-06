@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
+import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
@@ -20,6 +21,7 @@ import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -72,6 +74,12 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     @JsonProperty(value = "kubeletDiskType")
     private KubeletDiskType kubeletDiskType;
+
+    /*
+     * Determines the type of workload a node can run.
+     */
+    @JsonProperty(value = "workloadRuntime")
+    private WorkloadRuntime workloadRuntime;
 
     /*
      * The ID of the subnet which agent pool nodes and optionally pods will
@@ -313,6 +321,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     @JsonProperty(value = "gpuInstanceProfile")
     private GpuInstanceProfile gpuInstanceProfile;
 
+    /*
+     * CreationData to be used to specify the source Snapshot ID if the node
+     * pool will be created/upgraded using a snapshot.
+     */
+    @JsonProperty(value = "creationData")
+    private CreationData creationData;
+
     /**
      * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
      * 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default
@@ -428,6 +443,26 @@ public class ManagedClusterAgentPoolProfileProperties {
      */
     public ManagedClusterAgentPoolProfileProperties withKubeletDiskType(KubeletDiskType kubeletDiskType) {
         this.kubeletDiskType = kubeletDiskType;
+        return this;
+    }
+
+    /**
+     * Get the workloadRuntime property: Determines the type of workload a node can run.
+     *
+     * @return the workloadRuntime value.
+     */
+    public WorkloadRuntime workloadRuntime() {
+        return this.workloadRuntime;
+    }
+
+    /**
+     * Set the workloadRuntime property: Determines the type of workload a node can run.
+     *
+     * @param workloadRuntime the workloadRuntime value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
+        this.workloadRuntime = workloadRuntime;
         return this;
     }
 
@@ -1110,6 +1145,28 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
+     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
+     * created/upgraded using a snapshot.
+     *
+     * @return the creationData value.
+     */
+    public CreationData creationData() {
+        return this.creationData;
+    }
+
+    /**
+     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
+     * created/upgraded using a snapshot.
+     *
+     * @param creationData the creationData value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withCreationData(CreationData creationData) {
+        this.creationData = creationData;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1126,6 +1183,9 @@ public class ManagedClusterAgentPoolProfileProperties {
         }
         if (linuxOSConfig() != null) {
             linuxOSConfig().validate();
+        }
+        if (creationData() != null) {
+            creationData().validate();
         }
     }
 }

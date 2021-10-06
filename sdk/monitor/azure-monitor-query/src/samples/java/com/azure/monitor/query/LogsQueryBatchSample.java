@@ -39,9 +39,9 @@ public class LogsQueryBatchSample {
                 .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        logsBatchQuery.addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null);
-        logsBatchQuery.addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
-        logsBatchQuery.addQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null,
+        logsBatchQuery.addWorkspaceQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 2", null);
+        logsBatchQuery.addWorkspaceQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 3", null);
+        logsBatchQuery.addWorkspaceQuery("d2d0e126-fa1e-4b0a-b647-250cdd471e68", "AppRequests | take 4", null,
                         new LogsQueryOptions().setIncludeStatistics(true));
 
         LogsBatchQueryResultCollection batchResultCollection = logsQueryClient

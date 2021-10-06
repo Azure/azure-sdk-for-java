@@ -5,23 +5,24 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.SqlPoolResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A SQL Analytics pool patch info. */
-@JsonFlatten
+/** SQL pool patch info A SQL Analytics pool patch info. */
 @Fluent
-public class SqlPoolPatchInfo {
+public final class SqlPoolPatchInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolPatchInfo.class);
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -31,70 +32,16 @@ public class SqlPoolPatchInfo {
     private String location;
 
     /*
-     * SQL pool SKU
+     * Sku SQL pool SKU
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Maximum size in bytes
+     * SQL pool properties
      */
-    @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
-
-    /*
-     * Collation mode
-     */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
-
-    /*
-     * Source database to create from
-     */
-    @JsonProperty(value = "properties.sourceDatabaseId")
-    private String sourceDatabaseId;
-
-    /*
-     * Backup database to restore from
-     */
-    @JsonProperty(value = "properties.recoverableDatabaseId")
-    private String recoverableDatabaseId;
-
-    /*
-     * Resource state
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /*
-     * Resource status
-     */
-    @JsonProperty(value = "properties.status")
-    private String status;
-
-    /*
-     * Snapshot time to restore
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * What is this?
-     */
-    @JsonProperty(value = "properties.createMode")
-    private String createMode;
-
-    /*
-     * Date the SQL pool was created
-     */
-    @JsonProperty(value = "properties.creationDate")
-    private OffsetDateTime creationDate;
-
-    /*
-     * The storage account type used to store backups for this sql pool.
-     */
-    @JsonProperty(value = "properties.storageAccountType")
-    private StorageAccountType storageAccountType;
+    @JsonProperty(value = "properties")
+    private SqlPoolResourceProperties innerProperties;
 
     /**
      * Get the tags property: Resource tags.
@@ -137,7 +84,7 @@ public class SqlPoolPatchInfo {
     }
 
     /**
-     * Get the sku property: SQL pool SKU.
+     * Get the sku property: Sku SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -146,7 +93,7 @@ public class SqlPoolPatchInfo {
     }
 
     /**
-     * Set the sku property: SQL pool SKU.
+     * Set the sku property: Sku SQL pool SKU.
      *
      * @param sku the sku value to set.
      * @return the SqlPoolPatchInfo object itself.
@@ -157,12 +104,21 @@ public class SqlPoolPatchInfo {
     }
 
     /**
+     * Get the innerProperties property: SQL pool properties.
+     *
+     * @return the innerProperties value.
+     */
+    private SqlPoolResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the maxSizeBytes property: Maximum size in bytes.
      *
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
-        return this.maxSizeBytes;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
     }
 
     /**
@@ -172,7 +128,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withMaxSizeBytes(Long maxSizeBytes) {
-        this.maxSizeBytes = maxSizeBytes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withMaxSizeBytes(maxSizeBytes);
         return this;
     }
 
@@ -182,7 +141,7 @@ public class SqlPoolPatchInfo {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -192,7 +151,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -202,7 +164,7 @@ public class SqlPoolPatchInfo {
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
-        return this.sourceDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseId();
     }
 
     /**
@@ -212,7 +174,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withSourceDatabaseId(String sourceDatabaseId) {
-        this.sourceDatabaseId = sourceDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withSourceDatabaseId(sourceDatabaseId);
         return this;
     }
 
@@ -222,7 +187,7 @@ public class SqlPoolPatchInfo {
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
-        return this.recoverableDatabaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().recoverableDatabaseId();
     }
 
     /**
@@ -232,7 +197,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withRecoverableDatabaseId(String recoverableDatabaseId) {
-        this.recoverableDatabaseId = recoverableDatabaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withRecoverableDatabaseId(recoverableDatabaseId);
         return this;
     }
 
@@ -242,7 +210,7 @@ public class SqlPoolPatchInfo {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -252,7 +220,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -262,7 +233,7 @@ public class SqlPoolPatchInfo {
      * @return the status value.
      */
     public String status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -272,7 +243,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withStatus(String status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -282,7 +256,7 @@ public class SqlPoolPatchInfo {
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
     }
 
     /**
@@ -292,7 +266,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
     }
 
@@ -302,7 +279,7 @@ public class SqlPoolPatchInfo {
      * @return the createMode value.
      */
     public String createMode() {
-        return this.createMode;
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
     }
 
     /**
@@ -312,7 +289,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withCreateMode(String createMode) {
-        this.createMode = createMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
         return this;
     }
 
@@ -322,7 +302,7 @@ public class SqlPoolPatchInfo {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -332,7 +312,10 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCreationDate(creationDate);
         return this;
     }
 
@@ -342,7 +325,7 @@ public class SqlPoolPatchInfo {
      * @return the storageAccountType value.
      */
     public StorageAccountType storageAccountType() {
-        return this.storageAccountType;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountType();
     }
 
     /**
@@ -352,7 +335,33 @@ public class SqlPoolPatchInfo {
      * @return the SqlPoolPatchInfo object itself.
      */
     public SqlPoolPatchInfo withStorageAccountType(StorageAccountType storageAccountType) {
-        this.storageAccountType = storageAccountType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    /**
+     * Get the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+     *
+     * @return the sourceDatabaseDeletionDate value.
+     */
+    public OffsetDateTime sourceDatabaseDeletionDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseDeletionDate();
+    }
+
+    /**
+     * Set the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+     *
+     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
+     * @return the SqlPoolPatchInfo object itself.
+     */
+    public SqlPoolPatchInfo withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
         return this;
     }
 
@@ -364,6 +373,9 @@ public class SqlPoolPatchInfo {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
