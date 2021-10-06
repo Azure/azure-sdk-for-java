@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
+## 4.0.4 (2021-10-06)
 
 ### Bugs Fixed
 - Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
