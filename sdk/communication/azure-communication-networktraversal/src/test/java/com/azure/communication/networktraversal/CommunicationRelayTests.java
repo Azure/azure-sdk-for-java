@@ -25,7 +25,7 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
     protected void afterTest() {
         super.afterTest();
     }
-    
+
     private void setupTest(HttpClient httpClient) {
         CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
         user = communicationIdentityClient.createUser();
@@ -39,10 +39,37 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             setupTest(httpClient);
             CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
             client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
-            
+
             // Action & Assert
             assertNotNull(client);
             CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
+            List<CommunicationIceServer> iceServers = config.getIceServers();
+
+            assertNotNull(config);
+            assertNotNull(config.getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientWithoutUserIdUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
+            client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
+
+            // Action & Assert
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration();
             List<CommunicationIceServer> iceServers = config.getIceServers();
 
             assertNotNull(config);
@@ -68,7 +95,33 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
             assertNotNull(client);
             CommunicationRelayConfiguration config = client.getRelayConfiguration(user);
-            
+
+            // Action & Assert
+            List<CommunicationIceServer> iceServers = config.getIceServers();
+            assertNotNull(config);
+            assertNotNull(config.getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientWithoutUserIdUsingConnectionString(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+            client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
+            assertNotNull(client);
+            CommunicationRelayConfiguration config = client.getRelayConfiguration();
+
             // Action & Assert
             List<CommunicationIceServer> iceServers = config.getIceServers();
             assertNotNull(config);
@@ -93,9 +146,37 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
             CommunicationRelayClientBuilder builder = createClientBuilder(httpClient);
             client = setupClient(builder, "getRelayConfigWithResponse");
             Response<CommunicationRelayConfiguration> response;
-        
+
             // Action & Assert
             response = client.getRelayConfigurationWithResponse(user, Context.NONE);
+            List<CommunicationIceServer> iceServers = response.getValue().getIceServers();
+
+            assertNotNull(response.getValue());
+            assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+            assertNotNull(response.getValue().getExpiresOn());
+
+            for (CommunicationIceServer iceS : iceServers) {
+                assertNotNull(iceS.getUrls());
+                assertNotNull(iceS.getUsername());
+                assertNotNull(iceS.getCredential());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getRelayConfigWithResponseWithoutUserId(HttpClient httpClient) {
+        // Arrange
+        try {
+            setupTest(httpClient);
+            CommunicationRelayClientBuilder builder = createClientBuilder(httpClient);
+            client = setupClient(builder, "getRelayConfigWithResponse");
+            Response<CommunicationRelayConfiguration> response;
+
+            // Action & Assert
+            response = client.getRelayConfigurationWithResponse(Context.NONE);
             List<CommunicationIceServer> iceServers = response.getValue().getIceServers();
 
             assertNotNull(response.getValue());
