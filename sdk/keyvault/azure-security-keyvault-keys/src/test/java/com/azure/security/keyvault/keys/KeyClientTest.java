@@ -467,24 +467,6 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an RSA key with a public exponent can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyClient(httpClient, serviceVersion);
-        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
-            KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
-
-            assertKeyEquals(createRsaKeyOptions, rsaKey);
-            // TODO: Investigate why the KV service sets the JWK's "e" parameter to "AQAB" instead of "Aw".
-            /*assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
-                toBigInteger(rsaKey.getKey().getE()));*/
-            assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
-        });
-    }
-
-    /**
      * Tests that an existing key can be released.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

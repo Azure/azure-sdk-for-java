@@ -450,9 +450,6 @@ public abstract class KeyClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion);
-
-    @Test
     public abstract void getKeyRotationPolicyOfNonExistentKey(HttpClient httpClient, KeyServiceVersion serviceVersion);
 
     @Test
