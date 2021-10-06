@@ -411,12 +411,12 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     private void onTerminalState(String handlerName) {
         if (pendingLinkTerminations.get() <= 0) {
-            logger.verbose("connectionId[{}] linkName[{}]: Already disposed send/receive links.");
+            logger.verbose("connectionId[{}] linkName[{}] Already disposed send/receive links.");
             return;
         }
 
         final int remaining = pendingLinkTerminations.decrementAndGet();
-        logger.verbose("connectionId[{}] linkName[{}]: {} disposed. Remaining: {}",
+        logger.verbose("connectionId[{}] linkName[{}] {} disposed. Remaining: {}",
             connectionId, linkName, handlerName, remaining);
 
         if (remaining == 0) {
