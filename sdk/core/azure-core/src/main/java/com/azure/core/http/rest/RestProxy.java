@@ -464,8 +464,10 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
-            .switchIfEmpty(Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls)))
+        final Class<? extends Response<?>> clsFinal = cls;
+        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(clsFinal))
+            .switchIfEmpty(Mono.defer(() ->
+                Mono.error(new RuntimeException("Cannot find suitable constructor for class " + clsFinal))))
             .flatMap(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 
