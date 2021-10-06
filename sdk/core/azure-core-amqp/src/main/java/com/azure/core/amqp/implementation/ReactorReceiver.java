@@ -83,12 +83,12 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                             final Integer credits = supplier.get();
 
                             if (credits != null && credits > 0) {
-                                logger.info("connectionId[{}] linkName[{}] adding credits[{}]",
-                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                logger.info("connectionId[{}] linkName[{}] credits[{}] Adding credits.",
+                                    handler.getConnectionId(), getLinkName(), credits);
                                 receiver.flow(credits);
                             } else {
-                                logger.verbose("connectionId[{}] linkName[{}] There are no credits to add.",
-                                    handler.getConnectionId(), getLinkName(), creditsLeft, credits);
+                                logger.verbose("connectionId[{}] linkName[{}] credits[{}] There are no credits to add.",
+                                    handler.getConnectionId(), getLinkName(), credits);
                             }
 
                             sink.success(message);

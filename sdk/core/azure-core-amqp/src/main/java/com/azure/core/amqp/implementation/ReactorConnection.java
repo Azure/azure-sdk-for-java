@@ -565,12 +565,10 @@ public class ReactorConnection implements AmqpConnection {
             // remaining work after OperationTimeout has elapsed and closes afterwards.
             reactorProvider.getReactorDispatcher().getShutdownSignal()
                 .flatMap(signal -> {
-                    logger.info("Shutdown signal received from reactor provider.");
                     reactorExceptionHandler.onConnectionShutdown(signal);
                     return executorCloseMono;
                 })
                 .onErrorResume(error -> {
-                    logger.info("Error received from reactor provider.", error);
                     reactorExceptionHandler.onConnectionError(error);
                     return executorCloseMono;
                 })
