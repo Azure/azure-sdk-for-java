@@ -3,6 +3,10 @@
 
 package com.azure.iot.modelsrepository.implementation.models;
 
+/**
+ * {@link RepositoryFeatures} is designated to store
+ * attributes which apply to all models in the repository
+ */
 public class RepositoryFeatures {
     private final boolean expanded;
     private final boolean index;

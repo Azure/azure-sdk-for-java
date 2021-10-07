@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * The FetchMetadataResult class is used for storing the result of the
+ * The {@link FetchMetadataResult} class is used for storing the result of the
  * fetch repository metadata operation. It contains the metadata definition
  * and path
  */

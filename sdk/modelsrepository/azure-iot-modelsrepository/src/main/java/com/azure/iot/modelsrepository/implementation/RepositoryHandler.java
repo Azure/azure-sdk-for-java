@@ -24,7 +24,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/**
+ * The {@link RepositoryHandler} is responsible for processing fetched models
+ * and generates processed results which are sent back to the client.
+ */
 public final class RepositoryHandler {
 
     private final URI repositoryUri;
@@ -49,8 +52,7 @@ public final class RepositoryHandler {
         return processAsync(Collections.singletonList(dtmi), resolutionOptions, context);
     }
 
-    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelDependencyResolution
-        resolutionOptions, Context context) {
+    public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelDependencyResolution resolutionOptions, Context context) {
         List<String> modelsToProcess = prepareWork(dtmis);
 
         return isExpandedAvailable(resolutionOptions, context)
@@ -80,14 +82,12 @@ public final class RepositoryHandler {
             });
     }
 
-    private Flux<FetchModelResult> processAsync(boolean tryExpanded, List<String> dtmis,
-                                                ModelDependencyResolution resolution, Context context) {
+    private Flux<FetchModelResult> processAsync(boolean tryExpanded, List<String> dtmis, ModelDependencyResolution resolution, Context context) {
         return Flux.concat(dtmis.stream().map(dtmi -> processDtmi(tryExpanded, dtmi, resolution, context))
             .collect(Collectors.toList()));
     }
 
-    private Flux<FetchModelResult> processDtmi(boolean tryExpanded, String dtmi, ModelDependencyResolution resolution,
-                                               Context context) {
+    private Flux<FetchModelResult> processDtmi(boolean tryExpanded, String dtmi, ModelDependencyResolution resolution, Context context) {
         return modelFetcher.fetchModelAsync(dtmi, repositoryUri, tryExpanded, context)
             .flatMapMany(response -> {
                 // If the model was pre-computed, already expanded, processing of it is done.

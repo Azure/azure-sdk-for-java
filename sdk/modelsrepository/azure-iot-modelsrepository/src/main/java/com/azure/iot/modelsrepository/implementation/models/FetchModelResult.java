@@ -9,7 +9,7 @@ import com.azure.iot.modelsrepository.implementation.ModelsRepositoryConstants;
 import java.util.Locale;
 
 /**
- * The FetchModelResult class has the purpose of containing key elements of
+ * The {@link FetchModelResult} class has the purpose of containing key elements of
  * an IModelFetcher Fetch() operation including model definition, path and whether
  * it was from an expanded (pre-calculated) fetch.
  */

@@ -3,6 +3,10 @@
 
 package com.azure.iot.modelsrepository.implementation.models;
 
+/**
+ * {@link ModelsRepositoryMetadata} is designated to store
+ * information about models repository.
+ */
 public class ModelsRepositoryMetadata {
 
     private final String commitId;
@@ -11,8 +15,11 @@ public class ModelsRepositoryMetadata {
     private final Integer totalModelCount;
     private final RepositoryFeatures features;
 
-    public ModelsRepositoryMetadata(String commitId, String publishDateUtc,
-                                    String sourceRepo, Integer totalModelCount, RepositoryFeatures features) {
+    public ModelsRepositoryMetadata(String commitId,
+                             String publishDateUtc,
+                             String sourceRepo,
+                             Integer totalModelCount,
+                             RepositoryFeatures features) {
         this.commitId = commitId;
         this.publishDateUtc = publishDateUtc;
         this.sourceRepo = sourceRepo;
