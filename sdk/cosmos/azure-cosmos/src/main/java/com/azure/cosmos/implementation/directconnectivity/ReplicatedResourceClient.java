@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -43,6 +44,7 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
+    private final RetryWithOptions retryWithOptions;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -53,7 +55,8 @@ public class ReplicatedResourceClient {
             GatewayServiceConfigurationReader serviceConfigReader,
             IAuthorizationTokenProvider authorizationTokenProvider,
             boolean enableReadRequestsFallback,
-            boolean useMultipleWriteLocations) {
+            boolean useMultipleWriteLocations,
+            RetryWithOptions retryWithOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.configs = configs;
         this.protocol = configs.getProtocol();
@@ -80,6 +83,7 @@ public class ReplicatedResourceClient {
             serviceConfigReader,
             useMultipleWriteLocations);
         this.enableReadRequestsFallback = enableReadRequestsFallback;
+        this.retryWithOptions = retryWithOptions;
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -99,7 +103,9 @@ public class ReplicatedResourceClient {
     }
 
     public Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request,
-                                           Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate) {
+                                           Function<RxDocumentServiceRequest,
+                                           Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate,
+                                           RetryWithOptions retryWithOptions) {
         BiFunction<Quadruple<Boolean, Boolean, Duration, Integer>, RxDocumentServiceRequest, Mono<StoreResponse>> mainFuncDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout,
                 RxDocumentServiceRequest documentServiceRequest) -> {
@@ -160,7 +166,7 @@ public class ReplicatedResourceClient {
 
         return BackoffRetryUtility.executeAsync(
             funcDelegate,
-            new GoneAndRetryWithRetryPolicy(request, retryTimeout),
+            new GoneAndRetryWithRetryPolicy(request, retryTimeout, retryWithOptions),
             inBackoffFuncDelegate,
             Duration.ofSeconds(
                 ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS),

@@ -9,6 +9,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.RetryWithOptions;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -29,6 +30,7 @@ public final class ConnectionPolicy {
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
+    private RetryWithOptions retryWithOptions;
 
     //  Gateway connection config properties
     private int maxConnectionPoolSize;
@@ -69,6 +71,7 @@ public final class ConnectionPolicy {
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
         this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
+        this.setRetryWithOptions(new RetryWithOptions());
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -79,6 +82,7 @@ public final class ConnectionPolicy {
         this.multipleWriteRegionsEnabled = true;
         this.readRequestsFallbackEnabled = true;
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.retryWithOptions = new RetryWithOptions();
         this.userAgentSuffix = "";
     }
 
@@ -273,6 +277,36 @@ public final class ConnectionPolicy {
         }
 
         this.throttlingRetryOptions = throttlingRetryOptions;
+        return this;
+    }
+
+    /**
+     * Gets the retry policy options associated with the DocumentClient instance.
+     *
+     * @return the RetryOptions instance.
+     */
+    public RetryWithOptions getRetryWithOptions() {
+        return this.retryWithOptions;
+    }
+
+    /**
+     * Sets the retry policy options associated with the DocumentClient instance.
+     * <p>
+     * Properties in the RetryOptions class allow application to customize the built-in
+     * retry policies. This property is optional. When it's not set, the SDK uses the
+     * default values for configuring the retry policies.  See RetryOptions class for
+     * more details.
+     *
+     * @param retryWithOptions the RetryOptions instance.
+     * @return the ConnectionPolicy.
+     * @throws IllegalArgumentException thrown if an error occurs
+     */
+    public ConnectionPolicy setRetryWithOptions(RetryWithOptions retryWithOptions) {
+        if (retryWithOptions == null) {
+            throw new IllegalArgumentException("retryWithOptions value must not be null.");
+        }
+
+        this.retryWithOptions = retryWithOptions;
         return this;
     }
 

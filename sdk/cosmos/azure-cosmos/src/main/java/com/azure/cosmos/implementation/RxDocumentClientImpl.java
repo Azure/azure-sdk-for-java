@@ -483,7 +483,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionPolicy,
             // this.maxConcurrentConnectionOpenRequests,
             this.userAgentContainer,
-            this.connectionSharingAcrossClientsEnabled
+            this.connectionSharingAcrossClientsEnabled,
+            this.connectionPolicy.getRetryWithOptions()
         );
 
         this.createStoreModel(true);

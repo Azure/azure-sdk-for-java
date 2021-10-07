@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.GoneException;
@@ -49,14 +50,14 @@ public class ReplicatedResourceClientTest {
     public void invokeAsyncWithGoneException() {
         Configs configs = new Configs();
         ReplicatedResourceClient resourceClient = new ReplicatedResourceClient(mockDiagnosticsClientContext(), configs, new AddressSelector(addressResolver, Protocol.HTTPS), null,
-                transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false);
+                transportClient, serviceConfigReader, authorizationTokenProvider, enableReadRequestsFallback, false, new RetryWithOptions());
         FailureValidator validator = FailureValidator.builder().instanceOf(CosmosException.class).build();
         RxDocumentServiceRequest request = Mockito.spy(RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document));
         request.requestContext.cosmosDiagnostics = request.createCosmosDiagnostics();
 
         Mockito.when(addressResolver.resolveAsync(ArgumentMatchers.any(), ArgumentMatchers.anyBoolean()))
                 .thenReturn(Mono.error(new GoneException()));
-        Mono<StoreResponse> response = resourceClient.invokeAsync(request, null);
+        Mono<StoreResponse> response = resourceClient.invokeAsync(request, null, new RetryWithOptions());
 
         validateFailure(response, validator, TIMEOUT);
         //method will fail 6 time (first try , and 5 retries within 30 sec(1,2,4,8,15 wait))

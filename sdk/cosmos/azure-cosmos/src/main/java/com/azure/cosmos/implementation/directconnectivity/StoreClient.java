@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
@@ -50,6 +51,7 @@ public class StoreClient implements IStoreClient {
     private final ReplicatedResourceClient replicatedResourceClient;
     private final TransportClient transportClient;
     private final String ZERO_PARTITION_KEY_RANGE = "0";
+    private final RetryWithOptions retryWithOptions = new RetryWithOptions();
 
     public StoreClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -58,7 +60,8 @@ public class StoreClient implements IStoreClient {
             SessionContainer sessionContainer,
             GatewayServiceConfigurationReader serviceConfigurationReader, IAuthorizationTokenProvider userTokenProvider,
             TransportClient transportClient,
-            boolean useMultipleWriteLocations) {
+            boolean useMultipleWriteLocations,
+            RetryWithOptions retryWithOptions) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.transportClient = transportClient;
         this.sessionContainer = sessionContainer;
@@ -72,7 +75,8 @@ public class StoreClient implements IStoreClient {
             serviceConfigurationReader,
             userTokenProvider,
             false,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            retryWithOptions);
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -85,7 +89,7 @@ public class StoreClient implements IStoreClient {
             throw new NullPointerException("request");
         }
 
-        Callable<Mono<StoreResponse>> storeResponseDelegate = () -> this.replicatedResourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
+        Callable<Mono<StoreResponse>> storeResponseDelegate = () -> this.replicatedResourceClient.invokeAsync(request, prepareRequestAsyncDelegate, retryWithOptions);
 
         Mono<StoreResponse> storeResponse;
         try {

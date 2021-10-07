@@ -108,6 +108,7 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
+    private RetryWithOptions retryWithOptions;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -118,6 +119,7 @@ public class CosmosClientBuilder {
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.retryWithOptions = new RetryWithOptions();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -632,6 +634,24 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the configuration for the retry-with policy that gets applied when
+     * a request hits a RetryWithException with custom values rather than default ones.
+     *<p>
+     * DEFAULT values for these options are as follows:
+     * initialRetryIntervalMilliseconds = 10
+     * maximumRetryIntervalMilliseconds = 1000
+     * randomSaltMaxValueMilliseconds = 5
+     * totalWaitTimeMilliseconds = 30000
+     *
+     * @param retryWithOptions options for retry-with policy.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder retryWithOptions(RetryWithOptions retryWithOptions) {
+        this.retryWithOptions = retryWithOptions;
+        return this;
+    }
+
+    /**
      * Gets the GATEWAY connection configuration to be used.
      *
      * @return gateway connection config
@@ -776,6 +796,7 @@ public class CosmosClientBuilder {
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
         this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
+        this.connectionPolicy.setRetryWithOptions(this.retryWithOptions);
     }
 
     private void validateConfig() {

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -21,6 +22,7 @@ public class StoreClientFactory implements AutoCloseable {
     private final Configs configs;
     private final TransportClient transportClient;
     private volatile boolean isClosed;
+    private final RetryWithOptions retryWithOptions;
 
     public StoreClientFactory(
         IAddressResolver addressResolver,
@@ -28,7 +30,8 @@ public class StoreClientFactory implements AutoCloseable {
         Configs configs,
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
-        boolean enableTransportClientSharing) {
+        boolean enableTransportClientSharing,
+        RetryWithOptions retryWithOptions) {
 
         this.configs = configs;
         Protocol protocol = configs.getProtocol();
@@ -54,6 +57,7 @@ public class StoreClientFactory implements AutoCloseable {
                 throw new IllegalArgumentException(String.format("protocol: %s", protocol));
             }
         }
+        this.retryWithOptions = retryWithOptions;
     }
 
     public void close() throws Exception {
@@ -80,7 +84,8 @@ public class StoreClientFactory implements AutoCloseable {
             serviceConfigurationReader,
             authorizationTokenProvider,
             this.transportClient,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            this.retryWithOptions);
     }
 
     private void throwIfClosed() {

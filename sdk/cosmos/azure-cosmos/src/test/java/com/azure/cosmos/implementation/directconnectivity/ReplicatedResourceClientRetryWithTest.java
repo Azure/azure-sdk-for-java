@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -74,19 +75,19 @@ public class ReplicatedResourceClientRetryWithTest {
                 primaryAddress,
                 OperationType.Create,
                 ResourceType.Document,
-                new RetryWithException("Simultated 449 conflict", new HttpHeaders(), new URI("http://localhost")),
+                new RetryWithException("Simulated 449 conflict", new HttpHeaders(), new URI("http://localhost")),
                 false)
             .exceptionOn(
                 primaryAddress,
                 OperationType.Create,
                 ResourceType.Document,
-                new RetryWithException("Simultated 449 conflict", new HttpHeaders(), new URI("http://localhost")),
+                new RetryWithException("Simulated 449 conflict", new HttpHeaders(), new URI("http://localhost")),
                 false)
             .exceptionOn(
                 primaryAddress,
                 OperationType.Create,
                 ResourceType.Document,
-                new RetryWithException("Simultated 449 conflict", new HttpHeaders(), new URI("http://localhost")),
+                new RetryWithException("Simulated 449 conflict", new HttpHeaders(), new URI("http://localhost")),
                 false)
             .storeResponseOn(
                 primaryAddress,
@@ -115,7 +116,8 @@ public class ReplicatedResourceClientRetryWithTest {
             gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
             authorizationTokenProvider,
             false,
-            false);
+            false,
+            new RetryWithOptions());
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs", ResourceType.Document);
@@ -126,7 +128,7 @@ public class ReplicatedResourceClientRetryWithTest {
         Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate = null;
 
         Instant start = Instant.now();
-        Mono<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
+        Mono<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate, new RetryWithOptions());
 
         StoreResponseValidator validator = StoreResponseValidator.create()
                                                                  .withBELSN(lsn)

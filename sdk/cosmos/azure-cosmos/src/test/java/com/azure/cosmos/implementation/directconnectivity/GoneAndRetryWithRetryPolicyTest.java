@@ -16,6 +16,8 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -40,7 +42,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new GoneException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
@@ -82,7 +84,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             mockDiagnosticsClientContext(),
             OperationType.Create,
             ResourceType.Document);
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
 
         Supplier<GoneException> goneExceptionForNotYetFlushedRequestSupplier = () -> {
             GoneException goneExceptionForNotYetFlushedRequest = new GoneException();
@@ -140,7 +142,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             return goneExceptionForFlushedRequest;
         };
 
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(goneExceptionForFlushedRequestSupplier.get());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
@@ -164,7 +166,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Create,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy =
-            new GoneAndRetryWithRetryPolicy(request, 30);
+            new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
 
         Supplier<GoneException> goneExceptionForFlushedRequestSupplier = () -> {
             GoneException goneExceptionForFlushedRequest = new GoneException();
@@ -214,7 +216,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Read,
             ResourceType.Document);
 
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(new RequestTimeoutException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
@@ -228,7 +230,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Create,
             ResourceType.Document);
 
-        goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(new RequestTimeoutException());
         shouldRetryResult = singleShouldRetry.block();
@@ -247,7 +249,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionIsMigratingException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
@@ -265,7 +267,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new InvalidPartitionException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
@@ -293,7 +295,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionKeyRangeIsSplittingException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
@@ -314,11 +316,98 @@ public class GoneAndRetryWithRetryPolicyTest {
             mockDiagnosticsClientContext(),
             OperationType.Read,
             ResourceType.Document);
-        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new BadRequestException());
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
+    }
+
+    /**
+     * Test for default retryWith values
+     */
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void retryWithDefaultTimeouts() {
+        int expectedDelayInMs = 10;
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, new RetryWithOptions());
+
+        RetryWithException retryWithException = new RetryWithException();
+
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        validateRetryWithTimeRange(expectedDelayInMs, shouldRetryResult, null);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
+        expectedDelayInMs = expectedDelayInMs * 2; //backoff multiplier
+        validateRetryWithTimeRange(expectedDelayInMs, shouldRetryResult, null);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
+        expectedDelayInMs = expectedDelayInMs * 2; //backoff multiplier
+        validateRetryWithTimeRange(expectedDelayInMs, shouldRetryResult, null);
+    }
+
+    /**
+     * Test for custom retryWith values
+     */
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void retryWithCustomTimeouts() {
+        int customInitialDelayInMs = 11;
+        int customMaximumDelayInMs = 900;
+        int customSalt = 3;
+        int customTotalTime = 20000;
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Create,
+            ResourceType.Document);
+        RetryWithOptions retryWithOptions = new RetryWithOptions()
+            .setInitialBackoffForRetryWith(customInitialDelayInMs)
+            .setMaximumBackoffForRetryWith(customMaximumDelayInMs)
+            .setRandomSaltForRetryWith(customSalt)
+            .setTotalWaitTimeForRetryWith(customTotalTime);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30, retryWithOptions);
+
+        RetryWithException retryWithException = new RetryWithException();
+
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
+        validateRetryWithTimeRange(customInitialDelayInMs, shouldRetryResult, customSalt);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(2);
+        customInitialDelayInMs = customInitialDelayInMs * 2; //backoff multiplier
+        validateRetryWithTimeRange(customInitialDelayInMs, shouldRetryResult, customSalt);
+
+        singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
+        shouldRetryResult = singleShouldRetry.block();
+        assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(3);
+        customInitialDelayInMs = customInitialDelayInMs * 2; //backoff multiplier
+        validateRetryWithTimeRange(customInitialDelayInMs, shouldRetryResult, customSalt);
+    }
+
+    private static void validateRetryWithTimeRange(
+        int expectedDelayInMs,
+        ShouldRetryResult retryResult,
+        Integer saltValueInMs) {
+        int saltValue = saltValueInMs == null ? 0 : saltValueInMs;
+        assertThat(retryResult.shouldRetry).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() >= 0).isTrue();
+        if (saltValue == 0) {
+            assertThat(retryResult.backOffTime.toMillis() == expectedDelayInMs).isTrue();
+        } else {
+            assertThat(retryResult.backOffTime.toMillis() > expectedDelayInMs - saltValue).isTrue();
+            assertThat(retryResult.backOffTime.toMillis() < expectedDelayInMs + saltValue).isTrue();
+        }
     }
 
 }

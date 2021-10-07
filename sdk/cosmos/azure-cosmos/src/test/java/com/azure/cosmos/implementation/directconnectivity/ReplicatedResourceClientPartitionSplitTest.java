@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -122,7 +123,8 @@ public class ReplicatedResourceClientPartitionSplitTest {
                                                                                gatewayServiceConfigurationReaderWrapper.gatewayServiceConfigurationReader,
                                                                                authorizationTokenProvider,
                                                                                false,
-                                                                               false);
+                                                                               false,
+                                                                                new RetryWithOptions());
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -131,7 +133,7 @@ public class ReplicatedResourceClientPartitionSplitTest {
         request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
 
         Function<RxDocumentServiceRequest, Mono<RxDocumentServiceRequest>> prepareRequestAsyncDelegate = null;
-        Mono<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate);
+        Mono<StoreResponse> storeResponseObs = resourceClient.invokeAsync(request, prepareRequestAsyncDelegate, new RetryWithOptions());
 
         if (partitionIsSplitting < Integer.MAX_VALUE) {
 

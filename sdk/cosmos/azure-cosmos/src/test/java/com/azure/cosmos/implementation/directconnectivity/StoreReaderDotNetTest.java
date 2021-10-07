@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.RetryWithOptions;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
@@ -626,7 +627,7 @@ public class StoreReaderDotNetTest {
         Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
 
         try {
-            StoreClient storeClient = new StoreClient(mockDiagnosticsClientContext(), new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false);
+            StoreClient storeClient = new StoreClient(mockDiagnosticsClientContext(), new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false, new RetryWithOptions());
 
             ServerStoreModel storeModel = new ServerStoreModel(storeClient);
             Mono<RxDocumentServiceResponse> result = storeModel.processMessage(entity).single();
