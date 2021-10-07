@@ -41,9 +41,11 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionKeyInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionLimitsInner;
+import com.azure.resourcemanager.appservice.fluent.models.ResourceMetricDefinitionInner;
+import com.azure.resourcemanager.appservice.fluent.models.ResourceMetricInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetGatewayInner;
-import com.azure.resourcemanager.appservice.fluent.models.VnetInfoResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.VnetInfoInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetRouteInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlanCollection;
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
@@ -51,6 +53,8 @@ import com.azure.resourcemanager.appservice.models.CsmUsageQuotaCollection;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.HybridConnectionCollection;
 import com.azure.resourcemanager.appservice.models.ResourceCollection;
+import com.azure.resourcemanager.appservice.models.ResourceMetricCollection;
+import com.azure.resourcemanager.appservice.models.ResourceMetricDefinitionCollection;
 import com.azure.resourcemanager.appservice.models.WebAppCollection;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -135,7 +139,7 @@ public final class AppServicePlansClientImpl
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String endpoint,
@@ -147,19 +151,18 @@ public final class AppServicePlansClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -210,12 +213,12 @@ public final class AppServicePlansClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteHybridConnection(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -224,7 +227,6 @@ public final class AppServicePlansClientImpl
             @PathParam("relayName") String relayName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -292,11 +294,43 @@ public final class AppServicePlansClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/metricdefinitions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<ResourceMetricDefinitionCollection>> listMetricDefintions(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/metrics")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<ResourceMetricCollection>> listMetrics(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @QueryParam("details") Boolean details,
+            @QueryParam(value = "$filter", encoded = true) String filter,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/restartSites")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> restartWebApps(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -304,7 +338,6 @@ public final class AppServicePlansClientImpl
             @QueryParam("softRestart") Boolean softRestart,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -317,11 +350,11 @@ public final class AppServicePlansClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
             @QueryParam("$skipToken") String skipToken,
             @QueryParam(value = "$filter", encoded = true) String filter,
             @QueryParam("$top") String top,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -350,9 +383,9 @@ public final class AppServicePlansClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -362,7 +395,7 @@ public final class AppServicePlansClientImpl
                 + "/{name}/virtualNetworkConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<List<VnetInfoResourceInner>>> listVnets(
+        Mono<Response<List<VnetInfoInner>>> listVnets(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -377,7 +410,7 @@ public final class AppServicePlansClientImpl
                 + "/{name}/virtualNetworkConnections/{vnetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarm(
+        Mono<Response<VnetInfoInner>> getVnetFromServerFarm(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -459,7 +492,7 @@ public final class AppServicePlansClientImpl
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VnetRouteInner>> createOrUpdateVnetRoute(
             @HostParam("$host") String endpoint,
@@ -473,11 +506,11 @@ public final class AppServicePlansClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteVnetRoute(
             @HostParam("$host") String endpoint,
@@ -487,14 +520,13 @@ public final class AppServicePlansClientImpl
             @PathParam("routeName") String routeName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VnetRouteInner>> updateVnetRoute(
             @HostParam("$host") String endpoint,
@@ -508,12 +540,12 @@ public final class AppServicePlansClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/workers/{workerName}/reboot")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> rebootWorker(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -521,7 +553,6 @@ public final class AppServicePlansClientImpl
             @PathParam("workerName") String workerName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -568,6 +599,26 @@ public final class AppServicePlansClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<ResourceMetricDefinitionCollection>> listMetricDefintionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<ResourceMetricCollection>> listMetricsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WebAppCollection>> listWebAppsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
@@ -586,7 +637,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
@@ -594,7 +645,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServicePlanInner>> listSinglePageAsync(Boolean detailed) {
@@ -635,7 +686,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
@@ -644,7 +695,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServicePlanInner>> listSinglePageAsync(Boolean detailed, Context context) {
@@ -682,7 +733,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
@@ -690,7 +741,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServicePlanInner> listAsync(Boolean detailed) {
@@ -698,11 +749,11 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServicePlanInner> listAsync() {
@@ -711,7 +762,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
@@ -720,7 +771,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppServicePlanInner> listAsync(Boolean detailed, Context context) {
@@ -729,11 +780,11 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServicePlanInner> list() {
@@ -742,7 +793,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
      *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
@@ -751,7 +802,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServicePlanInner> list(Boolean detailed, Context context) {
@@ -759,13 +810,13 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServicePlanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -810,14 +861,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServicePlanInner>> listByResourceGroupSinglePageAsync(
@@ -860,13 +911,13 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AppServicePlanInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -876,14 +927,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AppServicePlanInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -893,13 +944,13 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServicePlanInner> listByResourceGroup(String resourceGroupName) {
@@ -907,14 +958,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service plans.
+     * @return all App Service plans in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServicePlanInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -922,14 +973,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get an App Service plan.
+     * Get an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
+     * @return an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AppServicePlanInner>> getByResourceGroupWithResponseAsync(
@@ -970,7 +1021,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get an App Service plan.
+     * Get an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -978,7 +1029,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
+     * @return an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppServicePlanInner>> getByResourceGroupWithResponseAsync(
@@ -1016,14 +1067,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get an App Service plan.
+     * Get an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
+     * @return an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServicePlanInner> getByResourceGroupAsync(String resourceGroupName, String name) {
@@ -1039,14 +1090,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get an App Service plan.
+     * Get an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
+     * @return an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppServicePlanInner getByResourceGroup(String resourceGroupName, String name) {
@@ -1054,7 +1105,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get an App Service plan.
+     * Get an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1062,7 +1113,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service plan.
+     * @return an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppServicePlanInner> getByResourceGroupWithResponse(
@@ -1071,7 +1122,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1126,7 +1177,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1179,7 +1230,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1205,7 +1256,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1229,7 +1280,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1246,7 +1297,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1264,7 +1315,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1283,7 +1334,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1303,7 +1354,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1320,7 +1371,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1338,12 +1389,12 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete an App Service plan.
+     * Delete an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1368,7 +1419,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1379,19 +1429,18 @@ public final class AppServicePlansClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Delete an App Service plan.
+     * Delete an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1416,7 +1465,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1425,17 +1473,16 @@ public final class AppServicePlansClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                accept,
                 context);
     }
 
     /**
-     * Description for Delete an App Service plan.
+     * Delete an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1445,12 +1492,12 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete an App Service plan.
+     * Delete an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1459,13 +1506,13 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete an App Service plan.
+     * Delete an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -1475,7 +1522,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1530,7 +1577,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1583,7 +1630,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1608,7 +1655,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1625,7 +1672,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Creates or updates an App Service Plan.
+     * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1643,7 +1690,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1691,7 +1738,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1737,7 +1784,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1760,7 +1807,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1775,7 +1822,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1792,7 +1839,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1850,7 +1897,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1906,7 +1953,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1932,7 +1979,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1950,7 +1997,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -1969,14 +2016,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2008,7 +2055,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2021,13 +2067,12 @@ public final class AppServicePlansClientImpl
                             relayName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2035,7 +2080,7 @@ public final class AppServicePlansClientImpl
      * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2067,7 +2112,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteHybridConnection(
@@ -2078,19 +2122,18 @@ public final class AppServicePlansClientImpl
                 relayName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                accept,
                 context);
     }
 
     /**
-     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2102,14 +2145,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2118,7 +2161,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2126,7 +2169,7 @@ public final class AppServicePlansClientImpl
      * @param relayName Name of the Service Bus relay.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -2138,7 +2181,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2147,7 +2190,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection key contract.
+     * @return the send key name and value of a Hybrid Connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HybridConnectionKeyInner>> listHybridConnectionKeysWithResponseAsync(
@@ -2196,7 +2239,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2206,7 +2249,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection key contract.
+     * @return the send key name and value of a Hybrid Connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridConnectionKeyInner>> listHybridConnectionKeysWithResponseAsync(
@@ -2252,7 +2295,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2261,7 +2304,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection key contract.
+     * @return the send key name and value of a Hybrid Connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HybridConnectionKeyInner> listHybridConnectionKeysAsync(
@@ -2278,7 +2321,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2287,7 +2330,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection key contract.
+     * @return the send key name and value of a Hybrid Connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridConnectionKeyInner listHybridConnectionKeys(
@@ -2296,7 +2339,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2306,7 +2349,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection key contract.
+     * @return the send key name and value of a Hybrid Connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridConnectionKeyInner> listHybridConnectionKeysWithResponse(
@@ -2316,7 +2359,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2325,7 +2368,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resources.
+     * @return all apps that use a Hybrid Connection in an App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listWebAppsByHybridConnectionSinglePageAsync(
@@ -2383,7 +2426,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2393,7 +2436,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resources.
+     * @return all apps that use a Hybrid Connection in an App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listWebAppsByHybridConnectionSinglePageAsync(
@@ -2448,7 +2491,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2457,7 +2500,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resources.
+     * @return all apps that use a Hybrid Connection in an App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listWebAppsByHybridConnectionAsync(
@@ -2468,7 +2511,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2478,7 +2521,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resources.
+     * @return all apps that use a Hybrid Connection in an App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<String> listWebAppsByHybridConnectionAsync(
@@ -2491,7 +2534,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2500,7 +2543,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resources.
+     * @return all apps that use a Hybrid Connection in an App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listWebAppsByHybridConnection(
@@ -2510,7 +2553,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2520,7 +2563,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resources.
+     * @return all apps that use a Hybrid Connection in an App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listWebAppsByHybridConnection(
@@ -2530,14 +2573,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection limits contract.
+     * @return the maximum number of Hybrid Connections allowed in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithResponseAsync(
@@ -2578,7 +2621,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2586,7 +2629,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection limits contract.
+     * @return the maximum number of Hybrid Connections allowed in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithResponseAsync(
@@ -2624,14 +2667,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection limits contract.
+     * @return the maximum number of Hybrid Connections allowed in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name) {
@@ -2647,14 +2690,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection limits contract.
+     * @return the maximum number of Hybrid Connections allowed in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HybridConnectionLimitsInner getHybridConnectionPlanLimit(String resourceGroupName, String name) {
@@ -2662,7 +2705,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2670,7 +2713,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return hybrid Connection limits contract.
+     * @return the maximum number of Hybrid Connections allowed in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HybridConnectionLimitsInner> getHybridConnectionPlanLimitWithResponse(
@@ -2679,7 +2722,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2736,7 +2779,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2791,7 +2834,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2808,7 +2851,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2827,7 +2870,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2842,7 +2885,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2859,7 +2902,418 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Restart all apps in an App Service plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics that can be queried for an App Service plan, and their definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricDefinitionInner>> listMetricDefintionsSinglePageAsync(
+        String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listMetricDefintions(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ResourceMetricDefinitionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics that can be queried for an App Service plan, and their definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricDefinitionInner>> listMetricDefintionsSinglePageAsync(
+        String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listMetricDefintions(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics that can be queried for an App Service plan, and their definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ResourceMetricDefinitionInner> listMetricDefintionsAsync(String resourceGroupName, String name) {
+        return new PagedFlux<>(
+            () -> listMetricDefintionsSinglePageAsync(resourceGroupName, name),
+            nextLink -> listMetricDefintionsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics that can be queried for an App Service plan, and their definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ResourceMetricDefinitionInner> listMetricDefintionsAsync(
+        String resourceGroupName, String name, Context context) {
+        return new PagedFlux<>(
+            () -> listMetricDefintionsSinglePageAsync(resourceGroupName, name, context),
+            nextLink -> listMetricDefintionsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics that can be queried for an App Service plan, and their definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceMetricDefinitionInner> listMetricDefintions(String resourceGroupName, String name) {
+        return new PagedIterable<>(listMetricDefintionsAsync(resourceGroupName, name));
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics that can be queried for an App Service plan, and their definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceMetricDefinitionInner> listMetricDefintions(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(listMetricDefintionsAsync(resourceGroupName, name, context));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is
+     *     &lt;code&gt;false&lt;/code&gt;.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName, String name, Boolean details, String filter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listMetrics(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            details,
+                            filter,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ResourceMetricInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is
+     *     &lt;code&gt;false&lt;/code&gt;.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName, String name, Boolean details, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listMetrics(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                details,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is
+     *     &lt;code&gt;false&lt;/code&gt;.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ResourceMetricInner> listMetricsAsync(
+        String resourceGroupName, String name, Boolean details, String filter) {
+        return new PagedFlux<>(
+            () -> listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
+            nextLink -> listMetricsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ResourceMetricInner> listMetricsAsync(String resourceGroupName, String name) {
+        final Boolean details = null;
+        final String filter = null;
+        return new PagedFlux<>(
+            () -> listMetricsSinglePageAsync(resourceGroupName, name, details, filter),
+            nextLink -> listMetricsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is
+     *     &lt;code&gt;false&lt;/code&gt;.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ResourceMetricInner> listMetricsAsync(
+        String resourceGroupName, String name, Boolean details, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listMetricsSinglePageAsync(resourceGroupName, name, details, filter, context),
+            nextLink -> listMetricsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceMetricInner> listMetrics(String resourceGroupName, String name) {
+        final Boolean details = null;
+        final String filter = null;
+        return new PagedIterable<>(listMetricsAsync(resourceGroupName, name, details, filter));
+    }
+
+    /**
+     * Get metrics for an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is
+     *     &lt;code&gt;false&lt;/code&gt;.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
+     *     endTime eq 2014-12-31T23:59:59Z and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metrics for an App Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceMetricInner> listMetrics(
+        String resourceGroupName, String name, Boolean details, String filter, Context context) {
+        return new PagedIterable<>(listMetricsAsync(resourceGroupName, name, details, filter, context));
+    }
+
+    /**
+     * Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2867,7 +3321,7 @@ public final class AppServicePlansClientImpl
      *     settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always
      *     restarts and reprovisions the apps.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2893,7 +3347,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2905,13 +3358,12 @@ public final class AppServicePlansClientImpl
                             softRestart,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2920,7 +3372,7 @@ public final class AppServicePlansClientImpl
      *     restarts and reprovisions the apps.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2946,7 +3398,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .restartWebApps(
@@ -2956,12 +3407,11 @@ public final class AppServicePlansClientImpl
                 softRestart,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                accept,
                 context);
     }
 
     /**
-     * Description for Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -2969,7 +3419,7 @@ public final class AppServicePlansClientImpl
      *     settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always
      *     restarts and reprovisions the apps.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2980,12 +3430,12 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2997,12 +3447,12 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3012,7 +3462,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3021,7 +3471,7 @@ public final class AppServicePlansClientImpl
      *     restarts and reprovisions the apps.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -3032,7 +3482,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3044,7 +3494,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SiteInner>> listWebAppsSinglePageAsync(
@@ -3077,11 +3527,11 @@ public final class AppServicePlansClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
                             skipToken,
                             filter,
                             top,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SiteInner>>map(
@@ -3097,7 +3547,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3110,7 +3560,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SiteInner>> listWebAppsSinglePageAsync(
@@ -3141,11 +3591,11 @@ public final class AppServicePlansClientImpl
                 this.client.getEndpoint(),
                 resourceGroupName,
                 name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
                 skipToken,
                 filter,
                 top,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -3160,7 +3610,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3172,7 +3622,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SiteInner> listWebAppsAsync(
@@ -3183,14 +3633,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name) {
@@ -3203,7 +3653,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3216,7 +3666,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SiteInner> listWebAppsAsync(
@@ -3227,14 +3677,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name) {
@@ -3245,7 +3695,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3258,7 +3708,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of App Service apps.
+     * @return all apps associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SiteInner> listWebApps(
@@ -3267,14 +3717,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return all selectable SKUs for a given App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getServerFarmSkusWithResponseAsync(String resourceGroupName, String name) {
@@ -3314,7 +3764,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3322,7 +3772,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return all selectable SKUs for a given App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Object>> getServerFarmSkusWithResponseAsync(
@@ -3360,14 +3810,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return all selectable SKUs for a given App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> getServerFarmSkusAsync(String resourceGroupName, String name) {
@@ -3383,14 +3833,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return all selectable SKUs for a given App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object getServerFarmSkus(String resourceGroupName, String name) {
@@ -3398,7 +3848,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3406,7 +3856,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return all selectable SKUs for a given App Service Plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> getServerFarmSkusWithResponse(String resourceGroupName, String name, Context context) {
@@ -3414,7 +3864,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3423,7 +3873,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(
@@ -3456,9 +3906,9 @@ public final class AppServicePlansClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             name,
+                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            filter,
                             accept,
                             context))
             .<PagedResponse<CsmUsageQuotaInner>>map(
@@ -3474,7 +3924,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3484,7 +3934,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(
@@ -3515,9 +3965,9 @@ public final class AppServicePlansClientImpl
                 this.client.getEndpoint(),
                 resourceGroupName,
                 name,
+                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                filter,
                 accept,
                 context)
             .map(
@@ -3532,7 +3982,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3541,7 +3991,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter) {
@@ -3551,14 +4001,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name) {
@@ -3569,7 +4019,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3579,7 +4029,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CsmUsageQuotaInner> listUsagesAsync(
@@ -3590,14 +4040,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name) {
@@ -3606,7 +4056,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Gets server farm usage information.
+     * Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
@@ -3616,7 +4066,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of CSM usage quotas.
+     * @return server farm usage information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmUsageQuotaInner> listUsages(
@@ -3625,18 +4075,17 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfoResource.
+     * @return all Virtual Networks associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VnetInfoResourceInner>>> listVnetsWithResponseAsync(
-        String resourceGroupName, String name) {
+    public Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3673,7 +4122,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3681,10 +4130,10 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfoResource.
+     * @return all Virtual Networks associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VnetInfoResourceInner>>> listVnetsWithResponseAsync(
+    private Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(
         String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3719,20 +4168,20 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfoResource.
+     * @return all Virtual Networks associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<VnetInfoResourceInner>> listVnetsAsync(String resourceGroupName, String name) {
+    public Mono<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name) {
         return listVnetsWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (Response<List<VnetInfoResourceInner>> res) -> {
+                (Response<List<VnetInfoInner>> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3742,22 +4191,22 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfoResource.
+     * @return all Virtual Networks associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VnetInfoResourceInner> listVnets(String resourceGroupName, String name) {
+    public List<VnetInfoInner> listVnets(String resourceGroupName, String name) {
         return listVnetsAsync(resourceGroupName, name).block();
     }
 
     /**
-     * Description for Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3765,16 +4214,15 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfoResource.
+     * @return all Virtual Networks associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VnetInfoResourceInner>> listVnetsWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<List<VnetInfoInner>> listVnetsWithResponse(String resourceGroupName, String name, Context context) {
         return listVnetsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
-     * Description for Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3782,10 +4230,10 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information ARM resource.
+     * @return a Virtual Network associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarmWithResponseAsync(
+    public Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3827,7 +4275,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3836,10 +4284,10 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information ARM resource.
+     * @return a Virtual Network associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarmWithResponseAsync(
+    private Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3878,7 +4326,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3886,14 +4334,13 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information ARM resource.
+     * @return a Virtual Network associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VnetInfoResourceInner> getVnetFromServerFarmAsync(
-        String resourceGroupName, String name, String vnetName) {
+    public Mono<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmWithResponseAsync(resourceGroupName, name, vnetName)
             .flatMap(
-                (Response<VnetInfoResourceInner> res) -> {
+                (Response<VnetInfoInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3903,7 +4350,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3911,15 +4358,15 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information ARM resource.
+     * @return a Virtual Network associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VnetInfoResourceInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
+    public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmAsync(resourceGroupName, name, vnetName).block();
     }
 
     /**
-     * Description for Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3928,16 +4375,16 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information ARM resource.
+     * @return a Virtual Network associated with an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VnetInfoResourceInner> getVnetFromServerFarmWithResponse(
+    public Response<VnetInfoInner> getVnetFromServerFarmWithResponse(
         String resourceGroupName, String name, String vnetName, Context context) {
         return getVnetFromServerFarmWithResponseAsync(resourceGroupName, name, vnetName, context).block();
     }
 
     /**
-     * Description for Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -3946,7 +4393,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Network gateway contract.
+     * @return a Virtual Network gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VnetGatewayInner>> getVnetGatewayWithResponseAsync(
@@ -3995,7 +4442,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4005,7 +4452,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Network gateway contract.
+     * @return a Virtual Network gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VnetGatewayInner>> getVnetGatewayWithResponseAsync(
@@ -4051,7 +4498,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4060,7 +4507,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Network gateway contract.
+     * @return a Virtual Network gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VnetGatewayInner> getVnetGatewayAsync(
@@ -4077,7 +4524,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4086,7 +4533,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Network gateway contract.
+     * @return a Virtual Network gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VnetGatewayInner getVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
@@ -4094,7 +4541,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4104,7 +4551,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Virtual Network gateway contract.
+     * @return a Virtual Network gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VnetGatewayInner> getVnetGatewayWithResponse(
@@ -4113,7 +4560,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4183,7 +4630,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4252,7 +4699,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4283,7 +4730,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4306,7 +4753,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4333,7 +4780,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4341,7 +4788,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return all routes that are associated with a Virtual Network in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VnetRouteInner>>> listRoutesForVnetWithResponseAsync(
@@ -4386,7 +4833,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4395,7 +4842,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return all routes that are associated with a Virtual Network in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VnetRouteInner>>> listRoutesForVnetWithResponseAsync(
@@ -4437,7 +4884,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4445,7 +4892,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return all routes that are associated with a Virtual Network in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName) {
@@ -4461,7 +4908,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4469,7 +4916,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return all routes that are associated with a Virtual Network in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<VnetRouteInner> listRoutesForVnet(String resourceGroupName, String name, String vnetName) {
@@ -4477,7 +4924,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4486,7 +4933,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return all routes that are associated with a Virtual Network in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VnetRouteInner>> listRoutesForVnetWithResponse(
@@ -4495,7 +4942,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4504,7 +4951,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return a Virtual Network route in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<VnetRouteInner>>> getRouteForVnetWithResponseAsync(
@@ -4553,7 +5000,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4563,7 +5010,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return a Virtual Network route in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<VnetRouteInner>>> getRouteForVnetWithResponseAsync(
@@ -4609,7 +5056,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4618,7 +5065,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return a Virtual Network route in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<VnetRouteInner>> getRouteForVnetAsync(
@@ -4635,7 +5082,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4644,7 +5091,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return a Virtual Network route in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<VnetRouteInner> getRouteForVnet(
@@ -4653,7 +5100,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4663,7 +5110,7 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetRoute.
+     * @return a Virtual Network route in an App Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<VnetRouteInner>> getRouteForVnetWithResponse(
@@ -4672,7 +5119,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4737,7 +5184,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4805,7 +5252,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4832,7 +5279,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4851,7 +5298,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4877,7 +5324,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4916,7 +5363,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -4929,13 +5375,12 @@ public final class AppServicePlansClientImpl
                             routeName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -4975,7 +5420,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteVnetRoute(
@@ -4986,12 +5430,11 @@ public final class AppServicePlansClientImpl
                 routeName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                accept,
                 context);
     }
 
     /**
-     * Description for Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5009,7 +5452,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5025,7 +5468,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5044,7 +5487,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5109,7 +5552,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5177,7 +5620,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5204,7 +5647,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5223,7 +5666,7 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
@@ -5248,13 +5691,13 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5283,7 +5726,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -5295,20 +5737,19 @@ public final class AppServicePlansClientImpl
                             workerName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5337,7 +5778,6 @@ public final class AppServicePlansClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .rebootWorker(
@@ -5347,18 +5787,17 @@ public final class AppServicePlansClientImpl
                 workerName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                accept,
                 context);
     }
 
     /**
-     * Description for Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5369,13 +5808,13 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5384,14 +5823,14 @@ public final class AppServicePlansClientImpl
     }
 
     /**
-     * Description for Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5681,6 +6120,151 @@ public final class AppServicePlansClientImpl
         context = this.client.mergeContext(context);
         return service
             .listHybridConnectionsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricDefinitionInner>> listMetricDefintionsNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listMetricDefintionsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourceMetricDefinitionInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricDefinitionInner>> listMetricDefintionsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listMetricDefintionsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricInner>> listMetricsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listMetricsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourceMetricInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of metric responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ResourceMetricInner>> listMetricsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listMetricsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

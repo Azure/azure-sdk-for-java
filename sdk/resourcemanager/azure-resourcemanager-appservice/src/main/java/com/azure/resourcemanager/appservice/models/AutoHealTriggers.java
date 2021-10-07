@@ -39,18 +39,6 @@ public final class AutoHealTriggers {
     @JsonProperty(value = "slowRequests")
     private SlowRequestsBasedTrigger slowRequests;
 
-    /*
-     * A rule based on multiple Slow Requests Rule with path
-     */
-    @JsonProperty(value = "slowRequestsWithPath")
-    private List<SlowRequestsBasedTrigger> slowRequestsWithPath;
-
-    /*
-     * A rule based on status codes ranges.
-     */
-    @JsonProperty(value = "statusCodesRange")
-    private List<StatusCodesRangeBasedTrigger> statusCodesRange;
-
     /**
      * Get the requests property: A rule based on total requests.
      *
@@ -132,46 +120,6 @@ public final class AutoHealTriggers {
     }
 
     /**
-     * Get the slowRequestsWithPath property: A rule based on multiple Slow Requests Rule with path.
-     *
-     * @return the slowRequestsWithPath value.
-     */
-    public List<SlowRequestsBasedTrigger> slowRequestsWithPath() {
-        return this.slowRequestsWithPath;
-    }
-
-    /**
-     * Set the slowRequestsWithPath property: A rule based on multiple Slow Requests Rule with path.
-     *
-     * @param slowRequestsWithPath the slowRequestsWithPath value to set.
-     * @return the AutoHealTriggers object itself.
-     */
-    public AutoHealTriggers withSlowRequestsWithPath(List<SlowRequestsBasedTrigger> slowRequestsWithPath) {
-        this.slowRequestsWithPath = slowRequestsWithPath;
-        return this;
-    }
-
-    /**
-     * Get the statusCodesRange property: A rule based on status codes ranges.
-     *
-     * @return the statusCodesRange value.
-     */
-    public List<StatusCodesRangeBasedTrigger> statusCodesRange() {
-        return this.statusCodesRange;
-    }
-
-    /**
-     * Set the statusCodesRange property: A rule based on status codes ranges.
-     *
-     * @param statusCodesRange the statusCodesRange value to set.
-     * @return the AutoHealTriggers object itself.
-     */
-    public AutoHealTriggers withStatusCodesRange(List<StatusCodesRangeBasedTrigger> statusCodesRange) {
-        this.statusCodesRange = statusCodesRange;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -185,12 +133,6 @@ public final class AutoHealTriggers {
         }
         if (slowRequests() != null) {
             slowRequests().validate();
-        }
-        if (slowRequestsWithPath() != null) {
-            slowRequestsWithPath().forEach(e -> e.validate());
-        }
-        if (statusCodesRange() != null) {
-            statusCodesRange().forEach(e -> e.validate());
         }
     }
 }

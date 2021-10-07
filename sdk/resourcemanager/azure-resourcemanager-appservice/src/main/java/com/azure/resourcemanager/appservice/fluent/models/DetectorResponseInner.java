@@ -6,12 +6,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.DataProviderMetadata;
 import com.azure.resourcemanager.appservice.models.DetectorInfo;
 import com.azure.resourcemanager.appservice.models.DiagnosticData;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.azure.resourcemanager.appservice.models.QueryUtterancesResults;
-import com.azure.resourcemanager.appservice.models.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -86,77 +83,6 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
             this.innerProperties = new DetectorResponseProperties();
         }
         this.innerProperties().withDataset(dataset);
-        return this;
-    }
-
-    /**
-     * Get the status property: Indicates status of the most severe insight.
-     *
-     * @return the status value.
-     */
-    public Status status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: Indicates status of the most severe insight.
-     *
-     * @param status the status value to set.
-     * @return the DetectorResponseInner object itself.
-     */
-    public DetectorResponseInner withStatus(Status status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DetectorResponseProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
-     * UI.
-     *
-     * @return the dataProvidersMetadata value.
-     */
-    public List<DataProviderMetadata> dataProvidersMetadata() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataProvidersMetadata();
-    }
-
-    /**
-     * Set the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
-     * UI.
-     *
-     * @param dataProvidersMetadata the dataProvidersMetadata value to set.
-     * @return the DetectorResponseInner object itself.
-     */
-    public DetectorResponseInner withDataProvidersMetadata(List<DataProviderMetadata> dataProvidersMetadata) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DetectorResponseProperties();
-        }
-        this.innerProperties().withDataProvidersMetadata(dataProvidersMetadata);
-        return this;
-    }
-
-    /**
-     * Get the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
-     * @return the suggestedUtterances value.
-     */
-    public QueryUtterancesResults suggestedUtterances() {
-        return this.innerProperties() == null ? null : this.innerProperties().suggestedUtterances();
-    }
-
-    /**
-     * Set the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
-     * @param suggestedUtterances the suggestedUtterances value to set.
-     * @return the DetectorResponseInner object itself.
-     */
-    public DetectorResponseInner withSuggestedUtterances(QueryUtterancesResults suggestedUtterances) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DetectorResponseProperties();
-        }
-        this.innerProperties().withSuggestedUtterances(suggestedUtterances);
         return this;
     }
 

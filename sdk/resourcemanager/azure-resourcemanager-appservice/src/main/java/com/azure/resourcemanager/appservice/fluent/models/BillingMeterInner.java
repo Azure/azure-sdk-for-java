@@ -179,29 +179,6 @@ public final class BillingMeterInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the multiplier property: Meter Multiplier.
-     *
-     * @return the multiplier value.
-     */
-    public Double multiplier() {
-        return this.innerProperties() == null ? null : this.innerProperties().multiplier();
-    }
-
-    /**
-     * Set the multiplier property: Meter Multiplier.
-     *
-     * @param multiplier the multiplier value to set.
-     * @return the BillingMeterInner object itself.
-     */
-    public BillingMeterInner withMultiplier(Double multiplier) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BillingMeterProperties();
-        }
-        this.innerProperties().withMultiplier(multiplier);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

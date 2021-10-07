@@ -124,11 +124,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return all top-level domains supported for registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopLevelDomainInner>> listSinglePageAsync() {
@@ -168,13 +168,13 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return all top-level domains supported for registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TopLevelDomainInner>> listSinglePageAsync(Context context) {
@@ -211,11 +211,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return all top-level domains supported for registration.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TopLevelDomainInner> listAsync() {
@@ -223,13 +223,13 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return all top-level domains supported for registration.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TopLevelDomainInner> listAsync(Context context) {
@@ -238,11 +238,11 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return all top-level domains supported for registration.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopLevelDomainInner> list() {
@@ -250,13 +250,13 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Top-level domains.
+     * @return all top-level domains supported for registration.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopLevelDomainInner> list(Context context) {
@@ -264,13 +264,13 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return details of a top-level domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TopLevelDomainInner>> getWithResponseAsync(String name) {
@@ -305,14 +305,14 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return details of a top-level domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TopLevelDomainInner>> getWithResponseAsync(String name, Context context) {
@@ -344,13 +344,13 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return details of a top-level domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TopLevelDomainInner> getAsync(String name) {
@@ -366,13 +366,13 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return details of a top-level domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopLevelDomainInner get(String name) {
@@ -380,14 +380,14 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
      * @param name Name of the top-level domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a top level domain object.
+     * @return details of a top-level domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopLevelDomainInner> getWithResponse(String name, Context context) {
@@ -395,14 +395,14 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return all legal agreements that user needs to accept before purchasing a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(
@@ -454,7 +454,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
@@ -462,7 +462,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return all legal agreements that user needs to accept before purchasing a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TldLegalAgreementInner>> listAgreementsSinglePageAsync(
@@ -511,14 +511,14 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return all legal agreements that user needs to accept before purchasing a domain.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TldLegalAgreementInner> listAgreementsAsync(
@@ -529,7 +529,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
@@ -537,7 +537,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return all legal agreements that user needs to accept before purchasing a domain.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TldLegalAgreementInner> listAgreementsAsync(
@@ -548,14 +548,14 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return all legal agreements that user needs to accept before purchasing a domain.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TldLegalAgreementInner> listAgreements(
@@ -564,7 +564,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
     }
 
     /**
-     * Description for Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param name Name of the top-level domain.
      * @param agreementOption Domain agreement options.
@@ -572,7 +572,7 @@ public final class TopLevelDomainsClientImpl implements TopLevelDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of top-level domain legal agreements.
+     * @return all legal agreements that user needs to accept before purchasing a domain.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TldLegalAgreementInner> listAgreements(

@@ -76,6 +76,12 @@ public final class ProcessThreadInfoProperties {
     private String userProcessorTime;
 
     /*
+     * Privileged processor time.
+     */
+    @JsonProperty(value = "priviledged_processor_time")
+    private String priviledgedProcessorTime;
+
+    /*
      * Thread state.
      */
     @JsonProperty(value = "state")
@@ -273,6 +279,26 @@ public final class ProcessThreadInfoProperties {
      */
     public ProcessThreadInfoProperties withUserProcessorTime(String userProcessorTime) {
         this.userProcessorTime = userProcessorTime;
+        return this;
+    }
+
+    /**
+     * Get the priviledgedProcessorTime property: Privileged processor time.
+     *
+     * @return the priviledgedProcessorTime value.
+     */
+    public String priviledgedProcessorTime() {
+        return this.priviledgedProcessorTime;
+    }
+
+    /**
+     * Set the priviledgedProcessorTime property: Privileged processor time.
+     *
+     * @param priviledgedProcessorTime the priviledgedProcessorTime value to set.
+     * @return the ProcessThreadInfoProperties object itself.
+     */
+    public ProcessThreadInfoProperties withPriviledgedProcessorTime(String priviledgedProcessorTime) {
+        this.priviledgedProcessorTime = priviledgedProcessorTime;
         return this;
     }
 

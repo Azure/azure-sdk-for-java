@@ -32,12 +32,6 @@ public final class VnetParametersProperties {
     @JsonProperty(value = "vnetSubnetName")
     private String vnetSubnetName;
 
-    /*
-     * The ARM Resource ID of the subnet to validate
-     */
-    @JsonProperty(value = "subnetResourceId")
-    private String subnetResourceId;
-
     /**
      * Get the vnetResourceGroup property: The Resource Group of the VNET to be validated.
      *
@@ -95,26 +89,6 @@ public final class VnetParametersProperties {
      */
     public VnetParametersProperties withVnetSubnetName(String vnetSubnetName) {
         this.vnetSubnetName = vnetSubnetName;
-        return this;
-    }
-
-    /**
-     * Get the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
-     * @return the subnetResourceId value.
-     */
-    public String subnetResourceId() {
-        return this.subnetResourceId;
-    }
-
-    /**
-     * Set the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
-     * @param subnetResourceId the subnetResourceId value to set.
-     * @return the VnetParametersProperties object itself.
-     */
-    public VnetParametersProperties withSubnetResourceId(String subnetResourceId) {
-        this.subnetResourceId = subnetResourceId;
         return this;
     }
 

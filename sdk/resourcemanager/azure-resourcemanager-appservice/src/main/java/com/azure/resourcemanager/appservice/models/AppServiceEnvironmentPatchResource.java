@@ -7,6 +7,8 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironment;
+import com.azure.resourcemanager.appservice.fluent.models.StampCapacityInner;
+import com.azure.resourcemanager.appservice.fluent.models.WorkerPool;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -39,6 +41,52 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
     }
 
     /**
+     * Get the name property: Name of the App Service Environment.
+     *
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Set the name property: Name of the App Service Environment.
+     *
+     * @param name the name value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withName(name);
+        return this;
+    }
+
+    /**
+     * Get the location property: Location of the App Service Environment, e.g. "West US".
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.innerProperties() == null ? null : this.innerProperties().location();
+    }
+
+    /**
+     * Set the location property: Location of the App Service Environment, e.g. "West US".
+     *
+     * @param location the location value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withLocation(String location) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withLocation(location);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the App Service Environment.
      *
      * @return the provisioningState value.
@@ -54,6 +102,75 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
      */
     public HostingEnvironmentStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the vnetName property: Name of the Virtual Network for the App Service Environment.
+     *
+     * @return the vnetName value.
+     */
+    public String vnetName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetName();
+    }
+
+    /**
+     * Set the vnetName property: Name of the Virtual Network for the App Service Environment.
+     *
+     * @param vnetName the vnetName value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withVnetName(String vnetName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withVnetName(vnetName);
+        return this;
+    }
+
+    /**
+     * Get the vnetResourceGroupName property: Resource group of the Virtual Network.
+     *
+     * @return the vnetResourceGroupName value.
+     */
+    public String vnetResourceGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetResourceGroupName();
+    }
+
+    /**
+     * Set the vnetResourceGroupName property: Resource group of the Virtual Network.
+     *
+     * @param vnetResourceGroupName the vnetResourceGroupName value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withVnetResourceGroupName(String vnetResourceGroupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withVnetResourceGroupName(vnetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * Get the vnetSubnetName property: Subnet of the Virtual Network.
+     *
+     * @return the vnetSubnetName value.
+     */
+    public String vnetSubnetName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetSubnetName();
+    }
+
+    /**
+     * Set the vnetSubnetName property: Subnet of the Virtual Network.
+     *
+     * @param vnetSubnetName the vnetSubnetName value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withVnetSubnetName(String vnetSubnetName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withVnetSubnetName(vnetSubnetName);
+        return this;
     }
 
     /**
@@ -85,7 +202,7 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
      *
      * @return the internalLoadBalancingMode value.
      */
-    public LoadBalancingMode internalLoadBalancingMode() {
+    public InternalLoadBalancingMode internalLoadBalancingMode() {
         return this.innerProperties() == null ? null : this.innerProperties().internalLoadBalancingMode();
     }
 
@@ -97,7 +214,7 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
     public AppServiceEnvironmentPatchResource withInternalLoadBalancingMode(
-        LoadBalancingMode internalLoadBalancingMode) {
+        InternalLoadBalancingMode internalLoadBalancingMode) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AppServiceEnvironment();
         }
@@ -138,6 +255,45 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
     }
 
     /**
+     * Set the multiRoleCount property: Number of front-end instances.
+     *
+     * @param multiRoleCount the multiRoleCount value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withMultiRoleCount(Integer multiRoleCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withMultiRoleCount(multiRoleCount);
+        return this;
+    }
+
+    /**
+     * Get the workerPools property: Description of worker pools with worker size IDs, VM sizes, and number of workers
+     * in each pool.
+     *
+     * @return the workerPools value.
+     */
+    public List<WorkerPool> workerPools() {
+        return this.innerProperties() == null ? null : this.innerProperties().workerPools();
+    }
+
+    /**
+     * Set the workerPools property: Description of worker pools with worker size IDs, VM sizes, and number of workers
+     * in each pool.
+     *
+     * @param workerPools the workerPools value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withWorkerPools(List<WorkerPool> workerPools) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withWorkerPools(workerPools);
+        return this;
+    }
+
+    /**
      * Get the ipsslAddressCount property: Number of IP SSL addresses reserved for the App Service Environment.
      *
      * @return the ipsslAddressCount value.
@@ -158,6 +314,44 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
         }
         this.innerProperties().withIpsslAddressCount(ipsslAddressCount);
         return this;
+    }
+
+    /**
+     * Get the databaseEdition property: Edition of the metadata database for the App Service Environment, e.g.
+     * "Standard".
+     *
+     * @return the databaseEdition value.
+     */
+    public String databaseEdition() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseEdition();
+    }
+
+    /**
+     * Get the databaseServiceObjective property: Service objective of the metadata database for the App Service
+     * Environment, e.g. "S0".
+     *
+     * @return the databaseServiceObjective value.
+     */
+    public String databaseServiceObjective() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseServiceObjective();
+    }
+
+    /**
+     * Get the upgradeDomains property: Number of upgrade domains of the App Service Environment.
+     *
+     * @return the upgradeDomains value.
+     */
+    public Integer upgradeDomains() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeDomains();
+    }
+
+    /**
+     * Get the subscriptionId property: Subscription of the App Service Environment.
+     *
+     * @return the subscriptionId value.
+     */
+    public String subscriptionId() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
     }
 
     /**
@@ -184,12 +378,122 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
     }
 
     /**
+     * Get the lastAction property: Last deployment action on the App Service Environment.
+     *
+     * @return the lastAction value.
+     */
+    public String lastAction() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastAction();
+    }
+
+    /**
+     * Get the lastActionResult property: Result of the last deployment action on the App Service Environment.
+     *
+     * @return the lastActionResult value.
+     */
+    public String lastActionResult() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastActionResult();
+    }
+
+    /**
+     * Get the allowedMultiSizes property: List of comma separated strings describing which VM sizes are allowed for
+     * front-ends.
+     *
+     * @return the allowedMultiSizes value.
+     */
+    public String allowedMultiSizes() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedMultiSizes();
+    }
+
+    /**
+     * Get the allowedWorkerSizes property: List of comma separated strings describing which VM sizes are allowed for
+     * workers.
+     *
+     * @return the allowedWorkerSizes value.
+     */
+    public String allowedWorkerSizes() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedWorkerSizes();
+    }
+
+    /**
      * Get the maximumNumberOfMachines property: Maximum number of VMs in the App Service Environment.
      *
      * @return the maximumNumberOfMachines value.
      */
     public Integer maximumNumberOfMachines() {
         return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfMachines();
+    }
+
+    /**
+     * Get the vipMappings property: Description of IP SSL mapping for the App Service Environment.
+     *
+     * @return the vipMappings value.
+     */
+    public List<VirtualIpMapping> vipMappings() {
+        return this.innerProperties() == null ? null : this.innerProperties().vipMappings();
+    }
+
+    /**
+     * Get the environmentCapacities property: Current total, used, and available worker capacities.
+     *
+     * @return the environmentCapacities value.
+     */
+    public List<StampCapacityInner> environmentCapacities() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentCapacities();
+    }
+
+    /**
+     * Get the networkAccessControlList property: Access control list for controlling traffic to the App Service
+     * Environment.
+     *
+     * @return the networkAccessControlList value.
+     */
+    public List<NetworkAccessControlEntry> networkAccessControlList() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAccessControlList();
+    }
+
+    /**
+     * Set the networkAccessControlList property: Access control list for controlling traffic to the App Service
+     * Environment.
+     *
+     * @param networkAccessControlList the networkAccessControlList value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withNetworkAccessControlList(
+        List<NetworkAccessControlEntry> networkAccessControlList) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withNetworkAccessControlList(networkAccessControlList);
+        return this;
+    }
+
+    /**
+     * Get the environmentIsHealthy property: True/false indicating whether the App Service Environment is healthy.
+     *
+     * @return the environmentIsHealthy value.
+     */
+    public Boolean environmentIsHealthy() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentIsHealthy();
+    }
+
+    /**
+     * Get the environmentStatus property: Detailed message about with results of the last check of the App Service
+     * Environment.
+     *
+     * @return the environmentStatus value.
+     */
+    public String environmentStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentStatus();
+    }
+
+    /**
+     * Get the resourceGroup property: Resource group of the App Service Environment.
+     *
+     * @return the resourceGroup value.
+     */
+    public String resourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGroup();
     }
 
     /**
@@ -216,6 +520,38 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
     }
 
     /**
+     * Get the defaultFrontEndScaleFactor property: Default Scale Factor for FrontEnds.
+     *
+     * @return the defaultFrontEndScaleFactor value.
+     */
+    public Integer defaultFrontEndScaleFactor() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultFrontEndScaleFactor();
+    }
+
+    /**
+     * Get the apiManagementAccountId property: API Management Account associated with the App Service Environment.
+     *
+     * @return the apiManagementAccountId value.
+     */
+    public String apiManagementAccountId() {
+        return this.innerProperties() == null ? null : this.innerProperties().apiManagementAccountId();
+    }
+
+    /**
+     * Set the apiManagementAccountId property: API Management Account associated with the App Service Environment.
+     *
+     * @param apiManagementAccountId the apiManagementAccountId value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withApiManagementAccountId(String apiManagementAccountId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withApiManagementAccountId(apiManagementAccountId);
+        return this;
+    }
+
+    /**
      * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended; otherwise,
      * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
      * available (most likely because NSG blocked the incoming traffic).
@@ -224,6 +560,49 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
      */
     public Boolean suspended() {
         return this.innerProperties() == null ? null : this.innerProperties().suspended();
+    }
+
+    /**
+     * Set the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
+     * available (most likely because NSG blocked the incoming traffic).
+     *
+     * @param suspended the suspended value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withSuspended(Boolean suspended) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withSuspended(suspended);
+        return this;
+    }
+
+    /**
+     * Get the dynamicCacheEnabled property: True/false indicating whether the App Service Environment is suspended. The
+     * environment can be suspended e.g. when the management endpoint is no longer available (most likely because NSG
+     * blocked the incoming traffic).
+     *
+     * @return the dynamicCacheEnabled value.
+     */
+    public Boolean dynamicCacheEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().dynamicCacheEnabled();
+    }
+
+    /**
+     * Set the dynamicCacheEnabled property: True/false indicating whether the App Service Environment is suspended. The
+     * environment can be suspended e.g. when the management endpoint is no longer available (most likely because NSG
+     * blocked the incoming traffic).
+     *
+     * @param dynamicCacheEnabled the dynamicCacheEnabled value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withDynamicCacheEnabled(Boolean dynamicCacheEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withDynamicCacheEnabled(dynamicCacheEnabled);
+        return this;
     }
 
     /**
@@ -282,48 +661,64 @@ public final class AppServiceEnvironmentPatchResource extends ProxyOnlyResource 
     }
 
     /**
-     * Get the dedicatedHostCount property: Dedicated Host Count.
+     * Set the hasLinuxWorkers property: Flag that displays whether an ASE has linux workers or not.
      *
-     * @return the dedicatedHostCount value.
-     */
-    public Integer dedicatedHostCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().dedicatedHostCount();
-    }
-
-    /**
-     * Set the dedicatedHostCount property: Dedicated Host Count.
-     *
-     * @param dedicatedHostCount the dedicatedHostCount value to set.
+     * @param hasLinuxWorkers the hasLinuxWorkers value to set.
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
-    public AppServiceEnvironmentPatchResource withDedicatedHostCount(Integer dedicatedHostCount) {
+    public AppServiceEnvironmentPatchResource withHasLinuxWorkers(Boolean hasLinuxWorkers) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AppServiceEnvironment();
         }
-        this.innerProperties().withDedicatedHostCount(dedicatedHostCount);
+        this.innerProperties().withHasLinuxWorkers(hasLinuxWorkers);
         return this;
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
+     * Get the sslCertKeyVaultId property: Key Vault ID for ILB App Service Environment default SSL certificate.
      *
-     * @return the zoneRedundant value.
+     * @return the sslCertKeyVaultId value.
      */
-    public Boolean zoneRedundant() {
-        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    public String sslCertKeyVaultId() {
+        return this.innerProperties() == null ? null : this.innerProperties().sslCertKeyVaultId();
     }
 
     /**
-     * Set the zoneRedundant property: Whether or not this App Service Environment is zone-redundant.
+     * Set the sslCertKeyVaultId property: Key Vault ID for ILB App Service Environment default SSL certificate.
      *
-     * @param zoneRedundant the zoneRedundant value to set.
+     * @param sslCertKeyVaultId the sslCertKeyVaultId value to set.
      * @return the AppServiceEnvironmentPatchResource object itself.
      */
-    public AppServiceEnvironmentPatchResource withZoneRedundant(Boolean zoneRedundant) {
+    public AppServiceEnvironmentPatchResource withSslCertKeyVaultId(String sslCertKeyVaultId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AppServiceEnvironment();
         }
-        this.innerProperties().withZoneRedundant(zoneRedundant);
+        this.innerProperties().withSslCertKeyVaultId(sslCertKeyVaultId);
+        return this;
+    }
+
+    /**
+     * Get the sslCertKeyVaultSecretName property: Key Vault Secret Name for ILB App Service Environment default SSL
+     * certificate.
+     *
+     * @return the sslCertKeyVaultSecretName value.
+     */
+    public String sslCertKeyVaultSecretName() {
+        return this.innerProperties() == null ? null : this.innerProperties().sslCertKeyVaultSecretName();
+    }
+
+    /**
+     * Set the sslCertKeyVaultSecretName property: Key Vault Secret Name for ILB App Service Environment default SSL
+     * certificate.
+     *
+     * @param sslCertKeyVaultSecretName the sslCertKeyVaultSecretName value to set.
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServiceEnvironment();
+        }
+        this.innerProperties().withSslCertKeyVaultSecretName(sslCertKeyVaultSecretName);
         return this;
     }
 
