@@ -265,7 +265,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.request.requestContext.quorumSelectedStoreResponse = null;
             logger.debug("Received partition key range splitting exception, will retry, {}", exception.toString());
             this.request.forcePartitionKeyRangeRefresh = true;
-            return Pair.of(null, false);
+            return Pair.of(null, true);
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleInvalidPartitionException(InvalidPartitionException exception) {

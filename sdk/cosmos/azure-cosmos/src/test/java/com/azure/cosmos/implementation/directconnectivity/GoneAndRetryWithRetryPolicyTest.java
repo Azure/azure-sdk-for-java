@@ -301,7 +301,7 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(request.forcePartitionKeyRangeRefresh).isTrue();
         assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
         assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
-        assertThat(shouldRetryResult.policyArg.getValue0()).isFalse();
+        assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
 
     }
 
