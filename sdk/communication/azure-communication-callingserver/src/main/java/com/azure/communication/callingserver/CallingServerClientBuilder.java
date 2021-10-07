@@ -5,7 +5,6 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder;
-import com.azure.communication.callingserver.implementation.RedirectPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -19,6 +18,7 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -27,11 +27,12 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 
 /**
  * Client builder that creates CallingServerAsyncClient and CallingServerClient.
@@ -49,6 +50,7 @@ public final class CallingServerClientBuilder {
     private final ClientLogger logger = new ClientLogger(CallingServerClientBuilder.class);
     private String connectionString;
     private String endpoint;
+    private String hostName;
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
@@ -252,6 +254,14 @@ public final class CallingServerClientBuilder {
         }
 
         Objects.requireNonNull(endpoint);
+        if (isTokenCredentialSet) {
+            try {
+                hostName = getHostNameFromEndpoint();
+            } catch (MalformedURLException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+        }
+
         if (pipeline == null) {
             Objects.requireNonNull(httpClient);
         }
@@ -279,20 +289,25 @@ public final class CallingServerClientBuilder {
         return this;
     }
 
-    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies() {
         if (tokenCredential != null && azureKeyCredential != null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
+
+        List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         if (tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(tokenCredential,
-                "https://communication.azure.com//.default");
+            pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                "https://communication.azure.com//.default"));
+            pipelinePolicies.add(new TokenCredentialAddHostHeaderPolicy(hostName));
         } else if (azureKeyCredential != null) {
-            return new HmacAuthenticationPolicy(azureKeyCredential);
+            pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
+
+        return pipelinePolicies;
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient) {
@@ -319,7 +334,7 @@ public final class CallingServerClientBuilder {
         policyList.add(new RequestIdPolicy());
         policyList.add((retryPolicy == null) ? new RetryPolicy() : retryPolicy);
         policyList.add(new RedirectPolicy());
-        policyList.add(createHttpPipelineAuthPolicy());
+        policyList.addAll(createHttpPipelineAuthPolicies());
         policyList.add(new CookiePolicy());
 
         // Add additional policies
@@ -340,5 +355,9 @@ public final class CallingServerClientBuilder {
         }
 
         return httpLogOptions;
+    }
+
+    private String getHostNameFromEndpoint() throws MalformedURLException {
+        return new URL(endpoint).getHost();
     }
 }

@@ -140,7 +140,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isRetryPending.get() && retryPolicy.calculateRetryDelay(throwable, retryAttempts.get()) != null) {
-            logger.warning("Retry is already pending. Ignoring transient error.", throwable);
+            logger.warning("namespace[{}] entityPath[{}]: Retry is already pending. Ignoring transient error.",
+                fullyQualifiedNamespace, entityPath, throwable);
             return;
         }
 
@@ -182,22 +183,24 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 return;
             }
 
-            logger.info("Retry #{}. Transient error occurred. Retrying after {} ms.", attempts,
-                retryInterval.toMillis(), throwable);
+            logger.info("namespace[{}] entityPath[{}]: Retry #{}. Transient error occurred. Retrying after {} ms.",
+                fullyQualifiedNamespace, entityPath, attempts, retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempts);
+                    logger.info("namespace[{}] entityPath[{}]: Retry #{}. Not requesting from upstream. Processor is disposed.",
+                        fullyQualifiedNamespace, entityPath, attempts);
                 } else {
-                    logger.info("Retry #{}. Requesting from upstream.", attempts);
+                    logger.info("namespace[{}] entityPath[{}]: Retry #{}. Requesting from upstream.",
+                        fullyQualifiedNamespace, entityPath, attempts);
 
                     requestUpstream();
                     isRetryPending.set(false);
                 }
             });
         } else {
-            logger.warning("entityPath[{}] Retry #{}. Retry attempts exhausted or exception was not retriable.",
-                entityPath, attempts, throwable);
+            logger.warning("namespace[{}] entityPath[{}]: Retry #{}. Retry attempts exhausted or exception was not retriable.",
+                fullyQualifiedNamespace, entityPath, attempts, throwable);
 
             lastError = throwable;
             isDisposed.set(true);
@@ -206,8 +209,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             synchronized (lock) {
                 final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
                 subscribers = new ConcurrentLinkedDeque<>();
-                logger.info("namespace[{}] entityPath[{}]: Error in AMQP channel processor. Notifying {} "
-                    + "subscribers.", fullyQualifiedNamespace, entityPath, currentSubscribers.size());
+                logger.info("namespace[{}] entityPath[{}]: Error in AMQP channel processor. Notifying {} subscribers.",
+                    fullyQualifiedNamespace, entityPath, currentSubscribers.size());
 
                 currentSubscribers.forEach(subscriber -> subscriber.onError(throwable));
             }
@@ -254,8 +257,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
 
         subscribers.add(subscriber);
-        logger.verbose("Added a subscriber {} to AMQP channel processor. Total "
-            + "subscribers = {}", subscriber, subscribers.size());
+        logger.verbose("namespace[{}] entityPath[{}]: Added a subscriber {} to AMQP channel processor. Total "
+            + "subscribers = {}", fullyQualifiedNamespace, entityPath, subscriber, subscribers.size());
 
         if (!isRetryPending.get()) {
             requestUpstream();
@@ -350,7 +353,11 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     /**
-     * Represents a subscriber, waiting for an AMQP connection.
+     * Represents the decorator-subscriber wrapping a downstream subscriber to AmqpChannelProcessor.
+     * These are the subscribers waiting to receive a channel that is yet to be available in the AmqpChannelProcessor.
+     * The AmqpChannelProcessor tracks a list of such waiting subscribers; once the processor receives
+     * a result (channel, error or disposal) from it's upstream, each decorated-subscriber will be notified,
+     * which removes itself from the tracking list, then propagates the notification to the wrapped subscriber.
      */
     private static final class ChannelSubscriber<T> extends Operators.MonoSubscriber<T, T> {
         private final AmqpChannelProcessor<T> processor;
@@ -362,15 +369,16 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
         @Override
         public void cancel() {
-            super.cancel();
             processor.subscribers.remove(this);
+            super.cancel();
         }
 
         @Override
         public void onComplete() {
             if (!isCancelled()) {
-                actual.onComplete();
+                // first untrack before calling into external code.
                 processor.subscribers.remove(this);
+                actual.onComplete();
             }
         }
 
@@ -384,8 +392,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         @Override
         public void onError(Throwable throwable) {
             if (!isCancelled()) {
-                actual.onError(throwable);
                 processor.subscribers.remove(this);
+                actual.onError(throwable);
             } else {
                 Operators.onErrorDropped(throwable, currentContext());
             }

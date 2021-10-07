@@ -261,9 +261,15 @@ public class ReactorSession implements AmqpSession {
         return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition, disposeLinks));
-            } catch (IOException | RejectedExecutionException e) {
+            } catch (IOException e) {
                 logger.info("connectionId[{}] sessionName[{}] Error while scheduling work. Manually disposing.",
                     sessionHandler.getConnectionId(), sessionName, e);
+
+                disposeWork(errorCondition, disposeLinks);
+            } catch (RejectedExecutionException e) {
+                logger.info("connectionId[{}] sessionName[{}] RejectedExecutionException when scheduling work.",
+                    sessionHandler.getConnectionId(), sessionName);
+
                 disposeWork(errorCondition, disposeLinks);
             }
         }).then(isClosedMono.asMono());
@@ -366,7 +372,7 @@ public class ReactorSession implements AmqpSession {
 
                     sink.success(computed.getLink());
                 });
-            } catch (IOException e) {
+            } catch (IOException | RejectedExecutionException e) {
                 sink.error(e);
             }
         }));
@@ -463,7 +469,7 @@ public class ReactorSession implements AmqpSession {
 
                     sink.success(computed.getLink());
                 });
-            } catch (IOException e) {
+            } catch (IOException | RejectedExecutionException e) {
                 sink.error(e);
             }
         }));

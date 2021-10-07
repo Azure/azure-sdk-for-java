@@ -93,7 +93,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
                             sink.success(message);
                         });
-                    } catch (IOException e) {
+                    } catch (IOException | RejectedExecutionException e) {
                         sink.error(e);
                     }
                 });
@@ -186,6 +186,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 sink.error(new UncheckedIOException(String.format(
                     "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
                     handler.getConnectionId(), getLinkName()), e));
+            } catch (RejectedExecutionException e) {
+                sink.error(e);
             }
         });
     }
@@ -278,10 +280,17 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         return Mono.fromRunnable(() -> {
             try {
                 dispatcher.invoke(closeReceiver);
-            } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] linkName[{}] Could not schedule disposing of receiver on "
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] linkName[{}] IO sink was closed when scheduling work. Manually "
+                        + "invoking and completing close.", handler.getConnectionId(), getLinkName(), e);
+
+                closeReceiver.run();
+                completeClose();
+            } catch (RejectedExecutionException e) {
+                // Not logging error here again because we have to log the exception when we throw it.
+                logger.info("connectionId[{}] linkName[{}] RejectedExecutionException when scheduling on "
                         + "ReactorDispatcher. Manually invoking and completing close.", handler.getConnectionId(),
-                    getLinkName(), e);
+                    getLinkName());
 
                 closeReceiver.run();
                 completeClose();

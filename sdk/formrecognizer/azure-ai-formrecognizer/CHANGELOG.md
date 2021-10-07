@@ -1,8 +1,19 @@
 # Release History
 
-## 3.2.0-beta.1 (Unreleased)
+## 4.0.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added new DocumentAnalysisClient with beginAnalyzeDocument and beginAnalyzeDocumentFromUrl methods. 
+Use these methods with the latest Form Recognizer API version to analyze documents, with prebuilt and custom models.
+- Added new models to use with the new DocumentAnalysisClient: AnalyzeResult, AnalyzedDocument, BoundingRegion, DocumentElement, 
+DocumentEntity, DocumentField, DocumentKeyValuePair, DocumentKeyValueElement, DocumentLine, DocumentPage, DocumentSelectionMark,
+DocumentSpan, DocumentStyle, DocumentTable, DocumentTableCell, DocumentWord, DocumentOperationResult.
+- Added a new model `DocumentAnalysisServiceVersion` that supports Azure Form Recognizer service version "2021-09-30-preview" and onwards.
+- Added new DocumentModelAdministrationClient with methods: beginBuildModel, beginCreateComposedModel, getCopyAuthorization,
+deleteModel, getAccountProperties, beginCopyModel, listModels, getModel, getOperation, listOperations.
+- Added new models to use with the new DocumentTrainingClient: DocumentModel, DocTypeInfo, DocumentFieldSchema, 
+AccountProperties, CopyAuthorization, BuildModelOptions, CopyAuthorizationOptions, CreateComposedModelOptions,
+DocumentModelInfo, ModelOperation, ModelOperationInfo, ModelOperationStatus, ModelOperationKind.
 
 ### Breaking Changes
 
@@ -177,7 +188,7 @@ respectively
 ## 1.0.0-beta.4 (2020-07-07)
 ### Breaking Changes
 - `beginRecognizeReceipt` APIs now return a `RecognizedForm` model instead of a `RecognizedReceipt`. See
-[this](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
+[this](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.4/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java)
 suggested approach for extracting information from receipts.
 - Methods returning `textContent` have been renamed to `fieldElements` on `FieldData` and `FormTableCell`
 - Renamed `FormContent` to `FormElement`

@@ -1,0 +1,81 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey015446f9/create?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "688",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 29 Sep 2021 10:51:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "264b1328-d226-4aca-80f7-d39b7bd48830",
+      "x-ms-keyvault-service-version" : "1.9.79.2",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey015446f9/b899bd3cfb0d40a3a7133a38de10b5d2\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"u8ybDVLag5DxPcCorVfc2YZMJJcsHSHc_1-YyeVomIIx_9TUqPKvUWUg3_ezStPkAFchKGl3d2sIqvkNyFjS5ChHmvscZZdSPeJsOB0vGk3TM-swaHHu15rueVfewBtF8k-Spb_eCTEqp7PLagIFPsaWnbzF3jAJjs0yV64_oqGuwNW60TvHrhG7lOTTkfpJYnbL74xmVEk5_-7y_VLtTibZkZoPZdeYJKqp48CUxDRfXNnoSd2ByzwmVMc5MR7CeN91wHIyhbqV__KUbPtc0V8pNWv5cUgns-zu6GObnjyKFEHOVLoaD_sRmV0CwCXU5K7fxQVgDjsp2yTOoklapQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1632912691,\"updated\":1632912691,\"recoveryLevel\":\"Recoverable+Purgeable\",\"recoverableDays\":90}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey015446f9/rotationpolicy?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "230",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 29 Sep 2021 10:51:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "92b52db7-39af-467a-933c-405d98ebdd84",
+      "x-ms-keyvault-service-version" : "1.9.79.2",
+      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey015446f9/rotationpolicy\",\"lifetimeActions\":[{\"trigger\":{\"timeBeforeExpiry\":\"P30D\"},\"action\":{\"type\":\"Notify\"}}],\"attributes\":{\"created\":1632912692,\"updated\":1632912692}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey015446f9/rotationpolicy?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "230",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 29 Sep 2021 10:51:31 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "e51c6100-9d5e-41d2-bb88-aebe27144950",
+      "x-ms-keyvault-service-version" : "1.9.79.2",
+      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey015446f9/rotationpolicy\",\"lifetimeActions\":[{\"trigger\":{\"timeBeforeExpiry\":\"P30D\"},\"action\":{\"type\":\"Notify\"}}],\"attributes\":{\"created\":1632912692,\"updated\":1632912692}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "rotatekey015446f9" ]
+}

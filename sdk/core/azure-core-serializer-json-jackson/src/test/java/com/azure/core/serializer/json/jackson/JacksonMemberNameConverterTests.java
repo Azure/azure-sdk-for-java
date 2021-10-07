@@ -268,6 +268,7 @@ public class JacksonMemberNameConverterTests {
         assertNull(jacksonJsonSerializer.convertMemberName(constructors[0]));
     }
 
+    @SuppressWarnings("removal")
     @ParameterizedTest
     @MethodSource("classConversionSupplier")
     public <T> void classConversion(T object, JacksonJsonSerializer converter, Set<String> expected)

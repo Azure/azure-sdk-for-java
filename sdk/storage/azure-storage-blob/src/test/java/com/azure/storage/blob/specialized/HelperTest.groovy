@@ -89,7 +89,7 @@ class HelperTest extends APISpec {
         "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
-    
+
     def "BlobURLParts"() {
         setup:
         def parts = new BlobUrlParts()
@@ -103,7 +103,7 @@ class HelperTest extends APISpec {
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null, "encryptionScope")
-        def sas = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
+        def sas = implUtil.generateSas(environment.primaryAccount.credential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 

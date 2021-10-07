@@ -51,6 +51,9 @@
       --add-opens com.azure.http.netty/com.azure.core.http.netty=ALL-UNNAMED
       --add-opens com.azure.http.netty/com.azure.core.http.netty.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <developers>
@@ -64,64 +67,64 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler-proxy</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-buffer</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http2</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-unix-common</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
       <classifier>linux-x86_64</classifier>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-kqueue</artifactId>
-      <version>4.1.67.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+      <version>4.1.68.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
       <classifier>osx-x86_64</classifier>
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty</artifactId>
-      <version>1.0.10</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <artifactId>reactor-netty-http</artifactId>
+      <version>1.0.11</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -141,7 +144,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.10</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -188,15 +191,15 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-buffer:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
-                <include>io.netty:netty-codec-http:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                <include>io.netty:netty-codec-http2:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
-                <include>io.netty:netty-handler:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
-                <include>io.netty:netty-handler-proxy:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
-                <include>io.netty:netty-transport-native-unix-common:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
-                <include>io.netty:netty-transport-native-epoll:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[1.0.10]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
-                <include>io.netty:netty-transport-native-kqueue:[4.1.67.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty-http:[1.0.11]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
+                <include>io.netty:netty-buffer:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http2:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                <include>io.netty:netty-handler:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                <include>io.netty:netty-handler-proxy:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                <include>io.netty:netty-transport-native-unix-common:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
+                <include>io.netty:netty-transport-native-epoll:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+                <include>io.netty:netty-transport-native-kqueue:[4.1.68.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

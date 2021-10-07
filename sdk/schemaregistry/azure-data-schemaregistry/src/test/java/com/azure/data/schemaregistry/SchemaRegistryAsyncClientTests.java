@@ -223,35 +223,6 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     }
 
     /**
-     * Verifies that we can register a schema and then get it by its schemaId.
-     */
-    @Test
-    public void registerAndGetCachedSchema() {
-        // Arrange
-        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
-        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
-
-        final AtomicReference<String> schemaId = new AtomicReference<>();
-
-        // Act & Assert
-        StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SerializationType.AVRO))
-            .assertNext(response -> {
-                assertSchemaProperties(response, null, schemaName, SCHEMA_CONTENT);
-                schemaId.set(response.getSchemaId());
-            }).verifyComplete();
-
-        // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
-        // cached, so it won't make a network call when getting the schema. client2 will not have this information.
-        final String schemaIdToGet = schemaId.get();
-        assertNotNull(schemaIdToGet);
-
-        // Act & Assert
-        StepVerifier.create(client1.getSchema(schemaIdToGet))
-            .assertNext(schema -> assertSchemaProperties(schema, schemaIdToGet, schemaName, SCHEMA_CONTENT))
-            .verifyComplete();
-    }
-
-    /**
      * Verifies that we get 404 when non-existent schema returned.
      */
     @Test

@@ -60,8 +60,6 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
-    static final String MHSM_SCOPE = "https://managedhsm.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
