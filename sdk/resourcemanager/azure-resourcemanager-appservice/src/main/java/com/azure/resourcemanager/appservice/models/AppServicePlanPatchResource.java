@@ -152,31 +152,6 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku.
-     *
-     * @return the elasticScaleEnabled value.
-     */
-    public Boolean elasticScaleEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().elasticScaleEnabled();
-    }
-
-    /**
-     * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku.
-     *
-     * @param elasticScaleEnabled the elasticScaleEnabled value to set.
-     * @return the AppServicePlanPatchResource object itself.
-     */
-    public AppServicePlanPatchResource withElasticScaleEnabled(Boolean elasticScaleEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppServicePlanPatchResourceProperties();
-        }
-        this.innerProperties().withElasticScaleEnabled(elasticScaleEnabled);
-        return this;
-    }
-
-    /**
      * Get the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
      * App Service Plan.
      *
@@ -412,64 +387,12 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the App Service Plan.
+     * Get the provisioningState property: Provisioning state of the App Service Environment.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @return the kubeEnvironmentProfile value.
-     */
-    public KubeEnvironmentProfile kubeEnvironmentProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().kubeEnvironmentProfile();
-    }
-
-    /**
-     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
-     * @return the AppServicePlanPatchResource object itself.
-     */
-    public AppServicePlanPatchResource withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppServicePlanPatchResourceProperties();
-        }
-        this.innerProperties().withKubeEnvironmentProfile(kubeEnvironmentProfile);
-        return this;
-    }
-
-    /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
-     * balancing.
-     *
-     * @return the zoneRedundant value.
-     */
-    public Boolean zoneRedundant() {
-        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
-    }
-
-    /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
-     * balancing.
-     *
-     * @param zoneRedundant the zoneRedundant value to set.
-     * @return the AppServicePlanPatchResource object itself.
-     */
-    public AppServicePlanPatchResource withZoneRedundant(Boolean zoneRedundant) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppServicePlanPatchResourceProperties();
-        }
-        this.innerProperties().withZoneRedundant(zoneRedundant);
-        return this;
     }
 
     /**

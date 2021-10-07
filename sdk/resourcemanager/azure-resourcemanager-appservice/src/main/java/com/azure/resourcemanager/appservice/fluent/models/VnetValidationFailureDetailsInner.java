@@ -40,29 +40,6 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the message property: Text describing the validation outcome.
-     *
-     * @return the message value.
-     */
-    public String message() {
-        return this.innerProperties() == null ? null : this.innerProperties().message();
-    }
-
-    /**
-     * Set the message property: Text describing the validation outcome.
-     *
-     * @param message the message value to set.
-     * @return the VnetValidationFailureDetailsInner object itself.
-     */
-    public VnetValidationFailureDetailsInner withMessage(String message) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VnetValidationFailureDetailsProperties();
-        }
-        this.innerProperties().withMessage(message);
-        return this;
-    }
-
-    /**
      * Get the failed property: A flag describing whether or not validation failed.
      *
      * @return the failed value.
@@ -105,29 +82,6 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
             this.innerProperties = new VnetValidationFailureDetailsProperties();
         }
         this.innerProperties().withFailedTests(failedTests);
-        return this;
-    }
-
-    /**
-     * Get the warnings property: A list of warnings generated during validation.
-     *
-     * @return the warnings value.
-     */
-    public List<VnetValidationTestFailure> warnings() {
-        return this.innerProperties() == null ? null : this.innerProperties().warnings();
-    }
-
-    /**
-     * Set the warnings property: A list of warnings generated during validation.
-     *
-     * @param warnings the warnings value to set.
-     * @return the VnetValidationFailureDetailsInner object itself.
-     */
-    public VnetValidationFailureDetailsInner withWarnings(List<VnetValidationTestFailure> warnings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VnetValidationFailureDetailsProperties();
-        }
-        this.innerProperties().withWarnings(warnings);
         return this;
     }
 

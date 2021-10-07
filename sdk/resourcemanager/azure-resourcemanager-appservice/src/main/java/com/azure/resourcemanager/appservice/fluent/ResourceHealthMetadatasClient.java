@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in ResourceHealthMetadatasClient. */
 public interface ResourceHealthMetadatasClient extends InnerSupportsListing<ResourceHealthMetadataInner> {
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -28,7 +28,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
     PagedFlux<ResourceHealthMetadataInner> listAsync();
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -39,7 +39,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
     PagedIterable<ResourceHealthMetadataInner> list();
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     * List all ResourceHealthMetadata for all sites in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,7 +52,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
     PagedIterable<ResourceHealthMetadataInner> list(Context context);
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +65,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
     PagedFlux<ResourceHealthMetadataInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +78,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
     PagedIterable<ResourceHealthMetadataInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     * List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -92,7 +92,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
     PagedIterable<ResourceHealthMetadataInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -100,13 +100,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resource health metadata.
+     * @return the category of ResourceHealthMetadata to use for the given site as a collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ResourceHealthMetadataInner> listBySiteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -114,13 +114,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resource health metadata.
+     * @return the category of ResourceHealthMetadata to use for the given site as a collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceHealthMetadataInner> listBySite(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -129,13 +129,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resource health metadata.
+     * @return the category of ResourceHealthMetadata to use for the given site as a collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceHealthMetadataInner> listBySite(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -143,13 +143,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResourceHealthMetadataInner>> getBySiteWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -157,13 +157,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResourceHealthMetadataInner> getBySiteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -171,13 +171,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceHealthMetadataInner getBySite(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -186,13 +186,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceHealthMetadataInner> getBySiteWithResponse(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -201,13 +201,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resource health metadata.
+     * @return the category of ResourceHealthMetadata to use for the given site as a collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ResourceHealthMetadataInner> listBySiteSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -216,13 +216,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resource health metadata.
+     * @return the category of ResourceHealthMetadata to use for the given site as a collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceHealthMetadataInner> listBySiteSlot(String resourceGroupName, String name, String slot);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     * Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -232,14 +232,14 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of resource health metadata.
+     * @return the category of ResourceHealthMetadata to use for the given site as a collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceHealthMetadataInner> listBySiteSlot(
         String resourceGroupName, String name, String slot, Context context);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -248,14 +248,14 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ResourceHealthMetadataInner>> getBySiteSlotWithResponseAsync(
         String resourceGroupName, String name, String slot);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -264,13 +264,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ResourceHealthMetadataInner> getBySiteSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -279,13 +279,13 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ResourceHealthMetadataInner getBySiteSlot(String resourceGroupName, String name, String slot);
 
     /**
-     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     * Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -295,7 +295,7 @@ public interface ResourceHealthMetadatasClient extends InnerSupportsListing<Reso
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return used for getting ResourceHealthCheck settings.
+     * @return the category of ResourceHealthMetadata to use for the given site.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceHealthMetadataInner> getBySiteSlotWithResponse(

@@ -7,9 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
-import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
@@ -34,12 +32,6 @@ public final class AppServicePlanInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private SkuDescription sku;
-
-    /*
-     * Extended Location.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
 
     /*
      * Kind of resource.
@@ -73,26 +65,6 @@ public final class AppServicePlanInner extends Resource {
      */
     public AppServicePlanInner withSku(SkuDescription sku) {
         this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the extendedLocation property: Extended Location.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: Extended Location.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -239,31 +211,6 @@ public final class AppServicePlanInner extends Resource {
             this.innerProperties = new AppServicePlanProperties();
         }
         this.innerProperties().withPerSiteScaling(perSiteScaling);
-        return this;
-    }
-
-    /**
-     * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku.
-     *
-     * @return the elasticScaleEnabled value.
-     */
-    public Boolean elasticScaleEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().elasticScaleEnabled();
-    }
-
-    /**
-     * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku.
-     *
-     * @param elasticScaleEnabled the elasticScaleEnabled value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withElasticScaleEnabled(Boolean elasticScaleEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppServicePlanProperties();
-        }
-        this.innerProperties().withElasticScaleEnabled(elasticScaleEnabled);
         return this;
     }
 
@@ -503,64 +450,12 @@ public final class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the App Service Plan.
+     * Get the provisioningState property: Provisioning state of the App Service Environment.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @return the kubeEnvironmentProfile value.
-     */
-    public KubeEnvironmentProfile kubeEnvironmentProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().kubeEnvironmentProfile();
-    }
-
-    /**
-     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppServicePlanProperties();
-        }
-        this.innerProperties().withKubeEnvironmentProfile(kubeEnvironmentProfile);
-        return this;
-    }
-
-    /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
-     * balancing.
-     *
-     * @return the zoneRedundant value.
-     */
-    public Boolean zoneRedundant() {
-        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
-    }
-
-    /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
-     * balancing.
-     *
-     * @param zoneRedundant the zoneRedundant value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withZoneRedundant(Boolean zoneRedundant) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AppServicePlanProperties();
-        }
-        this.innerProperties().withZoneRedundant(zoneRedundant);
-        return this;
     }
 
     /**
@@ -574,9 +469,6 @@ public final class AppServicePlanInner extends Resource {
         }
         if (sku() != null) {
             sku().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
         }
     }
 }

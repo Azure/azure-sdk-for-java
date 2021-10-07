@@ -26,12 +26,6 @@ public final class GeoRegionProperties {
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
-    /*
-     * Display name for region.
-     */
-    @JsonProperty(value = "orgDomain", access = JsonProperty.Access.WRITE_ONLY)
-    private String orgDomain;
-
     /**
      * Get the description property: Region description.
      *
@@ -48,15 +42,6 @@ public final class GeoRegionProperties {
      */
     public String displayName() {
         return this.displayName;
-    }
-
-    /**
-     * Get the orgDomain property: Display name for region.
-     *
-     * @return the orgDomain value.
-     */
-    public String orgDomain() {
-        return this.orgDomain;
     }
 
     /**

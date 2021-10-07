@@ -26,6 +26,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -79,7 +80,6 @@ public final class CertificatesClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -126,19 +126,18 @@ public final class CertificatesClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates"
                 + "/{name}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -179,17 +178,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
      *
-     * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(String filter) {
+    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -211,7 +207,6 @@ public final class CertificatesClientImpl
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            filter,
                             accept,
                             context))
             .<PagedResponse<CertificateInner>>map(
@@ -227,18 +222,16 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
      *
-     * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates for a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(String filter, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -258,7 +251,6 @@ public final class CertificatesClientImpl
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                filter,
                 accept,
                 context)
             .map(
@@ -273,87 +265,66 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates for a subscription.
-     *
-     * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CertificateInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateInner> listAsync() {
-        final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
      *
-     * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateInner> listAsync(String filter, Context context) {
+    private PagedFlux<CertificateInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> list() {
-        final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
+        return new PagedIterable<>(listAsync());
     }
 
     /**
-     * Description for Get all certificates for a subscription.
+     * Get all certificates for a subscription.
      *
-     * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates for a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
+    public PagedIterable<CertificateInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -398,14 +369,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByResourceGroupSinglePageAsync(
@@ -448,13 +419,13 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -464,14 +435,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CertificateInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -481,13 +452,13 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> listByResourceGroup(String resourceGroupName) {
@@ -495,14 +466,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get all certificates in a resource group.
+     * Get all certificates in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of certificates.
+     * @return all certificates in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -510,14 +481,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
+     * @return a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name) {
@@ -557,7 +528,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -565,7 +536,7 @@ public final class CertificatesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
+     * @return a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CertificateInner>> getByResourceGroupWithResponseAsync(
@@ -603,14 +574,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
+     * @return a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CertificateInner> getByResourceGroupAsync(String resourceGroupName, String name) {
@@ -626,14 +597,14 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
+     * @return a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateInner getByResourceGroup(String resourceGroupName, String name) {
@@ -641,7 +612,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Get a certificate.
+     * Get a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -649,7 +620,7 @@ public final class CertificatesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sSL certificate for an app.
+     * @return a certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateInner> getByResourceGroupWithResponse(
@@ -658,7 +629,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -714,7 +685,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -768,7 +739,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -793,7 +764,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -810,7 +781,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -828,12 +799,12 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -858,7 +829,6 @@ public final class CertificatesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -869,19 +839,18 @@ public final class CertificatesClientImpl
                             name,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -906,7 +875,6 @@ public final class CertificatesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -915,17 +883,16 @@ public final class CertificatesClientImpl
                 name,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                accept,
                 context);
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -935,12 +902,12 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -949,13 +916,13 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Delete a certificate.
+     * Delete a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -965,7 +932,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1021,7 +988,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1075,7 +1042,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1100,7 +1067,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
@@ -1117,7 +1084,7 @@ public final class CertificatesClientImpl
     }
 
     /**
-     * Description for Create or update a certificate.
+     * Create or update a certificate.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.

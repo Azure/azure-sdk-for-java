@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
+import com.azure.resourcemanager.appservice.models.GeoDistribution;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
@@ -427,33 +427,6 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
-     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
-     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
-     * @return the clientCertMode value.
-     */
-    public ClientCertMode clientCertMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientCertMode();
-    }
-
-    /**
-     * Set the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
-     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
-     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
-     * @param clientCertMode the clientCertMode value to set.
-     * @return the SitePatchResourceInner object itself.
-     */
-    public SitePatchResourceInner withClientCertMode(ClientCertMode clientCertMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePatchResourcePropertiesInner();
-        }
-        this.innerProperties().withClientCertMode(clientCertMode);
-        return this;
-    }
-
-    /**
      * Get the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
      *
      * @return the clientCertExclusionPaths value.
@@ -504,31 +477,6 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
-     * app. Customer will add this id to a txt record for verification.
-     *
-     * @return the customDomainVerificationId value.
-     */
-    public String customDomainVerificationId() {
-        return this.innerProperties() == null ? null : this.innerProperties().customDomainVerificationId();
-    }
-
-    /**
-     * Set the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
-     * app. Customer will add this id to a txt record for verification.
-     *
-     * @param customDomainVerificationId the customDomainVerificationId value to set.
-     * @return the SitePatchResourceInner object itself.
-     */
-    public SitePatchResourceInner withCustomDomainVerificationId(String customDomainVerificationId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePatchResourcePropertiesInner();
-        }
-        this.innerProperties().withCustomDomainVerificationId(customDomainVerificationId);
-        return this;
-    }
-
-    /**
      * Get the outboundIpAddresses property: List of IP addresses that the app uses for outbound connections (e.g.
      * database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
      *
@@ -540,7 +488,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the possibleOutboundIpAddresses property: List of IP addresses that the app uses for outbound connections
-     * (e.g. database access). Includes VIPs from all tenants except dataComponent. Read-only.
+     * (e.g. database access). Includes VIPs from all tenants. Read-only.
      *
      * @return the possibleOutboundIpAddresses value.
      */
@@ -730,75 +678,25 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
+     * Get the geoDistributions property: GeoDistributions for this site.
      *
-     * @return the storageAccountRequired value.
+     * @return the geoDistributions value.
      */
-    public Boolean storageAccountRequired() {
-        return this.innerProperties() == null ? null : this.innerProperties().storageAccountRequired();
+    public List<GeoDistribution> geoDistributions() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoDistributions();
     }
 
     /**
-     * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
+     * Set the geoDistributions property: GeoDistributions for this site.
      *
-     * @param storageAccountRequired the storageAccountRequired value to set.
+     * @param geoDistributions the geoDistributions value to set.
      * @return the SitePatchResourceInner object itself.
      */
-    public SitePatchResourceInner withStorageAccountRequired(Boolean storageAccountRequired) {
+    public SitePatchResourceInner withGeoDistributions(List<GeoDistribution> geoDistributions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SitePatchResourcePropertiesInner();
         }
-        this.innerProperties().withStorageAccountRequired(storageAccountRequired);
-        return this;
-    }
-
-    /**
-     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @return the keyVaultReferenceIdentity value.
-     */
-    public String keyVaultReferenceIdentity() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyVaultReferenceIdentity();
-    }
-
-    /**
-     * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
-     * @return the SitePatchResourceInner object itself.
-     */
-    public SitePatchResourceInner withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePatchResourcePropertiesInner();
-        }
-        this.innerProperties().withKeyVaultReferenceIdentity(keyVaultReferenceIdentity);
-        return this;
-    }
-
-    /**
-     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration. This must be of the form
-     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
-     * @return the virtualNetworkSubnetId value.
-     */
-    public String virtualNetworkSubnetId() {
-        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkSubnetId();
-    }
-
-    /**
-     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration. This must be of the form
-     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
-     * @param virtualNetworkSubnetId the virtualNetworkSubnetId value to set.
-     * @return the SitePatchResourceInner object itself.
-     */
-    public SitePatchResourceInner withVirtualNetworkSubnetId(String virtualNetworkSubnetId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SitePatchResourcePropertiesInner();
-        }
-        this.innerProperties().withVirtualNetworkSubnetId(virtualNetworkSubnetId);
+        this.innerProperties().withGeoDistributions(geoDistributions);
         return this;
     }
 

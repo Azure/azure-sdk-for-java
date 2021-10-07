@@ -37,8 +37,8 @@ public final class EndpointDetail {
      * Whether it is possible to create a TCP connection from the App Service
      * Environment to this IpAddress at this Port.
      */
-    @JsonProperty(value = "isAccessible")
-    private Boolean isAccessible;
+    @JsonProperty(value = "isAccessable")
+    private Boolean isAccessable;
 
     /**
      * Get the ipAddress property: An IP Address that Domain Name currently resolves to.
@@ -103,24 +103,24 @@ public final class EndpointDetail {
     }
 
     /**
-     * Get the isAccessible property: Whether it is possible to create a TCP connection from the App Service Environment
+     * Get the isAccessable property: Whether it is possible to create a TCP connection from the App Service Environment
      * to this IpAddress at this Port.
      *
-     * @return the isAccessible value.
+     * @return the isAccessable value.
      */
-    public Boolean isAccessible() {
-        return this.isAccessible;
+    public Boolean isAccessable() {
+        return this.isAccessable;
     }
 
     /**
-     * Set the isAccessible property: Whether it is possible to create a TCP connection from the App Service Environment
+     * Set the isAccessable property: Whether it is possible to create a TCP connection from the App Service Environment
      * to this IpAddress at this Port.
      *
-     * @param isAccessible the isAccessible value to set.
+     * @param isAccessable the isAccessable value to set.
      * @return the EndpointDetail object itself.
      */
-    public EndpointDetail withIsAccessible(Boolean isAccessible) {
-        this.isAccessible = isAccessible;
+    public EndpointDetail withIsAccessable(Boolean isAccessable) {
+        this.isAccessable = isAccessable;
         return this;
     }
 

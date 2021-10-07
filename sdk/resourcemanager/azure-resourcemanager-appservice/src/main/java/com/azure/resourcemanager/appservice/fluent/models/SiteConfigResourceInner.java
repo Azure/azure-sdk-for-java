@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ApiDefinitionInfo;
-import com.azure.resourcemanager.appservice.models.ApiManagementConfig;
 import com.azure.resourcemanager.appservice.models.AutoHealRules;
 import com.azure.resourcemanager.appservice.models.AzureStorageInfoValue;
 import com.azure.resourcemanager.appservice.models.ConnStringInfo;
@@ -197,29 +196,6 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the powerShellVersion property: Version of PowerShell.
-     *
-     * @return the powerShellVersion value.
-     */
-    public String powerShellVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().powerShellVersion();
-    }
-
-    /**
-     * Set the powerShellVersion property: Version of PowerShell.
-     *
-     * @param powerShellVersion the powerShellVersion value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withPowerShellVersion(String powerShellVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withPowerShellVersion(powerShellVersion);
-        return this;
-    }
-
-    /**
      * Get the linuxFxVersion property: Linux App Framework and version.
      *
      * @return the linuxFxVersion value.
@@ -387,52 +363,6 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     *
-     * @return the acrUseManagedIdentityCreds value.
-     */
-    public Boolean acrUseManagedIdentityCreds() {
-        return this.innerProperties() == null ? null : this.innerProperties().acrUseManagedIdentityCreds();
-    }
-
-    /**
-     * Set the acrUseManagedIdentityCreds property: Flag to use Managed Identity Creds for ACR pull.
-     *
-     * @param acrUseManagedIdentityCreds the acrUseManagedIdentityCreds value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withAcrUseManagedIdentityCreds(Boolean acrUseManagedIdentityCreds) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withAcrUseManagedIdentityCreds(acrUseManagedIdentityCreds);
-        return this;
-    }
-
-    /**
-     * Get the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     *
-     * @return the acrUserManagedIdentityId value.
-     */
-    public String acrUserManagedIdentityId() {
-        return this.innerProperties() == null ? null : this.innerProperties().acrUserManagedIdentityId();
-    }
-
-    /**
-     * Set the acrUserManagedIdentityId property: If using user managed identity, the user managed identity ClientId.
-     *
-     * @param acrUserManagedIdentityId the acrUserManagedIdentityId value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withAcrUserManagedIdentityId(String acrUserManagedIdentityId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withAcrUserManagedIdentityId(acrUserManagedIdentityId);
-        return this;
-    }
-
-    /**
      * Get the logsDirectorySizeLimit property: HTTP logs directory size limit.
      *
      * @return the logsDirectorySizeLimit value.
@@ -523,6 +453,29 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withAppSettings(appSettings);
+        return this;
+    }
+
+    /**
+     * Get the azureStorageAccounts property: User-provided Azure storage accounts.
+     *
+     * @return the azureStorageAccounts value.
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureStorageAccounts();
+    }
+
+    /**
+     * Set the azureStorageAccounts property: User-provided Azure storage accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set.
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteConfigInner();
+        }
+        this.innerProperties().withAzureStorageAccounts(azureStorageAccounts);
         return this;
     }
 
@@ -1004,56 +957,6 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
-     *
-     * @return the vnetRouteAllEnabled value.
-     */
-    public Boolean vnetRouteAllEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().vnetRouteAllEnabled();
-    }
-
-    /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
-     *
-     * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withVnetRouteAllEnabled(vnetRouteAllEnabled);
-        return this;
-    }
-
-    /**
-     * Get the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
-     * dynamically on runtime.
-     *
-     * @return the vnetPrivatePortsCount value.
-     */
-    public Integer vnetPrivatePortsCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().vnetPrivatePortsCount();
-    }
-
-    /**
-     * Set the vnetPrivatePortsCount property: The number of private ports assigned to this app. These will be assigned
-     * dynamically on runtime.
-     *
-     * @param vnetPrivatePortsCount the vnetPrivatePortsCount value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withVnetPrivatePortsCount(Integer vnetPrivatePortsCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withVnetPrivatePortsCount(vnetPrivatePortsCount);
-        return this;
-    }
-
-    /**
      * Get the cors property: Cross-Origin Resource Sharing (CORS) settings.
      *
      * @return the cors value.
@@ -1119,29 +1022,6 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withApiDefinition(apiDefinition);
-        return this;
-    }
-
-    /**
-     * Get the apiManagementConfig property: Azure API management settings linked to the app.
-     *
-     * @return the apiManagementConfig value.
-     */
-    public ApiManagementConfig apiManagementConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().apiManagementConfig();
-    }
-
-    /**
-     * Set the apiManagementConfig property: Azure API management settings linked to the app.
-     *
-     * @param apiManagementConfig the apiManagementConfig value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withApiManagementConfig(ApiManagementConfig apiManagementConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withApiManagementConfig(apiManagementConfig);
         return this;
     }
 
@@ -1236,29 +1116,6 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
             this.innerProperties = new SiteConfigInner();
         }
         this.innerProperties().withXManagedServiceIdentityId(xManagedServiceIdentityId);
-        return this;
-    }
-
-    /**
-     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @return the keyVaultReferenceIdentity value.
-     */
-    public String keyVaultReferenceIdentity() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyVaultReferenceIdentity();
-    }
-
-    /**
-     * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withKeyVaultReferenceIdentity(keyVaultReferenceIdentity);
         return this;
     }
 
@@ -1379,31 +1236,6 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
-     * requests for SCM site.
-     *
-     * @return the scmMinTlsVersion value.
-     */
-    public SupportedTlsVersions scmMinTlsVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().scmMinTlsVersion();
-    }
-
-    /**
-     * Set the scmMinTlsVersion property: ScmMinTlsVersion: configures the minimum version of TLS required for SSL
-     * requests for SCM site.
-     *
-     * @param scmMinTlsVersion the scmMinTlsVersion value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withScmMinTlsVersion(SupportedTlsVersions scmMinTlsVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withScmMinTlsVersion(scmMinTlsVersion);
-        return this;
-    }
-
-    /**
      * Get the ftpsState property: State of FTP / FTPS service.
      *
      * @return the ftpsState value.
@@ -1427,205 +1259,27 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the preWarmedInstanceCount property: Number of preWarmed instances. This setting only applies to the
-     * Consumption and Elastic Plans.
+     * Get the reservedInstanceCount property: Number of reserved instances. This setting only applies to the
+     * Consumption Plan.
      *
-     * @return the preWarmedInstanceCount value.
+     * @return the reservedInstanceCount value.
      */
-    public Integer preWarmedInstanceCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().preWarmedInstanceCount();
+    public Integer reservedInstanceCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().reservedInstanceCount();
     }
 
     /**
-     * Set the preWarmedInstanceCount property: Number of preWarmed instances. This setting only applies to the
-     * Consumption and Elastic Plans.
+     * Set the reservedInstanceCount property: Number of reserved instances. This setting only applies to the
+     * Consumption Plan.
      *
-     * @param preWarmedInstanceCount the preWarmedInstanceCount value to set.
+     * @param reservedInstanceCount the reservedInstanceCount value to set.
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withPreWarmedInstanceCount(Integer preWarmedInstanceCount) {
+    public SiteConfigResourceInner withReservedInstanceCount(Integer reservedInstanceCount) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SiteConfigInner();
         }
-        this.innerProperties().withPreWarmedInstanceCount(preWarmedInstanceCount);
-        return this;
-    }
-
-    /**
-     * Get the functionAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting only
-     * applies to the Consumption and Elastic Premium Plans.
-     *
-     * @return the functionAppScaleLimit value.
-     */
-    public Integer functionAppScaleLimit() {
-        return this.innerProperties() == null ? null : this.innerProperties().functionAppScaleLimit();
-    }
-
-    /**
-     * Set the functionAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting only
-     * applies to the Consumption and Elastic Premium Plans.
-     *
-     * @param functionAppScaleLimit the functionAppScaleLimit value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withFunctionAppScaleLimit(Integer functionAppScaleLimit) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withFunctionAppScaleLimit(functionAppScaleLimit);
-        return this;
-    }
-
-    /**
-     * Get the healthCheckPath property: Health check path.
-     *
-     * @return the healthCheckPath value.
-     */
-    public String healthCheckPath() {
-        return this.innerProperties() == null ? null : this.innerProperties().healthCheckPath();
-    }
-
-    /**
-     * Set the healthCheckPath property: Health check path.
-     *
-     * @param healthCheckPath the healthCheckPath value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withHealthCheckPath(String healthCheckPath) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withHealthCheckPath(healthCheckPath);
-        return this;
-    }
-
-    /**
-     * Get the functionsRuntimeScaleMonitoringEnabled property: Gets or sets a value indicating whether functions
-     * runtime scale monitoring is enabled. When enabled, the ScaleController will not monitor event sources directly,
-     * but will instead call to the runtime to get scale status.
-     *
-     * @return the functionsRuntimeScaleMonitoringEnabled value.
-     */
-    public Boolean functionsRuntimeScaleMonitoringEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().functionsRuntimeScaleMonitoringEnabled();
-    }
-
-    /**
-     * Set the functionsRuntimeScaleMonitoringEnabled property: Gets or sets a value indicating whether functions
-     * runtime scale monitoring is enabled. When enabled, the ScaleController will not monitor event sources directly,
-     * but will instead call to the runtime to get scale status.
-     *
-     * @param functionsRuntimeScaleMonitoringEnabled the functionsRuntimeScaleMonitoringEnabled value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withFunctionsRuntimeScaleMonitoringEnabled(
-        Boolean functionsRuntimeScaleMonitoringEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withFunctionsRuntimeScaleMonitoringEnabled(functionsRuntimeScaleMonitoringEnabled);
-        return this;
-    }
-
-    /**
-     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
-     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
-     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
-     * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
-     * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     *
-     * @return the websiteTimeZone value.
-     */
-    public String websiteTimeZone() {
-        return this.innerProperties() == null ? null : this.innerProperties().websiteTimeZone();
-    }
-
-    /**
-     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
-     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
-     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
-     * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
-     * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
-     *
-     * @param websiteTimeZone the websiteTimeZone value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withWebsiteTimeZone(String websiteTimeZone) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withWebsiteTimeZone(websiteTimeZone);
-        return this;
-    }
-
-    /**
-     * Get the minimumElasticInstanceCount property: Number of minimum instance count for a site This setting only
-     * applies to the Elastic Plans.
-     *
-     * @return the minimumElasticInstanceCount value.
-     */
-    public Integer minimumElasticInstanceCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().minimumElasticInstanceCount();
-    }
-
-    /**
-     * Set the minimumElasticInstanceCount property: Number of minimum instance count for a site This setting only
-     * applies to the Elastic Plans.
-     *
-     * @param minimumElasticInstanceCount the minimumElasticInstanceCount value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withMinimumElasticInstanceCount(Integer minimumElasticInstanceCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withMinimumElasticInstanceCount(minimumElasticInstanceCount);
-        return this;
-    }
-
-    /**
-     * Get the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
-     * @return the azureStorageAccounts value.
-     */
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.innerProperties() == null ? null : this.innerProperties().azureStorageAccounts();
-    }
-
-    /**
-     * Set the azureStorageAccounts property: List of Azure Storage Accounts.
-     *
-     * @param azureStorageAccounts the azureStorageAccounts value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withAzureStorageAccounts(azureStorageAccounts);
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Property to allow or block all public traffic.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public String publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Property to allow or block all public traffic.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteConfigInner();
-        }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        this.innerProperties().withReservedInstanceCount(reservedInstanceCount);
         return this;
     }
 

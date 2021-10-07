@@ -32,12 +32,6 @@ public final class LogSpecification {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
-    /*
-     * The logFilterPattern property.
-     */
-    @JsonProperty(value = "logFilterPattern")
-    private String logFilterPattern;
-
     /**
      * Get the name property: The name property.
      *
@@ -95,26 +89,6 @@ public final class LogSpecification {
      */
     public LogSpecification withBlobDuration(String blobDuration) {
         this.blobDuration = blobDuration;
-        return this;
-    }
-
-    /**
-     * Get the logFilterPattern property: The logFilterPattern property.
-     *
-     * @return the logFilterPattern value.
-     */
-    public String logFilterPattern() {
-        return this.logFilterPattern;
-    }
-
-    /**
-     * Set the logFilterPattern property: The logFilterPattern property.
-     *
-     * @param logFilterPattern the logFilterPattern value to set.
-     * @return the LogSpecification object itself.
-     */
-    public LogSpecification withLogFilterPattern(String logFilterPattern) {
-        this.logFilterPattern = logFilterPattern;
         return this;
     }
 

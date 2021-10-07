@@ -27,12 +27,6 @@ public final class SkuCapacity {
     private Integer maximum;
 
     /*
-     * Maximum number of Elastic workers for this App Service plan SKU.
-     */
-    @JsonProperty(value = "elasticMaximum")
-    private Integer elasticMaximum;
-
-    /*
      * Default number of workers for this App Service plan SKU.
      */
     @JsonProperty(value = "default")
@@ -81,26 +75,6 @@ public final class SkuCapacity {
      */
     public SkuCapacity withMaximum(Integer maximum) {
         this.maximum = maximum;
-        return this;
-    }
-
-    /**
-     * Get the elasticMaximum property: Maximum number of Elastic workers for this App Service plan SKU.
-     *
-     * @return the elasticMaximum value.
-     */
-    public Integer elasticMaximum() {
-        return this.elasticMaximum;
-    }
-
-    /**
-     * Set the elasticMaximum property: Maximum number of Elastic workers for this App Service plan SKU.
-     *
-     * @param elasticMaximum the elasticMaximum value to set.
-     * @return the SkuCapacity object itself.
-     */
-    public SkuCapacity withElasticMaximum(Integer elasticMaximum) {
-        this.elasticMaximum = elasticMaximum;
         return this;
     }
 

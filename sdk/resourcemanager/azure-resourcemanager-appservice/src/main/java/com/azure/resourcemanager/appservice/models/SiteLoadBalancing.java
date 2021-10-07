@@ -22,10 +22,7 @@ public enum SiteLoadBalancing {
     WEIGHTED_TOTAL_TRAFFIC("WeightedTotalTraffic"),
 
     /** Enum value RequestHash. */
-    REQUEST_HASH("RequestHash"),
-
-    /** Enum value PerSiteRoundRobin. */
-    PER_SITE_ROUND_ROBIN("PerSiteRoundRobin");
+    REQUEST_HASH("RequestHash");
 
     /** The actual serialized value for a SiteLoadBalancing instance. */
     private final String value;

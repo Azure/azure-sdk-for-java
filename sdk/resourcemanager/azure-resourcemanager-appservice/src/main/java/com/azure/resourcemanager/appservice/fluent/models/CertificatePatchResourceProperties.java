@@ -20,12 +20,6 @@ public final class CertificatePatchResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificatePatchResourceProperties.class);
 
     /*
-     * Certificate password.
-     */
-    @JsonProperty(value = "password")
-    private String password;
-
-    /*
      * Friendly name of the certificate.
      */
     @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
@@ -78,6 +72,12 @@ public final class CertificatePatchResourceProperties {
      */
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
+
+    /*
+     * Certificate password.
+     */
+    @JsonProperty(value = "password", required = true)
+    private String password;
 
     /*
      * Certificate thumbprint.
@@ -135,38 +135,6 @@ public final class CertificatePatchResourceProperties {
      */
     @JsonProperty(value = "serverFarmId")
     private String serverFarmId;
-
-    /*
-     * CNAME of the certificate to be issued via free certificate
-     */
-    @JsonProperty(value = "canonicalName")
-    private String canonicalName;
-
-    /*
-     * Method of domain validation for free cert
-     */
-    @JsonProperty(value = "domainValidationMethod")
-    private String domainValidationMethod;
-
-    /**
-     * Get the password property: Certificate password.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: Certificate password.
-     *
-     * @param password the password value to set.
-     * @return the CertificatePatchResourceProperties object itself.
-     */
-    public CertificatePatchResourceProperties withPassword(String password) {
-        this.password = password;
-        return this;
-    }
 
     /**
      * Get the friendlyName property: Friendly name of the certificate.
@@ -269,6 +237,26 @@ public final class CertificatePatchResourceProperties {
      */
     public OffsetDateTime expirationDate() {
         return this.expirationDate;
+    }
+
+    /**
+     * Get the password property: Certificate password.
+     *
+     * @return the password value.
+     */
+    public String password() {
+        return this.password;
+    }
+
+    /**
+     * Set the password property: Certificate password.
+     *
+     * @param password the password value to set.
+     * @return the CertificatePatchResourceProperties object itself.
+     */
+    public CertificatePatchResourceProperties withPassword(String password) {
+        this.password = password;
+        return this;
     }
 
     /**
@@ -391,51 +379,17 @@ public final class CertificatePatchResourceProperties {
     }
 
     /**
-     * Get the canonicalName property: CNAME of the certificate to be issued via free certificate.
-     *
-     * @return the canonicalName value.
-     */
-    public String canonicalName() {
-        return this.canonicalName;
-    }
-
-    /**
-     * Set the canonicalName property: CNAME of the certificate to be issued via free certificate.
-     *
-     * @param canonicalName the canonicalName value to set.
-     * @return the CertificatePatchResourceProperties object itself.
-     */
-    public CertificatePatchResourceProperties withCanonicalName(String canonicalName) {
-        this.canonicalName = canonicalName;
-        return this;
-    }
-
-    /**
-     * Get the domainValidationMethod property: Method of domain validation for free cert.
-     *
-     * @return the domainValidationMethod value.
-     */
-    public String domainValidationMethod() {
-        return this.domainValidationMethod;
-    }
-
-    /**
-     * Set the domainValidationMethod property: Method of domain validation for free cert.
-     *
-     * @param domainValidationMethod the domainValidationMethod value to set.
-     * @return the CertificatePatchResourceProperties object itself.
-     */
-    public CertificatePatchResourceProperties withDomainValidationMethod(String domainValidationMethod) {
-        this.domainValidationMethod = domainValidationMethod;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (password() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property password in model CertificatePatchResourceProperties"));
+        }
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();
         }
