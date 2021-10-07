@@ -25,10 +25,10 @@ import java.io.InputStream;
 public class ReadmeSamples {
 
     /**
-     * Sample to demonstrate creation of {@link SchemaRegistryAvroSerializer}.
-     * @return The {@link SchemaRegistryAvroSerializer}.
+     * Sample to demonstrate creation of {@link SchemaRegistryApacheAvroSerializer}.
+     * @return The {@link SchemaRegistryApacheAvroSerializer}.
      */
-    public SchemaRegistryAvroSerializer createAvroSchemaRegistrySerializer() {
+    public SchemaRegistryApacheAvroSerializer createAvroSchemaRegistrySerializer() {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
@@ -36,7 +36,7 @@ public class ReadmeSamples {
             .credential(tokenCredential)
             .buildAsyncClient();
 
-        SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAvroSerializerBuilder()
+        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .buildSerializer();
@@ -48,7 +48,7 @@ public class ReadmeSamples {
      * Serialize a strongly-typed object into avro payload compatible with schema registry.
      */
     public void serializeSample() {
-        SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
+        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
 
         PlayingCard playingCard = new PlayingCard();
         playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
@@ -65,7 +65,7 @@ public class ReadmeSamples {
      * Deserialize avro payload compatible with schema registry into a strongly-type object.
      */
     public void deserializeSample() {
-        SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
+        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
         InputStream inputStream = getSchemaRegistryAvroData();
         PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
             TypeReference.createInstance(PlayingCard.class));
