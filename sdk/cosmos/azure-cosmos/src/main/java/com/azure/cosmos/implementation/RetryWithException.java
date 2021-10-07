@@ -67,11 +67,4 @@ public class RetryWithException extends CosmosException {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.RETRY_WITH,
             requestUri != null ? requestUri.toString() : null);
     }
-
-    /**
-     * Instantiates a new Gone exception.
-     */
-    public RetryWithException() {
-        this(RMResources.RetryWith, null);
-    }
 }

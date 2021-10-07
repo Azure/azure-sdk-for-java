@@ -37,6 +37,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
     private volatile RetryWithException lastRetryWithException;
     private RetryContext retryContext;
+    static final ThreadLocal<Random> random = new ThreadLocal<>();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
@@ -172,7 +173,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration timeout;
             boolean forceRefreshAddressCache;
             if (isNonRetryableException(exception)) {
-
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
                 return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
@@ -313,7 +313,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
             Duration backoffTime;
             Duration timeout;
-            Random random = new Random();
 
             if (!(exception instanceof RetryWithException)) {
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
@@ -337,7 +336,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
             backoffTime = Duration.ofMillis(
                 Math.min(
-                    Math.min(this.currentBackoffMilliseconds + random.nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
+                    Math.min(this.currentBackoffMilliseconds + random.get().nextInt(RANDOM_SALT_IN_MS), remainingMilliseconds),
                     RetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_MS));
             this.currentBackoffMilliseconds *= RetryWithRetryPolicy.BACK_OFF_MULTIPLIER;
             logger.debug("BackoffTime: {} ms.", backoffTime.toMillis());

@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
 import com.azure.cosmos.implementation.RetryWithException;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -335,7 +336,7 @@ public class GoneAndRetryWithRetryPolicyTest {
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
 
-        RetryWithException retryWithException = new RetryWithException();
+        RetryWithException retryWithException = Mockito.mock(RetryWithException.class);
 
         Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy.shouldRetry(retryWithException);
         ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
