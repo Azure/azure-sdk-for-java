@@ -131,6 +131,7 @@ final class ObjectMapperFactory {
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
             .addModule(new JavaTimeModule())
             .addModule(ByteArraySerializer.getModule())
