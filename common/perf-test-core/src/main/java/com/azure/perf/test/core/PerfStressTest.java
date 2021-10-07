@@ -41,7 +41,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
-    private static AtomicInteger globalParallelIndex = new AtomicInteger();
+    private static final AtomicInteger globalParallelIndex = new AtomicInteger();
     protected final int parallelIndex;
 
     /**
