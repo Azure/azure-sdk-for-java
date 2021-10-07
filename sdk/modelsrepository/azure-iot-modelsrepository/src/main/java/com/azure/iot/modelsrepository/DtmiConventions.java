@@ -74,6 +74,13 @@ public final class DtmiConventions {
         }
     }
 
+    /**
+     * Generates the model path.
+     *
+     * @param dtmi DigitalTwin Model Id.
+     * @param expanded Is model from precomputed values
+     * @return The model path.
+     */
     public static String getModelPath(String dtmi, boolean expanded) {
         String dtmiPath = dtmiToPath(dtmi);
 
