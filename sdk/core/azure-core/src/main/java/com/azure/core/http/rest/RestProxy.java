@@ -478,7 +478,7 @@ public final class RestProxy implements InvocationHandler {
         final Type returnValueWireType = methodParser.getReturnValueWireType();
 
         final Mono<?> asyncResult;
-        if (httpMethod == HttpMethod.HEAD
+        if (httpMethod == HttpMethod.HEADp
             && (TypeUtil.isTypeOrSubTypeOf(
             entityType, Boolean.TYPE) || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
