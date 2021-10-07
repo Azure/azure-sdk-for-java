@@ -116,9 +116,10 @@ public final class SchemaRegistryAsyncClient {
             return FluxUtil.monoError(logger, new NullPointerException("'format' should not be null."));
         }
 
-        if (Objects.isNull(context)) {
-            context = Context.NONE;
-        }
+        // Context is not used yet in our auto-generated layer. comment this back in when it is.
+        // if (Objects.isNull(context)) {
+        //     context = Context.NONE;
+        // }
 
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, format, schemaDefinition);
