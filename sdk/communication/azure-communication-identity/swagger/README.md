@@ -24,7 +24,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-10-31
+tag: package-preview-2021-10
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/896d05e37dbb00712726620b8d679cc3c3be09fb/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
 custom-types: CommunicationTokenScope
