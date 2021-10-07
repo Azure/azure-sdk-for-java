@@ -22,7 +22,7 @@ public final class ByteBufferCollector {
      */
     private static final int DEFAULT_INITIAL_SIZE = 1024;
 
-    private static final String INVALID_INITIAL_SIZE = "'initialSize' cannot be equal to or less than 0.";
+    private static final String INVALID_INITIAL_SIZE = "'initialSize' cannot be less than 0.";
     private static final String REQUESTED_BUFFER_INVALID = "Required capacity is greater than Integer.MAX_VALUE.";
 
     private final ClientLogger logger = new ClientLogger(ByteBufferCollector.class);
@@ -44,7 +44,7 @@ public final class ByteBufferCollector {
      * @throws IllegalArgumentException If {@code initialSize} is equal to or less than {@code 0}.
      */
     public ByteBufferCollector(int initialSize) {
-        if (initialSize <= 0) {
+        if (initialSize < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_INITIAL_SIZE));
         }
 
