@@ -549,24 +549,6 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the encryption scope value for the SAS.
-     */
-    public String getEncryptionScope() {
-        return encryptionScope;
-    }
-
-    /**
-     * Sets the encryption scope value for the SAS.
-     *
-     * @param encryptionScope An encryption scope that will be applied to any write operations performed with the sas
-     * @return the updated BlobServiceSasSignatureValues object
-     */
-    public BlobServiceSasSignatureValues setEncryptionScope(String encryptionScope) {
-        this.encryptionScope = encryptionScope;
-        return this;
-    }
-
-    /**
      * Uses an account's shared key credential to sign these signature values to produce the proper SAS query
      * parameters.
      *

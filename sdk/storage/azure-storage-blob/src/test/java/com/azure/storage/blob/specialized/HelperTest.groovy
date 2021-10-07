@@ -89,7 +89,7 @@ class HelperTest extends APISpec {
         "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
-
+    
     def "BlobURLParts"() {
         setup:
         def parts = new BlobUrlParts()
@@ -102,7 +102,7 @@ class HelperTest extends APISpec {
         def p = new BlobSasPermission().setReadPermission(true)
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
-        def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null, null)
+        def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null, "encryptionScope")
         def sas = implUtil.generateSas(env.primaryAccount.credential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
@@ -116,7 +116,8 @@ class HelperTest extends APISpec {
         splitParts[1].contains("snapshot=snapshot")
         splitParts[1].contains("sp=r")
         splitParts[1].contains("sig=")
-        splitParts[1].split("&").size() == 6 // snapshot & sv & sr & sp & sig
+        splitParts[1].contains("ses=encryptionScope")
+        splitParts[1].split("&").size() == 7 // snapshot & sv & sr & sp & sig & ses
     }
 
     def "BlobURLParts implicit root"() {

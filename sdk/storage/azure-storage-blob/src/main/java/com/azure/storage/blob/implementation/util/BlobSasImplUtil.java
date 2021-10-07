@@ -137,12 +137,7 @@ public class BlobSasImplUtil {
         this.contentType = sasValues.getContentType();
         this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
-        /*
-        Prefer the encryption scope explicitly set on the sas values. If none present, fallback to the value on the
-        client.
-         */
-        this.encryptionScope = sasValues.getEncryptionScope() == null
-            ? encryptionScope : sasValues.getEncryptionScope();
+        this.encryptionScope = encryptionScope;
     }
 
     /**
