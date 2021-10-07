@@ -117,7 +117,7 @@ ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
 ```
 
-The avro type `PlayinCard` is available in samples package
+The avro type `PlayingCard` is available in samples package
 [`com.azure.data.schemaregistry.avro.generatedtestsources`][generated_types].
 
 ### Deserialize

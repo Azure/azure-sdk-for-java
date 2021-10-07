@@ -18,8 +18,8 @@
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
   <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
 
-  <name>Microsoft Azure Schema Registry - Avro-specific package for client library</name>
-  <description>Avro-specific package for Azure Schema Registry client library</description>
+  <name>Microsoft Azure client library for Schema Registry Apache Avro Serializer</name>
+  <description>Apache Avro-specific serializer for Azure Schema Registry client library</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -38,8 +38,8 @@
   <properties>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-opens com.azure.data.schemaregistry.avro/com.azure.data.schemaregistry.avro=ALL-UNNAMED
-      --add-opens com.azure.data.schemaregistry.avro/com.azure.data.schemaregistry.avro.generatedtestsources=org.apache.avro,ALL-UNNAMED
+      --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.avro=ALL-UNNAMED
+      --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.avro.generatedtestsources=org.apache.avro,ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
