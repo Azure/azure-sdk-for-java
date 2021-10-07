@@ -36,8 +36,7 @@ public final class ReferenceManagerImpl implements ReferenceManager {
         this.queue = new ReferenceQueue<>();
         this.cleanableReferenceList = new CleanableReference<>();
 
-        Thread thread = new Thread(Thread.currentThread().getThreadGroup(), this::clearReferenceQueue,
-            BASE_THREAD_NAME);
+        Thread thread = new Thread(this::clearReferenceQueue, BASE_THREAD_NAME);
 
         // Register this instance of ReferenceManager as the head of the cleaning queue. Doing so will allow the
         // ReferenceManager to clean itself up when no longer in use, for now it simply shuts down the backing thread.

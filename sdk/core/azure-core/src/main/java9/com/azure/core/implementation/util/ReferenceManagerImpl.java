@@ -17,8 +17,7 @@ public final class ReferenceManagerImpl implements ReferenceManager {
 
     // Create the constant Cleaner with a simple thread factory that is used to set the name of the Cleaner thread.
     // This creates thread name consistency between Java 8 and Java 9+ implementations.
-    private static final Cleaner CLEANER = Cleaner.create(r ->
-        new Thread(Thread.currentThread().getThreadGroup(), r, BASE_THREAD_NAME));
+    private static final Cleaner CLEANER = Cleaner.create(r -> new Thread(r, BASE_THREAD_NAME));
 
     @Override
     public void register(Object object, Runnable cleanupAction) {
