@@ -3,6 +3,7 @@
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `exchangeTeamsToken` to provide the ability to exchange a teams token for a communication access token
 
 ### Breaking Changes
 

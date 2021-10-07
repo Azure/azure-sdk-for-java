@@ -138,7 +138,6 @@ public class ReadmeSamples {
      */
     public AccessToken exchangeTeamsToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        // You can find your connection string from your resource in the Azure Portal
         String teamsToken = "<teams_token>";
         AccessToken accessToken = communicationIdentityClient.exchangeTeamsToken(teamsToken);
         System.out.println("User token value: " + accessToken.getToken());

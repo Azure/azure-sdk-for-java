@@ -170,10 +170,19 @@ Use the `deleteUser` function to delete a user.
 communicationIdentityClient.deleteUser(user);
 ```
 
+### Exchange access token
+Use the `exchangeTeamsToken` function to delete a user.
+
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L146 -->
+```java
+// exchange a teams token for a new ACS access token
+communicationIdentityClient.exchangeTeamsToken(teamsToken);
+```
+
 ## Troubleshooting
 
 All user token service operations will throw an exception on failure.
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L143 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L151-L159 -->
 ```java
 try {
     CommunicationUserIdentifier user = communicationIdentityClient.createUser();
