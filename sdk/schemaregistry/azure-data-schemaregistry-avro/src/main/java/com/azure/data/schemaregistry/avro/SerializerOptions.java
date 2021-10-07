@@ -18,7 +18,7 @@ class SerializerOptions {
      * Creates a new instance.
      *
      * @param schemaGroup Optional schema group when registering a schema is required.
-     * @param autoRegisterSchemas {@code true} to register schema if it does not exist. {@code false} otherwise.
+     * @param autoRegisterSchemas {@code true} to register schema if it does not exist, {@code false} otherwise.
      * @param maxCacheSize The maximum cache size for the serializer.
      */
     SerializerOptions(String schemaGroup, boolean autoRegisterSchemas, int maxCacheSize) {
