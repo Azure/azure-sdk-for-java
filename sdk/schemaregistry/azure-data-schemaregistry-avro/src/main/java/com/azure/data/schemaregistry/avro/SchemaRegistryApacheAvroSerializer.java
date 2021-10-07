@@ -24,7 +24,7 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Schema Registry-based serializer implementation for Avro data format.
+ * Schema Registry-based serializer implementation for Avro data format using Apache Avro.
  */
 public final class SchemaRegistryApacheAvroSerializer implements ObjectSerializer {
 
