@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-storage</artifactId>
-  <version>3.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
+  <version>3.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
 
   <name>Azure Spring Boot Starter for Azure Storage</name>
   <description>Spring Boot Starter for Azure Storage</description>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>3.9.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+      <version>3.10.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
 
     <dependency>
@@ -74,7 +74,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>

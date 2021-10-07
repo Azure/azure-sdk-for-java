@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey64150b4/create?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "431",
+      "x-frame-options" : "SAMEORIGIN",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-server-latency" : "160",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2a6c03a2-25b5-11ec-947f-000d3a4326f9",
+      "Body" : "{\"attributes\":{\"created\":1633422057,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1633422057},\"key\":{\"key_ops\":[\"deriveKey\",\"wrapKey\",\"verify\",\"sign\",\"unwrapKey\",\"encrypt\",\"decrypt\"],\"kid\":\"https://azure-kv-tests2.managedhsm.azure.net/keys/testoctkey64150b4/6dcf38bc4b604a38ae7e92ed30e4e7a8\",\"kty\":\"oct-HSM\"},\"tags\":{\"foo\":\"baz\"}}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "testoctkey64150b4" ]
+}

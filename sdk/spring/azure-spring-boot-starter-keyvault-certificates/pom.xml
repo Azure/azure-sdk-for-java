@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-  <version>3.2.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
+  <version>3.3.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
 
   <name>Azure Spring Boot Starter for Azure Key Vault Certificates</name>
   <description>Spring Boot Starter supporting Azure Key Vault Certificates</description>
@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-jca</artifactId>
-      <version>2.1.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

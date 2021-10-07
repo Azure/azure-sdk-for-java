@@ -9,7 +9,6 @@ import com.azure.core.util.ServiceVersion;
  * Versions of CallingServer service supported by this client library.
  */
 public enum CallingServerServiceVersion implements ServiceVersion {
-    V2021_06_15_PREVIEW("2021-06-15-preview"),
     V2021_08_30_PREVIEW("2021-08-30-preview");
 
     private final String version;

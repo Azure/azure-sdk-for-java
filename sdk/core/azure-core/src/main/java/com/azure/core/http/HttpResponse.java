@@ -19,6 +19,11 @@ import java.nio.charset.Charset;
 public abstract class HttpResponse implements Closeable {
     private final HttpRequest request;
 
+    /**
+     * Creates an instance of {@link HttpResponse}.
+     *
+     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
+     */
     protected HttpResponse(HttpRequest request) {
         this.request = request;
     }

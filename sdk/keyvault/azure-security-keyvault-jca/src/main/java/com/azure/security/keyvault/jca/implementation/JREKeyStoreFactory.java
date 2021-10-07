@@ -83,6 +83,7 @@ public final class JREKeyStoreFactory {
             .orElse(null);
     }
 
+    @SuppressWarnings("removal")
     private static String  privilegedGetProperty(String theProp, String defaultVal) {
         return AccessController.doPrivileged(
             (PrivilegedAction<String>) () -> {
