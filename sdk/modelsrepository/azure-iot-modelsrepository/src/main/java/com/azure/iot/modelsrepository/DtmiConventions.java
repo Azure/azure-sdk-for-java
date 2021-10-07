@@ -41,7 +41,6 @@ public final class DtmiConventions {
         if (dtmi == null || dtmi.isEmpty()) {
             return false;
         }
-        //return true;
         return VALID_DTMI_PATTERN.matcher(dtmi).matches();
     }
 
