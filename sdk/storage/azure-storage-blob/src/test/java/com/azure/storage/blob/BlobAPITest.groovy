@@ -3188,7 +3188,6 @@ class BlobAPITest extends APISpec {
 
     def "Specialized child client gets cached"() {
         expect:
-        true
         bc.getBlockBlobClient() == bc.getBlockBlobClient()
         bc.getAppendBlobClient() == bc.getAppendBlobClient()
         bc.getPageBlobClient() == bc.getPageBlobClient()
