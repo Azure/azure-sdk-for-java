@@ -4,11 +4,22 @@
 
 ### Features Added
 
+- Defer creation of AmqpException in switchIfEmpty to decrease creation of unused exception objects.
+- Updated tests to run in parallel.
+- Updated log messages so they are consistent in reporting connectionId.
+- Updated incorrect log messages in ReactorReceiver.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
+- Fixed issue where RequestResponseChannel did not complete pending sends on disposal. So, any downstream subscribers would wait forever for a completion or error. This results in dependent senders or receivers not recovering from a disconnect or graceful closure.
+
 ### Other Changes
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+- Upgraded Reactor from `3.4.9` to `3.4.10`.
+- Upgrade Jackson from `2.12.4` to `2.12.5`.
 
 ## 2.3.2 (2021-09-07)
 
