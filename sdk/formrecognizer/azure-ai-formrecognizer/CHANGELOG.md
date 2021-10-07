@@ -28,8 +28,6 @@ To continue to use Form Recognizer API version 2.1, please use major version 3 o
 - `FormRecognizerClient` and `FormRecognizerAsyncClient` has been replaced by `DocumentAnalysisClient` and `DocumentAnalysisAsyncClient` respectively.
 - `FormTrainingClient` and `FormTrainingAsyncClient` has been replaced by `DocumentModelAdministrationClient` and `DocumentModelAdministrationAsyncClient` respectively.
 
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 - Upgraded `azure-core` dependency to 1.21.0
