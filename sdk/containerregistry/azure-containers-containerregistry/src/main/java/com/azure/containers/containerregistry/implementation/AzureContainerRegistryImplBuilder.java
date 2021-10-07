@@ -6,8 +6,10 @@ package com.azure.containers.containerregistry.implementation;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,7 +17,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -23,17 +27,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** A builder for creating a new instance of the ContainerRegistry type. */
-@ServiceClientBuilder(serviceClients = {ContainerRegistryImpl.class})
-public final class ContainerRegistryImplBuilder {
+/** A builder for creating a new instance of the AzureContainerRegistry type. */
+@ServiceClientBuilder(serviceClients = {AzureContainerRegistryImpl.class})
+public final class AzureContainerRegistryImplBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = new HashMap<>();
 
-    /** Create an instance of the ContainerRegistryImplBuilder. */
-    public ContainerRegistryImplBuilder() {
+    /** Create an instance of the AzureContainerRegistryImplBuilder. */
+    public AzureContainerRegistryImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -46,10 +50,26 @@ public final class ContainerRegistryImplBuilder {
      * Sets Registry login URL.
      *
      * @param url the url value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder url(String url) {
+    public AzureContainerRegistryImplBuilder url(String url) {
         this.url = url;
+        return this;
+    }
+
+    /*
+     * Api Version
+     */
+    private String apiVersion;
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the AzureContainerRegistryImplBuilder.
+     */
+    public AzureContainerRegistryImplBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -62,9 +82,9 @@ public final class ContainerRegistryImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder pipeline(HttpPipeline pipeline) {
+    public AzureContainerRegistryImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -78,9 +98,9 @@ public final class ContainerRegistryImplBuilder {
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AzureContainerRegistryImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
@@ -94,9 +114,9 @@ public final class ContainerRegistryImplBuilder {
      * Sets The HTTP client used to send the request.
      *
      * @param httpClient the httpClient value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder httpClient(HttpClient httpClient) {
+    public AzureContainerRegistryImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -111,9 +131,9 @@ public final class ContainerRegistryImplBuilder {
      * Sets The configuration store that is used during construction of the service client.
      *
      * @param configuration the configuration value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder configuration(Configuration configuration) {
+    public AzureContainerRegistryImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -127,9 +147,9 @@ public final class ContainerRegistryImplBuilder {
      * Sets The logging configuration for HTTP requests and responses.
      *
      * @param httpLogOptions the httpLogOptions value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public AzureContainerRegistryImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -144,9 +164,9 @@ public final class ContainerRegistryImplBuilder {
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public AzureContainerRegistryImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -156,30 +176,51 @@ public final class ContainerRegistryImplBuilder {
      */
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
+    /*
+     * The client options such as application ID and custom headers to set on a
+     * request.
+     */
+    private ClientOptions clientOptions;
+
+    /**
+     * Sets The client options such as application ID and custom headers to set on a request.
+     *
+     * @param clientOptions the clientOptions value.
+     * @return the AzureContainerRegistryImplBuilder.
+     */
+    public AzureContainerRegistryImplBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
     /**
      * Adds a custom Http pipeline policy.
      *
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the ContainerRegistryImplBuilder.
+     * @return the AzureContainerRegistryImplBuilder.
      */
-    public ContainerRegistryImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public AzureContainerRegistryImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /**
-     * Builds an instance of ContainerRegistryImpl with the provided parameters.
+     * Builds an instance of AzureContainerRegistryImpl with the provided parameters.
      *
-     * @return an instance of ContainerRegistryImpl.
+     * @return an instance of AzureContainerRegistryImpl.
      */
-    public ContainerRegistryImpl buildClient() {
+    public AzureContainerRegistryImpl buildClient() {
+        if (apiVersion == null) {
+            this.apiVersion = "2021-07-01";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        ContainerRegistryImpl client = new ContainerRegistryImpl(pipeline, serializerAdapter, url);
+        AzureContainerRegistryImpl client =
+                new AzureContainerRegistryImpl(pipeline, serializerAdapter, url, apiVersion);
         return client;
     }
 
@@ -189,11 +230,19 @@ public final class ContainerRegistryImplBuilder {
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
+        if (clientOptions == null) {
+            clientOptions = new ClientOptions();
+        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());

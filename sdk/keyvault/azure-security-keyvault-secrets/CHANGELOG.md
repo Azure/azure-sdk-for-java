@@ -1,14 +1,26 @@
 # Release History
 
-## 4.4.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 4.4.0-beta.2 (2021-10-07)
 
 ### Bugs Fixed
+- Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
+
+## 4.3.4 (2021-10-06)
+
+### Bugs Fixed
+- Fixed an issue that made clients send unnecessary unauthorized requests to obtain a bearer challenge from the service even when already possessing a valid bearer token.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.21.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.1`
 
 ## 4.4.0-beta.1 (2021-09-10)
 
