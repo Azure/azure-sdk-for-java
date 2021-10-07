@@ -6,8 +6,8 @@ package com.azure.data.schemaregistry.apacheavro;
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
-import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
-import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.ByteArrayOutputStream;

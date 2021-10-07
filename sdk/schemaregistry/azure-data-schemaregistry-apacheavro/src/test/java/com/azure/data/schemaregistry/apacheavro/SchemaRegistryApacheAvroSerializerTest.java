@@ -5,8 +5,8 @@ package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
-import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -33,9 +33,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-import static com.azure.data.schemaregistry.avro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR;
-import static com.azure.data.schemaregistry.avro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
-import static com.azure.data.schemaregistry.avro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.RECORD_FORMAT_INDICATOR_SIZE;
+import static com.azure.data.schemaregistry.apacheavro.SchemaRegistryApacheAvroSerializer.SCHEMA_ID_SIZE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;

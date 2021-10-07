@@ -4,9 +4,9 @@
 package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.data.schemaregistry.avro.generatedtestsources.HandOfCards;
-import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCard;
-import com.azure.data.schemaregistry.avro.generatedtestsources.PlayingCardSuit;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.HandOfCards;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCard;
+import com.azure.data.schemaregistry.apacheavro.generatedtestsources.PlayingCardSuit;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
