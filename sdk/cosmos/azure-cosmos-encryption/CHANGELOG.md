@@ -4,6 +4,7 @@
 #### New Features
 * Added support for transaction batch.
 * Added support for aggregate query.
+* Updated `azure-cosmos` to version `4.20.0`.
 
 #### Key Bug Fixes
 * Fixed Json property name of ClientEncryptionKeyProperties.

@@ -2,9 +2,12 @@
 
 ### 4.20.0 (2021-10-07)
 #### Features Added
-* Updated reactor-core library version to `3.4.10`.
-* Updated reactor-netty library version to `1.0.11`.
-* Updated netty library version to `4.1.68.Final`.
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+#### Key Bug Fixes
+* Fixed ReadMany Api on partition split.
+* Removed full exception trace from 404 error on open telemetry.
+* Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
 
 ### 4.19.1 (2021-09-24)
 #### Features Added
