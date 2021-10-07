@@ -64,8 +64,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
-              <source>${java.version}</source>
-              <target>${java.version}</target>
+              <source>${java.vm.specification.version}</source>
+              <target>${java.vm.specification.version}</target>
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>
@@ -118,7 +118,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.19.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.19.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
 
     <dependency>
@@ -130,7 +130,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.3.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.3.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     </dependency>
 
     <dependency>
