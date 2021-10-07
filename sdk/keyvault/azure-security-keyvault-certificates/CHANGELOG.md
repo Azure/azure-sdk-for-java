@@ -1,5 +1,15 @@
 # Release History
 
+## 4.3.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.2.4 (2021-10-06)
 
 ### Bugs Fixed
