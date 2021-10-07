@@ -11,6 +11,11 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -31,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -138,9 +144,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();
 
-            KeyVaultKey keyToUpdate = client.getKey(original.getName()).block();
-
-            StepVerifier.create(client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn())))
+            StepVerifier.create(client.getKey(original.getName())
+                    .flatMap(keyToUpdate ->
+                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
                 .assertNext(response -> {
                     assertNotNull(response);
                     assertEquals(original.getName(), response.getName());
@@ -163,9 +169,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(client.createKey(original))
                 .assertNext(response -> assertKeyEquals(original, response))
                 .verifyComplete();
-            KeyVaultKey keyToUpdate = client.getKey(original.getName()).block();
 
-            StepVerifier.create(client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn())))
+            StepVerifier.create(client.getKey(original.getName())
+                    .flatMap(keyToUpdate ->
+                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
                 .assertNext(response -> {
                     assertNotNull(response);
                     assertEquals(original.getName(), response.getName());
@@ -583,6 +590,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void getKeyRotationPolicyWithNoPolicySet(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -609,6 +619,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
         updateGetKeyRotationPolicyWithMinimumPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
             StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
@@ -629,6 +642,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void updateGetKeyRotationPolicyWithAllProperties(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
         updateGetKeyRotationPolicyWithAllPropertiesRunner((keyName, keyRotationPolicyProperties) -> {
             StepVerifier.create(client.createRsaKey(new CreateRsaKeyOptions(keyName)))
@@ -649,6 +665,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void rotateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        // Key Rotation is not yet enabled in Managed HSM.
+        Assumptions.assumeTrue(!isHsmEnabled);
+
         createKeyAsyncClient(httpClient, serviceVersion);
 
         String keyName = testResourceNamer.randomName("rotateKey", 20);
@@ -666,22 +685,88 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             .verifyComplete();
     }
 
-    private void pollOnKeyDeletion(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKeyWithResponse(keyName).block().getValue();
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Key %s not found \n", keyName);
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key using a {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey");
+
+        assertNotNull(cryptographyAsyncClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyClient} can be created for a given key using a {@link KeyClient}. Also tests
+     * that cryptographic operations can be performed with said cryptography client.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientAndEncryptDecrypt(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        setKeyRunner((createKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions))
+                .assertNext(response -> assertKeyEquals(createKeyOptions, response))
+                .verifyComplete();
+
+            CryptographyAsyncClient cryptographyAsyncClient =
+                client.getCryptographyAsyncClient(createKeyOptions.getName());
+
+            assertNotNull(cryptographyAsyncClient);
+
+            byte[] plaintext = "myPlaintext".getBytes();
+
+            StepVerifier.create(cryptographyAsyncClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext)
+                    .map(EncryptResult::getCipherText)
+                    .flatMap(ciphertext -> cryptographyAsyncClient.decrypt(EncryptionAlgorithm.RSA_OAEP, ciphertext)
+                        .map(DecryptResult::getPlainText)))
+                .assertNext(decryptedText -> assertArrayEquals(plaintext, decryptedText))
+                .verifyComplete();
+        });
+    }
+
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key and version using a
+     * {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientWithKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient =
+            client.getCryptographyAsyncClient("myKey", "6A385B124DEF4096AF1361A85B16C204");
+
+        assertNotNull(cryptographyAsyncClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key using a {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientWithEmptyKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey", "");
+
+        assertNotNull(cryptographyAsyncClient);
+    }
+
+    /**
+     * Tests that a {@link CryptographyAsyncClient} can be created for a given key using a {@link KeyAsyncClient}.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void getCryptographyAsyncClientWithNullKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+
+        CryptographyAsyncClient cryptographyAsyncClient = client.getCryptographyAsyncClient("myKey", null);
+
+        assertNotNull(cryptographyAsyncClient);
     }
 
     private void pollOnKeyPurge(String keyName) {
@@ -689,12 +774,13 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         while (pendingPollCount < 10) {
             DeletedKey deletedKey = null;
             try {
-                deletedKey = client.getDeletedKeyWithResponse(keyName).block().getValue();
+                deletedKey = client.getDeletedKey(keyName).block();
             } catch (ResourceNotFoundException e) {
             }
             if (deletedKey != null) {
                 sleepInRecordMode(2000);
                 pendingPollCount += 1;
+                continue;
             } else {
                 return;
             }
