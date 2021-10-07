@@ -11,7 +11,9 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.Arrays;
 import javax.net.ssl.SSLException;
 
@@ -28,6 +30,7 @@ import javax.net.ssl.SSLException;
  */
 public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     private final reactor.netty.http.client.HttpClient recordPlaybackHttpClient;
+    private final URI testProxy;
     private final TestProxyPolicy testProxyPolicy;
     private String recordingId;
 
@@ -38,6 +41,9 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
+    private static AtomicInteger globalParallelIndex = new AtomicInteger();
+    protected final int parallelIndex;
+
     /**
      * Creates an instance of performance test.
      * @param options the options configured for the test.
@@ -45,6 +51,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      */
     public PerfStressTest(TOptions options) {
         this.options = options;
+        this.parallelIndex = globalParallelIndex.getAndIncrement();
 
         final SslContext sslContext;
 
@@ -66,7 +73,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
             httpClient = null;
         }
 
-        if (options.getTestProxy() != null) {
+        if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
             if (options.isInsecure()) {
                 recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create()
                         .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
@@ -74,10 +81,12 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                 recordPlaybackHttpClient = reactor.netty.http.client.HttpClient.create();
             }
 
-            testProxyPolicy = new TestProxyPolicy(options.getTestProxy());
+            testProxy = options.getTestProxies().get(parallelIndex % options.getTestProxies().size());
+            testProxyPolicy = new TestProxyPolicy(testProxy);
             policies = Arrays.asList(testProxyPolicy);
         } else {
             recordPlaybackHttpClient = null;
+            testProxy = null;
             testProxyPolicy = null;
             policies = null;
         }
@@ -177,7 +186,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
                     h.set("x-purge-inmemory-recording", Boolean.toString(true));
                 })
                 .post()
-                .uri(options.getTestProxy().resolve("/playback/stop"))
+                .uri(testProxy.resolve("/playback/stop"))
                 .response()
                 .doOnSuccess(response -> {
                     testProxyPolicy.setMode(null);
@@ -205,7 +214,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     private Mono<Void> startRecordingAsync() {
         return recordPlaybackHttpClient
                 .post()
-                .uri(options.getTestProxy().resolve("/record/start"))
+                .uri(testProxy.resolve("/record/start"))
                 .response()
                 .doOnNext(response -> {
                     recordingId = response.responseHeaders().get("x-recording-id");
@@ -217,7 +226,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         return recordPlaybackHttpClient
                 .headers(h -> h.set("x-recording-id", recordingId))
                 .post()
-                .uri(options.getTestProxy().resolve("/record/stop"))
+                .uri(testProxy.resolve("/record/stop"))
                 .response()
                 .then();
     }
@@ -226,7 +235,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         return recordPlaybackHttpClient
                 .headers(h -> h.set("x-recording-id", recordingId))
                 .post()
-                .uri(options.getTestProxy().resolve("/playback/start"))
+                .uri(testProxy.resolve("/playback/start"))
                 .response()
                 .doOnNext(response -> {
                     recordingId = response.responseHeaders().get("x-recording-id");

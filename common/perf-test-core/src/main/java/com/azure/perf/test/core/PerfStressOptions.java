@@ -86,10 +86,6 @@ public class PerfStressOptions {
         return testProxies;
     }
 
-    public URI getTestProxy() {
-        return testProxies.get(0);
-    }
-
     /**
      * Get the configured iterations for performance test.
      * @return The iterations.
