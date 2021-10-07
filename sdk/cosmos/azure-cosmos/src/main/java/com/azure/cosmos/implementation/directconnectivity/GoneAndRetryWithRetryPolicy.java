@@ -23,7 +23,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -38,7 +37,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
     private volatile RetryWithException lastRetryWithException;
     private RetryContext retryContext;
-    static final ThreadLocalRandom random = ThreadLocalRandom.current();
+    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
