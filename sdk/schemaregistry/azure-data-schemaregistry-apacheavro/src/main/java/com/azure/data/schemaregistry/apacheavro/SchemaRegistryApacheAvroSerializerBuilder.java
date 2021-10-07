@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.avro;
+package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import org.apache.avro.Schema;
