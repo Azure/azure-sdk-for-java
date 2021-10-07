@@ -19,7 +19,9 @@ param (
   [Parameter(Mandatory = $true)]
   $Language, # EG: js, java, dotnet. Used in language for the embedded readme.
   [Parameter(Mandatory = $true)]
-  $Configs # The configuration elements informing important locations within the cloned doc repo
+  $Configs, # The configuration elements informing important locations within the cloned doc repo
+  [Parameter(Mandatory = $true)]
+  $DocAuther # The one triggered the release pipeline will be the doc.ms author
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -71,7 +73,7 @@ function GetAdjustedReadmeContent($pkgInfo){
     $ReplacementPattern = "`${1}$($pkgInfo.Tag)"
     $fileContent = $fileContent -replace $releaseReplaceRegex, $ReplacementPattern
 
-    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: maggiepint`nms.author: magpint`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
+    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: $`nms.author: $DocAuthor`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
 
     if ($fileContent) {
       return "$header`n$fileContent"
