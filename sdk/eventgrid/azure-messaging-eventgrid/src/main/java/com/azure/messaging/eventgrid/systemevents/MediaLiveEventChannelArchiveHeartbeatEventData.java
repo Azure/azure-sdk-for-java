@@ -7,6 +7,8 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.Duration;
+
 /**
  * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
@@ -17,7 +19,7 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
      * Gets the channel latency in ms.
      */
     @JsonProperty(value = "channelLatencyMs", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String channelLatencyMs;
+    private String channelLatency;
 
     /*
      * Gets the latency result code.
@@ -30,8 +32,11 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
      *
      * @return the channelLatencyMs value.
      */
-    public String getChannelLatencyMs() {
-        return this.channelLatencyMs;
+    public Duration getChannelLatency() {
+        if ("n/a".equals(this.channelLatency)) {
+            return null;
+        }
+        return Duration.ofMillis(Long.parseLong(this.channelLatency));
     }
 
     /**
