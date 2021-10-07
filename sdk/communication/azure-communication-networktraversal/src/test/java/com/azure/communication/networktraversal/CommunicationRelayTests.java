@@ -65,7 +65,7 @@ public class CommunicationRelayTests extends CommunicationRelayClientTestBase {
         try {
             setupTest(httpClient);
             CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-            client = setupClient(builder, "createRelayClientWithoutUserIdUsingManagedIdentity");
+            client = setupClient(builder, "createRelayClientUsingManagedIdentitySync");
 
             // Action & Assert
             assertNotNull(client);
