@@ -63,6 +63,29 @@ class AzureSeekableByteChannelTest extends APISpec {
         os.toByteArray() == fileContent
     }
 
+    def "Read loop until EOF"() {
+        setup:
+        def fileContent = new byte[sourceFileSize]
+        fileStream.read(fileContent)
+        def os = new ByteArrayOutputStream(sourceFileSize)
+        def rand = new Random()
+        long timeLimit = System.currentTimeMillis() + 60_000 // fail if test runs >= 1 minute
+
+        when:
+        while (System.currentTimeMillis() < timeLimit) { // ensures test duration is bounded
+            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
+            int readAmount = readByteChannel.read(buffer)
+            if (readAmount == -1) {
+                break; // reached EOF
+            }
+            os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
+        }
+
+        then:
+        os.toByteArray() == fileContent
+        System.currentTimeMillis() < timeLimit // else potential inf. loop if read() always returns 0
+    }
+
     def "Read fs close"() {
         when:
         fs.close()
@@ -219,10 +242,10 @@ class AzureSeekableByteChannelTest extends APISpec {
         thrown(IllegalArgumentException)
 
         when:
-        readByteChannel.position(sourceFileSize + 1)
+        readByteChannel.position(sourceFileSize) // position is 0-based, so seeking to size --> EOF
 
         then:
-        readByteChannel.read(ByteBuffer.allocate(1)) == -1 // Seeking past the end and then reading should indicate EOF
+        readByteChannel.read(ByteBuffer.allocate(1)) == -1 // Seeking to the end and then reading should indicate EOF
     }
 
     def "Seek fs close"() {

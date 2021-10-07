@@ -63,9 +63,9 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         validateOpen();
         validateReadMode();
 
-        // See comments in position()
-        if (this.position > this.size()) {
-            return -1;
+        // See comments in position(), remember that position is 0-based and size() is exclusive
+        if (this.position >= this.size()) {
+            return -1; // at or past EOF
         }
 
         int count = 0;
