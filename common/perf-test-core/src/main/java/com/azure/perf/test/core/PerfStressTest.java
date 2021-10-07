@@ -132,7 +132,9 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      * @return An empty {@link Mono}.
      */
     public Mono<Void> recordAndStartPlaybackAsync() {
-        return startRecordingAsync()
+        // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization requests.
+        return runSyncOrAsync()
+                .then(startRecordingAsync())
                 .doOnSuccess(x -> {
                     testProxyPolicy.setRecordingId(recordingId);
                     testProxyPolicy.setMode("record");
