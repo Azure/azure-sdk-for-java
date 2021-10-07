@@ -359,11 +359,10 @@ public class GoneAndRetryWithRetryPolicyTest {
         int expectedDelayInMs,
         ShouldRetryResult retryResult,
         Integer saltValueInMs) {
-        int saltValue = saltValueInMs == null ? 0 : saltValueInMs;
         assertThat(retryResult.shouldRetry).isTrue();
         assertThat(retryResult.backOffTime.toMillis() >= 0).isTrue();
-        assertThat(retryResult.backOffTime.toMillis() > expectedDelayInMs - saltValue).isTrue();
-        assertThat(retryResult.backOffTime.toMillis() < expectedDelayInMs + saltValue).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() > expectedDelayInMs - saltValueInMs).isTrue();
+        assertThat(retryResult.backOffTime.toMillis() < expectedDelayInMs + saltValueInMs).isTrue();
     }
 
 }
