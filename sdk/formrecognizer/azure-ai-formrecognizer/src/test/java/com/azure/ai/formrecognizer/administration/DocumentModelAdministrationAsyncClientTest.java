@@ -53,7 +53,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
     private DocumentModelAdministrationAsyncClient getDocumentModelAdminAsyncClient(HttpClient httpClient,
                                                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion).buildAsyncClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildAsyncClient();
     }
 
     /**

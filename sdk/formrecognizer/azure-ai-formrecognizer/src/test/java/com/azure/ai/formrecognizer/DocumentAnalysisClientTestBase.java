@@ -20,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import reactor.test.StepVerifier;
 
@@ -33,7 +34,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -57,7 +57,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
     }
 
     DocumentAnalysisClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
-                                                             DocumentAnalysisServiceVersion serviceVersion) {
+                                                             DocumentAnalysisServiceVersion serviceVersion,
+                                                             boolean useKeyCredential) {
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -65,16 +66,22 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             .serviceVersion(serviceVersion)
             .addPolicy(interceptorManager.getRecordPolicy());
 
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         }
         return builder;
     }
 
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion) {
+                                                                                DocumentAnalysisServiceVersion serviceVersion,
+                                                                                boolean useKeyCredential) {
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -85,7 +92,11 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         }
         return builder;
     }
