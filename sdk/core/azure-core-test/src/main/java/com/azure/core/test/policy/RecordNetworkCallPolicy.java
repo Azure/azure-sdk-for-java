@@ -129,7 +129,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     }
 
                     return responseAndSessionRecordData.getT1();
-            }));
+                }));
     }
 
     private static void redactedAccountName(UrlBuilder urlBuilder) {
@@ -192,7 +192,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
                     responseData.put(BODY, content);
                     return Tuples.of(bufferedResponse, responseData);
-            });
+                });
         } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
             || contentType.equalsIgnoreCase("avro/binary")) {
             return bufferedResponse.getBodyAsByteArray()
@@ -204,14 +204,14 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                     responseData.put(BODY, Base64.getEncoder().encodeToString(bytes));
                     return Tuples.of(bufferedResponse, responseData);
-            });
+                });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return bufferedResponse.getBodyAsString(StandardCharsets.UTF_8)
                 .switchIfEmpty(Mono.defer(() -> Mono.just("")))
                 .map(content -> {
                     responseData.put(BODY, redactor.redact(content));
                     return Tuples.of(bufferedResponse, responseData);
-            });
+                });
         } else {
             return bufferedResponse.getBodyAsByteArray()
                 .switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
@@ -247,7 +247,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
                     responseData.put(BODY, content);
                     return Tuples.of(bufferedResponse, responseData);
-            });
+                });
         }
     }
 }
