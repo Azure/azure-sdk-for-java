@@ -3,38 +3,31 @@
 
 package com.azure.data.schemaregistry.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
 
-import java.util.Arrays;
-
 /**
- * Stores all relevant information returned from {@link SchemaRegistryClient}/{@link SchemaRegistryAsyncClient} layer.
+ * Stores properties of a schema stored in Schema Registry.
+ *
+ * @see SchemaRegistryAsyncClient
+ * @see SchemaRegistryClient
  */
+@Immutable
 public final class SchemaProperties {
 
     private final String schemaId;
-    private final SerializationType serializationType;
-    private final byte[] schemaBytes;
-    private final String schemaName;
+    private final SchemaFormat schemaFormat;
 
     /**
-     * Initializes SchemaRegistryObject instance.
+     * Initializes a new instance.
      *
-     * @param schemaId the schema id
-     * @param serializationType type of schema, e.g. avro, json
-     * @param schemaName name of the schema.
-     * @param schemaByteArray byte payload representing schema, returned from Azure Schema Registry
+     * @param schemaId The schema id.
+     * @param schemaFormat The type of schema, e.g. avro, json.
      */
-    public SchemaProperties(
-        String schemaId,
-        SerializationType serializationType,
-        String schemaName,
-        byte[] schemaByteArray) {
+    public SchemaProperties(String schemaId, SchemaFormat schemaFormat) {
         this.schemaId = schemaId;
-        this.serializationType = serializationType;
-        this.schemaBytes = schemaByteArray.clone();
-        this.schemaName = schemaName;
+        this.schemaFormat = schemaFormat;
     }
 
     /**
@@ -47,32 +40,10 @@ public final class SchemaProperties {
     }
 
     /**
-     * The serialization type of this schema.
+     * The schema format of this schema.
      * @return schema type associated with the schema payload
      */
-    public SerializationType getSerializationType() {
-        return serializationType;
+    public SchemaFormat getFormat() {
+        return schemaFormat;
     }
-
-
-    /**
-     * The name of the schema.
-     * @return the schema name.
-     */
-    public String getSchemaName() {
-        return this.schemaName;
-    }
-
-    /**
-     *  Schema bytes returned from Schema Registry.
-     *
-     *  @return The byte content of this schema.
-     */
-    public byte[] getSchema() {
-        if (schemaBytes == null) {
-            return new byte[0];
-        }
-        return Arrays.copyOf(this.schemaBytes, this.schemaBytes.length);
-    }
-
 }

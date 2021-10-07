@@ -1246,9 +1246,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
             ebc.getBlobUrl().toString())
             .buildEncryptedBlobAsyncClient()
 
-        def bacDownloading = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
-            ebc.getBlobUrl().toString())
-            .addPolicy({ context, next ->
+        def localData = data
+        def policy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
                     .flatMap({ r ->
                         if (counter.incrementAndGet() == 1) {
@@ -1256,12 +1257,16 @@ class EncyptedBlockBlobAPITest extends APISpec {
                              * When the download begins trigger an upload to overwrite the downloading blob
                              * so that the download is able to get an ETag before it is changed.
                              */
-                            return bacUploading.upload(data.defaultFlux, null, true)
+                            return bacUploading.upload(localData.defaultFlux, null, true)
                                 .thenReturn(r)
                         }
                         return Mono.just(r)
                     })
-            })
+            }
+        }
+        def bacDownloading = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
+            ebc.getBlobUrl().toString())
+            .addPolicy(policy)
             .buildEncryptedBlobAsyncClient()
 
         /*

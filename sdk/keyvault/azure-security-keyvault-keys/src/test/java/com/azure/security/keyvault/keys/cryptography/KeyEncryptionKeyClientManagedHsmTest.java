@@ -28,12 +28,13 @@ public class KeyEncryptionKeyClientManagedHsmTest extends KeyEncryptionKeyClient
     private KeyVaultKey keyVaultKey;
 
     public KeyEncryptionKeyClientManagedHsmTest() {
-        this.isManagedHsmTest = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
+        this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
+        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
     }
 
     @Override
     protected void beforeTest() {
-        Assumptions.assumeTrue(isManagedHsmTest || getTestMode() == TestMode.PLAYBACK);
+        Assumptions.assumeTrue(runManagedHsmTest);
 
         super.beforeTest();
     }

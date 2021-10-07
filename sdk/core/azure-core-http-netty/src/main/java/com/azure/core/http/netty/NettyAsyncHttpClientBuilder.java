@@ -42,7 +42,14 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  *
  * <p><strong>Building a new HttpClient instance</strong></p>
  *
- * {@codesnippet com.azure.core.http.netty.instantiation-simple}
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
  * @see HttpClient
  */
@@ -94,7 +101,17 @@ public class NettyAsyncHttpClientBuilder {
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link HttpClient}
      * based on the provided Reactor Netty HttpClient.
      *
-     * {@codesnippet com.azure.core.http.netty.from-existing-http-client}
+     * <!-- src_embed com.azure.core.http.netty.from-existing-http-client -->
+     * <pre>
+     * &#47;&#47; Creates a reactor-netty client with netty logging enabled.
+     * reactor.netty.http.client.HttpClient baseHttpClient = reactor.netty.http.client.HttpClient.create&#40;&#41;
+     *     .wiretap&#40;TcpClient.class.getName&#40;&#41;, LogLevel.INFO&#41;;
+     * &#47;&#47; Create an HttpClient based on above reactor-netty client and configure EventLoop count.
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;baseHttpClient&#41;
+     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;5&#41;&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.from-existing-http-client -->
      *
      * @param nettyHttpClient base reactor netty HttpClient
      */
@@ -195,7 +212,23 @@ public class NettyAsyncHttpClientBuilder {
      *
      * <p><strong>Code Sample</strong></p>
      *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider}
+     * <!-- src_embed com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider -->
+     * <pre>
+     * &#47;&#47; The following creates a connection provider which will have each connection use the base name
+     * &#47;&#47; 'myHttpConnection', has a limit of 500 concurrent connections in the connection pool, has no limit on the
+     * &#47;&#47; number of connection requests that can be pending when all connections are in use, and removes a connection
+     * &#47;&#47; from the pool if the connection isn't used for 60 seconds.
+     * ConnectionProvider connectionProvider = ConnectionProvider.builder&#40;&quot;myHttpConnection&quot;&#41;
+     *     .maxConnections&#40;500&#41;
+     *     .pendingAcquireMaxCount&#40;-1&#41;
+     *     .maxIdleTime&#40;Duration.ofSeconds&#40;60&#41;&#41;
+     *     .build&#40;&#41;;
+     *
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .connectionProvider&#40;connectionProvider&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder.connectionProvider#ConnectionProvider -->
      *
      * @param connectionProvider the connection provider
      * @return the updated {@link NettyAsyncHttpClientBuilder} object.
@@ -258,7 +291,14 @@ public class NettyAsyncHttpClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup}
+     * <!-- src_embed com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->
+     * <pre>
+     * int threadCount = 5;
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .eventLoopGroup&#40;new NioEventLoopGroup&#40;threadCount&#41;&#41;
+     *     .build&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.NettyAsyncHttpClientBuilder#eventLoopGroup -->
      *
      * @param eventLoopGroup The {@link EventLoopGroup} that will run IO loops.
      * @return the updated NettyAsyncHttpClientBuilder object.
@@ -294,7 +334,19 @@ public class NettyAsyncHttpClientBuilder {
      * upon the return of {@code onNext()}. So, users should ensure they process the {@link ByteBuffer} immediately and
      * then return.
      *
-     * {@codesnippet com.azure.core.http.netty.disabled-buffer-copy}
+     * <!-- src_embed com.azure.core.http.netty.disabled-buffer-copy -->
+     * <pre>
+     * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+     *     .port&#40;8080&#41;
+     *     .disableBufferCopy&#40;true&#41;
+     *     .build&#40;&#41;;
+     *
+     * client.send&#40;httpRequest&#41;
+     *     .flatMapMany&#40;response -&gt; response.getBody&#40;&#41;&#41;
+     *     .map&#40;byteBuffer -&gt; completeProcessingByteBuffer&#40;byteBuffer&#41;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.http.netty.disabled-buffer-copy -->
      *
      * @param disableBufferCopy If set to {@code true}, the client built from this builder will not deep-copy response
      * {@link ByteBuffer ByteBuffers}.

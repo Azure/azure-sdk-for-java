@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -58,7 +57,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class CryptographyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
-    protected boolean isManagedHsmTest = false;
+    protected boolean isHsmEnabled = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -222,16 +222,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
         return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
     }
 
-    String generateResourceId(String suffix) {
-        if (interceptorManager.isPlaybackMode()) {
-            return suffix;
-        }
-        String id = UUID.randomUUID().toString();
-        return suffix.length() > 0 ? id + "-" + suffix : id;
-    }
-
     public String getEndpoint() {
-        final String endpoint = isManagedHsmTest
+        final String endpoint = runManagedHsmTest
             ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
             : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
 

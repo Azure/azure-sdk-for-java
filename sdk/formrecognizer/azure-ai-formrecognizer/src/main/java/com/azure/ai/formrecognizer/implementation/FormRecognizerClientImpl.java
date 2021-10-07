@@ -51,11 +51,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -349,20 +347,18 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
             String modelId,
             ContentType contentType,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength) {
         final String accept = "application/json";
-        String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
                                 this.getEndpoint(),
                                 modelId,
-                                pagesConverted,
+                                pages,
                                 locale,
                                 stringIndexType,
                                 this.getApiVersion(),
@@ -394,19 +390,17 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
             String modelId,
             ContentType contentType,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
             Long contentLength,
             Context context) {
         final String accept = "application/json";
-        String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeDocument(
                 this.getEndpoint(),
                 modelId,
-                pagesConverted,
+                pages,
                 locale,
                 stringIndexType,
                 this.getApiVersion(),
@@ -437,7 +431,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeDocumentAsync(
             String modelId,
             ContentType contentType,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
@@ -468,7 +462,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeDocumentAsync(
             String modelId,
             ContentType contentType,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
@@ -498,7 +492,7 @@ public final class FormRecognizerClientImpl {
     public void analyzeDocument(
             String modelId,
             ContentType contentType,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
@@ -528,7 +522,7 @@ public final class FormRecognizerClientImpl {
     public AnalyzeDocumentResponse analyzeDocumentWithResponse(
             String modelId,
             ContentType contentType,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             Flux<ByteBuffer> analyzeRequest,
@@ -556,19 +550,17 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
             String modelId,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest) {
         final String accept = "application/json";
-        String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return FluxUtil.withContext(
                 context ->
                         service.analyzeDocument(
                                 this.getEndpoint(),
                                 modelId,
-                                pagesConverted,
+                                pages,
                                 locale,
                                 stringIndexType,
                                 this.getApiVersion(),
@@ -595,18 +587,16 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeDocumentResponse> analyzeDocumentWithResponseAsync(
             String modelId,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest,
             Context context) {
         final String accept = "application/json";
-        String pagesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(pages, CollectionFormat.CSV);
         return service.analyzeDocument(
                 this.getEndpoint(),
                 modelId,
-                pagesConverted,
+                pages,
                 locale,
                 stringIndexType,
                 this.getApiVersion(),
@@ -632,7 +622,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeDocumentAsync(
             String modelId,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest) {
@@ -658,7 +648,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeDocumentAsync(
             String modelId,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest,
@@ -683,7 +673,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeDocument(
             String modelId,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest) {
@@ -708,7 +698,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeDocumentResponse analyzeDocumentWithResponse(
             String modelId,
-            List<String> pages,
+            String pages,
             String locale,
             StringIndexType stringIndexType,
             AnalyzeDocumentRequest analyzeRequest,

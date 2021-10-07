@@ -4,6 +4,7 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
@@ -854,8 +855,12 @@ class DirectoryAPITest extends APISpec {
             .setBatchSize(2)
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        def localError = error
+        HttpPipelinePolicy mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(localError) : next.process() as Mono<HttpResponse>
+            }
         }
 
         dc = getDirectoryClient(environment.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
@@ -1261,8 +1266,12 @@ class DirectoryAPITest extends APISpec {
             .setBatchSize(2)
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        def localError = error
+        HttpPipelinePolicy mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(localError) : next.process() as Mono<HttpResponse>
+            }
         }
 
         dc = getDirectoryClient(environment.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)
@@ -1667,8 +1676,12 @@ class DirectoryAPITest extends APISpec {
             .setBatchSize(2)
 
         // Mock a policy that will return an error on the call with the continuation token
-        HttpPipelinePolicy mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(error) : next.process()
+        def localError = error
+        HttpPipelinePolicy mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return context.getHttpRequest().getUrl().toString().contains("continuation") ? Mono.error(localError) : next.process() as Mono<HttpResponse>
+            }
         }
 
         dc = getDirectoryClient(environment.dataLakeAccount.credential, dc.getDirectoryUrl(), dc.getObjectPath(), mockPolicy)

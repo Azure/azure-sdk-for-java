@@ -8,6 +8,8 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -1792,10 +1794,14 @@ class BlockBlobAPITest extends APISpec {
         def mockHttpResponse = getStubResponse(500, new HttpRequest(HttpMethod.PUT, new URL("https://www.fake.com")))
 
         // Mock a policy that will always then check that the data is still the same and return a retryable error.
-        def mockPolicy = { HttpPipelineCallContext context, HttpPipelineNextPolicy next ->
-            return collectBytesInBuffer(context.getHttpRequest().getBody())
-                .map({ it == data.defaultData })
-                .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) })
+        def localData = data.defaultData
+        def mockPolicy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return collectBytesInBuffer(context.getHttpRequest().getBody())
+                    .map({ it == localData })
+                    .flatMap({ it ? Mono.just(mockHttpResponse) : Mono.error(new IllegalArgumentException()) }) as Mono<HttpResponse>
+            }
         }
 
         // Build the pipeline

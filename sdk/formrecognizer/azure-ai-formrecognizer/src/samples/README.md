@@ -30,7 +30,7 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 |[Authentication][authentication_sample]|Authenticate the client|
 |[AnalyzeBusinessCards][analyze_business_cards] and [AnalyzeBusinessCardsAsync][analyze_business_cards_async]|Analyze business cards from an input stream|
 |[AnalyzeBusinessCardsFromUrl][analyze_business_cards_from_url] and [AnalyzeBusinessCardsFromUrlAsync][analyze_business_cards_from_url_async]|Analyze business cards from a URL|
-|[AnalyzeLayout][analyze_content] and [AnalyzeLayoutAsync][analyze_layout_async]|Analyze document layout, such as tables, lines, words, and selection marks like radio buttons and check boxes from a file stream|
+|[AnalyzeLayout][analyze_layout] and [AnalyzeLayoutAsync][analyze_layout_async]|Analyze document layout, such as tables, lines, words, and selection marks like radio buttons and check boxes from a file stream|
 |[AnalyzeLayoutFromUrl][analyze_layout_from_url] and [AnalyzeLayoutFromUrlAsync][analyze_layout_from_url_async]|Extract document layout such as tables, lines, words, and selection marks like radio buttons and check boxes from a URL|
 |[AnalyzeIdentityDocuments][analyze_id_documents] and [AnalyzeIdentityDocumentsAsync][analyze_id_documents_async]|Analyze data from an identity document like a passport or a US drivers license using a prebuilt model|
 |[AnalyzeIdentityDocumentsFromUrl][analyze_id_documents_from_url] and [AnalyzeIdentityDocumentsFromUrlAsync][analyze_id_documents_from_url_async]|Analyze data from a URL of a passport or a US drivers license using a prebuilt model|
@@ -43,7 +43,7 @@ All of these samples need the endpoint to your Form Recognizer resource ([instru
 |[ManageCustomModels][manage_custom_models] and [ManageCustomModelsAsync][manage_custom_models_async]|Manage the custom models in your account|
 |[CopyModel][copy_model] and [CopyModelAsync][copy_model_async]|Copy custom model from one Form Recognizer resource to another|
 |[CreateComposedModel][create_composed_model] and [CreateComposedModelAsync][create_composed_model_async]|Creates a composed model from a collection of existing built models with labels|
-|[GetOperation][get_operation] and [GetOperation][get_operation]| Get/list all document model associated with the Form Recognizer resource|
+|[GetOperation][get_operation] and [GetOperationAsync][get_operation_async]| Get/list all document model associated with the Form Recognizer resource|
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].

@@ -8,13 +8,11 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-//import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Test;
@@ -53,7 +51,6 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         client = new KeyClientBuilder()
             .pipeline(pipeline)
             .vaultUrl(getEndpoint())
-            .serviceVersion(KeyServiceVersion.getLatest())
             .buildClient();
     }
 
@@ -72,7 +69,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = generateResourceId("testRsaKey");
+            String keyName = testResourceNamer.randomName("testRsaKey", 20);
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
@@ -122,7 +119,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = generateResourceId("testRsaKeyWrapUnwrap");
+            String keyName = testResourceNamer.randomName("testRsaKeyWrapUnwrap", 25);
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
@@ -176,7 +173,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);
-            String keyName = generateResourceId("testRsaKeySignVerify");
+            String keyName = testResourceNamer.randomName("testRsaKeySignVerify", 25);
             KeyVaultKey importedKey = client.importKey(keyName, key);
             CryptographyClient cryptoClient = initializeCryptographyClient(importedKey.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();
@@ -245,7 +242,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             KeyPair keyPair = generator.generateKeyPair();
 
             JsonWebKey key = JsonWebKey.fromEc(keyPair, provider);
-            String keyName = generateResourceId("testEcKey" + crv.toString());
+            String keyName = testResourceNamer.randomName("testEcKey" + crv.toString(), 20);
             KeyVaultKey imported = client.importKey(keyName, key);
             CryptographyClient cryptoClient = initializeCryptographyClient(imported.getId(), httpClient, serviceVersion);
             CryptographyServiceClient serviceClient = cryptoClient.getServiceClient();

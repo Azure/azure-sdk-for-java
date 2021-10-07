@@ -35,7 +35,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
-    protected boolean isManagedHsmTest = false;
+    protected boolean isHsmEnabled = false;
+    protected boolean runManagedHsmTest = false;
 
     @Override
     protected String getTestName() {
@@ -99,7 +100,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
 
     public String getEndpoint() {
-        final String endpoint = isManagedHsmTest
+        final String endpoint = runManagedHsmTest
             ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
             : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
         Objects.requireNonNull(endpoint);

@@ -3,8 +3,11 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -1151,9 +1154,10 @@ class BlobAPITest extends APISpec {
             .credential(environment.primaryAccount.credential))
             .buildAsyncClient()
             .getBlockBlobAsyncClient()
-
-        def bacDownloading = instrument(new BlobClientBuilder()
-            .addPolicy({ context, next ->
+        def dataLocal = data
+        def policy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
                     .flatMap({ r ->
                         if (counter.incrementAndGet() == 1) {
@@ -1161,12 +1165,15 @@ class BlobAPITest extends APISpec {
                              * When the download begins trigger an upload to overwrite the downloading blob
                              * so that the download is able to get an ETag before it is changed.
                              */
-                            return bacUploading.upload(data.defaultFlux, data.defaultDataSize, true)
-                            .thenReturn(r)
+                            return bacUploading.upload(dataLocal.defaultFlux, dataLocal.defaultDataSize, true)
+                                .thenReturn(r)
                         }
                         return Mono.just(r)
                     })
-            })
+            }
+        }
+        def bacDownloading = instrument(new BlobClientBuilder()
+            .addPolicy(policy)
             .endpoint(bc.getBlobUrl())
             .credential(environment.primaryAccount.credential))
             .buildAsyncClient()

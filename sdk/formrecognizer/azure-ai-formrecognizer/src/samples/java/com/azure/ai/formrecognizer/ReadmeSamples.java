@@ -288,6 +288,76 @@ public class ReadmeSamples {
     }
 
     /**
+     * Code snippet for analyzing general documents using "prebuilt-document" models.
+     */
+    public void analyzePrebuiltDocument() {
+        String documentUrl = "{document-url}";
+        String modelId = "prebuilt-document";
+        SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
+            documentAnalysisClient.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
+
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+
+        for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
+            final AnalyzedDocument analyzedDocument = analyzeResult.getDocuments().get(i);
+            System.out.printf("----------- Analyzing document %d -----------%n", i);
+            System.out.printf("Analyzed document has doc type %s with confidence : %.2f%n",
+                analyzedDocument.getDocType(), analyzedDocument.getConfidence());
+        }
+
+        analyzeResult.getPages().forEach(documentPage -> {
+            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
+                documentPage.getWidth(),
+                documentPage.getHeight(),
+                documentPage.getUnit());
+
+            // lines
+            documentPage.getLines().forEach(documentLine ->
+                System.out.printf("Line %s is within a bounding box %s.%n",
+                    documentLine.getContent(),
+                    documentLine.getBoundingBox().toString()));
+
+            // words
+            documentPage.getWords().forEach(documentWord ->
+                System.out.printf("Word %s has a confidence score of %.2f%n.",
+                    documentWord.getContent(),
+                    documentWord.getConfidence()));
+        });
+
+        // tables
+        List<DocumentTable> tables = analyzeResult.getTables();
+        for (int i = 0; i < tables.size(); i++) {
+            DocumentTable documentTable = tables.get(i);
+            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
+                documentTable.getColumnCount());
+            documentTable.getCells().forEach(documentTableCell -> {
+                System.out.printf("Cell '%s', has row index %d and column index %d.%n",
+                    documentTableCell.getContent(),
+                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
+            });
+            System.out.println();
+        }
+
+        // Entities
+        analyzeResult.getEntities().forEach(documentEntity -> {
+            System.out.printf("Entity category : %s, sub-category %s%n: ",
+                documentEntity.getCategory(), documentEntity.getSubCategory());
+            System.out.printf("Entity content: %s%n: ", documentEntity.getContent());
+            System.out.printf("Entity confidence: %.2f%n", documentEntity.getConfidence());
+        });
+
+        // Key-value
+        analyzeResult.getKeyValuePairs().forEach(documentKeyValuePair -> {
+            System.out.printf("Key content: %s%n", documentKeyValuePair.getKey().getContent());
+            System.out.printf("Key content bounding region: %s%n",
+                documentKeyValuePair.getKey().getBoundingRegions().toString());
+
+            System.out.printf("Value content: %s%n", documentKeyValuePair.getValue().getContent());
+            System.out.printf("Value content bounding region: %s%n", documentKeyValuePair.getValue().getBoundingRegions().toString());
+        });
+    }
+
+    /**
      * Code snippet for managing models in form recognizer account.
      */
     public void manageModels() {
