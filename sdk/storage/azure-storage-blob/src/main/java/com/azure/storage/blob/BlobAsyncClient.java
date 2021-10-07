@@ -249,7 +249,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link BlockBlobAsyncClient} associated with this blob.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient() {
-        if (blockBlobAsyncClient==null) {
+        if (blockBlobAsyncClient == null) {
             blockBlobAsyncClient = prepareBuilder().buildBlockBlobAsyncClient();
         }
         return blockBlobAsyncClient;
@@ -261,7 +261,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link PageBlobAsyncClient} associated with this blob.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient() {
-        if (pageBlobAsyncClient==null) {
+        if (pageBlobAsyncClient == null) {
             pageBlobAsyncClient = prepareBuilder().buildPageBlobAsyncClient();
         }
         return pageBlobAsyncClient;
