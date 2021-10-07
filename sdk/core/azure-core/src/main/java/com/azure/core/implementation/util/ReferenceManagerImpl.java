@@ -10,7 +10,6 @@ import com.azure.core.util.logging.LogLevel;
 import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.util.Objects;
-import java.util.concurrent.ThreadFactory;
 
 // This is the base implementation of ReferenceManager, there is another Java 9 specific implementation in
 // /src/main/java9 for multi-release JARs.

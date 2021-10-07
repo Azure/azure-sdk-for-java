@@ -44,12 +44,8 @@ stages:
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry
-      MatrixConfigs:
-        - Name: Java_ci_test_base
-          Path: sdk/core/platform-matrix.json
-          Selection: sparse
-          NonSparseParameters: Agent
-          GenerateVMJobs: true
+      MatrixReplace:
+        - "AdditionalTestGoals": ".*/failsafe:integration-test failsafe:verify"
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
