@@ -17,9 +17,11 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.
 - Upgraded Reactor from `3.4.9` to `3.4.10`.
-- Upgrade Jackson from `2.12.4` to `2.12.5`.
+- Upgraded Jackson from `2.12.4` to `2.12.5`.
 
 ## 2.3.2 (2021-09-07)
 

@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.
 - Upgraded `azure-core-amqp` from `2.3.2` to `2.3.3`.
 
