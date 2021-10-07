@@ -1,14 +1,10 @@
 ## Release History
 
-### 3.13.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+### 3.13.0-beta.1 (2021-10-07)
+#### New Features
+* Added support for setting throughput on database creation.
+* Pagination improvement with slice query API.
+* Updated `azure-cosmos` to version `4.2.0.0`.
 
 ### 3.12.0 (2021-09-24)
 #### New Features
