@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (2021-10-06)
+## 4.0.0-beta.1 (2021-10-07)
 This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
 
 > Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features 
