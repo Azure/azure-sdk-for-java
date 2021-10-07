@@ -135,11 +135,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        updateKeyRunner((original, updated) -> {
-            assertKeyEquals(original, client.createKey(original));
-            KeyVaultKey keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
-            assertKeyEquals(updated, client.getKey(original.getName()));
+        updateKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            KeyVaultKey createdKey = client.createKey(createKeyOptions);
+
+            assertKeyEquals(createKeyOptions, createdKey);
+
+            KeyVaultKey updatedKey =
+                client.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+
+            assertKeyEquals(updateKeyOptions, updatedKey);
         });
     }
 
@@ -150,11 +154,15 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
-        updateDisabledKeyRunner((original, updated) -> {
-            assertKeyEquals(original, client.createKey(original));
-            KeyVaultKey keyToUpdate = client.getKey(original.getName());
-            client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()));
-            assertKeyEquals(updated, client.getKey(original.getName()));
+        updateDisabledKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            KeyVaultKey createdKey = client.createKey(createKeyOptions);
+
+            assertKeyEquals(createKeyOptions, createdKey);
+
+            KeyVaultKey updatedKey =
+                client.updateKeyProperties(createdKey.getProperties().setExpiresOn(updateKeyOptions.getExpiresOn()));
+
+            assertKeyEquals(updateKeyOptions, updatedKey);
         });
     }
 

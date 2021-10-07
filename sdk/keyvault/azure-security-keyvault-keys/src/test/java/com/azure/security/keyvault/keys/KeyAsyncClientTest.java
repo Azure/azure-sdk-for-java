@@ -139,23 +139,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        updateKeyRunner((original, updated) -> {
-            StepVerifier.create(client.createKey(original))
-                .assertNext(response -> assertKeyEquals(original, response))
-                .verifyComplete();
+        updateKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions)
+                    .flatMap(createdKey -> {
+                        assertKeyEquals(createKeyOptions, createdKey);
 
-            StepVerifier.create(client.getKey(original.getName())
-                    .flatMap(keyToUpdate ->
-                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
-                .assertNext(response -> {
-                    assertNotNull(response);
-                    assertEquals(original.getName(), response.getName());
-                }).verifyComplete();
-
-            sleepIfRunningAgainstService(1500);
-
-            StepVerifier.create(client.getKey(original.getName()))
-                .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
+                        return client.updateKeyProperties(createdKey.getProperties()
+                            .setExpiresOn(updateKeyOptions.getExpiresOn()));
+                    }))
+                .assertNext(updatedKey -> assertKeyEquals(updateKeyOptions, updatedKey))
                 .verifyComplete();
         });
     }
@@ -167,23 +159,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        updateDisabledKeyRunner((original, updated) -> {
-            StepVerifier.create(client.createKey(original))
-                .assertNext(response -> assertKeyEquals(original, response))
-                .verifyComplete();
+        updateDisabledKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions)
+                    .flatMap(createdKey -> {
+                        assertKeyEquals(createKeyOptions, createdKey);
 
-            StepVerifier.create(client.getKey(original.getName())
-                    .flatMap(keyToUpdate ->
-                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
-                .assertNext(response -> {
-                    assertNotNull(response);
-                    assertEquals(original.getName(), response.getName());
-                }).verifyComplete();
-
-            sleepIfRunningAgainstService(1500);
-
-            StepVerifier.create(client.getKey(original.getName()))
-                .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
+                        return client.updateKeyProperties(createdKey.getProperties()
+                            .setExpiresOn(updateKeyOptions.getExpiresOn()));
+                    }))
+                .assertNext(updatedKey -> assertKeyEquals(updateKeyOptions, updatedKey))
                 .verifyComplete();
         });
     }
