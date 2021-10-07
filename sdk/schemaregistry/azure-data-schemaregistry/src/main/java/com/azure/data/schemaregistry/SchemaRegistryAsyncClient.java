@@ -114,8 +114,10 @@ public final class SchemaRegistryAsyncClient {
             return FluxUtil.monoError(logger, new NullPointerException("'schemaDefinition' should not be null."));
         } else if (Objects.isNull(format)) {
             return FluxUtil.monoError(logger, new NullPointerException("'format' should not be null."));
-        } else if (Objects.isNull(context)) {
-            return FluxUtil.monoError(logger, new NullPointerException("'context' should not be null."));
+        }
+
+        if (Objects.isNull(context)) {
+            context = Context.NONE;
         }
 
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
