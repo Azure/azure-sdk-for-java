@@ -97,7 +97,7 @@ class FileModelFetcher implements ModelFetcher {
                 } catch (IOException e) {
                     logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
                         path.toString(), e.getMessage()));
-                    return Mono.empty();
+                    return Mono.error(new AzureException(e));
                 }
             }
 

@@ -3,25 +3,26 @@
 
 package com.azure.iot.modelsrepository.implementation;
 
-import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.iot.modelsrepository.DtmiConventions;
 import com.azure.iot.modelsrepository.ModelDependencyResolution;
-import com.azure.iot.modelsrepository.implementation.models.FetchMetadataResult;
 import com.azure.iot.modelsrepository.implementation.models.FetchModelResult;
 import com.azure.iot.modelsrepository.implementation.models.ModelMetadata;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Queue;
 import java.util.List;
-import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public final class RepositoryHandler {
@@ -50,92 +51,76 @@ public final class RepositoryHandler {
 
     public Mono<Map<String, String>> processAsync(Iterable<String> dtmis, ModelDependencyResolution
         resolutionOptions, Context context) {
+        List<String> modelsToProcess = prepareWork(dtmis);
 
-        Map<String, String> processedModels = new HashMap<>();
-        Queue<String> modelsToProcess = prepareWork(dtmis);
+        return isExpandedAvailable(resolutionOptions, context)
+            .flatMapMany(tryExpanded -> processAsync(tryExpanded, modelsToProcess, resolutionOptions, context))
+            .collectList()
+            .flatMap(results -> {
+                Map<String, String> processedModels = new HashMap<>();
 
-        return processAsync(modelsToProcess, resolutionOptions, context, processedModels)
-            .last()
-            .map(IntermediateFetchModelResult::getMap);
-    }
-
-    private Flux<IntermediateFetchModelResult> processAsync(
-        Queue<String> remainingWork,
-        ModelDependencyResolution resolutionOption,
-        Context context,
-        Map<String, String> currentResults) {
-
-        if (remainingWork.isEmpty()) {
-            return Flux.empty();
-        }
-
-        logger.info(String.format(StatusStrings.PROCESSING_DTMIS, remainingWork.peek()));
-
-        return isFromExpanded(resolutionOption, context)
-            .flatMap(tryExpanded -> {
-                logger.info("Try from expanded is " + tryExpanded);
-                return modelFetcher.fetchModelAsync(remainingWork.peek(), repositoryUri, tryExpanded, context);
-            })
-            .map(result -> new IntermediateFetchModelResult(result, currentResults))
-            .expandDeep(customType -> {
-                if (remainingWork.isEmpty()) {
-                    return Flux.empty();
+                try {
+                    for (FetchModelResult result : results) {
+                        ModelsQuery modelsQuery = new ModelsQuery(result.getDefinition());
+                        if (result.isFromExpanded()) {
+                            Map<String, String> expanded = modelsQuery.listToMap();
+                            for (Map.Entry<String, String> item : expanded.entrySet()) {
+                                processedModels.putIfAbsent(item.getKey(), item.getValue());
+                            }
+                        } else {
+                            ModelMetadata metadata = modelsQuery.parseModel();
+                            processedModels.put(metadata.getId(), result.getDefinition());
+                        }
+                    }
+                } catch (JsonProcessingException ex) {
+                    return Mono.error(ex);
                 }
 
-                Map<String, String> results = customType.getMap();
-                FetchModelResult response = customType.getFetchModelResult();
-                String targetDtmi = remainingWork.poll();
+                return Mono.just(processedModels);
+            });
+    }
 
+    private Flux<FetchModelResult> processAsync(boolean tryExpanded, List<String> dtmis,
+                                                ModelDependencyResolution resolution, Context context) {
+        return Flux.concat(dtmis.stream().map(dtmi -> processDtmi(tryExpanded, dtmi, resolution, context))
+            .collect(Collectors.toList()));
+    }
+
+    private Flux<FetchModelResult> processDtmi(boolean tryExpanded, String dtmi, ModelDependencyResolution resolution,
+                                               Context context) {
+        return modelFetcher.fetchModelAsync(dtmi, repositoryUri, tryExpanded, context)
+            .flatMapMany(response -> {
+                // If the model was pre-computed, already expanded, processing of it is done.
                 if (response.isFromExpanded()) {
-                    try {
-                        Map<String, String> expanded = new ModelsQuery(response.getDefinition()).listToMap();
-                        for (Map.Entry<String, String> item : expanded.entrySet()) {
-                            if (!results.containsKey(item.getKey())) {
-                                results.put(item.getKey(), item.getValue());
-                            }
-                        }
+                    return Flux.just(response);
+                }
 
-                        return processAsync(remainingWork, resolutionOption, context, results);
-                    } catch (Exception e) {
-                        return Mono.error(e);
-                    }
+                // If resolving dependencies isn't supported processing completes once the model response is returned.
+                if (resolution != ModelDependencyResolution.ENABLED) {
+                    return Flux.just(response);
                 }
 
                 try {
                     ModelMetadata metadata = new ModelsQuery(response.getDefinition()).parseModel();
+                    List<String> dependencies = metadata.getDependencies();
 
-                    if (resolutionOption == ModelDependencyResolution.ENABLED) {
-                        List<String> dependencies = metadata.getDependencies();
-
-                        if (dependencies.size() > 0) {
-                            logger.info(StatusStrings.DISCOVERED_DEPENDENCIES, String.join("\", \"", dependencies));
-                        }
-
-                        remainingWork.addAll(dependencies);
+                    if (!CoreUtils.isNullOrEmpty(dependencies)) {
+                        logger.log(LogLevel.INFORMATIONAL, () ->
+                            String.format(StatusStrings.DISCOVERED_DEPENDENCIES, String.join("\", \"", dependencies)));
+                        return processAsync(tryExpanded, dependencies, resolution, context).concatWith(Flux.just(response));
                     }
-
-                    String parsedDtmi = metadata.getId();
-                    if (!parsedDtmi.equals(targetDtmi)) {
-                        logger.error(String.format(StatusStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi));
-                        String errorMessage = String.format(StatusStrings.GENERIC_GET_MODELS_ERROR, targetDtmi) + String.format(StatusStrings.INCORRECT_DTMI_CASING, targetDtmi, parsedDtmi);
-
-                        return Mono.error(new AzureException(errorMessage));
-                    }
-
-                    results.put(targetDtmi, response.getDefinition());
-                    return processAsync(remainingWork, resolutionOption, context, results);
-
+                    return Flux.just(response);
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
             });
     }
 
-    private Queue<String> prepareWork(Iterable<String> dtmis) {
-        Queue<String> modelsToProcess = new LinkedList<>();
+    private List<String> prepareWork(Iterable<String> dtmis) {
+        List<String> modelsToProcess = new ArrayList<>();
         for (String dtmi : dtmis) {
             if (!DtmiConventions.isValidDtmi(dtmi)) {
-                logger.logExceptionAsError(new IllegalArgumentException(String.format(StatusStrings.INVALID_DTMI_FORMAT_S, dtmi)));
+                logger.log(LogLevel.ERROR, () -> String.format(StatusStrings.INVALID_DTMI_FORMAT_S, dtmi));
             }
 
             modelsToProcess.add(dtmi);
@@ -144,7 +129,7 @@ public final class RepositoryHandler {
         return modelsToProcess;
     }
 
-    private Mono<Boolean> isFromExpanded(ModelDependencyResolution resolutionOption, Context context) {
+    private Mono<Boolean> isExpandedAvailable(ModelDependencyResolution resolutionOption, Context context) {
         // If ModelDependencyResolution.Enabled is requested the client will first attempt to fetch
         // metadata.json content from the target repository. The metadata object includes supported features
         // of the repository.
@@ -153,17 +138,10 @@ public final class RepositoryHandler {
         // If the model expanded form does not exist fall back to computing model dependencies just-in-time.
         if (resolutionOption == ModelDependencyResolution.ENABLED) {
             return modelFetcher.fetchMetadataAsync(repositoryUri, context)
-                .onErrorResume(error -> Mono.just(new FetchMetadataResult()))
-                .flatMap(result -> {
-                    Boolean tryFromExpanded = false;
-                    if (result != null) {
-                        logger.error("got me some results: " + result);
-                        tryFromExpanded = result != null && result.getDefinition() != null
-                            && result.getDefinition().getFeatures() != null
-                            && result.getDefinition().getFeatures().isExpanded();
-                    }
-                    return Mono.just(tryFromExpanded);
-                });
+                .map(result -> result.getDefinition() != null
+                    && result.getDefinition().getFeatures() != null
+                    && result.getDefinition().getFeatures().isExpanded())
+                .onErrorReturn(false);
         }
 
         return Mono.just(false);
