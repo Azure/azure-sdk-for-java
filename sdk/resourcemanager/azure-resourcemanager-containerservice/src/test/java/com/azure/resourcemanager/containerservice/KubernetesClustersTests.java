@@ -20,6 +20,7 @@ import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -281,6 +282,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
+    @Disabled("Azure Spot VMs are not guaranteed to be scheduled.")
     public void canCreateClusterWithSpotVM() throws Exception {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
