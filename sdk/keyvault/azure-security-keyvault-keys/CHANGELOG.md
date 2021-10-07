@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.0-beta.4 (2021-10-06)
+## 4.4.0-beta.4 (2021-10-07)
 
 ### Features Added
 - Added new functions to key clients to enable key rotation:
