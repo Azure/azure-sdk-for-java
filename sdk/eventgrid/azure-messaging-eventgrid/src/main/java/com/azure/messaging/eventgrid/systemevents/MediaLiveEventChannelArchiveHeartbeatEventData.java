@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
@@ -15,11 +16,12 @@ import java.time.Duration;
  */
 @Immutable
 public final class MediaLiveEventChannelArchiveHeartbeatEventData {
+    static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);
     /*
      * Gets the channel latency in ms.
      */
     @JsonProperty(value = "channelLatencyMs", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String channelLatency;
+    private String channelLatencyMs;
 
     /*
      * Gets the latency result code.
@@ -33,10 +35,19 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
      * @return the channelLatencyMs value.
      */
     public Duration getChannelLatency() {
-        if ("n/a".equals(this.channelLatency)) {
+        if ("n/a".equals(this.channelLatencyMs)) {
             return null;
         }
-        return Duration.ofMillis(Long.parseLong(this.channelLatency));
+
+        Long channelLatencyMsLong;
+        try {
+            channelLatencyMsLong = Long.parseLong(this.channelLatencyMs);
+        } catch (NumberFormatException ex) {
+            LOGGER.logExceptionAsError(ex);
+            return null;
+        }
+
+        return Duration.ofMillis(channelLatencyMsLong);
     }
 
     /**

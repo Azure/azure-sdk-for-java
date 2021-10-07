@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -15,6 +16,8 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public final class MediaLiveEventIngestHeartbeatEventData {
+    static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
+
     /*
      * Gets the type of the track (Audio / Video).
      */
@@ -174,7 +177,13 @@ public final class MediaLiveEventIngestHeartbeatEventData {
         if ("n/a".equals(this.ingestDriftValue)) {
             return null;
         }
-        return Integer.parseInt(this.ingestDriftValue);
+
+        try {
+            return Integer.parseInt(this.ingestDriftValue);
+        } catch (NumberFormatException ex) {
+            LOGGER.logExceptionAsError(ex);
+            return null;
+        }
     }
 
     /**
