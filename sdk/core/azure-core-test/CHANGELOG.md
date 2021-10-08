@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.7.2 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+
 ## 1.7.1 (2021-09-07)
 
 ### Fixed

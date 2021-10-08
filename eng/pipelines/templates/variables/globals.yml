@@ -17,6 +17,7 @@ variables:
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
   TestFromSource: false
+  AdditionalTestGoals: ''
 
   skipComponentGovernanceDetection: true
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]

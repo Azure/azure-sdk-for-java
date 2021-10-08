@@ -1,23 +1,16 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.4 (2021-10-06)
 ### Features Added
 - Add support for TokenCredential authentication with CallingServerClientBuilder.
 - Added support for custom options(Recordingcontenttype, Recordingchanneltype, Recordingformattype) for Mixed Audio feature
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
+- Using released version of azure-communication-common.
 
 ### Other Changes
 #### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.4
-
-## 1.0.0-beta.4 (2021-08-04)
-### Bug Fixes
-- Using released version of azure-communication-common.
 
 ## 1.0.0-beta.3 (2021-07-26)
 ### Features Added

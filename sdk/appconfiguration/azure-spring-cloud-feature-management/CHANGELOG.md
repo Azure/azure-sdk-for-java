@@ -2,8 +2,16 @@
 
 ## 2.1.0-beta.1 (Unreleased)
 
-- Added `evaluate` Feature configuration, which disables Feature Flags with Feature Filters.
-- Added `AlwaysOnFilter` which always returns true.
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.0.1 (2021-09-28)
+
 - Updated to JUnit 5
 
 ## 2.0.0 (2021-06-21)

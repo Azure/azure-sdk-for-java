@@ -265,4 +265,13 @@ public class FeatureManagerTest {
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
 
+    class AlwaysOnFilter implements FeatureFilter {
+
+        @Override
+        public boolean evaluate(FeatureFilterEvaluationContext context) {
+            return true;
+        }
+
+    }
+
 }
