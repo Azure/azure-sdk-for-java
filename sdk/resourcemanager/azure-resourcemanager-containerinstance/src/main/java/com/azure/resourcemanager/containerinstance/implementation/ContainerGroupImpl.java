@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.management.Resource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
@@ -16,7 +17,7 @@ import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProfile;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
@@ -458,7 +459,8 @@ public class ContainerGroupImpl
 
     @Override
     public ContainerGroupImpl withExistingNetworkProfile(String networkProfileId) {
-        this.innerModel().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
+        this.innerModel().withSubnetIds(Collections.singletonList(
+            new ContainerGroupSubnetId().withId(networkProfileId)));
         if (this.innerModel().ipAddress() != null) {
             this.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
         }
@@ -690,7 +692,10 @@ public class ContainerGroupImpl
 
     @Override
     public String networkProfileId() {
-        return this.innerModel().networkProfile().id();
+        if (CoreUtils.isNullOrEmpty(this.innerModel().subnetIds())) {
+            return null;
+        }
+        return this.innerModel().subnetIds().iterator().next().id();
     }
 
     @Override
