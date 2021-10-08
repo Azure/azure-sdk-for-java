@@ -30,9 +30,9 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
     private String latencyResultCode;
 
     /**
-     * Get the channelLatencyMs property: Gets the channel latency in ms.
+     * Gets the duration of channel latency.
      *
-     * @return the channelLatencyMs value.
+     * @return the duration of channel latency.
      */
     public Duration getChannelLatency() {
         if ("n/a".equals(this.channelLatencyMs)) {
