@@ -58,6 +58,12 @@ public final class MetricSpecification {
     private String internalMetricName;
 
     /*
+     * Whether or not the service is using regional MDM accounts.
+     */
+    @JsonProperty(value = "enableRegionalMdmAccount")
+    private Boolean enableRegionalMdmAccount;
+
+    /*
      * The source MDM account.
      */
     @JsonProperty(value = "sourceMdmAccount")
@@ -98,6 +104,12 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "resourceIdDimensionNameOverride")
     private String resourceIdDimensionNameOverride;
+
+    /*
+     * Whether the metric is internal.
+     */
+    @JsonProperty(value = "isInternal")
+    private Boolean isInternal;
 
     /**
      * Get the name property: Name of metric specification.
@@ -240,6 +252,26 @@ public final class MetricSpecification {
     }
 
     /**
+     * Get the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
+     *
+     * @return the enableRegionalMdmAccount value.
+     */
+    public Boolean enableRegionalMdmAccount() {
+        return this.enableRegionalMdmAccount;
+    }
+
+    /**
+     * Set the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
+     *
+     * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withEnableRegionalMdmAccount(Boolean enableRegionalMdmAccount) {
+        this.enableRegionalMdmAccount = enableRegionalMdmAccount;
+        return this;
+    }
+
+    /**
      * Get the sourceMdmAccount property: The source MDM account.
      *
      * @return the sourceMdmAccount value.
@@ -376,6 +408,26 @@ public final class MetricSpecification {
      */
     public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
+        return this;
+    }
+
+    /**
+     * Get the isInternal property: Whether the metric is internal.
+     *
+     * @return the isInternal value.
+     */
+    public Boolean isInternal() {
+        return this.isInternal;
+    }
+
+    /**
+     * Set the isInternal property: Whether the metric is internal.
+     *
+     * @param isInternal the isInternal value to set.
+     * @return the MetricSpecification object itself.
+     */
+    public MetricSpecification withIsInternal(Boolean isInternal) {
+        this.isInternal = isInternal;
         return this;
     }
 

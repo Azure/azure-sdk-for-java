@@ -10,8 +10,13 @@
 
 ### Other Changes
 
+## 1.0.4 (2021-09-22)
+
+### Other Changes
+
 #### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.4
+- Upgraded `azure-core` to 1.20.0
 
 ## 1.0.3 (2021-06-09)
 Updated `azure-communication-sms` version

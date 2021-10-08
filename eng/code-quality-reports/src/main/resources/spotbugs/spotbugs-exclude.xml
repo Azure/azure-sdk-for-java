@@ -1268,83 +1268,11 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- FormRecognizerException fields re serializable -->
+  <!-- DocumentAnalysisException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException"/>
-    <Field name="errorInformationList"/>
+    <Class name="com.azure.ai.formrecognizer.models.DocumentAnalysisException"/>
+    <Field name="errorInformation"/>
     <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel"/>
-    <Field name="modelName"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel"/>
-    <Field name="customFormModelProperties"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo"/>
-    <Field name="modelName"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo"/>
-    <Field name="customFormModelProperties"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties"/>
-    <Field name="isComposed"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm"/>
-    <Field name="formTypeConfidence"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm"/>
-    <Field name="modelId"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark"/>
-    <Field name="confidence"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark"/>
-    <Field name="state"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
-  </Match>
-
-  <Match>
-    <Class name="com.azure.ai.formrecognizer.models.FormPage"/>
-    <Field name="selectionMarks"/>
-    <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
 
   <!-- TextAnalyticsException fields re serializable -->

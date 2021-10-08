@@ -184,15 +184,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(pagedFluxOptions.getCosmosAsyncClient())) &&
                 throwable instanceof CosmosException) {
                 CosmosException cosmosException = (CosmosException) throwable;
-                if (isTracerEnabled(pagedFluxOptions) && this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
-                    try {
-                        addDiagnosticsOnTracerEvent(pagedFluxOptions.getTracerProvider(),
-                            cosmosException.getDiagnostics(), parentContext.get());
-                    } catch (JsonProcessingException ex) {
-                        LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                    }
-                }
-
+                // not adding diagnostics on trace event for exception as this information is already there as
+                // part of exception message
                 if (this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(cosmosException.getDiagnostics()).compareAndSet(false, true)) {
                     fillClientTelemetry(pagedFluxOptions.getCosmosAsyncClient(), 0, pagedFluxOptions.getContainerId(),
                         pagedFluxOptions.getDatabaseId(),

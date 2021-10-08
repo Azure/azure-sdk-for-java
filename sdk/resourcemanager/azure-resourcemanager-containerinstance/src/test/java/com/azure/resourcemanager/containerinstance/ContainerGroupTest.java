@@ -66,7 +66,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
             .withLinux()
             .withPublicImageRegistryOnly()
             .withoutVolume()
-            .withContainerInstance("nginx", 80)
+            .withContainerInstance("nginx")
             .withExistingNetworkProfile(containerGroup1.networkProfileId())
             .create();
 
