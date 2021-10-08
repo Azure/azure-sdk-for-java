@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.AfterEach;
@@ -27,6 +28,9 @@ import org.springframework.context.ApplicationContext;
 
 import com.azure.spring.cloud.feature.manager.entities.Feature;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
 
 /**
  * Unit tests for FeatureManager.
@@ -41,6 +45,14 @@ public class FeatureManagerTest {
     private static final String PARAM_1_NAME = "param1";
 
     private static final String PARAM_1_VALUE = "testParam";
+    
+    private static final String USERS = "users";
+
+    private static final String GROUPS = "groups";
+    
+    private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
+    
+    private static final LinkedHashMap<String, Object> EMPTY_MAP = new LinkedHashMap<>();
 
     @InjectMocks
     private FeatureManager featureManager;
@@ -50,6 +62,9 @@ public class FeatureManagerTest {
 
     @Mock
     private FeatureManagementConfigProperties properties;
+    
+    @Mock
+    private FeatureVariantProperties variantProperties;
 
     @BeforeEach
     public void setup() {
@@ -235,6 +250,21 @@ public class FeatureManagerTest {
             () -> featureManager.isEnabledAsync("Off").block());
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
+    
+    @Test
+    public void getVariantAsyncTest() {
+        
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+        
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+        
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 100));
+        
+        dynamicFeature.setVariants(variants);
+        
+        featureManager.getVariantAsync("testVariant", Object.class);
+    }
 
     class AlwaysOnFilter implements FeatureFilter {
 
@@ -243,6 +273,24 @@ public class FeatureManagerTest {
             return true;
         }
 
+    }
+    
+    private FeatureVariant createFeatureVariant(String variantName, LinkedHashMap<String, Object> users,
+        LinkedHashMap<String, Object> groups, int defautPercentage) {
+        FeatureVariant variant = new FeatureVariant();
+        variant.setName(variantName);
+        variant.setDefault(false);
+        variant.setConfigurationReference(variantName + "Reference");
+
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+
+        parameters.put(USERS, users);
+        parameters.put(GROUPS, groups);
+        parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, defautPercentage);
+
+        variant.setAssignmentParameters(parameters);
+
+        return variant;
     }
 
 }

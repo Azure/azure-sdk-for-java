@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager.entities.featurevariants;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +22,7 @@ public class DynamicFeature {
     private String assigner;
 
     @NotNull
-    private Map<String, FeatureVariant> variants;
+    private Map<String, FeatureVariant> variants = new HashMap<>();
 
     /**
      * @return the assigner

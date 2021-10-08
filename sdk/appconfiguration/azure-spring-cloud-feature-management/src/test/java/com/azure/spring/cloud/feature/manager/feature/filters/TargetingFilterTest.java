@@ -4,12 +4,17 @@ package com.azure.spring.cloud.feature.manager.feature.filters;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -18,13 +23,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.azure.spring.cloud.feature.manager.TargetingException;
 import com.azure.spring.cloud.feature.manager.TestConfiguration;
 import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationContext;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.DynamicFeature;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.targeting.GroupRollout;
 import com.azure.spring.cloud.feature.manager.targeting.ITargetingContextAccessor;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.manager.targeting.TargetingEvaluationOptions;
 
 import reactor.core.publisher.Mono;
 
-@SpringBootTest(classes = {TestConfiguration.class, SpringBootTest.class})
+@SpringBootTest(classes = { TestConfiguration.class, SpringBootTest.class })
 public class TargetingFilterTest {
 
     private static final String USERS = "users";
@@ -41,6 +50,9 @@ public class TargetingFilterTest {
 
     @Mock
     private ITargetingContextAccessor contextAccessor;
+    
+    @Mock
+    private TargetingContext targetingContextMock;
 
     @Test
     public void targetedUser() {
@@ -370,5 +382,197 @@ public class TargetingFilterTest {
 
         Exception exception = assertThrows(TargetingException.class, () -> filter.evaluate(context));
         assertEquals("Audience : " + REQUIRED_PARAMETER, exception.getMessage());
+    }
+
+    @Test
+    public void assignVariantAsyncTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.just(new TargetingContext()));
+
+        TargetingEvaluationOptions options = new TargetingEvaluationOptions();
+        options.setIgnoreCase(true);
+        TargetingFilter filter = new TargetingFilter(contextAccessor, options);
+
+        Map<String, FeatureVariant> variants = new HashMap<String, FeatureVariant>();
+
+        FeatureVariant variant = createFeatureVariant("testVariant", new LinkedHashMap<String, Object>(),
+            new LinkedHashMap<String, Object>(), 100);
+        variants.put("0", variant);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("testAssigner");
+        dynamicFeature.setVariants(variants);
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
+
+        Mono<FeatureVariant> result = filter.assignVariantAsync(featureDefinition);
+        assertNotNull(result);
+        FeatureVariant resultVariant = result.block();
+        assertNotNull(resultVariant);
+        assertEquals(variant.getName(), resultVariant.getName());
+    }
+
+    @Test
+    public void assignVariantAsyncTwoVariantsTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.just(new TargetingContext()));
+
+        TargetingEvaluationOptions options = new TargetingEvaluationOptions();
+        options.setIgnoreCase(true);
+        TargetingFilter filter = new TargetingFilter(contextAccessor, options);
+
+        Map<String, FeatureVariant> variants = new HashMap<String, FeatureVariant>();
+
+        FeatureVariant variant = createFeatureVariant("testVariant", new LinkedHashMap<String, Object>(),
+            new LinkedHashMap<String, Object>(), 100);
+        variants.put("0", variant);
+
+        FeatureVariant zeroVariant = createFeatureVariant("zeroTestVariant", new LinkedHashMap<String, Object>(),
+            new LinkedHashMap<String, Object>(), 0);
+        variants.put("1", zeroVariant);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("testAssigner");
+        dynamicFeature.setVariants(variants);
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
+
+        Mono<FeatureVariant> result = filter.assignVariantAsync(featureDefinition);
+        assertNotNull(result);
+        FeatureVariant resultVariant = result.block();
+        assertNotNull(resultVariant);
+        assertEquals(variant.getName(), resultVariant.getName());
+    }
+
+    @Test
+    public void assignVariantAsyncUseDefaultTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.just(targetingContextMock));
+        when(targetingContextMock.getUserId()).thenReturn("Jeff");
+
+        TargetingEvaluationOptions options = new TargetingEvaluationOptions();
+        options.setIgnoreCase(true);
+        TargetingFilter filter = new TargetingFilter(contextAccessor, options);
+
+        Map<String, FeatureVariant> variants = new HashMap<String, FeatureVariant>();
+
+        FeatureVariant variant = createFeatureVariant("testVariant", null,
+            new LinkedHashMap<String, Object>(), 0);
+        variants.put("0", variant);
+
+        FeatureVariant zeroVariant = createFeatureVariant("zeroTestVariant", new LinkedHashMap<String, Object>(),
+            new LinkedHashMap<String, Object>(), 0);
+        variants.put("1", zeroVariant);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("testAssigner");
+        dynamicFeature.setVariants(variants);
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
+
+        Mono<FeatureVariant> result = filter.assignVariantAsync(featureDefinition);
+        assertNull(result);
+    }
+    
+    @Test
+    public void assignVariantAsyncUserTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.just(targetingContextMock));
+        when(targetingContextMock.getUserId()).thenReturn("Jeff");
+
+        TargetingEvaluationOptions options = new TargetingEvaluationOptions();
+        options.setIgnoreCase(true);
+        TargetingFilter filter = new TargetingFilter(contextAccessor, options);
+
+        Map<String, FeatureVariant> variants = new HashMap<String, FeatureVariant>();
+        LinkedHashMap<String, Object> users = new LinkedHashMap<String, Object>();
+        
+        users.put("0", "Jane");
+        users.put("1", "Jeff");
+
+        FeatureVariant variant = createFeatureVariant("testVariant", users, new LinkedHashMap<String, Object>(), 0);
+        variants.put("0", variant);
+
+        FeatureVariant zeroVariant = createFeatureVariant("zeroTestVariant", new LinkedHashMap<String, Object>(),
+            new LinkedHashMap<String, Object>(), 0);
+        variants.put("1", zeroVariant);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("testAssigner");
+        dynamicFeature.setVariants(variants);
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
+
+        Mono<FeatureVariant> result = filter.assignVariantAsync(featureDefinition);
+        assertNotNull(result);
+        FeatureVariant resultVariant = result.block();
+        assertNotNull(resultVariant);
+        assertEquals(variant.getName(), resultVariant.getName());
+    }
+    
+    @Test
+    public void assignVariantAsyncGroupsTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.just(targetingContextMock));
+        
+        List<String> groups = new ArrayList<>();
+        groups.add("Test");
+        
+        when(targetingContextMock.getGroups()).thenReturn(groups);
+
+        TargetingEvaluationOptions options = new TargetingEvaluationOptions();
+        options.setIgnoreCase(true);
+        TargetingFilter filter = new TargetingFilter(contextAccessor, options);
+
+        Map<String, FeatureVariant> variants = new HashMap<String, FeatureVariant>();
+        LinkedHashMap<String, Object> variantGroups = new LinkedHashMap<String, Object>();
+        
+        GroupRollout gr1 = new GroupRollout();
+        gr1.setName("Dev");
+        gr1.setRolloutPercentage(100);
+        
+        GroupRollout gr2 = new GroupRollout();
+        gr2.setName("Test");
+        gr2.setRolloutPercentage(100);
+        
+        variantGroups.put("0", gr1);
+        variantGroups.put("1", gr2);
+
+        FeatureVariant variant = createFeatureVariant("testVariant", new LinkedHashMap<String, Object>(), variantGroups, 0);
+        variants.put("0", variant);
+
+        FeatureVariant zeroVariant = createFeatureVariant("zeroTestVariant", new LinkedHashMap<String, Object>(),
+            new LinkedHashMap<String, Object>(), 0);
+        variants.put("1", zeroVariant);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("testAssigner");
+        dynamicFeature.setVariants(variants);
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
+
+        Mono<FeatureVariant> result = filter.assignVariantAsync(featureDefinition);
+        assertNotNull(result);
+        FeatureVariant resultVariant = result.block();
+        assertNotNull(resultVariant);
+        assertEquals(variant.getName(), resultVariant.getName());
+    }
+    
+    @Test
+    public void assignVariantAsyncNullContextTest() {
+        when(contextAccessor.getContextAsync()).thenReturn(Mono.justOrEmpty(null));
+
+        FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", new DynamicFeature());
+
+        Mono<FeatureVariant> result = new TargetingFilter(contextAccessor).assignVariantAsync(featureDefinition);
+        assertNull(result);
+    }
+
+    private FeatureVariant createFeatureVariant(String variantName, LinkedHashMap<String, Object> users,
+        LinkedHashMap<String, Object> groups, int defautPercentage) {
+        FeatureVariant variant = new FeatureVariant();
+        variant.setName(variantName);
+        variant.setDefault(false);
+        variant.setConfigurationReference(variantName + "Reference");
+
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
+
+        parameters.put(USERS, users);
+        parameters.put(GROUPS, groups);
+        parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, defautPercentage);
+
+        variant.setAssignmentParameters(parameters);
+
+        return variant;
     }
 }

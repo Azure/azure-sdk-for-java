@@ -42,13 +42,6 @@ public class FeatureDefinition {
     }
 
     /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * @return the assigner
      */
     public String getAssigner() {
@@ -56,24 +49,10 @@ public class FeatureDefinition {
     }
 
     /**
-     * @param assigner the assigner to set
-     */
-    public void setAssigner(String assigner) {
-        this.assigner = assigner;
-    }
-
-    /**
      * @return the variants
      */
     public List<FeatureVariant> getVariants() {
         return variants;
-    }
-
-    /**
-     * @param variants the variants to set
-     */
-    public void setVariants(List<FeatureVariant> variants) {
-        this.variants = variants;
     }
     
     @PostConstruct
