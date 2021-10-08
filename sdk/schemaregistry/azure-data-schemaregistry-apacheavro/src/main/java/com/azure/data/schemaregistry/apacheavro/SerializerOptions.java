@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.avro;
+package com.azure.data.schemaregistry.apacheavro;
 
 import com.azure.core.annotation.Immutable;
 
@@ -28,7 +28,7 @@ class SerializerOptions {
     }
 
     /**
-     * Gets whether or not to auto-register schemas.
+     * Gets whether to auto-register schemas.
      *
      * @return {@code true} to register schema if it does not exist; {@code false} otherwise.
      */
