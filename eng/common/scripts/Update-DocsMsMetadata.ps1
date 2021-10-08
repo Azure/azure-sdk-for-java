@@ -23,11 +23,13 @@ Location of the root of the docs.microsoft.com reference doc location. Further
 path information is provided by $GetDocsMsMetadataForPackageFn
 
 .PARAMETER Language
-Programming language to supply to metadata
+Programming language to supply to metadata. It can default to the variable of 'Language' in Language-Setting.ps1.
 
 .PARAMETER RepoId
 GitHub repository ID of the SDK. Typically of the form: 'Azure/azure-sdk-for-js'
 
+.PARAMETER DocAuthor
+The one triggered the release pipeline will be the doc.ms author
 #>
 
 param(
@@ -37,11 +39,14 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$DocRepoLocation, 
 
-  [Parameter(Mandatory = $true)]
+  [Parameter(Mandatory = $false)]
   [string]$Language,
 
   [Parameter(Mandatory = $true)]
-  [string]$RepoId
+  [string]$RepoId,
+
+  [Parameter(Mandatory = $false)]
+  [string]$DocAuthor
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -53,6 +58,8 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
   # The $PackageMetadata could be $null if there is no associated metadata entry
   # based on how the metadata CSV is filtered
   $service = $PackageInfo.ServiceDirectory.ToLower()
+  Write-Host "Service name is $service."
+  Write-Host "Doc author name is $DocAuthor."
   if ($PackageMetadata -and $PackageMetadata.ServiceName) {
     # Normalize service name "Key Vault" -> "keyvault"
     # TODO: Use taxonomy for service name -- https://github.com/Azure/azure-sdk-tools/issues/1442
@@ -82,8 +89,8 @@ function GetAdjustedReadmeContent($ReadmeContent, $PackageInfo, $PackageMetadata
 ---
 title: $foundTitle
 keywords: Azure, $Language, SDK, API, $($PackageInfo.Name), $service
-author: maggiepint
-ms.author: magpint
+author: $DocAuthor
+ms.author: $DocAuthor
 ms.date: $date
 ms.topic: reference
 ms.prod: azure

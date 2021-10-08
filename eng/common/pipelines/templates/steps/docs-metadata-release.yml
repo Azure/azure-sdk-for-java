@@ -60,7 +60,9 @@ parameters:
   - name: SparseCheckoutPaths
     type: object
     default: null
-
+  - name: PipelineRequestBy
+    type: string
+    default:  $(Build.RequestedFor) 
 steps:
 - pwsh: |
     if ($IsWindows) {
@@ -104,6 +106,7 @@ steps:
       -DocRepoLocation "${{ parameters.WorkingDirectory }}/repo"
       -Language "${{parameters.Language}}"
       -Configs "${{ parameters.CIConfigs }}"
+      -DocAuthor "${{ parameters.PipelineRequestBy }}"
     pwsh: true
   env:
     GH_TOKEN: $(azuresdk-github-pat)
