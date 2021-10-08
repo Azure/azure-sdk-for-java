@@ -134,7 +134,9 @@ public class BinaryDataTest {
 
     @Test
     public void createFromNullObject() {
-        assertThrows(NullPointerException.class, () -> BinaryData.fromObject(null, null));
+        BinaryData binaryData = BinaryData.fromObject(null, BinaryData.SERIALIZER);
+        Assertions.assertNull(binaryData.toBytes());
+        Assertions.assertNull(binaryData.getLength());
     }
 
     @Test
