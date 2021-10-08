@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.micrometer</groupId>
       <artifactId>micrometer-core</artifactId>
-      <version>1.7.3</version>
+      <version>1.7.3</version> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
     </dependency>
   </dependencies>
 
