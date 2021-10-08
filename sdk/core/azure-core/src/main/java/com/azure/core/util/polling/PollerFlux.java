@@ -164,10 +164,12 @@ import java.util.function.Supplier;
  * <!-- end com.azure.core.util.polling.poller.cancelOperation -->
  *
  * <p><strong>Instantiating and subscribing to PollerFlux from a known polling strategy</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy}
+ * <!-- src_embed com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
+ * <!-- end com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy -->
  *
  * <p><strong>Instantiating and subscribing to PollerFlux from a custom polling strategy</strong></p>
- * {@codesnippet com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy}
+ * <!-- com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
+ * <!-- end com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy -->
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long running operation.
