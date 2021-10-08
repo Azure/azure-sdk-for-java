@@ -9,7 +9,6 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
-import com.azure.identity.RegionalAuthority;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
@@ -53,10 +52,6 @@ public final class IdentityClientOptions {
         loadFromConfiugration(configuration);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        regionalAuthority = RegionalAuthority.fromString(
-            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
-        multiTenantAuthDisabled = configuration
-            .get(AZURE_IDENTITY_DISABLE_MULTITENANTAUTH, false);
     }
 
     /**
@@ -402,8 +397,8 @@ public final class IdentityClientOptions {
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
-        regionalAuthority = RegionalAuthority.fromString(
-            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
+        multiTenantAuthDisabled = configuration
+            .get(AZURE_IDENTITY_DISABLE_MULTITENANTAUTH, false);
         return  this;
     }
 }

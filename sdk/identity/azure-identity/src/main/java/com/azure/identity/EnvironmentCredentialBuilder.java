@@ -51,21 +51,6 @@ public class EnvironmentCredentialBuilder extends CredentialBuilderBase<Environm
     }
 
     /**
-     * Sets the configuration store that is used during construction of the credential.
-     *
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}.
-     *
-     * @param configuration The configuration store used to load Env variables and/or properties from.
-     *
-     * @return An updated instance of this builder with the configuration store set as specified.
-     */
-    public EnvironmentCredentialBuilder configuration(Configuration configuration) {
-        identityClientOptions.setConfiguration(configuration);
-        return this;
-    }
-
-    /**
      * Creates a new {@link EnvironmentCredential} with the current configurations.
      *
      * @return a {@link EnvironmentCredential} with the current configurations.

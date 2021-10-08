@@ -15,7 +15,7 @@ import java.util.concurrent.ForkJoinPool;
  *
  * @see AzureApplicationCredential
  */
-public class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
+class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
     private String managedIdentityClientId;
 
     /**
