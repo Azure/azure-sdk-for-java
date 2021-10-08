@@ -57,12 +57,17 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
         if (firstRun) {
             firstRun = false;
             return sendRequest().repeat(options.getFirstRunExtraRequests()).then();
-        }
-        else {
+        } else {
             return sendRequest();
         }
     }
 
+    /**
+     * Sends a GET request to the URL provided in the {@link HttpPipelineOptions options} given to this object's
+     * constructor.
+     *
+     * @return An empty {@link Mono}
+     */
     public Mono<Void> sendRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, options.getUrl());
         return httpPipeline

@@ -41,7 +41,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
-    private static final AtomicInteger globalParallelIndex = new AtomicInteger();
+    private static final AtomicInteger GLOBAL_PARALLEL_INDEX = new AtomicInteger();
     protected final int parallelIndex;
 
     /**
@@ -51,7 +51,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      */
     public PerfStressTest(TOptions options) {
         this.options = options;
-        this.parallelIndex = globalParallelIndex.getAndIncrement();
+        this.parallelIndex = GLOBAL_PARALLEL_INDEX.getAndIncrement();
 
         final SslContext sslContext;
 
@@ -144,7 +144,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
         runSyncOrAsync();
 
         startRecordingAsync().block();
-        
+
         testProxyPolicy.setRecordingId(recordingId);
         testProxyPolicy.setMode("record");
 
