@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProperties;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.spring.integration.core.api.StartPosition;
-import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.support.EventHubTestOperation;
 import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
