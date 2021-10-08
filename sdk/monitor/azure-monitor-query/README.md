@@ -383,7 +383,7 @@ Environment variable name: `AZURE_HTTP_LOG_DETAIL_LEVEL`
 
 ### Unable to authenticate requests
 
-Azure Monitor Query supports Azure Active Directory authentication. Both LogsQueryClientBuilder and MetricsQueryClientBuilder have methods to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more details on getting started, refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#create-the-client) of Azure Monitor Query library. You can also refer to the [Azure Identity documentation](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity) for more details on the various types of credential supported in `azure-identity`.
+Azure Monitor Query supports Azure Active Directory authentication. Both LogsQueryClientBuilder and MetricsQueryClientBuilder have methods to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more details on getting started, refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#create-the-client) of Azure Monitor Query library. You can also refer to the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity) for more details on the various types of credential supported in `azure-identity`.
 
 ### No results in logs query
 
