@@ -144,7 +144,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         // Black hole detection, part 1:
         // Treat the channel as unhealthy if the gap between the last attempted write and the last successful write
-        // grew beyond acceptable limits, unless a write was attempted recently. This is a sign of a hung write.
+        // grew beyond acceptable limits, unless a write was attempted recently. This is a sign of a nonresponding write.
 
         final long writeDelayInNanos =
             timestamps.lastChannelWriteAttemptNanoTime() - timestamps.lastChannelWriteNanoTime();
@@ -157,7 +157,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            logger.warn("{} health check failed due to hung write: {lastChannelWriteAttemptNanoTime: {}, " +
+            logger.warn("{} health check failed due to nonresponding write: {lastChannelWriteAttemptNanoTime: {}, " +
                     "lastChannelWriteNanoTime: {}, writeDelayInNanos: {}, writeDelayLimitInNanos: {}, " +
                     "rntbdContext: {}, pendingRequestCount: {}}",
                 channel, timestamps.lastChannelWriteAttemptNanoTime(), timestamps.lastChannelWriteNanoTime(),
@@ -168,7 +168,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
         // Black hole detection, part 2:
         // Treat the connection as unhealthy if the gap between the last successful write and the last successful read
-        // grew beyond acceptable limits, unless a write succeeded recently. This is a sign of a hung read.
+        // grew beyond acceptable limits, unless a write succeeded recently. This is a sign of a nonresponding read.
 
         final long readDelay = timestamps.lastChannelWriteNanoTime() - timestamps.lastChannelReadNanoTime();
         final long readHangDuration = currentTime - timestamps.lastChannelWriteNanoTime();
@@ -178,7 +178,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
 
-            logger.warn("{} health check failed due to hung read: {lastChannelWrite: {}, lastChannelRead: {}, "
+            logger.warn("{} health check failed due to nonresponding read: {lastChannelWrite: {}, lastChannelRead: {}, "
                 + "readDelay: {}, readDelayLimit: {}, rntbdContext: {}, pendingRequestCount: {}}", channel,
                 timestamps.lastChannelWriteNanoTime(), timestamps.lastChannelReadNanoTime(), readDelay,
                 this.readDelayLimitInNanos, rntbdContext, pendingRequestCount);

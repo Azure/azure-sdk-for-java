@@ -109,13 +109,16 @@ public final class BulkExecutor<TContext> {
 
         // Fill the option first, to make the BulkProcessingOptions immutable, as if accessed directly, we might get
         // different values when a new group is created.
-        maxMicroBatchIntervalInMs = cosmosBulkExecutionOptions.getMaxMicroBatchInterval().toMillis();
+        maxMicroBatchIntervalInMs = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMaxMicroBatchInterval(cosmosBulkExecutionOptions)
+            .toMillis();
         batchContext = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .getLegacyBatchScopedContext(cosmosBulkExecutionOptions);
         this.partitionScopeThresholds = ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
             .getBulkExecutionThresholdsAccessor()
-            .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholds());
+            .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholdsState());
         operationListener = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .getOperationContext(cosmosBulkExecutionOptions);
@@ -308,7 +311,9 @@ public final class BulkExecutor<TContext> {
 
                     return executeOperations(operations, thresholds, groupSink);
                 },
-                this.cosmosBulkExecutionOptions.getMaxMicroBatchConcurrency());
+                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                    .getCosmosBulkExecutionOptionsAccessor()
+                    .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions));
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(

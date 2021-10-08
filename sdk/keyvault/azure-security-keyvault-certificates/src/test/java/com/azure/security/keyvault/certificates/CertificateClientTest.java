@@ -51,9 +51,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
         beforeTestSetup();
     }
 
-    private void createCertificateClient(HttpClient httpClient,
-                                         CertificateServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
+    private void createCertificateClient(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
         CertificateAsyncClient asyncClient = spy(new CertificateClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)

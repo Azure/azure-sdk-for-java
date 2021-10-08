@@ -54,7 +54,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
@@ -73,7 +73,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
@@ -92,7 +92,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedIdentitySqlControlSettingsModelInner createOrUpdate(
@@ -110,7 +110,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Control Settings for workspace managed identity.
+     * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagedIdentitySqlControlSettingsModelInner createOrUpdate(

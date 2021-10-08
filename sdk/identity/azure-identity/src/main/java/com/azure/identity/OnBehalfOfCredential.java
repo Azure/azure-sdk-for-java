@@ -13,8 +13,6 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-
 /**
  * An AAD credential that acquires a token with a client secret and user assertion for an AAD application
  * on behalf of a user principal.
@@ -43,7 +41,6 @@ public class OnBehalfOfCredential implements TokenCredential {
             .certificatePath(certificatePath)
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions)
-            .confidentialClientCacheTimeout(Duration.ofMinutes(5))
             .build();
     }
 

@@ -25,7 +25,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-          <version>1.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+          <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
         </dependency>
       </dependencies>
 
@@ -34,7 +34,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>report-aggregate</id>

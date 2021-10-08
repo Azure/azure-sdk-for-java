@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeId;
@@ -25,6 +26,7 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Skills.Text.EntityRecognitionSkill")
 @Fluent
 public final class EntityRecognitionSkill extends SearchIndexerSkill {
+    @JsonIgnore
     private final ClientLogger logger = new ClientLogger(EntityRecognitionSkill.class);
 
     /*

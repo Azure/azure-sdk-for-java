@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A workspace key. */
-@JsonFlatten
 @Fluent
-public class KeyInner extends ProxyResource {
+public final class KeyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyInner.class);
 
     /*
-     * Used to activate the workspace after a customer managed key is provided.
+     * Keys resource properties
      */
-    @JsonProperty(value = "properties.isActiveCMK")
-    private Boolean isActiveCmk;
+    @JsonProperty(value = "properties")
+    private KeyProperties innerProperties;
 
-    /*
-     * The Key Vault Url of the workspace key.
+    /**
+     * Get the innerProperties property: Keys resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.keyVaultUrl")
-    private String keyVaultUrl;
+    private KeyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the isActiveCmk property: Used to activate the workspace after a customer managed key is provided.
@@ -35,7 +36,7 @@ public class KeyInner extends ProxyResource {
      * @return the isActiveCmk value.
      */
     public Boolean isActiveCmk() {
-        return this.isActiveCmk;
+        return this.innerProperties() == null ? null : this.innerProperties().isActiveCmk();
     }
 
     /**
@@ -45,7 +46,10 @@ public class KeyInner extends ProxyResource {
      * @return the KeyInner object itself.
      */
     public KeyInner withIsActiveCmk(Boolean isActiveCmk) {
-        this.isActiveCmk = isActiveCmk;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KeyProperties();
+        }
+        this.innerProperties().withIsActiveCmk(isActiveCmk);
         return this;
     }
 
@@ -55,7 +59,7 @@ public class KeyInner extends ProxyResource {
      * @return the keyVaultUrl value.
      */
     public String keyVaultUrl() {
-        return this.keyVaultUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultUrl();
     }
 
     /**
@@ -65,7 +69,10 @@ public class KeyInner extends ProxyResource {
      * @return the KeyInner object itself.
      */
     public KeyInner withKeyVaultUrl(String keyVaultUrl) {
-        this.keyVaultUrl = keyVaultUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KeyProperties();
+        }
+        this.innerProperties().withKeyVaultUrl(keyVaultUrl);
         return this;
     }
 
@@ -75,5 +82,8 @@ public class KeyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

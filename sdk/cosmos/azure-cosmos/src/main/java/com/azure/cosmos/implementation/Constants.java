@@ -198,7 +198,7 @@ public final class Constants {
         public static final String LOGGING_HANDLER_NAME = "logging-handler";
 
         // encryption
-        public static final String ENCRYPTION_ALGORITHM_ID = "encryptionAlgorithmId";
+        public static final String ENCRYPTION_ALGORITHM = "encryptionAlgorithm";
         public static final String KEY_WRAP_METADATA = "keyWrapMetadata";
         public static final String WRAPPED_DATA_ENCRYPTION_KEY = "wrappedDataEncryptionKey";
         public static final String CLIENT_ENCRYPTION_POLICY = "clientEncryptionPolicy";

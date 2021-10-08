@@ -6,6 +6,7 @@ parameters:
   GPGExecutablePath: $(Pipeline.Workspace)/azure-sdk-build-tools/tools/gpg/bin/gpg.exe
   JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
   StageOnly: false
+  ShouldPublish: true
 
 steps:
   - ${{if eq(parameters.Target, 'Burner')}}:
@@ -23,6 +24,7 @@ steps:
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+          -ShouldPublish:$${{parameters.ShouldPublish}}
           -InformationAction Continue
 
   - ${{if eq(parameters.Target, 'JavaDevFeed')}}:
@@ -40,6 +42,7 @@ steps:
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+          -ShouldPublish:$${{parameters.ShouldPublish}}
           -InformationAction Continue
 
   - ${{if eq(parameters.Target, 'AndroidDevFeed')}}:
@@ -57,6 +60,7 @@ steps:
           -RepositoryUsername nobody
           -RepositoryPassword $(System.AccessToken)
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+          -ShouldPublish:$${{parameters.ShouldPublish}}
           -InformationAction Continue
 
   - ${{if eq(parameters.Target, 'MavenCentral')}}:
@@ -75,4 +79,5 @@ steps:
           -RepositoryPassword $(azuresdk-sonatype-password)
           -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
           -StageOnly:$${{parameters.StageOnly}}
+          -ShouldPublish:$${{parameters.ShouldPublish}}
           -InformationAction Continue

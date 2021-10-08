@@ -6,36 +6,71 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.AzureActiveDirectoryRegistrationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the Azure Active Directory app registration. */
 @Fluent
-public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
+public final class AzureActiveDirectoryRegistration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryRegistration.class);
 
     /*
-     * AzureActiveDirectoryRegistration resource specific properties
+     * The OpenID Connect Issuer URI that represents the entity which issues
+     * access tokens for this application.
+     * When using Azure Active Directory, this value is the URI of the
+     * directory tenant, e.g.
+     * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
+     * This URI is a case-sensitive identifier for the token issuer.
+     * More information on OpenID Connect Discovery:
+     * http://openid.net/specs/openid-connect-discovery-1_0.html
      */
-    @JsonProperty(value = "properties")
-    private AzureActiveDirectoryRegistrationProperties innerProperties;
+    @JsonProperty(value = "openIdIssuer")
+    private String openIdIssuer;
 
-    /**
-     * Get the innerProperties property: AzureActiveDirectoryRegistration resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The Client ID of this relying party application, known as the client_id.
+     * This setting is required for enabling OpenID Connection authentication
+     * with Azure Active Directory or
+     * other 3rd party OpenID Connect providers.
+     * More information on OpenID Connect:
+     * http://openid.net/specs/openid-connect-core-1_0.html
      */
-    private AzureActiveDirectoryRegistrationProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "clientId")
+    private String clientId;
 
-    /** {@inheritDoc} */
-    @Override
-    public AzureActiveDirectoryRegistration withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    /*
+     * The app setting name that contains the client secret of the relying
+     * party application.
+     */
+    @JsonProperty(value = "clientSecretSettingName")
+    private String clientSecretSettingName;
+
+    /*
+     * An alternative to the client secret, that is the thumbprint of a
+     * certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret. It is also optional.
+     */
+    @JsonProperty(value = "clientSecretCertificateThumbprint")
+    private String clientSecretCertificateThumbprint;
+
+    /*
+     * An alternative to the client secret thumbprint, that is the subject
+     * alternative name of a certificate used for signing purposes. This
+     * property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also
+     * optional.
+     */
+    @JsonProperty(value = "clientSecretCertificateSubjectAlternativeName")
+    private String clientSecretCertificateSubjectAlternativeName;
+
+    /*
+     * An alternative to the client secret thumbprint, that is the issuer of a
+     * certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also
+     * optional.
+     */
+    @JsonProperty(value = "clientSecretCertificateIssuer")
+    private String clientSecretCertificateIssuer;
 
     /**
      * Get the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
@@ -46,7 +81,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the openIdIssuer value.
      */
     public String openIdIssuer() {
-        return this.innerProperties() == null ? null : this.innerProperties().openIdIssuer();
+        return this.openIdIssuer;
     }
 
     /**
@@ -59,10 +94,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the AzureActiveDirectoryRegistration object itself.
      */
     public AzureActiveDirectoryRegistration withOpenIdIssuer(String openIdIssuer) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
-        }
-        this.innerProperties().withOpenIdIssuer(openIdIssuer);
+        this.openIdIssuer = openIdIssuer;
         return this;
     }
 
@@ -74,7 +106,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the clientId value.
      */
     public String clientId() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientId();
+        return this.clientId;
     }
 
     /**
@@ -86,10 +118,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the AzureActiveDirectoryRegistration object itself.
      */
     public AzureActiveDirectoryRegistration withClientId(String clientId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
-        }
-        this.innerProperties().withClientId(clientId);
+        this.clientId = clientId;
         return this;
     }
 
@@ -100,7 +129,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientSecretSettingName();
+        return this.clientSecretSettingName;
     }
 
     /**
@@ -111,10 +140,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the AzureActiveDirectoryRegistration object itself.
      */
     public AzureActiveDirectoryRegistration withClientSecretSettingName(String clientSecretSettingName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
-        }
-        this.innerProperties().withClientSecretSettingName(clientSecretSettingName);
+        this.clientSecretSettingName = clientSecretSettingName;
         return this;
     }
 
@@ -126,7 +152,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the clientSecretCertificateThumbprint value.
      */
     public String clientSecretCertificateThumbprint() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientSecretCertificateThumbprint();
+        return this.clientSecretCertificateThumbprint;
     }
 
     /**
@@ -139,10 +165,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      */
     public AzureActiveDirectoryRegistration withClientSecretCertificateThumbprint(
         String clientSecretCertificateThumbprint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
-        }
-        this.innerProperties().withClientSecretCertificateThumbprint(clientSecretCertificateThumbprint);
+        this.clientSecretCertificateThumbprint = clientSecretCertificateThumbprint;
         return this;
     }
 
@@ -154,9 +177,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the clientSecretCertificateSubjectAlternativeName value.
      */
     public String clientSecretCertificateSubjectAlternativeName() {
-        return this.innerProperties() == null
-            ? null
-            : this.innerProperties().clientSecretCertificateSubjectAlternativeName();
+        return this.clientSecretCertificateSubjectAlternativeName;
     }
 
     /**
@@ -170,12 +191,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      */
     public AzureActiveDirectoryRegistration withClientSecretCertificateSubjectAlternativeName(
         String clientSecretCertificateSubjectAlternativeName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
-        }
-        this
-            .innerProperties()
-            .withClientSecretCertificateSubjectAlternativeName(clientSecretCertificateSubjectAlternativeName);
+        this.clientSecretCertificateSubjectAlternativeName = clientSecretCertificateSubjectAlternativeName;
         return this;
     }
 
@@ -187,7 +203,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the clientSecretCertificateIssuer value.
      */
     public String clientSecretCertificateIssuer() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientSecretCertificateIssuer();
+        return this.clientSecretCertificateIssuer;
     }
 
     /**
@@ -199,10 +215,7 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      * @return the AzureActiveDirectoryRegistration object itself.
      */
     public AzureActiveDirectoryRegistration withClientSecretCertificateIssuer(String clientSecretCertificateIssuer) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryRegistrationProperties();
-        }
-        this.innerProperties().withClientSecretCertificateIssuer(clientSecretCertificateIssuer);
+        this.clientSecretCertificateIssuer = clientSecretCertificateIssuer;
         return this;
     }
 
@@ -211,11 +224,6 @@ public final class AzureActiveDirectoryRegistration extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

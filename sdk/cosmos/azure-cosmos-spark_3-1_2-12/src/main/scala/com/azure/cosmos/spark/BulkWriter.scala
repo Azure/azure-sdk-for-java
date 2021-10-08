@@ -508,10 +508,14 @@ private object BulkWriter {
   // let's say we have a cosmos container with 1M RU which is 167 partitions
   // let's say we are ingesting items of size 1KB
   // let's say max request size is 1MB
-  // hence we want 2MB/ 1KB items per partition to be buffered
-  // 2 * 1024 * 167 items should get buffered on a 16 CPU core VM
-  // so per CPU core we want (2 * 1024 * 167 / 16) max items to be buffered
-  val DefaultMaxPendingOperationPerCore: Int = 2 * 1024 * 167 / 16
+  // hence we want 1MB/ 1KB items per partition to be buffered
+  // 1024 * 167 items should get buffered on a 16 CPU core VM
+  // so per CPU core we want (1024 * 167 / 16) max items to be buffered
+  // Reduced the targeted buffer from 2MB per partition and core to 1 MB because
+  // we had a few customers seeing to high CPU usage with the previous setting
+  // Reason is that several customers use larger than 1 KB documents so we need
+  // to be less aggressive with the buffering
+  val DefaultMaxPendingOperationPerCore: Int = 1024 * 167 / 16
 
   val emitFailureHandler: EmitFailureHandler =
         (_, emitResult) => if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) true else false
