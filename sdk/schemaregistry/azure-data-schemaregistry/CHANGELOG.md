@@ -2,6 +2,25 @@
 
 ## 1.0.0-beta.6 (Unreleased)
 
+### Features added
+
+- Added `SchemaRegistrySchema`.
+- Added `SchemaRegistryVersion`.
+- Added back `Response<T>` overloads for `getSchema`, `getSchemaProperties`.
+
+### Breaking changes
+
+- Removed client-side caching.
+- Changed `getSchemaId` to `getSchemaProperties`.
+- Moved `SchemaProperties.getSchema()` to `SchemaRegistrySchema.getSchemaDefinition()`.
+- Changed `getSchema()` to return `String` instead of `byte[]`.
+- Changed `SerializationType` to `SchemaFormat`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
 
 ## 1.0.0-beta.5 (2021-08-17)
 

@@ -1,7 +1,7 @@
 # Azure Schema Registry client library for Java
 
-Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning, 
-and management. The registry is leveraged by serializers to reduce payload size while describing payload structure with 
+Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
+and management. The registry is leveraged by serializers to reduce payload size while describing payload structure with
 schema identifiers rather than full schemas.
 
 [Source code][source_code] | Package (Maven) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
@@ -21,15 +21,15 @@ schema identifiers rather than full schemas.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
 In order to interact with the Azure Schema Registry service, you'll need to create an instance of the
-`SchemaRegistryClient` class through the `SchemaRegistryClientBuilder`. You will need an **endpoint** and an 
-**API key** to instantiate a client object.  
+`SchemaRegistryClient` class through the `SchemaRegistryClientBuilder`. You will need an **endpoint** and an
+**API key** to instantiate a client object.
 
 #### Create SchemaRegistryClient with Azure Active Directory Credential
 
@@ -42,7 +42,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.1.2</version>
+    <version>1.3.7</version>
 </dependency>
 ```
 
@@ -84,8 +84,8 @@ A schema has 6 components:
 - Schema Content: The string representation of the schema.
 - Schema Version: The version assigned to the schema in the Schema Registry instance.
 
-These components play different roles. Some are used as input into the operations and some are outputs. Currently, 
-[SchemaProperties][schema_properties] only exposes those properties that are potential outputs that are used in 
+These components play different roles. Some are used as input into the operations and some are outputs. Currently,
+[SchemaProperties][schema_properties] only exposes those properties that are potential outputs that are used in
 SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 
 ## Examples

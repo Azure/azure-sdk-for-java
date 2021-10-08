@@ -2,6 +2,20 @@
 
 ## 1.0.0-beta.6 (Unreleased)
 
+### Features added
+
+### Breaking Changes
+
+- Renamed package from `azure-data-schemaregistry-avro` to `azure-data-schemaregistry-apacheavro`.
+- Renamed serializer to `SchemaRegistryApacheAvroSerializer`.
+- Renamed builder to `SchemaRegistryApacheAvroSerializerBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-data-schemaregistry` dependency to `1.0.0-beta.6`.
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.15`.
 
 ## 1.0.0-beta.5 (2021-08-17)
 
