@@ -299,7 +299,6 @@ public class QueryValidationTests extends TestSuiteBase {
             createdContainer);
         documentsInserted.addAll(pk2Docs);
 
-
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey(pk2));
 
@@ -325,6 +324,20 @@ public class QueryValidationTests extends TestSuiteBase {
         // Top query should not be cached
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
+        // group by should not be cached
+        sqlQuerySpec.setQueryText("select max(c.id) from c order by c.name group by c.name");
+        values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+
+        // distinct queries should not be cached
+        sqlQuerySpec.setQueryText("SELECT distinct  c.name from c");
+        values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+
+        //order by query should not be cached
+        sqlQuerySpec.setQueryText("select * from c order by c.name");
+        values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 40)

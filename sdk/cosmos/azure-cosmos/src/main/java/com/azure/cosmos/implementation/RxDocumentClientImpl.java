@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.implementation.caches.SizeLimitingLRUCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -142,7 +143,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
-    private ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache;
+    private Map<String, PartitionedQueryExecutionInfo> queryPlanCache;
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
@@ -362,7 +363,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
-            this.queryPlanCache = new ConcurrentHashMap<>();
+            this.queryPlanCache = Collections.synchronizedMap(new SizeLimitingLRUCache(Constants.QUERYPLAN_CACHE_SIZE));
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -2462,7 +2463,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
+    public Map<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
         return queryPlanCache;
     }
 
