@@ -137,32 +137,30 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     /**
-     * Records responses and starts async tests in playback mode.
-     * @return An empty {@link Mono}.
+     * Records responses and starts tests in playback mode.
      */
-    public Mono<Void> recordAndStartPlaybackAsync() {
+    public void recordAndStartPlayback() {
         // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization requests.
-        return runSyncOrAsync()
-                .then(startRecordingAsync())
-                .doOnSuccess(x -> {
-                    testProxyPolicy.setRecordingId(recordingId);
-                    testProxyPolicy.setMode("record");
-                })
-                // Must use Mono.defer() to ensure fields are set from prior requests
-                .then(Mono.defer(() -> runSyncOrAsync()))
-                .then(Mono.defer(() -> stopRecordingAsync()))
-                .then(Mono.defer(() -> startPlaybackAsync()))
-                .doOnSuccess(x -> {
-                    testProxyPolicy.setRecordingId(recordingId);
-                    testProxyPolicy.setMode("playback");
-                });
+        runSyncOrAsync();
+
+        startRecordingAsync().block();
+        
+        testProxyPolicy.setRecordingId(recordingId);
+        testProxyPolicy.setMode("record");
+
+        runSyncOrAsync();
+        stopRecordingAsync().block();
+        startPlaybackAsync().block();
+
+        testProxyPolicy.setRecordingId(recordingId);
+        testProxyPolicy.setMode("playback");
     }
 
-    private Mono<Void> runSyncOrAsync() {
+    private void runSyncOrAsync() {
         if (options.isSync()) {
-            return Mono.empty().then().doOnSuccess(x -> run());
+            run();
         } else {
-            return runAsync();
+            runAsync().block();
         }
     }
 
