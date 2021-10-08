@@ -55,7 +55,7 @@ class ServiceAPITest extends APISpec {
         setup:
         // We shouldnt be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .endpoint(environment.primaryAccount.blobEndpoint)
             .buildClient()
         def disabled = new BlobRetentionPolicy().setEnabled(false)
         primaryBlobServiceClient.setProperties(new BlobServiceProperties()
@@ -644,7 +644,7 @@ class ServiceAPITest extends APISpec {
 
     def "Set props error"() {
         when:
-        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.primaryAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new BlobServiceProperties())
 
         then:
@@ -666,7 +666,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get props error"() {
         when:
-        getServiceClient(env.primaryAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.primaryAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -733,7 +733,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats"() {
         setup:
-        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
+        def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
         def response = serviceClient.getStatisticsWithResponse(null, null)
 
         expect:
@@ -746,7 +746,7 @@ class ServiceAPITest extends APISpec {
 
     def "Get stats min"() {
         setup:
-        def serviceClient = getServiceClient(env.primaryAccount.credential, env.primaryAccount.blobEndpointSecondary)
+        def serviceClient = getServiceClient(environment.primaryAccount.credential, environment.primaryAccount.blobEndpointSecondary)
 
         expect:
         serviceClient.getStatisticsWithResponse(null, null).getStatusCode() == 200
@@ -789,7 +789,7 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def client = getServiceClientBuilder(env.primaryAccount.credential, badURL.toString())
+        def client = getServiceClientBuilder(environment.primaryAccount.credential, badURL.toString())
             .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100, 1000, null))
             .buildClient()
 
@@ -938,7 +938,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
         .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
@@ -969,7 +969,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         def blobName = generateBlobName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
@@ -1035,7 +1035,7 @@ class ServiceAPITest extends APISpec {
 
     def "OAuth on secondary"() {
         setup:
-        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, env.primaryAccount.blobEndpointSecondary)).buildClient()
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, environment.primaryAccount.blobEndpointSecondary)).buildClient()
 
         when:
         serviceClient.getProperties()
@@ -1069,10 +1069,10 @@ class ServiceAPITest extends APISpec {
         /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def sc = getServiceClientBuilder(env.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+        def sc = getServiceClientBuilder(environment.primaryAccount.credential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
 
         when:
         def response = sc.getPropertiesWithResponse(null, null)
