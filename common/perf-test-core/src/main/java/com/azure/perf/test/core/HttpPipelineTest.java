@@ -21,7 +21,7 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
 
     private final HttpPipeline httpPipeline;
     private final byte[] buffer = new byte[BUFFER_SIZE];
-    private boolean _firstRun = true;
+    private boolean firstRun = true;
 
     /**
      * Creates an instance of the {@link HttpPipelineTest}.
@@ -54,8 +54,8 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        if (_firstRun) {
-            _firstRun = false;
+        if (firstRun) {
+            firstRun = false;
             return sendRequest().repeat(options.getFirstRunExtraRequests()).then();
         }
         else {
