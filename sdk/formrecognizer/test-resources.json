@@ -25,26 +25,26 @@
       }
     },
     "tenantId": {
-      "type": "string",
+      "type": "String",
       "metadata": {
         "description": "The tenant id to which the application and resources belong."
       }
     },
     "testApplicationId": {
-      "type": "string",
+      "type": "String",
       "metadata": {
         "description": "The application client id used to run tests."
       }
     },
     "testApplicationSecret": {
-      "type": "string",
+      "type": "String",
       "metadata": {
         "description": "The application client secret used to run tests."
       }
     },
     "cognitiveServicesEndpointSuffix": {
-      "defaultValue": ".cognitiveservices.azure.com/",
-      "type": "string"
+      "defaultValue": ".cognitiveservices.azure.com",
+      "type": "String"
     },
     "blobStorageAccount": {
       "type": "string",
@@ -124,7 +124,7 @@
     "authorizationApiVersion": "2018-09-01-preview",
     "formRecognizerBaseName": "[concat('formRecognizer', parameters('baseName'))]",
     "formRecognizerApiVersion": "2017-04-18",
-    "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('cognitiveServicesEndpointSuffix'))]",
+    "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]",
     "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
   },
   "resources": [
@@ -156,15 +156,15 @@
   ],
   "outputs": {
     "AZURE_TENANT_ID": {
-      "type": "string",
+      "type": "String",
       "value": "[parameters('tenantId')]"
     },
     "AZURE_CLIENT_ID": {
-      "type": "string",
+      "type": "String",
       "value": "[parameters('testApplicationId')]"
     },
     "AZURE_CLIENT_SECRET": {
-      "type": "string",
+      "type": "String",
       "value": "[parameters('testApplicationSecret')]"
     },
     "AZURE_FORM_RECOGNIZER_API_KEY": {
