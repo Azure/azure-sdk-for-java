@@ -113,25 +113,28 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         validateOpen();
         validateWriteMode();
 
-        int length = src.remaining();
-
-        this.position += src.remaining();
+        final int length = src.remaining();
+        this.position += length;
 
         /*
         If the buffer is backed by an array, we can read directly from that instead of allocating new memory.
-
         Set the position correctly if we read from underneath the buffer
          */
+        int pos;
         byte[] buf;
         if (src.hasArray()) {
+            pos = src.position();
             buf = src.array();
-            src.position(src.position() + length);
+            src.position(pos + length);
         } else {
+            pos = 0;
             buf = new byte[length];
-            src.get(buf);
+            src.get(buf); // advances src.position()
         }
-        this.writer.write(buf);
-
+        // Either way, the src.position() and this.position have been updated before we know if this write
+        // will succeed. (Original behavior.) It may be better to update position(s) only *after* success,
+        // but then on IOException would we know if there was a partial write, and if so how much?
+        this.writer.write(buf, pos, length);
         return length;
     }
 
@@ -212,6 +215,10 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
             this.writer.close();
         }
         this.closed = true;
+    }
+
+    Path getPath() {
+        return this.path;
     }
 
     private void validateOpen() throws ClosedChannelException {

@@ -4,6 +4,9 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.storage.blob.BlobClient
+import com.azure.storage.blob.specialized.BlobOutputStream
+import org.mockito.Answers
+import org.mockito.Mockito
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -153,6 +156,54 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         then:
         compareInputStreams(writeBc.openInputStream(), new ByteArrayInputStream(fileContent), sourceFileSize)
+    }
+
+    def "Write respect src buffer pos"() {
+        setup:
+        def rand = new Random()
+        int initialOffset = rand.nextInt(512) + 1 // always > 0
+        def srcBufferContent = new byte[2 * initialOffset + sourceFileSize]
+        rand.nextBytes(srcBufferContent) // fill with random bytes
+
+        def fileContent = new byte[sourceFileSize]
+        fileStream.read(fileContent)
+
+        // place expected file content into source buffer at random location, retain other random bytes
+        System.arraycopy(fileContent, 0, srcBufferContent, initialOffset, sourceFileSize)
+        def srcBuffer = ByteBuffer.wrap(srcBufferContent)
+        srcBuffer.position(initialOffset)
+        srcBuffer.limit(initialOffset + sourceFileSize)
+
+        // Use a mock to intercept the write calls sent by the channel to BlobOutputStream, because
+        // reading back from a replay of HTTP doesn't confirm the actual written bytes/size
+        def actualOutput = new ByteArrayOutputStream(sourceFileSize)
+        def blobOutputStream = Mockito.mock(
+            BlobOutputStream.class, Mockito.withSettings().useConstructor(4096 /* block size */))
+        Mockito.doAnswer(invoked -> actualOutput.write(invoked.getArgument(0)))
+            .when(blobOutputStream).write(Mockito.anyInt())
+        Mockito.doAnswer(invoked -> actualOutput.writeBytes(invoked.getArgument(0)))
+            .when(blobOutputStream).write(Mockito.any(byte[].class))
+        Mockito.doAnswer(invoked -> actualOutput.write(
+                invoked.getArgument(0), invoked.getArgument(1), invoked.getArgument(2)))
+            .when(blobOutputStream).write(Mockito.any(byte[].class), Mockito.anyInt(), Mockito.anyInt())
+        def path = writeByteChannel.getPath()
+        writeByteChannel = new AzureSeekableByteChannel(new NioBlobOutputStream(blobOutputStream, path), path)
+
+        when:
+        int written = 0
+        while (written < sourceFileSize) {
+            written += writeByteChannel.write(srcBuffer)
+        }
+        writeByteChannel.close()
+
+        then:
+        srcBuffer.position() == initialOffset + sourceFileSize // src buffer position SHOULD be updated
+        srcBuffer.limit() == srcBuffer.position() // limit SHOULD be unchanged (still at end of content)
+        // the above report back to the caller, but this verifies the correct bytes are going to the blob:
+        compareInputStreams(
+            new ByteArrayInputStream(actualOutput.toByteArray()),
+            new ByteArrayInputStream(fileContent),
+            sourceFileSize)
     }
 
     def "Write fs close"() {
