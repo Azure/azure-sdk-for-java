@@ -102,7 +102,7 @@ class ConnectionString {
     private void validateTokensAreLegal(Set<String> tokens) {
         boolean isValid = false;
 
-        List<Set<String>> validTokensList = TOKENS.get(this.type);
+        List<Set<String>> validTokensList = new ArrayList<>(TOKENS.get(this.type));
         validTokensList.sort((a, b) -> Integer.compare(b.size(), a.size()));
 
         for (Set<String> validTokens : validTokensList) {

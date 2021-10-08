@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.context;
+package com.azure.spring.core.factory;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 
 import java.util.ArrayList;

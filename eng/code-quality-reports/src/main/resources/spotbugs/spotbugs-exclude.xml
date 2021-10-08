@@ -2308,10 +2308,9 @@
     <Bug pattern="ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD"/>
   </Match>
 
-  <!-- Field is initialized in postProcessEnvironment function -->
   <Match>
-    <Class name="com.azure.spring.autoconfigure.unity.AbstractLegacyPropertyEnvironmentPostProcessor"/>
-    <Field name="environment"/>
+    <Class name="com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration$AzureServiceClientBuilderFactoryPostProcessor"/>
+    <Field name="beanFactory"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 

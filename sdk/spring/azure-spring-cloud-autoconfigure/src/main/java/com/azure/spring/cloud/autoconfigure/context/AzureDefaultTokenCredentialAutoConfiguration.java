@@ -7,9 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
+import com.azure.spring.core.factory.AzureCredentialBuilderFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -47,19 +48,27 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }
 
-    static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor {
+    static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
-        @Autowired
-        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
-        private TokenCredential tokenCredential;
+        private BeanFactory beanFactory;
 
         @SuppressWarnings("rawtypes")
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if (bean instanceof AbstractAzureServiceClientBuilderFactory) {
-                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(tokenCredential);
+            if (bean instanceof AzureCredentialBuilderFactory) {
+                return bean;
+            }
+            if (bean instanceof AbstractAzureServiceClientBuilderFactory
+                && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
+
+                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential((TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
             }
             return bean;
+        }
+
+        @Override
+        public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+            this.beanFactory = beanFactory;
         }
     }
     

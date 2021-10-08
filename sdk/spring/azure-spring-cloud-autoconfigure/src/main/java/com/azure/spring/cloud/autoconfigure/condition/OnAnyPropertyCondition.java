@@ -5,65 +5,23 @@ package com.azure.spring.cloud.autoconfigure.condition;
 
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
-import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.PropertyResolver;
-import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.Assert;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class OnAnyPropertyCondition extends SpringBootCondition {
+class OnAnyPropertyCondition extends PropertyCondition {
 
     @Override
-    public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        List<AnnotationAttributes> allAnnotationAttributes = annotationAttributesFromMultiValueMap(
-            metadata.getAllAnnotationAttributes(ConditionalOnAnyProperty.class.getName()));
-        List<ConditionMessage> noMatch = new ArrayList<>();
-        List<ConditionMessage> match = new ArrayList<>();
-        for (AnnotationAttributes annotationAttributes : allAnnotationAttributes) {
-            ConditionOutcome outcome = determineOutcome(annotationAttributes, context.getEnvironment());
-            (outcome.isMatch() ? match : noMatch).add(outcome.getConditionMessage());
-        }
-        if (!noMatch.isEmpty()) {
-            return ConditionOutcome.noMatch(ConditionMessage.of(noMatch));
-        }
-        return ConditionOutcome.match(ConditionMessage.of(match));
+    protected String getAnnotationName() {
+        return ConditionalOnAnyProperty.class.getName();
     }
 
-    private List<AnnotationAttributes> annotationAttributesFromMultiValueMap(
-        MultiValueMap<String, Object> multiValueMap) {
-        List<Map<String, Object>> maps = new ArrayList<>();
-
-        if (multiValueMap != null) {
-            multiValueMap.forEach((key, value) -> {
-                for (int i = 0; i < value.size(); i++) {
-                    Map<String, Object> map;
-                    if (i < maps.size()) {
-                        map = maps.get(i);
-                    } else {
-                        map = new HashMap<>();
-                        maps.add(map);
-                    }
-                    map.put(key, value.get(i));
-                }
-            });
-        }
-
-        List<AnnotationAttributes> annotationAttributes = new ArrayList<>(maps.size());
-        for (Map<String, Object> map : maps) {
-            annotationAttributes.add(AnnotationAttributes.fromMap(map));
-        }
-        return annotationAttributes;
-    }
-
-    private ConditionOutcome determineOutcome(AnnotationAttributes annotationAttributes, PropertyResolver resolver) {
+    protected ConditionOutcome determineOutcome(AnnotationAttributes annotationAttributes, PropertyResolver resolver) {
         OnAnyPropertyCondition.Spec spec = new OnAnyPropertyCondition.Spec(annotationAttributes);
         List<String> missingProperties = new ArrayList<>();
         List<String> nonMatchingProperties = new ArrayList<>();
@@ -73,7 +31,8 @@ class OnAnyPropertyCondition extends SpringBootCondition {
         if (matchingProperties.isEmpty()) {
             if (!missingProperties.isEmpty()) {
                 return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnAnyProperty.class, spec)
-                                                                .didNotFind("property", "properties").items(ConditionMessage.Style.QUOTE, missingProperties));
+                                                                .didNotFind("property", "properties")
+                                                                .items(ConditionMessage.Style.QUOTE, missingProperties));
             }
             if (!nonMatchingProperties.isEmpty()) {
                 return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnAnyProperty.class, spec)
