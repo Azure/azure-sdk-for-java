@@ -101,6 +101,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      *
      * @return An updated instance of this builder with the configuration store set as specified.
      */
+    @SuppressWarnings("unchecked")
     public T configuration(Configuration configuration) {
         identityClientOptions.setConfiguration(configuration);
         return (T) this;

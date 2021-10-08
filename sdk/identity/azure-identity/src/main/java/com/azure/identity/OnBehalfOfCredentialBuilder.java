@@ -98,7 +98,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
      * @param regionalAuthority the regional authority
      * @return An updated instance of this builder with the regional authority configured.
      */
-    public OnBehalfOfCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+    OnBehalfOfCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
         this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }

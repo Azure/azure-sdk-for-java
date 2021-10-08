@@ -33,8 +33,8 @@ public final class IdentityUtil {
                     + " to false ",
                     null));
             } else if (currentTenantId.equals("adfs")) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The credential is configured with" +
-                    "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The credential is configured with"
+                    + "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
                     + "TokenRequestContext class. ", null));
             }
             return CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId

@@ -48,7 +48,7 @@ public final class IdentityClientOptions {
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
         loadFromConfiugration(configuration);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
