@@ -78,7 +78,7 @@ public class EventHubProcessor {
             this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
             this.checkpointManager.onMessage(context, context.getEventData());
             recodeConsumeTotal.increment();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             LOGGER.error("An error occurred during message consumption.", ex);
         }
 
