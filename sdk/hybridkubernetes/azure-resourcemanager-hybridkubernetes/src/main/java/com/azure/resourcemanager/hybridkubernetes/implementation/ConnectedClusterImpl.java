@@ -4,16 +4,18 @@
 
 package com.azure.resourcemanager.hybridkubernetes.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterIdentity;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterPatch;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
+import com.azure.resourcemanager.hybridkubernetes.models.CredentialResults;
+import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
-import com.azure.resourcemanager.hybridkubernetes.models.SystemData;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
@@ -22,7 +24,7 @@ public final class ConnectedClusterImpl
     implements ConnectedCluster, ConnectedCluster.Definition, ConnectedCluster.Update {
     private ConnectedClusterInner innerObject;
 
-    private final HybridKubernetesManager serviceManager;
+    private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -117,7 +119,7 @@ public final class ConnectedClusterImpl
         return this.innerObject;
     }
 
-    private HybridKubernetesManager manager() {
+    private com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager() {
         return this.serviceManager;
     }
 
@@ -150,7 +152,8 @@ public final class ConnectedClusterImpl
         return this;
     }
 
-    ConnectedClusterImpl(String name, HybridKubernetesManager serviceManager) {
+    ConnectedClusterImpl(
+        String name, com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = new ConnectedClusterInner();
         this.serviceManager = serviceManager;
         this.clusterName = name;
@@ -181,7 +184,9 @@ public final class ConnectedClusterImpl
         return this;
     }
 
-    ConnectedClusterImpl(ConnectedClusterInner innerObject, HybridKubernetesManager serviceManager) {
+    ConnectedClusterImpl(
+        ConnectedClusterInner innerObject,
+        com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
@@ -206,6 +211,17 @@ public final class ConnectedClusterImpl
                 .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
                 .getValue();
         return this;
+    }
+
+    public CredentialResults listClusterUserCredential(ListClusterUserCredentialProperties properties) {
+        return serviceManager.connectedClusters().listClusterUserCredential(resourceGroupName, clusterName, properties);
+    }
+
+    public Response<CredentialResults> listClusterUserCredentialWithResponse(
+        ListClusterUserCredentialProperties properties, Context context) {
+        return serviceManager
+            .connectedClusters()
+            .listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, context);
     }
 
     public ConnectedClusterImpl withRegion(Region location) {

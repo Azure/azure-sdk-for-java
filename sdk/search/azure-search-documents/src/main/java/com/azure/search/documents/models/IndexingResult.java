@@ -16,27 +16,27 @@ import java.io.Serializable;
 @Fluent
 public final class IndexingResult implements Serializable {
     private static final long serialVersionUID = -8604424005271188140L;
-    /*
+    /**
      * The key of a document that was in the indexing request.
      */
     @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
-    /*
+    /**
      * The error message explaining why the indexing operation failed for the
      * document identified by the key; null if indexing succeeded.
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /*
+    /**
      * A value indicating whether the indexing operation succeeded for the
      * document identified by the key.
      */
     @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private boolean succeeded;
 
-    /*
+    /**
      * The status code of the indexing operation. Possible values include: 200
      * for a successful update or delete, 201 for successful document creation,
      * 400 for a malformed input document, 404 for document not found, 409 for
