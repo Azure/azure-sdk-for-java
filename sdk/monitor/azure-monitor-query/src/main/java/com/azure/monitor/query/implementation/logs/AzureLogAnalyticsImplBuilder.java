@@ -21,9 +21,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.monitor.query.LogsQueryClientBuilder;
-import com.azure.monitor.query.models.LogsQueryClientAudience;
-import com.azure.monitor.query.models.MetricsQueryClientAudience;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +34,6 @@ public final class AzureLogAnalyticsImplBuilder {
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = CoreUtils.getProperties("azure-monitor-query.properties");
-    private String audience;
 
     /** Create an instance of the AzureLogAnalyticsImplBuilder. */
     public AzureLogAnalyticsImplBuilder() {
@@ -191,18 +187,6 @@ public final class AzureLogAnalyticsImplBuilder {
     }
 
     /**
-     * Sets the audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience will be
-     * used if the property is null.
-     * @param audience audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience
-     * will be used if the property is null.
-     * @return the {@link AzureLogAnalyticsImplBuilder}.
-     */
-    public AzureLogAnalyticsImplBuilder audience(String audience) {
-        this.audience = audience;
-        return this;
-    }
-
-    /**
      * Builds an instance of AzureLogAnalyticsImpl with the provided parameters.
      *
      * @return an instance of AzureLogAnalyticsImpl.
@@ -235,11 +219,7 @@ public final class AzureLogAnalyticsImplBuilder {
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
-        String resolvedAudience = this.audience;
-        if (resolvedAudience == null) {
-            resolvedAudience = LogsQueryClientAudience.AZURE_PUBLIC_CLOUD.toString();
-        }
-        resolvedAudience += "/.default";
+        String resolvedAudience = host + "/.default";
         BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
                 resolvedAudience);
 

@@ -14,11 +14,15 @@ import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
+import org.mockito.Mockito;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -321,4 +325,22 @@ public class GoneAndRetryWithRetryPolicyTest {
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 
+    /**
+     * After waitTimeInSeconds exhausted, retryWithException will not be retried.
+     */
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void shouldRetryWithRetryWithException() {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document);
+        GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 1);
+
+        ShouldRetryResult shouldRetryResult = Mono.delay(Duration.ofSeconds(1))
+            .flatMap(t -> goneAndRetryWithRetryPolicy.shouldRetry(new RetryWithException("Test", null, null)))
+            .block();
+
+        assertThat(shouldRetryResult.shouldRetry).isFalse();
+        assertThat(shouldRetryResult.nonRelatedException).isFalse();
+    }
 }

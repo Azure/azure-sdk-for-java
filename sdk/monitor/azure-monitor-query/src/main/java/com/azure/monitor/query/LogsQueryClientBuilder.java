@@ -14,7 +14,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
-import com.azure.monitor.query.models.LogsQueryClientAudience;
 
 /**
  * Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.
@@ -121,18 +120,6 @@ public final class LogsQueryClientBuilder {
      */
     public LogsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /**
-     * Sets the audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience will be
-     * used if the property is null.
-     * @param audience audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience
-     * will be used if the property is null.
-     * @return the {@link LogsQueryClientBuilder}.
-     */
-    public LogsQueryClientBuilder audience(LogsQueryClientAudience audience) {
-        innerLogBuilder.audience(audience == null ? null : audience.toString());
         return this;
     }
 
