@@ -8,10 +8,11 @@ import com.azure.spring.servicebus.stream.binder.properties.ServiceBusConsumerPr
 import com.azure.spring.servicebus.stream.binder.properties.ServiceBusProducerProperties;
 import com.azure.spring.servicebus.stream.binder.support.ServiceBusQueueTestOperation;
 import com.azure.spring.servicebus.stream.binder.test.AzurePartitionBinderTests;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.binder.HeaderMode;
@@ -21,7 +22,7 @@ import org.springframework.cloud.stream.binder.HeaderMode;
  *
  * @author Warren Zhu
  */
-@RunWith(MockitoJUnitRunner.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ServiceBusQueuePartitionBinderTests
     extends AzurePartitionBinderTests<ServiceBusQueueTestBinder,
     ExtendedConsumerProperties<ServiceBusConsumerProperties>,
@@ -34,8 +35,9 @@ public class ServiceBusQueuePartitionBinderTests
 
     private ServiceBusQueueTestBinder binder;
 
-    @Before
+    @BeforeAll
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));
     }
 
@@ -58,7 +60,7 @@ public class ServiceBusQueuePartitionBinderTests
     }
 
     @Override
-    protected ExtendedProducerProperties<ServiceBusProducerProperties> createProducerProperties() {
+    protected ExtendedProducerProperties<ServiceBusProducerProperties> createProducerProperties(TestInfo testInfo) {
         ExtendedProducerProperties<ServiceBusProducerProperties> properties = new ExtendedProducerProperties<>(
             new ServiceBusProducerProperties());
         properties.setHeaderMode(HeaderMode.embeddedHeaders);
@@ -66,12 +68,12 @@ public class ServiceBusQueuePartitionBinderTests
     }
 
     @Override
-    public void testOneRequiredGroup() {
+    public void testOneRequiredGroup(TestInfo testInfo) {
         // Required group test rely on unsupported start position of consumer properties
     }
 
     @Override
-    public void testTwoRequiredGroups() {
+    public void testTwoRequiredGroups(TestInfo testInfo)  {
         // Required group test rely on unsupported start position of consumer properties
     }
 }
