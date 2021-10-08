@@ -1,0 +1,24 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2021-09-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "72c57826-8471-44ef-9545-7fd095558b0a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "254",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "9735259d-ee85-4461-a7e4-dc0bb8fe7d73",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"value\": [\n    {\n      \"modelId\": \"prebuilt-idDocument\",\n      \"createdDateTime\": \"2021-07-30T00:00:00Z\",\n      \"description\": \"Prebuilt model to extract key information from US driver licenses and international passports.\"\n    },\n    {\n      \"modelId\": \"prebuilt-layout\",\n      \"createdDateTime\": \"2021-07-30T00:00:00Z\",\n      \"description\": \"Prebuilt model to extract text, selection marks, tables, and other layout information.\"\n    },\n    {\n      \"modelId\": \"prebuilt-invoice\",\n      \"createdDateTime\": \"2021-07-30T00:00:00Z\",\n      \"description\": \"Prebuilt model to extract key information from English invoices, including customer, vendor, invoice ID, due date, total, and more.\"\n    },\n    {\n      \"modelId\": \"prebuilt-document\",\n      \"createdDateTime\": \"2021-07-30T00:00:00Z\",\n      \"description\": \"Prebuilt model to extract text, selection marks, tables, entities, and general key-value pairs.\"\n    },\n    {\n      \"modelId\": \"prebuilt-receipt\",\n      \"createdDateTime\": \"2021-07-30T00:00:00Z\",\n      \"description\": \"Prebuilt model to extract key information from English receipts, including merchant name, transaction date, transaction total, and more.\"\n    },\n    {\n      \"modelId\": \"prebuilt-businessCard\",\n      \"createdDateTime\": \"2021-07-30T00:00:00Z\",\n      \"description\": \"Prebuilt model to extract key information from English business cards, including personal contact info, company name, job title, and more.\"\n    },\n    {\n      \"modelId\": \"component_model_1\",\n      \"createdDateTime\": \"2021-09-16T22:49:41Z\"\n    },\n    {\n      \"modelId\": \"bd7612ff-a22e-4986-95e2-8340b8d62e7d\",\n      \"createdDateTime\": \"2021-09-20T21:36:10Z\"\n    },\n    {\n      \"modelId\": \"36bf457d-f1ae-4170-a767-7c613e90e0ab\",\n      \"createdDateTime\": \"2021-09-20T09:15:09Z\"\n    }\n  ]\n}",
+      "Date" : "Tue, 21 Sep 2021 04:44:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

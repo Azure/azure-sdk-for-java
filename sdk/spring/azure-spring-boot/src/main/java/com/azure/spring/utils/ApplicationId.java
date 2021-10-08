@@ -3,7 +3,13 @@
 
 package com.azure.spring.utils;
 
-import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Util class for ApplicationId
@@ -26,20 +32,28 @@ public class ApplicationId {
     //    cos: for Cosmos
     //    aad: for AAD
     //    b2c: for AAD B2C
-    public static final String VERSION = Optional.of(ApplicationId.class)
-                                                 .map(Class::getPackage)
-                                                 .map(Package::getImplementationVersion)
-                                                 .orElse("unknown");
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationId.class);
+    public static final String VERSION = getVersion();
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
     /**
-     * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers:
-     * 1. x-client-SKU;
-     * 2. x-client-VER;
+     * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers: 1. x-client-SKU; 2.
+     * x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
     public static final String AZURE_SPRING_B2C = "az-sp-b2c";
 
+    private static String getVersion() {
+        String version = "unknown";
+        try {
+            Properties properties = PropertiesLoaderUtils.loadProperties(
+                new ClassPathResource("project.properties"));
+            version = properties.getProperty("version");
+        } catch (IOException e) {
+            LOGGER.warn("Can not get version.");
+        }
+        return version;
+    }
 }

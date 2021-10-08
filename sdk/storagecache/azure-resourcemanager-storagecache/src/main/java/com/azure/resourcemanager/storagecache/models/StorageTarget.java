@@ -70,6 +70,13 @@ public interface StorageTarget {
     ProvisioningStateType provisioningState();
 
     /**
+     * Gets the state property: Storage target operational state.
+     *
+     * @return the state value.
+     */
+    OperationalStateType state();
+
+    /**
      * Gets the nfs3 property: Properties when targetType is nfs3.
      *
      * @return the nfs3 value.
@@ -146,6 +153,7 @@ public interface StorageTarget {
         interface WithCreate
             extends DefinitionStages.WithJunctions,
                 DefinitionStages.WithTargetType,
+                DefinitionStages.WithState,
                 DefinitionStages.WithNfs3,
                 DefinitionStages.WithClfs,
                 DefinitionStages.WithUnknown,
@@ -185,6 +193,16 @@ public interface StorageTarget {
              * @return the next definition stage.
              */
             WithCreate withTargetType(StorageTargetType targetType);
+        }
+        /** The stage of the StorageTarget definition allowing to specify state. */
+        interface WithState {
+            /**
+             * Specifies the state property: Storage target operational state..
+             *
+             * @param state Storage target operational state.
+             * @return the next definition stage.
+             */
+            WithCreate withState(OperationalStateType state);
         }
         /** The stage of the StorageTarget definition allowing to specify nfs3. */
         interface WithNfs3 {
@@ -237,6 +255,7 @@ public interface StorageTarget {
     /** The template for StorageTarget update. */
     interface Update
         extends UpdateStages.WithJunctions,
+            UpdateStages.WithState,
             UpdateStages.WithNfs3,
             UpdateStages.WithClfs,
             UpdateStages.WithUnknown,
@@ -268,6 +287,16 @@ public interface StorageTarget {
              * @return the next definition stage.
              */
             Update withJunctions(List<NamespaceJunction> junctions);
+        }
+        /** The stage of the StorageTarget update allowing to specify state. */
+        interface WithState {
+            /**
+             * Specifies the state property: Storage target operational state..
+             *
+             * @param state Storage target operational state.
+             * @return the next definition stage.
+             */
+            Update withState(OperationalStateType state);
         }
         /** The stage of the StorageTarget update allowing to specify nfs3. */
         interface WithNfs3 {

@@ -139,7 +139,19 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create search index named "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *         indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex -->
      *
      * @param index definition of the index to create.
      * @return the created Index.
@@ -156,7 +168,20 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create search index named "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex -->
+     * <pre>
+     * List&lt;SearchField&gt; searchFields = Arrays.asList&#40;
+     *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;.setKey&#40;true&#41;,
+     *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
+     * &#41;;
+     * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
+     *
+     * searchIndexAsyncClient.createIndexWithResponse&#40;searchIndex&#41;
+     *     .subscribe&#40;indexFromServiceResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
+     *         indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex -->
      *
      * @param index definition of the index to create
      * @return a response containing the created Index.
@@ -185,7 +210,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get search index with name "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String -->
+     * <pre>
+     * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
+     *     .subscribe&#40;indexFromService -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
+     *             indexFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String -->
      *
      * @param indexName The name of the index to retrieve
      * @return the Index.
@@ -202,7 +234,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get search index with "searchIndex. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String -->
+     * <pre>
+     * searchIndexAsyncClient.getIndexWithResponse&#40;&quot;searchIndex&quot;&#41;
+     *     .subscribe&#40;indexFromServiceResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
+     *             indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String -->
      *
      * @param indexName the name of the index to retrieve
      * @return a response containing the Index.
@@ -230,7 +269,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get search index "searchIndex" statistics. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String -->
+     * <pre>
+     * searchIndexAsyncClient.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;
+     *     .subscribe&#40;statistics -&gt;
+     *         System.out.printf&#40;&quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
+     *         statistics.getDocumentCount&#40;&#41;, statistics.getStorageSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String -->
      *
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
@@ -247,7 +293,15 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get search index "searchIndex" statistics. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String -->
+     * <pre>
+     * searchIndexAsyncClient.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;&#41;
+     *     .subscribe&#40;statistics -&gt; System.out.printf&#40;&quot;The status code of the response is %s.%n&quot;
+     *             + &quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
+     *         statistics.getStatusCode&#40;&#41;, statistics.getValue&#40;&#41;.getDocumentCount&#40;&#41;,
+     *         statistics.getValue&#40;&#41;.getStorageSize&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String -->
      *
      * @param indexName the name of the index for which to retrieve statistics
      * @return a response containing the index statistics result.
@@ -275,7 +329,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> List all search indexes. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes -->
+     * <pre>
+     * searchIndexAsyncClient.listIndexes&#40;&#41;
+     *     .subscribe&#40;index -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, index.getName&#40;&#41;,
+     *             index.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes -->
      *
      * @return a reactive response emitting the list of indexes.
      */
@@ -304,7 +365,12 @@ public final class SearchIndexAsyncClient {
      *
      * <p> List all search indexes names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames -->
+     * <pre>
+     * searchIndexAsyncClient.listIndexNames&#40;&#41;
+     *     .subscribe&#40;indexName -&gt; System.out.printf&#40;&quot;The index name is %s.%n&quot;, indexName&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames -->
      *
      * @return a reactive response emitting the list of index names.
      */
@@ -342,7 +408,17 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create or update search index named "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex -->
+     * <pre>
+     * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
+     *     .doOnNext&#40;indexFromService -&gt; indexFromService.setSuggesters&#40;Collections.singletonList&#40;
+     *         new SearchSuggester&#40;&quot;sg&quot;, Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;&#41;
+     *     .flatMap&#40;searchIndexAsyncClient::createOrUpdateIndex&#41;
+     *     .subscribe&#40;updatedIndex -&gt;
+     *         System.out.printf&#40;&quot;The index name is %s. The suggester name of index is %s.%n&quot;,
+     *             updatedIndex.getName&#40;&#41;, updatedIndex.getSuggesters&#40;&#41;.get&#40;0&#41;.getName&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex -->
      *
      * @param index the definition of the {@link SearchIndex} to create or update.
      * @return the index that was created or updated.
@@ -359,7 +435,18 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create or update search index named "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context -->
+     * <pre>
+     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
+     *     Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
+     * Response&lt;SearchIndex&gt; updatedIndexResponse = searchIndexClient.createOrUpdateIndexWithResponse&#40;indexFromService, true,
+     *     false, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
+     *         + &quot;The index name is %s. The ETag of index is %s.%n&quot;, updatedIndexResponse.getStatusCode&#40;&#41;,
+     *     updatedIndexResponse.getValue&#40;&#41;.getName&#40;&#41;, updatedIndexResponse.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context -->
      *
      * @param index the definition of the index to create or update
      * @param allowIndexDowntime allows new analyzers, tokenizers, token filters, or char filters to be added to an
@@ -399,7 +486,12 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Delete search index with name "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String -->
+     * <pre>
+     * searchIndexAsyncClient.deleteIndex&#40;&quot;searchIndex&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String -->
      *
      * @param indexName the name of the index to delete
      * @return a response signalling completion.
@@ -416,7 +508,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Delete search index with name "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean -->
+     * <pre>
+     * searchIndexAsyncClient.getIndex&#40;&quot;searchIndex&quot;&#41;
+     *     .flatMap&#40;indexFromService -&gt; searchIndexAsyncClient.deleteIndexWithResponse&#40;indexFromService, true&#41;&#41;
+     *     .subscribe&#40;deleteResponse -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean -->
      *
      * @param index the {@link SearchIndex} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code index} is the same as the current service value.
@@ -448,7 +547,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Analyzer text with LexicalTokenizerName "Classic" in search index "searchIndex". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions -->
+     * <pre>
+     * searchIndexAsyncClient.analyzeText&#40;&quot;searchIndex&quot;,
+     *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;&#41;
+     *     .subscribe&#40;tokenInfo -&gt;
+     *         System.out.printf&#40;&quot;The token emitted by the analyzer is %s.%n&quot;, tokenInfo.getToken&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions -->
      *
      * @param indexName the name of the index for which to test an analyzer
      * @param analyzeTextOptions the text and analyzer or analysis components to test
@@ -488,7 +594,16 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create synonym map named "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap -->
+     * <pre>
+     * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
+     *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
+     * searchIndexAsyncClient.createSynonymMap&#40;synonymMap&#41;
+     *     .subscribe&#40;synonymMapFromService -&gt;
+     *         System.out.printf&#40;&quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
+     *         synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap -->
      *
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
@@ -505,7 +620,18 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create synonym map named "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap -->
+     * <pre>
+     * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
+     *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
+     * searchIndexAsyncClient.createSynonymMapWithResponse&#40;synonymMap&#41;
+     *     .subscribe&#40;synonymMapFromService -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
+     *             + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
+     *             synonymMapFromService.getStatusCode&#40;&#41;,
+     *         synonymMapFromService.getValue&#40;&#41;.getName&#40;&#41;, synonymMapFromService.getValue&#40;&#41;.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap -->
      *
      * @param synonymMap the definition of the {@link SynonymMap} to create
      * @return a response containing the created SynonymMap.
@@ -534,7 +660,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get synonym map with name "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
+     * <pre>
+     * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     *     .subscribe&#40;synonymMapFromService -&gt;
+     *         System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;,
+     *             synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @return the {@link SynonymMap} definition
@@ -551,7 +684,14 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get synonym map with name "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
+     * <pre>
+     * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     *     .subscribe&#40;synonymMapFromService -&gt;
+     *         System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;,
+     *             synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String -->
      *
      * @param synonymMapName name of the synonym map to retrieve
      * @return a response containing the SynonymMap.
@@ -578,7 +718,13 @@ public final class SearchIndexAsyncClient {
      *
      * <p> List all synonym maps. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps -->
+     * <pre>
+     * searchIndexAsyncClient.listSynonymMaps&#40;&#41;
+     *     .subscribe&#40;synonymMap -&gt; System.out.printf&#40;&quot;The synonymMap name is %s. The ETag of synonymMap is %s.%n&quot;,
+     *         synonymMap.getName&#40;&#41;, synonymMap.getETag&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps -->
      *
      * @return a reactive response emitting the list of synonym maps.
      */
@@ -609,7 +755,12 @@ public final class SearchIndexAsyncClient {
      *
      * <p> List all synonym map names. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames -->
+     * <pre>
+     * searchIndexAsyncClient.listSynonymMapNames&#40;&#41;
+     *     .subscribe&#40;synonymMap -&gt; System.out.printf&#40;&quot;The synonymMap name is %s.%n&quot;, synonymMap&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames -->
      *
      * @return a reactive response emitting the list of synonym map names.
      */
@@ -646,7 +797,17 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create or update synonym map named "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap -->
+     * <pre>
+     * searchIndexAsyncClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
+     *     .doOnNext&#40;synonymMap -&gt; synonymMap
+     *         .setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;&#41;
+     *     .flatMap&#40;searchIndexAsyncClient::createOrUpdateSynonymMap&#41;
+     *     .subscribe&#40;updatedSynonymMap -&gt;
+     *         System.out.printf&#40;&quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getName&#40;&#41;,
+     *         updatedSynonymMap.getSynonyms&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap -->
      *
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @return the synonym map that was created or updated.
@@ -663,7 +824,20 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Create or update synonym map named "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
+     * <pre>
+     * searchIndexAsyncClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;
+     *     .flatMap&#40;synonymMap -&gt; &#123;
+     *         synonymMap.setSynonyms&#40;
+     *             &quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
+     *         return searchIndexAsyncClient.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true&#41;;
+     *     &#125;&#41;
+     *     .subscribe&#40;updatedSynonymMap -&gt;
+     *         System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
+     *             + &quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getStatusCode&#40;&#41;,
+     *         updatedSynonymMap.getValue&#40;&#41;.getName&#40;&#41;, updatedSynonymMap.getValue&#40;&#41;.getSynonyms&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
      *
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code synonymMap} is the same as the current service value.
@@ -697,7 +871,12 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Delete synonym map with name "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String -->
+     * <pre>
+     * searchIndexAsyncClient.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     *     .subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String -->
      *
      * @param synonymMapName the name of the {@link SynonymMap} to delete
      * @return a response signalling completion.
@@ -715,7 +894,13 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Delete synonym map with name "synonymMap". </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean -->
+     * <pre>
+     * searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;
+     *     .flatMap&#40;synonymMap -&gt; searchIndexAsyncClient.deleteSynonymMapWithResponse&#40;synonymMap, true&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;The status code of the response is&quot; + response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean -->
      *
      * @param synonymMap the {@link SynonymMap} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code synonymMap} is the same as the current service value.
@@ -763,7 +948,13 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get service statistics. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics -->
+     * <pre>
+     * searchIndexAsyncClient.getServiceStatistics&#40;&#41;
+     *     .subscribe&#40;serviceStatistics -&gt; System.out.printf&#40;&quot;There are %s search indexes in your service.%n&quot;,
+     *         serviceStatistics.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics -->
      *
      * @return the search service statistics result.
      */
@@ -780,7 +971,16 @@ public final class SearchIndexAsyncClient {
      *
      * <p> Get service statistics. </p>
      *
-     * {@codesnippet com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse}
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse -->
+     * <pre>
+     * searchIndexAsyncClient.getServiceStatisticsWithResponse&#40;&#41;
+     *     .subscribe&#40;serviceStatistics -&gt;
+     *         System.out.printf&#40;&quot;The status code of the response is %s.%n&quot;
+     *                 + &quot;There are %s search indexes in your service.%n&quot;,
+     *         serviceStatistics.getStatusCode&#40;&#41;,
+     *         serviceStatistics.getValue&#40;&#41;.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse -->
      *
      * @return the search service statistics result.
      */

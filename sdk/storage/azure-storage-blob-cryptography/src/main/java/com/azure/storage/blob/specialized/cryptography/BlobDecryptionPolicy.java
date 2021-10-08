@@ -14,7 +14,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -320,9 +319,9 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
             }
             return null;
         }
-        ObjectMapper objectMapper = new ObjectMapper();
+
         try {
-            EncryptionData encryptionData = objectMapper.readValue(encryptedDataString, EncryptionData.class);
+            EncryptionData encryptionData = EncryptionData.fromJsonString(encryptedDataString);
 
             // Blob being downloaded is not null.
             if (encryptionData == null) {

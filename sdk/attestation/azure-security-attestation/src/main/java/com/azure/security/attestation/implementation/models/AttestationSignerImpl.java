@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public class AttestationSignerImpl implements AttestationSigner {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
      /**
      * Sets the signing certificate.
@@ -135,8 +136,7 @@ public class AttestationSignerImpl implements AttestationSigner {
 
         JsonWebKey jsonWebKey;
         try {
-            ObjectMapper om = new ObjectMapper();
-            jsonWebKey = om.readValue(serializedKey, JsonWebKey.class);
+            jsonWebKey = MAPPER.readValue(serializedKey, JsonWebKey.class);
         } catch (JsonProcessingException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }

@@ -3,8 +3,11 @@
 
 package com.azure.storage.blob
 
-
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -70,11 +73,13 @@ import java.util.concurrent.atomic.AtomicInteger
 
 class BlobAPITest extends APISpec {
     BlobClient bc
+    BlobAsyncClient bcAsync
     String blobName
 
     def setup() {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName)
+        bcAsync = ccAsync.getBlobAsyncClient(blobName)
         bc.getBlockBlobClient().upload(data.defaultInputStream, data.defaultDataSize)
     }
 
@@ -240,7 +245,7 @@ class BlobAPITest extends APISpec {
     def "Upload successful retry"() {
         given:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             bc.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy())
 
@@ -413,7 +418,7 @@ class BlobAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def bu2 = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
+        def bu2 = getBlobClient(environment.primaryAccount.credential, bc.getBlobUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         when:
         def range = new BlobRange(2, 5L)
@@ -683,7 +688,7 @@ class BlobAPITest extends APISpec {
 
     def "Download retry default"() {
         setup:
-        def failureBlobClient = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), new MockFailureResponsePolicy(5))
+        def failureBlobClient = getBlobClient(environment.primaryAccount.credential, bc.getBlobUrl(), new MockFailureResponsePolicy(5))
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -893,8 +898,8 @@ class BlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceClient = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
             .buildClient()
 
         def blobClient = blobServiceClient.createBlobContainer(containerName)
@@ -940,8 +945,8 @@ class BlobAPITest extends APISpec {
         setup:
         def containerName = generateContainerName()
         def blobServiceAsyncClient = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
             .buildAsyncClient()
 
         def blobAsyncClient = blobServiceAsyncClient.createBlobContainer(containerName).block()
@@ -1148,12 +1153,13 @@ class BlobAPITest extends APISpec {
         expect:
         def bacUploading = instrument(new BlobClientBuilder()
             .endpoint(bc.getBlobUrl())
-            .credential(env.primaryAccount.credential))
+            .credential(environment.primaryAccount.credential))
             .buildAsyncClient()
             .getBlockBlobAsyncClient()
-
-        def bacDownloading = instrument(new BlobClientBuilder()
-            .addPolicy({ context, next ->
+        def dataLocal = data
+        def policy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
                 return next.process()
                     .flatMap({ r ->
                         if (counter.incrementAndGet() == 1) {
@@ -1161,14 +1167,17 @@ class BlobAPITest extends APISpec {
                              * When the download begins trigger an upload to overwrite the downloading blob
                              * so that the download is able to get an ETag before it is changed.
                              */
-                            return bacUploading.upload(data.defaultFlux, data.defaultDataSize, true)
-                            .thenReturn(r)
+                            return bacUploading.upload(dataLocal.defaultFlux, dataLocal.defaultDataSize, true)
+                                .thenReturn(r)
                         }
                         return Mono.just(r)
                     })
-            })
+            }
+        }
+        def bacDownloading = instrument(new BlobClientBuilder()
+            .addPolicy(policy)
             .endpoint(bc.getBlobUrl())
-            .credential(env.primaryAccount.credential))
+            .credential(environment.primaryAccount.credential))
             .buildAsyncClient()
             .getBlockBlobAsyncClient()
 
@@ -3045,7 +3054,7 @@ class BlobAPITest extends APISpec {
             .setPermissions(new BlobSasPermission().setReadPermission(true))
             .setContainerName(cc.getBlobContainerName())
             .setBlobName(blobName)
-            .generateSasQueryParameters(env.primaryAccount.credential)
+            .generateSasQueryParameters(environment.primaryAccount.credential)
             .encode()
         bcCopy.copyFromUrlWithResponse(bc.getBlobUrl().toString() + "?" + sas, null, tier2, null, null, null, null)
 
@@ -3164,10 +3173,10 @@ class BlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf({ getEnv().serviceVersion != null })
+    @IgnoreIf({ getEnvironment().serviceVersion != null })
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        bc = getBlobClient(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
+        bc = getBlobClient(environment.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
 
         when:
         def response = bc.getPropertiesWithResponse(null, null, null)
@@ -3175,5 +3184,15 @@ class BlobAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Specialized child client gets cached"() {
+        expect:
+        bc.getBlockBlobClient() == bc.getBlockBlobClient()
+        bc.getAppendBlobClient() == bc.getAppendBlobClient()
+        bc.getPageBlobClient() == bc.getPageBlobClient()
+        bcAsync.getBlockBlobAsyncClient() == bcAsync.getBlockBlobAsyncClient()
+        bcAsync.getAppendBlobAsyncClient() == bcAsync.getAppendBlobAsyncClient()
+        bcAsync.getPageBlobAsyncClient() == bcAsync.getPageBlobAsyncClient()
     }
 }
