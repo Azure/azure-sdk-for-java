@@ -44,6 +44,8 @@ stages:
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry
+      MatrixReplace:
+        - AdditionalTestGoals=.*/failsafe:integration-test failsafe:verify
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: core
