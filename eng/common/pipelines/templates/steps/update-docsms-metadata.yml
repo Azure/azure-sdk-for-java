@@ -28,7 +28,7 @@ parameters:
       - '**'
   - name: PipelineRequestBy
     type: string
-    default: $(Release.RequestedFor)   
+    default:  $(Build.RequestedFor) 
 
 steps:
 - template: /eng/common/pipelines/templates/steps/enable-long-path-support.yml
