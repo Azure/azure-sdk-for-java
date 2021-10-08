@@ -86,6 +86,42 @@ class AzureSeekableByteChannelTest extends APISpec {
         System.currentTimeMillis() < timeLimit // else potential inf. loop if read() always returns 0
     }
 
+    def "Read respect dest buffer pos"() {
+        setup:
+        def fileContent = new byte[sourceFileSize]
+        fileStream.read(fileContent)
+
+        def rand = new Random()
+        int initialOffset = rand.nextInt(512) + 1 // always > 0
+        def randArray = new byte[2 * initialOffset + sourceFileSize]
+        rand.nextBytes(randArray) // fill with random bytes
+        def destArray = randArray.clone() // same random bytes, but some will be overwritten by read()
+        def dest = ByteBuffer.wrap(destArray)
+        dest.position(initialOffset) // will have capacity on either side that should not be touched
+
+        when:
+        int readAmount = 0;
+        while (readAmount != -1) {
+            assert dest.position() != 0
+            readAmount = readByteChannel.read(dest) // backed by an array, but position != 0
+        }
+
+        then:
+        dest.position() == initialOffset + sourceFileSize
+        compareInputStreams( // destination content should match file content at initial read position
+            new ByteArrayInputStream(destArray, initialOffset, sourceFileSize),
+            new ByteArrayInputStream(fileContent),
+            sourceFileSize)
+        compareInputStreams( // destination content should be untouched prior to initial position
+            new ByteArrayInputStream(destArray, 0, initialOffset),
+            new ByteArrayInputStream(randArray, 0, initialOffset),
+            initialOffset)
+        compareInputStreams( // destination content should be untouched past end of read
+            new ByteArrayInputStream(destArray, initialOffset + sourceFileSize, initialOffset),
+            new ByteArrayInputStream(randArray, initialOffset + sourceFileSize, initialOffset),
+            initialOffset)
+    }
+
     def "Read fs close"() {
         when:
         fs.close()

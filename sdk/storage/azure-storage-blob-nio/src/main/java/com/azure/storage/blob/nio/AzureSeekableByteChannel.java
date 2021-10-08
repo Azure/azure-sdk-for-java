@@ -68,37 +68,42 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
             return -1; // at or past EOF
         }
 
-        int count = 0;
-
-        int len = dst.remaining();
-        byte[] buf;
-
         // If the buffer is backed by an array, we can write directly to that instead of allocating new memory.
+        int pos;
+        final int limit;
+        final byte[] buf;
         if (dst.hasArray()) {
+            pos = dst.position();
+            limit = pos + dst.remaining();
             buf = dst.array();
         } else {
-            buf = new byte[len];
+            pos = 0;
+            limit = dst.remaining();
+            buf = new byte[limit];
         }
 
-        while (count < len) {
-            int retCount = this.reader.read(buf, count, len - count);
-            if (retCount == -1) {
+        while (pos < limit) {
+            int byteCount = this.reader.read(buf, pos, limit - pos);
+            if (byteCount == -1) {
                 break;
             }
-            count += retCount;
+            pos += byteCount;
         }
 
         /*
         Either write to the destination if we had to buffer separately or just set the position correctly if we wrote
         underneath the buffer
          */
-        if (!dst.hasArray()) {
-            dst.put(buf, 0, count);
+        int count;
+        if (dst.hasArray()) {
+            count = pos - dst.position();
+            dst.position(pos);
         } else {
-            dst.position(dst.position() + count); //
+            count = pos; // original position was 0
+            dst.put(buf, 0, count);
         }
-        this.position += count;
 
+        this.position += count;
         return count;
     }
 
