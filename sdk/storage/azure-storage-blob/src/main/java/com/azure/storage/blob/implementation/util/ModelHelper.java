@@ -50,7 +50,7 @@ import java.util.Map;
  */
 public class ModelHelper {
 
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
 

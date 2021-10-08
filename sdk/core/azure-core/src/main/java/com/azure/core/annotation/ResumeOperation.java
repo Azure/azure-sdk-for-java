@@ -11,8 +11,11 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation for method representing continuation operation.
+ *
+ * @deprecated This interface is no longer used, or respected, in code.
  */
 @Retention(RUNTIME)
 @Target(METHOD)
+@Deprecated
 public @interface ResumeOperation {
 }

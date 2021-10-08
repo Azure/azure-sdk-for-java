@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -24,6 +25,13 @@ public final class DiskAccessInner extends Resource {
     @JsonProperty(value = "properties")
     private DiskAccessProperties innerProperties;
 
+    /*
+     * The extended location where the disk access will be created. Extended
+     * location cannot be changed.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
     /**
      * Get the innerProperties property: The properties property.
      *
@@ -31,6 +39,28 @@ public final class DiskAccessInner extends Resource {
      */
     private DiskAccessProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the extendedLocation property: The extended location where the disk access will be created. Extended location
+     * cannot be changed.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location where the disk access will be created. Extended location
+     * cannot be changed.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the DiskAccessInner object itself.
+     */
+    public DiskAccessInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -83,6 +113,9 @@ public final class DiskAccessInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

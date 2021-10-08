@@ -6,11 +6,14 @@ package com.azure.resourcemanager.kusto.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
+import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import com.azure.resourcemanager.kusto.models.AzureSku;
 import com.azure.resourcemanager.kusto.models.Cluster;
+import com.azure.resourcemanager.kusto.models.ClusterNetworkAccessFlag;
 import com.azure.resourcemanager.kusto.models.ClusterUpdate;
 import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
 import com.azure.resourcemanager.kusto.models.EngineType;
@@ -21,6 +24,7 @@ import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
@@ -60,6 +64,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public AzureSku sku() {
         return this.innerModel().sku();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public List<String> zones() {
@@ -140,8 +148,47 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().enableDoubleEncryption();
     }
 
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
+    public List<String> allowedIpRangeList() {
+        List<String> inner = this.innerModel().allowedIpRangeList();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public EngineType engineType() {
         return this.innerModel().engineType();
+    }
+
+    public List<AcceptedAudiences> acceptedAudiences() {
+        List<AcceptedAudiences> inner = this.innerModel().acceptedAudiences();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Boolean enableAutoStop() {
+        return this.innerModel().enableAutoStop();
+    }
+
+    public ClusterNetworkAccessFlag restrictOutboundNetworkAccess() {
+        return this.innerModel().restrictOutboundNetworkAccess();
+    }
+
+    public List<String> allowedFqdnList() {
+        List<String> inner = this.innerModel().allowedFqdnList();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -451,12 +498,72 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        }
+    }
+
+    public ClusterImpl withAllowedIpRangeList(List<String> allowedIpRangeList) {
+        if (isInCreateMode()) {
+            this.innerModel().withAllowedIpRangeList(allowedIpRangeList);
+            return this;
+        } else {
+            this.updateParameters.withAllowedIpRangeList(allowedIpRangeList);
+            return this;
+        }
+    }
+
     public ClusterImpl withEngineType(EngineType engineType) {
         if (isInCreateMode()) {
             this.innerModel().withEngineType(engineType);
             return this;
         } else {
             this.updateParameters.withEngineType(engineType);
+            return this;
+        }
+    }
+
+    public ClusterImpl withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences) {
+        if (isInCreateMode()) {
+            this.innerModel().withAcceptedAudiences(acceptedAudiences);
+            return this;
+        } else {
+            this.updateParameters.withAcceptedAudiences(acceptedAudiences);
+            return this;
+        }
+    }
+
+    public ClusterImpl withEnableAutoStop(Boolean enableAutoStop) {
+        if (isInCreateMode()) {
+            this.innerModel().withEnableAutoStop(enableAutoStop);
+            return this;
+        } else {
+            this.updateParameters.withEnableAutoStop(enableAutoStop);
+            return this;
+        }
+    }
+
+    public ClusterImpl withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withRestrictOutboundNetworkAccess(restrictOutboundNetworkAccess);
+            return this;
+        } else {
+            this.updateParameters.withRestrictOutboundNetworkAccess(restrictOutboundNetworkAccess);
+            return this;
+        }
+    }
+
+    public ClusterImpl withAllowedFqdnList(List<String> allowedFqdnList) {
+        if (isInCreateMode()) {
+            this.innerModel().withAllowedFqdnList(allowedFqdnList);
+            return this;
+        } else {
+            this.updateParameters.withAllowedFqdnList(allowedFqdnList);
             return this;
         }
     }

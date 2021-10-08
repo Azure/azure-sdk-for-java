@@ -8,177 +8,205 @@ pr:
     include:
       - eng/pipelines/aggregate-reports.yml
 
-jobs:
-  - job: Reporting
-    displayName: Generate reports (with build)
-    timeoutInMinutes: 180
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-    pool:
-      vmImage: 'ubuntu-20.04'
-    steps:
-    - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
-      parameters:
-        JobType: 'Reporting'
-        SDKType: 'client'
-        ServiceDirectory: 'aggregate-report'
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+
+stages:
+  - stage: AggregateReports
+    displayName: Aggregate Reports
+
+    jobs:
+      - job: Reporting
+        displayName: Generate reports (with build)
+        timeoutInMinutes: 180
+
+        pool:
+          vmImage: 'ubuntu-20.04'
+
+        steps:
+        - template: /eng/pipelines/templates/steps/cache-maven-repository.yml
+          parameters:
+            JobType: 'Reporting'
+            SDKType: 'client'
+            ServiceDirectory: 'aggregate-report'
 
 
-    # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-    # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-    - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+        # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+        # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
-    - task: Maven@3
-      displayName: 'Build All Libraries'
-      inputs:
-        mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
-        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaBuildVersion)
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'clean install'
+        - task: Maven@3
+          displayName: 'Build All Libraries'
+          inputs:
+            mavenPomFile: pom.xml
+            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaBuildVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: 'clean install'
 
-    - task: Maven@3
-      displayName: 'Generate Reports'
-      inputs:
-        mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Paggregatereports'
-        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaBuildVersion)
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'verify site:site site:stage'
+        - task: Maven@3
+          displayName: 'Generate Reports'
+          inputs:
+            mavenPomFile: pom.xml
+            options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Paggregatereports'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaBuildVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: 'verify site:site site:stage'
 
-    - task: Maven@3
-      condition: succeededOrFailed()
-      displayName: 'Generate BOM Reports'
-      inputs:
-        mavenPomFile: eng/bomgenerator/pom.xml
-        options: '$(DefaultOptions)'
-        mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaBuildVersion)
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'clean package'
+        - task: Maven@3
+          condition: succeededOrFailed()
+          displayName: 'Generate BOM Reports'
+          inputs:
+            mavenPomFile: eng/bomgenerator/pom.xml
+            options: '$(DefaultOptions)'
+            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+            javaHomeOption: 'JDKVersion'
+            jdkVersionOption: $(JavaBuildVersion)
+            jdkArchitectureOption: 'x64'
+            publishJUnitResults: false
+            goals: 'clean package'
 
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        mergeTestResults: true
-        testRunTitle: 'Linux on Java $(JavaBuildVersion)'
+        - task: PublishTestResults@2
+          condition: succeededOrFailed()
+          inputs:
+            mergeTestResults: true
+            testRunTitle: 'Linux on Java $(JavaBuildVersion)'
 
-    # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
-    # Code coverage reporting is setup only for Track 2 modules.
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: JaCoCo
-        summaryFileLocation: target/site/test-coverage/jacoco.xml
-        reportDirectory: target/site/test-coverage/
-        failIfCoverageEmpty: false
+        # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
+        # Code coverage reporting is setup only for Track 2 modules.
+        - task: PublishCodeCoverageResults@1
+          inputs:
+            codeCoverageTool: JaCoCo
+            summaryFileLocation: target/site/test-coverage/jacoco.xml
+            reportDirectory: target/site/test-coverage/
+            failIfCoverageEmpty: false
 
-    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
-    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
-    - task: PublishPipelineArtifact@0
-      displayName: 'Publish coverage artifact'
-      inputs:
-        artifactName: coverage
-        targetPath: target/site/
+        # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+        # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+        - task: PublishPipelineArtifact@0
+          displayName: 'Publish coverage artifact'
+          inputs:
+            artifactName: coverage
+            targetPath: target/site/
 
-    - pwsh: |
-        $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
-      displayName: Generate Interdependency Report Data
+        - pwsh: |
+            $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
+          displayName: Generate Interdependency Report Data
 
-    - pwsh: |
-        Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+        - pwsh: |
+            Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
+            Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+            Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
-        Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
-        Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
-      displayName: 'Copy reports to artifact staging'
+            Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
+            Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
+          displayName: 'Copy reports to artifact staging'
 
-    - pwsh: |
-        Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
+        - pwsh: |
+            Copy-Item eng/bomgenerator/target/dependency_conflictlist.html $(Build.ArtifactStagingDirectory)/staging
 
-      displayName: 'Copy BOM report to artifact staging'
-      condition: succeededOrFailed()
+          displayName: 'Copy BOM report to artifact staging'
+          condition: succeededOrFailed()
 
 
-    - publish: $(Build.ArtifactStagingDirectory)
-      condition: succeededOrFailed()
-      displayName: 'Publish Report Artifacts'
-      artifact: reports
+        - publish: $(Build.ArtifactStagingDirectory)
+          condition: succeededOrFailed()
+          displayName: 'Publish Report Artifacts'
+          artifact: reports
 
-    - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+        - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
-  - job: Compliance
-    displayName: Analyze (no build)
-    timeoutInMinutes: 120
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-    pool:
-      # CredScan build task is Windows only (https://aka.ms/credscan).
-      vmImage: 'windows-2019'
-    steps:
-    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-      # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-      # builds should be sufficient.
-      # Only run if building all libraries succeeded.
-      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-      displayName: 'Component Detection'
+      - job: Compliance
+        displayName: Analyze (no build)
+        timeoutInMinutes: 120
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+        pool:
+          # CredScan build task is Windows only (https://aka.ms/credscan).
+          vmImage: 'windows-2019'
+        steps:
+        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+          # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+          # builds should be sufficient.
+          # Only run if building all libraries succeeded.
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          displayName: 'Component Detection'
 
-    # Put cred scan step before install and build packages to avoid the tool scans generated folder like /target.
-    - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
-      displayName: 'Run CredScan'
-      inputs:
-        suppressionsFile: 'eng\CredScanSuppression.json'
-      condition: succeededOrFailed()
-    - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
-      displayName: 'Post Analysis'
-      inputs:
-        GdnBreakAllTools: false
-        GdnBreakGdnToolCredScan: true
-        GdnBreakGdnToolCredScanSeverity: Error
-        GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
-        GdnBreakBaselines: baseline
-        # Used for generating baseline file.
-        # GdnBreakOutputBaselineFile: java
-        # GdnBreakOutputBaseline: baseline
-      condition: succeededOrFailed()
-      continueOnError: true
-    - pwsh: |
-        $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
-        $csvRows = @()
-        $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
-        $results | ForEach-Object {
-          $csvRows += [pscustomobject]@{
-            ruleId = $_.ruleId
-            ruleIndex = $_.ruleIndex
-            fingerprints = $_.fingerprints
-            message = $_.message
-            properties = $_.properties
-            rank = $_.rank
-            fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
-            startLine = $_.locations.physicalLocation.region.startLine
-            startColumn = $_.locations.physicalLocation.region.startColumn
-            endLine = $_.locations.physicalLocation.region.endLine
-            endColumn = $_.locations.physicalLocation.region.endColumn
-            level = $_.level
-          }
-        }
-        $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
-      displayName: Add converted csv file for CredScan-matches.sarif
-    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
-      displayName: 'Publish Security Analysis Logs'
-      condition: succeededOrFailed()
-    # Run link verification at the end as it will run no matter the pipeline passing or failing.
-    # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
-    - template: /eng/common/pipelines/templates/steps/verify-links.yml
-      parameters:
-        Directory: ""
-        CheckLinkGuidance: $true
-        Condition: succeededOrFailed()
+        # Run link verification at the end as it will run no matter the pipeline passing or failing.
+        # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
+        - template: /eng/common/pipelines/templates/steps/verify-links.yml
+          parameters:
+            Directory: ""
+            CheckLinkGuidance: $true
+            Condition: succeededOrFailed()
+
+  - stage: ComplianceTools
+    displayName: Compliance Tools
+    dependsOn: []
+
+    jobs:
+      - job: ComplianceTools
+        timeoutInMinutes: 120
+
+        pool:
+          name: azsdk-pool-mms-win-2019-general
+          vmImage: MMS2019
+
+        steps:
+          - template: /eng/common/pipelines/templates/steps/policheck.yml
+            parameters:
+              ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
+              PublishAnalysisLogs: false
+          
+          - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+            displayName: 'Run CredScan'
+            inputs:
+              suppressionsFile: 'eng\CredScanSuppression.json'
+            condition: succeededOrFailed()
+
+          - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
+            displayName: 'Post Analysis'
+            inputs:
+              GdnBreakAllTools: false
+              GdnBreakGdnToolCredScan: true
+              GdnBreakGdnToolCredScanSeverity: Error
+              GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
+              GdnBreakBaselines: baseline
+              # Used for generating baseline file.
+              # GdnBreakOutputBaselineFile: java
+              # GdnBreakOutputBaseline: baseline
+            condition: succeededOrFailed()
+            continueOnError: true
+
+          - pwsh: |
+              $results = (Get-Content "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.sarif" | ConvertFrom-Json).runs.results
+              $csvRows = @()
+              $pathMatchRegex = ("$(Build.SourcesDirectory)" -replace "\\", "/")
+              $results | ForEach-Object {
+                $csvRows += [pscustomobject]@{
+                  ruleId = $_.ruleId
+                  ruleIndex = $_.ruleIndex
+                  fingerprints = $_.fingerprints
+                  message = $_.message
+                  properties = $_.properties
+                  rank = $_.rank
+                  fileName = $_.analysisTarget.uri -replace ".*$pathMatchRegex(.*)", "https://github.com/Azure/azure-sdk-for-java/blob/main/`$1"
+                  startLine = $_.locations.physicalLocation.region.startLine
+                  startColumn = $_.locations.physicalLocation.region.startColumn
+                  endLine = $_.locations.physicalLocation.region.endLine
+                  endColumn = $_.locations.physicalLocation.region.endColumn
+                  level = $_.level
+                }
+              }
+              $csvRows | Export-Csv -Path "$(Pipeline.workspace)\.gdn\.r\CredScan\001\CredScan-matches.csv" -NoTypeInformation
+            displayName: Add converted csv file for CredScan-matches.sarif
+
+          - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
+            displayName: 'Publish Security Analysis Logs'
+            condition: succeededOrFailed()

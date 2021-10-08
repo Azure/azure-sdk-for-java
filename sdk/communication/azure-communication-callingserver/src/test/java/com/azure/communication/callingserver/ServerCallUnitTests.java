@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.azure.communication.callingserver.models.RecordingChannel;
+import com.azure.communication.callingserver.models.RecordingContent;
+import com.azure.communication.callingserver.models.RecordingFormat;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.OperationStatus;
@@ -41,6 +45,24 @@ public class ServerCallUnitTests {
     }
 
     @Test
+    public void startRecordingWithRecordingParamsRelativeUriFails() {
+        StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
+        startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
+        startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
+        startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
+
+        ServerCall serverCall = new CallingServerClientBuilder()
+            .httpClient(new NoOpHttpClient())
+            .connectionString(MOCK_CONNECTION_STRING)
+            .buildClient()
+            .initializeServerCall(serverCallId);
+
+        assertThrows(
+            InvalidParameterException.class,
+            () -> serverCall.startRecordingWithResponse("/not/absolute/uri", startRecordingOptions, null));
+    }
+
+    @Test
     public void startRecordingWithResponseRelativeUriFails() {
         ServerCall serverCall = new CallingServerClientBuilder()
             .httpClient(new NoOpHttpClient())
@@ -50,7 +72,7 @@ public class ServerCallUnitTests {
 
         assertThrows(
             InvalidParameterException.class,
-            () -> serverCall.startRecordingWithResponse("/not/absolute/uri", null));
+            () -> serverCall.startRecordingWithResponse("/not/absolute/uri", null, null));
     }
 
     @Test
@@ -77,6 +99,25 @@ public class ServerCallUnitTests {
         assertThrows(
             InvalidParameterException.class,
             () -> serverCall.startRecording("/not/absolute/uri")
+                .block());
+    }
+
+    @Test
+    public void startRecordingWithRecordingParamsAsyncFails() {
+        StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
+        startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
+        startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
+        startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
+
+        ServerCallAsync serverCall = new CallingServerClientBuilder()
+            .httpClient(new NoOpHttpClient())
+            .connectionString(MOCK_CONNECTION_STRING)
+            .buildAsyncClient()
+            .initializeServerCall(serverCallId);
+
+        assertThrows(
+            InvalidParameterException.class,
+            () -> serverCall.startRecordingWithResponse("/not/absolute/uri", startRecordingOptions, null)
                 .block());
     }
 

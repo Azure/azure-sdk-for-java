@@ -6,37 +6,29 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.AzureActiveDirectoryLoginProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The configuration settings of the Azure Active Directory login flow. */
 @Fluent
-public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
+public final class AzureActiveDirectoryLogin {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectoryLogin.class);
 
     /*
-     * AzureActiveDirectoryLogin resource specific properties
+     * Login parameters to send to the OpenID Connect authorization endpoint
+     * when
+     * a user logs in. Each parameter must be in the form "key=value".
      */
-    @JsonProperty(value = "properties")
-    private AzureActiveDirectoryLoginProperties innerProperties;
+    @JsonProperty(value = "loginParameters")
+    private List<String> loginParameters;
 
-    /**
-     * Get the innerProperties property: AzureActiveDirectoryLogin resource specific properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * <code>true</code> if the www-authenticate provider should be omitted
+     * from the request; otherwise, <code>false</code>.
      */
-    private AzureActiveDirectoryLoginProperties innerProperties() {
-        return this.innerProperties;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureActiveDirectoryLogin withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
+    @JsonProperty(value = "disableWWWAuthenticate")
+    private Boolean disableWwwAuthenticate;
 
     /**
      * Get the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when a
@@ -45,7 +37,7 @@ public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
      * @return the loginParameters value.
      */
     public List<String> loginParameters() {
-        return this.innerProperties() == null ? null : this.innerProperties().loginParameters();
+        return this.loginParameters;
     }
 
     /**
@@ -56,10 +48,7 @@ public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
      * @return the AzureActiveDirectoryLogin object itself.
      */
     public AzureActiveDirectoryLogin withLoginParameters(List<String> loginParameters) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryLoginProperties();
-        }
-        this.innerProperties().withLoginParameters(loginParameters);
+        this.loginParameters = loginParameters;
         return this;
     }
 
@@ -70,7 +59,7 @@ public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
      * @return the disableWwwAuthenticate value.
      */
     public Boolean disableWwwAuthenticate() {
-        return this.innerProperties() == null ? null : this.innerProperties().disableWwwAuthenticate();
+        return this.disableWwwAuthenticate;
     }
 
     /**
@@ -81,10 +70,7 @@ public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
      * @return the AzureActiveDirectoryLogin object itself.
      */
     public AzureActiveDirectoryLogin withDisableWwwAuthenticate(Boolean disableWwwAuthenticate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AzureActiveDirectoryLoginProperties();
-        }
-        this.innerProperties().withDisableWwwAuthenticate(disableWwwAuthenticate);
+        this.disableWwwAuthenticate = disableWwwAuthenticate;
         return this;
     }
 
@@ -93,11 +79,6 @@ public final class AzureActiveDirectoryLogin extends ProxyOnlyResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
     }
 }

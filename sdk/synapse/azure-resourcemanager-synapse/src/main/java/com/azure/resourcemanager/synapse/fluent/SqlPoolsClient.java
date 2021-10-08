@@ -57,7 +57,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SqlPoolInner update(
@@ -74,7 +74,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SqlPoolInner> updateWithResponse(
@@ -94,7 +94,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
@@ -111,7 +111,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
@@ -127,7 +127,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SqlPoolInner create(String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo);
@@ -143,7 +143,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL Analytics pool.
+     * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SqlPoolInner create(
@@ -217,7 +217,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName);
@@ -231,7 +231,7 @@ public interface SqlPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName, Context context);

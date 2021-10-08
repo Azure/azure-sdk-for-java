@@ -1480,7 +1480,7 @@ class VirtualMachineImpl
 
     @Override
     public String osUnmanagedDiskVhdUri() {
-        if (isManagedDiskEnabled()) {
+        if (isManagedDiskEnabled() || this.storageProfile().osDisk().vhd() == null) {
             return null;
         }
         return innerModel().storageProfile().osDisk().vhd().uri();

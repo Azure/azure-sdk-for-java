@@ -14,7 +14,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  * Extended options that may be passed when appending a block from a source URL.
  */
 @Fluent
-public class AppendBlobAppendBlockFromUrlOptions {
+public final class AppendBlobAppendBlockFromUrlOptions {
     private final String sourceUrl;
     private BlobRange sourceRange;
     private byte[] sourceContentMd5;

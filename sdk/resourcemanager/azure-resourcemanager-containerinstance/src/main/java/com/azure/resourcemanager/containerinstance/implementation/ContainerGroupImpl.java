@@ -459,10 +459,9 @@ public class ContainerGroupImpl
     @Override
     public ContainerGroupImpl withExistingNetworkProfile(String networkProfileId) {
         this.innerModel().withNetworkProfile(new ContainerGroupNetworkProfile().withId(networkProfileId));
-        if (this.innerModel().ipAddress() == null) {
-            this.innerModel().withIpAddress(new IpAddress());
+        if (this.innerModel().ipAddress() != null) {
+            this.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
         }
-        this.innerModel().ipAddress().withType(ContainerGroupIpAddressType.PRIVATE);
         return this;
     }
 

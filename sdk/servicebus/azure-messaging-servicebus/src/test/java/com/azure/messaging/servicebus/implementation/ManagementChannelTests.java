@@ -142,7 +142,7 @@ class ManagementChannelTests {
     @AfterEach
     void teardown(TestInfo testInfo) {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

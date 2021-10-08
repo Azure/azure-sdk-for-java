@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/%2FAzure%2Fiot-plugandplay-models%2Fmain%2Fmetadata.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c1df76ad-7678-4dfb-8ff5-37d956634207"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "117",
+      "Access-Control-Allow-Origin" : "*",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "301",
+      "Source-Age" : "3151",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551638.736753,VS0,VE1",
+      "Accept-Ranges" : "bytes",
+      "X-Served-By" : "cache-sea4481-SEA",
+      "Vary" : "Authorization,Accept-Encoding",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-Cache-Hits" : "1",
+      "Body" : "<a href=\"/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json\">Moved Permanently</a>.\n\n",
+      "X-Fastly-Request-ID" : "8e1f2b87ec661ad60631285a5fe0d96514e365d2",
+      "Content-Type" : "text/html; charset=utf-8",
+      "Location" : "/Azure/iot-plugandplay-models/main/Azure/iot-plugandplay-models/main/metadata.json",
+      "X-GitHub-Request-Id" : "3658:1B57:376C8:48218:615DF8C6"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.githubusercontent.com/Azure/iot-plugandplay-models/main/dtmi%2Fcom%2Fexample%2Fthermostatddd-1.json",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-modelsrepository/1.0.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fdd06ab2-74ce-4ffd-a880-919642f59d4d"
+    },
+    "Response" : {
+      "X-Cache" : "HIT",
+      "content-length" : "14",
+      "Access-Control-Allow-Origin" : "*",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Source-Age" : "15",
+      "Date" : "Wed, 06 Oct 2021 20:20:37 GMT",
+      "Via" : "1.1 varnish",
+      "X-Timer" : "S1633551638.793259,VS0,VE1",
+      "X-Frame-Options" : "deny",
+      "Accept-Ranges" : "bytes",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "X-Served-By" : "cache-sea4481-SEA",
+      "Content-Security-Policy" : "default-src 'none'; style-src 'unsafe-inline'; sandbox",
+      "Vary" : "Authorization,Accept-Encoding,Origin",
+      "Expires" : "Wed, 06 Oct 2021 20:25:37 GMT",
+      "X-XSS-Protection" : "1; mode=block",
+      "X-Cache-Hits" : "1",
+      "Body" : "404: Not Found",
+      "X-Fastly-Request-ID" : "4b3fa9f84ad37624375c7db2b6d442ad910de934",
+      "Content-Type" : "text/plain; charset=utf-8",
+      "X-GitHub-Request-Id" : "7C18:1911:33727:48D74:615E0506"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

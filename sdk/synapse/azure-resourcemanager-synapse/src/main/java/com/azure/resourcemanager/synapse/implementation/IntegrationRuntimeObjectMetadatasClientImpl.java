@@ -147,6 +147,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         if (getMetadataRequest != null) {
             getMetadataRequest.validate();
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -154,7 +155,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
                     service
                         .list(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -212,12 +213,13 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         if (getMetadataRequest != null) {
             getMetadataRequest.validate();
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -363,6 +365,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
                 .error(
                     new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -370,7 +373,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
                     service
                         .refresh(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -419,12 +422,13 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
                 .error(
                     new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .refresh(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

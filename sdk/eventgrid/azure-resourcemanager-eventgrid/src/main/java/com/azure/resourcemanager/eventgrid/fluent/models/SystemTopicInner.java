@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,10 +15,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** EventGrid System Topic. */
-@JsonFlatten
 @Fluent
-public class SystemTopicInner extends Resource {
+public final class SystemTopicInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SystemTopicInner.class);
+
+    /*
+     * Properties of the system topic.
+     */
+    @JsonProperty(value = "properties")
+    private SystemTopicProperties innerProperties;
 
     /*
      * The system metadata relating to System Topic resource.
@@ -33,29 +37,14 @@ public class SystemTopicInner extends Resource {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /*
-     * Provisioning state of the system topic.
+    /**
+     * Get the innerProperties property: Properties of the system topic.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceProvisioningState provisioningState;
-
-    /*
-     * Source for the system topic.
-     */
-    @JsonProperty(value = "properties.source")
-    private String source;
-
-    /*
-     * TopicType for the system topic.
-     */
-    @JsonProperty(value = "properties.topicType")
-    private String topicType;
-
-    /*
-     * Metric resource id for the system topic.
-     */
-    @JsonProperty(value = "properties.metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricResourceId;
+    private SystemTopicProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to System Topic resource.
@@ -86,64 +75,6 @@ public class SystemTopicInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the provisioningState property: Provisioning state of the system topic.
-     *
-     * @return the provisioningState value.
-     */
-    public ResourceProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the source property: Source for the system topic.
-     *
-     * @return the source value.
-     */
-    public String source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: Source for the system topic.
-     *
-     * @param source the source value to set.
-     * @return the SystemTopicInner object itself.
-     */
-    public SystemTopicInner withSource(String source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the topicType property: TopicType for the system topic.
-     *
-     * @return the topicType value.
-     */
-    public String topicType() {
-        return this.topicType;
-    }
-
-    /**
-     * Set the topicType property: TopicType for the system topic.
-     *
-     * @param topicType the topicType value to set.
-     * @return the SystemTopicInner object itself.
-     */
-    public SystemTopicInner withTopicType(String topicType) {
-        this.topicType = topicType;
-        return this;
-    }
-
-    /**
-     * Get the metricResourceId property: Metric resource id for the system topic.
-     *
-     * @return the metricResourceId value.
-     */
-    public String metricResourceId() {
-        return this.metricResourceId;
-    }
-
     /** {@inheritDoc} */
     @Override
     public SystemTopicInner withLocation(String location) {
@@ -159,11 +90,78 @@ public class SystemTopicInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the system topic.
+     *
+     * @return the provisioningState value.
+     */
+    public ResourceProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the source property: Source for the system topic.
+     *
+     * @return the source value.
+     */
+    public String source() {
+        return this.innerProperties() == null ? null : this.innerProperties().source();
+    }
+
+    /**
+     * Set the source property: Source for the system topic.
+     *
+     * @param source the source value to set.
+     * @return the SystemTopicInner object itself.
+     */
+    public SystemTopicInner withSource(String source) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SystemTopicProperties();
+        }
+        this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the topicType property: TopicType for the system topic.
+     *
+     * @return the topicType value.
+     */
+    public String topicType() {
+        return this.innerProperties() == null ? null : this.innerProperties().topicType();
+    }
+
+    /**
+     * Set the topicType property: TopicType for the system topic.
+     *
+     * @param topicType the topicType value to set.
+     * @return the SystemTopicInner object itself.
+     */
+    public SystemTopicInner withTopicType(String topicType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SystemTopicProperties();
+        }
+        this.innerProperties().withTopicType(topicType);
+        return this;
+    }
+
+    /**
+     * Get the metricResourceId property: Metric resource id for the system topic.
+     *
+     * @return the metricResourceId value.
+     */
+    public String metricResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricResourceId();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

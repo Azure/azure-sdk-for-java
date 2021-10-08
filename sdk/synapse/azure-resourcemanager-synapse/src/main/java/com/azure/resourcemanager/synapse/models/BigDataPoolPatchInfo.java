@@ -7,10 +7,11 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties patch for a Big Data pool. */
+/** Patch for a Big Data pool Properties patch for a Big Data pool. */
 @Fluent
 public final class BigDataPoolPatchInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolPatchInfo.class);
@@ -19,6 +20,7 @@ public final class BigDataPoolPatchInfo {
      * Updated tags for the Big Data pool
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**

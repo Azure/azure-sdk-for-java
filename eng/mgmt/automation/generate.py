@@ -48,7 +48,11 @@ def generate(
         module,
     )
     shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors = True)
-    shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
+    if os.path.exists(os.path.join(output_dir, 'src/samples/README.md')):
+        # samples contains hand-written code
+        shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'), ignore_errors = True)
+    else:
+        shutil.rmtree(os.path.join(output_dir, 'src/samples'), ignore_errors = True)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -81,7 +85,7 @@ def generate(
 def compile_package(sdk_root, service):
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
-            'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
@@ -97,7 +101,7 @@ def generate_changelog_and_breaking_change(
     logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(
         old_jar, new_jar))
     stdout = subprocess.run(
-        'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
+        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
         .format(sdk_root, old_jar, new_jar),
         stdout = subprocess.PIPE,
         shell = True,
@@ -130,6 +134,8 @@ def update_changelog(changelog_file, changelog):
 
     first_version_part = old_changelog[:first_version.end() +
                                        second_version.start()]
+    # remove text starting from the first '###' (usually the block '### Features Added')
+    first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
     first_version_part += '\n\n' + changelog.strip() + '\n\n'
 
@@ -142,6 +148,8 @@ def update_changelog(changelog_file, changelog):
 
 def compare_with_maven_package(sdk_root, service, stable_version,
                                current_version):
+    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
+
     if stable_version == current_version:
         logging.info('[Changelog][Skip] no previous version')
         return
