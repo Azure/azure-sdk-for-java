@@ -137,8 +137,8 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @weidongxu-microsoft @qwordy @haolingdong-msft
-/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @qwordy @haolingdong-msft
+/sdk/resourcemanager/                               @weidongxu-microsoft @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @haolingdong-msft
 
 # Quantum
 # PRLabel: %Azure Quantum
