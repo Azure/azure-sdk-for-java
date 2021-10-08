@@ -193,8 +193,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-data-schemaregistry-avro</artifactId>
-      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-avro;current} -->
+      <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
