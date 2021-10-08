@@ -590,10 +590,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             actualDocument.getFields().forEach((key, documentField) -> {
                 // document fields
 
-                // if ("Tax".equals(key)) {
-                //     // incorrect reporting to 140
-                //     assertEquals("$4.00", documentField.getValueString());
-                // }
+                if ("Tax".equals(key)) {
+                    assertEquals("$4.00", documentField.getValueString());
+                }
                 if ("Signature".equals(key)) {
                     assertEquals("Bernie Sanders", documentField.getValueString());
                 } else if ("Email".equals(key)) {
@@ -623,10 +622,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                     assertEquals("938 NE Burner Road Boulder City, CO 92848",
                         documentField.getValueString());
                 }
-                // else if ("Subtotal".equals(key)) {
-                // returned as null currently
-                // assertEquals("$140.00", documentField.getValueString());
-                // }
+                else if ("Subtotal".equals(key)) {
+                assertEquals("$140.00", documentField.getValueString());
+                }
             });
         });
     }
@@ -650,10 +648,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
             validateDocumentPage(actualDocumentPage);
         });
-        Assertions.assertEquals(0, analyzeResult.getTables().size());
+        assertNull(analyzeResult.getTables());
 
         analyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals("custom:", actualDocument.getDocType());
             actualDocument.getFields().forEach((key, documentField) -> {
                 if ("AMEX_SELECTION_MARK".equals(key)) {
                     assertEquals(SelectionMarkState.SELECTED, documentField.getValueSelectionMark());
