@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +26,19 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
     @JsonProperty(value = "instanceCount")
     private Integer instanceCount;
 
+    /*
+     * Delay duration for RequestDrain feature to ensures that the endpoint
+     * advertised by the stateless instance is removed before the delay starts
+     * prior to closing the instance. This delay enables existing requests to
+     * drain gracefully before the instance actually goes down
+     * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
+     * It is first interpreted as a string representing an ISO 8601 duration.
+     * If that fails, then it is interpreted as a number representing the total
+     * number of milliseconds.
+     */
+    @JsonProperty(value = "instanceCloseDelayDuration")
+    private String instanceCloseDelayDuration;
+
     /**
      * Get the instanceCount property: The instance count.
      *
@@ -42,6 +56,36 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      */
     public StatelessServiceProperties withInstanceCount(Integer instanceCount) {
         this.instanceCount = instanceCount;
+        return this;
+    }
+
+    /**
+     * Get the instanceCloseDelayDuration property: Delay duration for RequestDrain feature to ensures that the endpoint
+     * advertised by the stateless instance is removed before the delay starts prior to closing the instance. This delay
+     * enables existing requests to drain gracefully before the instance actually goes down
+     * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
+     * It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a
+     * number representing the total number of milliseconds.
+     *
+     * @return the instanceCloseDelayDuration value.
+     */
+    public String instanceCloseDelayDuration() {
+        return this.instanceCloseDelayDuration;
+    }
+
+    /**
+     * Set the instanceCloseDelayDuration property: Delay duration for RequestDrain feature to ensures that the endpoint
+     * advertised by the stateless instance is removed before the delay starts prior to closing the instance. This delay
+     * enables existing requests to drain gracefully before the instance actually goes down
+     * (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-application-upgrade-advanced#avoid-connection-drops-during-stateless-service-planned-downtime-preview).
+     * It is first interpreted as a string representing an ISO 8601 duration. If that fails, then it is interpreted as a
+     * number representing the total number of milliseconds.
+     *
+     * @param instanceCloseDelayDuration the instanceCloseDelayDuration value to set.
+     * @return the StatelessServiceProperties object itself.
+     */
+    public StatelessServiceProperties withInstanceCloseDelayDuration(String instanceCloseDelayDuration) {
+        this.instanceCloseDelayDuration = instanceCloseDelayDuration;
         return this;
     }
 
@@ -64,6 +108,13 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
     public StatelessServiceProperties withServicePackageActivationMode(
         ArmServicePackageActivationMode servicePackageActivationMode) {
         super.withServicePackageActivationMode(servicePackageActivationMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StatelessServiceProperties withServiceDnsName(String serviceDnsName) {
+        super.withServiceDnsName(serviceDnsName);
         return this;
     }
 

@@ -11,7 +11,6 @@ module com.azure.http.netty {
     requires io.netty.handler.proxy;
     requires io.netty.resolver;
     requires io.netty.transport;
-    requires reactor.netty;
     requires reactor.netty.core;
     requires reactor.netty.http;
 

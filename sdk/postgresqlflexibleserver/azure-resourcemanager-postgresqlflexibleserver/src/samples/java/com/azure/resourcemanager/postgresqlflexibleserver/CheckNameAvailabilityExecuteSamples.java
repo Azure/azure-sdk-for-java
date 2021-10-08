@@ -9,16 +9,18 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilit
 
 /** Samples for CheckNameAvailability Execute. */
 public final class CheckNameAvailabilityExecuteSamples {
+    /*
+     * operationId: CheckNameAvailability_Execute
+     * api-version: 2021-06-01
+     * x-ms-examples: NameAvailability
+     */
     /**
      * Sample code: NameAvailability.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void nameAvailability(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager
+    public static void nameAvailability(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
             .checkNameAvailabilities()
             .executeWithResponse(
                 new NameAvailabilityRequest().withName("name1").withType("Microsoft.DBforPostgreSQL/flexibleServers"),

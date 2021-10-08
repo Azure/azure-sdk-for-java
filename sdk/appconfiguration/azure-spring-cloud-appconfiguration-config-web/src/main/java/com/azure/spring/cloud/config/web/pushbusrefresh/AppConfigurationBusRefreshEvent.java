@@ -8,12 +8,17 @@ import org.springframework.cloud.bus.event.RemoteApplicationEvent;
 /**
  * Event sent to all instances registered to the Bus to set the App Configuration watch interval to zero.
  */
-public class AppConfigurationBusRefreshEvent extends RemoteApplicationEvent {
+public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEvent {
 
     private static final long serialVersionUID = 1L;
 
     private String endpoint;
 
+    /**
+     * Event object for when a push event is triggered from a web hook. This event is sent to all registered application instances.
+     * 
+     * @param endpoint App Configuration Store endpoint that is requesting a refresh.
+     */
     AppConfigurationBusRefreshEvent(String endpoint, AppConfigurationBusRefreshEndpoint source, String origin, Destination destination) {
         super("App Configuration Refresh Event", origin, destination);
         this.endpoint = endpoint;
@@ -24,6 +29,8 @@ public class AppConfigurationBusRefreshEvent extends RemoteApplicationEvent {
     }
 
     /**
+     * Endpoint of the App Configuration store that triggered the Event.
+     * 
      * @return the endpoint
      */
     public String getEndpoint() {

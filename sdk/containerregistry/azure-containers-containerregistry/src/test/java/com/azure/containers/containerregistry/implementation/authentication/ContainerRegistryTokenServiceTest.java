@@ -73,6 +73,7 @@ public class ContainerRegistryTokenServiceTest {
             this.tokenCredential,
             null,
             "myString",
+            null,
             this.httpPipeline,
             this.serializerAdapter
         );

@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit&api-version=2021-09-30-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "20fadecd-52b7-454f-81fb-a60afcbc8408",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "9",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "3d5bcc10-cc67-4d09-9021-8b02e475a9fd",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
+      "Date" : "Mon, 27 Sep 2021 17:56:43 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

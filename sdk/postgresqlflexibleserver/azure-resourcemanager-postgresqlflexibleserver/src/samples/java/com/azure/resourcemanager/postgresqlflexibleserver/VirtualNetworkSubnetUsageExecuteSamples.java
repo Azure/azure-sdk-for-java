@@ -9,16 +9,19 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkS
 
 /** Samples for VirtualNetworkSubnetUsage Execute. */
 public final class VirtualNetworkSubnetUsageExecuteSamples {
+    /*
+     * operationId: VirtualNetworkSubnetUsage_Execute
+     * api-version: 2021-06-01
+     * x-ms-examples: VirtualNetworkSubnetUsageList
+     */
     /**
      * Sample code: VirtualNetworkSubnetUsageList.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void virtualNetworkSubnetUsageList(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
             .virtualNetworkSubnetUsages()
             .executeWithResponse(
                 "westus",

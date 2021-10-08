@@ -43,6 +43,12 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
     private SubResource defaultRedirectConfiguration;
 
     /*
+     * Default Load Distribution Policy resource of URL path map.
+     */
+    @JsonProperty(value = "defaultLoadDistributionPolicy")
+    private SubResource defaultLoadDistributionPolicy;
+
+    /*
      * Path rule of URL path map resource.
      */
     @JsonProperty(value = "pathRules")
@@ -134,6 +140,27 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
     public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultRedirectConfiguration(
         SubResource defaultRedirectConfiguration) {
         this.defaultRedirectConfiguration = defaultRedirectConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
+     *
+     * @return the defaultLoadDistributionPolicy value.
+     */
+    public SubResource defaultLoadDistributionPolicy() {
+        return this.defaultLoadDistributionPolicy;
+    }
+
+    /**
+     * Set the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
+     *
+     * @param defaultLoadDistributionPolicy the defaultLoadDistributionPolicy value to set.
+     * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
+     */
+    public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultLoadDistributionPolicy(
+        SubResource defaultLoadDistributionPolicy) {
+        this.defaultLoadDistributionPolicy = defaultLoadDistributionPolicy;
         return this;
     }
 

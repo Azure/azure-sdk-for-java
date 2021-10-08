@@ -10,10 +10,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
+import com.azure.resourcemanager.network.models.ExplicitProxySettings;
 import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
 import com.azure.resourcemanager.network.models.FirewallPolicySku;
 import com.azure.resourcemanager.network.models.FirewallPolicySnat;
+import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
@@ -276,6 +278,29 @@ public final class FirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the sql property: SQL Settings definition.
+     *
+     * @return the sql value.
+     */
+    public FirewallPolicySql sql() {
+        return this.innerProperties() == null ? null : this.innerProperties().sql();
+    }
+
+    /**
+     * Set the sql property: SQL Settings definition.
+     *
+     * @param sql the sql value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withSql(FirewallPolicySql sql) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallPolicyPropertiesFormat();
+        }
+        this.innerProperties().withSql(sql);
+        return this;
+    }
+
+    /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
      *
      * @return the dnsSettings value.
@@ -295,6 +320,29 @@ public final class FirewallPolicyInner extends Resource {
             this.innerProperties = new FirewallPolicyPropertiesFormat();
         }
         this.innerProperties().withDnsSettings(dnsSettings);
+        return this;
+    }
+
+    /**
+     * Get the explicitProxySettings property: Explicit Proxy Settings definition.
+     *
+     * @return the explicitProxySettings value.
+     */
+    public ExplicitProxySettings explicitProxySettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().explicitProxySettings();
+    }
+
+    /**
+     * Set the explicitProxySettings property: Explicit Proxy Settings definition.
+     *
+     * @param explicitProxySettings the explicitProxySettings value to set.
+     * @return the FirewallPolicyInner object itself.
+     */
+    public FirewallPolicyInner withExplicitProxySettings(ExplicitProxySettings explicitProxySettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FirewallPolicyPropertiesFormat();
+        }
+        this.innerProperties().withExplicitProxySettings(explicitProxySettings);
         return this;
     }
 

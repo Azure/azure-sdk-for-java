@@ -68,7 +68,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.10.0</version>
+    <version>3.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -179,6 +179,24 @@ public CosmosConfig cosmosConfig() {
 
 By default, `@EnableCosmosRepositories` will scan the current package for any interfaces that extend one of Spring Data's repository interfaces.
 Use it to annotate your Configuration class to scan a different root package by `@EnableCosmosRepositories(basePackageClass=UserRepository.class)` if your project layout has multiple projects.
+
+#### Using database provisioned throughput
+
+Cosmos supports both [container](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
+and [database](https://docs.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
+throughput.  By default, spring-data-cosmos will provision throughput for each container created.  If you prefer
+to share throughput between containers, you can enable database provisioned throughput via CosmosConfig.
+
+```java
+@Override
+public CosmosConfig cosmosConfig() {
+    int autoscale = false; 
+    int initialRequestUnits = 400;
+    return CosmosConfig.builder()
+                       .enableDatabaseThroughput(autoscale, initialRequestUnits) 
+                       .build();
+}
+```
 
 ### Define an entity
 - Define a simple entity as item in Azure Cosmos DB.
@@ -293,6 +311,9 @@ public interface UserRepository extends CosmosRepository<User, String> {
 ```
 
 - `findByFirstName` method is custom query method, it will find items per firstName.
+
+#### Query Plan Caching
+When query plan caching is enabled, custom query methods like `findByFirstName(String firstName)` where `firstName` is the partition key will result in lower query execution time. Query plan caching can be enabled by setting the `COSMOS.QUERYPLAN_CACHING_ENABLED` System property to 'true'. Currently, query plan caching is only supported for custom query methods targeting a single partition.
 
 #### QueryAnnotation : Using annotated queries in repositories
 Azure spring data cosmos supports specifying annotated queries in the repositories using `@Query`.

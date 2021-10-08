@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.DomainUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Properties of the Domain update. */
-@JsonFlatten
 @Fluent
-public class DomainUpdateParameters {
+public final class DomainUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainUpdateParameters.class);
 
     /*
      * Tags of the domains resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * Properties of the resource.
+     */
+    @JsonProperty(value = "properties")
+    private DomainUpdateParameterProperties innerProperties;
 
     /*
      * Identity information for the resource.
@@ -35,79 +42,6 @@ public class DomainUpdateParameters {
      */
     @JsonProperty(value = "sku")
     private ResourceSku sku;
-
-    /*
-     * This determines if traffic is allowed over public network. By default it
-     * is enabled.
-     * You can further restrict to specific IPs by configuring <seealso
-     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
-     * />
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * This can be used to restrict traffic from specific IPs instead of all
-     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
-     */
-    @JsonProperty(value = "properties.inboundIpRules")
-    private List<InboundIpRule> inboundIpRules;
-
-    /*
-     * This boolean is used to enable or disable local auth. Default value is
-     * false. When the property is set to true, only AAD token will be used to
-     * authenticate if user is allowed to publish to the domain.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
-
-    /*
-     * This Boolean is used to specify the creation mechanism for 'all' the
-     * Event Grid Domain Topics associated with this Event Grid Domain
-     * resource.
-     * In this context, creation of domain topic can be auto-managed (when
-     * true) or self-managed (when false). The default value for this property
-     * is true.
-     * When this property is null or set to true, Event Grid is responsible of
-     * automatically creating the domain topic when the first event
-     * subscription is
-     * created at the scope of the domain topic. If this property is set to
-     * false, then creating the first event subscription will require creating
-     * a domain topic
-     * by the user. The self-management mode can be used if the user wants full
-     * control of when the domain topic is created, while auto-managed mode
-     * provides the
-     * flexibility to perform less operations and manage fewer resources by the
-     * user. Also, note that in auto-managed creation mode, user is allowed to
-     * create the
-     * domain topic on demand if needed.
-     */
-    @JsonProperty(value = "properties.autoCreateTopicWithFirstSubscription")
-    private Boolean autoCreateTopicWithFirstSubscription;
-
-    /*
-     * This Boolean is used to specify the deletion mechanism for 'all' the
-     * Event Grid Domain Topics associated with this Event Grid Domain
-     * resource.
-     * In this context, deletion of domain topic can be auto-managed (when
-     * true) or self-managed (when false). The default value for this property
-     * is true.
-     * When this property is set to true, Event Grid is responsible of
-     * automatically deleting the domain topic when the last event subscription
-     * at the scope
-     * of the domain topic is deleted. If this property is set to false, then
-     * the user needs to manually delete the domain topic when it is no longer
-     * needed
-     * (e.g., when last event subscription is deleted and the resource needs to
-     * be cleaned up). The self-management mode can be used if the user wants
-     * full
-     * control of when the domain topic needs to be deleted, while auto-managed
-     * mode provides the flexibility to perform less operations and manage
-     * fewer
-     * resources by the user.
-     */
-    @JsonProperty(value = "properties.autoDeleteTopicWithLastSubscription")
-    private Boolean autoDeleteTopicWithLastSubscription;
 
     /**
      * Get the tags property: Tags of the domains resource.
@@ -127,6 +61,15 @@ public class DomainUpdateParameters {
     public DomainUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private DomainUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -178,7 +121,7 @@ public class DomainUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -191,7 +134,10 @@ public class DomainUpdateParameters {
      * @return the DomainUpdateParameters object itself.
      */
     public DomainUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -202,7 +148,7 @@ public class DomainUpdateParameters {
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
-        return this.inboundIpRules;
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpRules();
     }
 
     /**
@@ -213,7 +159,10 @@ public class DomainUpdateParameters {
      * @return the DomainUpdateParameters object itself.
      */
     public DomainUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
-        this.inboundIpRules = inboundIpRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withInboundIpRules(inboundIpRules);
         return this;
     }
 
@@ -225,7 +174,7 @@ public class DomainUpdateParameters {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -237,7 +186,10 @@ public class DomainUpdateParameters {
      * @return the DomainUpdateParameters object itself.
      */
     public DomainUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -255,7 +207,7 @@ public class DomainUpdateParameters {
      * @return the autoCreateTopicWithFirstSubscription value.
      */
     public Boolean autoCreateTopicWithFirstSubscription() {
-        return this.autoCreateTopicWithFirstSubscription;
+        return this.innerProperties() == null ? null : this.innerProperties().autoCreateTopicWithFirstSubscription();
     }
 
     /**
@@ -274,7 +226,10 @@ public class DomainUpdateParameters {
      */
     public DomainUpdateParameters withAutoCreateTopicWithFirstSubscription(
         Boolean autoCreateTopicWithFirstSubscription) {
-        this.autoCreateTopicWithFirstSubscription = autoCreateTopicWithFirstSubscription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
         return this;
     }
 
@@ -292,7 +247,7 @@ public class DomainUpdateParameters {
      * @return the autoDeleteTopicWithLastSubscription value.
      */
     public Boolean autoDeleteTopicWithLastSubscription() {
-        return this.autoDeleteTopicWithLastSubscription;
+        return this.innerProperties() == null ? null : this.innerProperties().autoDeleteTopicWithLastSubscription();
     }
 
     /**
@@ -310,7 +265,10 @@ public class DomainUpdateParameters {
      * @return the DomainUpdateParameters object itself.
      */
     public DomainUpdateParameters withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription) {
-        this.autoDeleteTopicWithLastSubscription = autoDeleteTopicWithLastSubscription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
         return this;
     }
 
@@ -320,14 +278,14 @@ public class DomainUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
         if (sku() != null) {
             sku().validate();
-        }
-        if (inboundIpRules() != null) {
-            inboundIpRules().forEach(e -> e.validate());
         }
     }
 }

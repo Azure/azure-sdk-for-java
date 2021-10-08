@@ -48,6 +48,12 @@ public final class ApplicationGatewayPathRulePropertiesFormat {
     private SubResource rewriteRuleSet;
 
     /*
+     * Load Distribution Policy resource of URL path map path rule.
+     */
+    @JsonProperty(value = "loadDistributionPolicy")
+    private SubResource loadDistributionPolicy;
+
+    /*
      * The provisioning state of the path rule resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -156,6 +162,26 @@ public final class ApplicationGatewayPathRulePropertiesFormat {
      */
     public ApplicationGatewayPathRulePropertiesFormat withRewriteRuleSet(SubResource rewriteRuleSet) {
         this.rewriteRuleSet = rewriteRuleSet;
+        return this;
+    }
+
+    /**
+     * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
+     *
+     * @return the loadDistributionPolicy value.
+     */
+    public SubResource loadDistributionPolicy() {
+        return this.loadDistributionPolicy;
+    }
+
+    /**
+     * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
+     *
+     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
+     * @return the ApplicationGatewayPathRulePropertiesFormat object itself.
+     */
+    public ApplicationGatewayPathRulePropertiesFormat withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
+        this.loadDistributionPolicy = loadDistributionPolicy;
         return this;
     }
 

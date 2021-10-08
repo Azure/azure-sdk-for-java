@@ -5,10 +5,11 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -26,9 +27,9 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -116,102 +117,100 @@ public class DistinctQueryTests extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT_LONG)
     public void queryDistinctDocuments() {
 
-        List<String> queries = Arrays.asList(
-            // basic distinct queries
-            "SELECT %s VALUE null",
-            "SELECT %s VALUE false",
-            "SELECT %s VALUE true",
-            "SELECT %s VALUE 1",
-            "SELECT %s VALUE 'a'",
-            "SELECT %s VALUE [null, true, false, 1, 'a']",
-            "SELECT %s false AS p",
-            "SELECT %s 1 AS p",
-            "SELECT %s 'a' AS p",
-
-            "SELECT %s VALUE null FROM c",
-            "SELECT %s VALUE false FROM c",
-            "SELECT %s VALUE 1 FROM c",
-            "SELECT %s VALUE 'a' FROM c",
-            "SELECT %s null AS p FROM c",
-            "SELECT %s false AS p FROM c",
-            "SELECT %s 1 AS p FROM c",
-            "SELECT %s 'a' AS p FROM c",
+        Map<String, Boolean> queries = ImmutableMap.<String, Boolean>builder()
+             // basic distinct queries
+            .put("SELECT %s VALUE null", true)
+            .put("SELECT %s VALUE false", false)
+            .put("SELECT %s VALUE true", false)
+            .put("SELECT %s VALUE 1", false)
+            .put("SELECT %s VALUE 'a'", true)
+            .put("SELECT %s VALUE [null, true, false, 1, 'a']", false)
+            .put("SELECT %s false AS p", true)
+            .put("SELECT %s 1 AS p", false)
+            .put("SELECT %s 'a' AS p", false)
+            .put("SELECT %s VALUE null FROM c", false)
+            .put("SELECT %s VALUE false FROM c", false)
+            .put("SELECT %s VALUE 1 FROM c", false)
+            .put("SELECT %s VALUE 'a' FROM c", false)
+            .put("SELECT %s null AS p FROM c", false)
+            .put("SELECT %s false AS p FROM c", false)
+            .put("SELECT %s 1 AS p FROM c", false)
+            .put("SELECT %s 'a' AS p FROM c", false)
 
             // number value distinct queries
-            "SELECT %s VALUE c.income from c",
-            "SELECT %s VALUE c.age from c",
-            "SELECT %s c.income, c.income AS income2 from c",
-            "SELECT %s c.income, c.age from c",
+            .put("SELECT %s VALUE c.income from c", true)
+            .put("SELECT %s VALUE c.age from c", false)
+            .put("SELECT %s c.income, c.income AS income2 from c",  false)
+            .put("SELECT %s c.income, c.age from c", false)
 
             // string value distinct queries
-            "SELECT %s  c.name from c",
-            "SELECT %s VALUE c.city from c",
-            "SELECT %s c.name, c.name AS name2 from c",
-            "SELECT %s c.name, c.city from c",
+            .put("SELECT %s  c.name from c", true)
+            .put("SELECT %s VALUE c.city from c", false)
+            .put("SELECT %s c.name, c.name AS name2 from c", false)
+            .put("SELECT %s c.name, c.city from c", false)
 
             // array distinct queries
-            "SELECT %s c.children from c",
-            "SELECT %s c.children, c.children AS children2 from c",
+            .put("SELECT %s c.children from c", true)
+            .put("SELECT %s c.children, c.children AS children2 from c", false)
 
             // object value distinct queries
-            "SELECT %s VALUE c.pet from c",
-            "SELECT %s c.pet, c.pet AS pet2 from c",
+            .put("SELECT %s VALUE c.pet from c", true)
+            .put("SELECT %s c.pet, c.pet AS pet2 from c", false)
 
             // scalar expressions distinct query
-            "SELECT %s VALUE ABS(c.age) FROM c",
-            "SELECT %s VALUE LEFT(c.name, 1) FROM c",
-            "SELECT %s VALUE c.name || ', ' || (c.city ?? '') FROM c",
-            "SELECT %s VALUE ARRAY_LENGTH(c.children) FROM c",
-            "SELECT %s VALUE IS_DEFINED(c.city) FROM c",
-            "SELECT %s VALUE (c.children[0].age ?? 0) + (c.children[1].age ?? 0) FROM c",
+            .put("SELECT %s VALUE ABS(c.age) FROM c", true)
+            .put("SELECT %s VALUE LEFT(c.name, 1) FROM c", false)
+            .put("SELECT %s VALUE c.name || ', ' || (c.city ?? '') FROM c", false)
+            .put("SELECT %s VALUE ARRAY_LENGTH(c.children) FROM c", false)
+            .put("SELECT %s VALUE IS_DEFINED(c.city) FROM c", false)
+            .put("SELECT %s VALUE (c.children[0].age ?? 0) + (c.children[1].age ?? 0) FROM c", false)
 
             // distinct queries with order by
-            "SELECT %s  c.name FROM c ORDER BY c.name ASC",
-            "SELECT %s  c.age FROM c ORDER BY c.age",
-            "SELECT %s  c.city FROM c ORDER BY c.city",
-            "SELECT %s  c.city FROM c ORDER BY c.age",
-            "SELECT %s  LEFT(c.name, 1) FROM c ORDER BY c.name",
+            .put("SELECT %s  c.name FROM c ORDER BY c.name ASC", false)
+            .put("SELECT %s  c.age FROM c ORDER BY c.age", false)
+            .put("SELECT %s  c.city FROM c ORDER BY c.city", false)
+            .put("SELECT %s  c.city FROM c ORDER BY c.age", false)
+            .put("SELECT %s  LEFT(c.name, 1) FROM c ORDER BY c.name", false)
 
             // distinct queries with top and no matching order by
-            "SELECT %s TOP 2147483647 VALUE c.age FROM c",
+            .put("SELECT %s TOP 2147483647 VALUE c.age FROM c", false)
 
             // distinct queries with top and  matching order by
-            "SELECT %s TOP 2147483647  c.age FROM c ORDER BY c.age",
+            .put("SELECT %s TOP 2147483647  c.age FROM c ORDER BY c.age", false)
 
             // distinct queries with aggregates
-            "SELECT %s VALUE MAX(c.age) FROM c",
+            .put("SELECT %s VALUE MAX(c.age) FROM c", false)
 
             // distinct queries with joins
-            "SELECT %s VALUE c.age FROM p JOIN c IN p.children",
-            "SELECT %s p.age AS ParentAge, c.age ChildAge FROM p JOIN c IN p.children",
-            "SELECT %s VALUE c.name FROM p JOIN c IN p.children",
-            "SELECT %s p.name AS ParentName, c.name ChildName FROM p JOIN c IN p.children",
+            .put("SELECT %s VALUE c.age FROM p JOIN c IN p.children", true)
+            .put("SELECT %s p.age AS ParentAge, c.age ChildAge FROM p JOIN c IN p.children", false)
+            .put("SELECT %s VALUE c.name FROM p JOIN c IN p.children", false)
+            .put("SELECT %s p.name AS ParentName, c.name ChildName FROM p JOIN c IN p.children", false)
 
             // distinct queries in subqueries
-            "SELECT %s r.age, s FROM r JOIN (SELECT DISTINCT VALUE c FROM (SELECT 1 a) c) s WHERE r.age > 25",
-            "SELECT %s p.name, p.age FROM (SELECT DISTINCT * FROM r) p WHERE p.age > 25",
+            .put("SELECT %s r.age, s FROM r JOIN (SELECT DISTINCT VALUE c FROM (SELECT 1 a) c) s WHERE r.age > 25", false)
+            .put("SELECT %s p.name, p.age FROM (SELECT DISTINCT * FROM r) p WHERE p.age > 25", false)
 
             // distinct queries in scalar subqeries
-            "SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p",
-            "SELECT %s p.name, p.age FROM p WHERE (SELECT DISTINCT VALUE LEFT(p.name, 1)) > 'A' AND (SELECT " +
-                "DISTINCT VALUE p.age) > 21",
-            "SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p WHERE (SELECT DISTINCT VALUE p.name) >" +
-                " 'A' OR (SELECT DISTINCT VALUE p.age) > 21",
+            .put("SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p", true)
+            .put("SELECT %s p.name, p.age FROM p WHERE (SELECT DISTINCT VALUE LEFT(p.name, 1)) > 'A' AND (SELECT " +
+                "DISTINCT VALUE p.age) > 21", false)
+            .put("SELECT %s p.name, (SELECT DISTINCT VALUE p.age) AS Age FROM p WHERE (SELECT DISTINCT VALUE p.name) >" +
+                " 'A' OR (SELECT DISTINCT VALUE p.age) > 21", false)
 
             //   select *
-            "SELECT %s * FROM c"
-        );
-
-        for (String query : queries) {
-            logger.info("Current distinct query: " + query);
+            .put("SELECT %s * FROM c", true)
+            .build();
+        for (Map.Entry<String, Boolean> entry :  queries.entrySet()) {
+            logger.info("Current distinct query: " + entry.getKey());
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
 
             List<JsonNode> documentsFromWithDistinct = new ArrayList<>();
             List<JsonNode> documentsFromWithoutDistinct = new ArrayList<>();
 
-            final String queryWithDistinct = String.format(query, "DISTINCT");
-            final String queryWithoutDistinct = String.format(query, "");
+            final String queryWithDistinct = String.format(entry.getKey(), "DISTINCT");
+            final String queryWithoutDistinct = String.format(entry.getKey(), "");
 
             CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryWithoutDistinct,
                                                                                      options,
@@ -239,6 +238,27 @@ public class DistinctQueryTests extends TestSuiteBase {
                 FeedResponse<JsonNode> next = iterator.next();
                 documentsFromWithDistinct.addAll(next.getResults());
             }
+
+            // We want to do Dcount for some queries
+            if (entry.getValue()) {
+                // Do a dcount query and validate results
+                String queryWithDcount = "Select value count(1) from ("
+                                             + String.format(entry.getKey(), "DISTINCT")
+                                             + ")";
+                List<Integer> docsWithDCount = new ArrayList<>();
+
+                CosmosPagedFlux<Integer> dcountQueryObs = createdCollection.queryItems(queryWithDcount,
+                                                                                       options,
+                                                                                       Integer.class);
+
+                for (FeedResponse<Integer> next : dcountQueryObs.byPage().toIterable()) {
+                    docsWithDCount.addAll(next.getResults());
+                }
+                assertThat(docsWithDCount.size()).isEqualTo(1);
+                int dCount = docsWithDCount.get(0);
+                assertThat(dCount).isEqualTo(documentsFromWithDistinct.size());
+            }
+
             assertThat(documentsFromWithDistinct.size()).isGreaterThanOrEqualTo(1);
             assertThat(documentsFromWithDistinct.size()).isEqualTo(documentsFromWithoutDistinct.size());
         }

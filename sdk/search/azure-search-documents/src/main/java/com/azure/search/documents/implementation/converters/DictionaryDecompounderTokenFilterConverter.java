@@ -18,21 +18,12 @@ public final class DictionaryDecompounderTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter =
-            new DictionaryDecompounderTokenFilter(obj.getName(), obj.getWordList());
 
-        Integer minSubwordSize = obj.getMinSubwordSize();
-        dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
-
-        Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
-        dictionaryDecompounderTokenFilter.setOnlyLongestMatched(onlyLongestMatch);
-
-        Integer maxSubwordSize = obj.getMaxSubwordSize();
-        dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
-
-        Integer minWordSize = obj.getMinWordSize();
-        dictionaryDecompounderTokenFilter.setMinWordSize(minWordSize);
-        return dictionaryDecompounderTokenFilter;
+        return new DictionaryDecompounderTokenFilter(obj.getName(), obj.getWordList())
+            .setMaxSubwordSize(obj.getMaxSubwordSize())
+            .setMinSubwordSize(obj.getMinSubwordSize())
+            .setMinWordSize(obj.getMinWordSize())
+            .setOnlyLongestMatched(obj.isOnlyLongestMatch());
     }
 
     /**
@@ -43,23 +34,13 @@ public final class DictionaryDecompounderTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter
-            = new com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter(obj.getName(), obj.getWordList());
 
-        Integer minSubwordSize = obj.getMinSubwordSize();
-        dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
-
-        Boolean onlyLongestMatch = obj.isOnlyLongestMatched();
-        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
-
-        Integer maxSubwordSize = obj.getMaxSubwordSize();
-        dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
-
-
-        Integer minWordSize = obj.getMinWordSize();
-        dictionaryDecompounderTokenFilter.setMinWordSize(minWordSize);
-
-        return dictionaryDecompounderTokenFilter;
+        return new com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter(
+            obj.getName(), obj.getWordList())
+            .setMaxSubwordSize(obj.getMaxSubwordSize())
+            .setMinSubwordSize(obj.getMinSubwordSize())
+            .setMinWordSize(obj.getMinWordSize())
+            .setOnlyLongestMatch(obj.isOnlyLongestMatched());
     }
 
     private DictionaryDecompounderTokenFilterConverter() {

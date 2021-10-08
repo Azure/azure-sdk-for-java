@@ -26,7 +26,14 @@ public class AmqpErrorContext implements Serializable {
 
     private static final long serialVersionUID = -2819764407122954922L;
 
+    /**
+     * Service namespace of the error.
+     */
     private final String namespace;
+
+    /**
+     * Additional information associated with the error.
+     */
     private final Map<String, Object> errorInfo;
 
     /**

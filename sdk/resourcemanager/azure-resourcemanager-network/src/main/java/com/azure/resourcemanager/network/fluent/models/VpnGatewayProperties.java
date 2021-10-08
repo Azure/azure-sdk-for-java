@@ -56,6 +56,12 @@ public final class VpnGatewayProperties {
     private List<VpnGatewayIpConfiguration> ipConfigurations;
 
     /*
+     * Enable BGP routes translation for NAT on this VpnGateway.
+     */
+    @JsonProperty(value = "enableBgpRouteTranslationForNat")
+    private Boolean enableBgpRouteTranslationForNat;
+
+    /*
      * Enable Routing Preference property for the Public IP Interface of the
      * VpnGateway.
      */
@@ -164,6 +170,26 @@ public final class VpnGatewayProperties {
      */
     public List<VpnGatewayIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
+    }
+
+    /**
+     * Get the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
+     *
+     * @return the enableBgpRouteTranslationForNat value.
+     */
+    public Boolean enableBgpRouteTranslationForNat() {
+        return this.enableBgpRouteTranslationForNat;
+    }
+
+    /**
+     * Set the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
+     *
+     * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
+     * @return the VpnGatewayProperties object itself.
+     */
+    public VpnGatewayProperties withEnableBgpRouteTranslationForNat(Boolean enableBgpRouteTranslationForNat) {
+        this.enableBgpRouteTranslationForNat = enableBgpRouteTranslationForNat;
+        return this;
     }
 
     /**

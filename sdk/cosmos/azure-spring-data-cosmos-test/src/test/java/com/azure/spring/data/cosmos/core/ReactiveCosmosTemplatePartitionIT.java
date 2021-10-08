@@ -3,13 +3,18 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
+import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
@@ -35,7 +40,9 @@ import reactor.test.StepVerifier;
 
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -49,11 +56,12 @@ public class ReactiveCosmosTemplatePartitionIT {
 
     private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(TestConstants.ID_2,
         TestConstants.NEW_FIRST_NAME,
-        TEST_PERSON.getZipCode(), TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.NEW_ZIP_CODE, TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
     @ClassRule
     public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
 
+    private static CosmosFactory cosmosFactory;
     private static ReactiveCosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<PartitionPerson, String> personInfo;
@@ -68,8 +76,10 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
+            //  Enable Query plan caching for testing
+            System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory dbFactory = new CosmosFactory(client, TestConstants.DB_NAME);
+            cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
             personInfo =
@@ -80,7 +90,7 @@ public class ReactiveCosmosTemplatePartitionIT {
 
             final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext,
                 null);
-            cosmosTemplate = new ReactiveCosmosTemplate(dbFactory, cosmosConfig, dbConverter);
+            cosmosTemplate = new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, dbConverter);
         }
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PartitionPerson.class);
         cosmosTemplate.insert(TEST_PERSON).block();
@@ -98,6 +108,46 @@ public class ReactiveCosmosTemplatePartitionIT {
             Assert.assertThat(actual.getFirstName(), is(equalTo(TEST_PERSON.getFirstName())));
             Assert.assertThat(actual.getZipCode(), is(equalTo(TEST_PERSON.getZipCode())));
         }).verifyComplete();
+    }
+
+    @Test
+    public void testFindWithPartitionWithQueryPlanCachingEnabled() {
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
+            Collections.singletonList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
+        CosmosQuery query = new CosmosQuery(criteria);
+        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
+            PartitionPerson.class,
+            PartitionPerson.class.getSimpleName());
+        StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
+            Assert.assertThat(actual.getFirstName(), is(equalTo(TEST_PERSON.getFirstName())));
+            Assert.assertThat(actual.getZipCode(), is(equalTo(TEST_PERSON.getZipCode())));
+        }).verifyComplete();
+
+        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
+        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        int initialSize = initialCache.size();
+
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
+
+        //  Fire the same query with different partition key value to make sure query plan caching is enabled
+        criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
+            Collections.singletonList(TestConstants.NEW_ZIP_CODE), Part.IgnoreCaseType.NEVER);
+        query = new CosmosQuery(criteria);
+        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        partitionPersonFlux = cosmosTemplate.find(query,
+            PartitionPerson.class,
+            PartitionPerson.class.getSimpleName());
+        StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
+            Assert.assertThat(actual.getFirstName(), is(equalTo(TEST_PERSON_2.getFirstName())));
+            Assert.assertThat(actual.getZipCode(), is(equalTo(TEST_PERSON_2.getZipCode())));
+        }).verifyComplete();
+
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
     }
 
     @Test

@@ -437,6 +437,31 @@ public final class DiskUpdate {
     }
 
     /**
+     * Get the supportedCapabilities property: List of supported capabilities (like accelerated networking) to be added
+     * on the OS disk.
+     *
+     * @return the supportedCapabilities value.
+     */
+    public SupportedCapabilities supportedCapabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportedCapabilities();
+    }
+
+    /**
+     * Set the supportedCapabilities property: List of supported capabilities (like accelerated networking) to be added
+     * on the OS disk.
+     *
+     * @param supportedCapabilities the supportedCapabilities value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withSupportedCapabilities(SupportedCapabilities supportedCapabilities) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withSupportedCapabilities(supportedCapabilities);
+        return this;
+    }
+
+    /**
      * Get the propertyUpdatesInProgress property: Properties of the disk for which update is pending.
      *
      * @return the propertyUpdatesInProgress value.
@@ -465,6 +490,29 @@ public final class DiskUpdate {
             this.innerProperties = new DiskUpdateProperties();
         }
         this.innerProperties().withSupportsHibernation(supportsHibernation);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiskUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

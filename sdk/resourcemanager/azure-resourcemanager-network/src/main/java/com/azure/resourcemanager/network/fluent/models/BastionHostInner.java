@@ -172,6 +172,144 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the scaleUnits property: The scale units for the Bastion Host resource.
+     *
+     * @return the scaleUnits value.
+     */
+    public Integer scaleUnits() {
+        return this.innerProperties() == null ? null : this.innerProperties().scaleUnits();
+    }
+
+    /**
+     * Set the scaleUnits property: The scale units for the Bastion Host resource.
+     *
+     * @param scaleUnits the scaleUnits value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withScaleUnits(Integer scaleUnits) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withScaleUnits(scaleUnits);
+        return this;
+    }
+
+    /**
+     * Get the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
+     *
+     * @return the disableCopyPaste value.
+     */
+    public Boolean disableCopyPaste() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableCopyPaste();
+    }
+
+    /**
+     * Set the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
+     *
+     * @param disableCopyPaste the disableCopyPaste value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withDisableCopyPaste(Boolean disableCopyPaste) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withDisableCopyPaste(disableCopyPaste);
+        return this;
+    }
+
+    /**
+     * Get the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
+     *
+     * @return the enableFileCopy value.
+     */
+    public Boolean enableFileCopy() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableFileCopy();
+    }
+
+    /**
+     * Set the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
+     *
+     * @param enableFileCopy the enableFileCopy value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableFileCopy(Boolean enableFileCopy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableFileCopy(enableFileCopy);
+        return this;
+    }
+
+    /**
+     * Get the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
+     *
+     * @return the enableIpConnect value.
+     */
+    public Boolean enableIpConnect() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableIpConnect();
+    }
+
+    /**
+     * Set the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
+     *
+     * @param enableIpConnect the enableIpConnect value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableIpConnect(Boolean enableIpConnect) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableIpConnect(enableIpConnect);
+        return this;
+    }
+
+    /**
+     * Get the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
+     *
+     * @return the enableShareableLink value.
+     */
+    public Boolean enableShareableLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableShareableLink();
+    }
+
+    /**
+     * Set the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
+     *
+     * @param enableShareableLink the enableShareableLink value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableShareableLink(Boolean enableShareableLink) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableShareableLink(enableShareableLink);
+        return this;
+    }
+
+    /**
+     * Get the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
+     *
+     * @return the enableTunneling value.
+     */
+    public Boolean enableTunneling() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableTunneling();
+    }
+
+    /**
+     * Set the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
+     *
+     * @param enableTunneling the enableTunneling value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableTunneling(Boolean enableTunneling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableTunneling(enableTunneling);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

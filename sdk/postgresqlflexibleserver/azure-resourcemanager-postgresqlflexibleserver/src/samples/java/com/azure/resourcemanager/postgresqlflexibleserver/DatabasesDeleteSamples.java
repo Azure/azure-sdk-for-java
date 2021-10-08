@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Databases Delete. */
 public final class DatabasesDeleteSamples {
+    /*
+     * operationId: Databases_Delete
+     * api-version: 2021-06-01
+     * x-ms-examples: Delete a database
+     */
     /**
      * Sample code: Delete a database.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void deleteADatabase(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.databases().delete("TestGroup", "testserver", "db1", Context.NONE);
+    public static void deleteADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.databases().delete("TestGroup", "testserver", "db1", Context.NONE);
     }
 }

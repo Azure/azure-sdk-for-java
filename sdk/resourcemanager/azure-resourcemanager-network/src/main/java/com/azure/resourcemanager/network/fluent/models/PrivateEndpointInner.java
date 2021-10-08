@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CustomDnsConfigPropertiesFormat;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.PrivateEndpointIpConfiguration;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -231,6 +232,82 @@ public final class PrivateEndpointInner extends Resource {
             this.innerProperties = new PrivateEndpointPropertiesInner();
         }
         this.innerProperties().withCustomDnsConfigs(customDnsConfigs);
+        return this;
+    }
+
+    /**
+     * Get the applicationSecurityGroups property: Application security groups in which the private endpoint IP
+     * configuration is included.
+     *
+     * @return the applicationSecurityGroups value.
+     */
+    public List<ApplicationSecurityGroupInner> applicationSecurityGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationSecurityGroups();
+    }
+
+    /**
+     * Set the applicationSecurityGroups property: Application security groups in which the private endpoint IP
+     * configuration is included.
+     *
+     * @param applicationSecurityGroups the applicationSecurityGroups value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withApplicationSecurityGroups(
+        List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withApplicationSecurityGroups(applicationSecurityGroups);
+        return this;
+    }
+
+    /**
+     * Get the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
+     * to the First Party Service's endpoints.
+     *
+     * @return the ipConfigurations value.
+     */
+    public List<PrivateEndpointIpConfiguration> ipConfigurations() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
+    }
+
+    /**
+     * Set the ipConfigurations property: A list of IP configurations of the private endpoint. This will be used to map
+     * to the First Party Service's endpoints.
+     *
+     * @param ipConfigurations the ipConfigurations value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withIpConfigurations(List<PrivateEndpointIpConfiguration> ipConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withIpConfigurations(ipConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the customNetworkInterfaceName property: The custom name of the network interface attached to the private
+     * endpoint.
+     *
+     * @return the customNetworkInterfaceName value.
+     */
+    public String customNetworkInterfaceName() {
+        return this.innerProperties() == null ? null : this.innerProperties().customNetworkInterfaceName();
+    }
+
+    /**
+     * Set the customNetworkInterfaceName property: The custom name of the network interface attached to the private
+     * endpoint.
+     *
+     * @param customNetworkInterfaceName the customNetworkInterfaceName value to set.
+     * @return the PrivateEndpointInner object itself.
+     */
+    public PrivateEndpointInner withCustomNetworkInterfaceName(String customNetworkInterfaceName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointPropertiesInner();
+        }
+        this.innerProperties().withCustomNetworkInterfaceName(customNetworkInterfaceName);
         return this;
     }
 

@@ -142,6 +142,7 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -149,7 +150,7 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -191,12 +192,13 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -297,6 +299,7 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
         } else {
             aadAdminInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -304,7 +307,7 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -353,12 +356,13 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
         } else {
             aadAdminInfo.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -561,6 +565,7 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -568,7 +573,7 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
                     service
                         .delete(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -610,12 +615,13 @@ public final class WorkspaceSqlAadAdminsClientImpl implements WorkspaceSqlAadAdm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

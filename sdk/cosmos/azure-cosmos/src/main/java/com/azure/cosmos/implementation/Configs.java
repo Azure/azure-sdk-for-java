@@ -91,6 +91,14 @@ public class Configs {
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS = 50;
 
+    // Whether to process the response on a different thread
+    private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
+    private static final boolean DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE = false;
+
+    // OpenConnectionsAndInitCaches Constants
+    private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
+    private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -250,6 +258,18 @@ public class Configs {
         return getJVMConfigAsInt(
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME,
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
+    }
+
+    public static boolean shouldSwitchOffIOThreadForResponse() {
+        return getJVMConfigAsBoolean(
+            SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME,
+            DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE);
+    }
+
+    public static int getOpenConnectionsRetriesCount() {
+        return getJVMConfigAsInt(
+            OPEN_CONNECTIONS_RETRIES_COUNT_NAME,
+            DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

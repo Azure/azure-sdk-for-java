@@ -18,7 +18,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.toCosmosDbValue;
@@ -31,9 +31,9 @@ public abstract class AbstractQueryGenerator {
     protected AbstractQueryGenerator() {
     }
 
-    private String generateQueryParameter(@NonNull String subject) {
+    private String generateQueryParameter(@NonNull String subject, int counter) {
         // user.name, user['name'] or user["first name"] are not valid sql parameter identifiers.
-        return subject.replaceAll("[^a-zA-Z\\d]", "_") + UUID.randomUUID().toString().replaceAll("-", "_");
+        return subject.replaceAll("[^a-zA-Z\\d]", "_") + counter;
     }
 
     private String generateUnaryQuery(@NonNull Criteria criteria) {
@@ -48,14 +48,14 @@ public abstract class AbstractQueryGenerator {
         }
     }
 
-    private String generateBinaryQuery(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
+    private String generateBinaryQuery(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters, int counter) {
         Assert.isTrue(criteria.getSubjectValues().size() == 1,
             "Binary criteria should have only one subject value");
         Assert.isTrue(CriteriaType.isBinary(criteria.getType()), "Criteria type should be binary operation");
 
         final String subject = criteria.getSubject();
         final Object subjectValue = toCosmosDbValue(criteria.getSubjectValues().get(0));
-        final String parameter = generateQueryParameter(subject);
+        final String parameter = generateQueryParameter(subject, counter);
         final Part.IgnoreCaseType ignoreCase = criteria.getIgnoreCase();
         final String sqlKeyword = criteria.getType().getSqlKeyword();
         parameters.add(Pair.of(parameter, subjectValue));
@@ -103,14 +103,14 @@ public abstract class AbstractQueryGenerator {
         }
     }
 
-    private String generateBetween(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
+    private String generateBetween(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters, int counter) {
         final String subject = criteria.getSubject();
         final Object value1 = toCosmosDbValue(criteria.getSubjectValues().get(0));
         final Object value2 = toCosmosDbValue(criteria.getSubjectValues().get(1));
         final String subject1 = subject + "start";
         final String subject2 = subject + "end";
-        final String parameter1 = generateQueryParameter(subject1);
-        final String parameter2 = generateQueryParameter(subject2);
+        final String parameter1 = generateQueryParameter(subject1, counter);
+        final String parameter2 = generateQueryParameter(subject2, counter);
         final String keyword = criteria.getType().getSqlKeyword();
 
         parameters.add(Pair.of(parameter1, value1));
@@ -152,7 +152,7 @@ public abstract class AbstractQueryGenerator {
             String.join(",", paras));
     }
 
-    private String generateQueryBody(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
+    private String generateQueryBody(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters, @NonNull final AtomicInteger counter) {
         final CriteriaType type = criteria.getType();
 
         switch (type) {
@@ -162,7 +162,7 @@ public abstract class AbstractQueryGenerator {
             case NOT_IN:
                 return generateInQuery(criteria, parameters);
             case BETWEEN:
-                return generateBetween(criteria, parameters);
+                return generateBetween(criteria, parameters, counter.getAndIncrement());
             case IS_NULL:
             case IS_NOT_NULL:
             case FALSE:
@@ -180,14 +180,14 @@ public abstract class AbstractQueryGenerator {
             case ENDS_WITH:
             case STARTS_WITH:
             case ARRAY_CONTAINS:
-                return generateBinaryQuery(criteria, parameters);
+                return generateBinaryQuery(criteria, parameters, counter.getAndIncrement());
             case AND:
             case OR:
                 Assert.isTrue(criteria.getSubCriteria().size() == 2,
                     "criteria should have two SubCriteria");
 
-                final String left = generateQueryBody(criteria.getSubCriteria().get(0), parameters);
-                final String right = generateQueryBody(criteria.getSubCriteria().get(1), parameters);
+                final String left = generateQueryBody(criteria.getSubCriteria().get(0), parameters, counter);
+                final String right = generateQueryBody(criteria.getSubCriteria().get(1), parameters, counter);
 
                 return generateClosedQuery(left, right, type);
             default:
@@ -204,9 +204,9 @@ public abstract class AbstractQueryGenerator {
      * @return A pair tuple compose of Sql query.
      */
     @NonNull
-    private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull CosmosQuery query) {
+    private Pair<String, List<Pair<String, Object>>> generateQueryBody(@NonNull CosmosQuery query, @NonNull final AtomicInteger counter) {
         final List<Pair<String, Object>> parameters = new ArrayList<>();
-        String queryString = this.generateQueryBody(query.getCriteria(), parameters);
+        String queryString = this.generateQueryBody(query.getCriteria(), parameters, counter);
 
         if (StringUtils.hasText(queryString)) {
             queryString = String.join(" ", "WHERE", queryString);
@@ -248,7 +248,8 @@ public abstract class AbstractQueryGenerator {
 
     protected SqlQuerySpec generateCosmosQuery(@NonNull CosmosQuery query,
                                                @NonNull String queryHead) {
-        final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query);
+        final AtomicInteger counter = new AtomicInteger();
+        final Pair<String, List<Pair<String, Object>>> queryBody = generateQueryBody(query, counter);
         String queryString = String.join(" ", queryHead, queryBody.getFirst(), generateQueryTail(query));
         final List<Pair<String, Object>> parameters = queryBody.getSecond();
 

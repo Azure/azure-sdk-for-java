@@ -41,8 +41,6 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize
 import com.azure.core.test.implementation.entities.HttpBinHeaders;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -63,6 +61,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -156,7 +155,7 @@ public abstract class RestProxyTests {
     public void syncRequestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
         final byte[] result = createService(Service2.class).getByteArray("localhost", 0);
 
-        // If no body then for async returns Mono.empty() for sync return null.
+        // If there isn't a body then for async returns Mono.empty() for sync return null.
         assertNull(result);
     }
 
@@ -174,11 +173,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncGetRequestWithNoReturn() {
-        try {
-            createService(Service3.class).getNothing();
-        } catch (Throwable throwable) {
-            fail("Received unexpected exception.");
-        }
+        assertDoesNotThrow(() -> createService(Service3.class).getNothing());
     }
 
     @Test
@@ -593,16 +588,14 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncPutRequestWithUnexpectedResponse() {
-        try {
-            createService(Service9.class).putWithUnexpectedResponse("I'm the body!");
-            fail("Expected HttpResponseException would be thrown.");
-        } catch (HttpResponseException e) {
-            assertNotNull(e.getValue());
-            assertTrue(e.getValue() instanceof LinkedHashMap);
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(Service9.class).putWithUnexpectedResponse("I'm the body!"));
 
-            @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
-            assertEquals("I'm the body!", expectedBody.get("data"));
-        }
+        assertNotNull(e.getValue());
+        assertTrue(e.getValue() instanceof LinkedHashMap);
+
+        @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
     @Test
@@ -621,15 +614,11 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncPutRequestWithUnexpectedResponseAndExceptionType() {
-        try {
-            createService(Service9.class).putWithUnexpectedResponseAndExceptionType("I'm the body!");
-            fail("Expected HttpResponseException would be thrown.");
-        } catch (MyRestException e) {
-            assertNotNull(e.getValue());
-            assertEquals("I'm the body!", e.getValue().data());
-        } catch (Throwable e) {
-            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
-        }
+        MyRestException e = assertThrows(MyRestException.class, () ->
+            createService(Service9.class).putWithUnexpectedResponseAndExceptionType("I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertEquals("I'm the body!", e.getValue().data());
     }
 
     @Test
@@ -645,15 +634,11 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncPutRequestWithUnexpectedResponseAndDeterminedExceptionType() {
-        try {
-            createService(Service9.class).putWithUnexpectedResponseAndDeterminedExceptionType("I'm the body!");
-            fail("Expected HttpResponseException would be thrown.");
-        } catch (MyRestException e) {
-            assertNotNull(e.getValue());
-            assertEquals("I'm the body!", e.getValue().data());
-        } catch (Throwable e) {
-            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
-        }
+        MyRestException e = assertThrows(MyRestException.class,
+            () -> createService(Service9.class).putWithUnexpectedResponseAndDeterminedExceptionType("I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertEquals("I'm the body!", e.getValue().data());
     }
 
     @Test
@@ -669,15 +654,11 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncPutRequestWithUnexpectedResponseAndFallthroughExceptionType() {
-        try {
-            createService(Service9.class).putWithUnexpectedResponseAndFallthroughExceptionType("I'm the body!");
-            fail("Expected HttpResponseException would be thrown.");
-        } catch (MyRestException e) {
-            assertNotNull(e.getValue());
-            assertEquals("I'm the body!", e.getValue().data());
-        } catch (Throwable e) {
-            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
-        }
+        MyRestException e = assertThrows(MyRestException.class,
+            () -> createService(Service9.class).putWithUnexpectedResponseAndFallthroughExceptionType("I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertEquals("I'm the body!", e.getValue().data());
     }
 
     @Test
@@ -693,18 +674,14 @@ public abstract class RestProxyTests {
 
     @Test
     public void syncPutRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
-        try {
-            createService(Service9.class).putWithUnexpectedResponseAndNoFallthroughExceptionType("I'm the body!");
-            fail("Expected HttpResponseException would be thrown.");
-        } catch (HttpResponseException e) {
-            assertNotNull(e.getValue());
-            assertTrue(e.getValue() instanceof LinkedHashMap);
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(Service9.class).putWithUnexpectedResponseAndNoFallthroughExceptionType("I'm the body!"));
 
-            @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
-            assertEquals("I'm the body!", expectedBody.get("data"));
-        } catch (Throwable e) {
-            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
-        }
+        assertNotNull(e.getValue());
+        assertTrue(e.getValue() instanceof LinkedHashMap);
+
+        @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
     @Test
@@ -1011,7 +988,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service18GetStatus200WithExpectedResponse200() {
-        createService(Service18.class).getStatus200WithExpectedResponse200();
+        assertDoesNotThrow(() -> createService(Service18.class).getStatus200WithExpectedResponse200());
     }
 
     @Test
@@ -1021,7 +998,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service18GetStatus300WithExpectedResponse300() {
-        createService(Service18.class).getStatus300WithExpectedResponse300();
+        assertDoesNotThrow(() -> createService(Service18.class).getStatus300WithExpectedResponse300());
     }
 
     @Test
@@ -1031,7 +1008,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service18GetStatus400WithExpectedResponse400() {
-        createService(Service18.class).getStatus400WithExpectedResponse400();
+        assertDoesNotThrow(() -> createService(Service18.class).getStatus400WithExpectedResponse400());
     }
 
     @Test
@@ -1041,7 +1018,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void service18GetStatus500WithExpectedResponse500() {
-        createService(Service18.class).getStatus500WithExpectedResponse500();
+        assertDoesNotThrow(() -> createService(Service18.class).getStatus500WithExpectedResponse500());
     }
 
     @Host("http://localhost")
@@ -1521,12 +1498,10 @@ public abstract class RestProxyTests {
 
     @Test
     public void unexpectedHTTPOK() {
-        try {
-            createService(UnexpectedOKService.class).getBytes();
-            fail();
-        } catch (HttpResponseException e) {
-            assertEquals("Status code 200, (1024-byte body)", e.getMessage());
-        }
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(UnexpectedOKService.class).getBytes());
+
+        assertEquals("Status code 200, (1024-byte body)", e.getMessage());
     }
 
     @Host("https://www.example.com")
@@ -1557,17 +1532,17 @@ public abstract class RestProxyTests {
 
     @Test
     public void simpleDownloadTest() {
-        try (StreamResponse response = createService(DownloadService.class).getBytes()) {
-            StepVerifier.create(response.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum))
-                .assertNext(count -> assertEquals(30720, count))
-                .verifyComplete();
-        }
+        StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(),
+                response -> response.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum),
+                StreamResponse::close))
+            .assertNext(count -> assertEquals(30720, count))
+            .verifyComplete();
     }
 
     @Test
     public void rawFluxDownloadTest() {
         StepVerifier.create(createService(DownloadService.class).getBytesFlux()
-            .map(ByteBuffer::remaining).reduce(0, Integer::sum))
+                .map(ByteBuffer::remaining).reduce(0, Integer::sum))
             .assertNext(count -> assertEquals(30720, count))
             .verifyComplete();
     }
@@ -1597,7 +1572,7 @@ public abstract class RestProxyTests {
             .build();
         //
         Response<HttpBinJSON> response = RestProxy
-            .create(FluxUploadService.class, httpPipeline, SERIALIZER).put(stream, Files.size(filePath));
+            .create(FluxUploadService.class, httpPipeline).put(stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
@@ -1721,7 +1696,7 @@ public abstract class RestProxyTests {
             .httpClient(httpClient)
             .build();
 
-        return RestProxy.create(serviceClass, httpPipeline, SERIALIZER);
+        return RestProxy.create(serviceClass, httpPipeline);
     }
 
     private static void assertMatchWithHttpOrHttps(String url1, String url2) {
@@ -1735,6 +1710,4 @@ public abstract class RestProxyTests {
         }
         fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
-
-    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 }

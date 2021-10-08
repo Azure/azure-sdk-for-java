@@ -20,16 +20,18 @@ import java.util.Map;
 
 /** Samples for Servers Create. */
 public final class ServersCreateSamples {
+    /*
+     * operationId: Servers_Create
+     * api-version: 2021-06-01
+     * x-ms-examples: Create a new server
+     */
     /**
      * Sample code: Create a new server.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void createANewServer(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager
+    public static void createANewServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
             .servers()
             .define("pgtestsvc4")
             .withRegion("westus")
@@ -53,16 +55,19 @@ public final class ServersCreateSamples {
             .create();
     }
 
+    /*
+     * operationId: Servers_Create
+     * api-version: 2021-06-01
+     * x-ms-examples: Create a database as a point in time restore
+     */
     /**
      * Sample code: Create a database as a point in time restore.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void createADatabaseAsAPointInTimeRestore(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
             .servers()
             .define("pgtestsvc5")
             .withRegion("westus")

@@ -7,10 +7,12 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
+import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -93,13 +95,35 @@ public final class VolumeProperties {
     private String subnetId;
 
     /*
+     * Network features Basic network, or Standard features available to the
+     * volume.
+     */
+    @JsonProperty(value = "networkFeatures")
+    private NetworkFeatures networkFeatures;
+
+    /*
+     * Network Sibling Set ID Network Sibling Set ID for the the group of
+     * volumes sharing networking resources.
+     */
+    @JsonProperty(value = "networkSiblingSetId", access = JsonProperty.Access.WRITE_ONLY)
+    private String networkSiblingSetId;
+
+    /*
+     * Storage to Network Proximity Provides storage to network proximity
+     * information for the volume.
+     */
+    @JsonProperty(value = "storageToNetworkProximity", access = JsonProperty.Access.WRITE_ONLY)
+    private VolumeStorageToNetworkProximity storageToNetworkProximity;
+
+    /*
      * mountTargets List of mount targets
      */
     @JsonProperty(value = "mountTargets", access = JsonProperty.Access.WRITE_ONLY)
     private List<MountTargetProperties> mountTargets;
 
     /*
-     * What type of volume is this
+     * What type of volume is this. For destination volumes in Cross Region
+     * Replication, set type to DataProtection
      */
     @JsonProperty(value = "volumeType")
     private String volumeType;
@@ -427,6 +451,46 @@ public final class VolumeProperties {
     }
 
     /**
+     * Get the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @return the networkFeatures value.
+     */
+    public NetworkFeatures networkFeatures() {
+        return this.networkFeatures;
+    }
+
+    /**
+     * Set the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @param networkFeatures the networkFeatures value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withNetworkFeatures(NetworkFeatures networkFeatures) {
+        this.networkFeatures = networkFeatures;
+        return this;
+    }
+
+    /**
+     * Get the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
+     * sharing networking resources.
+     *
+     * @return the networkSiblingSetId value.
+     */
+    public String networkSiblingSetId() {
+        return this.networkSiblingSetId;
+    }
+
+    /**
+     * Get the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
+     * information for the volume.
+     *
+     * @return the storageToNetworkProximity value.
+     */
+    public VolumeStorageToNetworkProximity storageToNetworkProximity() {
+        return this.storageToNetworkProximity;
+    }
+
+    /**
      * Get the mountTargets property: mountTargets List of mount targets.
      *
      * @return the mountTargets value.
@@ -436,7 +500,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the volumeType property: What type of volume is this.
+     * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @return the volumeType value.
      */
@@ -445,7 +510,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the volumeType property: What type of volume is this.
+     * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @param volumeType the volumeType value to set.
      * @return the VolumeProperties object itself.

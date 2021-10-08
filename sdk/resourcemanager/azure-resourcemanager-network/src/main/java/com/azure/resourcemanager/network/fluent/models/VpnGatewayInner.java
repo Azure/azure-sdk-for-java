@@ -202,6 +202,29 @@ public final class VpnGatewayInner extends Resource {
     }
 
     /**
+     * Get the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
+     *
+     * @return the enableBgpRouteTranslationForNat value.
+     */
+    public Boolean enableBgpRouteTranslationForNat() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableBgpRouteTranslationForNat();
+    }
+
+    /**
+     * Set the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
+     *
+     * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
+     * @return the VpnGatewayInner object itself.
+     */
+    public VpnGatewayInner withEnableBgpRouteTranslationForNat(Boolean enableBgpRouteTranslationForNat) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnGatewayProperties();
+        }
+        this.innerProperties().withEnableBgpRouteTranslationForNat(enableBgpRouteTranslationForNat);
+        return this;
+    }
+
+    /**
      * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the VpnGateway.
      *

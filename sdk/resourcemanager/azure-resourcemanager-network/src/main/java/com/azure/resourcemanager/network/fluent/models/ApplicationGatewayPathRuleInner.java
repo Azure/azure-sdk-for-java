@@ -211,6 +211,29 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
     }
 
     /**
+     * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
+     *
+     * @return the loadDistributionPolicy value.
+     */
+    public SubResource loadDistributionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicy();
+    }
+
+    /**
+     * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
+     *
+     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
+     * @return the ApplicationGatewayPathRuleInner object itself.
+     */
+    public ApplicationGatewayPathRuleInner withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withLoadDistributionPolicy(loadDistributionPolicy);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the path rule resource.
      *
      * @return the provisioningState value.

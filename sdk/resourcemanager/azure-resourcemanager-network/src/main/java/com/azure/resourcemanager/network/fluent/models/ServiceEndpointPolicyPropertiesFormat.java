@@ -41,6 +41,18 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /*
+     * The alias indicating if the policy belongs to a service
+     */
+    @JsonProperty(value = "serviceAlias")
+    private String serviceAlias;
+
+    /*
+     * A collection of contextual service endpoint policy.
+     */
+    @JsonProperty(value = "contextualServiceEndpointPolicies")
+    private List<String> contextualServiceEndpointPolicies;
+
     /**
      * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
      * service endpoint policy.
@@ -89,6 +101,47 @@ public final class ServiceEndpointPolicyPropertiesFormat {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the serviceAlias property: The alias indicating if the policy belongs to a service.
+     *
+     * @return the serviceAlias value.
+     */
+    public String serviceAlias() {
+        return this.serviceAlias;
+    }
+
+    /**
+     * Set the serviceAlias property: The alias indicating if the policy belongs to a service.
+     *
+     * @param serviceAlias the serviceAlias value to set.
+     * @return the ServiceEndpointPolicyPropertiesFormat object itself.
+     */
+    public ServiceEndpointPolicyPropertiesFormat withServiceAlias(String serviceAlias) {
+        this.serviceAlias = serviceAlias;
+        return this;
+    }
+
+    /**
+     * Get the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
+     *
+     * @return the contextualServiceEndpointPolicies value.
+     */
+    public List<String> contextualServiceEndpointPolicies() {
+        return this.contextualServiceEndpointPolicies;
+    }
+
+    /**
+     * Set the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
+     *
+     * @param contextualServiceEndpointPolicies the contextualServiceEndpointPolicies value to set.
+     * @return the ServiceEndpointPolicyPropertiesFormat object itself.
+     */
+    public ServiceEndpointPolicyPropertiesFormat withContextualServiceEndpointPolicies(
+        List<String> contextualServiceEndpointPolicies) {
+        this.contextualServiceEndpointPolicies = contextualServiceEndpointPolicies;
+        return this;
     }
 
     /**

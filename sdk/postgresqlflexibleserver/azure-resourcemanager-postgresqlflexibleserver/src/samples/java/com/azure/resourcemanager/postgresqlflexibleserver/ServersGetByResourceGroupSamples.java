@@ -8,27 +8,31 @@ import com.azure.core.util.Context;
 
 /** Samples for Servers GetByResourceGroup. */
 public final class ServersGetByResourceGroupSamples {
+    /*
+     * operationId: Servers_Get
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerGet
+     */
     /**
      * Sample code: ServerGet.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverGet(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc1", Context.NONE);
+    public static void serverGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc1", Context.NONE);
     }
 
+    /*
+     * operationId: Servers_Get
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerGetWithVnet
+     */
     /**
      * Sample code: ServerGetWithVnet.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverGetWithVnet(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc4", Context.NONE);
+    public static void serverGetWithVnet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc4", Context.NONE);
     }
 }

@@ -8,15 +8,18 @@ import com.azure.core.util.Context;
 
 /** Samples for GetPrivateDnsZoneSuffix Execute. */
 public final class GetPrivateDnsZoneSuffixExecuteSamples {
+    /*
+     * operationId: GetPrivateDnsZoneSuffix_Execute
+     * api-version: 2021-06-01
+     * x-ms-examples: GetPrivateDnsZoneSuffix
+     */
     /**
      * Sample code: GetPrivateDnsZoneSuffix.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void getPrivateDnsZoneSuffix(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.getPrivateDnsZoneSuffixes().executeWithResponse(Context.NONE);
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.getPrivateDnsZoneSuffixes().executeWithResponse(Context.NONE);
     }
 }

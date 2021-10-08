@@ -139,6 +139,34 @@ public interface DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dataControllerName);
+
+    /**
+     * Deletes a dataController resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The dataControllerName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String dataControllerName, Context context);
+
+    /**
+     * Deletes a dataController resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The dataControllerName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String dataControllerName);
@@ -152,10 +180,9 @@ public interface DataControllersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String dataControllerName, Context context);
+    void delete(String resourceGroupName, String dataControllerName, Context context);
 
     /**
      * Retrieves a dataController resource.

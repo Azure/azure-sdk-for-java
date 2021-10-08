@@ -23,7 +23,7 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration tests")
     public void clientSecretCanGetToken() {
-        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null, null, false, new IdentityClientOptions());
+        IdentityClient client = new IdentityClient(System.getenv(AZURE_TENANT_ID), System.getenv(AZURE_CLIENT_ID), System.getenv(AZURE_CLIENT_SECRET), null, null,  null, null, false, null, new IdentityClientOptions());
         StepVerifier.create(client.authenticateWithConfidentialClient(request))
             .expectNextMatches(token -> token.getToken() != null
                 && token.getExpiresAt() != null
@@ -38,7 +38,7 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration tests")
     public void deviceCodeCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, false, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null,  null, false, null, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithDeviceCode(request, deviceCode -> {
             System.out.println(deviceCode.getMessage());
             try {
@@ -60,7 +60,7 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration tests")
     public void browserCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, false, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, null, false, null, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithBrowserInteraction(request, 8765, null, null).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
@@ -75,7 +75,7 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration tests")
     public void usernamePasswordCanGetToken() {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, false, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, null, false, null, new IdentityClientOptions().setProxyOptions(new ProxyOptions(Type.HTTP, new InetSocketAddress("localhost", 8888))));
         MsalToken token = client.authenticateWithUsernamePassword(request, System.getenv("username"), System.getenv("password")).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());
@@ -90,7 +90,7 @@ public class IdentityClientIntegrationTests {
 
     @Ignore("Integration tests")
     public void authCodeCanGetToken() throws Exception {
-        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, false, new IdentityClientOptions());
+        IdentityClient client = new IdentityClient("common", System.getenv(AZURE_CLIENT_ID), null, null, null, null, null,  false, null, new IdentityClientOptions());
         MsalToken token = client.authenticateWithAuthorizationCode(request, System.getenv("AZURE_AUTH_CODE"), new URI("http://localhost:8000")).block();
         Assert.assertNotNull(token);
         Assert.assertNotNull(token.getToken());

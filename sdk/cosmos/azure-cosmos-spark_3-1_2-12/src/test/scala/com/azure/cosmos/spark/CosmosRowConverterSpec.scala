@@ -22,6 +22,7 @@ import org.apache.spark.sql.types._
 class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
+  //scalastyle:off file.size.limit
 
   val objectMapper = new ObjectMapper()
 
@@ -232,6 +233,24 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))))
 
     val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInt shouldEqual colVal1
+    objectNode.get(colName2).asText shouldEqual colVal2
+  }
+
+  "rawJson in spark InternalRow" should "translate to ObjectNode" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = 8
+    val colVal2 = "strVal"
+    val sourceObjectNode: ObjectNode = objectMapper.createObjectNode()
+    sourceObjectNode.put(colName1, colVal1)
+    sourceObjectNode.put(colName2, colVal2)
+
+    val row = InternalRow(sourceObjectNode.toString)
+
+    val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(
+      row,
+      StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))))
     objectNode.get(colName1).asInt shouldEqual colVal1
     objectNode.get(colName2).asText shouldEqual colVal2
   }
@@ -796,4 +815,5 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
   //scalastyle:on null
   //scalastyle:on multiple.string.literals
+  //scalastyle:on file.size.limit
 }

@@ -7,7 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.Captions;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpeller;
 import com.azure.search.documents.models.QueryType;
@@ -203,7 +202,7 @@ public final class SearchOptions {
      * 'extractive|highlight-true'. Defaults to 'None'.
      */
     @JsonProperty(value = "captions")
-    private Captions captions;
+    private String captions;
 
     /*
      * The list of field names used for semantic search.
@@ -703,7 +702,7 @@ public final class SearchOptions {
      *
      * @return the captions value.
      */
-    public Captions getCaptions() {
+    public String getCaptions() {
         return this.captions;
     }
 
@@ -716,7 +715,7 @@ public final class SearchOptions {
      * @param captions the captions value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setCaptions(Captions captions) {
+    public SearchOptions setCaptions(String captions) {
         this.captions = captions;
         return this;
     }

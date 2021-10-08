@@ -189,6 +189,30 @@ public final class ApplicationGatewayUrlPathMapInner extends SubResource {
     }
 
     /**
+     * Get the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
+     *
+     * @return the defaultLoadDistributionPolicy value.
+     */
+    public SubResource defaultLoadDistributionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultLoadDistributionPolicy();
+    }
+
+    /**
+     * Set the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
+     *
+     * @param defaultLoadDistributionPolicy the defaultLoadDistributionPolicy value to set.
+     * @return the ApplicationGatewayUrlPathMapInner object itself.
+     */
+    public ApplicationGatewayUrlPathMapInner withDefaultLoadDistributionPolicy(
+        SubResource defaultLoadDistributionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayUrlPathMapPropertiesFormat();
+        }
+        this.innerProperties().withDefaultLoadDistributionPolicy(defaultLoadDistributionPolicy);
+        return this;
+    }
+
+    /**
      * Get the pathRules property: Path rule of URL path map resource.
      *
      * @return the pathRules value.

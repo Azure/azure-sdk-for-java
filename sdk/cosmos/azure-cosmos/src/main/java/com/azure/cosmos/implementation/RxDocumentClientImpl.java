@@ -990,6 +990,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
     }
 
+    private Mono<RxDocumentServiceResponse> deleteAllItemsByPartitionKey(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy, OperationContextAndListenerTuple operationContextAndListenerTuple) {
+        return populateHeaders(request, RequestVerb.POST)
+            .flatMap(requestPopulated -> {
+                RxStoreModel storeProxy = this.getStoreProxy(requestPopulated);
+                if (documentClientRetryPolicy.getRetryContext() != null && documentClientRetryPolicy.getRetryContext().getRetryCount() > 0) {
+                    documentClientRetryPolicy.getRetryContext().updateEndTime();
+                }
+
+                return storeProxy.processMessage(requestPopulated, operationContextAndListenerTuple);
+            });
+    }
+
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
         return populateHeaders(request, RequestVerb.GET)
             .flatMap(requestPopulated -> {
@@ -1937,6 +1949,42 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
+            return Mono.error(e);
+        }
+    }
+
+    @Override
+    public Mono<ResourceResponse<Document>> deleteAllDocumentsByPartitionKey(String collectionLink, PartitionKey partitionKey, RequestOptions options) {
+        DocumentClientRetryPolicy requestRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteAllDocumentsByPartitionKeyInternal(collectionLink, options, requestRetryPolicy),
+            requestRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> deleteAllDocumentsByPartitionKeyInternal(String collectionLink, RequestOptions options,
+                                                                                  DocumentClientRetryPolicy retryPolicyInstance) {
+        try {
+            if (StringUtils.isEmpty(collectionLink)) {
+                throw new IllegalArgumentException("collectionLink");
+            }
+
+            logger.debug("Deleting all items by Partition Key. collectionLink: [{}]", collectionLink);
+            String path = Utils.joinPath(collectionLink, null);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.PartitionKey, OperationType.Delete);
+            RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
+                OperationType.Delete, ResourceType.PartitionKey, path, requestHeaders, options);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+
+            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+
+            return requestObs.flatMap(req -> this
+                .deleteAllItemsByPartitionKey(req, retryPolicyInstance, getOperationContextAndListenerTuple(options))
+                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+        } catch (Exception e) {
+            logger.debug("Failure in deleting documents due to [{}]", e.getMessage());
             return Mono.error(e);
         }
     }
@@ -3919,7 +3967,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (resourceType == ResourceType.Offer ||
             resourceType == ResourceType.ClientEncryptionKey ||
             resourceType.isScript() && operationType != OperationType.ExecuteJavaScript ||
-            resourceType == ResourceType.PartitionKeyRange) {
+            resourceType == ResourceType.PartitionKeyRange ||
+            resourceType == ResourceType.PartitionKey && operationType == OperationType.Delete) {
             return this.gatewayProxy;
         }
 

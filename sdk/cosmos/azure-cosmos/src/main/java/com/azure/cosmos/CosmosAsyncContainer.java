@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
@@ -93,6 +94,7 @@ public class CosmosAsyncContainer {
     private final String readItemSpanName;
     private final String upsertItemSpanName;
     private final String deleteItemSpanName;
+    private final String deleteAllItemsByPartitionKeySpanName;
     private final String replaceItemSpanName;
     private final String patchItemSpanName;
     private final String createItemSpanName;
@@ -117,6 +119,7 @@ public class CosmosAsyncContainer {
         this.readItemSpanName = "readItem." + this.id;
         this.upsertItemSpanName = "upsertItem." + this.id;
         this.deleteItemSpanName = "deleteItem." + this.id;
+        this.deleteAllItemsByPartitionKeySpanName = "deleteAllItemsByPartitionKey." + this.id;
         this.replaceItemSpanName = "replaceItem." + this.id;
         this.patchItemSpanName = "patchItem." + this.id;
         this.createItemSpanName = "createItem." + this.id;
@@ -450,6 +453,7 @@ public class CosmosAsyncContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<Void> openConnectionsAndInitCaches() {
+        int retryCount = Configs.getOpenConnectionsRetriesCount();
 
         if(isInitialized.compareAndSet(false, true)) {
             return this.getFeedRanges().flatMap(feedRanges -> {
@@ -458,13 +462,17 @@ public class CosmosAsyncContainer {
                 querySpec.setQueryText("select * from c where c.id = @id");
                 querySpec.setParameters(Collections.singletonList(new SqlParameter("@id",
                     UUID.randomUUID().toString())));
-                for (FeedRange feedRange : feedRanges) {
-                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                    options.setFeedRange(feedRange);
-                    CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
-                        ObjectNode.class);
-                    fluxList.add(cosmosPagedFlux.byPage());
+
+                for (int i = 0; i < retryCount; i++) {
+                    for (FeedRange feedRange : feedRanges) {
+                        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                        options.setFeedRange(feedRange);
+                        CosmosPagedFlux<ObjectNode> cosmosPagedFlux = this.queryItems(querySpec, options,
+                            ObjectNode.class);
+                        fluxList.add(cosmosPagedFlux.byPage());
+                    }
                 }
+
                 Mono<List<FeedResponse<ObjectNode>>> listMono = Flux.merge(fluxList).collectList();
                 return listMono.flatMap(objects -> Mono.empty());
             });
@@ -1474,6 +1482,28 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Deletes all items in the Container with the specified partitionKey value.
+     * Starts an asynchronous Cosmos DB background operation which deletes all items in the Container with the specified value.
+     * The asynchronous Cosmos DB background operation runs using a percentage of user RUs.
+     *
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response for all the deleted items.
+     *
+     * @param partitionKey partitionKey of the item.
+     * @param options the request options.
+     * @return an {@link Mono} containing the Cosmos item resource response.
+     */
+    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
+        return withContext(context -> deleteAllItemsByPartitionKeyInternal(partitionKey, requestOptions, context));
+    }
+
+    /**
      * Deletes the item.
      * <p>
      * After subscription the operation will be performed.
@@ -1651,6 +1681,31 @@ public class CosmosAsyncContainer {
                 requestOptions.getConsistencyLevel(),
                 OperationType.Delete,
                 ResourceType.Document,
+                requestOptions.getThresholdForDiagnosticsOnTracer());
+    }
+
+    private Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKeyInternal(
+        PartitionKey partitionKey,
+        RequestOptions requestOptions,
+        Context context) {
+        Mono<CosmosItemResponse<Object>> responseMono = this.getDatabase()
+            .getDocClientWrapper()
+            .deleteAllDocumentsByPartitionKey(getLink(), partitionKey, requestOptions)
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
+            .single();
+        return database
+            .getClient()
+            .getTracerProvider()
+            .traceEnabledCosmosItemResponsePublisher(
+                responseMono,
+                context,
+                this.deleteAllItemsByPartitionKeySpanName,
+                this.getId(),
+                database.getId(),
+                database.getClient(),
+                requestOptions.getConsistencyLevel(),
+                OperationType.Delete,
+                ResourceType.PartitionKey,
                 requestOptions.getThresholdForDiagnosticsOnTracer());
     }
 

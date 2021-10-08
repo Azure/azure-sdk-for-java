@@ -564,6 +564,13 @@ public interface NetworkManagementClient {
     ServiceTagsClient getServiceTags();
 
     /**
+     * Gets the ServiceTagInformationsClient object to access its operations.
+     *
+     * @return the ServiceTagInformationsClient object.
+     */
+    ServiceTagInformationsClient getServiceTagInformations();
+
+    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.

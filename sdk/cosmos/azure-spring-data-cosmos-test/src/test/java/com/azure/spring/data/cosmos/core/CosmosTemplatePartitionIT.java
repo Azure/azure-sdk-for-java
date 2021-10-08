@@ -4,8 +4,12 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.PageTestUtils;
@@ -13,6 +17,7 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
+import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -38,6 +43,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
@@ -63,11 +69,12 @@ public class CosmosTemplatePartitionIT {
         HOBBIES, ADDRESSES);
 
     private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(ID_2, NEW_FIRST_NAME,
-        TEST_PERSON.getZipCode(), HOBBIES, ADDRESSES);
+        NEW_ZIP_CODE, HOBBIES, ADDRESSES);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
+    private static CosmosFactory cosmosFactory;
     private static CosmosTemplate cosmosTemplate;
     private static String containerName;
     private static CosmosEntityInformation<PartitionPerson, String> personInfo;
@@ -82,8 +89,10 @@ public class CosmosTemplatePartitionIT {
     @Before
     public void setUp() throws ClassNotFoundException {
         if (cosmosTemplate == null) {
+            //  Enable Query plan caching for testing
+            System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
             CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-            final CosmosFactory cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
+            cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
             personInfo = new CosmosEntityInformation<>(PartitionPerson.class);
@@ -119,6 +128,41 @@ public class CosmosTemplatePartitionIT {
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
+    }
+
+    @Test
+    public void testFindWithPartitionWithQueryPlanCachingEnabled() {
+        Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ZIP_CODE,
+            Collections.singletonList(ZIP_CODE), Part.IgnoreCaseType.NEVER);
+        CosmosQuery query = new CosmosQuery(criteria);
+        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
+            PartitionPerson.class.getSimpleName()));
+
+        assertThat(result.size()).isEqualTo(1);
+        assertEquals(TEST_PERSON, result.get(0));
+
+        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
+        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        int initialSize = initialCache.size();
+
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode()));
+
+        criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ZIP_CODE,
+            Collections.singletonList(NEW_ZIP_CODE), Part.IgnoreCaseType.NEVER);
+        query = new CosmosQuery(criteria);
+        //  Fire the same query but with different partition key value to make sure query plan caching is enabled
+        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
+            PartitionPerson.class.getSimpleName()));
+
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
+        assertThat(result.size()).isEqualTo(1);
+        assertEquals(TEST_PERSON_2, result.get(0));
     }
 
     @Test
@@ -196,8 +240,6 @@ public class CosmosTemplatePartitionIT {
 
         final List<PartitionPerson> inserted = TestUtils.toList(cosmosTemplate.findAll(PartitionPerson.class));
         assertThat(inserted.size()).isEqualTo(2);
-        assertThat(inserted.get(0).getZipCode()).isEqualTo(TEST_PERSON.getZipCode());
-        assertThat(inserted.get(1).getZipCode()).isEqualTo(TEST_PERSON.getZipCode());
 
         cosmosTemplate.deleteById(PartitionPerson.class.getSimpleName(),
             TEST_PERSON.getId(), new PartitionKey(TEST_PERSON.getZipCode()));

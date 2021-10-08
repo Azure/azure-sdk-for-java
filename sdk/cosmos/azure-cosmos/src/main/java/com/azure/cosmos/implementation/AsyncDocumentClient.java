@@ -627,6 +627,7 @@ public interface AsyncDocumentClient {
      */
     Mono<ResourceResponse<Document>> deleteDocument(String documentLink, InternalObjectNode internalObjectNode, RequestOptions options);
 
+    Mono<ResourceResponse<Document>> deleteAllDocumentsByPartitionKey(String collectionLink, PartitionKey partitionKey, RequestOptions options);
     /**
      * Reads a document
      * <p>

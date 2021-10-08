@@ -9,10 +9,12 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
+import com.azure.resourcemanager.network.models.ExplicitProxySettings;
 import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
 import com.azure.resourcemanager.network.models.FirewallPolicySku;
 import com.azure.resourcemanager.network.models.FirewallPolicySnat;
+import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -81,10 +83,22 @@ public final class FirewallPolicyPropertiesFormat {
     private FirewallPolicySnat snat;
 
     /*
+     * SQL Settings definition.
+     */
+    @JsonProperty(value = "sql")
+    private FirewallPolicySql sql;
+
+    /*
      * DNS Proxy Settings definition.
      */
     @JsonProperty(value = "dnsSettings")
     private DnsSettings dnsSettings;
+
+    /*
+     * Explicit Proxy Settings definition.
+     */
+    @JsonProperty(value = "explicitProxySettings")
+    private ExplicitProxySettings explicitProxySettings;
 
     /*
      * The configuration for Intrusion detection.
@@ -242,6 +256,26 @@ public final class FirewallPolicyPropertiesFormat {
     }
 
     /**
+     * Get the sql property: SQL Settings definition.
+     *
+     * @return the sql value.
+     */
+    public FirewallPolicySql sql() {
+        return this.sql;
+    }
+
+    /**
+     * Set the sql property: SQL Settings definition.
+     *
+     * @param sql the sql value to set.
+     * @return the FirewallPolicyPropertiesFormat object itself.
+     */
+    public FirewallPolicyPropertiesFormat withSql(FirewallPolicySql sql) {
+        this.sql = sql;
+        return this;
+    }
+
+    /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
      *
      * @return the dnsSettings value.
@@ -258,6 +292,26 @@ public final class FirewallPolicyPropertiesFormat {
      */
     public FirewallPolicyPropertiesFormat withDnsSettings(DnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
+        return this;
+    }
+
+    /**
+     * Get the explicitProxySettings property: Explicit Proxy Settings definition.
+     *
+     * @return the explicitProxySettings value.
+     */
+    public ExplicitProxySettings explicitProxySettings() {
+        return this.explicitProxySettings;
+    }
+
+    /**
+     * Set the explicitProxySettings property: Explicit Proxy Settings definition.
+     *
+     * @param explicitProxySettings the explicitProxySettings value to set.
+     * @return the FirewallPolicyPropertiesFormat object itself.
+     */
+    public FirewallPolicyPropertiesFormat withExplicitProxySettings(ExplicitProxySettings explicitProxySettings) {
+        this.explicitProxySettings = explicitProxySettings;
         return this;
     }
 
@@ -336,8 +390,14 @@ public final class FirewallPolicyPropertiesFormat {
         if (snat() != null) {
             snat().validate();
         }
+        if (sql() != null) {
+            sql().validate();
+        }
         if (dnsSettings() != null) {
             dnsSettings().validate();
+        }
+        if (explicitProxySettings() != null) {
+            explicitProxySettings().validate();
         }
         if (intrusionDetection() != null) {
             intrusionDetection().validate();

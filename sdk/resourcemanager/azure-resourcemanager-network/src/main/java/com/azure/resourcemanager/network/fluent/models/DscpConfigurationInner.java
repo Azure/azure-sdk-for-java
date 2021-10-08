@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProtocolType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.QosDefinition;
 import com.azure.resourcemanager.network.models.QosIpRange;
 import com.azure.resourcemanager.network.models.QosPortRange;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** DSCP Configuration in a resource group. */
+/** Differentiated Services Code Point configuration for any given network interface. */
 @Fluent
 public final class DscpConfigurationInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DscpConfigurationInner.class);
@@ -226,6 +227,29 @@ public final class DscpConfigurationInner extends Resource {
             this.innerProperties = new DscpConfigurationPropertiesFormat();
         }
         this.innerProperties().withProtocol(protocol);
+        return this;
+    }
+
+    /**
+     * Get the qosDefinitionCollection property: QoS object definitions.
+     *
+     * @return the qosDefinitionCollection value.
+     */
+    public List<QosDefinition> qosDefinitionCollection() {
+        return this.innerProperties() == null ? null : this.innerProperties().qosDefinitionCollection();
+    }
+
+    /**
+     * Set the qosDefinitionCollection property: QoS object definitions.
+     *
+     * @param qosDefinitionCollection the qosDefinitionCollection value to set.
+     * @return the DscpConfigurationInner object itself.
+     */
+    public DscpConfigurationInner withQosDefinitionCollection(List<QosDefinition> qosDefinitionCollection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DscpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withQosDefinitionCollection(qosDefinitionCollection);
         return this;
     }
 

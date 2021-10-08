@@ -9,7 +9,6 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
@@ -36,14 +35,14 @@ public final class HttpClientOptions extends ClientOptions {
         ClientLogger logger = new ClientLogger(HttpClientOptions.class);
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        DEFAULT_CONNECT_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, TimeUnit.SECONDS.toMillis(10), logger));
-        DEFAULT_WRITE_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger));
-        DEFAULT_RESPONSE_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger));
-        DEFAULT_READ_TIMEOUT = Duration.ofMillis(getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_READ_TIMEOUT, TimeUnit.SECONDS.toMillis(60), logger));
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), logger);
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            Duration.ofSeconds(60), logger);
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), logger);
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            Duration.ofSeconds(60), logger);
     }
 
     private final ClientLogger logger = new ClientLogger(HttpClientOptions.class);

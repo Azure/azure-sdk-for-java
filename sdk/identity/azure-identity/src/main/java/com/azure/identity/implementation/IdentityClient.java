@@ -42,6 +42,7 @@ import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -57,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -122,12 +124,15 @@ public class IdentityClient {
     private final String tenantId;
     private final String clientId;
     private final String clientSecret;
+    private final String clientAssertionFilePath;
     private final InputStream certificate;
     private final String certificatePath;
     private final String certificatePassword;
     private HttpPipelineAdapter httpPipelineAdapter;
     private final SynchronizedAccessor<PublicClientApplication> publicClientApplicationAccessor;
     private final SynchronizedAccessor<ConfidentialClientApplication> confidentialClientApplicationAccessor;
+    private final SynchronizedAccessor<String> clientAssertionAccessor;
+
 
     /**
      * Creates an IdentityClient with the given options.
@@ -140,10 +145,12 @@ public class IdentityClient {
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
+     * @param clientAssertionTimeout the time out to use for the client assertion.
      * @param options the options configuring the client.
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                   String clientAssertionFilePath, InputStream certificate, String certificatePassword,
+                   boolean isSharedTokenCacheCredential, Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -154,16 +161,21 @@ public class IdentityClient {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
+        this.clientAssertionFilePath = clientAssertionFilePath;
         this.certificatePath = certificatePath;
         this.certificate = certificate;
         this.certificatePassword = certificatePassword;
         this.options = options;
 
-        this.publicClientApplicationAccessor = new SynchronizedAccessor<PublicClientApplication>(() ->
+        this.publicClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getPublicClientApplication(isSharedTokenCacheCredential));
 
-        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<ConfidentialClientApplication>(() ->
+        this.confidentialClientApplicationAccessor = new SynchronizedAccessor<>(() ->
             getConfidentialClientApplication());
+
+        this.clientAssertionAccessor = clientAssertionTimeout == null
+            ? new SynchronizedAccessor<>(() -> parseClientAssertion(), Duration.ofMinutes(5))
+                : new SynchronizedAccessor<>(() -> parseClientAssertion(), clientAssertionTimeout);
     }
 
     private Mono<ConfidentialClientApplication> getConfidentialClientApplication() {
@@ -253,6 +265,21 @@ public class IdentityClient {
             ConfidentialClientApplication confidentialClientApplication = applicationBuilder.build();
             return tokenCache != null ? tokenCache.registerCache()
                 .map(ignored -> confidentialClientApplication) : Mono.just(confidentialClientApplication);
+        });
+    }
+
+    private Mono<String> parseClientAssertion() {
+        return Mono.fromCallable(() -> {
+            if (clientAssertionFilePath != null) {
+                byte[] encoded = Files.readAllBytes(Paths.get(clientAssertionFilePath));
+                return new String(encoded, StandardCharsets.UTF_8);
+            } else {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Client Assertion File Path is not provided."
+                        + " It should be provided to authenticate with client assertion."
+                ));
+            }
+
         });
     }
 
@@ -525,6 +552,23 @@ public class IdentityClient {
                 return Mono.error(last);
             }));
     }
+
+
+    /**
+     * Asynchronously acquire a token from Active Directory with Azure Power Shell.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateWithOBO(TokenRequestContext request) {
+
+        return confidentialClientApplicationAccessor.getValue()
+            .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
+                    .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
+                    .build()))
+                .map(MsalToken::new));
+    }
+
 
     private Mono<AccessToken> getAccessTokenFromPowerShell(TokenRequestContext request,
                                                            PowershellManager powershellManager) {
@@ -995,6 +1039,61 @@ public class IdentityClient {
     }
 
     /**
+     * Asynchronously acquire a token from the Azure Arc Managed Service Identity endpoint.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticatewithExchangeToken(TokenRequestContext request) {
+
+        return clientAssertionAccessor.getValue()
+            .flatMap(assertionToken -> Mono.fromCallable(() -> {
+                String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "")
+                    + "/" + tenantId + "/oauth2/v2.0/token";
+
+                StringBuilder urlParametersBuilder  = new StringBuilder();
+                urlParametersBuilder.append("client_assertion=");
+                urlParametersBuilder.append(assertionToken);
+                urlParametersBuilder.append("&client_assertion_type=urn:ietf:params:oauth:client-assertion-type"
+                    + ":jwt-bearer");
+                urlParametersBuilder.append("&client_id=");
+                urlParametersBuilder.append(clientId);
+                urlParametersBuilder.append("&grant_type=client_credentials");
+                urlParametersBuilder.append("&scope=");
+                urlParametersBuilder.append(URLEncoder.encode(request.getScopes().get(0), "UTF-8"));
+
+                String urlParams = urlParametersBuilder.toString();
+
+                byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
+                int postDataLength = postData.length;
+
+                HttpURLConnection connection = null;
+
+                URL url = new URL(authorityUrl);
+
+                try {
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("POST");
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+                    connection.setDoOutput(true);
+                    try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                        outputStream.write(postData);
+                    }
+                    connection.connect();
+
+                    Scanner s = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                    String result = s.hasNext() ? s.next() : "";
+                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                }
+            }));
+    }
+
+    /**
      * Asynchronously acquire a token from the Azure Service Fabric Managed Service Identity endpoint.
      *
      * @param identityEndpoint the Identity endpoint to acquire token from
@@ -1007,7 +1106,6 @@ public class IdentityClient {
                                                                                 String thumbprint,
                                                                                 TokenRequestContext request) {
         return Mono.fromCallable(() -> {
-
             HttpsURLConnection connection = null;
             String endpoint = identityEndpoint;
             String headerValue = identityHeader;

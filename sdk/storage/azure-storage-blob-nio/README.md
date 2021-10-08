@@ -19,7 +19,7 @@ This package allows you to interact with Azure Blob Storage through the standard
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-blob-nio</artifactId>
-    <version>12.0.0-beta.7</version>
+    <version>12.0.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -48,7 +48,7 @@ public class BulkProcessingOptionsTest {
     @Test(groups = { "unit" })
     public void thresholdsInstanceCanBePassedAcrossBulkExecutionOptionsInstances() {
         CosmosBulkExecutionOptions initialOptions = new CosmosBulkExecutionOptions();
-        CosmosBulkExecutionThresholdsState thresholds = initialOptions.getThresholds();
+        CosmosBulkExecutionThresholdsState thresholds = initialOptions.getThresholdsState();
         ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholdsMap =
             ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                 .getBulkExecutionThresholdsAccessor()
@@ -56,11 +56,11 @@ public class BulkProcessingOptionsTest {
         CosmosBulkExecutionOptions optionsWithThresholds =
             new CosmosBulkExecutionOptions(null, thresholds);
 
-        assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholds());
+        assertThat(thresholds).isSameAs(optionsWithThresholds.getThresholdsState());
         assertThat(partitionScopeThresholdsMap)
             .isSameAs(
                 ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
                     .getBulkExecutionThresholdsAccessor()
-                    .getPartitionScopeThresholds(optionsWithThresholds.getThresholds()));
+                    .getPartitionScopeThresholds(optionsWithThresholds.getThresholdsState()));
     }
 }

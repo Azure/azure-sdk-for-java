@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Servers Start. */
 public final class ServersStartSamples {
+    /*
+     * operationId: Servers_Start
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerStart
+     */
     /**
      * Sample code: ServerStart.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverStart(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.servers().start("testrg", "testserver", Context.NONE);
+    public static void serverStart(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.servers().start("testrg", "testserver", Context.NONE);
     }
 }

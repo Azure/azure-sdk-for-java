@@ -67,6 +67,12 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     private SubResource redirectConfiguration;
 
     /*
+     * Load Distribution Policy resource of the application gateway.
+     */
+    @JsonProperty(value = "loadDistributionPolicy")
+    private SubResource loadDistributionPolicy;
+
+    /*
      * The provisioning state of the request routing rule resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -232,6 +238,27 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withRedirectConfiguration(
         SubResource redirectConfiguration) {
         this.redirectConfiguration = redirectConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
+     *
+     * @return the loadDistributionPolicy value.
+     */
+    public SubResource loadDistributionPolicy() {
+        return this.loadDistributionPolicy;
+    }
+
+    /**
+     * Set the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
+     *
+     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
+     */
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat withLoadDistributionPolicy(
+        SubResource loadDistributionPolicy) {
+        this.loadDistributionPolicy = loadDistributionPolicy;
         return this;
     }
 

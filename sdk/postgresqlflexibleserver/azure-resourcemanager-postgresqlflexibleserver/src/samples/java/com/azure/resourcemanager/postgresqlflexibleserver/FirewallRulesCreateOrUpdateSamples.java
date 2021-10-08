@@ -6,16 +6,19 @@ package com.azure.resourcemanager.postgresqlflexibleserver;
 
 /** Samples for FirewallRules CreateOrUpdate. */
 public final class FirewallRulesCreateOrUpdateSamples {
+    /*
+     * operationId: FirewallRules_CreateOrUpdate
+     * api-version: 2021-06-01
+     * x-ms-examples: FirewallRuleCreate
+     */
     /**
      * Sample code: FirewallRuleCreate.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void firewallRuleCreate(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager
             .firewallRules()
             .define("rule1")
             .withExistingFlexibleServer("testrg", "testserver")

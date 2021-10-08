@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for LocationBasedCapabilities Execute. */
 public final class LocationBasedCapabilitiesExecuteSamples {
+    /*
+     * operationId: LocationBasedCapabilities_Execute
+     * api-version: 2021-06-01
+     * x-ms-examples: CapabilitiesList
+     */
     /**
      * Sample code: CapabilitiesList.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void capabilitiesList(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.locationBasedCapabilities().execute("westus", Context.NONE);
+    public static void capabilitiesList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.locationBasedCapabilities().execute("westus", Context.NONE);
     }
 }

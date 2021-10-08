@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
@@ -15,56 +15,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The policy definition. */
-@JsonFlatten
 @Fluent
-public class PolicyDefinitionInner extends ProxyResource {
+public final class PolicyDefinitionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionInner.class);
 
     /*
-     * The type of policy definition. Possible values are NotSpecified,
-     * BuiltIn, Custom, and Static.
+     * The policy definition properties.
      */
-    @JsonProperty(value = "properties.policyType")
-    private PolicyType policyType;
+    @JsonProperty(value = "properties")
+    private PolicyDefinitionProperties innerProperties;
 
     /*
-     * The policy definition mode. Some examples are All, Indexed,
-     * Microsoft.KeyVault.Data.
+     * The system metadata relating to this resource.
      */
-    @JsonProperty(value = "properties.mode")
-    private String mode;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /*
-     * The display name of the policy definition.
+    /**
+     * Get the innerProperties property: The policy definition properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    private PolicyDefinitionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The policy definition description.
+    /**
+     * Get the systemData property: The system metadata relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The policy rule.
-     */
-    @JsonProperty(value = "properties.policyRule")
-    private Object policyRule;
-
-    /*
-     * The policy definition metadata.  Metadata is an open ended object and is
-     * typically a collection of key value pairs.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The parameter definitions for parameters used in the policy rule. The
-     * keys are the parameter names.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, ParameterDefinitionsValue> parameters;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
      * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
@@ -73,7 +56,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the policyType value.
      */
     public PolicyType policyType() {
-        return this.policyType;
+        return this.innerProperties() == null ? null : this.innerProperties().policyType();
     }
 
     /**
@@ -84,7 +67,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withPolicyType(PolicyType policyType) {
-        this.policyType = policyType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withPolicyType(policyType);
         return this;
     }
 
@@ -94,7 +80,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the mode value.
      */
     public String mode() {
-        return this.mode;
+        return this.innerProperties() == null ? null : this.innerProperties().mode();
     }
 
     /**
@@ -104,7 +90,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withMode(String mode) {
-        this.mode = mode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withMode(mode);
         return this;
     }
 
@@ -114,7 +103,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -124,7 +113,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -134,7 +126,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -144,7 +136,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -154,7 +149,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the policyRule value.
      */
     public Object policyRule() {
-        return this.policyRule;
+        return this.innerProperties() == null ? null : this.innerProperties().policyRule();
     }
 
     /**
@@ -164,7 +159,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withPolicyRule(Object policyRule) {
-        this.policyRule = policyRule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withPolicyRule(policyRule);
         return this;
     }
 
@@ -175,7 +173,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the metadata value.
      */
     public Object metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -186,7 +184,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withMetadata(Object metadata) {
-        this.metadata = metadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -197,7 +198,7 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the parameters value.
      */
     public Map<String, ParameterDefinitionsValue> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -208,7 +209,10 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @return the PolicyDefinitionInner object itself.
      */
     public PolicyDefinitionInner withParameters(Map<String, ParameterDefinitionsValue> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyDefinitionProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -218,15 +222,8 @@ public class PolicyDefinitionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

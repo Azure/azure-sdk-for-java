@@ -15,20 +15,19 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 
 /** Samples for Servers Update. */
 public final class ServersUpdateSamples {
+    /*
+     * operationId: Servers_Update
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerUpdate
+     */
     /**
      * Sample code: ServerUpdate.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void serverUpdate(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
+    public static void serverUpdate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource =
-            postgreSqlManager
-                .servers()
-                .getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", Context.NONE)
-                .getValue();
+            manager.servers().getByResourceGroupWithResponse("TestGroup", "pgtestsvc4", Context.NONE).getValue();
         resource
             .update()
             .withSku(new Sku().withName("Standard_D8s_v3").withTier(SkuTier.GENERAL_PURPOSE))
@@ -39,17 +38,20 @@ public final class ServersUpdateSamples {
             .apply();
     }
 
+    /*
+     * operationId: Servers_Update
+     * api-version: 2021-06-01
+     * x-ms-examples: ServerUpdateWithCustomerMaintenanceWindow
+     */
     /**
      * Sample code: ServerUpdateWithCustomerMaintenanceWindow.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
     public static void serverUpdateWithCustomerMaintenanceWindow(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         Server resource =
-            postgreSqlManager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc4", Context.NONE).getValue();
+            manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc4", Context.NONE).getValue();
         resource
             .update()
             .withMaintenanceWindow(

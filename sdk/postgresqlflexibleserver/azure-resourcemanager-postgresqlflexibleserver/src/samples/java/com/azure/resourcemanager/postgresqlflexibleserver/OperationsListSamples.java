@@ -8,15 +8,17 @@ import com.azure.core.util.Context;
 
 /** Samples for Operations List. */
 public final class OperationsListSamples {
+    /*
+     * operationId: Operations_List
+     * api-version: 2021-06-01
+     * x-ms-examples: OperationList
+     */
     /**
      * Sample code: OperationList.
      *
-     * @param postgreSqlManager Entry point to PostgreSqlManager. The Microsoft Azure management API provides create,
-     *     read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall
-     *     rules, VNET rules, security alert policies, log files and configurations with new business model.
+     * @param manager Entry point to PostgreSqlManager.
      */
-    public static void operationList(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager postgreSqlManager) {
-        postgreSqlManager.operations().listWithResponse(Context.NONE);
+    public static void operationList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.operations().listWithResponse(Context.NONE);
     }
 }

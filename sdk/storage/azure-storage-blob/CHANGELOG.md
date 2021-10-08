@@ -1,7 +1,20 @@
 # Release History
 
-## 12.14.0-beta.2 (Unreleased)
+## 12.15.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+- Fixed a bug when Blob Endpoint is provided as an IP address (e.g., `https://x.x.x.x:10000`) with 
+  empty component path, the parsing fails with StringIndexOutOfBoundsException
+
+### Other Changes
+
+## 12.14.0 (2021-09-15)
+- GA release
 
 ## 12.14.0-beta.1 (2021-07-28)
 - Fixed a bug where BlobClient.exists would not function correctly on blobs encrypted with CPK.
@@ -25,11 +38,11 @@
 - Updated `azure-core` to version `1.16.0`
 
 ## 12.11.0 (2021-04-29)
-- Fixed a bug where large files would hang when the upload method was called. 
+- Fixed a bug where large files would not respond when the upload method was called. 
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where BlobOutputStream would lock up if the inner uploadWithResponse call is cancelled for any reason.
-- Fixed a bug where BlobOutputStream could hang when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
+- Fixed a bug where BlobOutputStream could not respond when writing in a tight loop because the inner FluxSink would buffer in an unbounded manner. This would cause memory issues especially if the heap size was set to less than the size of the data being uploaded.
 - Fixed a bug where a null check was placed on the wrong parameter of the InputStream constructor for BlobParallelUploadOptions
 
 ## 12.11.0-beta.2 (2021-03-29)

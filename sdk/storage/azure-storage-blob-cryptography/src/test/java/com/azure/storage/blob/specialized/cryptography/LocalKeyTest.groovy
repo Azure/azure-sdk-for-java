@@ -28,12 +28,12 @@ class LocalKeyTest extends APISpec {
             .buildAsyncKeyEncryptionKey(localKey)
             .block()
 
-        cc = getServiceClientBuilder(env.primaryAccount)
+        cc = getServiceClientBuilder(environment.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
-        bec = getEncryptedClientBuilder(akek, null, env.primaryAccount.credential,
+        bec = getEncryptedClientBuilder(akek, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(generateBlobName())
             .buildEncryptedBlobClient()
