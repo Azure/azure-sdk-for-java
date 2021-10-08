@@ -147,7 +147,7 @@ public final class TagRulesImpl implements TagRules {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE);
     }
 
     public TagRulesDeleteResponse deleteByIdWithResponse(String id, Context context) {
