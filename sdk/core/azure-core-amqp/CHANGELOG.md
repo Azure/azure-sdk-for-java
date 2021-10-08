@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.1 (Unreleased)
+## 2.3.3 (2021-10-07)
 
 ### Features Added
 
@@ -8,8 +8,6 @@
 - Updated tests to run in parallel.
 - Updated log messages so they are consistent in reporting connectionId.
 - Updated incorrect log messages in ReactorReceiver.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
