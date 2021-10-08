@@ -16,7 +16,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.Assumptions;
@@ -34,7 +33,6 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     protected static final boolean IS_MANAGED_HSM_DEPLOYED =
         Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
     static final String DISPLAY_NAME = "{displayName}";
-    private final ClientLogger logger = new ClientLogger(KeyVaultAdministrationClientTestBase.class);
 
     @Override
     protected void beforeTest() {
@@ -50,15 +48,10 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestBase {
     protected List<HttpPipelinePolicy> getPolicies() {
         TokenCredential credential = null;
 
-        logger.info("KeyVaultAdministrationClientTestBase.getPolicies  AZURE_KEYVAULT_ENDPOINT : " + System.getenv("AZURE_KEYVAULT_ENDPOINT"));
-        logger.info("KeyVaultAdministrationClientTestBase.getPolicies  isPlaybackMode : " + interceptorManager.isPlaybackMode());
         if (!interceptorManager.isPlaybackMode()) {
-            logger.info("KeyVaultAdministrationClientTestBase.getPolicies  AZURE_KEYVAULT_CLIENT_ID : " + System.getenv("AZURE_KEYVAULT_CLIENT_ID"));
-            logger.info("KeyVaultAdministrationClientTestBase.getPolicies  AZURE_KEYVAULT_CLIENT_SECRET : " + System.getenv("AZURE_KEYVAULT_CLIENT_SECRET"));
-            logger.info("KeyVaultAdministrationClientTestBase.getPolicies  AZURE_KEYVAULT_TENANT_ID : " + System.getenv("AZURE_KEYVAULT_TENANT_ID"));
-            String clientId = System.getenv("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = System.getenv("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = System.getenv("AZURE_KEYVAULT_TENANT_ID");
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
 
             Objects.requireNonNull(clientId, "The client id cannot be null");
             Objects.requireNonNull(clientKey, "The client key cannot be null");
