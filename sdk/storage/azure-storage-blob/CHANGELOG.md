@@ -3,6 +3,7 @@
 ## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for setting encryption scopes on the destination of a sync copy.
 
 ### Breaking Changes
 
