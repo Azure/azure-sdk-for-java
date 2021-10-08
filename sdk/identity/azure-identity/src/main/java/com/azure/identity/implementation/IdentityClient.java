@@ -417,7 +417,7 @@ public class IdentityClient {
 
         azCommand.append(scopes);
 
-        String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        String tenant = IdentityUtil.resolveTenantId(null, request, options);
         if (!CoreUtils.isNullOrEmpty(tenant)) {
             azCommand.append("--tenant " + tenant);
         }
@@ -585,7 +585,7 @@ public class IdentityClient {
                     }
                     StringBuilder accessTokenCommand = new StringBuilder("Get-AzAccessToken -ResourceUrl ");
                     accessTokenCommand.append(ScopeUtil.scopesToResource(request.getScopes()));
-                    String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+                    String tenant = IdentityUtil.resolveTenantId(null, request, options);
                     if (!CoreUtils.isNullOrEmpty(tenant)) {
                         accessTokenCommand.append("-TenantId " + tenant);
                     }
