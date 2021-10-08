@@ -21,7 +21,7 @@ param (
   [Parameter(Mandatory = $true)]
   $Configs, # The configuration elements informing important locations within the cloned doc repo
   [Parameter(Mandatory = $false)]
-  $DocAuther # The one triggered the release pipeline will be the doc.ms author
+  $DocAuthor # The one triggered the release pipeline will be the doc.ms author
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
