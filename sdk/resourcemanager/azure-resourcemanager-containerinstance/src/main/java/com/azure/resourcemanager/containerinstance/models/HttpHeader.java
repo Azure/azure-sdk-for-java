@@ -9,10 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HTTP headers. */
+/** The HTTP header. */
 @Fluent
-public final class HttpHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpHeaders.class);
+public final class HttpHeader {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpHeader.class);
 
     /*
      * The header name.
@@ -39,9 +39,9 @@ public final class HttpHeaders {
      * Set the name property: The header name.
      *
      * @param name the name value to set.
-     * @return the HttpHeaders object itself.
+     * @return the HttpHeader object itself.
      */
-    public HttpHeaders withName(String name) {
+    public HttpHeader withName(String name) {
         this.name = name;
         return this;
     }
@@ -59,9 +59,9 @@ public final class HttpHeaders {
      * Set the value property: The header value.
      *
      * @param value the value value to set.
-     * @return the HttpHeaders object itself.
+     * @return the HttpHeader object itself.
      */
-    public HttpHeaders withValue(String value) {
+    public HttpHeader withValue(String value) {
         this.value = value;
         return this;
     }

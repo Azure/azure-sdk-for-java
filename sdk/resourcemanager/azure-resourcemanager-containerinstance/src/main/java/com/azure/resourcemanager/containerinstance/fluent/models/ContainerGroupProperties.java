@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSku;
@@ -24,67 +22,103 @@ import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
-/** A container group. */
+/** The container group properties. */
 @Fluent
-public final class ContainerGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupInner.class);
+public final class ContainerGroupProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupProperties.class);
 
     /*
-     * The identity of the container group, if configured.
+     * The provisioning state of the container group. This only appears in the
+     * response.
      */
-    @JsonProperty(value = "identity")
-    private ContainerGroupIdentity identity;
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
 
     /*
-     * The container group properties
+     * The containers within the container group.
      */
-    @JsonProperty(value = "properties", required = true)
-    private ContainerGroupProperties innerProperties = new ContainerGroupProperties();
+    @JsonProperty(value = "containers", required = true)
+    private List<Container> containers;
 
-    /**
-     * Get the identity property: The identity of the container group, if configured.
+    /*
+     * The image registry credentials by which the container group is created
+     * from.
+     */
+    @JsonProperty(value = "imageRegistryCredentials")
+    private List<ImageRegistryCredential> imageRegistryCredentials;
+
+    /*
+     * Restart policy for all containers within the container group.
+     * - `Always` Always restart
+     * - `OnFailure` Restart on failure
+     * - `Never` Never restart
      *
-     * @return the identity value.
      */
-    public ContainerGroupIdentity identity() {
-        return this.identity;
-    }
+    @JsonProperty(value = "restartPolicy")
+    private ContainerGroupRestartPolicy restartPolicy;
 
-    /**
-     * Set the identity property: The identity of the container group, if configured.
-     *
-     * @param identity the identity value to set.
-     * @return the ContainerGroupInner object itself.
+    /*
+     * The IP address type of the container group.
      */
-    public ContainerGroupInner withIdentity(ContainerGroupIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
+    @JsonProperty(value = "ipAddress")
+    private IpAddress ipAddress;
 
-    /**
-     * Get the innerProperties property: The container group properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The operating system type required by the containers in the container
+     * group.
      */
-    private ContainerGroupProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "osType", required = true)
+    private OperatingSystemTypes osType;
 
-    /** {@inheritDoc} */
-    @Override
-    public ContainerGroupInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
+    /*
+     * The list of volumes that can be mounted by containers in this container
+     * group.
+     */
+    @JsonProperty(value = "volumes")
+    private List<Volume> volumes;
 
-    /** {@inheritDoc} */
-    @Override
-    public ContainerGroupInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
+    /*
+     * The instance view of the container group. Only valid in response.
+     */
+    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
+    private ContainerGroupPropertiesInstanceView instanceView;
+
+    /*
+     * The diagnostic information for a container group.
+     */
+    @JsonProperty(value = "diagnostics")
+    private ContainerGroupDiagnostics diagnostics;
+
+    /*
+     * The subnet resource IDs for a container group.
+     */
+    @JsonProperty(value = "subnetIds")
+    private List<ContainerGroupSubnetId> subnetIds;
+
+    /*
+     * The DNS config information for a container group.
+     */
+    @JsonProperty(value = "dnsConfig")
+    private DnsConfiguration dnsConfig;
+
+    /*
+     * The SKU for a container group.
+     */
+    @JsonProperty(value = "sku")
+    private ContainerGroupSku sku;
+
+    /*
+     * The encryption properties for a container group.
+     */
+    @JsonProperty(value = "encryptionProperties")
+    private EncryptionProperties encryptionProperties;
+
+    /*
+     * The init containers for a container group.
+     */
+    @JsonProperty(value = "initContainers")
+    private List<InitContainerDefinition> initContainers;
 
     /**
      * Get the provisioningState property: The provisioning state of the container group. This only appears in the
@@ -93,7 +127,7 @@ public final class ContainerGroupInner extends Resource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+        return this.provisioningState;
     }
 
     /**
@@ -102,20 +136,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the containers value.
      */
     public List<Container> containers() {
-        return this.innerProperties() == null ? null : this.innerProperties().containers();
+        return this.containers;
     }
 
     /**
      * Set the containers property: The containers within the container group.
      *
      * @param containers the containers value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withContainers(List<Container> containers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withContainers(containers);
+    public ContainerGroupProperties withContainers(List<Container> containers) {
+        this.containers = containers;
         return this;
     }
 
@@ -126,7 +157,7 @@ public final class ContainerGroupInner extends Resource {
      * @return the imageRegistryCredentials value.
      */
     public List<ImageRegistryCredential> imageRegistryCredentials() {
-        return this.innerProperties() == null ? null : this.innerProperties().imageRegistryCredentials();
+        return this.imageRegistryCredentials;
     }
 
     /**
@@ -134,13 +165,11 @@ public final class ContainerGroupInner extends Resource {
      * from.
      *
      * @param imageRegistryCredentials the imageRegistryCredentials value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withImageRegistryCredentials(List<ImageRegistryCredential> imageRegistryCredentials) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withImageRegistryCredentials(imageRegistryCredentials);
+    public ContainerGroupProperties withImageRegistryCredentials(
+        List<ImageRegistryCredential> imageRegistryCredentials) {
+        this.imageRegistryCredentials = imageRegistryCredentials;
         return this;
     }
 
@@ -151,7 +180,7 @@ public final class ContainerGroupInner extends Resource {
      * @return the restartPolicy value.
      */
     public ContainerGroupRestartPolicy restartPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().restartPolicy();
+        return this.restartPolicy;
     }
 
     /**
@@ -159,13 +188,10 @@ public final class ContainerGroupInner extends Resource {
      * restart - `OnFailure` Restart on failure - `Never` Never restart.
      *
      * @param restartPolicy the restartPolicy value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withRestartPolicy(ContainerGroupRestartPolicy restartPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withRestartPolicy(restartPolicy);
+    public ContainerGroupProperties withRestartPolicy(ContainerGroupRestartPolicy restartPolicy) {
+        this.restartPolicy = restartPolicy;
         return this;
     }
 
@@ -175,20 +201,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the ipAddress value.
      */
     public IpAddress ipAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().ipAddress();
+        return this.ipAddress;
     }
 
     /**
      * Set the ipAddress property: The IP address type of the container group.
      *
      * @param ipAddress the ipAddress value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withIpAddress(IpAddress ipAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withIpAddress(ipAddress);
+    public ContainerGroupProperties withIpAddress(IpAddress ipAddress) {
+        this.ipAddress = ipAddress;
         return this;
     }
 
@@ -198,20 +221,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.innerProperties() == null ? null : this.innerProperties().osType();
+        return this.osType;
     }
 
     /**
      * Set the osType property: The operating system type required by the containers in the container group.
      *
      * @param osType the osType value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withOsType(OperatingSystemTypes osType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withOsType(osType);
+    public ContainerGroupProperties withOsType(OperatingSystemTypes osType) {
+        this.osType = osType;
         return this;
     }
 
@@ -221,20 +241,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the volumes value.
      */
     public List<Volume> volumes() {
-        return this.innerProperties() == null ? null : this.innerProperties().volumes();
+        return this.volumes;
     }
 
     /**
      * Set the volumes property: The list of volumes that can be mounted by containers in this container group.
      *
      * @param volumes the volumes value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withVolumes(List<Volume> volumes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withVolumes(volumes);
+    public ContainerGroupProperties withVolumes(List<Volume> volumes) {
+        this.volumes = volumes;
         return this;
     }
 
@@ -244,7 +261,7 @@ public final class ContainerGroupInner extends Resource {
      * @return the instanceView value.
      */
     public ContainerGroupPropertiesInstanceView instanceView() {
-        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
+        return this.instanceView;
     }
 
     /**
@@ -253,20 +270,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the diagnostics value.
      */
     public ContainerGroupDiagnostics diagnostics() {
-        return this.innerProperties() == null ? null : this.innerProperties().diagnostics();
+        return this.diagnostics;
     }
 
     /**
      * Set the diagnostics property: The diagnostic information for a container group.
      *
      * @param diagnostics the diagnostics value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withDiagnostics(ContainerGroupDiagnostics diagnostics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withDiagnostics(diagnostics);
+    public ContainerGroupProperties withDiagnostics(ContainerGroupDiagnostics diagnostics) {
+        this.diagnostics = diagnostics;
         return this;
     }
 
@@ -276,20 +290,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the subnetIds value.
      */
     public List<ContainerGroupSubnetId> subnetIds() {
-        return this.innerProperties() == null ? null : this.innerProperties().subnetIds();
+        return this.subnetIds;
     }
 
     /**
      * Set the subnetIds property: The subnet resource IDs for a container group.
      *
      * @param subnetIds the subnetIds value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withSubnetIds(List<ContainerGroupSubnetId> subnetIds) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withSubnetIds(subnetIds);
+    public ContainerGroupProperties withSubnetIds(List<ContainerGroupSubnetId> subnetIds) {
+        this.subnetIds = subnetIds;
         return this;
     }
 
@@ -299,20 +310,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the dnsConfig value.
      */
     public DnsConfiguration dnsConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().dnsConfig();
+        return this.dnsConfig;
     }
 
     /**
      * Set the dnsConfig property: The DNS config information for a container group.
      *
      * @param dnsConfig the dnsConfig value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withDnsConfig(DnsConfiguration dnsConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withDnsConfig(dnsConfig);
+    public ContainerGroupProperties withDnsConfig(DnsConfiguration dnsConfig) {
+        this.dnsConfig = dnsConfig;
         return this;
     }
 
@@ -322,20 +330,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the sku value.
      */
     public ContainerGroupSku sku() {
-        return this.innerProperties() == null ? null : this.innerProperties().sku();
+        return this.sku;
     }
 
     /**
      * Set the sku property: The SKU for a container group.
      *
      * @param sku the sku value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withSku(ContainerGroupSku sku) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withSku(sku);
+    public ContainerGroupProperties withSku(ContainerGroupSku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -345,20 +350,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the encryptionProperties value.
      */
     public EncryptionProperties encryptionProperties() {
-        return this.innerProperties() == null ? null : this.innerProperties().encryptionProperties();
+        return this.encryptionProperties;
     }
 
     /**
      * Set the encryptionProperties property: The encryption properties for a container group.
      *
      * @param encryptionProperties the encryptionProperties value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withEncryptionProperties(EncryptionProperties encryptionProperties) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withEncryptionProperties(encryptionProperties);
+    public ContainerGroupProperties withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        this.encryptionProperties = encryptionProperties;
         return this;
     }
 
@@ -368,20 +370,17 @@ public final class ContainerGroupInner extends Resource {
      * @return the initContainers value.
      */
     public List<InitContainerDefinition> initContainers() {
-        return this.innerProperties() == null ? null : this.innerProperties().initContainers();
+        return this.initContainers;
     }
 
     /**
      * Set the initContainers property: The init containers for a container group.
      *
      * @param initContainers the initContainers value to set.
-     * @return the ContainerGroupInner object itself.
+     * @return the ContainerGroupProperties object itself.
      */
-    public ContainerGroupInner withInitContainers(List<InitContainerDefinition> initContainers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerGroupProperties();
-        }
-        this.innerProperties().withInitContainers(initContainers);
+    public ContainerGroupProperties withInitContainers(List<InitContainerDefinition> initContainers) {
+        this.initContainers = initContainers;
         return this;
     }
 
@@ -391,16 +390,45 @@ public final class ContainerGroupInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
-        }
-        if (innerProperties() == null) {
+        if (containers() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property innerProperties in model ContainerGroupInner"));
+                        "Missing required property containers in model ContainerGroupProperties"));
         } else {
-            innerProperties().validate();
+            containers().forEach(e -> e.validate());
+        }
+        if (imageRegistryCredentials() != null) {
+            imageRegistryCredentials().forEach(e -> e.validate());
+        }
+        if (ipAddress() != null) {
+            ipAddress().validate();
+        }
+        if (osType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property osType in model ContainerGroupProperties"));
+        }
+        if (volumes() != null) {
+            volumes().forEach(e -> e.validate());
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
+        if (diagnostics() != null) {
+            diagnostics().validate();
+        }
+        if (subnetIds() != null) {
+            subnetIds().forEach(e -> e.validate());
+        }
+        if (dnsConfig() != null) {
+            dnsConfig().validate();
+        }
+        if (encryptionProperties() != null) {
+            encryptionProperties().validate();
+        }
+        if (initContainers() != null) {
+            initContainers().forEach(e -> e.validate());
         }
     }
 }
