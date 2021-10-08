@@ -69,7 +69,7 @@ public class ReadmeSamples {
         SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
             schemaContent, SchemaFormat.AVRO);
 
-        System.out.println("Registered schema: " + schemaProperties.getSchemaId());
+        System.out.println("Registered schema: " + schemaProperties.getId());
     }
 
     /**
@@ -85,7 +85,7 @@ public class ReadmeSamples {
 
         SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
-        System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getSchemaId(),
+        System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
             schema.getSchemaDefinition());
     }
 
@@ -116,6 +116,6 @@ public class ReadmeSamples {
         SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
             schemaContent, SchemaFormat.AVRO);
 
-        System.out.println("Retrieved schema id: " + properties.getSchemaId());
+        System.out.println("Retrieved schema id: " + properties.getId());
     }
 }

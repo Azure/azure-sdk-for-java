@@ -56,11 +56,11 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
         return this.retryWithRetryPolicy.shouldRetry(exception)
                                         .flatMap((retryWithResult) -> {
-
-            if (retryWithResult.shouldRetry) {
+            if (!retryWithResult.nonRelatedException) {
                 return Mono.just(retryWithResult);
             }
 
+            // only pass request to gone retry policy if retryWithRetryPolicy can not handle the exception.
             return this.goneRetryPolicy.shouldRetry(exception)
                 .flatMap((goneRetryResult) -> {
                     if (!goneRetryResult.shouldRetry) {
@@ -111,7 +111,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
 
         private boolean isNonRetryableException(Exception exception) {
             if (exception instanceof GoneException ||
-                exception instanceof RetryWithException ||
                 exception instanceof PartitionIsMigratingException ||
                 exception instanceof PartitionKeyRangeIsSplittingException) {
 
