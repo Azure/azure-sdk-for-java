@@ -86,7 +86,6 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
     private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
                                                                     EventHubProcessor eventHubProcessor) {
-
         Assert.hasText(checkpointStorageConnectionString, "checkpointConnectionString can't be null or empty, check "
             + "whether checkpoint-storage-account is configured in the configuration file.");
         // We set eventHubName as the container name when we use track1 library, and the EventHubProcessor will create

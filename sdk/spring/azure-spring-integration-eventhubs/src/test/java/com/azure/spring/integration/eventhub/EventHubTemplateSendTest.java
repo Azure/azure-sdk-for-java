@@ -32,7 +32,7 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
     @Mock
     EventDataBatch eventDataBatch;
     @Mock
-    private DefaultEventHubClientFactory mockClientFactory;
+    DefaultEventHubClientFactory mockClientFactory;
 
     @Mock
     EventHubProducerAsyncClient mockProducerClient;

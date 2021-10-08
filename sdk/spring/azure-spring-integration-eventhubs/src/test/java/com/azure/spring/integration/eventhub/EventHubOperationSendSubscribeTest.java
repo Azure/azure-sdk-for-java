@@ -47,7 +47,6 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
 
     private MeterRegistry meterRegistry = new SimpleMeterRegistry();
 
-
     @BeforeEach
     @Override
     public void setUp() {
@@ -71,7 +70,7 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
 
     @Override
     protected void verifyCheckpointBatchSuccessCalled(int times) {
-        //        verify(this.eventContext, times(times)).updateCheckpoint();
+//        verify(this.eventContext, times(times)).updateCheckpoint();
     }
 
     @Override
