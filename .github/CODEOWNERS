@@ -34,7 +34,7 @@
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
-/sdk/communication/azure-communication-identity/    @petrsvihlik @martinbarnas-ms
+/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk
 /sdk/communication/azure-communication-phonenumbers/ @RoyHerrod @danielav7 @whisper6284 @AlonsoMondal
 /sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
 
@@ -61,7 +61,7 @@
 /sdk/digitaltwins/                                  @drwill-ms @azabbasi @johngallardo
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
@@ -139,8 +139,8 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @weidongxu-microsoft @qwordy @haolingdong-msft
-/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @qwordy @haolingdong-msft
+/sdk/resourcemanager/                               @weidongxu-microsoft @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @haolingdong-msft
 
 # Quantum
 # PRLabel: %Azure Quantum

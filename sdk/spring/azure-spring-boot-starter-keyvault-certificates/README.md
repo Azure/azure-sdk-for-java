@@ -316,7 +316,7 @@ KeyVaultKeyStore can fetch certificates from KeyVault periodically if the follow
 azure:
   keyvault:
     jca:
-       certificates-refresh-interval: 1800000
+       certificates-refresh-interval-in-ms: 1800000
 ```
 
 Its value is 0(ms) by default, and certificate will not automatically refresh when its value <= 0.

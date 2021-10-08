@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+Rename `azure.keyvault.jca.certificates-refresh-interval` to `azure.keyvault.jca.certificates-refresh-interval-in-ms`.
 
 ### Bugs Fixed
 

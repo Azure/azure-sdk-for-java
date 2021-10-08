@@ -354,7 +354,7 @@ class AppendBlobAPITest extends APISpec {
     def "Append block retry on transient failure"() {
         setup:
         def clientWithFailure = getBlobClient(
-            env.primaryAccount.credential,
+            environment.primaryAccount.credential,
             bc.getBlobUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         ).getAppendBlobClient()
@@ -696,11 +696,11 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | 1
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def specialBlob = getSpecializedBuilder(env.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
+        def specialBlob = getSpecializedBuilder(environment.primaryAccount.credential, bc.getBlobUrl(), getPerCallVersionPolicy())
             .buildAppendBlobClient()
 
         when:
