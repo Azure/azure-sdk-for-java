@@ -16,7 +16,12 @@ import java.util.Objects;
  *
  * <p>Create a named credential for a service specific sas key.</p>
  *
- * {@codesnippet com.azure.core.credential.azureNamedKeyCredenialSasKey}
+ * <!-- src_embed com.azure.core.credential.azureNamedKeyCredenialSasKey -->
+ * <pre>
+ * AzureNamedKeyCredential azureNamedKeyCredential =
+ *     new AzureNamedKeyCredential&#40;&quot;AZURE-SERVICE-SAS-KEY-NAME&quot;, &quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.credential.azureNamedKeyCredenialSasKey -->
  *
  */
 public final class AzureNamedKeyCredential {

@@ -231,7 +231,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFlushAsync(
         String resourceGroupName, String cacheName, String storageTargetName) {
         Mono<Response<Flux<ByteBuffer>>> mono = flushWithResponseAsync(resourceGroupName, cacheName, storageTargetName);
@@ -254,7 +254,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginFlushAsync(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         context = this.client.mergeContext(context);
@@ -278,7 +278,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName) {
         return beginFlushAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
@@ -298,7 +298,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginFlush(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         return beginFlushAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
@@ -501,7 +501,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(
         String resourceGroupName, String cacheName, String storageTargetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -524,7 +524,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSuspendAsync(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         context = this.client.mergeContext(context);
@@ -547,7 +547,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName) {
         return beginSuspendAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
@@ -566,7 +566,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSuspend(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         return beginSuspendAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
@@ -765,7 +765,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResumeAsync(
         String resourceGroupName, String cacheName, String storageTargetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -788,7 +788,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResumeAsync(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         context = this.client.mergeContext(context);
@@ -811,7 +811,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName) {
         return beginResumeAsync(resourceGroupName, cacheName, storageTargetName).getSyncPoller();
@@ -830,7 +830,7 @@ public final class StorageTargetOperationsClientImpl implements StorageTargetOpe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResume(
         String resourceGroupName, String cacheName, String storageTargetName, Context context) {
         return beginResumeAsync(resourceGroupName, cacheName, storageTargetName, context).getSyncPoller();
