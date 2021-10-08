@@ -13,13 +13,7 @@ public enum ModelDependencyResolution {
     DISABLED,
 
     /**
-     * Enable model dependency resolution. The client will parse models and calculate dependencies recursively.
+     * Enable model dependency resolution.
      */
     ENABLED,
-
-    /**
-     * Try to get pre-computed model dependencies using .expanded.json.
-     * If the model expanded form does not exist, it will fall back to {@link ModelDependencyResolution#ENABLED}.
-     */
-    TRY_FROM_EXPANDED,
 }

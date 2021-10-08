@@ -103,7 +103,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
-        final String schemaIdToGet = response.getSchemaId();
+        final String schemaIdToGet = response.getId();
 
         // Act
         final SchemaRegistrySchema schema1 = client2.getSchema(schemaIdToGet);
@@ -138,11 +138,11 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
-        assertNotEquals(response.getSchemaId(), response2.getSchemaId());
+        assertNotEquals(response.getId(), response2.getId());
 
         // Act & Assert
-        final SchemaRegistrySchema response3 = client2.getSchema(response2.getSchemaId());
-        assertSchemaRegistrySchema(response3, response2.getSchemaId(), schemaFormat, schemaContentModified);
+        final SchemaRegistrySchema response3 = client2.getSchema(response2.getId());
+        assertSchemaRegistrySchema(response3, response2.getId(), schemaFormat, schemaContentModified);
     }
 
     /**
@@ -163,14 +163,14 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
-        final String schemaIdToGet = response.getSchemaId();
+        final String schemaIdToGet = response.getId();
         assertNotNull(schemaIdToGet);
 
         // Act & Assert
         final SchemaProperties schemaProperties = client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT,
             schemaFormat);
 
-        assertEquals(schemaIdToGet, schemaProperties.getSchemaId());
+        assertEquals(schemaIdToGet, schemaProperties.getId());
         assertEquals(schemaFormat, schemaProperties.getFormat());
     }
 

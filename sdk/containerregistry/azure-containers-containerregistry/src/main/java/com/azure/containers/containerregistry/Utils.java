@@ -178,6 +178,7 @@ final class Utils {
      * @param perRetryPolicies per retry policies.
      * @param httpClient http client
      * @param endpoint endpoint to be called
+     * @param serviceVersion the service api version being targeted by the client.
      * @return returns the httpPipeline to be consumed by the builders.
      */
     static HttpPipeline buildHttpPipeline(
@@ -191,6 +192,7 @@ final class Utils {
         List<HttpPipelinePolicy> perRetryPolicies,
         HttpClient httpClient,
         String endpoint,
+        ContainerRegistryServiceVersion serviceVersion,
         ClientLogger logger) {
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -225,6 +227,7 @@ final class Utils {
             credential,
             audience,
             endpoint,
+            serviceVersion,
             new HttpPipelineBuilder()
                 .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
@@ -252,18 +255,22 @@ final class Utils {
         return clonedPolicy;
     }
 
-    static Mono<Response<Void>> deleteResponseToSuccess(Response<Void> responseT) {
+    static <T> Mono<Response<Void>> deleteResponseToSuccess(Response<T> responseT) {
         if (responseT.getStatusCode() != HTTP_STATUS_CODE_NOT_FOUND) {
-            return Mono.just(responseT);
+            // In case of success scenario return Response<Void>.
+            return getAcceptedDeleteResponse(responseT, responseT.getStatusCode());
         }
 
-        Response<Void> successResponse = new ResponseBase<String, Void>(
+        // In case of 400, we still convert it to success i.e. no-op.
+        return getAcceptedDeleteResponse(responseT, HTTP_STATUS_CODE_ACCEPTED);
+    }
+
+    static <T> Mono<Response<Void>> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
+        return Mono.just(new ResponseBase<String, Void>(
             responseT.getRequest(),
-            HTTP_STATUS_CODE_ACCEPTED,
+            statusCode,
             responseT.getHeaders(),
             null,
-            null);
-
-        return Mono.just(successResponse);
+            null));
     }
 }
