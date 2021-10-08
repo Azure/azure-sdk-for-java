@@ -141,7 +141,7 @@ public class PerfStressProgram {
                 Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
 
-                if (options.getTestProxy() != null) {
+                if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
 
                     try {
