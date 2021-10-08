@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
+import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -22,17 +23,22 @@ public class TokenServiceImpl {
 
     /**
      * Creates an instance of the token service impl class.TokenServiceImpl.java
-     *  @param url the service endpoint.
+     * @param url the service endpoint.
+     * @param apiVersion the api-version of the service being targeted.
      * @param pipeline the pipeline to use to make the call.
      * @param serializerAdapter the serializer adapter for the rest client.
      *
      */
-    public TokenServiceImpl(String url, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
+    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
         if (serializerAdapter == null) {
             serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
 
-        this.authenticationsImpl = new AuthenticationsImpl(url, pipeline, serializerAdapter);
+        if (apiVersion == null) {
+            apiVersion = ContainerRegistryServiceVersion.getLatest();
+        }
+
+        this.authenticationsImpl = new AuthenticationsImpl(url, apiVersion.getVersion(), pipeline, serializerAdapter);
     }
 
     /**

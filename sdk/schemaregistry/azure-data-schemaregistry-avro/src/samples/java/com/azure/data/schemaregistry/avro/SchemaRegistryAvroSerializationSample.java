@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 /**
- * Sample to demonstrate using {@link SchemaRegistryAvroSerializer} for serialization of data.
+ * Sample to demonstrate using {@link SchemaRegistryApacheAvroSerializer} for serialization of data.
  */
 public class SchemaRegistryAvroSerializationSample {
     /**
@@ -29,12 +29,12 @@ public class SchemaRegistryAvroSerializationSample {
         // Create the schema registry async client
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
-            .endpoint("{schema-registry-endpoint}")
+            .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
         // Create the serializer instance by configuring the serializer with the schema registry client and
         // enabling auto registering of new schemas
-        SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAvroSerializerBuilder()
+        SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
             .avroSpecificReader(true)
