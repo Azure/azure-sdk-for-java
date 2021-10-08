@@ -1,7 +1,6 @@
 # Release History
 
 ## 1.0.5 (2021-10-06)
-- Upgraded `azure-communication-common` to 1.0.5
 - Upgraded `azure-core` to 1.21.0
 
 ## 1.0.4 (2021-09-09)
