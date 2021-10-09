@@ -19,7 +19,7 @@ public class CosmosActuatorIT {
     public void testCosmosSpringBootActuatorHealth() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("spring.cloud.azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
+            app.property("spring.cloud.azure.cosmos.endpoint", AZURE_COSMOS_ENDPOINT);
             app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
             app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
             app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
