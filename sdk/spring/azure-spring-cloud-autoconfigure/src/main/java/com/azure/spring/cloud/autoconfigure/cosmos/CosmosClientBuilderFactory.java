@@ -72,7 +72,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     protected void configureService(CosmosClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
-        map.from(this.cosmosProperties.getUri()).to(builder::endpoint);
+        map.from(this.cosmosProperties.getEndpoint()).to(builder::endpoint);
         map.from(this.cosmosProperties.getConsistencyLevel()).to(builder::consistencyLevel);
         map.from(this.cosmosProperties.getClientTelemetryEnabled()).to(builder::clientTelemetryEnabled);
         map.from(this.cosmosProperties.getConnectionSharingAcrossClientsEnabled()).to(builder::connectionSharingAcrossClientsEnabled);

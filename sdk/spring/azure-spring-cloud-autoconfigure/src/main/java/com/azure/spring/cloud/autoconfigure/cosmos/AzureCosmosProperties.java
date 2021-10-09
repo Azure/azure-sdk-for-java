@@ -29,7 +29,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     @NotEmpty
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
-    private String uri;
+    private String endpoint;
 
     private String key;
 
@@ -70,12 +70,12 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
         return new ClientProperties();
     }
 
-    public String getUri() {
-        return uri;
+    public String getEndpoint() {
+        return endpoint;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
     @Override

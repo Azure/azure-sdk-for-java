@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureKeyVaultSecretAutoConfigurationTest {
 
-    private static final String KEY_VAULT_URL = "https:/%s.vault.azure.net/";
+    private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class));
@@ -25,7 +25,7 @@ class AzureKeyVaultSecretAutoConfigurationTest {
     void withoutSecretClientBuilderShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(SecretClientBuilder.class))
-            .withPropertyValues("spring.cloud.azure.keyvault.secret.vault-url=" + String.format(KEY_VAULT_URL, "mykv"))
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultSecretAutoConfiguration.class));
     }
 
@@ -34,21 +34,21 @@ class AzureKeyVaultSecretAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.keyvault.secret.enabled=false",
-                "spring.cloud.azure.keyvault.secret.vault-url=" + String.format(KEY_VAULT_URL, "mykv")
+                "spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv")
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultSecretAutoConfiguration.class));
     }
 
     @Test
-    void withoutVaultUrlShouldNotConfigure() {
+    void withoutVaultEndpointShouldNotConfigure() {
         this.contextRunner
             .run(context -> assertThat(context).doesNotHaveBean(AzureKeyVaultSecretAutoConfiguration.class));
     }
 
     @Test
-    void withVaultUrlShouldConfigure() {
+    void withVaultEndpointShouldConfigure() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.keyvault.secret.vault-url=" + String.format(KEY_VAULT_URL, "mykv"))
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretAutoConfiguration.class);

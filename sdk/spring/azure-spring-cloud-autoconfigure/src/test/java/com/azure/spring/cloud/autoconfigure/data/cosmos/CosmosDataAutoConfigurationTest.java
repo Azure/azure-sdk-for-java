@@ -13,8 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CosmosDataAutoConfigurationTest {
 
-    static final String TEST_URI_HTTPS = "https://test.https.documents.azure.com:443/";
-
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(CosmosDataAutoConfiguration.class));
 
@@ -33,7 +31,7 @@ class CosmosDataAutoConfigurationTest {
     }
 
     @Test
-    void configureWithoutUri() {
+    void configureWithoutEndpoint() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.cosmos.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(CosmosConfig.class));

@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ CosmosTemplate.class })
 @ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true}")
-@ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = { "uri", "database" })
+@ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = { "endpoint", "database" })
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
     private final AzureCosmosProperties cosmosProperties;

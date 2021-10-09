@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class AzureAppConfigurationAutoConfigurationTest {
 
-    private static final String APP_CONFIGURATION_URL = "https://%s.azconfig.io";
+    private static final String ENDPOINT = "https://%s.azconfig.io";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureAppConfigurationAutoConfiguration.class));
@@ -28,7 +28,7 @@ class AzureAppConfigurationAutoConfigurationTest {
     @Test
     void withoutConfigurationClientBuilderShouldNotConfigure() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(APP_CONFIGURATION_URL, "my-appconfig"))
+            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .withClassLoader(new FilteredClassLoader(ConfigurationClientBuilder.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureAppConfigurationAutoConfiguration.class));
     }
@@ -38,7 +38,7 @@ class AzureAppConfigurationAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.appconfiguration.enabled=false",
-                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(APP_CONFIGURATION_URL, "my-appconfig")
+                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig")
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureAppConfigurationAutoConfiguration.class));
     }
@@ -52,7 +52,7 @@ class AzureAppConfigurationAutoConfigurationTest {
     @Test
     void withEndpointShouldConfigure() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(APP_CONFIGURATION_URL, "my-appconfig"))
+            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureAppConfigurationAutoConfiguration.class);

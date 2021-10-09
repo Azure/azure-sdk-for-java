@@ -34,7 +34,7 @@ public class CosmosHealthConfiguration {
                                                    CosmosAsyncClient cosmosAsyncClient) {
         return new CosmosHealthIndicator(cosmosAsyncClient,
                                          azureCosmosProperties.getDatabase(),
-                                         azureCosmosProperties.getUri());
+                                         azureCosmosProperties.getEndpoint());
     }
 
 }

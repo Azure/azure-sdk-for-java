@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosPropertiesTest.TEST_URI_HTTPS;
+import static com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosPropertiesTest.TEST_ENDPOINT_HTTPS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -42,20 +42,20 @@ class AzureCosmosAutoConfigurationTest {
     }
 
     @Test
-    void configureWithoutUri() {
+    void configureWithoutEndpoint() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.cosmos.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(AzureCosmosProperties.class));
     }
 
     @Test
-    void configureWithUri() {
+    void configureWithEndpoint() {
         final CosmosClientBuilder mockCosmosClientBuilder = mock(CosmosClientBuilder.class);
         when(mockCosmosClientBuilder.buildClient()).thenReturn(mock(CosmosClient.class));
         when(mockCosmosClientBuilder.buildAsyncClient()).thenReturn(mock(CosmosAsyncClient.class));
 
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.cosmos.uri=" + TEST_URI_HTTPS)
+            .withPropertyValues("spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilder.class, () -> mockCosmosClientBuilder)
             .run(context -> {
@@ -79,7 +79,7 @@ class AzureCosmosAutoConfigurationTest {
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .withPropertyValues("spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
                                 "spring.cloud.azure.cosmos.retry.backoff.delay=2m",
-                                "spring.cloud.azure.cosmos.uri=" + TEST_URI_HTTPS,
+                                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
                                 "spring.cloud.azure.cosmos.key=cosmos-key"
                                 )
             .run(context -> {
@@ -88,7 +88,7 @@ class AzureCosmosAutoConfigurationTest {
                 assertThat(properties).extracting("credential.clientId").isEqualTo("cosmos-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
                 assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
-                assertThat(properties).extracting("uri").isEqualTo(TEST_URI_HTTPS);
+                assertThat(properties).extracting("endpoint").isEqualTo(TEST_ENDPOINT_HTTPS);
                 assertThat(properties).extracting("key").isEqualTo("cosmos-key");
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
