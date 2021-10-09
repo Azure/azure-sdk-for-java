@@ -62,24 +62,24 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-avro</artifactId>
-      <version>2.12.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
+      <version>2.12.5</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.9</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.10</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -112,7 +112,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.12.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.12.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-avro;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

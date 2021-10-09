@@ -30,11 +30,11 @@ public class LogsQueryTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        logsQueryClient.query(workspaceId, LOGS_QUERY, null);
+        logsQueryClient.queryWorkspace(workspaceId, LOGS_QUERY, null);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return logsQueryAsyncClient.query(workspaceId, LOGS_QUERY, null).then();
+        return logsQueryAsyncClient.queryWorkspace(workspaceId, LOGS_QUERY, null).then();
     }
 }
