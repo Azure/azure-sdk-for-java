@@ -64,8 +64,8 @@ public final class TestUtils {
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
     public static final String INVALID_KEY = "invalid key";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
-    static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
-        + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
+    static final String URL_TEST_FILE_FORMAT = "https://github.com/Azure/azure-sdk-for-java/" +
+        "tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
     public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
     static {
