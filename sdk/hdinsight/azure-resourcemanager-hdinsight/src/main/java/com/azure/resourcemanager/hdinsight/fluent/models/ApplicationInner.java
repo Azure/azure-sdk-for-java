@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.models.ApplicationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,6 +37,12 @@ public final class ApplicationInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private ApplicationProperties properties;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the etag property: The ETag for the application.
@@ -95,6 +102,15 @@ public final class ApplicationInner extends ProxyResource {
     public ApplicationInner withProperties(ApplicationProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
