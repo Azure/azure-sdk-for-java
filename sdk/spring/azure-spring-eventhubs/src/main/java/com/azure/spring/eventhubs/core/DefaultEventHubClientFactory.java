@@ -4,7 +4,6 @@
 package com.azure.spring.eventhubs.core;
 
 import com.azure.core.util.ClientOptions;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
