@@ -74,7 +74,7 @@ function GetAdjustedReadmeContent($pkgInfo){
     $fileContent = $fileContent -replace $releaseReplaceRegex, $ReplacementPattern
     Write-Host "Service name is $service."
     Write-Host "Doc author name is $DocAuthor."
-    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: $`nms.author: $DocAuthor`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
+    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: $DocAuthor`nms.author: $DocAuthor`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
 
     if ($fileContent) {
       return "$header`n$fileContent"
