@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -44,6 +45,11 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     }
 
     @Override
+    protected BiConsumer<SecretClientBuilder, HttpPipeline> consumeHttpPipeline() {
+        return SecretClientBuilder::pipeline;
+    }
+
+    @Override
     protected SecretClientBuilder createBuilderInstance() {
         return new SecretClientBuilder();
     }
@@ -62,7 +68,7 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     @Override
     protected void configureService(SecretClientBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        map.from(secretProperties.getVaultUrl()).to(builder::vaultUrl);
+        map.from(secretProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(secretProperties.getServiceVersion()).to(builder::serviceVersion);
     }
 

@@ -96,6 +96,7 @@ org.slf4j:slf4j-simple;1.7.32
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.5.4
+org.springframework.boot:spring-boot-actuator;2.5.4
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.5.4
 org.springframework.boot:spring-boot-autoconfigure-processor;2.5.4
 org.springframework.boot:spring-boot-autoconfigure;2.5.4

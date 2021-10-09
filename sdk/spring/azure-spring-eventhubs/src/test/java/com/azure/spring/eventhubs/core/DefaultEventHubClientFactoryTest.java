@@ -62,7 +62,10 @@ public class DefaultEventHubClientFactoryTest {
         when(eventHubServiceClientBuilder.buildAsyncProducerClient()).thenReturn(this.eventHubProducerClient);
         when(eventProcessorServiceClientBuilder.buildEventProcessorClient()).thenReturn(this.eventProcessorClient);
 
-        this.clientFactory = spy(new DefaultEventHubClientFactory(eventHubServiceClientBuilder, eventProcessorServiceClientBuilder));
+        DefaultEventHubClientFactory factory = new DefaultEventHubClientFactory(eventHubServiceClientBuilder);
+        factory.setEventProcessorServiceClientBuilder(eventProcessorServiceClientBuilder);
+        this.clientFactory = spy(factory);
+
     }
 
     @Test

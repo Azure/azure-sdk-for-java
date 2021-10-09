@@ -39,7 +39,7 @@ public class MultipleKeyVaultsIT {
     @Test
     public void testGetValueFromKeyVault1() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
-            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].vault-url", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", AZURE_KEYVAULT_URI);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].name", KEY_VAULT_NAME_1);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-id", SPRING_CLIENT_ID);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-secret", SPRING_CLIENT_SECRET);
@@ -55,7 +55,7 @@ public class MultipleKeyVaultsIT {
     @Test
     public void testGetValueFromKeyVault2() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
-            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].vault-url", AZURE_KEYVAULT2_URI);
+            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", AZURE_KEYVAULT2_URI);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].name", KEY_VAULT_NAME_2);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-id", SPRING_CLIENT_ID);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-secret", SPRING_CLIENT_SECRET);
@@ -72,13 +72,13 @@ public class MultipleKeyVaultsIT {
     @Test
     public void testGetValueForDuplicateKey() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
-            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].vault-url", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", AZURE_KEYVAULT_URI);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].name", KEY_VAULT_NAME_1);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-id", SPRING_CLIENT_ID);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-secret", SPRING_CLIENT_SECRET);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id", SPRING_TENANT_ID);
 
-            app.property("spring.cloud.azure.keyvault.secret.property-sources[1].vault-url", AZURE_KEYVAULT2_URI);
+            app.property("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", AZURE_KEYVAULT2_URI);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[1].name", KEY_VAULT_NAME_2);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[1].credential.client-id", SPRING_CLIENT_ID);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[1].credential.client-secret", SPRING_CLIENT_SECRET);
@@ -100,10 +100,10 @@ public class MultipleKeyVaultsIT {
             app.property("spring.cloud.azure.credential.client-secret", SPRING_CLIENT_SECRET);
             app.property("spring.cloud.azure.profile.tenant-id", SPRING_TENANT_ID);
 
-            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].vault-url", AZURE_KEYVAULT_URI);
+            app.property("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", AZURE_KEYVAULT_URI);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[0].name", KEY_VAULT_NAME_1);
 
-            app.property("spring.cloud.azure.keyvault.secret.property-sources[1].vault-url", AZURE_KEYVAULT2_URI);
+            app.property("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", AZURE_KEYVAULT2_URI);
             app.property("spring.cloud.azure.keyvault.secret.property-sources[1].name", KEY_VAULT_NAME_2);
 
             app.start();

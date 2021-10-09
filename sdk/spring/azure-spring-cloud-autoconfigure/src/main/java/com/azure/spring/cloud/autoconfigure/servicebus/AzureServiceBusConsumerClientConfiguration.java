@@ -10,29 +10,40 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
+import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.ApplicationId;
-import com.azure.spring.core.StaticConnectionStringProvider;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
  * Configuration for a {@link ServiceBusSenderClient} or a {@link ServiceBusSenderAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ServiceBusConditions.ConditionalOnServiceBusConsumer
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "queue-name", "topic-name" })
 @Import({
+    AzureServiceBusConsumerClientConfiguration.ShareConsumerConnectionConfiguration.class,
+    AzureServiceBusConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
 })
@@ -40,76 +51,86 @@ class AzureServiceBusConsumerClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusConsumerClientConfiguration.class);
 
-    public static final String CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME";
-    public static final String CONSUMER_CLIENT_BUILDER_BEAN_NAME = "com.azure.spring.cloud.autoconfigure.servicebus.CONSUMER_CLIENT_BUILDER_BEAN_NAME";
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "connection-string", "namespace" })
+    @Configuration(proxyBeanMethods = false)
+    static class DedicatedConsumerConnectionConfiguration {
 
-    private final AzureServiceBusProperties serviceBusProperties;
+        private final AzureServiceBusProperties.Consumer consumerProperties;
 
-    AzureServiceBusConsumerClientConfiguration(AzureServiceBusProperties serviceBusProperties) {
-        this.serviceBusProperties = buildConsumerProperties(serviceBusProperties);
-    }
-
-    // TODO (xiada): this logic seems weird
-    private AzureServiceBusProperties buildConsumerProperties(AzureServiceBusProperties source) {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        AzureServiceBusProperties target = new AzureServiceBusProperties();
-
-        AzurePropertiesUtils.copyAzureProperties(source, target);
-        propertyMapper.from(source.getConsumer().getDomainName()).to(target::setDomainName);
-        propertyMapper.from(source.getConsumer().getNamespace()).to(target::setNamespace);
-        propertyMapper.from(source.getConsumer().getConnectionString()).to(target::setConnectionString);
-
-        return target;
-    }
-
-    @Bean(CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ServiceBusConditions.ConditionalOnDedicatedServiceBusConsumer
-    public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
-
-        final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
-
-        builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
-                                                                                        this.serviceBusProperties.getConnectionString()));
-        builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
-        return builderFactory;
-    }
-
-    @Bean(CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-    @ConditionalOnBean(name = CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-    public ServiceBusClientBuilder serviceBusClientBuilderForConsumer(
-        @Qualifier(CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
-
-        return clientBuilderFactory.build();
-    }
-
-    @ConditionalOnExpression("!${spring.cloud.azure.servicebus.consumer.session-aware:false}")
-    static class NoneSessionConsumerClientConfiguration {
-
-        @Bean
-        @Conditional(ServiceBusConditions.ConditionOnGlobalClientBuilderAndMissingReceiverClientBuilder.class)
-        public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
-            AzureServiceBusProperties serviceBusProperties,
-            ServiceBusClientBuilder serviceBusClientBuilder) {
-
-            return buildReceiverClientBuilder(serviceBusProperties, serviceBusClientBuilder);
+        DedicatedConsumerConnectionConfiguration(AzureServiceBusProperties serviceBusProperties) {
+            this.consumerProperties = serviceBusProperties.buildConsumerProperties();
         }
 
-        @Bean
-        @ConditionalOnBean(name = CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-        @ConditionalOnMissingBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
-        public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilderForConsumer(
-            AzureServiceBusProperties serviceBusProperties,
-            @Qualifier(CONSUMER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+        @Bean(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+        @ConditionalOnMissingBean(name = SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+        public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
 
-            return buildReceiverClientBuilder(serviceBusProperties, serviceBusClientBuilder);
+            final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.consumerProperties);
+
+            builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
+                this.consumerProperties.getConnectionString()));
+            builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
+            return builderFactory;
+        }
+
+        @Bean(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
+        @ConditionalOnMissingBean(name = SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
+        public ServiceBusClientBuilder serviceBusClientBuilderForConsumer(
+            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
+
+            return clientBuilderFactory.build();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
+        @ServiceBusSessionDisabled
+        public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilderForConsumer(
+            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+
+            return buildReceiverClientBuilder(consumerProperties, serviceBusClientBuilder);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        @ServiceBusSessionEnabled
+        public ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilderForConsumer(
+            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
+
+            return buildSessionReceiverClientBuilder(consumerProperties, serviceBusClientBuilder);
+        }
+
+    }
+
+    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "connection-string", "namespace" })
+    @Configuration(proxyBeanMethods = false)
+    static class ShareConsumerConnectionConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        @ServiceBusSessionDisabled
+        public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
+            AzureServiceBusProperties serviceBusProperties, ServiceBusClientBuilder serviceBusClientBuilder) {
+
+            return buildReceiverClientBuilder(serviceBusProperties.getConsumer(), serviceBusClientBuilder);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        @ServiceBusSessionEnabled
+        public ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
+            AzureServiceBusProperties serviceBusProperties, ServiceBusClientBuilder serviceBusClientBuilder) {
+
+            return buildSessionReceiverClientBuilder(serviceBusProperties.getConsumer(), serviceBusClientBuilder);
+        }
+
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    @ServiceBusSessionDisabled
+    static class NoneSessionConsumerClientConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
         public ServiceBusReceiverAsyncClient serviceBusReceiverAsyncClient(
             ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildAsyncClient();
@@ -117,66 +138,19 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class)
         public ServiceBusReceiverClient serviceBusReceiverClient(
             ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildClient();
         }
 
-        private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder buildReceiverClientBuilder(
-            AzureServiceBusProperties serviceBusProperties,
-            ServiceBusClientBuilder serviceBusClientBuilder) {
-            final AzureServiceBusProperties.ServiceBusConsumer consumerProperties = serviceBusProperties.getConsumer();
-            final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder = serviceBusClientBuilder.receiver();
-
-            PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-            propertyMapper.from(consumerProperties.getQueueName()).to(receiverClientBuilder::queueName);
-            propertyMapper.from(consumerProperties.getTopicName()).to(receiverClientBuilder::topicName);
-            propertyMapper.from(consumerProperties.getSubscriptionName()).to(receiverClientBuilder::subscriptionName);
-            propertyMapper.from(consumerProperties.getReceiveMode()).to(receiverClientBuilder::receiveMode);
-            propertyMapper.from(consumerProperties.getSubQueue()).to(receiverClientBuilder::subQueue);
-            propertyMapper.from(consumerProperties.getPrefetchCount()).to(receiverClientBuilder::prefetchCount);
-            propertyMapper.from(consumerProperties.getMaxAutoLockRenewDuration())
-                          .to(receiverClientBuilder::maxAutoLockRenewDuration);
-            propertyMapper.from(consumerProperties.isAutoComplete()).whenFalse().to(t -> receiverClientBuilder.disableAutoComplete());
-
-            if (StringUtils.hasText(consumerProperties.getQueueName())
-                    && StringUtils.hasText(consumerProperties.getTopicName())
-                    && StringUtils.hasText(consumerProperties.getSubscriptionName())) {
-                LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name"
-                                + " will take effective");
-            }
-            return receiverClientBuilder;
-        }
-
-
     }
 
-    @ConditionalOnExpression("${spring.cloud.azure.servicebus.consumer.session-aware:false}")
+    @Configuration(proxyBeanMethods = false)
+    @ServiceBusSessionEnabled
     static class SessionConsumerClientConfiguration {
 
         @Bean
-        @ConditionalOnMissingBean(name = CONSUMER_CLIENT_BUILDER_BEAN_NAME, value = ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class)
-        public ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
-            AzureServiceBusProperties serviceBusProperties,
-            ServiceBusClientBuilder serviceBusClientBuilder) {
-
-            return buildSessionReceiverClientBuilder(serviceBusProperties, serviceBusClientBuilder);
-        }
-
-        @Bean
-        @ConditionalOnBean(name = CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-        @ConditionalOnMissingBean(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class)
-        public ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilderForProducer(
-            AzureServiceBusProperties serviceBusProperties,
-            @Qualifier(CONSUMER_CLIENT_BUILDER_BEAN_NAME) ServiceBusClientBuilder serviceBusClientBuilder) {
-
-            return buildSessionReceiverClientBuilder(serviceBusProperties, serviceBusClientBuilder);
-        }
-
-        @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class)
         public ServiceBusSessionReceiverAsyncClient serviceBusSessionReceiverAsyncClient(
             ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildAsyncClient();
@@ -184,37 +158,74 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class)
         public ServiceBusSessionReceiverClient serviceBusSessionReceiverClient(
             ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildClient();
         }
 
-        private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder buildSessionReceiverClientBuilder(
-            AzureServiceBusProperties serviceBusProperties,
-            ServiceBusClientBuilder serviceBusClientBuilder) {
-            final AzureServiceBusProperties.ServiceBusConsumer receiverProperties = serviceBusProperties.getConsumer();
-            final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder = serviceBusClientBuilder.sessionReceiver();
+    }
 
-            PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-            propertyMapper.from(receiverProperties.getQueueName()).to(sessionReceiverClientBuilder::queueName);
-            propertyMapper.from(receiverProperties.getTopicName()).to(sessionReceiverClientBuilder::topicName);
-            propertyMapper.from(receiverProperties.getSubscriptionName()).to(sessionReceiverClientBuilder::subscriptionName);
-            propertyMapper.from(receiverProperties.getReceiveMode()).to(sessionReceiverClientBuilder::receiveMode);
-            propertyMapper.from(receiverProperties.getSubQueue()).to(sessionReceiverClientBuilder::subQueue);
-            propertyMapper.from(receiverProperties.getPrefetchCount()).to(sessionReceiverClientBuilder::prefetchCount);
-            propertyMapper.from(receiverProperties.getMaxAutoLockRenewDuration())
-                          .to(sessionReceiverClientBuilder::maxAutoLockRenewDuration);
-            propertyMapper.from(receiverProperties.isAutoComplete()).whenFalse().to(t -> sessionReceiverClientBuilder.disableAutoComplete());
+    private static ServiceBusClientBuilder.ServiceBusReceiverClientBuilder buildReceiverClientBuilder(
+        AzureServiceBusProperties.Consumer consumerProperties, ServiceBusClientBuilder serviceBusClientBuilder) {
+        final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder = serviceBusClientBuilder.receiver();
 
-            if (StringUtils.hasText(receiverProperties.getQueueName())
-                    && StringUtils.hasText(receiverProperties.getTopicName())
-                    && StringUtils.hasText(receiverProperties.getSubscriptionName())) {
-                LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name"
-                                + " will take effective");
-            }
-            return sessionReceiverClientBuilder;
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        propertyMapper.from(consumerProperties.getQueueName()).to(receiverClientBuilder::queueName);
+        propertyMapper.from(consumerProperties.getTopicName()).to(receiverClientBuilder::topicName);
+        propertyMapper.from(consumerProperties.getSubscriptionName()).to(receiverClientBuilder::subscriptionName);
+        propertyMapper.from(consumerProperties.getReceiveMode()).to(receiverClientBuilder::receiveMode);
+        propertyMapper.from(consumerProperties.getSubQueue()).to(receiverClientBuilder::subQueue);
+        propertyMapper.from(consumerProperties.getPrefetchCount()).to(receiverClientBuilder::prefetchCount);
+        propertyMapper.from(consumerProperties.getMaxAutoLockRenewDuration())
+                      .to(receiverClientBuilder::maxAutoLockRenewDuration);
+        propertyMapper.from(consumerProperties.getAutoComplete()).whenFalse().to(t -> receiverClientBuilder.disableAutoComplete());
+
+        if (StringUtils.hasText(consumerProperties.getQueueName())
+            && StringUtils.hasText(consumerProperties.getTopicName())
+            && StringUtils.hasText(consumerProperties.getSubscriptionName())) {
+            LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name"
+                + " will take effective");
         }
+        return receiverClientBuilder;
+    }
+
+    private static ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder buildSessionReceiverClientBuilder(
+        AzureServiceBusProperties.Consumer consumerProperties, ServiceBusClientBuilder serviceBusClientBuilder) {
+        final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder = serviceBusClientBuilder.sessionReceiver();
+
+        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        propertyMapper.from(consumerProperties.getQueueName()).to(sessionReceiverClientBuilder::queueName);
+        propertyMapper.from(consumerProperties.getTopicName()).to(sessionReceiverClientBuilder::topicName);
+        propertyMapper.from(consumerProperties.getSubscriptionName()).to(sessionReceiverClientBuilder::subscriptionName);
+        propertyMapper.from(consumerProperties.getReceiveMode()).to(sessionReceiverClientBuilder::receiveMode);
+        propertyMapper.from(consumerProperties.getSubQueue()).to(sessionReceiverClientBuilder::subQueue);
+        propertyMapper.from(consumerProperties.getPrefetchCount()).to(sessionReceiverClientBuilder::prefetchCount);
+        propertyMapper.from(consumerProperties.getMaxAutoLockRenewDuration())
+                      .to(sessionReceiverClientBuilder::maxAutoLockRenewDuration);
+        propertyMapper.from(consumerProperties.getAutoComplete()).whenFalse().to(t -> sessionReceiverClientBuilder.disableAutoComplete());
+
+        if (StringUtils.hasText(consumerProperties.getQueueName())
+            && StringUtils.hasText(consumerProperties.getTopicName())
+            && StringUtils.hasText(consumerProperties.getSubscriptionName())) {
+            LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name"
+                + " will take effective");
+        }
+        return sessionReceiverClientBuilder;
+    }
+
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Documented
+    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "true")
+    private @interface ServiceBusSessionEnabled {
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ ElementType.TYPE, ElementType.METHOD })
+    @Documented
+    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "false", matchIfMissing = true)
+    private @interface ServiceBusSessionDisabled {
     }
 
 }
