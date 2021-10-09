@@ -375,7 +375,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartHostsAsync(
         String resourceGroupName, String clusterName, List<String> hosts) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartHostsWithResponseAsync(resourceGroupName, clusterName, hosts);
@@ -396,7 +396,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartHostsAsync(
         String resourceGroupName, String clusterName, List<String> hosts, Context context) {
         context = this.client.mergeContext(context);
@@ -418,7 +418,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestartHosts(
         String resourceGroupName, String clusterName, List<String> hosts) {
         return beginRestartHostsAsync(resourceGroupName, clusterName, hosts).getSyncPoller();
@@ -436,7 +436,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestartHosts(
         String resourceGroupName, String clusterName, List<String> hosts, Context context) {
         return beginRestartHostsAsync(resourceGroupName, clusterName, hosts, context).getSyncPoller();
