@@ -127,6 +127,7 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurecore
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: azure-spring-messaging
         groupId: com.azure.spring
         safeName: azurespringmessaging
@@ -147,18 +148,22 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazureautoconfigure
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-actuator
         groupId: com.azure.spring
         safeName: springcloudazureactuator
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-actuator-autoconfigure
         groupId: com.azure.spring
         safeName: springcloudazureactuatorautoconfigure
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-resourcemanager
         groupId: com.azure.spring
         safeName: springcloudazureresourcemanager
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter
         groupId: com.azure.spring
         safeName: springcloudazurestarter
