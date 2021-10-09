@@ -9,7 +9,6 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsume
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.eventhubs.core.DefaultEventHubClientFactory;
 import com.azure.spring.eventhubs.support.StartPosition;
-import com.azure.spring.eventhubs.core.EventHubClientFactory;
 import com.azure.spring.eventhubs.support.EventHubTestOperation;
 import com.azure.spring.cloud.stream.binder.servicebus.test.AzurePartitionBinderTests;
 import io.micrometer.core.instrument.MeterRegistry;
