@@ -22,14 +22,14 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     private final CosmosAsyncClient cosmosAsyncClient;
     private final String database;
-    private final String uri;
+    private final String endpoint;
 
-    public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient, String database, String uri) {
+    public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient, String database, String endpoint) {
         super("Cosmos health check failed");
         Assert.notNull(cosmosAsyncClient, "CosmosClient must not be null");
         this.cosmosAsyncClient = cosmosAsyncClient;
         this.database = database;
-        this.uri = uri;
+        this.endpoint = endpoint;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
         if (response != null) {
             LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
-                response.getRequestCharge(), uri, database);
+                response.getRequestCharge(), endpoint, database);
         }
         if (response == null) {
             builder.down();
