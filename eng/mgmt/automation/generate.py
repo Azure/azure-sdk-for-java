@@ -137,7 +137,10 @@ def update_changelog(changelog_file, changelog):
     # remove text starting from the first '###' (usually the block '### Features Added')
     first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
-    first_version_part += '\n\n' + changelog.strip() + '\n\n'
+
+    first_version_part += '\n\n'
+    if changelog.strip() != '':
+        first_version_part += changelog.strip() + '\n\n'
 
     with open(changelog_file, 'w') as fout:
         fout.write(first_version_part +
@@ -173,7 +176,7 @@ def compare_with_maven_package(sdk_root, service, stable_version,
             raise Exception('Cannot found built jar in {0}'.format(new_jar))
         breaking, changelog = generate_changelog_and_breaking_change(
             sdk_root, old_jar, new_jar)
-        if changelog and changelog.strip() != '':
+        if changelog:
             changelog_file = os.path.join(
                 sdk_root,
                 CHANGELOG_FORMAT.format(service = service,
