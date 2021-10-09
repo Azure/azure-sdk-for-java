@@ -5,6 +5,8 @@ package com.azure.spring.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.messaging.core.SubscribeByGroupOperationTest;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
@@ -21,10 +23,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest<EventHubOperation> {
 
     @Mock
-    private EventHubClientFactory mockClientFactory;
+    private DefaultEventHubClientFactory mockClientFactory;
+
+    private MeterRegistry meterRegistry = new SimpleMeterRegistry();
 
     @Mock
     private EventProcessorClient eventProcessorClient;
@@ -35,6 +40,7 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.subscribeByGroupOperation = new EventHubTemplate(mockClientFactory);
+        when(this.mockClientFactory.getMeterRegistry()).thenReturn(this.meterRegistry);
         when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class)))
             .thenReturn(this.eventProcessorClient);
         when(this.mockClientFactory.getEventProcessorClient(anyString(), anyString()))

@@ -4,10 +4,12 @@
 package com.azure.spring.eventhubs.core;
 
 import com.azure.core.util.ClientOptions;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.util.Memoizer;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -47,6 +49,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         Memoizer.memoize(consumerClientMap, this::createEventHubClient);
     private final Function<String, EventHubProducerAsyncClient> producerClientCreator =
         Memoizer.memoize(producerClientMap, this::createProducerClient);
+    private MeterRegistry meterRegistry;
 
     // TODO (xiada) this will share credential across different event hubs, but they could have different credentials
     private final EventHubSharedAuthenticationClientBuilder eventHubServiceClientBuilder;
@@ -130,5 +133,13 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     @Override
     public EventProcessorClient removeEventProcessorClient(String eventHubName, String consumerGroup) {
         return this.processorClientMap.remove(Tuples.of(eventHubName, consumerGroup));
+    }
+
+    public MeterRegistry getMeterRegistry() {
+        return meterRegistry;
+    }
+
+    public void setMeterRegistry(MeterRegistry meterRegistry) {
+        this.meterRegistry = meterRegistry;
     }
 }

@@ -120,6 +120,9 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
         } else {
             try {
                 mono.block(Duration.of(sendTimeout, ChronoUnit.MILLIS));
+                if (this.sendCallback != null) {
+                    this.sendCallback.onSuccess(null);
+                }
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("{} sent successfully in sync mode", message);
                 }

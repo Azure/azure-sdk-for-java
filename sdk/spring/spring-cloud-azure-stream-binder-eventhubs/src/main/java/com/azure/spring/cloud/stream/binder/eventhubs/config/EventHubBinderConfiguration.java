@@ -15,6 +15,8 @@ import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChann
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubProvisioner;
 import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.eventhubs.core.EventHubTemplate;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -60,10 +62,13 @@ public class EventHubBinderConfiguration {
     @ConditionalOnMissingBean
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
                                                        EventHubOperation eventHubOperation,
-                                                       EventHubExtendedBindingProperties bindingProperties) {
+                                                       EventHubExtendedBindingProperties bindingProperties,
+                                                       MeterRegistry meterRegistry) {
         EventHubMessageChannelBinder binder =
             new EventHubMessageChannelBinder(null, eventHubChannelProvisioner, eventHubOperation);
         binder.setBindingProperties(bindingProperties);
+        EventHubTemplate eventHubTemplate = (EventHubTemplate) eventHubOperation;
+        eventHubTemplate.getClientFactory().setMeterRegistry(meterRegistry);
         return binder;
     }
 

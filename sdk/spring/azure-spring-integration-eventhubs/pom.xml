@@ -93,6 +93,12 @@
       <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-core</artifactId>
+      <version>1.7.3</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -108,6 +114,7 @@
                 <include>org.mockito:mockito-core:[3.12.4]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
                 <include>org.powermock:powermock-api-mockito2:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
                 <include>org.powermock:powermock-module-junit4:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
+                <include>io.micrometer:micrometer-core:[1.7.3]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

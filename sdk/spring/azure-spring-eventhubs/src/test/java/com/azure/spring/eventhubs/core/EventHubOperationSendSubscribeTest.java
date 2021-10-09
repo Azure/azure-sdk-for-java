@@ -13,6 +13,8 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.core.SendSubscribeByGroupOperationTest;
 import com.azure.spring.messaging.support.pojo.User;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,12 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
     @Mock
     PartitionContext partitionContext;
 
+    @Mock
+    DefaultEventHubClientFactory defaultEventHubClientFactory;
+
     private AutoCloseable closeable;
+
+    private MeterRegistry meterRegistry = new SimpleMeterRegistry();
 
     @BeforeEach
     @Override
@@ -45,8 +52,8 @@ public class EventHubOperationSendSubscribeTest extends SendSubscribeByGroupOper
         when(this.eventContext.updateCheckpointAsync()).thenReturn(Mono.empty());
         when(this.eventContext.getPartitionContext()).thenReturn(this.partitionContext);
         when(this.partitionContext.getPartitionId()).thenReturn(this.partitionId);
-
-        this.sendSubscribeOperation = new EventHubTestOperation(null, () -> eventContext);
+        when(this.defaultEventHubClientFactory.getMeterRegistry()).thenReturn(this.meterRegistry);
+        this.sendSubscribeOperation = new EventHubTestOperation(defaultEventHubClientFactory, () -> eventContext);
     }
 
     @AfterEach

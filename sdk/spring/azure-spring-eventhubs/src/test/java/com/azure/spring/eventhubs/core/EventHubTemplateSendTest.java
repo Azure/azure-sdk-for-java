@@ -8,6 +8,8 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.messaging.core.SendOperationTest;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
@@ -26,15 +28,19 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubOperatio
     @Mock
     EventDataBatch eventDataBatch;
     @Mock
-    EventHubClientFactory mockClientFactory;
+    DefaultEventHubClientFactory mockClientFactory;
+
     @Mock
     EventHubProducerAsyncClient mockProducerClient;
 
     private AutoCloseable closeable;
 
+    private MeterRegistry meterRegistry = new SimpleMeterRegistry();
+
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
+        when(this.mockClientFactory.getMeterRegistry()).thenReturn(this.meterRegistry);
         when(this.mockClientFactory.getOrCreateProducerClient(eq(this.destination)))
             .thenReturn(this.mockProducerClient);
         when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))

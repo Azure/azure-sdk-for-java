@@ -17,6 +17,7 @@ import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.eventhubs.checkpoint.CheckpointManager;
 import com.azure.spring.eventhubs.support.converter.EventHubMessageConverter;
+import io.micrometer.core.instrument.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -39,6 +40,7 @@ public class EventHubProcessor {
     protected final EventHubMessageConverter messageConverter;
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
+    private Counter recodeConsumeTotal;
 
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
                              EventHubMessageConverter messageConverter) {
@@ -69,10 +71,16 @@ public class EventHubProcessor {
         Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
+            ((AzureCheckpointer) checkpointer).setRecordConsumeTotal(recodeConsumeTotal);
         }
 
-        this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
-        this.checkpointManager.onMessage(context, context.getEventData());
+        try {
+            this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
+            this.checkpointManager.onMessage(context, context.getEventData());
+            recodeConsumeTotal.increment();
+        } catch (Exception ex) {
+            LOGGER.error("An error occurred during message consumption.", ex);
+        }
 
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
             this.checkpointManager.completeBatch(context);
@@ -86,5 +94,9 @@ public class EventHubProcessor {
 
     public void setEventPosition(EventPosition eventPosition) {
         this.eventPosition = eventPosition;
+    }
+
+    public void setRecodeConsumeTotal(Counter recodeConsumeTotal) {
+        this.recodeConsumeTotal = recodeConsumeTotal;
     }
 }
