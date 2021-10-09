@@ -881,7 +881,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -908,7 +908,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String dedicatedCloudNodeName,
@@ -939,7 +939,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdate(
         String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest) {
         return beginCreateOrUpdateAsync(resourceGroupName, dedicatedCloudNodeName, dedicatedCloudNodeRequest)
@@ -958,7 +958,7 @@ public final class DedicatedCloudNodesClientImpl implements DedicatedCloudNodesC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdate(
         String resourceGroupName,
         String dedicatedCloudNodeName,

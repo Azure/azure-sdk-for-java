@@ -54,7 +54,7 @@ public interface VirtualMachine {
      *
      * @return the amountOfRam value.
      */
-    Integer amountOfRam();
+    int amountOfRam();
 
     /**
      * Gets the controllers property: The list of Virtual Disks' Controllers.
@@ -124,7 +124,7 @@ public interface VirtualMachine {
      *
      * @return the numberOfCores value.
      */
-    Integer numberOfCores();
+    int numberOfCores();
 
     /**
      * Gets the password property: Password for login. Deprecated - use customization property.
@@ -315,7 +315,7 @@ public interface VirtualMachine {
              * @param amountOfRam The amount of memory.
              * @return the next definition stage.
              */
-            WithCreate withAmountOfRam(Integer amountOfRam);
+            WithCreate withAmountOfRam(int amountOfRam);
         }
         /** The stage of the VirtualMachine definition allowing to specify customization. */
         interface WithCustomization {
@@ -365,7 +365,7 @@ public interface VirtualMachine {
              * @param numberOfCores The number of CPU cores.
              * @return the next definition stage.
              */
-            WithCreate withNumberOfCores(Integer numberOfCores);
+            WithCreate withNumberOfCores(int numberOfCores);
         }
         /** The stage of the VirtualMachine definition allowing to specify password. */
         interface WithPassword {

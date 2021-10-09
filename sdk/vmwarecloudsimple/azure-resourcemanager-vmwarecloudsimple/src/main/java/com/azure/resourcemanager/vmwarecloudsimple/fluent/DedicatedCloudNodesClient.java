@@ -109,7 +109,7 @@ public interface DedicatedCloudNodesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdate(
         String resourceGroupName, String dedicatedCloudNodeName, DedicatedCloudNodeInner dedicatedCloudNodeRequest);
 
@@ -125,7 +125,7 @@ public interface DedicatedCloudNodesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dedicated cloud node model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedCloudNodeInner>, DedicatedCloudNodeInner> beginCreateOrUpdate(
         String resourceGroupName,
         String dedicatedCloudNodeName,

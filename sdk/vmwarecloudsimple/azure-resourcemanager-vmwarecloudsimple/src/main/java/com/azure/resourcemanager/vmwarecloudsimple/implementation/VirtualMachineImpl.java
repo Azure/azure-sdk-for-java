@@ -55,7 +55,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
-    public Integer amountOfRam() {
+    public int amountOfRam() {
         return this.innerModel().amountOfRam();
     }
 
@@ -115,7 +115,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
-    public Integer numberOfCores() {
+    public int numberOfCores() {
         return this.innerModel().numberOfCores();
     }
 
@@ -317,7 +317,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
-    public VirtualMachineImpl withAmountOfRam(Integer amountOfRam) {
+    public VirtualMachineImpl withAmountOfRam(int amountOfRam) {
         this.innerModel().withAmountOfRam(amountOfRam);
         return this;
     }
@@ -342,7 +342,7 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this;
     }
 
-    public VirtualMachineImpl withNumberOfCores(Integer numberOfCores) {
+    public VirtualMachineImpl withNumberOfCores(int numberOfCores) {
         this.innerModel().withNumberOfCores(numberOfCores);
         return this;
     }

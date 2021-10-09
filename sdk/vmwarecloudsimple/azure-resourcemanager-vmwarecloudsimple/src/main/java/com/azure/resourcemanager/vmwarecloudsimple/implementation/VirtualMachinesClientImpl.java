@@ -908,7 +908,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualMachineName, VirtualMachineInner virtualMachineRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -935,7 +935,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualMachineName,
@@ -961,7 +961,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualMachineName, VirtualMachineInner virtualMachineRequest) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest).getSyncPoller();
@@ -979,7 +979,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualMachineName,
@@ -1187,7 +1187,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualMachineName);
         return this
@@ -1206,7 +1206,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
@@ -1226,7 +1226,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName) {
         return beginDeleteAsync(resourceGroupName, virtualMachineName).getSyncPoller();
     }
@@ -1242,7 +1242,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualMachineName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualMachineName, context).getSyncPoller();
@@ -1435,7 +1435,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(
         String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1462,7 +1462,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(
         String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -1485,7 +1485,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
         String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest) {
         return beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest).getSyncPoller();
@@ -1503,7 +1503,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual machine model.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
         String resourceGroupName, String virtualMachineName, PatchPayload virtualMachineRequest, Context context) {
         return beginUpdateAsync(resourceGroupName, virtualMachineName, virtualMachineRequest, context).getSyncPoller();
@@ -1701,7 +1701,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, virtualMachineName);
         return this
@@ -1720,7 +1720,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
@@ -1740,7 +1740,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String virtualMachineName) {
         return beginStartAsync(resourceGroupName, virtualMachineName).getSyncPoller();
     }
@@ -1756,7 +1756,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String virtualMachineName, Context context) {
         return beginStartAsync(resourceGroupName, virtualMachineName, context).getSyncPoller();
@@ -1960,7 +1960,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, virtualMachineName, mode, m);
@@ -1982,7 +1982,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context) {
         context = this.client.mergeContext(context);
@@ -2005,7 +2005,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m) {
         return beginStopAsync(resourceGroupName, virtualMachineName, mode, m).getSyncPoller();
@@ -2024,7 +2024,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String virtualMachineName, StopMode mode, VirtualMachineStopMode m, Context context) {
         return beginStopAsync(resourceGroupName, virtualMachineName, mode, m, context).getSyncPoller();
