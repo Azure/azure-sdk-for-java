@@ -28,6 +28,7 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
      * Builder for key vault private key
      * @param algorithm algorithm
      * @param kid The key id
+     * @param keyVaultClient related keyVaultClient
      */
     public KeyVaultPrivateKey(String algorithm, String kid, KeyVaultClient keyVaultClient) {
         this.algorithm = algorithm;
