@@ -470,6 +470,9 @@ the main ServiceBusClientBuilder. -->
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
+  <!-- JavadocPackage: Temporarily skip -->
+  <suppress checks="JavadocPackage" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
   <!-- MissingJavadocMethod: internal packages -->
