@@ -419,8 +419,8 @@
 
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-core</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
+      <artifactId>spring-cloud-azure-core</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -444,48 +444,48 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <artifactId>spring-cloud-azure-autoconfigure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-resourcemanager</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+      <artifactId>spring-cloud-azure-resourcemanager</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-starter</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter;current} -->
+      <artifactId>spring-cloud-azure-starter</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
+      <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-active-directory;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
+      <artifactId>spring-cloud-azure-starter-keyvault-certificates</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
+      <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-servicebus-jms</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-servicebus-jms;current} -->
+      <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
+      <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-storage</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
+      <artifactId>spring-cloud-azure-starter-storage</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -524,8 +524,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-starter-cache</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-cache;current} -->
+      <artifactId>spring-cloud-azure-starter-cache</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cache;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

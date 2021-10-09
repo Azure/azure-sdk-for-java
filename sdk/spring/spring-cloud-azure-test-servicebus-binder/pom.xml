@@ -6,9 +6,9 @@
 
   <parent>
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-parent;current} -->
-    <relativePath>../azure-spring-cloud-test-parent</relativePath>
+    <artifactId>spring-cloud-azure-test-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-test-parent;current} -->
+    <relativePath>../spring-cloud-azure-test-parent</relativePath>
   </parent>
 
   <groupId>com.azure.spring</groupId>

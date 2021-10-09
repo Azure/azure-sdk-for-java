@@ -5,7 +5,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-service</artifactId>
+  <artifactId>spring-cloud-azure</artifactId>
+  <name>Spring Cloud Azure</name>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
@@ -13,41 +14,41 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-spring-cloud-core</module>
-        <module>azure-spring-cloud-autoconfigure</module>
-        <module>azure-spring-cloud-actuator</module>
-        <module>azure-spring-cloud-actuator-autoconfigure</module>
-        <module>azure-spring-cloud-resourcemanager</module>
+        <module>azure-spring-eventhubs</module>
         <module>azure-spring-integration-core</module>
         <module>azure-spring-integration-eventhubs</module>
         <module>azure-spring-integration-servicebus</module>
         <module>azure-spring-integration-storage-queue</module>
+        <module>azure-spring-messaging</module>
+        <module>azure-spring-servicebus</module>
+        <module>azure-spring-storage-queue</module>
+        <module>spring-cloud-azure-actuator-autoconfigure</module>
+        <module>spring-cloud-azure-actuator</module>
+        <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-core</module>
         <module>spring-cloud-azure-messaging</module>
-        <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-resourcemanager</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
-        <module>azure-spring-messaging</module>
-        <module>azure-spring-eventhubs</module>
-        <module>azure-spring-servicebus</module>
-        <module>azure-spring-storage-queue</module>
       </modules>
       <dependencies>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-core</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-core;current} -->
+          <artifactId>spring-cloud-azure-core</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+          <artifactId>spring-cloud-azure-autoconfigure</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>azure-spring-cloud-resourcemanager</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+          <artifactId>spring-cloud-azure-resourcemanager</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -149,21 +150,9 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-spring-cloud-core</module>
-        <module>azure-spring-cloud-autoconfigure</module>
-        <module>azure-spring-cloud-actuator</module>
-        <module>azure-spring-cloud-actuator-autoconfigure</module>
-        <module>azure-spring-cloud-starter</module>
-        <module>azure-spring-cloud-starter-actuator</module>
-        <module>azure-spring-boot-starter-active-directory</module>
-        <module>azure-spring-boot-starter-cosmos</module>
-        <module>azure-spring-boot-starter-keyvault-certificates</module>
-        <module>azure-spring-boot-starter-keyvault-secrets</module>
-        <module>azure-spring-boot-starter-servicebus-jms</module>
-        <module>azure-spring-boot-starter-storage</module>
-        <module>azure-spring-boot-test-aad</module>
-        <module>azure-spring-boot-test-aad-webapp-and-resource-server-with-obo</module>
         <module>azure-spring-boot-test-aad-resource-server</module>
+        <module>azure-spring-boot-test-aad-webapp-and-resource-server-with-obo</module>
+        <module>azure-spring-boot-test-aad</module>
         <module>azure-spring-boot-test-application</module>
         <module>azure-spring-boot-test-core</module>
         <module>azure-spring-boot-test-cosmos</module>
@@ -174,29 +163,41 @@
         <module>azure-spring-boot-test-selenium-common</module>
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
-        <module>azure-spring-cloud-resourcemanager</module>
+        <module>azure-spring-eventhubs</module>
+        <module>azure-spring-integration-core</module>
+        <module>azure-spring-integration-eventhubs</module>
+        <module>azure-spring-integration-servicebus</module>
+        <module>azure-spring-integration-storage-queue</module>
+        <module>azure-spring-messaging</module>
+        <module>azure-spring-servicebus</module>
+        <module>azure-spring-storage-queue</module>
+        <module>spring-cloud-azure-actuator-autoconfigure</module>
+        <module>spring-cloud-azure-actuator</module>
+        <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-core</module>
         <module>spring-cloud-azure-messaging</module>
-        <module>azure-spring-cloud-starter-cache</module>
-        <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-resourcemanager</module>
+        <module>spring-cloud-azure-starter-active-directory</module>
+        <module>spring-cloud-azure-starter-actuator</module>
+        <module>spring-cloud-azure-starter-cache</module>
+        <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs-kafka</module>
+        <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-keyvault-certificates</module>
+        <module>spring-cloud-azure-starter-keyvault-secrets</module>
+        <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
         <module>spring-cloud-azure-starter-storage-queue</module>
-        <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-starter-storage</module>
+        <module>spring-cloud-azure-starter</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
+        <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-test-eventhubs-kafka</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
-        <module>azure-spring-integration-core</module>
-        <module>azure-spring-integration-eventhubs</module>
-        <module>azure-spring-integration-servicebus</module>
-        <module>azure-spring-integration-storage-queue</module>
-        <module>azure-spring-messaging</module>
-        <module>azure-spring-eventhubs</module>
-        <module>azure-spring-servicebus</module>
-        <module>azure-spring-storage-queue</module>
       </modules>
     </profile>
   </profiles>

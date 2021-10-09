@@ -14,18 +14,18 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-storage</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-storage;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-test-storage;current} -->
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-storage</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-storage;current} -->
+      <artifactId>spring-cloud-azure-starter-storage</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-starter-actuator</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-actuator;current} -->
+      <artifactId>spring-cloud-azure-starter-actuator</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-actuator;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

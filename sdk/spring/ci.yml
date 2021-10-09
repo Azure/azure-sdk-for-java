@@ -12,52 +12,52 @@ trigger:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
-      - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
-      - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
-      - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
-      - sdk/spring/azure-spring-boot-starter-storage/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-application/pom.xml
       - sdk/spring/azure-spring-boot-test-core/pom.xml
       - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-parent/pom.xml
       - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
-      - sdk/spring/azure-spring-cloud-actuator/pom.xml
-      - sdk/spring/azure-spring-cloud-actuator-autoconfigure/pom.xml
-      - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
-      - sdk/spring/azure-spring-cloud-core/pom.xml
-      - sdk/spring/azure-spring-cloud-resourcemanager/pom.xml
-      - sdk/spring/azure-spring-cloud-starter/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-actuator/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
-      - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-core/pom.xml
+      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-servicebus/pom.xml
+      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-servicebus/pom.xml
       - sdk/spring/azure-spring-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-core/pom.xml
       - sdk/spring/spring-cloud-azure-messaging/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-active-directory/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-cache/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage/pom.xml
+      - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
-      - sdk/spring/azure-spring-integration-core/pom.xml
-      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
-      - sdk/spring/azure-spring-integration-servicebus/pom.xml
-      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
 
 pr:
   branches:
@@ -71,61 +71,61 @@ pr:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-starter-active-directory/pom.xml
-      - sdk/spring/azure-spring-boot-starter-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-starter-keyvault-certificates/pom.xml
-      - sdk/spring/azure-spring-boot-starter-keyvault-secrets/pom.xml
-      - sdk/spring/azure-spring-boot-starter-servicebus-jms/pom.xml
-      - sdk/spring/azure-spring-boot-starter-storage/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
       - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
+      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-application/pom.xml
       - sdk/spring/azure-spring-boot-test-core/pom.xml
       - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
-      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
+      - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-parent/pom.xml
       - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
-      - sdk/spring/azure-spring-cloud-actuator/pom.xml
-      - sdk/spring/azure-spring-cloud-actuator-autoconfigure/pom.xml
-      - sdk/spring/azure-spring-cloud-autoconfigure/pom.xml
-      - sdk/spring/azure-spring-cloud-core/pom.xml
-      - sdk/spring/azure-spring-cloud-resourcemanager/pom.xml
-      - sdk/spring/azure-spring-cloud-starter/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-actuator/pom.xml
-      - sdk/spring/azure-spring-cloud-starter-cache/pom.xml
-      - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-core/pom.xml
+      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
+      - sdk/spring/azure-spring-integration-servicebus/pom.xml
+      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/azure-spring-messaging/pom.xml
       - sdk/spring/azure-spring-servicebus/pom.xml
       - sdk/spring/azure-spring-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
+      - sdk/spring/spring-cloud-azure-core/pom.xml
       - sdk/spring/spring-cloud-azure-messaging/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-active-directory/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-cache/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage/pom.xml
+      - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
-      - sdk/spring/azure-spring-integration-core/pom.xml
-      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
-      - sdk/spring/azure-spring-integration-servicebus/pom.xml
-      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring
     Artifacts:
-      - name: azure-spring-cloud-core
+      - name: spring-cloud-azure-core
         groupId: com.azure.spring
-        safeName: azurespringcloudcore
+        safeName: springcloudazurecore
         skipPublishDocMs: true
       - name: azure-spring-messaging
         groupId: com.azure.spring
@@ -143,61 +143,61 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringstoragequeue
         skipPublishDocMs: true
-      - name: azure-spring-cloud-autoconfigure
+      - name: spring-cloud-azure-autoconfigure
         groupId: com.azure.spring
-        safeName: azurespringcloudautoconfigure
+        safeName: springcloudazureautoconfigure
         skipPublishDocMs: true
-      - name: azure-spring-cloud-actuator
+      - name: spring-cloud-azure-actuator
         groupId: com.azure.spring
-        safeName: azurespringcloudactuator
+        safeName: springcloudazureactuator
         skipPublishDocMs: true
-      - name: azure-spring-cloud-actuator-autoconfigure
+      - name: spring-cloud-azure-actuator-autoconfigure
         groupId: com.azure.spring
-        safeName: azurespringcloudactuatorautoconfigure
+        safeName: springcloudazureactuatorautoconfigure
         skipPublishDocMs: true
-      - name: azure-spring-cloud-resourcemanager
+      - name: spring-cloud-azure-resourcemanager
         groupId: com.azure.spring
-        safeName: azurespringcloudresourcemanager
+        safeName: springcloudazureresourcemanager
         skipPublishDocMs: true
-      - name: azure-spring-cloud-starter
+      - name: spring-cloud-azure-starter
         groupId: com.azure.spring
-        safeName: azurespringcloudstarter
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: azure-spring-boot-starter-active-directory
-        groupId: com.azure.spring
-        safeName: azurespringbootstarteractivedirectory
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        skipUpdatePackageJson: true
-      - name: azure-spring-boot-starter-cosmos
-        groupId: com.azure.spring
-        safeName: azurespringbootstartercosmos
+        safeName: springcloudazurestarter
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: azure-spring-boot-starter-keyvault-certificates
+      - name: spring-cloud-azure-starter-active-directory
         groupId: com.azure.spring
-        safeName: azurespringbootstarterkeyvaultcertificates
+        safeName: springcloudazurestarteractivedirectory
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+        skipUpdatePackageJson: true
+      - name: spring-cloud-azure-starter-cosmos
+        groupId: com.azure.spring
+        safeName: springcloudazurestartercosmos
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: azure-spring-boot-starter-keyvault-secrets
+      - name: spring-cloud-azure-starter-keyvault-certificates
         groupId: com.azure.spring
-        safeName: azurespringbootstarterkeyvaultsecrets
+        safeName: springcloudazurestarterkeyvaultcertificates
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: azure-spring-boot-starter-servicebus-jms
+      - name: spring-cloud-azure-starter-keyvault-secrets
         groupId: com.azure.spring
-        safeName: azurespringbootstarterservicebusjms
+        safeName: springcloudazurestarterkeyvaultsecrets
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: azure-spring-boot-starter-storage
+      - name: spring-cloud-azure-starter-servicebus-jms
         groupId: com.azure.spring
-        safeName: azurespringbootstarterstorage
+        safeName: springcloudazurestarterservicebusjms
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstorage
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
@@ -220,15 +220,15 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazuremessaging
         skipPublishDocMs: true
-      - name: azure-spring-cloud-starter-actuator
+      - name: spring-cloud-azure-starter-actuator
         groupId: com.azure.spring
-        safeName: azurespringcloudstarteractuator
+        safeName: springcloudazurestarteractuator
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: azure-spring-cloud-starter-cache
+      - name: spring-cloud-azure-starter-cache
         groupId: com.azure.spring
-        safeName: azurespringcloudstartercache
+        safeName: springcloudazurestartercache
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true

@@ -9,13 +9,13 @@
   <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
 
-  <name>Azure Spring Cloud Starter Event Hubs</name>
+  <name>Spring Cloud Azure Starter Event Hubs</name>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <artifactId>spring-cloud-azure-autoconfigure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -36,8 +36,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-resourcemanager</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+      <artifactId>spring-cloud-azure-resourcemanager</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
     </dependency>
   </dependencies>
 
