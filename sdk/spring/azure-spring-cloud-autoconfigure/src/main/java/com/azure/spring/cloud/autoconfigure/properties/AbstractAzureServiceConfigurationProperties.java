@@ -64,4 +64,5 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
     public AzureResourceMetadata getResource() {
         return resource;
     }
+
 }

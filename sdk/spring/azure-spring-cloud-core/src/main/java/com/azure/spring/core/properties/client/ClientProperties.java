@@ -11,6 +11,10 @@ import java.util.List;
  */
 public class ClientProperties {
 
+    public ClientProperties() {
+
+    }
+
     private String applicationId;
 
     private final List<HeaderProperties> headers = new ArrayList<>();

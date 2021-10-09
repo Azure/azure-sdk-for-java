@@ -21,7 +21,7 @@ class AzureResourceManagerAutoConfigurationTest {
     @Test
     void testAzureResourceManagerDisabled() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.resource-manager.enabled=false")
+            .withPropertyValues("spring.cloud.azure.resourcemanager.enabled=false")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureResourceManager.class);
                 assertThat(context).doesNotHaveBean(AzureProfile.class);
@@ -31,7 +31,7 @@ class AzureResourceManagerAutoConfigurationTest {
     @Test
     void configureWithoutTenantId() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.resource-manager.enabled=true")
+            .withPropertyValues("spring.cloud.azure.resourcemanager.enabled=true")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureResourceManager.class);
                 assertThat(context).doesNotHaveBean(AzureProfile.class);
@@ -47,8 +47,6 @@ class AzureResourceManagerAutoConfigurationTest {
                 assertThat(context).doesNotHaveBean(AzureProfile.class);
             });
     }
-    
-    
 
     @Test
     void testWithoutAzureResourceManagerClass() {
@@ -62,42 +60,4 @@ class AzureResourceManagerAutoConfigurationTest {
                           .run(context -> assertThat(context).doesNotHaveBean(AzureProfile.class));
     }
 
-
-    /*@Test
-    void testAzurePropertiesConfigured() {
-        this.contextRunner
-            .withPropertyValues(
-                AZURE_PROPERTY_PREFIX + ".credential.client-id=client1",
-                AZURE_PROPERTY_PREFIX + ".credential.client-secret=secret1",
-                AZURE_PROPERTY_PREFIX + ".profile.tenant-id=tenant1")
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureResourceManagerProperties.class);
-                assertThat(context.getBean(AzureResourceManagerProperties.class).getClientId()).isEqualTo("client1");
-                assertThat(context.getBean(AzureResourceManagerProperties.class).getClientSecret()).isEqualTo("secret1");
-                assertThat(context.getBean(AzureResourceManagerProperties.class).getTenantId()).isEqualTo("tenant1");
-                assertThat(context.getBean(AzureResourceManagerProperties.class).getResourceGroup()).isEqualTo("rg1");
-                assertThat(context.getBean(AzureResourceManagerProperties.class).getRegion()).isEqualTo("region1");
-                assertThat(context.getBean(AzureResourceManagerProperties.class).getSubscriptionId()).isEqualTo("sub1");
-            });
-    }
-
-    @Test
-    void testAutoConfigureEnabled() {
-        this.contextRunner.withPropertyValues(AZURE_PROPERTY_PREFIX + "resource-group=rg1")
-                          .withUserConfiguration(TestConfigurationWithResourceManager.class)
-                          .run(context -> {
-                              assertThat(context).hasSingleBean(AzureResourceManagerProperties.class);
-                              assertThat(context).hasSingleBean(AzureProfile.class);
-                          });
-    }
-
-    @Configuration
-    static class TestConfigurationWithResourceManager {
-
-        @Bean
-        AzureResourceManager azureResourceManager() {
-            return mock(AzureResourceManager.class);
-        }
-
-    }*/
 }

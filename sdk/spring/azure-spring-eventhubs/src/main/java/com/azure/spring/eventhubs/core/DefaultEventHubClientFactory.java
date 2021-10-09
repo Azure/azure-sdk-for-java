@@ -11,6 +11,8 @@ import com.azure.spring.core.util.Memoizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.Map;
 import java.util.Optional;
@@ -18,8 +20,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import static com.azure.spring.core.ApplicationId.AZURE_SPRING_EVENT_HUB;
 import static com.azure.spring.core.ApplicationId.VERSION;
@@ -50,11 +50,13 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
     // TODO (xiada) this will share credential across different event hubs, but they could have different credentials
     private final EventHubSharedAuthenticationClientBuilder eventHubServiceClientBuilder;
-    private final EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder;
+    private EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder;
 
-    public DefaultEventHubClientFactory(EventHubSharedAuthenticationClientBuilder eventHubClientBuilder,
-                                        EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder) {
+    public DefaultEventHubClientFactory(EventHubSharedAuthenticationClientBuilder eventHubClientBuilder) {
         this.eventHubServiceClientBuilder = eventHubClientBuilder;
+    }
+
+    public void setEventProcessorServiceClientBuilder(EventProcessorSharedAuthenticationClientBuilder eventProcessorServiceClientBuilder) {
         this.eventProcessorServiceClientBuilder = eventProcessorServiceClientBuilder;
     }
 
@@ -78,6 +80,10 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     private EventProcessorClient createEventProcessorClientInternal(String eventHubName,
                                                                     String consumerGroup,
                                                                     EventHubProcessor eventHubProcessor) {
+        if (this.eventProcessorServiceClientBuilder == null) {
+            throw new IllegalStateException("Event processor is not configured so no EventProcessorClient could be created");
+        }
+
         return eventProcessorServiceClientBuilder
             .eventHubName(eventHubName)
             .consumerGroup(consumerGroup)

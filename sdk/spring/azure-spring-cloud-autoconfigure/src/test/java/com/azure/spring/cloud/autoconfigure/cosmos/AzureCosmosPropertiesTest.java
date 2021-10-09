@@ -15,9 +15,9 @@ import java.util.Set;
 
 class AzureCosmosPropertiesTest {
 
-    static final String TEST_URI_HTTPS = "https://test.https.documents.azure.com:443/";
-    static final String TEST_URI_HTTP = "http://test.http.documents.azure.com:443/";
-    static final String TEST_URI_FAIL = "http://test.fail.documentsfail.azure.com:443/";
+    static final String TEST_ENDPOINT_HTTPS = "https://test.https.documents.azure.com:443/";
+    static final String TEST_ENDPOINT_HTTP = "http://test.http.documents.azure.com:443/";
+    static final String TEST_ENDPOINT_MALFORMED = "http://test.fail.documentsfail.azure.com:443/";
 
     private Validator validator;
 
@@ -36,9 +36,9 @@ class AzureCosmosPropertiesTest {
     }
 
     @Test
-    void testWithWrongUriPattern() {
+    void testWithWrongEndpointPattern() {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
-        cosmosProperties.setUri(TEST_URI_FAIL);
+        cosmosProperties.setEndpoint(TEST_ENDPOINT_MALFORMED);
         cosmosProperties.setKey("test-key");
 
 
@@ -47,9 +47,9 @@ class AzureCosmosPropertiesTest {
     }
 
     @Test
-    void testWithHttpUriPattern() {
+    void testWithHttpEndpointPattern() {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
-        cosmosProperties.setUri(TEST_URI_HTTP);
+        cosmosProperties.setEndpoint(TEST_ENDPOINT_HTTP);
         cosmosProperties.setKey("test-key");
 
 
@@ -58,9 +58,9 @@ class AzureCosmosPropertiesTest {
     }
 
     @Test
-    void testWithHttpsUriPattern() {
+    void testWithHttpsEndpointPattern() {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
-        cosmosProperties.setUri(TEST_URI_HTTPS);
+        cosmosProperties.setEndpoint(TEST_ENDPOINT_HTTPS);
         cosmosProperties.setKey("test-key");
 
         Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);

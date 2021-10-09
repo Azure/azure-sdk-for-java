@@ -11,13 +11,13 @@ import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigur
 public class AzureKeyVaultProperties extends AbstractAzureHttpConfigurationProperties {
 
     // TODO (xiada): the default vault url
-    private String vaultUrl;
+    private String endpoint;
 
-    public String getVaultUrl() {
-        return vaultUrl;
+    public String getEndpoint() {
+        return endpoint;
     }
 
-    public void setVaultUrl(String vaultUrl) {
-        this.vaultUrl = vaultUrl;
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 }
