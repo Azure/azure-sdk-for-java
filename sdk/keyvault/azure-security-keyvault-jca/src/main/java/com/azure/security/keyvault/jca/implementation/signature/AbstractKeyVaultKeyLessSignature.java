@@ -35,14 +35,6 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
      */
     public abstract String getAlgorithmName();
 
-    public AbstractKeyVaultKeyLessSignature() {
-        this.keyVaultClient = createKeyVaultClientBySystemProperty();
-    }
-
-    void setKeyVaultClient(KeyVaultClient keyVaultClient) {
-        this.keyVaultClient = keyVaultClient;
-    }
-
     // After throw UnsupportedOperationException, other methods will be called.
     // such as RSAPSSSignature#engineInitVerify.
     @Override
@@ -81,6 +73,7 @@ public abstract class AbstractKeyVaultKeyLessSignature extends SignatureSpi {
     protected void engineInitSign(PrivateKey privateKey, SecureRandom random) {
         if (privateKey instanceof KeyVaultPrivateKey) {
             keyId = ((KeyVaultPrivateKey) privateKey).getKid();
+            keyVaultClient = ((KeyVaultPrivateKey) privateKey).getKeyVaultClient();
         } else {
             throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
         }
