@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.InvoiceSectionState;
@@ -15,42 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An invoice section. */
-@JsonFlatten
 @Fluent
-public class InvoiceSectionInner extends ProxyResource {
+public final class InvoiceSectionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceSectionInner.class);
 
     /*
-     * The name of the invoice section.
+     * The properties of an invoice section.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private InvoiceSectionProperties innerProperties;
 
-    /*
-     * Dictionary of metadata associated with the invoice section.
+    /**
+     * Get the innerProperties property: The properties of an invoice section.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.labels")
-    private Map<String, String> labels;
-
-    /*
-     * Identifies the state of an invoice section.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private InvoiceSectionState state;
-
-    /*
-     * The system generated unique identifier for an invoice section.
-     */
-    @JsonProperty(value = "properties.systemId", access = JsonProperty.Access.WRITE_ONLY)
-    private String systemId;
-
-    /*
-     * Identifies the cloud environments that are associated with an invoice
-     * section. This is a system managed optional field and gets updated as the
-     * invoice section gets associated with accounts in various clouds.
-     */
-    @JsonProperty(value = "properties.targetCloud", access = JsonProperty.Access.WRITE_ONLY)
-    private TargetCloud targetCloud;
+    private InvoiceSectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: The name of the invoice section.
@@ -58,7 +39,7 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -68,7 +49,10 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the InvoiceSectionInner object itself.
      */
     public InvoiceSectionInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InvoiceSectionProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -78,7 +62,7 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the labels value.
      */
     public Map<String, String> labels() {
-        return this.labels;
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
     }
 
     /**
@@ -88,7 +72,10 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the InvoiceSectionInner object itself.
      */
     public InvoiceSectionInner withLabels(Map<String, String> labels) {
-        this.labels = labels;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InvoiceSectionProperties();
+        }
+        this.innerProperties().withLabels(labels);
         return this;
     }
 
@@ -98,7 +85,7 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the state value.
      */
     public InvoiceSectionState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -107,7 +94,34 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the systemId value.
      */
     public String systemId() {
-        return this.systemId;
+        return this.innerProperties() == null ? null : this.innerProperties().systemId();
+    }
+
+    /**
+     * Get the tags property: Dictionary of metadata associated with the invoice section. Maximum key/value length
+     * supported of 256 characters. Keys/value should not empty value nor null. Keys can not contain &lt; &gt; % &amp; \
+     * ? /.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Dictionary of metadata associated with the invoice section. Maximum key/value length
+     * supported of 256 characters. Keys/value should not empty value nor null. Keys can not contain &lt; &gt; % &amp; \
+     * ? /.
+     *
+     * @param tags the tags value to set.
+     * @return the InvoiceSectionInner object itself.
+     */
+    public InvoiceSectionInner withTags(Map<String, String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InvoiceSectionProperties();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
     }
 
     /**
@@ -118,7 +132,7 @@ public class InvoiceSectionInner extends ProxyResource {
      * @return the targetCloud value.
      */
     public TargetCloud targetCloud() {
-        return this.targetCloud;
+        return this.innerProperties() == null ? null : this.innerProperties().targetCloud();
     }
 
     /**
@@ -127,5 +141,8 @@ public class InvoiceSectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
