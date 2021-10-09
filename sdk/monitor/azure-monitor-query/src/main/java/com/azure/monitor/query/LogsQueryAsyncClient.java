@@ -80,8 +80,8 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LogsQueryResult> query(String workspaceId, String query, QueryTimeInterval timeInterval) {
-        return queryWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions())
+    public Mono<LogsQueryResult> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval) {
+        return queryWorkspaceWithResponse(workspaceId, query, timeInterval, new LogsQueryOptions())
                 .map(Response::getValue);
     }
 
@@ -95,8 +95,8 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<List<T>> query(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
-        return query(workspaceId, query, timeInterval)
+    public <T> Mono<List<T>> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
+        return queryWorkspace(workspaceId, query, timeInterval)
                 .map(result -> LogsQueryHelper.toObject(result.getTable(), type));
     }
 
@@ -111,9 +111,9 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<List<T>> query(String workspaceId, String query, QueryTimeInterval timeInterval,
-            Class<T> type, LogsQueryOptions options) {
-        return queryWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
+    public <T> Mono<List<T>> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                            Class<T> type, LogsQueryOptions options) {
+        return queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
                 .map(response -> LogsQueryHelper.toObject(response.getValue().getTable(), type));
     }
 
@@ -132,9 +132,9 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LogsQueryResult>> queryWithResponse(String workspaceId, String query,
-                                                             QueryTimeInterval timeInterval, LogsQueryOptions options) {
-        return withContext(context -> queryWithResponse(workspaceId, query, timeInterval, options, context));
+    public Mono<Response<LogsQueryResult>> queryWorkspaceWithResponse(String workspaceId, String query,
+                                                                      QueryTimeInterval timeInterval, LogsQueryOptions options) {
+        return withContext(context -> queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, context));
     }
 
     /**
@@ -150,9 +150,9 @@ public final class LogsQueryAsyncClient {
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<Response<List<T>>> queryWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
-                                                   Class<T> type, LogsQueryOptions options) {
-        return queryWithResponse(workspaceId, query, timeInterval, options)
+    public <T> Mono<Response<List<T>>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                                                  Class<T> type, LogsQueryOptions options) {
+        return queryWorkspaceWithResponse(workspaceId, query, timeInterval, options)
                 .map(response -> new SimpleResponse<>(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(),
                         LogsQueryHelper.toObject(response.getValue().getTable(), type)));
@@ -169,7 +169,7 @@ public final class LogsQueryAsyncClient {
     Mono<LogsBatchQueryResultCollection> queryBatch(String workspaceId, List<String> queries,
                                                     QueryTimeInterval timeInterval) {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        queries.forEach(query -> logsBatchQuery.addQuery(workspaceId, query, timeInterval));
+        queries.forEach(query -> logsBatchQuery.addWorkspaceQuery(workspaceId, query, timeInterval));
         return queryBatchWithResponse(logsBatchQuery).map(Response::getValue);
     }
 
@@ -266,8 +266,8 @@ public final class LogsQueryAsyncClient {
         return null;
     }
 
-    Mono<Response<LogsQueryResult>> queryWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
-                                                      LogsQueryOptions options, Context context) {
+    Mono<Response<LogsQueryResult>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                                               LogsQueryOptions options, Context context) {
         String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
         context = updateContext(options.getServerTimeout(), context);
 

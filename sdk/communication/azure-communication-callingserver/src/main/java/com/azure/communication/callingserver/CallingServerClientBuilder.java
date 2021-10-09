@@ -5,20 +5,22 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImpl;
 import com.azure.communication.callingserver.implementation.AzureCommunicationCallingServerServiceImplBuilder;
-import com.azure.communication.callingserver.implementation.RedirectPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
@@ -31,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -299,7 +302,9 @@ public final class CallingServerClientBuilder {
         if (tokenCredential != null) {
             pipelinePolicies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 "https://communication.azure.com//.default"));
-            pipelinePolicies.add(new TokenCredentialAddHostHeaderPolicy(hostName));
+            Map<String, String> httpHeaders = new HashMap<>();
+            httpHeaders.put("x-ms-host", hostName);
+            pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
         } else if (azureKeyCredential != null) {
             pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
         } else {

@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerRepositoryAnonymousAccessTests extends ContainerRegistryClientsTestBase {
     @BeforeEach
-    void beforeEach() {
-        TestUtils.importImageAsync(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT).block();
+    void beforeEach() throws InterruptedException {
+        TestUtils.importImage(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -28,9 +28,9 @@ class APISpec extends StorageSpec {
      * Clean up the test queues and messages for the account.
      */
     def cleanup() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             def cleanupQueueServiceClient = new QueueServiceClientBuilder()
-                .connectionString(env.primaryAccount.connectionString)
+                .connectionString(environment.primaryAccount.connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(namer.getResourcePrefix()),
                 null, Context.NONE).each {
@@ -42,14 +42,14 @@ class APISpec extends StorageSpec {
     def queueServiceBuilderHelper() {
         QueueServiceClientBuilder builder = instrument(new QueueServiceClientBuilder())
         return builder
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
     }
 
     def queueBuilderHelper() {
         def queueName = namer.getRandomName(60)
         QueueClientBuilder builder = instrument(new QueueClientBuilder())
         return builder
-            .connectionString(env.primaryAccount.connectionString)
+            .connectionString(environment.primaryAccount.connectionString)
             .queueName(queueName)
     }
 
@@ -79,7 +79,7 @@ class APISpec extends StorageSpec {
     }
 
     def sleepIfLive(long milliseconds) {
-        if (env.testMode == TestMode.PLAYBACK) {
+        if (environment.testMode == TestMode.PLAYBACK) {
             return
         }
 
@@ -87,7 +87,7 @@ class APISpec extends StorageSpec {
     }
 
     def getMessageUpdateDelay(long liveTestDurationInMillis) {
-        return (env.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+        return (environment.testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
     }
 
     def getPerCallVersionPolicy() {

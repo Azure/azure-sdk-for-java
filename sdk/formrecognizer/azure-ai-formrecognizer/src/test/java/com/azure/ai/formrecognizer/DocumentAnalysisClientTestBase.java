@@ -12,7 +12,6 @@ import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentTable;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
-import com.azure.ai.formrecognizer.models.StringIndexType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -710,7 +709,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
 
     private void validateReceipt(AnalyzeResult actualAnalyzeResult) {
         Assertions.assertEquals("prebuilt-receipt", actualAnalyzeResult.getModelId());
-        Assertions.assertEquals(StringIndexType.UTF16CODE_UNIT, actualAnalyzeResult.getStringIndexType());
         Assertions.assertNotNull(actualAnalyzeResult.getPages());
     }
 
