@@ -106,11 +106,6 @@
         <artifactId>azure-spring-cloud-autoconfigure</artifactId>
         <version>${project.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-messaging</artifactId>
-        <version>${azure.spring.cloud.version}</version>
-      </dependency>
 
       <!-- Azure Spring Cloud Stream Binder -->
       <dependency>
