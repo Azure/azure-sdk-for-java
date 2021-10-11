@@ -10746,8 +10746,8 @@ public final class GlossariesImpl {
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {},
-                new TypeReference<BinaryData>() {});
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -10810,8 +10810,8 @@ public final class GlossariesImpl {
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvWithResponseAsync(glossaryGuid, file, requestOptions, context),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {},
-                new TypeReference<BinaryData>() {});
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -11063,8 +11063,8 @@ public final class GlossariesImpl {
                 Duration.ofSeconds(1),
                 () -> this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(glossaryName, file, requestOptions),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {},
-                new TypeReference<BinaryData>() {});
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -11129,8 +11129,8 @@ public final class GlossariesImpl {
                         this.importGlossaryTermsViaCsvByGlossaryNameWithResponseAsync(
                                 glossaryName, file, requestOptions, context),
                 new DefaultPollingStrategy<>(this.client.getHttpPipeline()),
-                new TypeReference<BinaryData>() {},
-                new TypeReference<BinaryData>() {});
+                new TypeReferenceBinaryData(),
+                new TypeReferenceBinaryData());
     }
 
     /**
@@ -12016,4 +12016,6 @@ public final class GlossariesImpl {
             String glossaryName, RequestOptions requestOptions, Context context) {
         return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions, context).block();
     }
+
+    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {}
 }
