@@ -448,8 +448,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
             ReplicatedResourceClient replicatedResourceClient =
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
-            StoreReader storeReader =
-                ReflectionUtils.getStoreReader(ReflectionUtils.getConsistencyReader(replicatedResourceClient));
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
 
             TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
             GoneException exception = new GoneException("Gone Test");
@@ -457,25 +456,22 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(exception));
-            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
+            ReflectionUtils.setTransportClient(consistencyWriter, mockTransportClient);
 
             try {
                 CosmosContainer cosmosContainer =
                     cosmosClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
                 TestPojo testPojo = getTestPojoObject();
-
-                // CI pipeline starts the emulator in strong consistency mode
-                // In order to be consistently validate the retry context, using session and read operation
-                CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-                cosmosItemRequestOptions.setConsistencyLevel(ConsistencyLevel.SESSION);
-                cosmosContainer.readItem(testPojo.getId(),
-                    new PartitionKey(testPojo.getMypk()), cosmosItemRequestOptions, TestPojo.class);
+                cosmosContainer.createItem(testPojo,
+                    new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
 
                 fail("Create item should no succeed");
             } catch (CosmosException ex) {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(7);
+
+                //In CI pipeline, the emulator starts with strong consitency
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(9);
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);
