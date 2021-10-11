@@ -8,7 +8,7 @@ To build the SDK for Server Calling Client, simply Install AutoRest and in this 
 ### Setup
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
-git checkout v4
+git checkout main
 git submodule update --init --recursive
 mvn package -Dlocal
 npm install
@@ -94,5 +94,32 @@ directive:
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                        
+    to: ToneInfoInternal                                            
+```
+
+### Rename RecordingChannelType to RecordingChannel
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingChannelType
+    transform: >
+      $["x-ms-enum"].name = "RecordingChannel";
+```
+
+### Rename RecordingContentType to RecordingContent
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingContentType
+    transform: >
+      $["x-ms-enum"].name = "RecordingContent";
+```
+
+### Rename RecordingFormatType to RecordingFormat
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingFormatType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingFormat";
 ```

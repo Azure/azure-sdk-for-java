@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSSigner;
@@ -44,8 +45,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * and accessing test environments.
  */
 public class AttestationClientTestBase extends TestBase {
-
-    private static final String DATAPLANE_SCOPE = "https://attest.azure.net/.default";
 
     final ClientLogger logger = new ClientLogger(AttestationClientTestBase.class);
 
@@ -91,19 +90,55 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     /**
+     * Retrieve an authenticated attestationAdministrationClientBuilder for the specified HTTP
+     * client and client URI.
+     * @param httpClient - HTTP client ot be used for the attestation client.
+     * @param clientUri - Client base URI to access the service.
+     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
+     */
+    AttestationClientBuilder getAdministrationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+        }
+        return builder;
+    }
+
+
+    /**
+     * Retrieve an authenticated attestationClientBuilder for the specified HTTP client and client URI
+     * @param httpClient - HTTP client ot be used for the attestation client.
+     * @param clientUri - Client base URI to access the service.
+     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
+     */
+    AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+        }
+        return builder;
+    }
+
+    /**
      * Retrieve an attestationClientBuilder for the specified HTTP client and client URI
      * @param httpClient - HTTP client ot be used for the attestation client.
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
+    AttestationClientBuilder getAttestationBuilder(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder builder = new AttestationClientBuilder()
             .endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
 //            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy());
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+
+        // In playback mode, we want to disable expiration times, since the tokens in the recordings
+        // will almost certainly expire.
+        if (interceptorManager.isPlaybackMode()) {
+            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
+                .setValidateExpiresOn(false)
+                .setValidateNotBefore(false)
+            );
         }
         return builder;
     }
@@ -136,7 +171,6 @@ public class AttestationClientTestBase extends TestBase {
                     sink.error(logger.logThrowableAsError(e));
                     return;
                 }
-
 
                 final JWTClaimsSet claims;
                 try {
@@ -179,14 +213,12 @@ public class AttestationClientTestBase extends TestBase {
     /**
      * Find the signing certificate associated with the specified SignedJWT token.
      *
-     * This method depends on the token
-     * @param token - MAA generated token on which to find the certificate.
      * @param client - Http Client used to retrieve signing certificates.
      * @param clientUri - Base URI for the attestation client.
      * @return X509Certificate which will have been used to sign the token.
      */
     Mono<AttestationSigner> getSigningCertificateByKeyId(String keyId, HttpClient client, String clientUri) {
-        AttestationClientBuilder builder = getBuilder(client, clientUri);
+        AttestationClientBuilder builder = getAttestationBuilder(client, clientUri);
         return builder.buildAsyncClient().listAttestationSigners()
             .handle((signers, sink) -> {
                 boolean foundKey = false;

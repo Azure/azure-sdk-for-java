@@ -1,17 +1,19 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.5 (2021-10-06)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency updates
+- Upgraded `azure-core` to 1.21.0
 
-### Bugs Fixed
+## 1.0.4 (2021-09-22)
 
 ### Other Changes
 
 #### Dependency updates
 - Upgraded `azure-communication-common` to 1.0.4
+- Upgraded `azure-core` to 1.20.0
 
 ## 1.0.3 (2021-06-09)
 Updated `azure-communication-sms` version

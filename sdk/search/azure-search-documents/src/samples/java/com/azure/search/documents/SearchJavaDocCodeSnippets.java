@@ -1020,7 +1020,7 @@ public class SearchJavaDocCodeSnippets {
         System.out.printf("The status code of the response is %d.%n"
                 + "The synonym map name is %s. The ETag of synonym map is %s.%n", synonymMapFromService.getStatusCode(),
             synonymMapFromService.getValue().getName(), synonymMapFromService.getValue().getETag());
-        // END:com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-Context
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-Context
     }
 
     /**

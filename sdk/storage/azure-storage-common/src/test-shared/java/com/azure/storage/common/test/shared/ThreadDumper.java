@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ThreadDumper {
 
-    private static final ClientLogger LOGGER = new ClientLogger(StorageSpec.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ThreadDumper.class);
     private static volatile ScheduledExecutorService executorService;
 
     // Assume that after 30 minutes test job hangs.

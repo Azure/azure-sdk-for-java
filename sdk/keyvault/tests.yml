@@ -24,8 +24,8 @@ stages:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           MatrixFilters:
             - ArmTemplateParameters=^(?!.*enableHsm.*true)
-      AdditionalMatrixConfigs:
-        - Name: keyvault_test_matrix_addons
+      MatrixConfigs:
+        - Name: Key_Vault_live_test
           Path: sdk/keyvault/platform-matrix.json
           Selection: sparse
           GenerateVMJobs: true

@@ -73,6 +73,7 @@ public final class AttestationOptions {
     private AttestationData runTimeData;
     private AttestationData initTimeData;
     private String draftPolicyForAttestation;
+    private AttestationTokenValidationOptions validationOptions;
 
     /**
      * Creates a new AttestOpenEnclaveRequest object with the OpenEnclave report from the enclave to be attested.
@@ -182,5 +183,24 @@ public final class AttestationOptions {
      */
     public String getDraftPolicyForAttestation() {
         return this.draftPolicyForAttestation;
+    }
+
+    /**
+     * Sets the options used to validate attestation tokens returned from the service.
+     * @param validationOptions Token Validation options to be used to enhance the validations
+     *                          already performed by the SDK.
+     * @return this {@link AttestationOptions} object.
+     */
+    public AttestationOptions setValidationOptions(AttestationTokenValidationOptions validationOptions) {
+        this.validationOptions = validationOptions;
+        return this;
+    }
+
+    /**
+     * Returns the options used for token validation.
+     * @return attestation token validation options.
+     */
+    public AttestationTokenValidationOptions getValidationOptions() {
+        return validationOptions;
     }
 }

@@ -1,6 +1,23 @@
 # Release History
 
-## 1.4.0-beta.1 (2021-08-16)
+## 1.4.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.7 (2021-10-04)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.21.0
+
+
+## 1.4.0-beta.1 (2021-09-13)
 ### Features Added
 
 - Added support to `ManagedIdentityCredential` for Bridge to Kubernetes local development authentication.
@@ -11,6 +28,7 @@
     - A region can also be specified through the `AZURE_REGIONAL_AUTHORITY_NAME` environment variable.
 - Added `loginHint()` setter to `InteractiveBrowserCredentialBuilder` which allows a username to be pre-selected for interactive logins.
 - Added support to consume `TenantId` challenges from `TokenRequestContext`.
+- Added support for AKS Token Exchange support in `ManagedIdentityCredential`
 
 
 ## 1.3.6 (2021-09-08)

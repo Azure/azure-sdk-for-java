@@ -123,7 +123,7 @@ public final class ResourceManagerUtils {
         if (subscriptionList.size() == 0) {
             throw new ClientLogger(ResourceManagerUtils.class).logExceptionAsError(
                 new IllegalStateException("Please create a subscription before you start resource management. "
-                + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
+                + "To learn more, see: https://azure.microsoft.com/free/."));
         } else if (subscriptionList.size() > 1) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("More than one subscription found in your tenant. "

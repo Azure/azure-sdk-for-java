@@ -14,27 +14,35 @@ import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.*;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
+import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
-import org.mockito.Mock;
-import org.mockito.Captor;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.mockito.ArgumentCaptor;
-import org.mockito.MockitoAnnotations;
+import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import reactor.core.publisher.ReplayProcessor;
-import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
@@ -63,6 +71,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+// This class is executed synchronously as it runs into a NullPointerException when attempting to dispose
+// connectionProcessor in parallel runs.
+@Execution(ExecutionMode.SAME_THREAD)
+@Isolated
 class ServiceBusSessionManagerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -144,6 +156,8 @@ class ServiceBusSessionManagerTest {
     void afterEach(TestInfo testInfo) throws Exception {
         logger.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
 
+        // If this test class is made to run in parallel this will need to change to
+        // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.
         Mockito.framework().clearInlineMocks();
 
         if (mocksCloseable != null) {

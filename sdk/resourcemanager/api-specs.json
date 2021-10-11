@@ -226,7 +226,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--payload-flattening-threshold=1 --tag=package-policy-2020-09"
+    "args": "--payload-flattening-threshold=1 --tag=package-policy-2021-06 --remove-model=UserAssignedIdentitiesValue"
   },
   "powerbi": {
     "dir": "azure-resourcemanager-powerbi",

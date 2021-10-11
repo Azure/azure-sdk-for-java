@@ -44,6 +44,18 @@ public class ManagementExceptionTests {
     }
 
     @Test
+    public void testCaseInsensitiveSubclassDeserialization() throws IOException {
+        final String errorBody = "{\"error\":{\"Code\":\"WepAppError\",\"MESSAGE\":\"Web app error.\",\"Details\":[{\"code\":\"e\"}],\"TaRgeT\":\"foo\"}}";
+
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        WebError webError = serializerAdapter.deserialize(errorBody, WebError.class, SerializerEncoding.JSON);
+        Assertions.assertEquals("WepAppError", webError.getCode());
+        Assertions.assertEquals("Web app error.", webError.getMessage());
+        Assertions.assertEquals(1, webError.getDetails().size());
+        Assertions.assertEquals("foo", webError.getTarget());
+    }
+
+    @Test
     public void testDeserializationInResource() throws IOException {
         final String virtualMachineJson = "{\"properties\":{\"instanceView\":{\"patchStatus\":{\"availablePatchSummary\":{\"error\":{}}}}}}";
 

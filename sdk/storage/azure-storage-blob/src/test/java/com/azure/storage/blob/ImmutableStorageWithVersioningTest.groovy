@@ -56,11 +56,11 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     @Shared
     private String vlwContainerName
     @Shared
-    private String accountName = env.versionedAccount.name
+    private String accountName = environment.versionedAccount.name
     @Shared
-    private String resourceGroupName = env.resourceGroupName
+    private String resourceGroupName = environment.resourceGroupName
     @Shared
-    private String subscriptionId = env.subscriptionId
+    private String subscriptionId = environment.subscriptionId
     @Shared
     private String apiVersion = "2021-04-01"
     @Shared
@@ -72,7 +72,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     private BlobClient vlwBlob
 
     def setupSpec() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString()
 
             String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
@@ -127,15 +127,15 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     }
 
     def cleanupSpec() {
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(credentialPolicy)
                 .httpClient(getHttpClient())
                 .build()
             def cleanupClient = new BlobServiceClientBuilder()
                 .httpClient(getHttpClient())
-                .credential(env.versionedAccount.credential)
-                .endpoint(env.versionedAccount.blobEndpoint)
+                .credential(environment.versionedAccount.credential)
+                .endpoint(environment.versionedAccount.blobEndpoint)
                 .buildClient()
 
             def containerClient = cleanupClient.getBlobContainerClient(vlwContainerName)

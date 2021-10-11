@@ -24,7 +24,7 @@ public final class DedicatedGatewayRequestOptions {
 
     /**
      * Gets the staleness value associated with the request in the Azure CosmosDB service. For requests where the {@link
-     * com.azure.cosmos.ConsistencyLevel} is {@link com.azure.cosmos.ConsistencyLevel#EVENTUAL}, responses from the
+     * com.azure.cosmos.ConsistencyLevel} is {@link com.azure.cosmos.ConsistencyLevel#EVENTUAL} or {@link com.azure.cosmos.ConsistencyLevel#SESSION}, responses from the
      * integrated cache are guaranteed to be no staler than value indicated by this maxIntegratedCacheStaleness.
      *
      * <p>Default value is null</p>
@@ -40,7 +40,7 @@ public final class DedicatedGatewayRequestOptions {
 
     /**
      * Sets the staleness value associated with the request in the Azure CosmosDB service. For requests where the {@link
-     * com.azure.cosmos.ConsistencyLevel} is {@link com.azure.cosmos.ConsistencyLevel#EVENTUAL}, responses from the
+     * com.azure.cosmos.ConsistencyLevel} is {@link com.azure.cosmos.ConsistencyLevel#EVENTUAL} or {@link com.azure.cosmos.ConsistencyLevel#SESSION}, responses from the
      * integrated cache are guaranteed to be no staler than value indicated by this maxIntegratedCacheStaleness.
      *
      * <p>Default value is null</p>

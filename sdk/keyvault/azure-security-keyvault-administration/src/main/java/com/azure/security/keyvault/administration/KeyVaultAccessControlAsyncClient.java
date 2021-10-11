@@ -384,10 +384,10 @@ public final class KeyVaultAccessControlAsyncClient {
                     options.getRoleDefinitionName(), parameters,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
                 .doOnRequest(ignored ->
-                    logger.verbose("Creating role assignment - {}", options.getRoleDefinitionName()))
-                .doOnSuccess(response -> logger.verbose("Created role assignment - {}", response.getValue().getName()))
+                    logger.verbose("Creating role definition - {}", options.getRoleDefinitionName()))
+                .doOnSuccess(response -> logger.verbose("Created role definition - {}", response.getValue().getName()))
                 .doOnError(error ->
-                    logger.warning("Failed to create role assignment - {}", options.getRoleDefinitionName(), error))
+                    logger.warning("Failed to create role definition - {}", options.getRoleDefinitionName(), error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
@@ -471,11 +471,11 @@ public final class KeyVaultAccessControlAsyncClient {
             return clientImpl.getRoleDefinitions()
                 .getWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Retrieving role assignment - {}", roleDefinitionName))
+                .doOnRequest(ignored -> logger.verbose("Retrieving role definition - {}", roleDefinitionName))
                 .doOnSuccess(response ->
-                    logger.verbose("Retrieved role assignment - {}", response.getValue().getName()))
+                    logger.verbose("Retrieved role definition - {}", response.getValue().getName()))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieved role assignment - {}", roleDefinitionName, error))
+                    logger.warning("Failed to retrieved role definition - {}", roleDefinitionName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleDefinitionResponse);
         } catch (RuntimeException e) {
@@ -555,9 +555,9 @@ public final class KeyVaultAccessControlAsyncClient {
             return clientImpl.getRoleDefinitions()
                 .deleteWithResponseAsync(vaultUrl, roleScope.toString(), roleDefinitionName,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-                .doOnRequest(ignored -> logger.verbose("Deleting role assignment - {}", roleDefinitionName))
-                .doOnSuccess(response -> logger.verbose("Deleted role assignment - {}", response.getValue().getName()))
-                .doOnError(error -> logger.warning("Failed to delete role assignment - {}", roleDefinitionName, error))
+                .doOnRequest(ignored -> logger.verbose("Deleting role definition - {}", roleDefinitionName))
+                .doOnSuccess(response -> logger.verbose("Deleted role definition - {}", response.getValue().getName()))
+                .doOnError(error -> logger.warning("Failed to delete role definition - {}", roleDefinitionName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(KeyVaultAdministrationException.class, e ->
@@ -897,7 +897,7 @@ public final class KeyVaultAccessControlAsyncClient {
                 .doOnSuccess(response ->
                     logger.verbose("Retrieved role assignment - {}", response.getValue().getName()))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieved role assignment - {}", roleAssignmentName, error))
+                    logger.warning("Failed to retrieve role assignment - {}", roleAssignmentName, error))
                 .onErrorMap(KeyVaultAdministrationUtils::mapThrowableToKeyVaultAdministrationException)
                 .map(KeyVaultAccessControlAsyncClient::transformRoleAssignmentResponse);
         } catch (RuntimeException e) {

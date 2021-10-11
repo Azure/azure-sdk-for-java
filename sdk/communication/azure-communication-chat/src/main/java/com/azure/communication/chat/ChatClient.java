@@ -19,6 +19,14 @@ import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Sync Client that supports chat operations.
+ *
+ * <p><strong>Instantiating a synchronous Chat Client</strong></p>
+ *
+ * {@codesnippet com.azure.communication.chat.chatclient.instantiation}
+ *
+ * <p>View {@link ChatClientBuilder this} for additional ways to construct the client.</p>
+ *
+ * @see ChatClientBuilder
  */
 @ServiceClient(builder = ChatClientBuilder.class, isAsync = false)
 public final class ChatClient {
@@ -51,6 +59,12 @@ public final class ChatClient {
 
     /**
      * Creates a chat thread.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create a chat thread based on "options".</p>
+     *
+     * {@codesnippet com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions}
      *
      * @param options Options for creating a chat thread.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
