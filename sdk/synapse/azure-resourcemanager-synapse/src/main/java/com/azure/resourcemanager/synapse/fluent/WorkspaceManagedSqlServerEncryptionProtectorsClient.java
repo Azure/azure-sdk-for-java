@@ -65,7 +65,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -85,7 +85,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -171,7 +171,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
 
@@ -187,7 +187,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName,
         String workspaceName,

@@ -4,53 +4,40 @@
 
 package com.azure.resourcemanager.hdinsight.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for HDInsightClusterProvisioningState. */
-public enum HDInsightClusterProvisioningState {
-    /** Enum value InProgress. */
-    IN_PROGRESS("InProgress"),
+public final class HDInsightClusterProvisioningState extends ExpandableStringEnum<HDInsightClusterProvisioningState> {
+    /** Static value InProgress for HDInsightClusterProvisioningState. */
+    public static final HDInsightClusterProvisioningState IN_PROGRESS = fromString("InProgress");
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
+    /** Static value Failed for HDInsightClusterProvisioningState. */
+    public static final HDInsightClusterProvisioningState FAILED = fromString("Failed");
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded"),
+    /** Static value Succeeded for HDInsightClusterProvisioningState. */
+    public static final HDInsightClusterProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Enum value Canceled. */
-    CANCELED("Canceled"),
+    /** Static value Canceled for HDInsightClusterProvisioningState. */
+    public static final HDInsightClusterProvisioningState CANCELED = fromString("Canceled");
 
-    /** Enum value Deleting. */
-    DELETING("Deleting");
-
-    /** The actual serialized value for a HDInsightClusterProvisioningState instance. */
-    private final String value;
-
-    HDInsightClusterProvisioningState(String value) {
-        this.value = value;
-    }
+    /** Static value Deleting for HDInsightClusterProvisioningState. */
+    public static final HDInsightClusterProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * Parses a serialized value to a HDInsightClusterProvisioningState instance.
+     * Creates or finds a HDInsightClusterProvisioningState from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed HDInsightClusterProvisioningState object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding HDInsightClusterProvisioningState.
      */
     @JsonCreator
-    public static HDInsightClusterProvisioningState fromString(String value) {
-        HDInsightClusterProvisioningState[] items = HDInsightClusterProvisioningState.values();
-        for (HDInsightClusterProvisioningState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static HDInsightClusterProvisioningState fromString(String name) {
+        return fromString(name, HDInsightClusterProvisioningState.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known HDInsightClusterProvisioningState values. */
+    public static Collection<HDInsightClusterProvisioningState> values() {
+        return values(HDInsightClusterProvisioningState.class);
     }
 }
