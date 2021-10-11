@@ -98,7 +98,10 @@ class AzureSeekableByteChannelTest extends APISpec {
         int initialOffset = rand.nextInt(512) + 1 // always > 0
         byte[] randArray = new byte[2 * initialOffset + sourceFileSize]
         rand.nextBytes(randArray) // fill with random bytes
-        def destArray = randArray.clone() // same random bytes, but some will be overwritten by read()
+
+        // copy same random bytes, but in this copy some will eventually be overwritten by read()
+        byte[] destArray = new byte[randArray.length]
+        System.arraycopy(randArray, 0, destArray, 0, randArray.length)
         def dest = ByteBuffer.wrap(destArray)
         dest.position(initialOffset) // will have capacity on either side that should not be touched
 
