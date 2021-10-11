@@ -3,6 +3,7 @@
 ## 12.1.1 (2021-10-11)
 
 ### Other Changes
+#### Dependency Updates
 - Updated `azure-storage-common` to version `12.13.1`
 
 ## 12.1.0 (2021-09-15)
