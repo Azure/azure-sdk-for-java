@@ -54,6 +54,18 @@
 - [ListUsages](#locations_listusages)
 - [ValidateClusterCreateRequest](#locations_validateclustercreaterequest)
 
+## PrivateEndpointConnections
+
+- [CreateOrUpdate](#privateendpointconnections_createorupdate)
+- [Delete](#privateendpointconnections_delete)
+- [Get](#privateendpointconnections_get)
+- [ListByCluster](#privateendpointconnections_listbycluster)
+
+## PrivateLinkResources
+
+- [Get](#privatelinkresources_get)
+- [ListByCluster](#privatelinkresources_listbycluster)
+
 ## ScriptActions
 
 - [Delete](#scriptactions_delete)
@@ -84,6 +96,9 @@ import java.util.Arrays;
 
 /** Samples for Applications Create. */
 public final class ApplicationsCreateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateApplication.json
+     */
     /**
      * Sample code: Create Application.
      *
@@ -135,6 +150,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Applications Delete. */
 public final class ApplicationsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DeleteApplication.json
+     */
     /**
      * Sample code: Delete Application from HDInsight cluster.
      *
@@ -154,6 +172,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Applications Get. */
 public final class ApplicationsGetSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetApplicationInProgress.json
+     */
     /**
      * Sample code: Get application on HDInsight cluster creation in progress.
      *
@@ -164,6 +185,9 @@ public final class ApplicationsGetSamples {
         manager.applications().getWithResponse("rg1", "cluster1", "app", Context.NONE);
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetApplicationCreated.json
+     */
     /**
      * Sample code: Get application on HDInsight cluster successfully created.
      *
@@ -183,6 +207,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Applications GetAzureAsyncOperationStatus. */
 public final class ApplicationsGetAzureAsyncOperationStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetApplicationCreationAsyncOperationStatus.json
+     */
     /**
      * Sample code: Get the azure async operation status.
      *
@@ -204,6 +231,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Applications ListByCluster. */
 public final class ApplicationsListByClusterSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetAllApplications.json
+     */
     /**
      * Sample code: Get All Applications for an HDInsight cluster.
      *
@@ -258,6 +288,504 @@ import java.util.Map;
 
 /** Samples for Clusters Create. */
 public final class ClustersCreateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateLinuxHadoopSshPassword.json
+     */
+    /**
+     * Sample code: Create Hadoop on Linux cluster with SSH password.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createHadoopOnLinuxClusterWithSSHPassword(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
+        manager
+            .clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("key1", "val1"))
+            .withProperties(
+                new ClusterCreateProperties()
+                    .withClusterVersion("3.5")
+                    .withOsType(OSType.LINUX)
+                    .withTier(Tier.STANDARD)
+                    .withClusterDefinition(
+                        new ClusterDefinition()
+                            .withKind("Hadoop")
+                            .withConfigurations(
+                                SerializerFactory
+                                    .createDefaultManagementSerializerAdapter()
+                                    .deserialize(
+                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":\"true\",\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
+                                        Object.class,
+                                        SerializerEncoding.JSON)))
+                    .withComputeProfile(
+                        new ComputeProfile()
+                            .withRoles(
+                                Arrays
+                                    .asList(
+                                        new Role()
+                                            .withName("headnode")
+                                            .withMinInstanceCount(1)
+                                            .withTargetInstanceCount(2)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))),
+                                        new Role()
+                                            .withName("workernode")
+                                            .withMinInstanceCount(1)
+                                            .withTargetInstanceCount(4)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))),
+                                        new Role()
+                                            .withName("zookeepernode")
+                                            .withMinInstanceCount(1)
+                                            .withTargetInstanceCount(3)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Small"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))))))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withStorageaccounts(
+                                Arrays
+                                    .asList(
+                                        new StorageAccount()
+                                            .withName("mystorage.blob.core.windows.net")
+                                            .withIsDefault(true)
+                                            .withContainer("containername")
+                                            .withKey("storagekey")))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateKafkaClusterWithKafkaRestProxy.json
+     */
+    /**
+     * Sample code: Create Kafka cluster with Kafka Rest Proxy.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createKafkaClusterWithKafkaRestProxy(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
+        manager
+            .clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withProperties(
+                new ClusterCreateProperties()
+                    .withClusterVersion("4.0")
+                    .withOsType(OSType.LINUX)
+                    .withTier(Tier.STANDARD)
+                    .withClusterDefinition(
+                        new ClusterDefinition()
+                            .withKind("kafka")
+                            .withComponentVersion(mapOf("Kafka", "2.1"))
+                            .withConfigurations(
+                                SerializerFactory
+                                    .createDefaultManagementSerializerAdapter()
+                                    .deserialize(
+                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
+                                        Object.class,
+                                        SerializerEncoding.JSON)))
+                    .withKafkaRestProperties(
+                        new KafkaRestProperties()
+                            .withClientGroupInfo(
+                                new ClientGroupInfo()
+                                    .withGroupName("Kafka security group name")
+                                    .withGroupId("00000000-0000-0000-0000-111111111111")))
+                    .withComputeProfile(
+                        new ComputeProfile()
+                            .withRoles(
+                                Arrays
+                                    .asList(
+                                        new Role()
+                                            .withName("headnode")
+                                            .withTargetInstanceCount(2)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Large"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))),
+                                        new Role()
+                                            .withName("workernode")
+                                            .withTargetInstanceCount(3)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Large"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********")))
+                                            .withDataDisksGroups(
+                                                Arrays.asList(new DataDisksGroups().withDisksPerNode(8))),
+                                        new Role()
+                                            .withName("zookeepernode")
+                                            .withTargetInstanceCount(3)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Small"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))),
+                                        new Role()
+                                            .withName("kafkamanagementnode")
+                                            .withTargetInstanceCount(2)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D4_v2"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("kafkauser")
+                                                            .withPassword("**********"))))))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withStorageaccounts(
+                                Arrays
+                                    .asList(
+                                        new StorageAccount()
+                                            .withName("mystorage.blob.core.windows.net")
+                                            .withIsDefault(true)
+                                            .withContainer("containername")
+                                            .withKey("storagekey")))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithAutoscaleConfig.json
+     */
+    /**
+     * Sample code: Create HDInsight cluster with Autoscale configuration.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createHDInsightClusterWithAutoscaleConfiguration(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
+        manager
+            .clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withProperties(
+                new ClusterCreateProperties()
+                    .withClusterVersion("3.6")
+                    .withOsType(OSType.LINUX)
+                    .withTier(Tier.STANDARD)
+                    .withClusterDefinition(
+                        new ClusterDefinition()
+                            .withKind("hadoop")
+                            .withComponentVersion(mapOf("Hadoop", "2.7"))
+                            .withConfigurations(
+                                SerializerFactory
+                                    .createDefaultManagementSerializerAdapter()
+                                    .deserialize(
+                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
+                                        Object.class,
+                                        SerializerEncoding.JSON)))
+                    .withComputeProfile(
+                        new ComputeProfile()
+                            .withRoles(
+                                Arrays
+                                    .asList(
+                                        new Role()
+                                            .withName("workernode")
+                                            .withTargetInstanceCount(4)
+                                            .withAutoscaleConfiguration(
+                                                new Autoscale()
+                                                    .withRecurrence(
+                                                        new AutoscaleRecurrence()
+                                                            .withTimeZone("China Standard Time")
+                                                            .withSchedule(
+                                                                Arrays
+                                                                    .asList(
+                                                                        new AutoscaleSchedule()
+                                                                            .withDays(
+                                                                                Arrays
+                                                                                    .asList(
+                                                                                        DaysOfWeek.MONDAY,
+                                                                                        DaysOfWeek.TUESDAY,
+                                                                                        DaysOfWeek.WEDNESDAY,
+                                                                                        DaysOfWeek.THURSDAY,
+                                                                                        DaysOfWeek.FRIDAY))
+                                                                            .withTimeAndCapacity(
+                                                                                new AutoscaleTimeAndCapacity()
+                                                                                    .withTime("09:00")
+                                                                                    .withMinInstanceCount(3)
+                                                                                    .withMaxInstanceCount(3)),
+                                                                        new AutoscaleSchedule()
+                                                                            .withDays(
+                                                                                Arrays
+                                                                                    .asList(
+                                                                                        DaysOfWeek.MONDAY,
+                                                                                        DaysOfWeek.TUESDAY,
+                                                                                        DaysOfWeek.WEDNESDAY,
+                                                                                        DaysOfWeek.THURSDAY,
+                                                                                        DaysOfWeek.FRIDAY))
+                                                                            .withTimeAndCapacity(
+                                                                                new AutoscaleTimeAndCapacity()
+                                                                                    .withTime("18:00")
+                                                                                    .withMinInstanceCount(6)
+                                                                                    .withMaxInstanceCount(6)),
+                                                                        new AutoscaleSchedule()
+                                                                            .withDays(
+                                                                                Arrays
+                                                                                    .asList(
+                                                                                        DaysOfWeek.SATURDAY,
+                                                                                        DaysOfWeek.SUNDAY))
+                                                                            .withTimeAndCapacity(
+                                                                                new AutoscaleTimeAndCapacity()
+                                                                                    .withTime("09:00")
+                                                                                    .withMinInstanceCount(2)
+                                                                                    .withMaxInstanceCount(2)),
+                                                                        new AutoscaleSchedule()
+                                                                            .withDays(
+                                                                                Arrays
+                                                                                    .asList(
+                                                                                        DaysOfWeek.SATURDAY,
+                                                                                        DaysOfWeek.SUNDAY))
+                                                                            .withTimeAndCapacity(
+                                                                                new AutoscaleTimeAndCapacity()
+                                                                                    .withTime("18:00")
+                                                                                    .withMinInstanceCount(4)
+                                                                                    .withMaxInstanceCount(4))))))
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D4_V2"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********")))
+                                            .withScriptActions(Arrays.asList()))))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withStorageaccounts(
+                                Arrays
+                                    .asList(
+                                        new StorageAccount()
+                                            .withName("mystorage.blob.core.windows.net")
+                                            .withIsDefault(true)
+                                            .withContainer("hdinsight-autoscale-tes-2019-06-18t05-49-16-591z")
+                                            .withKey("storagekey")))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateLinuxHadoopSshPublicKey.json
+     */
+    /**
+     * Sample code: Create Hadoop on Linux cluster with SSH public key.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createHadoopOnLinuxClusterWithSSHPublicKey(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
+        manager
+            .clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("key1", "val1"))
+            .withProperties(
+                new ClusterCreateProperties()
+                    .withClusterVersion("3.5")
+                    .withOsType(OSType.LINUX)
+                    .withTier(Tier.STANDARD)
+                    .withClusterDefinition(
+                        new ClusterDefinition()
+                            .withKind("Hadoop")
+                            .withConfigurations(
+                                SerializerFactory
+                                    .createDefaultManagementSerializerAdapter()
+                                    .deserialize(
+                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
+                                        Object.class,
+                                        SerializerEncoding.JSON)))
+                    .withComputeProfile(
+                        new ComputeProfile()
+                            .withRoles(
+                                Arrays
+                                    .asList(
+                                        new Role()
+                                            .withName("headnode")
+                                            .withMinInstanceCount(1)
+                                            .withTargetInstanceCount(2)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withSshProfile(
+                                                                new SshProfile()
+                                                                    .withPublicKeys(
+                                                                        Arrays
+                                                                            .asList(
+                                                                                new SshPublicKey()
+                                                                                    .withCertificateData(
+                                                                                        "**********")))))),
+                                        new Role()
+                                            .withName("workernode")
+                                            .withMinInstanceCount(1)
+                                            .withTargetInstanceCount(4)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))),
+                                        new Role()
+                                            .withName("zookeepernode")
+                                            .withMinInstanceCount(1)
+                                            .withTargetInstanceCount(3)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("Small"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********"))))))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withStorageaccounts(
+                                Arrays
+                                    .asList(
+                                        new StorageAccount()
+                                            .withName("mystorage.blob.core.windows.net")
+                                            .withIsDefault(true)
+                                            .withContainer("containername")
+                                            .withKey("storagekey")))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithAvailabilityZones.json
+     */
+    /**
+     * Sample code: Create cluster with availability zones.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void createClusterWithAvailabilityZones(com.azure.resourcemanager.hdinsight.HDInsightManager manager)
+        throws IOException {
+        manager
+            .clusters()
+            .define("cluster1")
+            .withExistingResourceGroup("rg1")
+            .withZones(Arrays.asList("1"))
+            .withProperties(
+                new ClusterCreateProperties()
+                    .withClusterVersion("3.6")
+                    .withOsType(OSType.LINUX)
+                    .withClusterDefinition(
+                        new ClusterDefinition()
+                            .withKind("hadoop")
+                            .withConfigurations(
+                                SerializerFactory
+                                    .createDefaultManagementSerializerAdapter()
+                                    .deserialize(
+                                        "{\"ambari-conf\":{\"database-name\":\"{ambari database"
+                                            + " name}\",\"database-server\":\"{sql server"
+                                            + " name}.database.windows.net\",\"database-user-name\":\"**********\",\"database-user-password\":\"**********\"},\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"},\"hive-env\":{\"hive_database\":\"Existing"
+                                            + " MSSQL Server database with SQL"
+                                            + " authentication\",\"hive_database_name\":\"{hive metastore"
+                                            + " name}\",\"hive_database_type\":\"mssql\",\"hive_existing_mssql_server_database\":\"{hive"
+                                            + " metastore name}\",\"hive_existing_mssql_server_host\":\"{sql server"
+                                            + " name}.database.windows.net\",\"hive_hostname\":\"{sql server"
+                                            + " name}.database.windows.net\"},\"hive-site\":{\"javax.jdo.option.ConnectionDriverName\":\"com.microsoft.sqlserver.jdbc.SQLServerDriver\",\"javax.jdo.option.ConnectionPassword\":\"**********!\",\"javax.jdo.option.ConnectionURL\":\"jdbc:sqlserver://{sql"
+                                            + " server name}.database.windows.net;database={hive metastore"
+                                            + " name};encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300;sendStringParametersAsUnicode=true;prepareSQL=0\",\"javax.jdo.option.ConnectionUserName\":\"**********\"},\"oozie-env\":{\"oozie_database\":\"Existing"
+                                            + " MSSQL Server database with SQL"
+                                            + " authentication\",\"oozie_database_name\":\"{oozie metastore"
+                                            + " name}\",\"oozie_database_type\":\"mssql\",\"oozie_existing_mssql_server_database\":\"{oozie"
+                                            + " metastore name}\",\"oozie_existing_mssql_server_host\":\"{sql server"
+                                            + " name}.database.windows.net\",\"oozie_hostname\":\"{sql server"
+                                            + " name}.database.windows.net\"},\"oozie-site\":{\"oozie.db.schema.name\":\"oozie\",\"oozie.service.JPAService.jdbc.driver\":\"com.microsoft.sqlserver.jdbc.SQLServerDriver\",\"oozie.service.JPAService.jdbc.password\":\"**********\",\"oozie.service.JPAService.jdbc.url\":\"jdbc:sqlserver://{sql"
+                                            + " server name}.database.windows.net;database={oozie metastore"
+                                            + " name};encrypt=true;trustServerCertificate=true;create=false;loginTimeout=300;sendStringParametersAsUnicode=true;prepareSQL=0\",\"oozie.service.JPAService.jdbc.username\":\"**********\"}}",
+                                        Object.class,
+                                        SerializerEncoding.JSON)))
+                    .withComputeProfile(
+                        new ComputeProfile()
+                            .withRoles(
+                                Arrays
+                                    .asList(
+                                        new Role()
+                                            .withName("headnode")
+                                            .withTargetInstanceCount(2)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("standard_d3"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********")
+                                                            .withSshProfile(
+                                                                new SshProfile()
+                                                                    .withPublicKeys(
+                                                                        Arrays
+                                                                            .asList(
+                                                                                new SshPublicKey()
+                                                                                    .withCertificateData(
+                                                                                        "**********"))))))
+                                            .withVirtualNetworkProfile(
+                                                new VirtualNetworkProfile()
+                                                    .withId(
+                                                        "/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnetname")
+                                                    .withSubnet(
+                                                        "/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet")),
+                                        new Role()
+                                            .withName("workernode")
+                                            .withTargetInstanceCount(2)
+                                            .withHardwareProfile(new HardwareProfile().withVmSize("standard_d3"))
+                                            .withOsProfile(
+                                                new OsProfile()
+                                                    .withLinuxOperatingSystemProfile(
+                                                        new LinuxOperatingSystemProfile()
+                                                            .withUsername("sshuser")
+                                                            .withPassword("**********")
+                                                            .withSshProfile(
+                                                                new SshProfile()
+                                                                    .withPublicKeys(
+                                                                        Arrays
+                                                                            .asList(
+                                                                                new SshPublicKey()
+                                                                                    .withCertificateData(
+                                                                                        "**********"))))))
+                                            .withVirtualNetworkProfile(
+                                                new VirtualNetworkProfile()
+                                                    .withId(
+                                                        "/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnetname")
+                                                    .withSubnet(
+                                                        "/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnetname/subnets/vnetsubnet")))))
+                    .withStorageProfile(
+                        new StorageProfile()
+                            .withStorageaccounts(
+                                Arrays
+                                    .asList(
+                                        new StorageAccount()
+                                            .withName("mystorage")
+                                            .withIsDefault(true)
+                                            .withContainer("containername")
+                                            .withKey("storage account key")))))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateLinuxHadoopAdlsGen2.json
+     */
     /**
      * Sample code: Create Hadoop cluster with Azure Data Lake Storage Gen 2.
      *
@@ -336,6 +864,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateLinuxHadoopSecureHadoop.json
+     */
     /**
      * Sample code: Create Secure Hadoop cluster.
      *
@@ -468,84 +999,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
-    /**
-     * Sample code: Create Hadoop on Linux cluster with SSH password.
-     *
-     * @param manager Entry point to HDInsightManager.
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateLinuxSparkSshPassword.json
      */
-    public static void createHadoopOnLinuxClusterWithSSHPassword(
-        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
-        manager
-            .clusters()
-            .define("cluster1")
-            .withExistingResourceGroup("rg1")
-            .withTags(mapOf("key1", "val1"))
-            .withProperties(
-                new ClusterCreateProperties()
-                    .withClusterVersion("3.5")
-                    .withOsType(OSType.LINUX)
-                    .withTier(Tier.STANDARD)
-                    .withClusterDefinition(
-                        new ClusterDefinition()
-                            .withKind("Hadoop")
-                            .withConfigurations(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize(
-                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":\"true\",\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
-                                        Object.class,
-                                        SerializerEncoding.JSON)))
-                    .withComputeProfile(
-                        new ComputeProfile()
-                            .withRoles(
-                                Arrays
-                                    .asList(
-                                        new Role()
-                                            .withName("headnode")
-                                            .withMinInstanceCount(1)
-                                            .withTargetInstanceCount(2)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))),
-                                        new Role()
-                                            .withName("workernode")
-                                            .withMinInstanceCount(1)
-                                            .withTargetInstanceCount(4)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))),
-                                        new Role()
-                                            .withName("zookeepernode")
-                                            .withMinInstanceCount(1)
-                                            .withTargetInstanceCount(3)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Small"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withStorageaccounts(
-                                Arrays
-                                    .asList(
-                                        new StorageAccount()
-                                            .withName("mystorage.blob.core.windows.net")
-                                            .withIsDefault(true)
-                                            .withContainer("containername")
-                                            .withKey("storagekey")))))
-            .create();
-    }
-
     /**
      * Sample code: Create Spark on Linux Cluster with SSH password.
      *
@@ -614,6 +1070,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithCustomNetworkProperties.json
+     */
     /**
      * Sample code: Create cluster with network properties.
      *
@@ -709,6 +1168,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithTLS12.json
+     */
     /**
      * Sample code: Create cluster with TLS 1.2.
      *
@@ -784,298 +1246,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
-    /**
-     * Sample code: Create Kafka cluster with Kafka Rest Proxy.
-     *
-     * @param manager Entry point to HDInsightManager.
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithEncryptionAtHost.json
      */
-    public static void createKafkaClusterWithKafkaRestProxy(
-        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
-        manager
-            .clusters()
-            .define("cluster1")
-            .withExistingResourceGroup("rg1")
-            .withProperties(
-                new ClusterCreateProperties()
-                    .withClusterVersion("4.0")
-                    .withOsType(OSType.LINUX)
-                    .withTier(Tier.STANDARD)
-                    .withClusterDefinition(
-                        new ClusterDefinition()
-                            .withKind("kafka")
-                            .withComponentVersion(mapOf("Kafka", "2.1"))
-                            .withConfigurations(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize(
-                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
-                                        Object.class,
-                                        SerializerEncoding.JSON)))
-                    .withKafkaRestProperties(
-                        new KafkaRestProperties()
-                            .withClientGroupInfo(
-                                new ClientGroupInfo()
-                                    .withGroupName("Kafka security group name")
-                                    .withGroupId("00000000-0000-0000-0000-111111111111")))
-                    .withComputeProfile(
-                        new ComputeProfile()
-                            .withRoles(
-                                Arrays
-                                    .asList(
-                                        new Role()
-                                            .withName("headnode")
-                                            .withTargetInstanceCount(2)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Large"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))),
-                                        new Role()
-                                            .withName("workernode")
-                                            .withTargetInstanceCount(3)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Large"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********")))
-                                            .withDataDisksGroups(
-                                                Arrays.asList(new DataDisksGroups().withDisksPerNode(8))),
-                                        new Role()
-                                            .withName("zookeepernode")
-                                            .withTargetInstanceCount(3)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Small"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))),
-                                        new Role()
-                                            .withName("kafkamanagementnode")
-                                            .withTargetInstanceCount(2)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D4_v2"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("kafkauser")
-                                                            .withPassword("**********"))))))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withStorageaccounts(
-                                Arrays
-                                    .asList(
-                                        new StorageAccount()
-                                            .withName("mystorage.blob.core.windows.net")
-                                            .withIsDefault(true)
-                                            .withContainer("containername")
-                                            .withKey("storagekey")))))
-            .create();
-    }
-
-    /**
-     * Sample code: Create HDInsight cluster with Autoscale configuration.
-     *
-     * @param manager Entry point to HDInsightManager.
-     */
-    public static void createHDInsightClusterWithAutoscaleConfiguration(
-        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
-        manager
-            .clusters()
-            .define("cluster1")
-            .withExistingResourceGroup("rg1")
-            .withProperties(
-                new ClusterCreateProperties()
-                    .withClusterVersion("3.6")
-                    .withOsType(OSType.LINUX)
-                    .withTier(Tier.STANDARD)
-                    .withClusterDefinition(
-                        new ClusterDefinition()
-                            .withKind("hadoop")
-                            .withComponentVersion(mapOf("Hadoop", "2.7"))
-                            .withConfigurations(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize(
-                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
-                                        Object.class,
-                                        SerializerEncoding.JSON)))
-                    .withComputeProfile(
-                        new ComputeProfile()
-                            .withRoles(
-                                Arrays
-                                    .asList(
-                                        new Role()
-                                            .withName("workernode")
-                                            .withTargetInstanceCount(4)
-                                            .withAutoscaleConfiguration(
-                                                new Autoscale()
-                                                    .withRecurrence(
-                                                        new AutoscaleRecurrence()
-                                                            .withTimeZone("China Standard Time")
-                                                            .withSchedule(
-                                                                Arrays
-                                                                    .asList(
-                                                                        new AutoscaleSchedule()
-                                                                            .withDays(
-                                                                                Arrays
-                                                                                    .asList(
-                                                                                        DaysOfWeek.MONDAY,
-                                                                                        DaysOfWeek.TUESDAY,
-                                                                                        DaysOfWeek.WEDNESDAY,
-                                                                                        DaysOfWeek.THURSDAY,
-                                                                                        DaysOfWeek.FRIDAY))
-                                                                            .withTimeAndCapacity(
-                                                                                new AutoscaleTimeAndCapacity()
-                                                                                    .withTime("09:00")
-                                                                                    .withMinInstanceCount(3)
-                                                                                    .withMaxInstanceCount(3)),
-                                                                        new AutoscaleSchedule()
-                                                                            .withDays(
-                                                                                Arrays
-                                                                                    .asList(
-                                                                                        DaysOfWeek.MONDAY,
-                                                                                        DaysOfWeek.TUESDAY,
-                                                                                        DaysOfWeek.WEDNESDAY,
-                                                                                        DaysOfWeek.THURSDAY,
-                                                                                        DaysOfWeek.FRIDAY))
-                                                                            .withTimeAndCapacity(
-                                                                                new AutoscaleTimeAndCapacity()
-                                                                                    .withTime("18:00")
-                                                                                    .withMinInstanceCount(6)
-                                                                                    .withMaxInstanceCount(6)),
-                                                                        new AutoscaleSchedule()
-                                                                            .withDays(
-                                                                                Arrays
-                                                                                    .asList(
-                                                                                        DaysOfWeek.SATURDAY,
-                                                                                        DaysOfWeek.SUNDAY))
-                                                                            .withTimeAndCapacity(
-                                                                                new AutoscaleTimeAndCapacity()
-                                                                                    .withTime("09:00")
-                                                                                    .withMinInstanceCount(2)
-                                                                                    .withMaxInstanceCount(2)),
-                                                                        new AutoscaleSchedule()
-                                                                            .withDays(
-                                                                                Arrays
-                                                                                    .asList(
-                                                                                        DaysOfWeek.SATURDAY,
-                                                                                        DaysOfWeek.SUNDAY))
-                                                                            .withTimeAndCapacity(
-                                                                                new AutoscaleTimeAndCapacity()
-                                                                                    .withTime("18:00")
-                                                                                    .withMinInstanceCount(4)
-                                                                                    .withMaxInstanceCount(4))))))
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D4_V2"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********")))
-                                            .withScriptActions(Arrays.asList()))))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withStorageaccounts(
-                                Arrays
-                                    .asList(
-                                        new StorageAccount()
-                                            .withName("mystorage.blob.core.windows.net")
-                                            .withIsDefault(true)
-                                            .withContainer("hdinsight-autoscale-tes-2019-06-18t05-49-16-591z")
-                                            .withKey("storagekey")))))
-            .create();
-    }
-
-    /**
-     * Sample code: Create Hadoop on Linux cluster with SSH public key.
-     *
-     * @param manager Entry point to HDInsightManager.
-     */
-    public static void createHadoopOnLinuxClusterWithSSHPublicKey(
-        com.azure.resourcemanager.hdinsight.HDInsightManager manager) throws IOException {
-        manager
-            .clusters()
-            .define("cluster1")
-            .withExistingResourceGroup("rg1")
-            .withTags(mapOf("key1", "val1"))
-            .withProperties(
-                new ClusterCreateProperties()
-                    .withClusterVersion("3.5")
-                    .withOsType(OSType.LINUX)
-                    .withTier(Tier.STANDARD)
-                    .withClusterDefinition(
-                        new ClusterDefinition()
-                            .withKind("Hadoop")
-                            .withConfigurations(
-                                SerializerFactory
-                                    .createDefaultManagementSerializerAdapter()
-                                    .deserialize(
-                                        "{\"gateway\":{\"restAuthCredential.isEnabled\":true,\"restAuthCredential.password\":\"**********\",\"restAuthCredential.username\":\"admin\"}}",
-                                        Object.class,
-                                        SerializerEncoding.JSON)))
-                    .withComputeProfile(
-                        new ComputeProfile()
-                            .withRoles(
-                                Arrays
-                                    .asList(
-                                        new Role()
-                                            .withName("headnode")
-                                            .withMinInstanceCount(1)
-                                            .withTargetInstanceCount(2)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withSshProfile(
-                                                                new SshProfile()
-                                                                    .withPublicKeys(
-                                                                        Arrays
-                                                                            .asList(
-                                                                                new SshPublicKey()
-                                                                                    .withCertificateData(
-                                                                                        "**********")))))),
-                                        new Role()
-                                            .withName("workernode")
-                                            .withMinInstanceCount(1)
-                                            .withTargetInstanceCount(4)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Standard_D3_V2"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))),
-                                        new Role()
-                                            .withName("zookeepernode")
-                                            .withMinInstanceCount(1)
-                                            .withTargetInstanceCount(3)
-                                            .withHardwareProfile(new HardwareProfile().withVmSize("Small"))
-                                            .withOsProfile(
-                                                new OsProfile()
-                                                    .withLinuxOperatingSystemProfile(
-                                                        new LinuxOperatingSystemProfile()
-                                                            .withUsername("sshuser")
-                                                            .withPassword("**********"))))))
-                    .withStorageProfile(
-                        new StorageProfile()
-                            .withStorageaccounts(
-                                Arrays
-                                    .asList(
-                                        new StorageAccount()
-                                            .withName("mystorage.blob.core.windows.net")
-                                            .withIsDefault(true)
-                                            .withContainer("containername")
-                                            .withKey("storagekey")))))
-            .create();
-    }
-
     /**
      * Sample code: Create cluster with encryption at host.
      *
@@ -1151,6 +1324,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithEncryptionInTransit.json
+     */
     /**
      * Sample code: Create cluster with encryption in transit.
      *
@@ -1227,6 +1403,9 @@ public final class ClustersCreateSamples {
             .create();
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateHDInsightClusterWithComputeIsolationProperties.json
+     */
     /**
      * Sample code: Create cluster with compute isolation properties.
      *
@@ -1327,6 +1506,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Clusters Delete. */
 public final class ClustersDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DeleteLinuxHadoopCluster.json
+     */
     /**
      * Sample code: Delete Hadoop on Linux cluster.
      *
@@ -1348,6 +1530,9 @@ import java.util.Arrays;
 
 /** Samples for Clusters ExecuteScriptActions. */
 public final class ClustersExecuteScriptActionsSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/PostExecuteScriptAction.json
+     */
     /**
      * Sample code: Execute script action on HDInsight cluster.
      *
@@ -1382,6 +1567,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Clusters GetAzureAsyncOperationStatus. */
 public final class ClustersGetAzureAsyncOperationStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetClusterCreatingAsyncOperationStatus.json
+     */
     /**
      * Sample code: Get Async Operation Status of Creating Cluster.
      *
@@ -1404,6 +1592,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Clusters GetByResourceGroup. */
 public final class ClustersGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxHadoopCluster.json
+     */
     /**
      * Sample code: Get Hadoop on Linux cluster.
      *
@@ -1413,6 +1604,9 @@ public final class ClustersGetByResourceGroupSamples {
         manager.clusters().getByResourceGroupWithResponse("rg1", "cluster1", Context.NONE);
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxSparkCluster.json
+     */
     /**
      * Sample code: Get Spark on Linux cluster.
      *
@@ -1431,6 +1625,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Clusters GetGatewaySettings. */
 public final class ClustersGetGatewaySettingsSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Clusters_GetGatewaySettings.json
+     */
     /**
      * Sample code: Get HTTP settings.
      *
@@ -1449,6 +1646,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Clusters List. */
 public final class ClustersListSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxHadoopAllClusters.json
+     */
     /**
      * Sample code: Get All Hadoop on Linux clusters.
      *
@@ -1467,6 +1667,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Clusters ListByResourceGroup. */
 public final class ClustersListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxHadoopAllClustersInResourceGroup.json
+     */
     /**
      * Sample code: Get All Hadoop on Linux clusters in a resource group.
      *
@@ -1488,6 +1691,9 @@ import com.azure.resourcemanager.hdinsight.models.RoleName;
 
 /** Samples for Clusters Resize. */
 public final class ClustersResizeSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ResizeLinuxHadoopCluster.json
+     */
     /**
      * Sample code: Resize the worker nodes for a Hadoop on Linux cluster.
      *
@@ -1515,6 +1721,9 @@ import com.azure.resourcemanager.hdinsight.models.ClusterDiskEncryptionParameter
 
 /** Samples for Clusters RotateDiskEncryptionKey. */
 public final class ClustersRotateDiskEncryptionKeySamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/RotateLinuxHadoopClusterDiskEncryptionKey.json
+     */
     /**
      * Sample code: Rotate disk encryption key of the specified HDInsight cluster.
      *
@@ -1546,6 +1755,9 @@ import java.util.Map;
 
 /** Samples for Clusters Update. */
 public final class ClustersUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/PatchLinuxHadoopCluster.json
+     */
     /**
      * Sample code: Patch HDInsight Linux clusters.
      *
@@ -1586,6 +1798,9 @@ import java.util.Arrays;
 
 /** Samples for Clusters UpdateAutoScaleConfiguration. */
 public final class ClustersUpdateAutoScaleConfigurationSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableOrUpdateAutoScaleWithLoadBasedConfiguration.json
+     */
     /**
      * Sample code: Enable or Update Autoscale with the load based configuration for HDInsight cluster.
      *
@@ -1606,6 +1821,9 @@ public final class ClustersUpdateAutoScaleConfigurationSamples {
                 Context.NONE);
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DisableClusterAutoScale.json
+     */
     /**
      * Sample code: Disable Autoscale for the HDInsight cluster.
      *
@@ -1619,6 +1837,9 @@ public final class ClustersUpdateAutoScaleConfigurationSamples {
                 "rg1", "cluster1", RoleName.WORKERNODE, new AutoscaleConfigurationUpdateParameter(), Context.NONE);
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableOrUpdateAutoScaleWithScheduleBasedConfiguration.json
+     */
     /**
      * Sample code: Enable or Update Autoscale with the schedule based configuration for HDInsight cluster.
      *
@@ -1661,6 +1882,9 @@ import com.azure.resourcemanager.hdinsight.models.UpdateGatewaySettingsParameter
 
 /** Samples for Clusters UpdateGatewaySettings. */
 public final class ClustersUpdateGatewaySettingsSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Clusters_UpdateGatewaySettings_Enable.json
+     */
     /**
      * Sample code: Enable HTTP connectivity.
      *
@@ -1682,6 +1906,9 @@ import com.azure.resourcemanager.hdinsight.models.UpdateClusterIdentityCertifica
 
 /** Samples for Clusters UpdateIdentityCertificate. */
 public final class ClustersUpdateIdentityCertificateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Clusters_UpdateClusterIdentityCertificate.json
+     */
     /**
      * Sample code: Update cluster identity certificate.
      *
@@ -1709,6 +1936,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Configurations Get. */
 public final class ConfigurationsGetSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Configurations_Get.json
+     */
     /**
      * Sample code: Get Core site settings.
      *
@@ -1727,6 +1957,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Configurations List. */
 public final class ConfigurationsListSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Configurations_List.json
+     */
     /**
      * Sample code: Get all configuration information.
      *
@@ -1747,6 +1980,9 @@ import java.util.Map;
 
 /** Samples for Configurations Update. */
 public final class ConfigurationsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ChangeHttpConnectivityEnable.json
+     */
     /**
      * Sample code: Enable HTTP connectivity.
      *
@@ -1769,6 +2005,9 @@ public final class ConfigurationsUpdateSamples {
                 Context.NONE);
     }
 
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ChangeHttpConnectivityDisable.json
+     */
     /**
      * Sample code: Disable HTTP connectivity.
      *
@@ -1801,6 +2040,9 @@ import com.azure.resourcemanager.hdinsight.models.Extension;
 
 /** Samples for Extensions Create. */
 public final class ExtensionsCreateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/CreateExtension.json
+     */
     /**
      * Sample code: Create a monitoring extension on Hadoop Linux cluster.
      *
@@ -1827,6 +2069,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions Delete. */
 public final class ExtensionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DeleteExtension.json
+     */
     /**
      * Sample code: Delete an extension.
      *
@@ -1845,6 +2090,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions DisableAzureMonitor. */
 public final class ExtensionsDisableAzureMonitorSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DisableLinuxClusterAzureMonitor.json
+     */
     /**
      * Sample code: Enable cluster monitoring.
      *
@@ -1863,6 +2111,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions DisableMonitoring. */
 public final class ExtensionsDisableMonitoringSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DisableLinuxClusterMonitoring.json
+     */
     /**
      * Sample code: Enable cluster monitoring.
      *
@@ -1882,6 +2133,9 @@ import com.azure.resourcemanager.hdinsight.models.AzureMonitorRequest;
 
 /** Samples for Extensions EnableAzureMonitor. */
 public final class ExtensionsEnableAzureMonitorSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableLinuxClusterAzureMonitor.json
+     */
     /**
      * Sample code: Enable cluster monitoring.
      *
@@ -1909,6 +2163,9 @@ import com.azure.resourcemanager.hdinsight.models.ClusterMonitoringRequest;
 
 /** Samples for Extensions EnableMonitoring. */
 public final class ExtensionsEnableMonitoringSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/EnableLinuxClusterMonitoring.json
+     */
     /**
      * Sample code: Enable cluster monitoring.
      *
@@ -1935,6 +2192,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions Get. */
 public final class ExtensionsGetSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetExtension.json
+     */
     /**
      * Sample code: Get an extension.
      *
@@ -1953,6 +2213,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions GetAzureAsyncOperationStatus. */
 public final class ExtensionsGetAzureAsyncOperationStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetExtensionCreationAsyncOperationStatus.json
+     */
     /**
      * Sample code: Gets the azure async operation status.
      *
@@ -1974,6 +2237,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions GetAzureMonitorStatus. */
 public final class ExtensionsGetAzureMonitorStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxClusterAzureMonitorStatus.json
+     */
     /**
      * Sample code: Enable cluster monitoring.
      *
@@ -1992,6 +2258,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Extensions GetMonitoringStatus. */
 public final class ExtensionsGetMonitoringStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxClusterMonitoringStatus.json
+     */
     /**
      * Sample code: Enable cluster monitoring.
      *
@@ -2011,6 +2280,9 @@ import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckRequestPa
 
 /** Samples for Locations CheckNameAvailability. */
 public final class LocationsCheckNameAvailabilitySamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Locations_CheckClusterNameAvailability.json
+     */
     /**
      * Sample code: Get the subscription usages for specific location.
      *
@@ -2035,6 +2307,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Locations GetAzureAsyncOperationStatus. */
 public final class LocationsGetAzureAsyncOperationStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Locations_GetAsyncOperationStatus.json
+     */
     /**
      * Sample code: Gets the azure async operation status.
      *
@@ -2056,6 +2331,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Locations GetCapabilities. */
 public final class LocationsGetCapabilitiesSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetHDInsightCapabilities.json
+     */
     /**
      * Sample code: Get the subscription capabilities for specific location.
      *
@@ -2075,6 +2353,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Locations ListBillingSpecs. */
 public final class LocationsListBillingSpecsSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Locations_ListBillingSpecs.json
+     */
     /**
      * Sample code: Get the subscription billingSpecs for the specified location.
      *
@@ -2094,6 +2375,9 @@ import com.azure.core.util.Context;
 
 /** Samples for Locations ListUsages. */
 public final class LocationsListUsagesSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetHDInsightUsages.json
+     */
     /**
      * Sample code: Get the subscription usages for specific location.
      *
@@ -2131,6 +2415,9 @@ import java.util.Map;
 
 /** Samples for Locations ValidateClusterCreateRequest. */
 public final class LocationsValidateClusterCreateRequestSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/HDI_Locations_ValidateClusterCreateRequest.json
+     */
     /**
      * Sample code: Get the subscription usages for specific location.
      *
@@ -2237,6 +2524,152 @@ public final class LocationsValidateClusterCreateRequestSamples {
 }
 ```
 
+### PrivateEndpointConnections_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.hdinsight.models.PrivateLinkServiceConnectionStatus;
+
+/** Samples for PrivateEndpointConnections CreateOrUpdate. */
+public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/ApprovePrivateEndpointConnection.json
+     */
+    /**
+     * Sample code: Approve a private endpoint connection manually.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void approveAPrivateEndpointConnectionManually(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager
+            .privateEndpointConnections()
+            .define("testprivateep.b3bf5fed-9b12-4560-b7d0-2abe1bba07e2")
+            .withExistingCluster("rg1", "cluster1")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState()
+                    .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                    .withDescription("update it from pending to approved.")
+                    .withActionsRequired("None"))
+            .create();
+    }
+}
+```
+
+### PrivateEndpointConnections_Delete
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PrivateEndpointConnections Delete. */
+public final class PrivateEndpointConnectionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DeletePrivateEndpointConnection.json
+     */
+    /**
+     * Sample code: Delete specific private endpoint connection for a specific HDInsight cluster.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void deleteSpecificPrivateEndpointConnectionForASpecificHDInsightCluster(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager
+            .privateEndpointConnections()
+            .delete("rg1", "cluster1", "testprivateep.b3bf5fed-9b12-4560-b7d0-2abe1bba07e2", Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PrivateEndpointConnections Get. */
+public final class PrivateEndpointConnectionsGetSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetPrivateEndpointConnection.json
+     */
+    /**
+     * Sample code: Get specific private endpoint connection for a specific HDInsight cluster.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void getSpecificPrivateEndpointConnectionForASpecificHDInsightCluster(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager
+            .privateEndpointConnections()
+            .getWithResponse("rg1", "cluster1", "testprivateep.b3bf5fed-9b12-4560-b7d0-2abe1bba07e2", Context.NONE);
+    }
+}
+```
+
+### PrivateEndpointConnections_ListByCluster
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PrivateEndpointConnections ListByCluster. */
+public final class PrivateEndpointConnectionsListByClusterSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetAllPrivateEndpointConnectionsInCluster.json
+     */
+    /**
+     * Sample code: Get all private endpoint connections for a specific HDInsight cluster.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void getAllPrivateEndpointConnectionsForASpecificHDInsightCluster(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager.privateEndpointConnections().listByCluster("rg1", "cluster1", Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PrivateLinkResources Get. */
+public final class PrivateLinkResourcesGetSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetPrivateLinkResource.json
+     */
+    /**
+     * Sample code: Get specific private link resource in a specific HDInsight cluster.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void getSpecificPrivateLinkResourceInASpecificHDInsightCluster(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager.privateLinkResources().getWithResponse("rg1", "cluster1", "gateway", Context.NONE);
+    }
+}
+```
+
+### PrivateLinkResources_ListByCluster
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for PrivateLinkResources ListByCluster. */
+public final class PrivateLinkResourcesListByClusterSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetAllPrivateLinkResourcesInCluster.json
+     */
+    /**
+     * Sample code: Get all private link resources in a specific HDInsight cluster.
+     *
+     * @param manager Entry point to HDInsightManager.
+     */
+    public static void getAllPrivateLinkResourcesInASpecificHDInsightCluster(
+        com.azure.resourcemanager.hdinsight.HDInsightManager manager) {
+        manager.privateLinkResources().listByClusterWithResponse("rg1", "cluster1", Context.NONE);
+    }
+}
+```
+
 ### ScriptActions_Delete
 
 ```java
@@ -2244,6 +2677,9 @@ import com.azure.core.util.Context;
 
 /** Samples for ScriptActions Delete. */
 public final class ScriptActionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/DeleteScriptAction.json
+     */
     /**
      * Sample code: Delete a script action on HDInsight cluster.
      *
@@ -2263,6 +2699,9 @@ import com.azure.core.util.Context;
 
 /** Samples for ScriptActions GetExecutionAsyncOperationStatus. */
 public final class ScriptActionsGetExecutionAsyncOperationStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetScriptExecutionAsyncOperationStatus.json
+     */
     /**
      * Sample code: Gets the async execution operation status.
      *
@@ -2285,6 +2724,9 @@ import com.azure.core.util.Context;
 
 /** Samples for ScriptActions GetExecutionDetail. */
 public final class ScriptActionsGetExecutionDetailSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetScriptActionById.json
+     */
     /**
      * Sample code: Get script execution history by script id.
      *
@@ -2304,6 +2746,9 @@ import com.azure.core.util.Context;
 
 /** Samples for ScriptActions ListByCluster. */
 public final class ScriptActionsListByClusterSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetLinuxHadoopScriptAction.json
+     */
     /**
      * Sample code: List all persisted script actions for the given cluster.
      *
@@ -2323,6 +2768,9 @@ import com.azure.core.util.Context;
 
 /** Samples for ScriptExecutionHistory ListByCluster. */
 public final class ScriptExecutionHistoryListByClusterSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetScriptExecutionHistory.json
+     */
     /**
      * Sample code: Get Script Execution History List.
      *
@@ -2341,6 +2789,9 @@ import com.azure.core.util.Context;
 
 /** Samples for ScriptExecutionHistory Promote. */
 public final class ScriptExecutionHistoryPromoteSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/PromoteLinuxHadoopScriptAction.json
+     */
     /**
      * Sample code: Promote a script action on HDInsight cluster.
      *
@@ -2360,6 +2811,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VirtualMachines GetAsyncOperationStatus. */
 public final class VirtualMachinesGetAsyncOperationStatusSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetRestartHostsAsyncOperationStatus.json
+     */
     /**
      * Sample code: Gets the async operation status of restarting host.
      *
@@ -2382,6 +2836,9 @@ import com.azure.core.util.Context;
 
 /** Samples for VirtualMachines ListHosts. */
 public final class VirtualMachinesListHostsSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/GetClusterVirtualMachines.json
+     */
     /**
      * Sample code: Get All hosts in the cluster.
      *
@@ -2401,6 +2858,9 @@ import java.util.Arrays;
 
 /** Samples for VirtualMachines RestartHosts. */
 public final class VirtualMachinesRestartHostsSamples {
+    /*
+     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/stable/2021-06-01/examples/RestartVirtualMachinesOperation.json
+     */
     /**
      * Sample code: Restarts the specified HDInsight cluster hosts.
      *

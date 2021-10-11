@@ -9,11 +9,11 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-synapse</artifactId>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-synapse;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-synapse;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Synapse Management</name>
-  <description>This package contains Microsoft Azure SDK for Synapse Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Synapse Analytics Management Client. Package tag package-composite-v1.</description>
+  <description>This package contains Microsoft Azure SDK for Synapse Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Azure Synapse Analytics Management Client. Package tag package-composite-v2.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
