@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.RegexFlags;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -29,8 +30,9 @@ public final class PatternTokenizer extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
+    @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.PatternTokenizer";
 
     /*
      * A regular expression pattern to match token separators. Default is an

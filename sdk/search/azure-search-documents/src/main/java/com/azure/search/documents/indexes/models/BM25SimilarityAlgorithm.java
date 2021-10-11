@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -28,8 +29,9 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
     /*
      * The @odata.type property.
      */
+    @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.BM25Similarity";
 
     /*
      * This property controls the scaling function between the term frequency

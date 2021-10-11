@@ -10,6 +10,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -28,8 +29,9 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * Identifies the concrete type of the skill.
      */
+    @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    private String odataType = "#Microsoft.Skills.Custom.WebApiSkill";
 
     /*
      * The url for the Web API.

@@ -10,6 +10,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -25,8 +26,9 @@ public final class KeywordTokenizerV2 extends LexicalTokenizer {
     /*
      * Identifies the concrete type of the tokenizer.
      */
+    @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.KeywordTokenizerV2";
 
     /*
      * The maximum token length. Default is 256. Tokens longer than the maximum

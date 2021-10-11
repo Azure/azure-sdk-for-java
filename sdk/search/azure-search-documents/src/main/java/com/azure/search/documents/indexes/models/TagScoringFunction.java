@@ -10,6 +10,7 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -26,8 +27,9 @@ public final class TagScoringFunction extends ScoringFunction {
      * Indicates the type of function to use. Valid values include magnitude,
      * freshness, distance, and tag. The function type must be lower case.
      */
+    @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "tag";
 
     /*
      * Parameter values for the tag scoring function.

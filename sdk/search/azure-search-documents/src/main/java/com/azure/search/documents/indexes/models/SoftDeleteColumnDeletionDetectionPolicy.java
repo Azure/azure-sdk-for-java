@@ -9,6 +9,7 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -27,8 +28,9 @@ public final class SoftDeleteColumnDeletionDetectionPolicy extends DataDeletionD
     /*
      * Identifies the concrete type of the data deletion detection policy.
      */
+    @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy";
 
     /*
      * The name of the column to use for soft-deletion detection.

@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -26,8 +27,9 @@ public final class StemmerTokenFilter extends TokenFilter {
     /*
      * Identifies the concrete type of the token filter.
      */
+    @JsonTypeId
     @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    private String odataType = "#Microsoft.Azure.Search.StemmerTokenFilter";
 
     /*
      * The language to use.
