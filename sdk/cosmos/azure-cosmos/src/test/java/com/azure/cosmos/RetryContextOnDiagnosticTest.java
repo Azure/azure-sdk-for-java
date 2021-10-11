@@ -448,7 +448,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
             ReplicatedResourceClient replicatedResourceClient =
                 ReflectionUtils.getReplicatedResourceClient(storeClient);
-            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+            StoreReader storeReader =
+                ReflectionUtils.getStoreReader(ReflectionUtils.getConsistencyReader(replicatedResourceClient));
 
             TransportClient mockTransportClient = Mockito.mock(TransportClient.class);
             GoneException exception = new GoneException("Gone Test");
@@ -456,7 +457,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             Mockito.when(mockTransportClient.invokeResourceOperationAsync(Mockito.any(Uri.class),
                 Mockito.any(RxDocumentServiceRequest.class)))
                 .thenReturn(Mono.error(exception));
-            ReflectionUtils.setTransportClient(consistencyWriter, mockTransportClient);
+            ReflectionUtils.setTransportClient(storeReader, mockTransportClient);
 
             try {
                 CosmosContainer cosmosContainer =
