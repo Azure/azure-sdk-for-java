@@ -467,6 +467,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
                 fail("Create item should no succeed");
             } catch (CosmosException ex) {
+                System.out.println("goneExceptionFailureScenario diagnostics: " + ex.getDiagnostics());
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(7);
