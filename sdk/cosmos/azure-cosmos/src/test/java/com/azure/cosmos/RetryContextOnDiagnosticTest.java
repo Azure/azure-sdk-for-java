@@ -462,12 +462,16 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
                 CosmosContainer cosmosContainer =
                     cosmosClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
                 TestPojo testPojo = getTestPojoObject();
-                cosmosContainer.createItem(testPojo,
-                    new PartitionKey(testPojo.getMypk()), new CosmosItemRequestOptions());
+
+                // CI pipeline starts the emulator in strong consistency mode
+                // In order to be consistently validate the retry context, using session and read operation
+                CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+                cosmosItemRequestOptions.setConsistencyLevel(ConsistencyLevel.SESSION);
+                cosmosContainer.readItem(testPojo.getId(),
+                    new PartitionKey(testPojo.getMypk()), cosmosItemRequestOptions, TestPojo.class);
 
                 fail("Create item should no succeed");
             } catch (CosmosException ex) {
-                System.out.println("goneExceptionFailureScenario diagnostics: " + ex.getDiagnostics());
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(7);
