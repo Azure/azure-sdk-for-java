@@ -43,7 +43,7 @@
       }
     },
     "cognitiveServicesEndpointSuffix": {
-      "defaultValue": ".cognitiveservices.azure.com",
+      "defaultValue": ".cognitiveservices.azure.com/",
       "type": "String"
     },
     "blobStorageAccount": {
@@ -124,7 +124,7 @@
     "authorizationApiVersion": "2018-09-01-preview",
     "formRecognizerBaseName": "[concat('formRecognizer', parameters('baseName'))]",
     "formRecognizerApiVersion": "2017-04-18",
-    "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]",
+    "azureFormRecognizerUrl": "[concat('https://', variables('formRecognizerBaseName'), parameters('cognitiveServicesEndpointSuffix'))]",
     "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
   },
   "resources": [
