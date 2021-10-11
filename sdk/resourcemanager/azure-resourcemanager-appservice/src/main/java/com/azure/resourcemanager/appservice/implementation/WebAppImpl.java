@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.DeployOptions;
@@ -17,6 +18,8 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInne
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.io.File;
@@ -337,5 +340,25 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         }
         return kuduClient.deployAsync(type, file, length,
             deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        return null;
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        return null;
     }
 }
