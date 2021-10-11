@@ -3,59 +3,59 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout:analyze?stringIndexType=utf16CodeUnit&api-version=2021-09-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b539205a-270d-4457-9903-07939b22c2fa",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b758b715-bf88-41db-9685-39cf18d8530d",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "184",
+      "x-envoy-upstream-service-time" : "63",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f9dfc6e0-f287-4fab-aed9-83ec0eb442c2",
+      "apim-request-id" : "5266b30d-db04-44af-aebb-2da7b6c11f6f",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "Operation-Location" : "https://krpratic-form-canary-aad.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/f9dfc6e0-f287-4fab-aed9-83ec0eb442c2?api-version=2021-09-30-preview",
-      "Date" : "Mon, 27 Sep 2021 17:56:42 GMT"
+      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/5266b30d-db04-44af-aebb-2da7b6c11f6f?api-version=2021-09-30-preview",
+      "Date" : "Fri, 08 Oct 2021 20:52:39 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/f9dfc6e0-f287-4fab-aed9-83ec0eb442c2?api-version=2021-09-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/5266b30d-db04-44af-aebb-2da7b6c11f6f?api-version=2021-09-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e14deaab-8a2b-4fda-832c-5147e6ef4c1c"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e56136e4-10ed-484c-9bc2-b8c3f440bd7f"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "171",
+      "x-envoy-upstream-service-time" : "39",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f0fa41c6-16dd-4ee7-8e4b-cbf20cee91dc",
+      "apim-request-id" : "771aa7a3-8921-4aa1-b976-02dab9d0e33f",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-09-27T17:56:42Z\",\"lastUpdatedDateTime\":\"2021-09-27T17:56:45Z\",\"analyzeResult\":{\"apiVersion\":\"2021-09-30-preview\",\"modelId\":\"prebuilt-layout\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"selectionMarks\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}]}],\"tables\":[]}}",
-      "Date" : "Mon, 27 Sep 2021 17:56:47 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-10-08T20:52:39Z\",\"lastUpdatedDateTime\":\"2021-10-08T20:52:41Z\",\"analyzeResult\":{\"apiVersion\":\"2021-09-30-preview\",\"modelId\":\"prebuilt-layout\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"selectionMarks\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}]}],\"tables\":[]}}",
+      "Date" : "Fri, 08 Oct 2021 20:52:45 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/f9dfc6e0-f287-4fab-aed9-83ec0eb442c2?api-version=2021-09-30-preview",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/5266b30d-db04-44af-aebb-2da7b6c11f6f?api-version=2021-09-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4906c49a-3c04-4ebc-8d09-697b10633c37"
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4a8a9912-0e35-4c60-8240-33b5d470915a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "151",
+      "x-envoy-upstream-service-time" : "35",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "01a203c2-127a-4f90-9157-be8a23c66571",
+      "apim-request-id" : "f645a3c4-cc9e-4a1d-b39d-626ce6f923d4",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-09-27T17:56:42Z\",\"lastUpdatedDateTime\":\"2021-09-27T17:56:45Z\",\"analyzeResult\":{\"apiVersion\":\"2021-09-30-preview\",\"modelId\":\"prebuilt-layout\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"selectionMarks\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}]}],\"tables\":[]}}",
-      "Date" : "Mon, 27 Sep 2021 17:56:47 GMT",
+      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2021-10-08T20:52:39Z\",\"lastUpdatedDateTime\":\"2021-10-08T20:52:41Z\",\"analyzeResult\":{\"apiVersion\":\"2021-09-30-preview\",\"modelId\":\"prebuilt-layout\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"selectionMarks\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}]}],\"tables\":[]}}",
+      "Date" : "Fri, 08 Oct 2021 20:52:45 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
