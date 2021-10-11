@@ -96,7 +96,7 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         def rand = new Random()
         int initialOffset = rand.nextInt(512) + 1 // always > 0
-        def randArray = new byte[2 * initialOffset + sourceFileSize]
+        byte[] randArray = new byte[2 * initialOffset + sourceFileSize]
         rand.nextBytes(randArray) // fill with random bytes
         def destArray = randArray.clone() // same random bytes, but some will be overwritten by read()
         def dest = ByteBuffer.wrap(destArray)
@@ -179,12 +179,12 @@ class AzureSeekableByteChannelTest extends APISpec {
         def actualOutput = new ByteArrayOutputStream(sourceFileSize)
         def blobOutputStream = Mockito.mock(
             BlobOutputStream.class, Mockito.withSettings().useConstructor(4096 /* block size */))
-        Mockito.doAnswer(invoked -> actualOutput.write(invoked.getArgument(0)))
+        Mockito.doAnswer( { invoked -> actualOutput.write(invoked.getArgument(0)) } )
             .when(blobOutputStream).write(Mockito.anyInt())
-        Mockito.doAnswer(invoked -> actualOutput.writeBytes(invoked.getArgument(0)))
+        Mockito.doAnswer( { invoked -> actualOutput.writeBytes(invoked.getArgument(0)) } )
             .when(blobOutputStream).write(Mockito.any(byte[].class))
-        Mockito.doAnswer(invoked -> actualOutput.write(
-                invoked.getArgument(0), invoked.getArgument(1), invoked.getArgument(2)))
+        Mockito.doAnswer( { invoked -> actualOutput.write(
+                invoked.getArgument(0), invoked.getArgument(1), invoked.getArgument(2)) } )
             .when(blobOutputStream).write(Mockito.any(byte[].class), Mockito.anyInt(), Mockito.anyInt())
         def path = writeByteChannel.getPath()
         writeByteChannel = new AzureSeekableByteChannel(new NioBlobOutputStream(blobOutputStream, path), path)
