@@ -30,8 +30,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -187,16 +185,16 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected static String generateTeamsToken() throws MalformedURLException, ExecutionException, InterruptedException {
         String token = "Sanitized";
-        if(TEST_MODE != TestMode.PLAYBACK){
+        if (TEST_MODE != TestMode.PLAYBACK) {
             try {
                 IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
                     .authority(COMMUNICATION_M365_AAD_AUTHORITY + "/" + COMMUNICATION_M365_AAD_TENANT)
                     .build();
                 Set<String> scopes = Collections.singleton(COMMUNICATION_M365_SCOPE);
-                char [] password = COMMUNICATION_MSAL_PASSWORD.toCharArray();
+                char[] password = COMMUNICATION_MSAL_PASSWORD.toCharArray();
                 UserNamePasswordParameters userNamePasswordParameters =  UserNamePasswordParameters.builder(scopes, COMMUNICATION_MSAL_USERNAME, password)
-                   .build();
-                Arrays.fill(password,'0');
+                        .build();
+                Arrays.fill(password, '0');
                 IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
                 token = result.accessToken();
             } catch (Exception e) {
@@ -206,7 +204,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return token;
     }
 
-    protected void verifySucceedAccessToken(AccessToken issuedToken){
+    protected void verifySucceedAccessToken(AccessToken issuedToken) {
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
         assertNotNull(issuedToken.getExpiresAt());

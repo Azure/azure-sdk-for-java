@@ -10,7 +10,11 @@ import java.util.stream.StreamSupport;
 
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.models.*;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
+import com.azure.communication.identity.implementation.models.TeamsUserAccessTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -241,6 +245,8 @@ public final class CommunicationIdentityClient {
      * Exchanges a teams token for a new ACS access token.
      *
      * @param teamsToken Teams token to acquire a new ACS access token.
+     * @param context the context of the request. Can also be null or
+     *                          Context.NONE.
      * @return the token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -373,13 +373,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsToken");
-        try{
-        String teamsToken = generateTeamsToken();
-        // Action & Assert
-        Mono<AccessToken> response = asyncClient.exchangeTeamsToken(teamsToken);
-        StepVerifier.create(response)
-            .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken))
-            .verifyComplete();
+        try {
+            String teamsToken = generateTeamsToken();
+            // Action & Assert
+            Mono<AccessToken> response = asyncClient.exchangeTeamsToken(teamsToken);
+            StepVerifier.create(response)
+                .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken))
+                .verifyComplete();
         } catch (Exception exception) {
             fail("Could not generate teams token");
         }
@@ -391,14 +391,14 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithResponse");
-        try{
+        try {
             String teamsToken = generateTeamsToken();
             // Action & Assert
             Mono<Response<AccessToken>> response = asyncClient.exchangeTeamsTokenWithResponse(teamsToken);
             StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
                     verifySucceedAccessToken(issuedTokenResponse.getValue());
-                    assertEquals(201, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
+                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
                 })
                 .verifyComplete();
         } catch (Exception exception) {
@@ -561,7 +561,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenUsingManagedIdentity");
-        try{
+        try {
             String teamsToken = generateTeamsToken();
             // Action & Assert
             Mono<AccessToken> response = asyncClient.exchangeTeamsToken(teamsToken);
@@ -579,14 +579,14 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithResponseUsingManagedIdentity");
-        try{
+        try {
             String teamsToken = generateTeamsToken();
             // Action & Assert
             Mono<Response<AccessToken>> response = asyncClient.exchangeTeamsTokenWithResponse(teamsToken);
             StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
                     verifySucceedAccessToken(issuedTokenResponse.getValue());
-                    assertEquals(201, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
+                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
                 })
                 .verifyComplete();
         } catch (Exception exception) {
