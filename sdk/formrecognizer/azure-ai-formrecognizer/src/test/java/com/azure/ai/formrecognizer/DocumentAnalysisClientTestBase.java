@@ -613,17 +613,15 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
                     assertEquals("Hillary Swank", documentField.getValueString());
                 } else if ("Website".equals(key)) {
                     assertEquals("www.herolimited.com", documentField.getValueString());
-                }
-                else if ("Merchant".equals(key)) {
+                } else if ("Merchant".equals(key)) {
                     assertEquals("Hero Limited", documentField.getValueString());
                 } else if ("PurchaseOrderNumber".equals(key)) {
                     assertEquals("948284", documentField.getValueString());
                 } else if ("CompanyAddress".equals(key)) {
                     assertEquals("938 NE Burner Road Boulder City, CO 92848",
                         documentField.getValueString());
-                }
-                else if ("Subtotal".equals(key)) {
-                assertEquals("$140.00", documentField.getValueString());
+                } else if ("Subtotal".equals(key)) {
+                    assertEquals("$140.00", documentField.getValueString());
                 }
             });
         });

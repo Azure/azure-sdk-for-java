@@ -27,7 +27,6 @@ import java.time.Duration;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;

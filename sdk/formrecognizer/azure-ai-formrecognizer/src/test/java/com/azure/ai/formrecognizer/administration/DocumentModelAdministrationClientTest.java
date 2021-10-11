@@ -304,16 +304,15 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginBuildModelIncludeSubfolderWithPrefixName(HttpClient httpClient,
                                                               DocumentAnalysisServiceVersion serviceVersion) {
-        
+
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class, () -> 
+            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.beginBuildModel(trainingFilesUrl, null,
                     new BuildModelOptions().setPrefix("subfolder"), Context.NONE)
                 .setPollInterval(durationTestMode));
 
-            final FormRecognizerError errorInformation =
-            (FormRecognizerError) exception.getValue();
+            final FormRecognizerError errorInformation = (FormRecognizerError) exception.getValue();
             assertEquals("TrainingContentMissing", errorInformation.getInnerError().getCode());
         });
     }
