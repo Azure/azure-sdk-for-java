@@ -32,10 +32,26 @@ public class RequestOptionsTests {
     @Test
     public void addHeader() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        request.setHeader("x-ms-foo", "foo");
 
         RequestOptions options = new RequestOptions()
             .addHeader("x-ms-foo", "bar")
             .addHeader("Content-Type", "application/json");
+        options.getRequestCallback().accept(request);
+
+        HttpHeaders headers = request.getHeaders();
+        assertEquals("foo,bar", headers.getValue("x-ms-foo"));
+        assertEquals("application/json", headers.getValue("Content-Type"));
+    }
+
+    @Test
+    public void setHeader() throws MalformedURLException {
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        request.setHeader("x-ms-foo", "foo");
+
+        RequestOptions options = new RequestOptions()
+            .setHeader("x-ms-foo", "bar")
+            .setHeader("Content-Type", "application/json");
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
