@@ -9,7 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A SQL Analytics pool. */
+/** SQL pool A SQL Analytics pool. */
 @JsonFlatten
 @Fluent
 public class SqlPool extends TrackedResource {
