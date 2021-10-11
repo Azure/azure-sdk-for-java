@@ -18,6 +18,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -901,6 +902,47 @@ public class SearchIndexerClient {
         return asyncClient.getIndexerStatusWithResponse(indexerName, context).block();
     }
 
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-boolean-List-List -->
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-boolean-List-List -->
+     *
+     * @param indexerName The name of the indexer to reset documents for.
+     * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
+     * payload will be queued to be re-ingested.
+     * @param documentKeys Document keys to be reset.
+     * @param datasourceDocumentIds Datasource document identifiers to be reset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetDocuments(String indexerName, boolean overwrite, List<String> documentKeys,
+        List<String> datasourceDocumentIds) {
+        resetDocumentsWithResponse(new SearchIndexer(indexerName), overwrite, documentKeys, datasourceDocumentIds,
+            Context.NONE);
+    }
+
+    /**
+     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#String-boolean-List-List-Context -->
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#String-boolean-List-List-Context -->
+     *
+     * @param indexer The indexer to reset documents for.
+     * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
+     * payload will be queued to be re-ingested.
+     * @param documentKeys Document keys to be reset.
+     * @param datasourceDocumentIds Datasource document identifiers to be reset.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return A response signalling completion.
+     * @throws NullPointerException If {@code indexer} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetDocumentsWithResponse(SearchIndexer indexer, boolean overwrite,
+        List<String> documentKeys, List<String> datasourceDocumentIds, Context context) {
+        return asyncClient.resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys, datasourceDocumentIds,
+            context).block();
+    }
+
 
     /**
      * Creates a new skillset in an Azure Cognitive Search service.
@@ -1282,4 +1324,29 @@ public class SearchIndexerClient {
         return asyncClient.deleteSkillsetWithResponse(skillset.getName(), eTag, context).block();
     }
 
+    /**
+     * Resets skills in an existing skillset in an Azure Cognitive Search service.
+     *
+     * @param skillsetName The name of the skillset to reset.
+     * @param skillNames The skills to reset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetSkills(String skillsetName, List<String> skillNames) {
+        resetSkillsWithResponse(new SearchIndexerSkillset(skillsetName), skillNames, Context.NONE);
+    }
+
+    /**
+     * Resets skills in an existing skillset in an Azure Cognitive Search service.
+     *
+     * @param skillset The skillset to reset.
+     * @param skillNames The skills to reset.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A response signalling completion.
+     * @throws NullPointerException If {@code skillset} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames,
+        Context context) {
+        return asyncClient.resetSkillsWithResponse(skillset.getName(), skillNames, context).block();
+    }
 }

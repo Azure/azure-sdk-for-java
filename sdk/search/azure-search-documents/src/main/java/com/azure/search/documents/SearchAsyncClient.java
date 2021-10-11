@@ -36,8 +36,8 @@ import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryAnswer;
-import com.azure.search.documents.models.QueryCaption;
+import com.azure.search.documents.models.QueryAnswerType;
+import com.azure.search.documents.models.QueryCaptionType;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -1093,7 +1093,7 @@ public final class SearchAsyncClient {
     }
 
     static String createSearchRequestAnswers(SearchOptions searchOptions) {
-        QueryAnswer answer = searchOptions.getAnswers();
+        QueryAnswerType answer = searchOptions.getAnswers();
         Integer answersCount = searchOptions.getAnswersCount();
 
         // No answer has been defined.
@@ -1111,8 +1111,8 @@ public final class SearchAsyncClient {
     }
 
     static String createSearchRequestCaptions(SearchOptions searchOptions) {
-        QueryCaption queryCaption = searchOptions.getQueryCaption();
-        Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlight();
+        QueryCaptionType queryCaption = searchOptions.getQueryCaption();
+        Boolean queryCaptionHighlight = searchOptions.getQueryCaptionHighlightEnabled();
 
         // No caption has been defined.
         if (queryCaption == null) {

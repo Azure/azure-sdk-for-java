@@ -9,7 +9,7 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpeller;
+import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -128,7 +128,7 @@ public final class SearchOptions {
      * Improve search recall by spell-correcting individual search query terms.
      */
     @JsonProperty(value = "speller")
-    private QuerySpeller speller;
+    private QuerySpellerType speller;
 
     /*
      * This parameter is only valid if the query type is 'semantic'. If set,
@@ -512,7 +512,7 @@ public final class SearchOptions {
      *
      * @return the speller value.
      */
-    public QuerySpeller getSpeller() {
+    public QuerySpellerType getSpeller() {
         return this.speller;
     }
 
@@ -522,7 +522,7 @@ public final class SearchOptions {
      * @param speller the speller value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSpeller(QuerySpeller speller) {
+    public SearchOptions setSpeller(QuerySpellerType speller) {
         this.speller = speller;
         return this;
     }

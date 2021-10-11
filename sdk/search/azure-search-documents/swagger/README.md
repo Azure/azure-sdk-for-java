@@ -61,7 +61,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/4e3ae66b8b25c53be84bb0c35c3d6d43291f7a40/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,QueryAnswer,QueryCaption,QueryLanguage,QuerySpeller,QueryType,ScoringStatistics,SearchMode,SuggestOptions
+custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,QueryAnswerType,QueryCaptionType,QueryLanguage,QuerySpellerType,QueryType,ScoringStatistics,SearchMode,SuggestOptions
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
@@ -222,24 +222,24 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Rename Speller to QuerySpeller
+### Rename Speller to QuerySpellerType
 ``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.paths["/docs"].get.parameters
     transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpeller";
+      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
 ```
 
-### Rename Answers to QueryAnswer, Captions to QueryCaption, and Speller to QuerySpeller
+### Rename Answers to QueryAnswerType, Captions to QueryCaptionType, and Speller to QuerySpellerType
 ``` yaml $(java)
 directive:
   - from: swagger-document
     where: $.definitions
     transform: >
-      $.Answers["x-ms-enum"].name = "QueryAnswer";
-      $.Captions["x-ms-enum"].name = "QueryCaption";
-      $.Speller["x-ms-enum"].name = "QuerySpeller";
+      $.Answers["x-ms-enum"].name = "QueryAnswerType";
+      $.Captions["x-ms-enum"].name = "QueryCaptionType";
+      $.Speller["x-ms-enum"].name = "QuerySpellerType";
 ```
 
 ### Change Answers and Captions to a string in SearchOptions and SearchRequest

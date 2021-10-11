@@ -1772,6 +1772,40 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link SearchIndexerClient#resetDocuments(String, boolean, List, List)}
+     */
+    public void resetDocuments() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-boolean-List-List
+        // Reset the documents with keys 1234 and 4321.
+        searchIndexerClient.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null);
+
+        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
+        searchIndexerClient.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null);
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-boolean-List-List
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#resetDocumentsWithResponse(SearchIndexer, boolean, List, List, Context)}
+     */
+    public void resetDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#String-boolean-List-List-Context
+        SearchIndexer searchIndexer = searchIndexerClient.getIndexer("searchIndexer");
+
+        // Reset the documents with keys 1234 and 4321.
+        Response<Void> resetDocsResult = searchIndexerClient.resetDocumentsWithResponse(searchIndexer, false,
+            Arrays.asList("1234", "4321"), null, new Context(key1, value1));
+        System.out.printf("Requesting documents to be reset completed with status code %d.%n",
+            resetDocsResult.getStatusCode());
+
+        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
+        resetDocsResult = searchIndexerClient.resetDocumentsWithResponse(searchIndexer, true,
+            Arrays.asList("1235", "5321"), null, new Context(key1, value1));
+        System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
+            resetDocsResult.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#String-boolean-List-List-Context
+    }
+
+    /**
      * Code snippet for creating {@link SearchIndexerClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
      */
     public void createDataSource() {
