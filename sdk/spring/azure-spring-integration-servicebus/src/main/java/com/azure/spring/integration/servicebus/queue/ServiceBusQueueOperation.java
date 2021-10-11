@@ -9,7 +9,6 @@ import com.azure.spring.integration.servicebus.ServiceBusClientConfig;
 import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.springframework.messaging.Message;
 
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Azure service bus queue operation to support send
