@@ -26,6 +26,8 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 
 This project provides inbound and outbound channel adapters for Azure Service Bus.
 
+Note: CompletableFuture support APIs have been deprecated from version 2.10.0, and will be replaced by Reactor Core from version 4.0.0.
+Please refer to Javadoc for details.
 ### Configure ServiceBusMessageConverter to customize ObjectMapper
 `ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
 

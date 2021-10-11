@@ -24,6 +24,8 @@ The Spring Cloud Service Bus starter helps developers to finish the auto-configu
 
 This project provides Spring Integration adaption with Azure Service Bus and the ability to auto-configure connection to Azure Service Bus.
 
+Note: CompletableFuture support APIs have been deprecated from version 2.10.0, and will be replaced by Reactor Core from version 4.0.0.
+Please refer to Javadoc for details.
 ### Configure ServiceBusMessageConverter to customize ObjectMapper
 `ServiceBusMessageConverter` is made as a configurable bean to allow users to customized `ObjectMapper`.
 
