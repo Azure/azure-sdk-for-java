@@ -34,6 +34,7 @@ public class StoreResult {
     final public long itemLSN;
     final public ISessionToken sessionToken;
     final public double requestCharge;
+    final public String activityId;
     final public int currentReplicaSetSize;
     final public int currentWriteQuorum;
     final public boolean isValid;
@@ -51,6 +52,7 @@ public class StoreResult {
             long lsn,
             long quorumAckedLsn,
             double requestCharge,
+            String activityId,
             int currentReplicaSetSize,
             int currentWriteQuorum,
             boolean isValid,
@@ -66,6 +68,7 @@ public class StoreResult {
         this.lsn = lsn;
         this.quorumAckedLSN = quorumAckedLsn;
         this.requestCharge = requestCharge;
+        this.activityId= activityId;
         this.currentReplicaSetSize = currentReplicaSetSize;
         this.currentWriteQuorum = currentWriteQuorum;
         this.isValid = isValid;
@@ -161,6 +164,7 @@ public class StoreResult {
                 ", isThroughputControlRequestRateTooLarge: " + this.isThroughputControlRequestRateTooLargeException +
                 ", isInvalidPartition: " + this.isInvalidPartitionException +
                 ", requestCharge: " + this.requestCharge +
+                ", activityId: " + this.activityId +
                 ", itemLSN: " + this.itemLSN +
                 ", sessionToken: " + (this.sessionToken != null ? this.sessionToken.convertToString() : null) +
                 ", backendLatencyInMs: " + this.backendLatencyInMs +
@@ -201,6 +205,7 @@ public class StoreResult {
             jsonGenerator.writeBooleanField("isInvalidPartition", storeResult.isInvalidPartitionException);
             jsonGenerator.writeBooleanField("isThroughputControlRequestRateTooLarge", storeResult.isThroughputControlRequestRateTooLargeException);
             jsonGenerator.writeNumberField("requestCharge", storeResult.requestCharge);
+            jsonGenerator.writeStringField("activityId", storeResult.activityId);
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
             jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
             jsonGenerator.writeObjectField("backendLatencyInMs", storeResult.backendLatencyInMs);

@@ -712,6 +712,11 @@ public class StoreReader {
                 requestCharge = Double.parseDouble(headerValue);
             }
 
+            String activityId = "";
+            if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID)) != null) {
+                activityId = headerValue;
+            }
+
             if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
                 numberOfReadRegions = Integer.parseInt(headerValue);
             }
@@ -753,6 +758,7 @@ public class StoreReader {
                     /* lsn: */ lsn,
                     /* quorumAckedLsn: */ quorumAckedLSN,
                     /* getRequestCharge: */ requestCharge,
+                                            activityId,
                     /* currentReplicaSetSize: */ currentReplicaSetSize,
                     /* currentWriteQuorum: */ currentWriteQuorum,
                     /* isValid: */true,
@@ -791,6 +797,11 @@ public class StoreReader {
                 headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     requestCharge = Double.parseDouble(headerValue);
+                }
+
+                String activityId = "";
+                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID)) != null) {
+                    activityId = headerValue;
                 }
 
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
@@ -834,6 +845,7 @@ public class StoreReader {
                         /* lsn: */ lsn,
                         /* quorumAckedLsn: */ quorumAckedLSN,
                         /* getRequestCharge: */ requestCharge,
+                                                activityId,
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
@@ -855,6 +867,7 @@ public class StoreReader {
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
+                        "",
                         /* currentReplicaSetSize: */ 0,
                         /* currentWriteQuorum: */ 0,
                         /* isValid: */ false,

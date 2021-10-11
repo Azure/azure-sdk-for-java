@@ -139,6 +139,9 @@ public class ClientSideRequestStatistics {
                                                           .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
                 this.gatewayStatistics.requestCharge = storeResponse
                                                            .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                this.gatewayStatistics.activityId = storeResponse
+                    .getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
+
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
                 this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
             } else if (exception != null) {
@@ -412,6 +415,7 @@ public class ClientSideRequestStatistics {
         private int statusCode;
         private int subStatusCode;
         private String requestCharge;
+        private String activityId;
         private RequestTimeline requestTimeline;
         private String partitionKeyRangeId;
 
@@ -434,6 +438,8 @@ public class ClientSideRequestStatistics {
         public String getRequestCharge() {
             return requestCharge;
         }
+
+        public String getActivityId(){return activityId;}
 
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
