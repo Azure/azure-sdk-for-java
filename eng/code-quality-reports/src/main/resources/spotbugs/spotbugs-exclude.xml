@@ -2499,4 +2499,13 @@
     <Method name="getServiceVersions"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <Match>
+    <Class name="~com\.azure\.search.*"/>
+    <Or>
+      <Field name="odataType"/>
+      <Field name="type"/>
+    </Or>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 </FindBugsFilter>
