@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-10-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.1.3 (11.0.12; Mac OS X; 11.6)",
-      "x-ms-client-request-id" : "ae066198-4616-47db-8e69-da9c1866f47b",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
+      "x-ms-client-request-id" : "475c7e05-1619-4af7-afbe-569b2c5305e3",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,13 +13,13 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 12 Oct 2021 08:29:48 GMT",
+      "Date" : "Tue, 12 Oct 2021 17:16:48 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "167ms",
-      "MS-CV" : "KIukbeUm7Uulyx9LrdiXXA.0",
-      "X-Azure-Ref" : "0fEdlYQAAAAC/crSsWvJNRo9vSVh9jZW/UFJHMDFFREdFMDYyMABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-1380-e196-84f5-084822008691\"},\"accessToken\":{\"token\":\"REDACTED\",\"expiresOn\":\"2021-10-13T08:29:48.4594114+00:00\"}}",
-      "x-ms-client-request-id" : "ae066198-4616-47db-8e69-da9c1866f47b",
+      "X-Processing-Time" : "202ms",
+      "MS-CV" : "Y+uq7iY0JkuBU4Pwv2Q6vQ.0",
+      "X-Azure-Ref" : "0AcNlYQAAAABytaNw9rjVSY+bID2bf4GfUFJHMDFFREdFMDYxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-1563-606b-84f5-08482200a772\"},\"accessToken\":{\"token\":\"REDACTED\",\"expiresOn\":\"2021-10-13T17:16:49.3014759+00:00\"}}",
+      "x-ms-client-request-id" : "475c7e05-1619-4af7-afbe-569b2c5305e3",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },

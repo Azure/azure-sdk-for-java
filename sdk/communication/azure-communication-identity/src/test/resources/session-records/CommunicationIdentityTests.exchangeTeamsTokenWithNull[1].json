@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2021-10-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.1.3 (11.0.12; Mac OS X; 11.6)",
-      "x-ms-client-request-id" : "1a5c4bf2-82eb-4a4d-a9e6-be759b09f88e",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
+      "x-ms-client-request-id" : "79f97208-149b-426e-8e08-6a73731d1d17",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Tue, 12 Oct 2021 08:29:59 GMT",
+      "Date" : "Tue, 12 Oct 2021 17:17:02 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
       "X-Processing-Time" : "0ms",
-      "MS-CV" : "/0fVYRFSdEa8h4fuM89IqA.0",
-      "X-Azure-Ref" : "0h0dlYQAAAABDXePJRf36S6HYKEu0/XzzUFJHMDFFREdFMDYxMQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "MS-CV" : "SRamd+3pckq/vx7+gEi+ug.0",
+      "X-Azure-Ref" : "0D8NlYQAAAACguEJuGGq4RJtPYNx8vkKAUFJHMDFFREdFMDcyMQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"The body is either missing or doesn't contain any token.\"}}",
-      "x-ms-client-request-id" : "1a5c4bf2-82eb-4a4d-a9e6-be759b09f88e",
+      "x-ms-client-request-id" : "79f97208-149b-426e-8e08-6a73731d1d17",
       "Content-Type" : "application/json",
       "Request-Context" : "appId="
     },
