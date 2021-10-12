@@ -23,6 +23,8 @@ Event Hubs is a fully managed, real-time data ingestion service that’s simple,
 ## Key concepts
 Spring Integration enables lightweight messaging within Spring-based applications and supports integration with external systems via declarative adapters. Those adapters provide a higher-level of abstraction over Spring’s support for remoting, messaging, and scheduling.
 
+Note: RxJava support APIs have been deprecated from version 2.10.0, and will be dropped from version 4.0.0.
+Please refer to Javadoc for details.
 ## Examples
 Please refer to this [sample project][sample] illustrating how to use Event Hubs integration.
 
