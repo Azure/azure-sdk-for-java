@@ -1,10 +1,6 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 12.14.1 (2021-10-11)
 
 ### Bugs Fixed
 
@@ -12,6 +8,9 @@
   empty component path, the parsing fails with StringIndexOutOfBoundsException
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+- Updated to version `12.13.1` of `azure-storage-common`
 
 ## 12.14.0 (2021-09-15)
 - GA release

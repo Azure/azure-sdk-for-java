@@ -1,10 +1,10 @@
 # Azure Schema Registry client library for Java
 
-Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning, 
-and management. The registry is leveraged by serializers to reduce payload size while describing payload structure with 
+Azure Schema Registry is a schema repository service hosted by Azure Event Hubs, providing schema storage, versioning,
+and management. The registry is leveraged by serializers to reduce payload size while describing payload structure with
 schema identifiers rather than full schemas.
 
-[Source code][source_code] | Package (Maven) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
+[Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
 ## Getting started
 
@@ -21,15 +21,15 @@ schema identifiers rather than full schemas.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
 In order to interact with the Azure Schema Registry service, you'll need to create an instance of the
-`SchemaRegistryClient` class through the `SchemaRegistryClientBuilder`. You will need an **endpoint** and an 
-**API key** to instantiate a client object.  
+`SchemaRegistryClient` class through the `SchemaRegistryClientBuilder`. You will need an **endpoint** and an
+**API key** to instantiate a client object.
 
 #### Create SchemaRegistryClient with Azure Active Directory Credential
 
@@ -42,7 +42,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.1.2</version>
+    <version>1.3.7</version>
 </dependency>
 ```
 
@@ -84,8 +84,8 @@ A schema has 6 components:
 - Schema Content: The string representation of the schema.
 - Schema Version: The version assigned to the schema in the Schema Registry instance.
 
-These components play different roles. Some are used as input into the operations and some are outputs. Currently, 
-[SchemaProperties][schema_properties] only exposes those properties that are potential outputs that are used in 
+These components play different roles. Some are used as input into the operations and some are outputs. Currently,
+[SchemaProperties][schema_properties] only exposes those properties that are potential outputs that are used in
 SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 
 ## Examples
@@ -194,6 +194,8 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[package_maven]: https://search.maven.org/artifact/com.azure/azure-data-schemaregistry
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry/src/samples
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/src/samples/java/com/azure/data/schemaregistry
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/src
 [samples_code]: src/samples/
@@ -206,5 +208,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [event_hubs_namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
+[custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
+[register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
+[schema_properties]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry/src/main/java/com/azure/data/schemaregistry/models/SchemaProperties.java
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fschemaregistry%2Fazure-data-schemaregistry%2FREADME.png)
