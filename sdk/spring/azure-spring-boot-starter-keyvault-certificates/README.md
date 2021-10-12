@@ -9,12 +9,12 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 - [Environment checklist][environment_checklist]
 
 ### Include the package
-[//]: # ({x-version-update-start;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current})
+1. [Add azure-spring-boot-bom].
+1. Add dependency. `<version>` can be skipped because we already add azure-spring-boot-bom`.
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -432,3 +432,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [non-exportable]: https://docs.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 [Azure Spring Cloud TLS]: https://docs.microsoft.com/azure/spring-cloud/how-to-enable-end-to-end-tls
 [Deploy Application Azure Spring Cloud]: https://docs.microsoft.com/azure/spring-cloud/quickstart?tabs=Azure-CLI&pivots=programming-language-java
+[Add azure-spring-boot-bom]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom
