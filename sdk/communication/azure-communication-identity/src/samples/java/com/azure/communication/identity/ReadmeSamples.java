@@ -132,14 +132,14 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for exchanging a teams token for a new ACS access token
+     * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
      *
      * @return the token
      */
     public AccessToken exchangeTeamsToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        String teamsToken = "<teams_token>";
-        AccessToken accessToken = communicationIdentityClient.exchangeTeamsToken(teamsToken);
+        String accessTokenAAD = "<AAD_access_token>";
+        AccessToken accessToken = communicationIdentityClient.exchangeTeamsToken(accessTokenAAD);
         System.out.println("User token value: " + accessToken.getToken());
         System.out.println("Expires at: " + accessToken.getExpiresAt());
         return accessToken;

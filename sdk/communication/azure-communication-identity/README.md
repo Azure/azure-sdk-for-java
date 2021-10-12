@@ -171,12 +171,12 @@ communicationIdentityClient.deleteUser(user);
 ```
 
 ### Exchange access token
-Use the `exchangeTeamsToken` function to delete a user.
+Use the `exchangeTeamsToken` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L146 -->
 ```java
-// exchange a teams token for a new ACS access token
-communicationIdentityClient.exchangeTeamsToken(teamsToken);
+// exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+communicationIdentityClient.exchangeTeamsToken(accessTokenAAD);
 ```
 
 ## Troubleshooting

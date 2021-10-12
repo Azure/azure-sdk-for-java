@@ -204,7 +204,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return token;
     }
 
-    protected void verifySucceedAccessToken(AccessToken issuedToken) {
+    protected void verifyTokenNotEmpty(AccessToken issuedToken) {
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
         assertNotNull(issuedToken.getExpiresAt());

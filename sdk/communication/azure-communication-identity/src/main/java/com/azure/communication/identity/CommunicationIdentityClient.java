@@ -228,32 +228,32 @@ public final class CommunicationIdentityClient {
     }
 
     /**
-     * Exchanges a teams token for a new ACS access token.
+     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param teamsToken Teams token to acquire a new ACS access token.
-     * @return the token.
+     * @param accessTokenAAD AAD access token of a Teams User to acquire Communication Identity access token.
+     * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessToken exchangeTeamsToken(String teamsToken) {
+    public AccessToken exchangeTeamsToken(String accessTokenAAD) {
         TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-        requestBody.setToken(teamsToken);
+        requestBody.setToken(accessTokenAAD);
         CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
     /**
-     * Exchanges a teams token for a new ACS access token.
+     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param teamsToken Teams token to acquire a new ACS access token.
+     * @param accessTokenAAD AAD access token of a Teams User to acquire Communication Identity access token.
      * @param context the context of the request. Can also be null or
      *                          Context.NONE.
-     * @return the token with response.
+     * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessToken> exchangeTeamsTokenWithResponse(String teamsToken, Context context) {
+    public Response<AccessToken> exchangeTeamsTokenWithResponse(String accessTokenAAD, Context context) {
         context = context == null ? Context.NONE : context;
         TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-        requestBody.setToken(teamsToken);
+        requestBody.setToken(accessTokenAAD);
         Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
             .block();
         if (response == null || response.getValue() == null) {

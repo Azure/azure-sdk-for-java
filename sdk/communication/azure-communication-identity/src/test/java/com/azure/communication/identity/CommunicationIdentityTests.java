@@ -220,7 +220,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes);
-        verifySucceedAccessToken(issuedToken);
+        verifyTokenNotEmpty(issuedToken);
     }
 
     @ParameterizedTest
@@ -235,7 +235,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
-        verifySucceedAccessToken(issuedTokenResponse.getValue());
+        verifyTokenNotEmpty(issuedTokenResponse.getValue());
     }
 
     @ParameterizedTest
@@ -250,7 +250,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, scopes, null);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
-        verifySucceedAccessToken(issuedTokenResponse.getValue());
+        verifyTokenNotEmpty(issuedTokenResponse.getValue());
     }
 
     @ParameterizedTest
@@ -334,7 +334,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes);
-        verifySucceedAccessToken(issuedToken);
+        verifyTokenNotEmpty(issuedToken);
     }
 
     @ParameterizedTest
@@ -349,7 +349,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Action & Assert
         Response<AccessToken> response = client.getTokenWithResponse(communicationUser, scopes, Context.NONE);
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
-        verifySucceedAccessToken(response.getValue());
+        verifyTokenNotEmpty(response.getValue());
     }
 
     private CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {
@@ -432,9 +432,9 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "exchangeTeamsTokenWithValidTokenSync");
         // Action & Assert
         try {
-            String teamsToken = generateTeamsToken();
-            AccessToken issuedToken = client.exchangeTeamsToken(teamsToken);
-            verifySucceedAccessToken(issuedToken);
+            String accessTokenAAD = generateTeamsToken();
+            AccessToken issuedToken = client.exchangeTeamsToken(accessTokenAAD);
+            verifyTokenNotEmpty(issuedToken);
         } catch (Exception exception) {
             fail("Could not generate teams token");
         }
@@ -449,10 +449,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "exchangeTeamsTokenWithValidTokenWithResponseSync");
         // Action & Assert
         try {
-            String teamsToken = generateTeamsToken();
-            Response<AccessToken> response = client.exchangeTeamsTokenWithResponse(teamsToken, Context.NONE);
+            String accessTokenAAD = generateTeamsToken();
+            Response<AccessToken> response = client.exchangeTeamsTokenWithResponse(accessTokenAAD, Context.NONE);
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
-            verifySucceedAccessToken(response.getValue());
+            verifyTokenNotEmpty(response.getValue());
         } catch (Exception exception) {
             fail("Could not generate teams token");
         }
@@ -466,9 +466,9 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "exchangeTeamsTokenUsingManagedIdentitySync");
         // Action & Assert
         try {
-            String teamsToken = generateTeamsToken();
-            AccessToken issuedToken = client.exchangeTeamsToken(teamsToken);
-            verifySucceedAccessToken(issuedToken);
+            String accessTokenAAD = generateTeamsToken();
+            AccessToken issuedToken = client.exchangeTeamsToken(accessTokenAAD);
+            verifyTokenNotEmpty(issuedToken);
         } catch (Exception e) {
             fail("Could not generate teams token");
         }
@@ -482,10 +482,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "exchangeTeamsTokenWithResponseUsingManagedIdentitySync");
         // Action & Assert
         try {
-            String teamsToken = generateTeamsToken();
-            Response<AccessToken> response = client.exchangeTeamsTokenWithResponse(teamsToken, Context.NONE);
+            String accessTokenAAD = generateTeamsToken();
+            Response<AccessToken> response = client.exchangeTeamsTokenWithResponse(accessTokenAAD, Context.NONE);
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
-            verifySucceedAccessToken(response.getValue());
+            verifyTokenNotEmpty(response.getValue());
         } catch (Exception e) {
             fail("Could not generate teams token");
         }

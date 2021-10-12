@@ -302,7 +302,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.getToken(communicationUser, scopes);
                 }))
-            .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken))
+            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
             .verifyComplete();
     }
 
@@ -321,7 +321,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     return asyncClient.getTokenWithResponse(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
-                verifySucceedAccessToken(issuedToken.getValue());
+                verifyTokenNotEmpty(issuedToken.getValue());
                 assertEquals(issuedToken.getStatusCode(), 200);
             })
             .verifyComplete();
@@ -374,11 +374,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsToken");
         try {
-            String teamsToken = generateTeamsToken();
+            String accessTokenAAD = generateTeamsToken();
             // Action & Assert
-            Mono<AccessToken> response = asyncClient.exchangeTeamsToken(teamsToken);
+            Mono<AccessToken> response = asyncClient.exchangeTeamsToken(accessTokenAAD);
             StepVerifier.create(response)
-                .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken))
+                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
         } catch (Exception exception) {
             fail("Could not generate teams token");
@@ -437,12 +437,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithResponse");
         try {
-            String teamsToken = generateTeamsToken();
+            String accessTokenAAD = generateTeamsToken();
             // Action & Assert
-            Mono<Response<AccessToken>> response = asyncClient.exchangeTeamsTokenWithResponse(teamsToken);
+            Mono<Response<AccessToken>> response = asyncClient.exchangeTeamsTokenWithResponse(accessTokenAAD);
             StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
-                    verifySucceedAccessToken(issuedTokenResponse.getValue());
+                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
                     assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
                 })
                 .verifyComplete();
@@ -578,7 +578,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.getToken(communicationUser, scopes);
                 }))
-            .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken))
+            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
             .verifyComplete();
     }
 
@@ -596,7 +596,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.getTokenWithResponse(communicationUser, scopes);
                 }))
-            .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken.getValue()))
+            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken.getValue()))
             .verifyComplete();
     }
 
@@ -607,11 +607,11 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenUsingManagedIdentity");
         try {
-            String teamsToken = generateTeamsToken();
+            String accessTokenAAD = generateTeamsToken();
             // Action & Assert
-            Mono<AccessToken> response = asyncClient.exchangeTeamsToken(teamsToken);
+            Mono<AccessToken> response = asyncClient.exchangeTeamsToken(accessTokenAAD);
             StepVerifier.create(response)
-                .assertNext(issuedToken -> verifySucceedAccessToken(issuedToken))
+                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
         } catch (Exception exception) {
             fail("Could not generate teams token");
@@ -625,12 +625,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithResponseUsingManagedIdentity");
         try {
-            String teamsToken = generateTeamsToken();
+            String accessTokenAAD = generateTeamsToken();
             // Action & Assert
-            Mono<Response<AccessToken>> response = asyncClient.exchangeTeamsTokenWithResponse(teamsToken);
+            Mono<Response<AccessToken>> response = asyncClient.exchangeTeamsTokenWithResponse(accessTokenAAD);
             StepVerifier.create(response)
                 .assertNext(issuedTokenResponse -> {
-                    verifySucceedAccessToken(issuedTokenResponse.getValue());
+                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
                     assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
                 })
                 .verifyComplete();
