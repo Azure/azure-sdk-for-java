@@ -84,7 +84,7 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
         @Override
         public <T> Page<T> createPage(List<T> content, Pageable pageable, Supplier<Long> totalFunction) {
             long total = totalFunction.get();
-            return new CosmosPageImpl(content, pageable, total);
+            return new CosmosPageImpl<T>(content, pageable, total);
         }
 
     }
