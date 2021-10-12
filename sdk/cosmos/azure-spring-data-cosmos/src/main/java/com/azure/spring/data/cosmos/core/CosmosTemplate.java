@@ -28,6 +28,8 @@ import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
 import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
 import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
+import com.azure.spring.data.cosmos.core.query.CosmosLazyPageImpl;
+import com.azure.spring.data.cosmos.core.query.CosmosPageFactory;
 import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
@@ -78,6 +80,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final boolean queryMetricsEnabled;
     private final CosmosAsyncClient cosmosAsyncClient;
     private final DatabaseThroughputConfig databaseThroughputConfig;
+    private final CosmosPageFactory pageFactory;
 
     private ApplicationContext applicationContext;
 
@@ -130,6 +133,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
         this.databaseThroughputConfig = cosmosConfig.getDatabaseThroughputConfig();
+        this.pageFactory = cosmosConfig.isLazyPageTotalCount() ? new CosmosLazyPageImpl.Factory() : new CosmosPageImpl.Factory();
     }
 
     /**
@@ -709,8 +713,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                        Class<T> returnType, String containerName,
                                         Optional<Object> partitionKeyValue) {
         Slice<T> response = sliceQuery(querySpec, pageable, sort, returnType, containerName, partitionKeyValue);
-        final long total = getCountValue(countQuerySpec, containerName);
-        return new CosmosPageImpl<>(response.getContent(), response.getPageable(), total);
+        return pageFactory.createPage(response.getContent(), response.getPageable(), () -> getCountValue(countQuerySpec, containerName));
     }
 
     private <T> Slice<T> sliceQuery(SqlQuerySpec querySpec,

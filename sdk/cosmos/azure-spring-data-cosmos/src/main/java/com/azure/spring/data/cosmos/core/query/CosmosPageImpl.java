@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.core.query;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Supplier;
 
 /**
  * {@code CosmosPageImpl} implementation.
@@ -75,4 +77,16 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
     public int hashCode() {
         return Objects.hash(super.hashCode(), offset);
     }
+
+
+    public static class Factory implements CosmosPageFactory {
+
+        @Override
+        public <T> Page<T> createPage(List<T> content, Pageable pageable, Supplier<Long> totalFunction) {
+            long total = totalFunction.get();
+            return new CosmosPageImpl(content, pageable, total);
+        }
+
+    }
+
 }

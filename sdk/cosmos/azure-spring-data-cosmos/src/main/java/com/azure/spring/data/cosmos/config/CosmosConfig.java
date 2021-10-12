@@ -17,6 +17,8 @@ public class CosmosConfig {
 
     private final boolean queryMetricsEnabled;
 
+    private final boolean lazyPageTotalCount;
+
     /**
      * Initialization
      *
@@ -40,9 +42,25 @@ public class CosmosConfig {
     public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                         DatabaseThroughputConfig databaseThroughputConfig,
                         boolean queryMetricsEnabled) {
+        this(responseDiagnosticsProcessor, databaseThroughputConfig, queryMetricsEnabled, true);
+    }
+
+    /**
+     * Initialization
+     *
+     * @param responseDiagnosticsProcessor must not be {@literal null}
+     * @param databaseThroughputConfig may be @{literal null}
+     * @param queryMetricsEnabled must not be {@literal null}
+     * @param lazyPageTotalCount true if Page:getTotalCount should be lazily invoked
+     */
+    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "lazyPageTotalCount"})
+    private CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+                        DatabaseThroughputConfig databaseThroughputConfig,
+                        boolean queryMetricsEnabled, boolean lazyPageTotalCount) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
+        this.lazyPageTotalCount = lazyPageTotalCount;
     }
 
     /**
@@ -61,6 +79,15 @@ public class CosmosConfig {
      */
     public boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
+    }
+
+    /**
+     * Gets the option to enable lazy evaluation of page totals.
+     *
+     * @return boolean, whether to resolve the page count lazily.
+     */
+    public boolean isLazyPageTotalCount() {
+        return lazyPageTotalCount;
     }
 
     /**
@@ -88,9 +115,10 @@ public class CosmosConfig {
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private DatabaseThroughputConfig databaseThroughputConfig;
         private boolean queryMetricsEnabled;
+        private boolean lazyPageTotalCount = true;
+
         CosmosConfigBuilder() {
         }
-
 
         /**
          * Set responseDiagnosticsProcessor
@@ -115,6 +143,18 @@ public class CosmosConfig {
             return this;
         }
 
+        /**
+         * Enable eager fetching of Page:getTotalCount on CosmosTemplate#paginationQuery (all Repository paged requests).
+         * By default, Page:getTotalCount will be lazily evaluated since retrieving the count of a query in cosmos can be
+         * a very expensive operation.  This method may be used to instead evaluate the count at the time of the query.
+         *
+         * @return CosmosConfigBuilder
+         */
+        public CosmosConfigBuilder eagerFetchPageTotalCount() {
+            this.lazyPageTotalCount = false;
+            return this;
+        }
+
         public CosmosConfigBuilder enableDatabaseThroughput(boolean autoscale, int requestUnits) {
             this.databaseThroughputConfig = new DatabaseThroughputConfig(autoscale, requestUnits);
             return this;
@@ -126,7 +166,8 @@ public class CosmosConfig {
          * @return CosmosConfig
          */
         public CosmosConfig build() {
-            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig, this.queryMetricsEnabled);
+            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig,
+                                    this.queryMetricsEnabled, this.lazyPageTotalCount);
         }
 
         @Override
@@ -135,6 +176,7 @@ public class CosmosConfig {
                 + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
                 + ", databaseThroughputConfig=" + databaseThroughputConfig
                 + ", queryMetricsEnabled=" + queryMetricsEnabled
+                + ", lazyPageTotalCount=" + lazyPageTotalCount
                 + '}';
         }
     }

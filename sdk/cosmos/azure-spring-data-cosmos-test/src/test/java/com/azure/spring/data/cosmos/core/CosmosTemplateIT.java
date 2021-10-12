@@ -21,6 +21,8 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
+import com.azure.spring.data.cosmos.core.query.CosmosLazyPageImpl;
+import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.Criteria;
@@ -709,6 +711,53 @@ public class CosmosTemplateIT {
         } catch (CosmosException ex) {
             assertEquals(ex.getStatusCode(), 404);
         }
+    }
+
+    @Test
+    public void paginationQueryShouldLazilyExecuteCountQueryByDefault() {
+        cosmosTemplate.insert(TEST_PERSON_2,
+                              new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "age",
+                                                       Collections.singletonList(AGE), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_1, null);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Page<Person> page = cosmosTemplate.paginationQuery(query, Person.class, containerName);
+        assertThat(page.getContent().size()).isEqualTo(1);
+        PageTestUtils.validateNonLastPage(page, page.getContent().size());
+        assertThat(page).isInstanceOf(CosmosLazyPageImpl.class);
+
+        cosmosTemplate.insert(TEST_PERSON_3,
+                              new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        assertEquals(page.getTotalElements(), 3);
+    }
+
+    @Test
+    public void paginationQueryShouldEagerlyExecuteCountQueryIfConfigured() throws ClassNotFoundException {
+        cosmosTemplate.insert(TEST_PERSON_2,
+                              new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
+
+        final CosmosConfig config = CosmosConfig.builder()
+            .eagerFetchPageTotalCount()
+            .build();
+        final CosmosTemplate eagerCountCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "age",
+                                                       Collections.singletonList(AGE), Part.IgnoreCaseType.NEVER);
+        final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_1, null);
+        final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest);
+
+        final Page<Person> page = eagerCountCosmosTemplate.paginationQuery(query, Person.class, containerName);
+        assertThat(page.getContent().size()).isEqualTo(1);
+        PageTestUtils.validateNonLastPage(page, page.getContent().size());
+        assertThat(page).isInstanceOf(CosmosPageImpl.class);
+
+        eagerCountCosmosTemplate.insert(TEST_PERSON_3,
+                                        new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3)));
+
+        assertEquals(page.getTotalElements(), 2);
     }
 
 }
