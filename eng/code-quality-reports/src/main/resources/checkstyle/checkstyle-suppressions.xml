@@ -45,7 +45,7 @@
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
 
-  <!-- We should remove KeyVaultPrivateKey into implementation. -->
+  <!-- We should move KeyVaultPrivateKey into implementation. -->
   <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.security.keyvault.jca.KeyVaultPrivateKey"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
