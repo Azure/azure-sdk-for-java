@@ -84,7 +84,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
         if (managedIdentityServiceCredential == null) {
             return Mono.error(logger.logExceptionAsError(
                 new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                   + "The Target Azure platform could not be determined from environment variables.")));
+                   + "The Target Azure platform could not be determined from environment variables."
+                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                    + " https://aka.ms/azsdk/net/identity/managedidentitycredential/troubleshoot")));
         }
         return managedIdentityServiceCredential.authenticate(request)
             .doOnSuccess(t -> logger.info("Azure Identity => Managed Identity environment: {}",
