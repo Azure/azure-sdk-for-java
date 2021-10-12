@@ -9,26 +9,26 @@ This troubleshooting guide covers mitigation steps to resolve these exceptions t
   - [Troubleshooting Environment Credential Authentication Issues](#troubleshooting-environment-credential-authentication-issues)
   - [Troubleshooting Service Principal Authentication Issues](#troubleshooting-service-principal-authentication-issues)
   - [Troubleshooting Username Password Authentication Issues](#troubleshooting-username-password-authentication-issues)
-  - [Troubleshooting Mananged Identity Authenticaiton Issues](#troubleshooting-mananged-identity-authenticaiton-issues)
-  - [Troubleshooting Visual Studio Code Authenticaiton Issues](#troubleshooting-visual-studio-code-authenticaiton-issues)
-  - [Troubleshooting Azure CLI Authenticaiton Issues](#troubleshooting-azure-cli-authenticaiton-issues)
-  - [Troubleshooting Azure Powershell Authenticaiton Issues](#troubleshooting-azure-powershell-authenticaiton-issues)
+  - [Troubleshooting Managed Identity Authentication Issues](#troubleshooting-managed-identity-authentication-issues)
+  - [Troubleshooting Visual Studio Code Authentication Issues](#troubleshooting-visual-studio-code-authentication-issues)
+  - [Troubleshooting Azure CLI Authentication Issues](#troubleshooting-azure-cli-authentication-issues)
+  - [Troubleshooting Azure Powershell Authentication Issues](#troubleshooting-azure-powershell-authentication-issues)
 
 
 
 ## Troubleshooting Default Azure Credential Authentication Issues.
 
 ### Credential Unavailable Exception
-The `DefaultAzureCredential` attempts to retrieve an access token by sequentially invoking a chain of credentials. The `CredentialUnavailableException` in this scenario signifies that all the credentials in the chain failed to retrieve the token in the current environment setup/configuration. You need to follow the configurtion instructions for the respective credential you're looking to use via `DefaultAzureCredential` chain, so that the credential can work in your environment.
+The `DefaultAzureCredential` attempts to retrieve an access token by sequentially invoking a chain of credentials. The `CredentialUnavailableException` in this scenario signifies that all the credentials in the chain failed to retrieve the token in the current environment setup/configuration. You need to follow the configuration instructions for the respective credential you're looking to use via `DefaultAzureCredential` chain, so that the credential can work in your environment.
 
-Please follow the configuration instructions in the `Credential Unvavailable` section of hte troublehsooting guidelines below for the repsective credential/authentication type you're looking to use via `DefaultAzureCredential`:
+Please follow the configuration instructions in the `Credential Unvavailable` section of hte troubleshooting guidelines below for the respective credential/authentication type you're looking to use via `DefaultAzureCredential`:
 
-| Credential Type |	Trobuleshoot Guide |
+| Credential Type |	Troubleshoot Guide |
 | --- | --- |
 | Environment Credential |	[Environment Credential Troubleshooting Guide](#troubleshooting-environment-credential-authentication-issues) |
 | Managed Identity Credential |	[Managed Identity Troubleshooting Guide](#troubleshooting-managed-identity-authentication-issues) |
-| Visual Studio Code Credential |	[Visual Studio Code Troubleshooting Guide](#troubleshooting-visual-studio-code-authenticaiton-issues) |
-| Azure CLI Credential |	[Azure CLI Troubleshooting Guide](#troubleshooting-azure-cli-authenticaiton-issues) |
+| Visual Studio Code Credential |	[Visual Studio Code Troubleshooting Guide](#troubleshooting-visual-studio-code-authentication-issues) |
+| Azure CLI Credential |	[Azure CLI Troubleshooting Guide](#troubleshooting-azure-cli-authentication-issues) |
 | Azure Powershell Credential |	[Azure Powershell Troubleshooting Guide](#troubleshooting-azure-powershell-authentication-issues) |
 
 
@@ -39,7 +39,7 @@ Please follow the configuration instructions in the `Credential Unvavailable` se
 ### Credential Unavailable Exception
 
 #### Environment variables not configured
-The `EnvironmentCredential` supports Service Principal authentication and Username + Password Authentication. To utilize the desired way of authentication via `EnvironmentCredential`, you need to ensure the environment varialbes below are configured properly and the application is able to read them.
+The `EnvironmentCredential` supports Service Principal authentication and Username + Password Authentication. To utilize the desired way of authentication via `EnvironmentCredential`, you need to ensure the environment variables below are configured properly and the application is able to read them.
 
 
 ##### Service principal with secret
@@ -65,9 +65,9 @@ AZURE_PASSWORD | The associated password for the given username. |
 
 ### Client Authentication Exception
 The `EnvironmentCredential` supports Service Principal authentication and Username + Password Authentication.
-Please follow the troublehsooting guidelines below for the repsective authentication which you tried and failed.
+Please follow the troubleshooting guidelines below for the respective authentication which you tried and failed.
 
-| Authentication Type |	Trobuleshoot Guide |
+| Authentication Type |	Troubleshoot Guide |
 | --- | --- |
 | Service Principal |	[Service Principal Auth Troubleshooting Guide](#troubleshooting-username-password-authentication-issues) |
 | Username Password |	[Username Password Auth Troubleshooting Guide](#troubleshooting-username-password-authentication-issues) |
@@ -77,8 +77,8 @@ Please follow the troublehsooting guidelines below for the repsective authentica
 
 ## Troubleshooting Username Password Authentication Issues.
 
-### Two Factor Authentication Required Error.
-The `UsernamePassword` credential works only for users whose two factor authentication has been disabled in Azure Active Directrory. You can change the Multi Factor Authentication in Azure Portal by folliwng the steps [here](https://docs.microsoft.com/en-us/azure/active-directory/authentication/howto-mfa-userstates#change-the-status-for-a-user).
+### Two-Factor Authentication Required Error.
+The `UsernamePassword` credential works only for users whose two-factor authentication has been disabled in Azure Active Directory. You can change the Multi-Factor Authentication in Azure Portal by following the steps [here](https://docs.microsoft.com/azure/active-directory/authentication/howto-mfa-userstates#change-the-status-for-a-user).
 
 
 
@@ -89,55 +89,55 @@ The `UsernamePassword` credential works only for users whose two factor authenti
 
 #### Client Id
  
-The Client Id is the application Id of the registered application / service principal in Azure Active Directory.
+The Client ID is the application ID of the registered application / service principal in Azure Active Directory.
 It is a required parameter for `ClientSecretCredential` and `ClientCertificateCredential`. If you have already created your service principal
-then you can retrieve the client/app id by following the instructions [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-tenant-and-app-id-values-for-signing-in).
+then you can retrieve the client/app id by following the instructions [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-tenant-and-app-id-values-for-signing-in).
 
 #### Tenant Id
 The tenant id is te Global Unique Identifier (GUID) that identifies your organization. It is a required parameter for
 `ClientSecretCredential` and `ClientCertificateCredential`. If you have already created your service principal
-then you can retrieve the client/app id by following the instructions [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#get-tenant-and-app-id-values-for-signing-in).
+then you can retrieve the client/app id by following the instructions [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-tenant-and-app-id-values-for-signing-in).
 
 ### Client Secret Credential Issues
 
 #### Client Secret Argument
 The client secret is the secret string that the application uses to prove its identity when requesting a token, this can also can be referred to as an application password.
-If you have already created a servie principal you can follow the instructions [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret) to get the client secret for your application.
+If you have already created a service principal you can follow the instructions [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret) to get the client secret for your application.
 
 ### Client Certificate Credential Issues
 
 #### Client Certificate Argument
-The `Client Certificate Credential` accepts `pfx` and `pem` certificates. The certificate needs to be associated with your registered application/service principal. To create and associate a certificate with your registered app. please follow the instrucitons [here](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).
+The `Client Certificate Credential` accepts `pfx` and `pem` certificates. The certificate needs to be associated with your registered application/service principal. To create and associate a certificate with your registered app. please follow the instructions [here](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).
 
 ### Create a new service principal
-If you're looking to create a new service principal and would like to use that, then follow tne instructions [here](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-service-principal-auth#create-a-service-principal-with-the-azure-cli) to create a new service principal.
+If you're looking to create a new service principal and would like to use that, then follow tne instructions [here](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#create-a-service-principal-with-the-azure-cli) to create a new service principal.
 
 
 
 
-## Troubleshooting Mananged Identity Authenticaiton Issues
+## Troubleshooting Managed Identity Authentication Issues
 
 ### Credential Unavailable
 
 #### Connection Timed Out / Connection could not be established / Target Environment could not be determined.
 The Managed Identity credential runs only on Azure Hosted machines/servers. So ensure that you are running your application on an
-Azure Hosted resource. Currently Azure Identity SDK supports [Managed Identity Authentication]((https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)) 
+Azure Hosted resource. Currently, Azure Identity SDK supports [Managed Identity Authentication]((https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview)) 
 in the below listed Azure Services, so ensure you're running your application on one of these resources and have enabled the Managed Identity on
 them by following the instructions at their configuration links below.
 
 Azure Service | Managed Identity Configuration
 --- | --- |
-[Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token) | [Configuration Instructions](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm)
-[Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=java) | [Configuration Instructions](https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity?tabs=java)
+[Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token) | [Configuration Instructions](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm)
+[Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=java) | [Configuration Instructions](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=java)
 [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity) | [Configuration Instructions](https://docs.microsoft.com/azure/aks/use-managed-identity)
 [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization) |  |
-[Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication) | [Configuration Instructions](https://docs.microsoft.com/en-us/azure/azure-arc/servers/security-overview#using-a-managed-identity-with-arc-enabled-servers)
-[Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity) | [Configuration Instructions](https://docs.microsoft.com/en-us/azure/service-fabric/configure-existing-cluster-enable-managed-identity-token-service)
+[Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication) | [Configuration Instructions](https://docs.microsoft.com/azure/azure-arc/servers/security-overview#using-a-managed-identity-with-arc-enabled-servers)
+[Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity) | [Configuration Instructions](https://docs.microsoft.com/azure/service-fabric/configure-existing-cluster-enable-managed-identity-token-service)
 
 
 
 
-## Troubleshooting Visual Studio Code Authenticaiton Issues
+## Troubleshooting Visual Studio Code Authentication Issues
 
 ### Credential Unavailable
 
@@ -171,51 +171,51 @@ AZURE GOVERNMENT | https://login.microsoftonline.us/
 
 
 
-## Troubleshooting Azure CLI Authenticaiton Issues
+## Troubleshooting Azure CLI Authentication Issues
 
 ### Credential Unavailable
 
 #### Azure CLI Not Installed.
 THe `Azure CLI Credential` failed to execute as Azure CLI command line tool is not installed. 
-To use Azure CLI credential, the Azure CLI needs to be installed, please follow the instructions [here](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+To use Azure CLI credential, the Azure CLI needs to be installed, please follow the instructions [here](https://docs.microsoft.com/cli/azure/install-azure-cli)
 to install it for your platform and then try running the credential again.
 
 #### Azure account not logged in.
 The `Azure CLI Credential` utilizes the current logged in Azure user in Azure CLI to fetch an access token. 
-You need to login to your account in Azure CLI via `az login` command. You can further read instructions to [Sign in with Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli).
+You need to log in to your account in Azure CLI via `az login` command. You can further read instructions to [Sign in with Azure CLI](https://docs.microsoft.com/cli/azure/authenticate-azure-cli).
 Once logged in try running the credential again.
 
 ### Illegal State
 #### Safe Working Directory Not Located.
-The `Azure CLI Credential` was not able to locoate a value for System Environment property `SystemRoot` to execute in.
+The `Azure CLI Credential` was not able to locate a value for System Environment property `SystemRoot` to execute in.
 Please ensure the `SystemRoot` environment variable is configured to a safe working directory and then try running the credential again.
 
 
 
 
-## Troubleshooting Azure Powershell Authenticaiton Issues
+## Troubleshooting Azure Powershell Authentication Issues
 
 ### Credential Unavailable
 
 #### Powershell not installed.
 
-The `Azure Powershell Credential` utilizes the locally installed `Powershell` command line tool to fetch an access token. Please ensure it is installed on your platform by following the instructions [here](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.1) and then run the credential again.
+The `Azure Powershell Credential` utilizes the locally installed `Powershell` command line tool to fetch an access token. Please ensure it is installed on your platform by following the instructions [here](https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7.1) and then run the credential again.
 
-#### Azure Az Moudle Not Installed.
+#### Azure Az Module Not Installed.
 The `Azure Powershell Credential` failed to execute as Azure az module is not installed. 
-To use Azure Powershell credential, the Azure az module needs to be installed, please follow the instructions [here](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-6.3.0)
+To use Azure Powershell credential, the Azure az module needs to be installed, please follow the instructions [here](https://docs.microsoft.com/powershell/azure/install-az-ps?view=azps-6.3.0)
 to install it for your platform and then try running the credential again.
 
 #### Azure account not logged in.
 The `Azure Powershell Credential` utilizes the current logged in Azure user in Azure Powershell to fetch an access token. 
-You need to login to your account in Azure Powershell via `Connect-AzAccount` command. You can further read instructions to [Sign in with Azure Powershell](https://docs.microsoft.com/en-us/powershell/azure/authenticate-azureps?view=azps-6.3.0).
+You need to log in to your account in Azure Powershell via `Connect-AzAccount` command. You can further read instructions to [Sign in with Azure Powershell](https://docs.microsoft.com/powershell/azure/authenticate-azureps?view=azps-6.3.0).
 Once logged in try running the credential again.
 
 
 #### Deserialization error.
 The `Azure Powershell Credential` was able to retrieve a response from the Azure Powershell when attempting to get an access token but failed 
 to parse that response.
-In your local powershell window, run the following command to ensure that Azure Powerhsell is returning an access token in correct format.
+In your local powershell window, run the following command to ensure that Azure Powershell is returning an access token in correct format.
 
 ```pwsh
 Get-AzAccessToken -ResourceUrl "<Scopes-Url>"
