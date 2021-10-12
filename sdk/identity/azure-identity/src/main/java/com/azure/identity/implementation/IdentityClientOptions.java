@@ -23,7 +23,7 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
-    public static final String AZURE_IDENTITY_DISABLE_MULTITENANTAUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
+    public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
 
     private String authorityHost;
     private int maxRetry;
@@ -398,7 +398,7 @@ public final class IdentityClientOptions {
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
-            .get(AZURE_IDENTITY_DISABLE_MULTITENANTAUTH, false);
+            .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
         return  this;
     }
 }

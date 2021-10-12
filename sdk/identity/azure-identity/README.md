@@ -222,7 +222,7 @@ public void createManagedIdentityCredential() {
 Credentials default to authenticating to the Azure Active Directory endpoint for
 Azure Public Cloud. To access resources in other clouds, such as Azure Government
 or a private cloud, configure credentials with the `auhtorityHost` argument.
-[AzureAuthorityHosts](https://aka.ms/azsdk/python/identity/docs#azure.identity.AzureAuthorityHosts)
+[AzureAuthorityHosts](https://docs.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
 defines authorities for well-known clouds:
 ```java
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
