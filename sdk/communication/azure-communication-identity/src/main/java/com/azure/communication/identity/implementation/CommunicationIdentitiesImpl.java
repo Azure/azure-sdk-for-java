@@ -390,7 +390,8 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
+     * expiration time.
      *
      * @param body AAD access token of a Teams user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -408,7 +409,8 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
+     * expiration time.
      *
      * @param body AAD access token of a Teams user.
      * @param context The context to associate with this operation.
@@ -425,7 +427,8 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
+     * expiration time.
      *
      * @param body AAD access token of a Teams user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -447,7 +450,8 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
+     * expiration time.
      *
      * @param body AAD access token of a Teams user.
      * @param context The context to associate with this operation.
@@ -471,7 +475,8 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
+     * expiration time.
      *
      * @param body AAD access token of a Teams user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -485,7 +490,8 @@ public final class CommunicationIdentitiesImpl {
     }
 
     /**
-     * Exchange an AAD access token of a Teams user for a new Communication Identity access token.
+     * Exchange an AAD access token of a Teams user for a new Communication Identity access token with a matching
+     * expiration time.
      *
      * @param body AAD access token of a Teams user.
      * @param context The context to associate with this operation.

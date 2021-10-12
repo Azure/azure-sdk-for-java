@@ -387,6 +387,51 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void exchangeTeamsTokenWithEmptyToken(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithEmptyToken");
+        // Action & Assert
+        Mono<AccessToken> response = asyncClient.exchangeTeamsToken("");
+        StepVerifier.create(response)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("401"));
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void exchangeTeamsTokenWithNull(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithNull");
+        // Action & Assert
+        Mono<AccessToken> response = asyncClient.exchangeTeamsToken(null);
+        StepVerifier.create(response)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("token"));
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void exchangeTeamsTokenWithInvalidToken(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
+        asyncClient = setupAsyncClient(builder, "exchangeTeamsTokenWithInvalidToken");
+        // Action & Assert
+        Mono<AccessToken> response = asyncClient.exchangeTeamsToken("invalid");
+        StepVerifier.create(response)
+            .verifyErrorSatisfies(throwable -> {
+                assertNotNull(throwable.getMessage());
+                assertTrue(throwable.getMessage().contains("401"));
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsTokenWithResponse(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);

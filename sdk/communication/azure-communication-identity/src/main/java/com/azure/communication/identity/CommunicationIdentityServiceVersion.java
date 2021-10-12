@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Communication Identity Service supported by this client library.
  */
 public enum CommunicationIdentityServiceVersion implements ServiceVersion {
-    V2021_10_31("2021-10-31");
+    V2021_03_07("2021-03-07");
 
     private final String version;
 
@@ -32,6 +32,6 @@ public enum CommunicationIdentityServiceVersion implements ServiceVersion {
      * @return the latest {@link CommunicationIdentityServiceVersion}
      */
     public static CommunicationIdentityServiceVersion getLatest() {
-        return V2021_10_31;
+        return V2021_03_07;
     }
 }
