@@ -1,130 +1,130 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8f87f3d1-335f-467b-a8fc-e7c3dba5cddb",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4aeb4ec9-ece1-4960-ba41-052cdd386f2d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "822",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "8f87f3d1-335f-467b-a8fc-e7c3dba5cddb",
+      "request-id" : "4aeb4ec9-ece1-4960-ba41-052cdd386f2d",
       "StatusCode" : "201",
-      "Date" : "Tue, 13 Jul 2021 19:27:18 GMT",
+      "Date" : "Thu, 27 May 2021 21:18:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D946343B2FB361\"",
-      "client-request-id" : "8f87f3d1-335f-467b-a8fc-e7c3dba5cddb",
-      "elapsed-time" : "34",
+      "ETag" : "W/\"0x8D92154F4CBC61F\"",
+      "client-request-id" : "4aeb4ec9-ece1-4960-ba41-052cdd386f2d",
+      "elapsed-time" : "32",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D946343B2FB361\\\"\",\"name\":\"cognitive-services-key-skillset3470709082d\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null},\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "x-ms-client-request-id" : "8f87f3d1-335f-467b-a8fc-e7c3dba5cddb",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D92154F4CBC61F\\\"\",\"name\":\"cognitive-services-key-skillset556873db61a\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null},\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "4aeb4ec9-ece1-4960-ba41-052cdd386f2d",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/skillsets('cognitive-services-key-skillset3470709082d')?api-version=2021-04-30-Preview"
+      "Location" : "https://alzimmer-test.search.windows.net/skillsets('cognitive-services-key-skillset556873db61a')?api-version=2020-06-30"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b9957758-9e1a-4dc6-81bf-0f044ec444c4",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9c2ddb4d-f9ac-4c9d-805c-b18d47863bf2",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "711",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b9957758-9e1a-4dc6-81bf-0f044ec444c4",
+      "request-id" : "9c2ddb4d-f9ac-4c9d-805c-b18d47863bf2",
       "StatusCode" : "201",
-      "Date" : "Tue, 13 Jul 2021 19:27:18 GMT",
+      "Date" : "Thu, 27 May 2021 21:18:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D946343B449EC5\"",
-      "client-request-id" : "b9957758-9e1a-4dc6-81bf-0f044ec444c4",
-      "elapsed-time" : "54",
+      "ETag" : "W/\"0x8D92154F4D58BE7\"",
+      "client-request-id" : "9c2ddb4d-f9ac-4c9d-805c-b18d47863bf2",
+      "elapsed-time" : "34",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D946343B449EC5\\\"\",\"name\":\"entity-recognition-skillset433175152c404\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "x-ms-client-request-id" : "b9957758-9e1a-4dc6-81bf-0f044ec444c4",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D92154F4D58BE7\\\"\",\"name\":\"entity-recognition-skillset9061527168a2a\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.EntityRecognitionSkill\",\"name\":\"myentity\",\"description\":\"Tested Entity Recognition skill\",\"context\":\"/document\",\"categories\":[],\"defaultLanguageCode\":null,\"minimumPrecision\":null,\"includeTypelessEntities\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"entities\",\"targetName\":\"myEntities\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "x-ms-client-request-id" : "9c2ddb4d-f9ac-4c9d-805c-b18d47863bf2",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/skillsets('entity-recognition-skillset433175152c404')?api-version=2021-04-30-Preview"
+      "Location" : "https://alzimmer-test.search.windows.net/skillsets('entity-recognition-skillset9061527168a2a')?api-version=2020-06-30"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?$select=name&api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?$select=name&api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "95df215a-4333-486b-bdad-7aa87c87e241"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23438c2e-6327-4cfc-afbb-b5bce466f335"
     },
     "Response" : {
       "content-length" : "203",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "95df215a-4333-486b-bdad-7aa87c87e241",
+      "request-id" : "23438c2e-6327-4cfc-afbb-b5bce466f335",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:27:18 GMT",
+      "Date" : "Thu, 27 May 2021 21:18:21 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "95df215a-4333-486b-bdad-7aa87c87e241",
-      "elapsed-time" : "8",
+      "client-request-id" : "23438c2e-6327-4cfc-afbb-b5bce466f335",
+      "elapsed-time" : "11",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset3470709082d\"},{\"name\":\"entity-recognition-skillset433175152c404\"}]}",
-      "x-ms-client-request-id" : "95df215a-4333-486b-bdad-7aa87c87e241",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#skillsets(name)\",\"value\":[{\"name\":\"cognitive-services-key-skillset556873db61a\"},{\"name\":\"entity-recognition-skillset9061527168a2a\"}]}",
+      "x-ms-client-request-id" : "23438c2e-6327-4cfc-afbb-b5bce466f335",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('cognitive-services-key-skillset3470709082d')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('cognitive-services-key-skillset556873db61a')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f4fb6121-6dda-46a9-a220-a92f453311da"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b47e2e6c-7d69-41ab-9321-7a7e3b662d6c"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "f4fb6121-6dda-46a9-a220-a92f453311da",
-      "elapsed-time" : "20",
+      "client-request-id" : "b47e2e6c-7d69-41ab-9321-7a7e3b662d6c",
+      "elapsed-time" : "22",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "f4fb6121-6dda-46a9-a220-a92f453311da",
+      "request-id" : "b47e2e6c-7d69-41ab-9321-7a7e3b662d6c",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "f4fb6121-6dda-46a9-a220-a92f453311da",
-      "Date" : "Tue, 13 Jul 2021 19:27:19 GMT"
+      "x-ms-client-request-id" : "b47e2e6c-7d69-41ab-9321-7a7e3b662d6c",
+      "Date" : "Thu, 27 May 2021 21:18:21 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('entity-recognition-skillset433175152c404')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('entity-recognition-skillset9061527168a2a')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9f96df74-8944-4eed-80f4-e3c4291dc6ac"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a9828e0c-7671-4425-bc16-3a9ae9de52d4"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "9f96df74-8944-4eed-80f4-e3c4291dc6ac",
-      "elapsed-time" : "19",
+      "client-request-id" : "a9828e0c-7671-4425-bc16-3a9ae9de52d4",
+      "elapsed-time" : "20",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "9f96df74-8944-4eed-80f4-e3c4291dc6ac",
+      "request-id" : "a9828e0c-7671-4425-bc16-3a9ae9de52d4",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "9f96df74-8944-4eed-80f4-e3c4291dc6ac",
-      "Date" : "Tue, 13 Jul 2021 19:27:19 GMT"
+      "x-ms-client-request-id" : "a9828e0c-7671-4425-bc16-3a9ae9de52d4",
+      "Date" : "Thu, 27 May 2021 21:18:21 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "cognitive-services-key-skillset3470709082d", "entity-recognition-skillset433175152c404" ]
+  "variables" : [ "cognitive-services-key-skillset556873db61a", "entity-recognition-skillset9061527168a2a" ]
 }

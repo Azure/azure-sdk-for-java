@@ -315,7 +315,6 @@ public final class TestHelpers {
         }
     }
 
-    @SuppressWarnings("removal")
     public static SearchIndexClient setupSharedIndex(String indexName) {
         InputStream stream = Objects.requireNonNull(AutocompleteSyncTests.class
             .getClassLoader()

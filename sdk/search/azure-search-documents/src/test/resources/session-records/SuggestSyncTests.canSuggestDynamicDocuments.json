@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')/docs/search.post.suggest?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-suggest-shared-instance')/docs/search.post.suggest?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e2498ebe-cc4c-4f61-8f0d-59443f2a215e",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e2cce714-d7a3-48b1-a470-693de334c8ff",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "2172",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e2498ebe-cc4c-4f61-8f0d-59443f2a215e",
+      "request-id" : "e2cce714-d7a3-48b1-a470-693de334c8ff",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:21:56 GMT",
+      "Date" : "Thu, 27 May 2021 21:13:46 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "e2498ebe-cc4c-4f61-8f0d-59443f2a215e",
-      "elapsed-time" : "6",
+      "client-request-id" : "e2cce714-d7a3-48b1-a470-693de334c8ff",
+      "elapsed-time" : "9",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"@search.text\":\"Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.\",\"HotelId\":\"10\",\"HotelName\":\"Countryside Hotel\",\"Description\":\"Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.\",\"Description_fr\":\"\\u00c9conomisez jusqu'\\u00e0 50% sur les h\\u00f4tels traditionnels.  WiFi gratuit, tr\\u00e8s bien situ\\u00e9 pr\\u00e8s du centre-ville, cuisine compl\\u00e8te, laveuse & s\\u00e9cheuse, support 24/7, bowling, centre de fitness et plus encore.\",\"Category\":\"Budget\",\"Tags\":[\"24-hour front desk service\",\"coffee in lobby\",\"restaurant\"],\"ParkingIncluded\":false,\"SmokingAllowed\":true,\"LastRenovationDate\":\"1999-09-06T00:00:00Z\",\"Rating\":3,\"Location\":{\"type\":\"Point\",\"coordinates\":[-78.940483,35.90416],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"Address\":{\"StreetAddress\":\"6910 Fayetteville Rd\",\"City\":\"Durham\",\"StateProvince\":\"NC\",\"PostalCode\":\"27713\",\"Country\":\"USA\"},\"Rooms\":[{\"Description\":\"Suite, 1 King Bed (Amenities)\",\"Description_fr\":\"Suite, 1 tr\\u00e8s grand lit (Services)\",\"Type\":\"Suite\",\"BaseRate\":2.44,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"coffee maker\"]},{\"Description\":\"Budget Room, 1 Queen Bed (Amenities)\",\"Description_fr\":\"Chambre \\u00c9conomique, 1 grand lit (Services)\",\"Type\":\"Budget Room\",\"BaseRate\":7.69,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":false,\"Tags\":[\"coffee maker\"]}]},{\"@search.text\":\"Has some road noise and is next to the very police station. Bathrooms had morel coverings.\",\"HotelId\":\"8\",\"HotelName\":null,\"Description\":\"Has some road noise and is next to the very police station. Bathrooms had morel coverings.\",\"Description_fr\":\"Il y a du bruit de la route et se trouve \\u00e0 c\\u00f4t\\u00e9 de la station de police. Les salles de bain avaient des rev\\u00eatements de morilles.\",\"Category\":null,\"Tags\":[],\"ParkingIncluded\":null,\"SmokingAllowed\":null,\"LastRenovationDate\":null,\"Rating\":null,\"Location\":null,\"Address\":null,\"Rooms\":[]}]}",
-      "x-ms-client-request-id" : "e2498ebe-cc4c-4f61-8f0d-59443f2a215e",
+      "x-ms-client-request-id" : "e2cce714-d7a3-48b1-a470-693de334c8ff",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },

@@ -1,159 +1,159 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')?allowIndexDowntime=false&api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')?allowIndexDowntime=false&api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "acc94082-079e-4821-84ed-d983f8617899",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4066269e-4fbc-4245-a854-0d91f0385cc7",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "6947",
+      "content-length" : "6498",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "acc94082-079e-4821-84ed-d983f8617899",
+      "request-id" : "4066269e-4fbc-4245-a854-0d91f0385cc7",
       "StatusCode" : "201",
-      "Date" : "Tue, 13 Jul 2021 19:15:52 GMT",
+      "Date" : "Thu, 27 May 2021 21:08:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D94632A1AD1856\"",
-      "client-request-id" : "acc94082-079e-4821-84ed-d983f8617899",
-      "elapsed-time" : "1641",
+      "ETag" : "W/\"0x8D921538620C68F\"",
+      "client-request-id" : "4066269e-4fbc-4245-a854-0d91f0385cc7",
+      "elapsed-time" : "1526",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D94632A1AD1856\\\"\",\"name\":\"hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]}],\"scoringProfiles\":[{\"name\":\"nearest\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"myloc\",\"boostingDistance\":100.0},\"tag\":null}]},{\"name\":\"text\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"mytag\"}}]}],\"corsOptions\":null,\"suggesters\":[{\"name\":\"sg\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"Description\",\"HotelName\"]}],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null}}",
-      "x-ms-client-request-id" : "acc94082-079e-4821-84ed-d983f8617899",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-test.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8D921538620C68F\\\"\",\"name\":\"hotelscanindexdynamicdocumentsthrowonerror673648775461a23\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"synonymMaps\":[]},{\"name\":\"Description_fr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":false,\"retrievable\":true,\"sortable\":false,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"synonymMaps\":[]}]}],\"scoringProfiles\":[{\"name\":\"nearest\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"myloc\",\"boostingDistance\":100.0},\"tag\":null}]},{\"name\":\"text\",\"functionAggregation\":\"sum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":2.0,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"mytag\"}}]}],\"corsOptions\":null,\"suggesters\":[{\"name\":\"sg\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"Description\",\"HotelName\"]}],\"analyzers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null}}",
+      "x-ms-client-request-id" : "4066269e-4fbc-4245-a854-0d91f0385cc7",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-test.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')?allowIndexDowntime=false&api-version=2021-04-30-Preview"
+      "Location" : "https://alzimmer-test.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')?allowIndexDowntime=false&api-version=2020-06-30"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')/docs/search.index?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')/docs/search.index?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b347b68f-cf74-41ee-9517-879aed445627",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1f7a7a23-953a-4d89-95c1-8ab7bf8c83d9",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "366",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "b347b68f-cf74-41ee-9517-879aed445627",
+      "request-id" : "1f7a7a23-953a-4d89-95c1-8ab7bf8c83d9",
       "StatusCode" : "207",
-      "Date" : "Tue, 13 Jul 2021 19:15:52 GMT",
+      "Date" : "Thu, 27 May 2021 21:08:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "b347b68f-cf74-41ee-9517-879aed445627",
-      "elapsed-time" : "121",
+      "client-request-id" : "1f7a7a23-953a-4d89-95c1-8ab7bf8c83d9",
+      "elapsed-time" : "109",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"key\":\"1\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"randomId\",\"status\":true,\"errorMessage\":null,\"statusCode\":200},{\"key\":\"nonExistingHotel\",\"status\":false,\"errorMessage\":\"Document not found.\",\"statusCode\":404},{\"key\":\"3\",\"status\":true,\"errorMessage\":null,\"statusCode\":201},{\"key\":\"2\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "x-ms-client-request-id" : "b347b68f-cf74-41ee-9517-879aed445627",
+      "x-ms-client-request-id" : "1f7a7a23-953a-4d89-95c1-8ab7bf8c83d9",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')/docs('1')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')/docs('1')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f02023dc-eeac-44bd-bb3c-aeb33d647d3a"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fa0c229b-4041-4cb8-a6c1-fce3f19f3302"
     },
     "Response" : {
       "content-length" : "1038",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f02023dc-eeac-44bd-bb3c-aeb33d647d3a",
+      "request-id" : "fa0c229b-4041-4cb8-a6c1-fce3f19f3302",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:15:52 GMT",
+      "Date" : "Thu, 27 May 2021 21:08:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "f02023dc-eeac-44bd-bb3c-aeb33d647d3a",
-      "elapsed-time" : "85",
+      "client-request-id" : "fa0c229b-4041-4cb8-a6c1-fce3f19f3302",
+      "elapsed-time" : "24",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"HotelId\":\"1\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
-      "x-ms-client-request-id" : "f02023dc-eeac-44bd-bb3c-aeb33d647d3a",
+      "x-ms-client-request-id" : "fa0c229b-4041-4cb8-a6c1-fce3f19f3302",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')/docs('2')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')/docs('2')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "66dbdfd3-db84-4a9d-9a29-75db08970929"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c62ebc3e-320e-4b50-9a69-bdef8a4b8a58"
     },
     "Response" : {
       "content-length" : "1038",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "66dbdfd3-db84-4a9d-9a29-75db08970929",
+      "request-id" : "c62ebc3e-320e-4b50-9a69-bdef8a4b8a58",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:15:52 GMT",
+      "Date" : "Thu, 27 May 2021 21:08:06 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "66dbdfd3-db84-4a9d-9a29-75db08970929",
-      "elapsed-time" : "27",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Body" : "{\"HotelId\":\"2\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
-      "x-ms-client-request-id" : "66dbdfd3-db84-4a9d-9a29-75db08970929",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')/docs('3')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "81ddcbf7-40a9-449a-a530-5d5a0602f4d3"
-    },
-    "Response" : {
-      "content-length" : "1038",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "81ddcbf7-40a9-449a-a530-5d5a0602f4d3",
-      "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:15:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "81ddcbf7-40a9-449a-a530-5d5a0602f4d3",
+      "client-request-id" : "c62ebc3e-320e-4b50-9a69-bdef8a4b8a58",
       "elapsed-time" : "19",
       "OData-Version" : "4.0",
       "Expires" : "-1",
+      "Body" : "{\"HotelId\":\"2\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
+      "x-ms-client-request-id" : "c62ebc3e-320e-4b50-9a69-bdef8a4b8a58",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=none"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')/docs('3')?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55c67756-3a62-4dbc-bc16-d90de5a88c75"
+    },
+    "Response" : {
+      "content-length" : "1038",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "55c67756-3a62-4dbc-bc16-d90de5a88c75",
+      "StatusCode" : "200",
+      "Date" : "Thu, 27 May 2021 21:08:06 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "55c67756-3a62-4dbc-bc16-d90de5a88c75",
+      "elapsed-time" : "21",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
       "Body" : "{\"HotelId\":\"3\",\"HotelName\":\"Fancy Stay Hotel\",\"Description\":\"Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.\",\"Description_fr\":null,\"Category\":\"Luxury\",\"Tags\":[\"pool\",\"view\",\"wifi\",\"concierge\"],\"ParkingIncluded\":true,\"SmokingAllowed\":true,\"LastRenovationDate\":\"2019-01-30T00:00:00Z\",\"Rating\":5,\"Location\":null,\"Address\":{\"StreetAddress\":\"One Microsoft way\",\"City\":\"Redmond\",\"StateProvince\":\"Washington\",\"PostalCode\":\"98052\",\"Country\":\"US\"},\"Rooms\":[{\"Description\":\"Budget Room, 1 Queen Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":149.99,\"BedOptions\":\"1 Queen Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"great view\"]},{\"Description\":\"Budget Room, 1 King Bed\",\"Description_fr\":null,\"Type\":\"Budget Room\",\"BaseRate\":249.99,\"BedOptions\":\"1 King Bed\",\"SleepsCount\":2,\"SmokingAllowed\":true,\"Tags\":[\"vcr/dvd\",\"seaside view\"]}]}",
-      "x-ms-client-request-id" : "81ddcbf7-40a9-449a-a530-5d5a0602f4d3",
+      "x-ms-client-request-id" : "55c67756-3a62-4dbc-bc16-d90de5a88c75",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2')?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanindexdynamicdocumentsthrowonerror673648775461a23')?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5b6fc99c-5e36-4f58-9a34-d15bc3d8297d"
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d4eac392-ccb6-4081-ae38-867fec8bb44d"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "5b6fc99c-5e36-4f58-9a34-d15bc3d8297d",
-      "elapsed-time" : "552",
+      "client-request-id" : "d4eac392-ccb6-4081-ae38-867fec8bb44d",
+      "elapsed-time" : "525",
       "Pragma" : "no-cache",
       "Expires" : "-1",
       "retry-after" : "0",
-      "request-id" : "5b6fc99c-5e36-4f58-9a34-d15bc3d8297d",
+      "request-id" : "d4eac392-ccb6-4081-ae38-867fec8bb44d",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "5b6fc99c-5e36-4f58-9a34-d15bc3d8297d",
-      "Date" : "Tue, 13 Jul 2021 19:15:53 GMT"
+      "x-ms-client-request-id" : "d4eac392-ccb6-4081-ae38-867fec8bb44d",
+      "Date" : "Thu, 27 May 2021 21:08:06 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanindexdynamicdocumentsthrowonerrore4296446a29c8d2" ]
+  "variables" : [ "hotelscanindexdynamicdocumentsthrowonerror673648775461a23" ]
 }
