@@ -372,3 +372,34 @@ stages:
               parameters:
                 ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                 ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+      - job: PublishDocsToNightlyBranch
+        dependsOn: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
+        steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipDefaultCheckout: true 
+              Paths:
+                - sdk/**/*.md
+          - download: current
+          - pwsh: |
+              Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
+            displayName: Show visible artifacts
+
+          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+            parameters:
+              PackageInfoLocations:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
+              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              Language: 'java'
+              DailyDocsBuild: true
+              SparseCheckoutPaths:
+                - docs-ref-services/
+                - metadata/

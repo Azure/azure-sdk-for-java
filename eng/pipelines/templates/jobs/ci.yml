@@ -101,6 +101,18 @@ jobs:
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
 
+      - task: Powershell@2
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+          arguments: >
+            -ServiceDirectory ${{parameters.ServiceDirectory}}
+            -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+            -AddDevVersion
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+        displayName: Update package properties with dev version
+        condition: and(succeeded(),eq(variables['SetDevVersion'],'true'))
+
       - pwsh: |
           $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
           python3 --version
