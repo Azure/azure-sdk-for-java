@@ -10,7 +10,7 @@ public class BatchConfig {
     /**
      * The maximum number of events that will be in the list when this callback is invoked.
      */
-    private final int maxBatchSize;
+    private final int batchSize;
 
     /**
      * The max time duration to wait to receive a batch of events upto the max batch size before.
@@ -18,13 +18,13 @@ public class BatchConfig {
      */
     private final Duration maxWaitTime;
 
-    public BatchConfig(int maxBatchSize, Duration maxWaitTime) {
-        this.maxBatchSize = maxBatchSize;
+    public BatchConfig(int batchSize, Duration maxWaitTime) {
+        this.batchSize = batchSize;
         this.maxWaitTime = maxWaitTime;
     }
 
-    public int getMaxBatchSize() {
-        return maxBatchSize;
+    public int getBatchSize() {
+        return batchSize;
     }
 
     public Duration getMaxWaitTime() {
@@ -36,12 +36,12 @@ public class BatchConfig {
     }
 
     public static class BatchConfigBuilder {
-        private int maxBatchSize;
+        private int batchSize;
 
         private Duration maxWaitTime;
 
-        public BatchConfigBuilder maxBatchSize(int maxBatchSize) {
-            this.maxBatchSize = maxBatchSize;
+        public BatchConfigBuilder batchSize(int batchSize) {
+            this.batchSize = batchSize;
             return this;
         }
 
@@ -51,7 +51,7 @@ public class BatchConfig {
         }
 
         public BatchConfig build() {
-            return new BatchConfig(this.maxBatchSize, this.maxWaitTime);
+            return new BatchConfig(this.batchSize, this.maxWaitTime);
         }
     }
 }

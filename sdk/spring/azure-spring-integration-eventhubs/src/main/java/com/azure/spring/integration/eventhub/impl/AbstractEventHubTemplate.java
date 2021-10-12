@@ -48,7 +48,7 @@ public class AbstractEventHubTemplate {
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
         .checkpointMode(CheckpointMode.RECORD).build();
 
-    private BatchConfig batchConfig = BatchConfig.builder().maxBatchSize(1).build();
+    private BatchConfig batchConfig = BatchConfig.builder().batchSize(1).build();
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;

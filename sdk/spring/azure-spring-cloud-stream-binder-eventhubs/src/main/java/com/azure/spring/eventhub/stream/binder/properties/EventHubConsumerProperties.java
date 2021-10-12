@@ -45,7 +45,7 @@ public class EventHubConsumerProperties {
      */
     private Duration checkpointInterval = Duration.ofSeconds(5);
 
-    private int maxBatchSize;
+    private int batchSize = 1;
 
     private Duration maxBatchDuration = null;
 
@@ -81,12 +81,12 @@ public class EventHubConsumerProperties {
         this.checkpointInterval = checkpointInterval;
     }
 
-    public int getMaxBatchSize() {
-        return maxBatchSize;
+    public int getBatchSize() {
+        return batchSize;
     }
 
-    public void setMaxBatchSize(int maxBatchSize) {
-        this.maxBatchSize = maxBatchSize;
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
     }
 
     public Duration getMaxBatchDuration() {

@@ -87,7 +87,7 @@ public class EventHubMessageChannelBinder extends
                                 .checkpointInterval(properties.getExtension().getCheckpointInterval())
                                 .build();
         this.eventHubOperation.setCheckpointConfig(checkpointConfig);
-        BatchConfig batchConfig = BatchConfig.builder().maxBatchSize(properties.getExtension().getMaxBatchSize())
+        BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getBatchSize())
                                                        .maxWaitTime(properties.getExtension().getMaxBatchDuration())
                                                        .build();
         this.eventHubOperation.setBatchConfig(batchConfig);

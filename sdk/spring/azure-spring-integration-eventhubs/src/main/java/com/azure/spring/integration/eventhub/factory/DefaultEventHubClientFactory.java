@@ -106,14 +106,14 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         }
 
         // TODO (xiada): set up event processing position for each partition
-        if (batchConfig.getMaxBatchSize() > 1) {
+        if (batchConfig.getBatchSize() > 1) {
             return new EventProcessorClientBuilder()
                 .connectionString(eventHubConnectionString, eventHubName)
                 .consumerGroup(consumerGroup)
                 .checkpointStore(new BlobCheckpointStore(blobClient))
                 .processPartitionInitialization(eventHubProcessor::onInitialize)
                 .processPartitionClose(eventHubProcessor::onClose)
-                .processEventBatch(eventHubProcessor::onEventBatch, batchConfig.getMaxBatchSize(), batchConfig.getMaxWaitTime())
+                .processEventBatch(eventHubProcessor::onEventBatch, batchConfig.getBatchSize(), batchConfig.getMaxWaitTime())
                 .processError(eventHubProcessor::onError)
                 .buildEventProcessorClient();
         } else {

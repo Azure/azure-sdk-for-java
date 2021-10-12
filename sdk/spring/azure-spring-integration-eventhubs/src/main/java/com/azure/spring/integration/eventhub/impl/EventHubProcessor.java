@@ -89,9 +89,9 @@ public class EventHubProcessor {
         this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
         this.checkpointManager.onMessage(context, context.getEventData());
 
-        if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
-            this.checkpointManager.completeBatch(context);
-        }
+//        if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
+//            this.checkpointManager.completeBatch(context);
+//        }
     }
 
 //    public void onEventBatch(EventBatchContext context) {
@@ -132,7 +132,7 @@ public class EventHubProcessor {
 
         List<Message<?>> springMessageList = new ArrayList<>();
         for(EventData event: events) {
-            springMessageList.add(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType))
+            springMessageList.add(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
         }
         this.consumer.accept(MessageBuilder.withPayload(springMessageList).copyHeaders(headers).build());
 

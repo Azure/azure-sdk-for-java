@@ -4,6 +4,7 @@
 package com.azure.spring.integration.eventhub;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.integration.core.api.BatchConfig;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
@@ -39,8 +40,8 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.subscribeByGroupOperation = new EventHubTemplate(mockClientFactory);
-        when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class)))
-            .thenReturn(this.eventProcessorClient);
+        when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class),
+            isA(BatchConfig.class))).thenReturn(this.eventProcessorClient);
         when(this.mockClientFactory.getEventProcessorClient(anyString(), anyString()))
             .thenReturn(Optional.of(this.eventProcessorClient));
         doNothing().when(this.eventProcessorClient).stop();
@@ -55,13 +56,13 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     @Override
     protected void verifySubscriberCreatorCalled() {
         verify(this.mockClientFactory, atLeastOnce()).createEventProcessorClient(anyString(), anyString(),
-            isA(EventHubProcessor.class));
+            isA(EventHubProcessor.class), isA(BatchConfig.class));
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
         verify(this.mockClientFactory, never()).createEventProcessorClient(anyString(), anyString(),
-            isA(EventHubProcessor.class));
+            isA(EventHubProcessor.class), isA(BatchConfig.class));
     }
 
     @Override

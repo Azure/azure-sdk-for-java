@@ -42,7 +42,6 @@ public class BatchCheckpointManager extends CheckpointManager {
 
     public void onMessages(EventBatchContext context) {
         completeBatch(context);
-
     }
 
     @Override
