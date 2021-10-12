@@ -1,15 +1,14 @@
 # Release History
 
-## 12.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 12.7.1 (2021-10-11)
 
 ### Bugs Fixed
 - Fixed bug where composite BlobServiceException wasn't translated into DataLakeServiceException.
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version `1.21.0` of `azure-core`
 
 ## 12.7.0 (2021-09-15)
 - GA release

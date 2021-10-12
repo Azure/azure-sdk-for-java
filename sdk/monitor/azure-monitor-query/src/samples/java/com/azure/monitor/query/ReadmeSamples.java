@@ -3,8 +3,12 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
@@ -220,5 +224,60 @@ public class ReadmeSamples {
                 }
             }
         }
+    }
+
+    /**
+     * Enable HTTP request and response logging.
+     */
+    public void tsgEnableHttpLogging() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+    }
+
+    /**
+     * Sample to show how to set response timeout for http client.
+     */
+    public void tsgHttpResponseTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+                .buildClient();
+    }
+
+    /**
+     * Sample to show how to set server timeout.
+     */
+    public void tsgSetServerTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+                new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
+    }
+
+    /**
+     * Sample to show how to allow partial errors for logs queries.
+     */
+    public void tsgAllowPartialErrors() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+                new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
     }
 }
