@@ -29,7 +29,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/5bcf8b9ce0d230830b172c2d9753cbbb4abf325b/specification/containerregistry/data-plane/Azure.ContainerRegistry/preview/2019-08-15-preview/containerregistry.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/9b489ff217acd3bd6d62b2932e42d3c08ed4d08c/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
 generate-client-as-impl: true
@@ -40,89 +40,15 @@ add-context-parameter: true
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactManifestOrderBy,ArtifactTagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties
+custom-types: ArtifactManifestOrderBy,ArtifactTagOrderBy,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties
 custom-types-subpackage: models
-```
-
-### Set readonly flag to properties of DeletedRepository
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.DeletedRepository
-  transform: >
-    $["properties"]["manifestsDeleted"].readOnly = true;
-    $["properties"]["tagsDeleted"].readOnly = true;
-```
-
-### Set readonly flag to properties of RepositoryAttributes
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.RepositoryAttributes
-  transform: >
-    $["properties"]["imageName"].readOnly = true;
-    $["properties"]["createdTime"].readOnly = true;
-    $["properties"]["lastUpdateTime"].readOnly = true;
-    $["properties"]["manifestCount"].readOnly = true;
-    $["properties"]["tagCount"].readOnly = true;
-    $["properties"]["changeableAttributes"].readOnly = true;
-```
-
-### Set readonly flag to properties of ManifestAttributesBase
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ManifestAttributesBase
-  transform: >
-    $["properties"]["digest"].readOnly = true;
-    $["properties"]["imageSize"].readOnly = true;
-    $["properties"]["createdTime"].readOnly = true;
-    $["properties"]["lastUpdateTime"].readOnly = true;
-    $["properties"]["architecture"].readOnly = true;
-    $["properties"]["os"].readOnly = true;
-    $["properties"]["tags"].readOnly = true;
-    $["properties"]["changeableAttributes"].readOnly = true;
-    $["properties"]["references"].readOnly = true;
-```
-
-### Set readonly flag to properties of ManifestAttributes
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ManifestAttributes
-  transform: >
-    $["properties"]["imageName"].readOnly = true;
-    $["properties"]["manifest"].readOnly = true;
-```
-
-### Set readonly flag to properties of TagAttributesBase
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TagAttributesBase
-  transform: >
-    $["properties"]["name"].readOnly = true;
-    $["properties"]["digest"].readOnly = true;
-    $["properties"]["createdTime"].readOnly = true;
-    $["properties"]["lastUpdateTime"].readOnly = true;
-    $["properties"]["changeableAttributes"].readOnly = true;
-```
-
-### Set readonly flag to properties of TagAttributes
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.TagAttributes
-  transform: >
-    $["properties"]["imageName"].readOnly = true;
-    $["properties"]["tag"].readOnly = true;
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy
 ```yaml
 directive:
 - from: swagger-document
-  where: $.definitions.ArtifactTagOrderBy
+  where: $.definitions.TagOrderBy
   transform: >
     $["x-ms-enum"].modelAsString = true;
 ```
@@ -131,23 +57,9 @@ directive:
 ```yaml
 directive:
 - from: swagger-document
-  where: $.definitions.ArtifactManifestOrderBy
+  where: $.definitions.ManifestOrderBy
   transform: >
     $["x-ms-enum"].modelAsString = true;
-```
-
-### Delete Quarantine fields from the manifest attributes.
-```yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ManifestChangeableAttributes
-  transform: >
-    $["properties"]["deleteEnabled"]["x-ms-client-name"] = "deleteEnabled";
-    $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
-    $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
-    $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
-    delete  $["properties"]["quarantineState"];
-    delete  $["properties"]["quarantineDetails"];
 ```
 
 ### Update the field names for RepositoryChangeableAttributes
@@ -160,6 +72,36 @@ directive:
     $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
+```
+
+### Delete Quarantine fields from the manifest attributes.
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestChangeableAttributes
+  transform: >
+    $["properties"]["deleteEnabled"]["x-ms-client-name"] = "deleteEnabled";
+    $["properties"]["writeEnabled"]["x-ms-client-name"] = "writeEnabled";
+    $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
+    $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
+```
+
+### Set readonly flag to properties of ManifestAttributesBase
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ManifestAttributesBase
+  transform: >
+      delete  $["properties"]["configMediaType"];
+```
+
+### Set readonly flag to properties of TagAttributesBase
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TagAttributesBase
+  transform: >
+      delete  $["properties"]["signed"];
 ```
 
 ### Update the field names for TagChangeableAttributes

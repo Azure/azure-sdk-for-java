@@ -51,7 +51,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.query#String-String-QueryTimeInterval
-        Mono<LogsQueryResult> queryResult = logsQueryAsyncClient.query("{workspace-id}", "{kusto-query}",
+        Mono<LogsQueryResult> queryResult = logsQueryAsyncClient.queryWorkspace("{workspace-id}", "{kusto-query}",
                 QueryTimeInterval.LAST_DAY);
         queryResult.subscribe(result -> {
             for (LogsTableRow row : result.getTable().getRows()) {
@@ -70,7 +70,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
                 .buildClient();
 
         // BEGIN: com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval
-        LogsQueryResult queryResult = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        LogsQueryResult queryResult = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
                 QueryTimeInterval.LAST_DAY);
         for (LogsTableRow row : queryResult.getTable().getRows()) {
             System.out.println(row.getRow()
@@ -86,7 +86,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildAsyncClient();
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions
-        Mono<Response<LogsQueryResult>> queryResult = logsQueryAsyncClient.queryWithResponse("{workspace-id}",
+        Mono<Response<LogsQueryResult>> queryResult = logsQueryAsyncClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}",
                 QueryTimeInterval.LAST_7_DAYS,
                 new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
@@ -108,7 +108,7 @@ public class LogsQueryClientJavaDocCodeSnippets {
                 .buildClient();
         
         // BEGIN: com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context
-        Response<LogsQueryResult> queryResult = logsQueryClient.queryWithResponse("{workspace-id}",
+        Response<LogsQueryResult> queryResult = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}",
                 QueryTimeInterval.LAST_7_DAYS,
                 new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)),
@@ -130,8 +130,8 @@ public class LogsQueryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.monitor.query.LogsQueryAsyncClient.queryBatch#LogsBatchQuery
         LogsBatchQuery batchQuery = new LogsBatchQuery();
-        String queryId1 = batchQuery.addQuery("{workspace-id-1}", "{kusto-query-1}", QueryTimeInterval.LAST_DAY);
-        String queryId2 = batchQuery.addQuery("{workspace-id-2}", "{kusto-query-2}",
+        String queryId1 = batchQuery.addWorkspaceQuery("{workspace-id-1}", "{kusto-query-1}", QueryTimeInterval.LAST_DAY);
+        String queryId2 = batchQuery.addWorkspaceQuery("{workspace-id-2}", "{kusto-query-2}",
                 QueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
         
         Mono<LogsBatchQueryResultCollection> batchQueryResponse = logsQueryAsyncClient.queryBatch(batchQuery);
@@ -157,8 +157,8 @@ public class LogsQueryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery
         LogsBatchQuery batchQuery = new LogsBatchQuery();
-        String queryId1 = batchQuery.addQuery("{workspace-id-1}", "{kusto-query-1}", QueryTimeInterval.LAST_DAY);
-        String queryId2 = batchQuery.addQuery("{workspace-id-2}", "{kusto-query-2}",
+        String queryId1 = batchQuery.addWorkspaceQuery("{workspace-id-1}", "{kusto-query-1}", QueryTimeInterval.LAST_DAY);
+        String queryId2 = batchQuery.addWorkspaceQuery("{workspace-id-2}", "{kusto-query-2}",
                 QueryTimeInterval.LAST_7_DAYS, new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(2)));
         
         LogsBatchQueryResultCollection batchQueryResponse = logsQueryClient.queryBatch(batchQuery);

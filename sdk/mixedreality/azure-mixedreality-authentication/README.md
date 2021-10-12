@@ -28,7 +28,7 @@ token from the STS that can be used to access Mixed Reality services.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-authentication</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.2</version>
 </dependency>
 ```
 

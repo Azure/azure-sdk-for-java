@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for `validateMoveResources` in `GenericResources`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

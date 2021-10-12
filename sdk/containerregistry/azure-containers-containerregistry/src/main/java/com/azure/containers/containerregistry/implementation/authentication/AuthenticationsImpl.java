@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
@@ -32,6 +33,8 @@ public final class AuthenticationsImpl {
     /** Registry login URL. */
     private final String url;
 
+    private final String apiVersion;
+
     /**
      * Gets Registry login URL.
      *
@@ -42,6 +45,13 @@ public final class AuthenticationsImpl {
     }
 
     /**
+    * Gets the API version of the client.
+    * */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
      * Initializes an instance of AccessTokensImpl.
      *
      * @param url the service endpoint.
@@ -49,41 +59,48 @@ public final class AuthenticationsImpl {
      * @param serializerAdapter the serializer adapter for the rest client.
      *
      */
-    public AuthenticationsImpl(String url, HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    public AuthenticationsImpl(String url, String apiVersion, HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.service =
             RestProxy.create(AuthenticationsService.class, httpPipeline, serializerAdapter);
         this.url = url;
+        this.apiVersion = apiVersion;
     }
 
     /**
-     * The interface defining all the services for ContainerRegistryAuthentications to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureContainerRegistryAuthentications to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "ContainerRegistryAut")
+    @ServiceInterface(name = "AzureContainerRegist")
     public interface AuthenticationsService {
+        // @Multipart not supported by RestProxy
         @Post("/oauth2/exchange")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrRefreshToken>> exchangeAadAccessTokenForAcrRefreshToken(
-                @HostParam("url") String url,
-                @FormParam(value = "grant_type", encoded = true) String grantType,
-                @FormParam(value = "service", encoded = true) String service,
-                @FormParam(value = "access_token", encoded = true) String accessToken,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("url") String url,
+            @QueryParam("api-version") String apiVersion,
+            @FormParam("grant_type") String grantType,
+            @FormParam("service") String service,
+            @FormParam("tenant") String tenant,
+            @FormParam("refresh_token") String refreshToken,
+            @FormParam("access_token") String accessToken,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
+        // @Multipart not supported by RestProxy
         @Post("/oauth2/token")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<Response<AcrAccessToken>> exchangeAcrRefreshTokenForAcrAccessToken(
-                @HostParam("url") String url,
-                @FormParam(value = "grant_type") String grantType,
-                @FormParam(value = "service") String service,
-                @FormParam(value = "scope") String scope,
-                @FormParam(value = "refresh_token") String refreshToken,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("url") String url,
+            @QueryParam("api-version") String apiVersion,
+            @FormParam("service") String service,
+            @FormParam("scope") String scope,
+            @FormParam("refresh_token") String refreshToken,
+            @FormParam("grant_type") String grantType,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -104,7 +121,7 @@ public final class AuthenticationsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.exchangeAadAccessTokenForAcrRefreshToken(
-                                this.getUrl(), grantType, serviceParam, accessToken, accept, context));
+                                this.getUrl(), this.getApiVersion(), grantType, serviceParam, null, null, accessToken, accept, context));
     }
 
     /**
@@ -151,7 +168,7 @@ public final class AuthenticationsImpl {
         return FluxUtil.withContext(
                 context ->
                         service.exchangeAcrRefreshTokenForAcrAccessToken(
-                                this.getUrl(), grantType, serviceParam, scope, refreshToken, accept, context));
+                                this.getUrl(), this.getApiVersion(), serviceParam, scope, refreshToken, grantType, accept, context));
     }
 
     /**

@@ -9,6 +9,7 @@ public class ModelsRepositoryConstants {
     public static final String JSON_EXTENSION = ".json";
     public static final String JSON_EXPANDED_EXTENSION = ".expanded.json";
     public static final String DEFAULT_MODELS_REPOSITORY_ENDPOINT = "https://devicemodels.azure.com";
+    public static final String MODELS_REPOSITORY_METADATA_FILE = "metadata.json";
 
     // DTDL conventions
     public static final String DTDL_TYPE = "@type";

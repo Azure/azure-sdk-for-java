@@ -71,11 +71,10 @@ public final class NotebookOperationResultsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getWithResponseAsync(String operationId) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(), this.client.getApiVersion(), operationId, accept, context));
+                context -> service.get(this.client.getEndpoint(), apiVersion, operationId, accept, context));
     }
 
     /**
@@ -90,8 +89,9 @@ public final class NotebookOperationResultsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getWithResponseAsync(String operationId, Context context) {
+        final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), operationId, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, operationId, accept, context);
     }
 
     /**

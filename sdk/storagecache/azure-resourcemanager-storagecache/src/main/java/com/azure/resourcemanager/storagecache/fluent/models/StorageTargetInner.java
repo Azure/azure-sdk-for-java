@@ -10,6 +10,7 @@ import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
 import com.azure.resourcemanager.storagecache.models.ClfsTarget;
 import com.azure.resourcemanager.storagecache.models.NamespaceJunction;
 import com.azure.resourcemanager.storagecache.models.Nfs3Target;
+import com.azure.resourcemanager.storagecache.models.OperationalStateType;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetResource;
 import com.azure.resourcemanager.storagecache.models.StorageTargetType;
@@ -92,6 +93,29 @@ public final class StorageTargetInner extends StorageTargetResource {
      */
     public ProvisioningStateType provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the state property: Storage target operational state.
+     *
+     * @return the state value.
+     */
+    public OperationalStateType state() {
+        return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Set the state property: Storage target operational state.
+     *
+     * @param state the state value to set.
+     * @return the StorageTargetInner object itself.
+     */
+    public StorageTargetInner withState(OperationalStateType state) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageTargetProperties();
+        }
+        this.innerProperties().withState(state);
+        return this;
     }
 
     /**
