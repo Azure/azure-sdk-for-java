@@ -22,7 +22,6 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     private String algorithm;
 
-    @SuppressWarnings(value = "SE_BAD_FIELD")
     private final KeyVaultClient keyVaultClient;
 
     /**
@@ -35,6 +34,15 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
         this.algorithm = algorithm;
         this.kid = kid;
         this.keyVaultClient = keyVaultClient;
+    }
+
+    /**
+     * Builder for key vault private key
+     * @param algorithm algorithm
+     * @param kid The key id
+     */
+    public KeyVaultPrivateKey(String algorithm, String kid) {
+        this(algorithm, kid, null);
     }
 
     /**
