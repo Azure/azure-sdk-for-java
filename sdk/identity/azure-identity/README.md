@@ -61,9 +61,9 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 
 When debugging and executing code locally it is typical for a developer to use their own account for authenticating calls to Azure services. There are several developer tools which can be used to perform this authentication in your development environment:
 
-- [Azure Toolkit for IntelliJ](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-dev-env-auth#intellij-credential)
-- [Visual Studio Code Azure Account Extension](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-dev-env-auth#visual-studio-code-credential)
-- [Azure CLI](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
+- [Azure Toolkit for IntelliJ](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#intellij-credential)
+- [Visual Studio Code Azure Account Extension](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#visual-studio-code-credential)
+- [Azure CLI](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
 
 Click on each item above to learn about how to configure them for Azure Identity authentication.
 
@@ -144,7 +144,7 @@ public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
 In addition to configuring the `managedIdentityClientId` via code, it can also be set using the `AZURE_CLIENT_ID` environment variable. These two approaches are equivalent when using the `DefaultAzureCredential`.
 
 ### Authenticating a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
-To Authenticate using IntelliJ, please ensure that configuration instructions [here](https://docs.microsoft.com/en-us/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
+To Authenticate using IntelliJ, please ensure that configuration instructions [here](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account to the Azure Toolkit for IntelliJ.
 
@@ -172,7 +172,7 @@ public void createDefaultAzureCredentialForIntelliJ() {
 ## Managed Identity Support
 The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via either the `DefaultAzureCredential` or the `ManagedIdentityCredential` directly for the following Azure Services:
 * [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
-* [Azure Virtual Machines Scale Sets](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
+* [Azure Virtual Machines Scale Sets](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
 * [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
 * [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
 * [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
