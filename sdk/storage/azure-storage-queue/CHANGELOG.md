@@ -1,14 +1,11 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.11.1 (2021-10-11)
 
 ### Other Changes
+#### Dependency Updates
+- Updated `azure-storage-common` to version `12.13.1`
+- Updated `azure-core` to version `1.21.0`
 
 ## 12.11.0 (2021-09-15)
 - GA release

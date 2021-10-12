@@ -201,10 +201,16 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        boolean disableTracing = (boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false);
-        if (!TracerProxy.isTracingEnabled() || disableTracing) {
+        // First check if tracing is enabled. This is an optimized operation, so it is done first.
+        if (!TracerProxy.isTracingEnabled()) {
             return context;
         }
+
+        // Then check if this method disabled tracing. This requires walking a linked list, so do it last.
+        if ((boolean) context.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
+            return context;
+        }
+
         String spanName = interfaceParser.getServiceName() + "." + method.getName();
         context = TracerProxy.setSpanName(spanName, context);
         return TracerProxy.start(spanName, context);
@@ -458,8 +464,10 @@ public final class RestProxy implements InvocationHandler {
             }
         }
 
-        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(cls))
-            .switchIfEmpty(Mono.error(new RuntimeException("Cannot find suitable constructor for class " + cls)))
+        final Class<? extends Response<?>> clsFinal = cls;
+        return Mono.just(RESPONSE_CONSTRUCTORS_CACHE.get(clsFinal))
+            .switchIfEmpty(Mono.defer(() ->
+                Mono.error(new RuntimeException("Cannot find suitable constructor for class " + clsFinal))))
             .flatMap(ctr -> RESPONSE_CONSTRUCTORS_CACHE.invoke(ctr, response, bodyAsObject));
     }
 

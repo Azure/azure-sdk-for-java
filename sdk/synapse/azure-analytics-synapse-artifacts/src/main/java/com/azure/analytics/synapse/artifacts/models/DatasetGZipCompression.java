@@ -15,13 +15,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class DatasetGZipCompression extends DatasetCompression {
     /*
-     * The GZip compression level.
+     * The GZip compression level. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "level")
     private Object level;
 
     /**
-     * Get the level property: The GZip compression level.
+     * Get the level property: The GZip compression level. Type: string (or Expression with resultType string).
      *
      * @return the level value.
      */
@@ -30,7 +31,7 @@ public final class DatasetGZipCompression extends DatasetCompression {
     }
 
     /**
-     * Set the level property: The GZip compression level.
+     * Set the level property: The GZip compression level. Type: string (or Expression with resultType string).
      *
      * @param level the level value to set.
      * @return the DatasetGZipCompression object itself.

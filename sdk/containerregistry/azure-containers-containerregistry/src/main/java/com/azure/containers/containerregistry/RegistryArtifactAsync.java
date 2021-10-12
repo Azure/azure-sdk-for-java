@@ -6,8 +6,8 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.ArtifactTagPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
-import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.models.ManifestWriteableProperties;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagWriteableProperties;
@@ -85,9 +85,11 @@ public final class RegistryArtifactAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException("'digest' can't be empty"));
         }
 
-        ContainerRegistryImpl registryImpl = new ContainerRegistryImplBuilder()
+        AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
             .pipeline(httpPipeline)
-            .url(endpoint).buildClient();
+            .url(endpoint)
+            .apiVersion(version)
+            .buildClient();
 
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;

@@ -96,7 +96,7 @@ public final class MetricsQueryResult {
      * @param metricName The name of the metric to look up the result for.
      * @return The {@link MetricResult} for {@code metricName} if found, {@code null} otherwise.
      */
-    public MetricResult getMetrics(String metricName) {
+    public MetricResult getMetricByName(String metricName) {
         Objects.requireNonNull(metricName, "'metricName' cannot be null");
         if (CoreUtils.isNullOrEmpty(metrics)) {
             return null;

@@ -85,7 +85,16 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context}
+     * <!-- src_embed com.azure.core.util.tracing.start#string-context -->
+     * <pre>
+     * &#47;&#47; pass the current tracing span context to the calling method
+     * Context traceContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
+     * &#47;&#47; start a new tracing span with the given method name and explicit parent span
+     * Context updatedContext = tracer.start&#40;&quot;azure.keyvault.secrets&#47;setsecret&quot;, traceContext&#41;;
+     * System.out.printf&#40;&quot;Span returned in the context object: %s%n&quot;,
+     *     updatedContext.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.start#string-context -->
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
@@ -104,7 +113,16 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Starts a tracing span with provided method name and explicit parent span</p>
-     * {@codesnippet com.azure.core.util.tracing.start#options-context}
+     * <!-- src_embed com.azure.core.util.tracing.start#options-context -->
+     * <pre>
+     * &#47;&#47; start a new CLIENT tracing span with the given start options and explicit parent span
+     * StartSpanOptions options = new StartSpanOptions&#40;SpanKind.CLIENT&#41;
+     *     .setAttribute&#40;&quot;key&quot;, &quot;value&quot;&#41;;
+     * Context updatedClientSpanContext = tracer.start&#40;&quot;azure.keyvault.secrets&#47;setsecret&quot;, options, traceContext&#41;;
+     * System.out.printf&#40;&quot;Span returned in the context object: %s%n&quot;,
+     *     updatedClientSpanContext.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.start#options-context -->
      *
      * @param methodName Name of the method triggering the span creation.
      * @param options span creation options.
@@ -140,13 +158,45 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-SEND}
+     * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-SEND -->
+     * <pre>
+     * &#47;&#47; pass the current tracing span and request metadata to the calling method
+     * Context sendContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;
+     *     .addData&#40;ENTITY_PATH_KEY, &quot;entity-path&quot;&#41;.addData&#40;HOST_NAME_KEY, &quot;hostname&quot;&#41;;
+     *
+     * &#47;&#47; start a new tracing span with explicit parent, sets the request attributes on the span and sets the span
+     * &#47;&#47; kind to client when process kind SEND
+     * Context updatedSendContext = tracer.start&#40;&quot;azure.eventhubs.send&quot;, sendContext, ProcessKind.SEND&#41;;
+     * System.out.printf&#40;&quot;Span returned in the context object: %s%n&quot;,
+     *     updatedSendContext.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.start#string-context-processKind-SEND -->
      *
      * <p>Starts a tracing span with provided method name and AMQP operation MESSAGE</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-MESSAGE}
+     * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-MESSAGE -->
+     * <pre>
+     * String diagnosticIdKey = &quot;Diagnostic-Id&quot;;
+     * &#47;&#47; start a new tracing span with explicit parent, sets the diagnostic Id &#40;traceparent headers&#41; on the current
+     * &#47;&#47; context when process kind MESSAGE
+     * Context updatedReceiveContext = tracer.start&#40;&quot;azure.eventhubs.receive&quot;, traceContext,
+     *     ProcessKind.MESSAGE&#41;;
+     * System.out.printf&#40;&quot;Diagnostic Id: %s%n&quot;, updatedReceiveContext.getData&#40;diagnosticIdKey&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.start#string-context-processKind-MESSAGE -->
      *
      * <p>Starts a tracing span with provided method name and AMQP operation PROCESS</p>
-     * {@codesnippet com.azure.core.util.tracing.start#string-context-processKind-PROCESS}
+     * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-PROCESS -->
+     * <pre>
+     * String spanImplContext = &quot;span-context&quot;;
+     * &#47;&#47; start a new tracing span with remote parent and uses the span in the current context to return a scope
+     * &#47;&#47; when process kind PROCESS
+     * Context processContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;
+     *     .addData&#40;spanImplContext, &quot;&lt;user-current-span-context&gt;&quot;&#41;;
+     * Context updatedProcessContext = tracer.start&#40;&quot;azure.eventhubs.process&quot;, processContext,
+     *     ProcessKind.PROCESS&#41;;
+     * System.out.printf&#40;&quot;Scope: %s%n&quot;, updatedProcessContext.getData&#40;&quot;scope&quot;&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.start#string-context-processKind-PROCESS -->
      *
      * @param methodName Name of the method triggering the span creation.
      * @param context Additional metadata that is passed through the call stack.
@@ -163,7 +213,16 @@ public interface Tracer {
      *
      * <p>Completes the tracing span present in the context, with the corresponding OpenTelemetry status for the given
      * response status code</p>
-     * {@codesnippet com.azure.core.util.tracing.end#int-throwable-context}
+     * <!-- src_embed com.azure.core.util.tracing.end#int-throwable-context -->
+     * <pre>
+     * &#47;&#47; context containing the current tracing span to end
+     * String openTelemetrySpanKey = &quot;openTelemetry-span&quot;;
+     * Context traceContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
+     *
+     * &#47;&#47; completes the tracing span with the passed response status code
+     * tracer.end&#40;200, null, traceContext&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.end#int-throwable-context -->
      *
      * @param responseCode Response status code if the span is in an HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
@@ -178,7 +237,13 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Completes the tracing span with the corresponding OpenTelemetry status for the given status message</p>
-     * {@codesnippet com.azure.core.util.tracing.end#string-throwable-context}
+     * <!-- src_embed com.azure.core.util.tracing.end#string-throwable-context -->
+     * <pre>
+     * &#47;&#47; context containing the current tracing span to end
+     * &#47;&#47; completes the tracing span with the passed status message
+     * tracer.end&#40;&quot;success&quot;, null, traceContext&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.end#string-throwable-context -->
      *
      * @param statusMessage The error or success message that occurred during the call, or {@code null} if no error
      * occurred.
@@ -204,7 +269,14 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Retrieve the span name of the returned span</p>
-     * {@codesnippet com.azure.core.util.tracing.setSpanName#string-context}
+     * <!-- src_embed com.azure.core.util.tracing.setSpanName#string-context -->
+     * <pre>
+     * &#47;&#47; Sets the span name of the returned span on the context object, with key PARENT_SPAN_KEY
+     * String openTelemetrySpanKey = &quot;openTelemetry-span&quot;;
+     * Context context = tracer.setSpanName&#40;&quot;test-span-method&quot;, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Span name: %s%n&quot;, context.getData&#40;PARENT_SPAN_KEY&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.setSpanName#string-context -->
      *
      * @param spanName Name to give the next span.
      * @param context Additional metadata that is passed through the call stack.
@@ -220,7 +292,18 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Link multiple spans using their span context information</p>
-     * {@codesnippet com.azure.core.util.tracing.addLink#context}
+     * <!-- src_embed com.azure.core.util.tracing.addLink#context -->
+     * <pre>
+     * &#47;&#47; use the parent context containing the current tracing span to start a child span
+     * Context parentContext = new Context&#40;PARENT_SPAN_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
+     * &#47;&#47; use the returned span context information of the current tracing span to link
+     * Context spanContext = tracer.start&#40;&quot;test.method&quot;, parentContext, ProcessKind.MESSAGE&#41;;
+     *
+     * &#47;&#47; Adds a link between multiple span's using the span context information of the Span
+     * &#47;&#47; For each event processed, add a link with the created spanContext
+     * tracer.addLink&#40;spanContext&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.addLink#context -->
      *
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
@@ -233,7 +316,14 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Extracts the corresponding span context information from a valid diagnostic id</p>
-     * {@codesnippet com.azure.core.util.tracing.extractContext#string-context}
+     * <!-- src_embed com.azure.core.util.tracing.extractContext#string-context -->
+     * <pre>
+     * &#47;&#47; Extracts the span context information from the passed diagnostic Id that can be used for linking spans.
+     * String spanImplContext = &quot;span-context&quot;;
+     * Context spanContext = tracer.extractContext&#40;&quot;valid-diagnostic-id&quot;, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Span context of the current tracing span: %s%n&quot;, spanContext.getData&#40;spanImplContext&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.extractContext#string-context -->
      *
      * @param diagnosticId Unique identifier for the trace information of the span.
      * @param context Additional metadata that is passed through the call stack.
@@ -248,7 +338,14 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Returns a builder with the provided span name.</p>
-     * {@codesnippet com.azure.core.util.tracing.getSpanBuilder#string-context}
+     * <!-- src_embed com.azure.core.util.tracing.getSpanBuilder#string-context -->
+     * <pre>
+     * &#47;&#47; Returns a span builder with the provided name
+     * String methodName = &quot;message-span&quot;;
+     * Context spanContext = tracer.getSharedSpanBuilder&#40;methodName, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;Span context of the current tracing span: %s%n&quot;, spanContext.getData&#40;SPAN_BUILDER_KEY&#41;.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.getSpanBuilder#string-context -->
      *
      * @param spanName Name to give the span for the created builder.
      * @param context Additional metadata that is passed through the call stack.
@@ -304,7 +401,22 @@ public interface Tracer {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Starts a tracing span, makes it current and ends it</p>
-     * {@codesnippet com.azure.core.util.tracing.makeSpanCurrent#context}
+     * <!-- src_embed com.azure.core.util.tracing.makeSpanCurrent#context -->
+     * <pre>
+     * &#47;&#47; Starts a span, makes it current and then stops it.
+     * Context traceContext = tracer.start&#40;&quot;EventHub.process&quot;, Context.NONE&#41;;
+     *
+     * &#47;&#47; Make sure to always use try-with-resource statement with makeSpanCurrent
+     * try &#40;AutoCloseable ignored = tracer.makeSpanCurrent&#40;traceContext&#41;&#41; &#123;
+     *     System.out.println&#40;&quot;doing some work...&quot;&#41;;
+     * &#125; catch &#40;Throwable throwable&#41; &#123;
+     *     tracer.end&#40;&quot;Failure&quot;, throwable, traceContext&#41;;
+     * &#125; finally &#123;
+     *     tracer.end&#40;&quot;OK&quot;, null, traceContext&#41;;
+     * &#125;
+     *
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.makeSpanCurrent#context -->
      *
      * @return Closeable that should be closed in the same thread with try-with-resource statement.
      */

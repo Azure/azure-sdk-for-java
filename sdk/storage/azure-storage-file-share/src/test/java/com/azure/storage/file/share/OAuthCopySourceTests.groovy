@@ -39,14 +39,14 @@ class OAuthCopySourceTests extends APISpec {
 
     def getBlobContainer() {
         instrument(new BlobServiceClientBuilder())
-            .endpoint(env.primaryAccount.blobEndpoint)
-            .credential(env.primaryAccount.credential)
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
             .buildClient()
             .createBlobContainer(getShareName())
     }
 
     // RBAC replication lag
-    @Retry(count = 5, delay = 30, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 30, condition = { environment.testMode == TestMode.LIVE })
     def "Copy from URL with oauth source"() {
         given:
         def oauthHeader = getAuthToken()

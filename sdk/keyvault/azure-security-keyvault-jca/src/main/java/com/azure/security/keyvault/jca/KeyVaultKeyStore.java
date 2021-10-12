@@ -25,9 +25,11 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.WARNING;
@@ -122,10 +124,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        long refreshInterval = Optional.of("azure.keyvault.jca.certificates-refresh-interval")
-                                       .map(System::getProperty)
-                                       .map(Long::valueOf)
-                                       .orElse(0L);
+        long refreshInterval = getRefreshInterval();
         refreshCertificatesWhenHaveUnTrustCertificate =
             Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
                     .map(System::getProperty)
@@ -139,6 +138,15 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         classpathCertificates = new ClasspathCertificates();
         allCertificates = Arrays.asList(
             jreCertificates, wellKnowCertificates, customCertificates, keyVaultCertificates, classpathCertificates);
+    }
+
+    Long getRefreshInterval() {
+        return Stream.of("azure.keyvault.jca.certificates-refresh-interval-in-ms", "azure.keyvault.jca.certificates-refresh-interval")
+                     .map(System::getProperty)
+                     .filter(Objects::nonNull)
+                     .map(Long::valueOf)
+                     .findFirst()
+                     .orElse(0L);
     }
 
     /**

@@ -1,14 +1,10 @@
 # Release History
 
-## 12.14.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.13.1 (2021-10-11)
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
 
 ## 12.13.0 (2021-09-15)
 - GA release
@@ -29,7 +25,7 @@
 - Updated `azure-core` to version `1.16.0`
 
 ## 12.11.0 (2021-04-29)
-- Fixed concurrency issue in UploadBufferPool that caused large files to hang.
+- Fixed concurrency issue in UploadBufferPool that caused large files to not respond.
 
 ## 12.11.0-beta.3 (2021-04-16)
 - Fixed a bug where connection strings with unencoded SAS's would result in URL exceptions. 

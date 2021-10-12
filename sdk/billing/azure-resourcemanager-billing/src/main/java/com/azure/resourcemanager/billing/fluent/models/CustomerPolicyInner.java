@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.ViewCharges;
@@ -13,17 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The customer's Policy. */
-@JsonFlatten
 @Fluent
-public class CustomerPolicyInner extends ProxyResource {
+public final class CustomerPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerPolicyInner.class);
 
     /*
-     * The policy that controls whether the users in customer's organization
-     * can view charges at pay-as-you-go prices.
+     * The properties of a customer's policy.
      */
-    @JsonProperty(value = "properties.viewCharges")
-    private ViewCharges viewCharges;
+    @JsonProperty(value = "properties")
+    private CustomerPolicyProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: The properties of a customer's policy.
+     *
+     * @return the innerProperties value.
+     */
+    private CustomerPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the viewCharges property: The policy that controls whether the users in customer's organization can view
@@ -32,7 +38,7 @@ public class CustomerPolicyInner extends ProxyResource {
      * @return the viewCharges value.
      */
     public ViewCharges viewCharges() {
-        return this.viewCharges;
+        return this.innerProperties() == null ? null : this.innerProperties().viewCharges();
     }
 
     /**
@@ -43,7 +49,10 @@ public class CustomerPolicyInner extends ProxyResource {
      * @return the CustomerPolicyInner object itself.
      */
     public CustomerPolicyInner withViewCharges(ViewCharges viewCharges) {
-        this.viewCharges = viewCharges;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomerPolicyProperties();
+        }
+        this.innerProperties().withViewCharges(viewCharges);
         return this;
     }
 
@@ -53,5 +62,8 @@ public class CustomerPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

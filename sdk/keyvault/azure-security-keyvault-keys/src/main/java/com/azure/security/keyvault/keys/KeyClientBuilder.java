@@ -41,23 +41,23 @@ import java.util.Map;
  * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient} are
  * {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation}
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.withhttpclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient}
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
  * and {@link KeyClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.pipeline.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline}
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.keyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.KeyClient.instantiation}
  *
  * @see KeyAsyncClient
  * @see KeyClient
@@ -178,7 +178,6 @@ public final class KeyClientBuilder {
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
         policies.add(new KeyVaultCredentialPolicy(credential));
-
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
 
