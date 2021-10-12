@@ -1,14 +1,11 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.14.1 (2021-10-11)
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version `1.21.0` of `azure-core`
 
 ## 12.14.0 (2021-09-15)
 - GA release
