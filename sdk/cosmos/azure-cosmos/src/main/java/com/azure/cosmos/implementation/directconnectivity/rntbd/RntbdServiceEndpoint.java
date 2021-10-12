@@ -144,7 +144,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 
         if (eventLoopGroup instanceof EpollEventLoopGroup) {
-            //The default Linux os config for tcp keep-alive, so a broken connection can be detected faster.
+            // Override the default Linux os config for tcp keep-alive, so a broken connection can be detected faster.
             // see man 7 tcp for more details.
             bootstrap.channel(EpollSocketChannel.class)
                 .option(EpollChannelOption.TCP_KEEPINTVL, 1) // default value 75s
