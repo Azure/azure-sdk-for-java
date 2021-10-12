@@ -22,6 +22,7 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     private String algorithm;
 
+    @SuppressWarnings(value = "SE_BAD_FIELD")
     private final KeyVaultClient keyVaultClient;
 
     /**
