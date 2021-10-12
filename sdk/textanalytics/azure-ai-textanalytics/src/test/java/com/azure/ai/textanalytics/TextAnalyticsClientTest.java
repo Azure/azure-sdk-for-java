@@ -2214,6 +2214,28 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeActionsWithMultiSameKindActions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeActionsWithMultiSameKindActionsRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, null, null);
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
+            final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
+            actionsResults.forEach(actionsResult -> {
+                assertEquals(2, actionsResult.getRecognizeEntitiesResults().stream().count());
+                assertEquals(2, actionsResult.getRecognizePiiEntitiesResults().stream().count());
+                assertEquals(2, actionsResult.getRecognizeLinkedEntitiesResults().stream().count());
+                assertEquals(2, actionsResult.getAnalyzeSentimentResults().stream().count());
+                assertEquals(2, actionsResult.getExtractKeyPhrasesResults().stream().count());
+                assertEquals(2, actionsResult.getExtractSummaryResults().stream().count());
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeBatchActionsPaginationRunner((documents, tasks) -> {

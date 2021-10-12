@@ -1,5 +1,8 @@
 # Release History
 ## 5.2.0-beta.2 (Unreleased)
+### Feature Added
+- Multiple of the same action type is now supported with `beginAnalyzeActions` method.
+
 ### Breaking Changes
 - Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`, in the
   option bag, `ExtractSummaryAction`.

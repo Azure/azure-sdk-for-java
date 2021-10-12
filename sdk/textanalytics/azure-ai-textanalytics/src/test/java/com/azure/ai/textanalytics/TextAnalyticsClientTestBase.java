@@ -629,6 +629,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeActionsWithMultiSameKindActions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -1054,6 +1058,23 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         );
     }
 
+    void analyzeActionsWithMultiSameKindActionsRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
+            new TextAnalyticsActions()
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction(), new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction(), new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction(), new ExtractKeyPhrasesAction())
+                .setExtractSummaryActions(new ExtractSummaryAction(), new ExtractSummaryAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction(),
+                    new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction(), new AnalyzeSentimentAction())
+        );
+    }
+
     void analyzeBatchActionsPaginationRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner,
         int documentsInTotal) {
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -1299,7 +1320,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateCategorizedEntity(
         CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
-        assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
+        assertNotNull(actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
