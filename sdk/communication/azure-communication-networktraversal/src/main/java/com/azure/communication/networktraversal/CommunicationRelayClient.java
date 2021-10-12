@@ -37,7 +37,7 @@ public final class CommunicationRelayClient {
 
     }
 
-        /**
+    /**
      * Creates a new CommunicationRelayConfiguration.
      *
      * @return The obtained Communication Relay Configuration
