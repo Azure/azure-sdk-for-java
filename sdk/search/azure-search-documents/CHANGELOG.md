@@ -1,6 +1,6 @@
 # Release History
 
-## 11.4.4 (2021-10-12)
+## 11.4.4 (2021-10-13)
 
 ### Other Changes
 
