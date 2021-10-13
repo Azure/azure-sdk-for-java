@@ -40,6 +40,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -47,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -73,6 +75,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
+    private final List<FormDataEntry> formDataEntries = new ArrayList<>();
     private final BitSet expectedStatusCodes;
     private final Type returnType;
     private final Type returnValueWireType;
@@ -212,6 +215,12 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                     formSubstitutions.add(new Substitution(formParamAnnotation.value(), parameterIndex,
                         !formParamAnnotation.encoded()));
                     bodyContentType = ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+                    bodyJavaType = String.class;
+                } else if (annotationType.equals(FormData.class)) {
+                    final FormData formDataAnnotation = (FormData) annotation;
+                    formDataEntries.add(new FormDataEntry(formDataAnnotation, parameterIndex,
+                        swaggerMethod.getGenericParameterTypes()[parameterIndex]));
+                    bodyContentType = ContentType.MULTIPART_FORM_DATA;
                     bodyJavaType = String.class;
                 }
             }
@@ -430,6 +439,31 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
+     * Generate the object to be used as the value of the HTTP request.
+     *
+     * @param swaggerMethodArguments The method arguments to generate the value object from.
+     * @return The object that will be used as the body of the HTTP request
+     */
+    public String setMultipartBody(Object[] swaggerMethodArguments, String boundary) {
+        String result = null;
+
+        if (!CoreUtils.isNullOrEmpty(formDataEntries) && swaggerMethodArguments != null) {
+            String boundaryPrefix = "--" + boundary + System.lineSeparator();
+            String boundaryDelimiter = System.lineSeparator() + "--" + boundary + System.lineSeparator();
+            String boundarySuffix = System.lineSeparator() + "--" + boundary + "--";
+
+            result = formDataEntries.stream()
+                .map(formDataEntry -> serializeMultipartFormData(serializer, formDataEntry.getFormData().value(),
+                    swaggerMethodArguments[formDataEntry.getParameterIndex()],
+                    formDataEntry.getFormData().filename()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(boundaryDelimiter, boundaryPrefix, boundarySuffix));
+        }
+
+        return result;
+    }
+
+    /**
      * Get the Content-Type of the body of this Swagger method.
      *
      * @return the Content-Type of the body of this Swagger method
@@ -460,7 +494,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      *
-     * Get the type that the return value will be send across the network as. If returnValueWireType is not null, then
+     * Get the type that the return value will be sent across the network as. If returnValueWireType is not null, then
      * the raw HTTP response body will need to parsed to this type and then converted to the actual returnType.
      *
      * @return the type that the raw HTTP response body will be sent as
@@ -511,6 +545,48 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
     }
 
+    private static String serializeMultipartFormData(SerializerAdapter serializer, String key, Object value,
+                                                     String filename) {
+        // Can the key even be null? Should we allow for empty keys?
+        if (CoreUtils.isNullOrEmpty(key) || value == null) {
+            return null;
+        }
+
+        // Should we encode the key and filename value or should we assume they will be encoded by the calling function
+        // if required?
+        StringBuilder partBuilder = new StringBuilder("Content-Disposition: form-data; name=\"")
+            .append(UrlEscapers.FORM_ESCAPER.escape(key))
+            .append("\"");
+
+        if (!CoreUtils.isNullOrEmpty(filename)) {
+            partBuilder.append("; filename=\"")
+                .append(UrlEscapers.FORM_ESCAPER.escape(filename))
+                .append("\"")
+                .append(System.lineSeparator())
+                .append("Content-Type: ");
+
+            String mimeType = URLConnection.guessContentTypeFromName(filename);
+
+            if (CoreUtils.isNullOrEmpty(mimeType)) {
+                mimeType = ContentType.APPLICATION_OCTET_STREAM;
+            }
+
+            partBuilder.append(mimeType);
+
+            // We might want to consider adding a "hidden" for a default "_charset_" field instead of appending this to
+            // each part.
+            if (mimeType.equals(ContentType.TEXT_PLAIN)) {
+                partBuilder.append("; charset=UTF-8");
+            }
+        }
+
+        partBuilder.append(System.lineSeparator())
+            .append(System.lineSeparator())
+            .append(serializeAndEncodeFormDataValue(serializer, value));
+
+        return partBuilder.toString();
+    }
+
     private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
         boolean shouldEncode) {
         if (value == null) {
@@ -520,6 +596,16 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         String serializedValue = serializer.serializeRaw(value);
 
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
+    }
+
+    private static String serializeAndEncodeFormDataValue(SerializerAdapter serializer, Object value) {
+        if (value == null) {
+            return null;
+        }
+
+        // This should produce a JSON is value is a list, right?
+        // On another note, do we want to encode the contents?
+        return serializer.serializeRaw(value);
     }
 
     private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions,
