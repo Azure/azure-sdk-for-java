@@ -31,7 +31,7 @@ public @interface FormParam {
     /**
      * A value true for this argument indicates that value of {@link FormParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
-     * @return Whether or not this query parameter is already encoded.
+     * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
 }

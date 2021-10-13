@@ -19,7 +19,7 @@ class Substitution {
      *                         target URL.
      * @param methodParameterIndex The index of the parameter in the original interface method where
      *                             the value for the placeholder is.
-     * @param shouldEncode Whether or not the value from the method's argument should be encoded
+     * @param shouldEncode Whether the value from the method's argument should be encoded
      *                     when the substitution is taking place.
      */
     Substitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
@@ -45,9 +45,9 @@ class Substitution {
     }
 
     /**
-     * Get whether or not the replacement value from the method argument needs to be encoded when the
+     * Get whether the replacement value from the method argument needs to be encoded when the
      * substitution is taking place.
-     * @return Whether or not the replacement value from the method argument needs to be encoded
+     * @return Whether the replacement value from the method argument needs to be encoded
      * when the substitution is taking place.
      */
     public boolean shouldEncode() {

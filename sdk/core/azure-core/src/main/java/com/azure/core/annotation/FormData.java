@@ -26,10 +26,11 @@ public @interface FormData {
      * @return The name of the key in a key value pair as part of the form data.
      */
     String value();
+
     /**
      * A value true for this argument indicates that value of {@link FormData#value()} is a file's contents.
      *
-     * @return Whether or not this parameter represents a file's contents.
+     * @return Whether this parameter represents a file's contents.
      */
     boolean isFile() default false;
 }

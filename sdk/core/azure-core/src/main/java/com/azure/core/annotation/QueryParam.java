@@ -44,7 +44,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p>In this case, if consumer pass "a=b" as the value for param1 then the resolved url looks as expected:
  * "<code>http://wq.com/foo/paramblah/values?connectionString=a=b</code>"</p>
- * 
+ *
  * <p><strong>Example 3:</strong></p>
  *
  * <pre>
@@ -67,14 +67,14 @@ public @interface QueryParam {
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
-     * @return Whether or not this query parameter is already encoded.
+     * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} should not be
      * converted to Json in case it is an array but instead sent as multiple values with same parameter
      * name.
-     * @return Whether or not this query parameter list values should be sent as individual query
+     * @return Whether this query parameter list values should be sent as individual query
      * params or as a single Json.
      */
     boolean multipleQueryParams() default false;

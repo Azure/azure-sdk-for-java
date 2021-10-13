@@ -60,7 +60,7 @@ public @interface PathParam {
     /**
      * A value true for this argument indicates that value of {@link PathParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
-     * @return Whether or not this path parameter is already encoded.
+     * @return Whether this path parameter is already encoded.
      */
     boolean encoded() default false;
 }

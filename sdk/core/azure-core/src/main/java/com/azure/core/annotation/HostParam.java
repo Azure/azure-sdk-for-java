@@ -48,7 +48,7 @@ public @interface HostParam {
     /**
      * A value true for this argument indicates that value of {@link HostParam#value()} is already
      * encoded hence engine should not encode it, by default value will be encoded.
-     * @return Whether or not this argument is already encoded.
+     * @return Whether this argument is already encoded.
      */
     boolean encoded() default true;
 }

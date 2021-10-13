@@ -18,9 +18,9 @@ class QuerySubstitution extends Substitution {
      *                         target URL.
      * @param methodParameterIndex The index of the parameter in the original interface method where
      *                             the value for the placeholder is.
-     * @param shouldEncode Whether or not the value from the method's argument should be encoded
+     * @param shouldEncode Whether the value from the method's argument should be encoded
      *                     when the substitution is taking place.
-     * @param multipleParams Get whether or not the value from the method argument needs to be sent
+     * @param multipleParams Get whether the value from the method argument needs to be sent
      *                       as string in case the values are a list or as multiple query parameters.
      */
     QuerySubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode, boolean multipleParams) {
@@ -29,9 +29,9 @@ class QuerySubstitution extends Substitution {
     }
 
     /**
-     * Get whether or not the values from the same query parameter name are sent as a list or multiple
+     * Get whether the values from the same query parameter name are sent as a list or multiple
      * different parameters.
-     * @return Whether or not this query parameter list values should be sent as a list or as
+     * @return Whether this query parameter list values should be sent as a list or as
      * individual query params.
      */
     public boolean mergeParameters() {
