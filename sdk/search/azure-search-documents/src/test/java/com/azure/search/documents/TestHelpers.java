@@ -17,16 +17,17 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
@@ -67,6 +68,21 @@ public final class TestHelpers {
     public static final TypeReference<List<Map<String, Object>>> LIST_TYPE_REFERENCE =
         new TypeReference<List<Map<String, Object>>>() {
         };
+
+    private static final byte[] HOTELS_TESTS_INDEX_DATA_JSON_DATA;
+
+    static {
+        try {
+            URI fileUri = AutocompleteSyncTests.class
+                .getClassLoader()
+                .getResource(HOTELS_TESTS_INDEX_DATA_JSON)
+                .toURI();
+
+            HOTELS_TESTS_INDEX_DATA_JSON_DATA = Files.readAllBytes(Paths.get(fileUri));
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * Assert whether two objects are equal.
@@ -315,22 +331,12 @@ public final class TestHelpers {
         }
     }
 
-    @SuppressWarnings("removal")
     public static SearchIndexClient setupSharedIndex(String indexName) {
-        InputStream stream = Objects.requireNonNull(AutocompleteSyncTests.class
-            .getClassLoader()
-            .getResourceAsStream(HOTELS_TESTS_INDEX_DATA_JSON));
-
         try {
-            SearchIndex index = MAPPER.readValue(stream, SearchIndex.class);
+            JsonNode jsonNode = MAPPER.readTree(HOTELS_TESTS_INDEX_DATA_JSON_DATA);
+            ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
 
-            Field searchIndexName = index.getClass().getDeclaredField("name");
-            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                searchIndexName.setAccessible(true);
-                return null;
-            });
-
-            searchIndexName.set(index, indexName);
+            SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
