@@ -30,7 +30,7 @@ public class RegisterSchemaSample {
         schemaRegistryAsyncClient
             .registerSchema("{group-name}", "{schema-name}", "{schema-string}", SchemaFormat.AVRO)
             .subscribe(schemaProperties -> {
-                System.out.println("Successfully registered a schema with id " + schemaProperties.getSchemaId());
+                System.out.println("Successfully registered a schema with id " + schemaProperties.getId());
                 countDownLatch.countDown();
             });
 

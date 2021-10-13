@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Library requirements for a Big Data pool powered by Apache Spark. */
+/** Spark pool library version requirements Library requirements for a Big Data pool powered by Apache Spark. */
 @Fluent
 public final class LibraryRequirements {
     /*
