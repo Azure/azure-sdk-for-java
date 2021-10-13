@@ -5,12 +5,10 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
-import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
