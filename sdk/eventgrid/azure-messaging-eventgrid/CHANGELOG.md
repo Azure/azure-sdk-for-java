@@ -1,6 +1,6 @@
 # Release History
 
-## 4.7.0 (2021-10-06)
+## 4.7.0 (2021-10-13)
 
 ### Features Added
 - Added new Api Management service system events, `ApiManagementApiCreatedEventData`, `ApiManagementApiDeletedEventData`, 
