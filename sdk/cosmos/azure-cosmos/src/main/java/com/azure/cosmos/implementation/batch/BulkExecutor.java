@@ -513,10 +513,10 @@ public final class BulkExecutor<TContext> {
                 if (itemOperation instanceof ItemBulkOperation<?, ?>) {
 
                     ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
-                    if (itemBulkOperation.getRequestOptions() != null &&
-                        ((itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
-                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled().booleanValue())||
-                        itemBulkOperation.getOperationType() == CosmosItemOperationType.READ)){
+                    if (itemBulkOperation.getOperationType() == CosmosItemOperationType.READ ||
+                        (itemBulkOperation.getRequestOptions() != null &&
+                        itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled().booleanValue())) {
 
                         options.setContentResponseOnWriteEnabled(true);
                         break;
