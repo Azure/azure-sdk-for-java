@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.jms.ConnectionFactory;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_SERVICE_BUS;
-import static com.azure.spring.core.ApplicationId.VERSION;
+import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
+import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
 
 /**
  * Automatic configuration class of ServiceBusJMS for Premium Service Bus

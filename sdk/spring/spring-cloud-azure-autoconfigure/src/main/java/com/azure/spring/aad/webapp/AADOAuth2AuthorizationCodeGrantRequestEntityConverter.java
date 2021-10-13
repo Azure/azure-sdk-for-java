@@ -4,7 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter;
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.core.AzureSpringIdentifier;
 import org.springframework.security.oauth2.client.endpoint.AbstractOAuth2AuthorizationGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -30,7 +30,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
 
     @Override
     protected String getApplicationId() {
-        return ApplicationId.AZURE_SPRING_AAD;
+        return AzureSpringIdentifier.AZURE_SPRING_AAD;
     }
 
     @Override

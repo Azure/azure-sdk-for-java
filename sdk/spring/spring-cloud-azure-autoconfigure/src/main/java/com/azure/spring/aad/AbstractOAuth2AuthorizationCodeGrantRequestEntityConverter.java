@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.core.AzureSpringIdentifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
@@ -47,7 +47,7 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
     public HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.put("x-client-SKU", Collections.singletonList(getApplicationId()));
-        httpHeaders.put("x-client-VER", Collections.singletonList(ApplicationId.VERSION));
+        httpHeaders.put("x-client-VER", Collections.singletonList(AzureSpringIdentifier.VERSION));
         httpHeaders.put("client-request-id", Collections.singletonList(UUID.randomUUID().toString()));
         return httpHeaders;
     }

@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * Util class for ApplicationId
+ * Util class for AzureSpringIdentifier
  */
-public class ApplicationId {
+public class AzureSpringIdentifier {
     //    There is 24 char limitation about the app id. So some abbreviation needs to be applied:
     //    az: for Azure
     //    sp: for Spring
@@ -32,17 +32,17 @@ public class ApplicationId {
     //    cos: for Cosmos
     //    aad: for AAD
     //    b2c: for AAD B2C
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationId.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringIdentifier.class);
     public static final String VERSION = getVersion();
-    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/";
-    public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/";
-    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/";
-    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/";
-
-    public static final String AZURE_SPRING_COSMOS = "az-sp-cosmos";
-    public static final String AZURE_SPRING_EVENT_HUB = "az-sc-eh/;";
-    public static final String AZURE_SPRING_STORAGE_QUEUE = "az-sp-sq/";
-    public static final String AZURE_SPRING_INTEGRATION_STORAGE_QUEUE = "az-si-sq/";
+    public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
+    public static final String AZURE_SPRING_EVENT_HUB = "az-sp-eh/" + VERSION;
+    public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
+    public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+    public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
+    public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
+    public static final String AZURE_SPRING_COSMOS = "az-sp-cos/" + VERSION;
+    public static final String AZURE_SPRING_STORAGE_QUEUE = "az-sp-sq/" + VERSION;
+    public static final String AZURE_SPRING_INTEGRATION_STORAGE_QUEUE = "az-si-sq/" + VERSION;
 
     /**
      * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers: 1. x-client-SKU; 2.

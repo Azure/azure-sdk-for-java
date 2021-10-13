@@ -90,6 +90,4 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         this.clientOptions = clientOptions;
     }
 
-
-
 }

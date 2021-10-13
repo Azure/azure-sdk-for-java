@@ -7,6 +7,7 @@ import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubSharedAuthenticationClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventProcessorSharedAuthenticationClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.eventhubs.core.EventHubOperation;
@@ -39,6 +40,7 @@ class AzureEventHubSharedCredentialClientConfiguration {
         @ConditionalOnMissingBean
         public EventHubSharedAuthenticationClientBuilder eventHubSharedAuthenticationClientBuilder(
             EventHubSharedAuthenticationClientBuilderFactory factory) {
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
             return factory.build();
         }
 
@@ -62,6 +64,7 @@ class AzureEventHubSharedCredentialClientConfiguration {
         @ConditionalOnMissingBean
         public EventProcessorSharedAuthenticationClientBuilder eventProcessorSharedAuthenticationClientBuilder(
             EventProcessorSharedAuthenticationClientBuilderFactory factory) {
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
             return factory.build();
         }
 

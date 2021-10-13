@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -57,15 +58,17 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     protected TokenCredential defaultTokenCredential = new DefaultAzureCredentialBuilder().build();
     private AzureEnvironment azureEnvironment = AzureEnvironment.AZURE;
-    private String applicationId; // end-user
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
 
     /**
-     * 1. create a builder instance 2. configure builder 2.1 configure azure core level configuration 2.1.1 configure
-     * http client getHttpClientInstance 2.2 configure service level configuration 3. customize builder 4. return
-     * builder
+     * <ol>
+     *  <li>Create a builder instance.</li>
+     *  <li>Configure Azure core level configuration.</li>
+     *  <li>Configure service level configuration.</li>
+     *  <li>Customize builder.</li>
+     * </ol>
      *
      * @return the service client builder
      */
@@ -156,14 +159,24 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         this.azureEnvironment = azureEnvironment;
     }
 
+    /**
+     * The application id provided to sdk should be a concatenation of customer-application-id and
+     * azure-spring-identifier.
+     *
+     * @return The application id provided to sdk.
+     */
     protected String getApplicationId() {
         final ClientProperties clientProperties = getAzureProperties().getClient();
-        return this.applicationId != null ? this.applicationId : (clientProperties != null
-                                                                      ? clientProperties.getApplicationId() : null);
-    }
+        String userApplicationId = Optional.ofNullable(clientProperties)
+                                           .map(ClientProperties::getApplicationId)
+                                           .orElse("");
 
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
+        if (!StringUtils.hasText(this.springIdentifier)) {
+            LOGGER.warn("SpringIdentifier is null or empty.");
+            return userApplicationId;
+        }
+
+        return userApplicationId + this.springIdentifier;
     }
 
     public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {

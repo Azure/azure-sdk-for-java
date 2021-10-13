@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.core;
 
-import com.azure.core.util.ClientOptions;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
@@ -20,9 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_EVENT_HUB;
-import static com.azure.spring.core.ApplicationId.VERSION;
 
 
 /**
@@ -64,16 +60,12 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         return eventHubServiceClientBuilder
             .eventHubName(eventHubName)
             .consumerGroup(consumerGroup)
-            //TODO (xiada) the client options here
-            .clientOptions(new ClientOptions().setApplicationId(AZURE_SPRING_EVENT_HUB + VERSION))
             .buildAsyncConsumerClient();
     }
 
     private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
         return eventHubServiceClientBuilder
             .eventHubName(eventHubName)
-            //TODO (xiada) the client options here
-            .clientOptions(new ClientOptions().setApplicationId(AZURE_SPRING_EVENT_HUB + VERSION))
             .buildAsyncProducerClient();
     }
 

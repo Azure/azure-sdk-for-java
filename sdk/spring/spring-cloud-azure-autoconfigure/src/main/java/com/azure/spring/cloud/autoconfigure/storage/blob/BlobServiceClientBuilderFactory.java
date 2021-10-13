@@ -22,9 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_BLOB;
-import static com.azure.spring.core.ApplicationId.VERSION;
-
 /**
  * Storage Blob Service client builder factory, it builds the storage blob client according the configuration context
  * and blob properties.
@@ -96,8 +93,4 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureHttpClientBuil
         );
     }
 
-    @Override
-    protected String getApplicationId() {
-        return AZURE_SPRING_STORAGE_BLOB + VERSION;
-    }
 }
