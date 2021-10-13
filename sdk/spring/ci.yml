@@ -53,9 +53,12 @@ trigger:
       - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
@@ -112,9 +115,12 @@ pr:
       - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
@@ -273,9 +279,21 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurestreambinderservicebustopic
         skipPublishDocMs: true
+      - name: spring-cloud-azure-starter-stream-servicebus-topic
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreamservicebustopic
+        skipPublishDocMs: true
       - name: spring-cloud-azure-stream-binder-servicebus-queue
         groupId: com.azure.spring
         safeName: springcloudazurestreambinderservicebusqueue
+        skipPublishDocMs: true
+      - name: spring-cloud-azure-starter-stream-servicebus-topic
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreamservicebustopic
+        skipPublishDocMs: true
+      - name: spring-cloud-azure-starter-stream-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreameventhubs
         skipPublishDocMs: true
       - name: spring-cloud-azure-stream-binder-eventhubs
         groupId: com.azure.spring

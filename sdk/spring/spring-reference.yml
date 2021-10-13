@@ -324,6 +324,18 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-topic
                 version: 2.2.0
+        -   artifactId: spring-cloud-azure-starter-stream-servicebus-topic
+            groupId: com.azure.spring
+            versionPreview: 4.0.0-beta.1
+            description: Microsoft's Spring Cloud Stream Binder Starter provides Spring Cloud Stream Binder for Azure Service Bus Topic which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Service Bus Topic.
+            type: spring
+            links:
+                repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-stream-servicebus-topic
+                msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
+                github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic
+            springProperties:
+                bom: azure-spring-cloud-dependencies
+                compatibilityRange: "[2.5.0,2.5.5)"
         - artifactId: spring-cloud-azure-stream-binder-servicebus-queue
           groupId: com.azure.spring
           versionGA: 4.0.0
@@ -348,6 +360,18 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-servicebus-queue
                 version: 2.2.0
+        -   artifactId: spring-cloud-azure-starter-stream-servicebus-queue
+            groupId: com.azure.spring
+            versionPreview: 4.0.0-beta.1
+            description: Microsoft's Spring Cloud Stream Binder Starter provides Spring Cloud Stream Binder for Azure Service Bus Queue which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Service Bus Queue.
+            type: spring
+            links:
+                repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-stream-servicebus-queue
+                msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
+                github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue
+            springProperties:
+                bom: azure-spring-cloud-dependencies
+                compatibilityRange: "[2.5.0,2.5.5)"
         - artifactId: spring-cloud-azure-starter-servicebus
           groupId: com.azure.spring
           versionGA: 4.0.0
@@ -460,6 +484,18 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-stream-binder-eventhubs
                 version: 2.2.0
+        - artifactId: spring-cloud-azure-starter-stream-eventhubs
+          groupId: com.azure.spring
+          versionPreview: 4.0.0-beta.1
+          description: Microsoft's Spring Cloud Stream Binder Starter provides Spring Cloud Stream Binder for Azure Event Hub which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hub service.
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-stream-eventhubs
+            msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-azure-event-hub
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-stream-eventhubs
+          springProperties:
+            bom: azure-spring-cloud-dependencies
+            compatibilityRange: "[2.5.0,2.5.5)"
     - name: Event Hubs - Kafka
       description: The Event Hubs for Apache Kafka feature provides a protocol head on top of Azure Event Hubs that is protocol compatible with Apache Kafka clients built for Apache Kafka server versions 1.0 and later and supports for both reading from and writing to Event Hubs, which are equivalent to Apache Kafka topics.
       msdocs: https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview
