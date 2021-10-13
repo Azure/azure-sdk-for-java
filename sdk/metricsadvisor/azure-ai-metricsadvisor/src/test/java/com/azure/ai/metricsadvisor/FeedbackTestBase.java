@@ -36,8 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
 
-    static final OffsetDateTime FEEDBACK_START_TIME = TIME_SERIES_START_TIME;
-    static final OffsetDateTime FEEDBACK_END_TIME = TIME_SERIES_END_TIME;
+    static final OffsetDateTime FEEDBACK_START_TIME = OffsetDateTime.parse("2021-08-05T00:00:00Z");;
+    static final OffsetDateTime FEEDBACK_END_TIME = OffsetDateTime.parse("2021-08-07T00:00:00Z");;
     static final HashMap<String, String> DIMENSION_FILTER = SERIES_KEY_FILTER;
     static final int LISTING_FILTER_BY_FEEDBACK_TYPE_LIMIT = 50;
 

@@ -24,8 +24,8 @@ public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorCli
             .put("region", "Miami")
             .put("category", "Health & Personal Care");
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
-        final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-22T00:00:00Z");
-        final OffsetDateTime endTime = OffsetDateTime.parse("2020-10-22T00:00:00Z");
+        final OffsetDateTime startTime = OffsetDateTime.parse("2021-09-22T00:00:00Z");
+        final OffsetDateTime endTime = OffsetDateTime.parse("2021-10-22T00:00:00Z");
 
         List<DimensionKey> getSeriesKeys() {
             final List<DimensionKey> seriesKeys = new ArrayList<DimensionKey>();

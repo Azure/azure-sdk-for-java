@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,8 +44,11 @@ public class AnomalyIncidentDetectedTest extends IncidentDetectedTestBase {
             ListIncidentsDetectedInput.INSTANCE.startTime, ListIncidentsDetectedInput.INSTANCE.endTime,
             ListIncidentsDetectedInput.INSTANCE.options, Context.NONE);
 
+        int[] cnt = new int[1];
         for (AnomalyIncident anomalyIncident : incidentsIterable) {
+            cnt[0]++;
             assertListIncidentsDetectedOutput(anomalyIncident);
         }
+        Assertions.assertEquals(ListIncidentsDetectedOutput.INSTANCE.expectedIncidents, cnt[0]);
     }
 }

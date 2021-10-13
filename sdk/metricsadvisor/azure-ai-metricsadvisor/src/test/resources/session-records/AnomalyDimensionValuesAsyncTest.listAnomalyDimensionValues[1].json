@@ -4,20 +4,42 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "319b317e-638a-469d-816e-3a7bed0fe569",
+      "x-ms-client-request-id" : "b9770e47-b284-405c-a6ec-056004c20c21",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "32fc72cd-3ad5-4408-8d96-d996e88929be",
-      "content-length" : "12",
-      "x-envoy-upstream-service-time" : "366",
+      "x-request-id" : "ce4b2202-5856-4ac4-8d2d-8db35cb8abcf",
+      "content-length" : "327",
+      "x-envoy-upstream-service-time" : "5370",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "32fc72cd-3ad5-4408-8d96-d996e88929be",
+      "apim-request-id" : "ce4b2202-5856-4ac4-8d2d-8db35cb8abcf",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[]}",
-      "Date" : "Thu, 30 Sep 2021 21:43:46 GMT",
+      "Body" : "{\"value\":[\"__SUM__\",\"Karachi\",\"Delhi\",\"Mumbai\",\"Beijing\",\"Seoul\",\"Cairo\",\"New York\",\"Miami\",\"Tianjin\"],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10&$skip=10\"}",
+      "Date" : "Wed, 13 Oct 2021 22:12:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/anomalies/dimension/query?$maxpagesize=10&$skip=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e3aa4c75-68b1-4f29-a7f7-3a81891f4c23",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "2ea472c0-7c46-47f1-b215-a4ce1de2d3b8",
+      "content-length" : "22",
+      "x-envoy-upstream-service-time" : "5406",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "2ea472c0-7c46-47f1-b215-a4ce1de2d3b8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"Istanbul\"]}",
+      "Date" : "Wed, 13 Oct 2021 22:12:33 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -4,20 +4,40 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b4e4b909-855f-494d-81de-7fdd248fad71",
+      "x-ms-client-request-id" : "021d15c6-f6e6-4fbe-8fa3-40356105808c",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "f9df97ea-3d0c-4fc5-9ab3-724f994503ea",
-      "content-length" : "34",
-      "x-envoy-upstream-service-time" : "453",
+      "x-request-id" : "7b60078a-d0f8-425a-9a0b-2b175d3bae2b",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "6733",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f9df97ea-3d0c-4fc5-9ab3-724f994503ea",
+      "apim-request-id" : "7b60078a-d0f8-425a-9a0b-2b175d3bae2b",
       "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"code\":\"BadRequest\",\"message\":\"\"}",
-      "Date" : "Thu, 30 Sep 2021 21:44:09 GMT",
+      "StatusCode" : "201",
+      "Date" : "Wed, 13 Oct 2021 21:17:03 GMT",
+      "Location" : "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/c66fc09c-0cdf-4854-821b-2cf594289d33"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/c66fc09c-0cdf-4854-821b-2cf594289d33",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5a8081d6-634f-4aec-8ba4-efd0fdfeb449"
+    },
+    "Response" : {
+      "x-request-id" : "dbfe3225-8dc2-4d86-8d4d-4ba5f47c3fa6",
+      "content-length" : "422",
+      "x-envoy-upstream-service-time" : "5323",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dbfe3225-8dc2-4d86-8d4d-4ba5f47c3fa6",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"c66fc09c-0cdf-4854-821b-2cf594289d33\",\"createdTime\":\"2021-10-13T21:17:03.875Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}",
+      "Date" : "Wed, 13 Oct 2021 21:17:09 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

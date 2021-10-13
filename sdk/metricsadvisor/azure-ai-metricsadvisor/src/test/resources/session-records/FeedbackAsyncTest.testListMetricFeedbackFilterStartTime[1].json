@@ -4,20 +4,62 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6dcc4295-c361-4a65-9949-bb56aae0415d",
+      "x-ms-client-request-id" : "a5fe17a9-fa5f-478a-b933-9e23e0ce6a28",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "40e58cd5-8f99-4842-a609-f457b1200421",
-      "content-length" : "34",
-      "x-envoy-upstream-service-time" : "10565",
+      "x-request-id" : "24cd8d25-dfc1-452d-97dc-17a2abef3a7a",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "5667",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "40e58cd5-8f99-4842-a609-f457b1200421",
+      "apim-request-id" : "24cd8d25-dfc1-452d-97dc-17a2abef3a7a",
       "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"code\":\"BadRequest\",\"message\":\"\"}",
-      "Date" : "Thu, 30 Sep 2021 21:44:06 GMT",
+      "StatusCode" : "201",
+      "Date" : "Wed, 13 Oct 2021 21:23:55 GMT",
+      "Location" : "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/8dc45cd6-94f4-4165-a5f6-3039cbda7307"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/8dc45cd6-94f4-4165-a5f6-3039cbda7307",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "31bc0538-7342-4bdf-81a7-4ea228175ff5"
+    },
+    "Response" : {
+      "x-request-id" : "dd45aef0-d6af-4c08-a02f-159b5d920df4",
+      "content-length" : "422",
+      "x-envoy-upstream-service-time" : "10183",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "dd45aef0-d6af-4c08-a02f-159b5d920df4",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"8dc45cd6-94f4-4165-a5f6-3039cbda7307\",\"createdTime\":\"2021-10-13T21:23:55.372Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}",
+      "Date" : "Wed, 13 Oct 2021 21:24:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2ef8b66d-1ac3-4490-ac98-7ef6e2d75aae",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "139910fa-4479-45f8-925b-50384fffd815",
+      "content-length" : "434",
+      "x-envoy-upstream-service-time" : "5154",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "139910fa-4479-45f8-925b-50384fffd815",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"feedbackId\":\"8dc45cd6-94f4-4165-a5f6-3039cbda7307\",\"createdTime\":\"2021-10-13T21:23:55.372Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}]}",
+      "Date" : "Wed, 13 Oct 2021 21:24:11 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

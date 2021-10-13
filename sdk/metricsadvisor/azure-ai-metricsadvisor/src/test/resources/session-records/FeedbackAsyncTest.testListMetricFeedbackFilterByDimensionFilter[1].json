@@ -4,33 +4,62 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a40d5d0d-b9c3-49a4-b179-611f02d2aeee",
-      "Content-Type" : "application/json"
-    },
-    "Response" : null,
-    "Exception" : {
-      "ClassName" : "java.util.concurrent.TimeoutException",
-      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
-    }
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a40d5d0d-b9c3-49a4-b179-611f02d2aeee",
+      "x-ms-client-request-id" : "038a13ac-22f3-45d4-bd1a-282bc7c3a1bd",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "22ed770f-ab87-4e71-b4e4-7aaeb584a964",
-      "content-length" : "34",
-      "x-envoy-upstream-service-time" : "403",
+      "x-request-id" : "48ec14f1-3e76-4fa2-894f-72248c5364a9",
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "5977",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "22ed770f-ab87-4e71-b4e4-7aaeb584a964",
+      "apim-request-id" : "48ec14f1-3e76-4fa2-894f-72248c5364a9",
       "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"code\":\"BadRequest\",\"message\":\"\"}",
-      "Date" : "Thu, 30 Sep 2021 21:45:08 GMT",
+      "StatusCode" : "201",
+      "Date" : "Wed, 13 Oct 2021 21:23:05 GMT",
+      "Location" : "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/890e7dba-0459-4ed8-8ef0-90072e5f8f2e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/890e7dba-0459-4ed8-8ef0-90072e5f8f2e",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c49f3e78-9842-48ba-880a-0804019643ff"
+    },
+    "Response" : {
+      "x-request-id" : "91864a3b-8dc5-45ba-84bd-3a54b6b5f79c",
+      "content-length" : "422",
+      "x-envoy-upstream-service-time" : "5313",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "91864a3b-8dc5-45ba-84bd-3a54b6b5f79c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"890e7dba-0459-4ed8-8ef0-90072e5f8f2e\",\"createdTime\":\"2021-10-13T21:23:05.323Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}",
+      "Date" : "Wed, 13 Oct 2021 21:23:10 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2cc771e1-328a-4349-bdd0-9af7dde67bf2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "de7a7030-cce1-4a4f-8d80-8b81282e5e62",
+      "content-length" : "3367",
+      "x-envoy-upstream-service-time" : "5319",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "de7a7030-cce1-4a4f-8d80-8b81282e5e62",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"feedbackId\":\"890e7dba-0459-4ed8-8ef0-90072e5f8f2e\",\"createdTime\":\"2021-10-13T21:23:05.323Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"6c4acc26-f0d2-4def-aad1-d573710bf463\",\"createdTime\":\"2021-10-13T21:22:20.22Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"7517f1a2-7fc7-4dae-a415-30b293c1bf31\",\"createdTime\":\"2021-10-13T21:22:13.537Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"4e0a9734-b880-4e5c-ac19-e07e84057eb1\",\"createdTime\":\"2021-10-13T21:21:04.938Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"6bd21cda-0011-4a36-9631-a0040da83eeb\",\"createdTime\":\"2021-10-13T21:19:53.513Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"3e4eba48-d797-4091-acb1-e956f2e69ece\",\"createdTime\":\"2021-10-13T21:18:48.957Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"ea344418-6304-4c5a-9602-cf68b8bfd7d6\",\"createdTime\":\"2021-10-13T21:18:01.279Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"c66fc09c-0cdf-4854-821b-2cf594289d33\",\"createdTime\":\"2021-10-13T21:17:03.875Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}]}",
+      "Date" : "Wed, 13 Oct 2021 21:23:15 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

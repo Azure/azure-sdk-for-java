@@ -32,12 +32,12 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
         "Tools & Home Improvement").stream().sorted().collect(Collectors.toList());
     static final int LISTING_SERIES_DEFINITIONS_LIMIT = 50;
 
-    static final int EXPECTED_DIMENSION_VALUES_COUNT = 8;
-    static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2020-01-01T00:00:00Z");
-    static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2020-10-22T00:00:00Z");
+    static final int EXPECTED_DIMENSION_VALUES_COUNT = 11;
+    static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2021-01-01T00:00:00Z");
+    static final OffsetDateTime TIME_SERIES_END_TIME = OffsetDateTime.parse("2021-10-22T00:00:00Z");
     static final HashMap<String, String> SERIES_KEY_FILTER = new HashMap<String, String>() {{
             put("region", "Miami");
-            put("category", "Health & Personal Care");
+            put("category", "Shoes Handbags & Sunglasses");
         }};
 
     // Pre-configured test resource.
@@ -51,7 +51,7 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
 
     protected static class ListEnrichmentStatusOutput {
         static final ListEnrichmentStatusOutput INSTANCE = new ListEnrichmentStatusOutput();
-        final int expectedStatuses = 29;
+        final int expectedStatuses = 12;
     }
 
     static void validateEnrichmentStatus(EnrichmentStatus actualEnrichmentStatus) {

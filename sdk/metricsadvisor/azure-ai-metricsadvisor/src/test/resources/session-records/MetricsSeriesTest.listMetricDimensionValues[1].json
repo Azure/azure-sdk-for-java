@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/dimension/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "23b3aae3-5547-412e-a38b-b8a33bd50e49",
+      "x-ms-client-request-id" : "2a333b80-dbbc-42dc-8460-d1013e56947e",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "f3ce1bd4-77e7-431d-bcc2-4eb4e22922fe",
+      "x-request-id" : "4d3f05c2-3f79-405d-8669-08e7ec57e545",
       "content-length" : "114",
-      "x-envoy-upstream-service-time" : "5167",
+      "x-envoy-upstream-service-time" : "5221",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f3ce1bd4-77e7-431d-bcc2-4eb4e22922fe",
+      "apim-request-id" : "4d3f05c2-3f79-405d-8669-08e7ec57e545",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[\"__SUM__\",\"Beijing\",\"Cairo\",\"Delhi\",\"Istanbul\",\"Karachi\",\"Miami\",\"Mumbai\",\"New York\",\"Seoul\",\"Tianjin\"]}",
-      "Date" : "Thu, 30 Sep 2021 21:44:10 GMT",
+      "Date" : "Wed, 13 Oct 2021 22:34:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -24,7 +24,7 @@ public abstract class IncidentForAlertTestBase extends MetricsAdvisorClientTestB
 
     protected static class ListIncidentsForAlertOutput {
         static final ListIncidentsForAlertOutput INSTANCE = new ListIncidentsForAlertOutput();
-        final int expectedIncidents = 2;
+        final int expectedIncidents = 3;
     }
 
     protected void assertListIncidentsForAlertOutput(AnomalyIncident incident) {

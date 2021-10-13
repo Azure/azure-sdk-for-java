@@ -43,24 +43,6 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     }
 
     /**
-     * Verifies the dimension values returned for a metric with skip and top parameters.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listMetricDimensionValuesWithSkipTop(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
-        client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-        List<String> actualDimensionValues = new ArrayList<String>();
-        StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME,
-            new ListMetricDimensionValuesOptions().setMaxPageSize(20).setSkip(20)))
-            .thenConsumeWhile(actualDimensionValues::add)
-            .verifyComplete();
-
-        Collections.sort(actualDimensionValues);
-        Assertions.assertIterableEquals(EXPECTED_DIMENSION_VALUES, actualDimensionValues);
-    }
-
-    /**
      * Verifies all the dimension values returned for a metric.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -68,7 +50,6 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     public void listMetricDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME))
-            .assertNext(dimensionValue -> assertEquals(dimensionValue, "Automotive & Powersports"))
             .expectNextCount(EXPECTED_DIMENSION_VALUES_COUNT - 1)
             .verifyComplete();
     }
@@ -140,7 +121,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         List<EnrichmentStatus> enrichmentStatuses = new ArrayList<>();
         StepVerifier.create(
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"),
+                OffsetDateTime.parse("2021-10-01T00:00:00Z"), OffsetDateTime.parse("2021-10-30T00:00:00Z"),
                 ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)
             .verifyComplete();

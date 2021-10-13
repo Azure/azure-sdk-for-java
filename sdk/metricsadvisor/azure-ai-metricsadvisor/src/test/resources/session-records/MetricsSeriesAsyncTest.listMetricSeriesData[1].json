@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/data/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4ff24e44-2715-4e57-9ffb-b9a76ad4cb85",
+      "x-ms-client-request-id" : "1c6e74bf-8abf-4044-8e20-d8c2f09378ce",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "ae1e5999-7ada-476e-bf67-a2cdb9b08f1e",
-      "content-length" : "171",
-      "x-envoy-upstream-service-time" : "322",
+      "x-request-id" : "4dce32ae-b083-4f71-8a42-46cab8ace867",
+      "content-length" : "176",
+      "x-envoy-upstream-service-time" : "8438",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ae1e5999-7ada-476e-bf67-a2cdb9b08f1e",
+      "apim-request-id" : "4dce32ae-b083-4f71-8a42-46cab8ace867",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Health & Personal Care\",\"region\":\"Miami\"}},\"timestampList\":[],\"valueList\":[]}]}",
-      "Date" : "Thu, 30 Sep 2021 21:35:07 GMT",
+      "Body" : "{\"value\":[{\"id\":{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Miami\"}},\"timestampList\":[],\"valueList\":[]}]}",
+      "Date" : "Wed, 13 Oct 2021 21:54:45 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
