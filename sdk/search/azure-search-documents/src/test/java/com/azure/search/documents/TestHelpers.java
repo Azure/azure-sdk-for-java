@@ -39,11 +39,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.SearchTestBase.HOTELS_TESTS_INDEX_DATA_JSON;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
@@ -69,20 +69,7 @@ public final class TestHelpers {
         new TypeReference<List<Map<String, Object>>>() {
         };
 
-    private static final byte[] HOTELS_TESTS_INDEX_DATA_JSON_DATA;
-
-    static {
-        try {
-            URI fileUri = AutocompleteSyncTests.class
-                .getClassLoader()
-                .getResource(HOTELS_TESTS_INDEX_DATA_JSON)
-                .toURI();
-
-            HOTELS_TESTS_INDEX_DATA_JSON_DATA = Files.readAllBytes(Paths.get(fileUri));
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
+    private static final Map<String, byte[]> LOADED_FILE_DATA = new ConcurrentHashMap<>();
 
     /**
      * Assert whether two objects are equal.
@@ -333,7 +320,8 @@ public final class TestHelpers {
 
     public static SearchIndexClient setupSharedIndex(String indexName) {
         try {
-            JsonNode jsonNode = MAPPER.readTree(HOTELS_TESTS_INDEX_DATA_JSON_DATA);
+            byte[] hotelsTestIndexDataJsonData = loadResource(indexName);
+            JsonNode jsonNode = MAPPER.readTree(hotelsTestIndexDataJsonData);
             ((ObjectNode) jsonNode).set("name", new TextNode(indexName));
 
             SearchIndex index = MAPPER.treeToValue(jsonNode, SearchIndex.class);
@@ -371,5 +359,19 @@ public final class TestHelpers {
         }
 
         return builder.append("))'").toString();
+    }
+
+    static byte[] loadResource(String fileName) {
+        return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
+            try {
+                URI fileUri = AutocompleteSyncTests.class.getClassLoader()
+                    .getResource(fileName)
+                    .toURI();
+
+                return Files.readAllBytes(Paths.get(fileUri));
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
     }
 }
