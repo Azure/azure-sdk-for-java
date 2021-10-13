@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -16,12 +15,12 @@ import java.util.function.Supplier;
  *
  * @param <T> the type of which the CosmosLazyPageImpl consists.
  */
-public class CosmosLazyPageImpl<T> extends PageImpl<T> implements Serializable {
+public class CosmosLazyPageImpl<T> extends PageImpl<T> {
 
     private static final long serialVersionUID = -2805108120909259912L;
 
     private final String continuationToken;
-    private final Supplier<Long> totalFunction;
+    private final transient Supplier<Long> totalFunction;
     private Long totalElements;
 
     public CosmosLazyPageImpl(List<T> content, Pageable pageable, Supplier<Long> totalFunction, String continuationToken) {
@@ -38,6 +37,9 @@ public class CosmosLazyPageImpl<T> extends PageImpl<T> implements Serializable {
     @Override
     public long getTotalElements() {
         if (totalElements == null) {
+            if (totalFunction == null) {
+                throw new IllegalStateException("getTotalElements must be invoked prior to serialization");
+            }
             totalElements = totalFunction.get();
         }
         return totalElements;
