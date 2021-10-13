@@ -184,6 +184,7 @@ public class DocumentQueryExecutionContextFactory {
                    && !queryInfo.hasLimit()
                    && !queryInfo.hasTop()
                    && !queryInfo.hasOffset()
+                   && !queryInfo.hasDCount()
                    && !queryInfo.hasOrderBy();
     }
 
