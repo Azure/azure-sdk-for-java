@@ -6,14 +6,26 @@ package com.azure.data.cosmos.internal.directconnectivity;
 import com.azure.data.cosmos.ConsistencyLevel;
 import com.azure.data.cosmos.CosmosClientException;
 import com.azure.data.cosmos.GoneException;
-import com.azure.data.cosmos.internal.ISessionContainer;
-import com.azure.data.cosmos.PartitionKeyRangeGoneException;
-import com.azure.data.cosmos.RequestRateTooLargeException;
-import com.azure.data.cosmos.internal.*;
 import com.azure.data.cosmos.NotFoundException;
 import com.azure.data.cosmos.PartitionIsMigratingException;
+import com.azure.data.cosmos.PartitionKeyRangeGoneException;
 import com.azure.data.cosmos.PartitionKeyRangeIsSplittingException;
+import com.azure.data.cosmos.RequestRateTooLargeException;
+import com.azure.data.cosmos.internal.DocumentServiceRequestContext;
+import com.azure.data.cosmos.internal.FailureValidator;
+import com.azure.data.cosmos.internal.HttpConstants;
+import com.azure.data.cosmos.internal.ISessionContainer;
+import com.azure.data.cosmos.internal.ISessionToken;
+import com.azure.data.cosmos.internal.OperationType;
+import com.azure.data.cosmos.internal.PartitionKeyRange;
+import com.azure.data.cosmos.internal.RequestChargeTracker;
+import com.azure.data.cosmos.internal.ResourceType;
+import com.azure.data.cosmos.internal.RxDocumentServiceRequest;
+import com.azure.data.cosmos.internal.StoreResponseBuilder;
+import com.azure.data.cosmos.internal.Utils;
+import com.azure.data.cosmos.internal.VectorSessionToken;
 import com.google.common.collect.ImmutableList;
+import io.reactivex.Single;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.Mockito;
@@ -646,6 +658,52 @@ public class StoreReaderTest {
                 { true, 1, ReadMode.Any },
                 { false, 1, ReadMode.Any },
         };
+    }
+
+    @Test(groups = "unit")
+    public void canParseLongLsn() throws CosmosClientException {
+        TransportClient transportClient = Mockito.mock(TransportClient.class);
+        AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+
+        URI primaryURI = URI.create("primaryLoc");
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        Mockito.doReturn(true).when(request.requestContext.timeoutHelper).isElapsed();
+        request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+            Mockito.eq(request) , Mockito.eq(false));
+
+
+        StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
+
+        long bigLsn = 3629783308L;
+
+        // Test parsing GLSN from storeResponse
+        StoreResponse storeResponse = StoreResponseBuilder.create()
+            .withLSN(bigLsn)
+            .withLocalLSN(bigLsn)
+            .withGlobalCommittedLsn(bigLsn)
+            .build();
+
+        StoreResult result = storeReader.createStoreResult(storeResponse, null, false, false, null);
+        assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
+        assertThat(result.lsn).isEqualTo(bigLsn);
+
+        // Test parsing GLSN from cosmosException
+        GoneException goneException = new GoneException();
+        goneException.responseHeaders().put(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(bigLsn));
+        goneException.responseHeaders().put(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(bigLsn));
+
+        result = storeReader.createStoreResult(null, goneException, false, true, null);
+        assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
+        assertThat(result.lsn).isEqualTo(bigLsn);
     }
 
     @Test(groups = "unit", dataProvider = "readMultipleReplicasAsyncArgProvider")
