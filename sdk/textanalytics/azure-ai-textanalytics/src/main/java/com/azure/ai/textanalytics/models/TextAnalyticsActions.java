@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
 
@@ -13,8 +12,6 @@ import java.util.Arrays;
  */
 @Fluent
 public final class TextAnalyticsActions {
-    private final ClientLogger logger = new ClientLogger(TextAnalyticsActions.class);
-
     private String displayName;
     private Iterable<RecognizeEntitiesAction> recognizeEntitiesActions;
     private Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions;

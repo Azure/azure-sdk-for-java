@@ -50,11 +50,17 @@ import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
+import com.azure.ai.textanalytics.models.ExtractSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
@@ -82,8 +88,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
@@ -232,119 +236,123 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<EntitiesTask> toEntitiesTask(TextAnalyticsActions actions) {
-        return StreamSupport.stream(actions.getRecognizeEntitiesActions().spliterator(), false).map(
-            action -> {
-                if (action == null) {
-                    return null;
-                }
-                final EntitiesTask entitiesTask = new EntitiesTask();
-                entitiesTask
-                    .setParameters(
-                        new EntitiesTaskParameters()
-                            .setModelVersion(action.getModelVersion())
-                            .setLoggingOptOut(action.isServiceLogsDisabled())
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT))
-                    .setTaskName(action.getActionName());
-                return entitiesTask;
-            }).collect(Collectors.toList());
+        final List<EntitiesTask> entitiesTasks = new ArrayList<>();
+        for (RecognizeEntitiesAction action : actions.getRecognizeEntitiesActions()) {
+            if (action == null) {
+                entitiesTasks.add(null);
+            } else {
+                entitiesTasks.add(
+                    new EntitiesTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new EntitiesTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)));
+            }
+        }
+        return entitiesTasks;
     }
 
     private List<PiiTask> toPiiTask(TextAnalyticsActions actions) {
-        return StreamSupport.stream(actions.getRecognizePiiEntitiesActions().spliterator(), false).map(
-            action -> {
-                if (action == null) {
-                    return null;
-                }
-                final PiiTask piiTask = new PiiTask();
-                piiTask
-                    .setParameters(
-                        new PiiTaskParameters()
-                            .setModelVersion(action.getModelVersion())
-                            .setLoggingOptOut(action.isServiceLogsDisabled())
-                            .setDomain(PiiTaskParametersDomain.fromString(
-                                action.getDomainFilter() == null ? null
-                                    : action.getDomainFilter().toString()))
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                            .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter())))
-                    .setTaskName(action.getActionName());
-                return piiTask;
-            }).collect(Collectors.toList());
+        final List<PiiTask> piiTasks = new ArrayList<>();
+        for (RecognizePiiEntitiesAction action : actions.getRecognizePiiEntitiesActions()) {
+            if (action == null) {
+                piiTasks.add(null);
+            } else {
+                piiTasks.add(
+                    new PiiTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new PiiTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setDomain(PiiTaskParametersDomain.fromString(
+                                    action.getDomainFilter() == null ? null
+                                        : action.getDomainFilter().toString()))
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter()))));
+            }
+        }
+        return piiTasks;
     }
 
     private List<KeyPhrasesTask> toKeyPhrasesTask(TextAnalyticsActions actions) {
-        return StreamSupport.stream(actions.getExtractKeyPhrasesActions().spliterator(), false).map(
-            action -> {
-                if (action == null) {
-                    return null;
-                }
-                final KeyPhrasesTask keyPhrasesTask = new KeyPhrasesTask();
-                keyPhrasesTask
-                    .setParameters(
-                        new KeyPhrasesTaskParameters()
-                            .setModelVersion(action.getModelVersion())
-                            .setLoggingOptOut(action.isServiceLogsDisabled()))
-                    .setTaskName(action.getActionName());
-                return keyPhrasesTask;
-            }).collect(Collectors.toList());
+        final List<KeyPhrasesTask> keyPhrasesTasks = new ArrayList<>();
+        for (ExtractKeyPhrasesAction action : actions.getExtractKeyPhrasesActions()) {
+            if (action == null) {
+                keyPhrasesTasks.add(null);
+            } else {
+                keyPhrasesTasks.add(
+                    new KeyPhrasesTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new KeyPhrasesTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())));
+            }
+        }
+        return keyPhrasesTasks;
     }
 
     private List<EntityLinkingTask> toEntityLinkingTask(TextAnalyticsActions actions) {
-        return StreamSupport.stream(actions.getRecognizeLinkedEntitiesActions().spliterator(), false).map(
-            action -> {
-                if (action == null) {
-                    return null;
-                }
-                final EntityLinkingTask entityLinkingTask = new EntityLinkingTask();
-                entityLinkingTask
+        final List<EntityLinkingTask> entityLinkingTasks = new ArrayList<>();
+        for (RecognizeLinkedEntitiesAction action : actions.getRecognizeLinkedEntitiesActions()) {
+            if (action == null) {
+                entityLinkingTasks.add(null);
+            } else {
+                new EntityLinkingTask()
+                    .setTaskName(action.getActionName())
                     .setParameters(
                         new EntityLinkingTaskParameters()
                             .setModelVersion(action.getModelVersion())
                             .setLoggingOptOut(action.isServiceLogsDisabled())
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT))
-                    .setTaskName(action.getActionName());
-                return entityLinkingTask;
-            }).collect(Collectors.toList());
+                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
+            }
+        }
+        return entityLinkingTasks;
     }
 
     private List<SentimentAnalysisTask> toSentimentAnalysisTask(TextAnalyticsActions actions) {
-        return StreamSupport.stream(actions.getAnalyzeSentimentActions().spliterator(), false).map(
-            action -> {
-                if (action == null) {
-                    return null;
-                }
-                final SentimentAnalysisTask sentimentAnalysisTask = new SentimentAnalysisTask();
-                sentimentAnalysisTask
-                    .setParameters(
-                        new SentimentAnalysisTaskParameters()
-                            .setModelVersion(action.getModelVersion())
-                            .setLoggingOptOut(action.isServiceLogsDisabled())
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT))
-                    .setTaskName(action.getActionName());
-                return sentimentAnalysisTask;
-            }).collect(Collectors.toList());
+        final List<SentimentAnalysisTask> sentimentAnalysisTasks = new ArrayList<>();
+        for (AnalyzeSentimentAction action : actions.getAnalyzeSentimentActions()) {
+            if (action == null) {
+                sentimentAnalysisTasks.add(null);
+            } else {
+                sentimentAnalysisTasks.add(
+                    new SentimentAnalysisTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new SentimentAnalysisTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)));
+            }
+        }
+        return sentimentAnalysisTasks;
     }
 
     private List<ExtractiveSummarizationTask> toExtractiveSummarizationTask(TextAnalyticsActions actions) {
-        return StreamSupport.stream(actions.getExtractSummaryActions().spliterator(), false).map(
-            action -> {
-                if (action == null) {
-                    return null;
-                }
-                final ExtractiveSummarizationTask extractiveSummarizationTask =
-                    new ExtractiveSummarizationTask();
-                extractiveSummarizationTask
-                    .setParameters(
-                        new ExtractiveSummarizationTaskParameters()
-                            .setModelVersion(action.getModelVersion())
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                            .setLoggingOptOut(action.isServiceLogsDisabled())
-                            .setSentenceCount(action.getMaxSentenceCount())
-                            .setSortBy(action.getOrderBy() == null ? null
-                                           : ExtractiveSummarizationTaskParametersSortBy.fromString(
-                                action.getOrderBy().toString())))
-                    .setTaskName(action.getActionName());
-                return extractiveSummarizationTask;
-            }).collect(Collectors.toList());
+        final List<ExtractiveSummarizationTask> extractiveSummarizationTasks = new ArrayList<>();
+        for (ExtractSummaryAction action : actions.getExtractSummaryActions()) {
+            if (action == null) {
+                extractiveSummarizationTasks.add(null);
+            } else {
+                extractiveSummarizationTasks.add(
+                    new ExtractiveSummarizationTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new ExtractiveSummarizationTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setSentenceCount(action.getMaxSentenceCount())
+                                .setSortBy(action.getOrderBy() == null ? null
+                                               : ExtractiveSummarizationTaskParametersSortBy.fromString(
+                                    action.getOrderBy().toString()))));
+            }
+        }
+        return extractiveSummarizationTasks;
     }
 
     private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsOperationDetail>>
