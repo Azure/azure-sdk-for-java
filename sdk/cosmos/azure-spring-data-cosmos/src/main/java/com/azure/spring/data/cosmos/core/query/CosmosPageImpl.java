@@ -79,6 +79,9 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
     }
 
 
+    /**
+     * Builder class for CosmosPageImpl
+     */
     public static class Factory implements CosmosPageFactory {
 
         @Override

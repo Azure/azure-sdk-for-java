@@ -9,11 +9,16 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * {@code CosmosLazyPageImpl} implementation.
+ *
+ * @param <T> the type of which the CosmosLazyPageImpl consists.
+ */
 public class CosmosLazyPageImpl<T> extends PageImpl<T> {
 
-    private String continuationToken;
+    private final String continuationToken;
+    private final Supplier<Long> totalFunction;
     private Long totalElements;
-    private Supplier<Long> totalFunction;
 
     public CosmosLazyPageImpl(List<T> content, Pageable pageable, Supplier<Long> totalFunction, String continuationToken) {
         super(content, pageable, -1);
@@ -45,11 +50,14 @@ public class CosmosLazyPageImpl<T> extends PageImpl<T> {
     }
 
 
+    /**
+     * Factory for CosmosLazyPageImpl
+     */
     public static class Factory implements CosmosPageFactory {
 
         @Override
         public <T> Page<T> createPage(List<T> content, Pageable pageable, Supplier<Long> totalFunction) {
-            if (pageable instanceof CosmosPageRequest == false) {
+            if (!(pageable instanceof CosmosPageRequest)) {
                 throw new IllegalArgumentException("Input pageable must be of type " + CosmosPageRequest.class);
             }
             String continuationToken = ((CosmosPageRequest) pageable).getRequestContinuation();

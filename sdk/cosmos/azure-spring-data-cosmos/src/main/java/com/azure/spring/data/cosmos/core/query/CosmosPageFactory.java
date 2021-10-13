@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.function.Supplier;
 
+/**
+ * Factory for Page implementations
+ */
 public interface CosmosPageFactory {
 
     <T> Page<T> createPage(List<T> content, Pageable pageable, Supplier<Long> totalFunction);
