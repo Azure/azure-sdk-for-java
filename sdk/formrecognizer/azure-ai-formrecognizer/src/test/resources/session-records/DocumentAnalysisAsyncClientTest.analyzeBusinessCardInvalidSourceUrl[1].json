@@ -3,20 +3,20 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-businessCard:analyze?stringIndexType=utf16CodeUnit&api-version=2021-09-30-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f0a68bfd-8f4e-4797-bdbe-47677f0800dc",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.2 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4a5a7d0e-deff-4576-83d3-62bbbb6d2dd0",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "1133",
+      "x-envoy-upstream-service-time" : "1187",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9c63c0e3-3245-46f2-8b40-cbb87dcc5797",
+      "apim-request-id" : "34b3fe4b-51a5-4da5-a887-8d951a8c5963",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid request.\",\"innererror\":{\"code\":\"InvalidContent\",\"message\":\"The file is corrupted or format is unsupported. Refer to documentation for the list of supported formats.\"}}}",
-      "Date" : "Mon, 27 Sep 2021 17:56:43 GMT",
+      "Date" : "Fri, 08 Oct 2021 20:53:26 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

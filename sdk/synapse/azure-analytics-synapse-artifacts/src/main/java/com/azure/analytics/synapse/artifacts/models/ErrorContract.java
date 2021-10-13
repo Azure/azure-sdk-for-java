@@ -7,7 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains details when the response code indicates an error. */
+/** Error details. Contains details when the response code indicates an error. */
 @Fluent
 public final class ErrorContract {
     /*

@@ -11,10 +11,19 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 12.14.1 (2021-10-12)
+
+### Bugs Fixed
+
 - Fixed a bug when Blob Endpoint is provided as an IP address (e.g., `https://x.x.x.x:10000`) with 
   empty component path, the parsing fails with StringIndexOutOfBoundsException
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+- Updated to version `12.14.0` of `azure-storage-common`
 
 ## 12.14.0 (2021-09-15)
 - GA release
