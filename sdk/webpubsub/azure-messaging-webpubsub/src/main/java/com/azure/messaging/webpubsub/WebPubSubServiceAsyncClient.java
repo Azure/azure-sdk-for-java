@@ -127,7 +127,9 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponse(
             BinaryData message, WebPubSubContentType contentType, long contentLength, RequestOptions requestOptions) {
-        return this.serviceClient.sendToAllWithResponseAsync(hub, contentType.toString(), message, contentLength, requestOptions);
+        requestOptions.addHeader("contentType", contentType.toString());
+        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
+        return this.serviceClient.sendToAllWithResponseAsync(hub, message, requestOptions);
     }
 
     /**
@@ -187,7 +189,7 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeConnectionWithResponse(
             String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.closeClientConnectionWithResponseAsync(hub, connectionId, requestOptions);
+        return this.serviceClient.closeConnectionWithResponseAsync(hub, connectionId, requestOptions);
     }
 
     /**
@@ -209,8 +211,10 @@ public final class WebPubSubServiceAsyncClient {
             WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
+        requestOptions.addHeader("contentType", contentType.toString());
+        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponseAsync(
-                hub, connectionId, contentType.toString(), message, contentLength, requestOptions);
+                hub, connectionId, message, requestOptions);
     }
 
     /**
@@ -280,8 +284,10 @@ public final class WebPubSubServiceAsyncClient {
             WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
+        requestOptions.addHeader("contentType", contentType.toString());
+        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponseAsync(
-                hub, group, contentType.toString(), message, contentLength, requestOptions);
+                hub, group, message, requestOptions);
     }
 
     /**
@@ -382,8 +388,10 @@ public final class WebPubSubServiceAsyncClient {
             WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
+        requestOptions.addHeader("contentType", contentType.toString());
+        requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponseAsync(
-                hub, userId, contentType.toString(), message, contentLength, requestOptions);
+                hub, userId, message, requestOptions);
     }
 
     /**
@@ -512,5 +520,84 @@ public final class WebPubSubServiceAsyncClient {
     public Mono<Response<Boolean>> checkPermissionWithResponse(
             String permission, String connectionId, RequestOptions requestOptions) {
         return this.serviceClient.checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions);
+    }
+
+    /**
+     * Close the connections in the hub.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the hub.</td></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions) {
+        return this.serviceClient.closeAllConnectionsWithResponseAsync(hub, requestOptions);
+    }
+
+    /**
+     * Close connections in the specific group.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections in the group.</td></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param group Target group name, which length should be greater than 0 and less than 1025.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> closeGroupConnectionsWithResponse(
+        String hub, String group, RequestOptions requestOptions) {
+        return this.serviceClient.closeGroupConnectionsWithResponseAsync(hub, group, requestOptions);
+    }
+
+    /**
+     * Close connections for the specific user.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>excluded</td><td>String</td><td>No</td><td>Exclude these connectionIds when closing the connections for the user.</td></tr>
+     *     <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     *     characters or underscore.
+     * @param userId The user Id.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> closeUserConnectionsWithResponse(
+        String hub, String userId, RequestOptions requestOptions) {
+        return this.serviceClient.closeUserConnectionsWithResponseAsync(hub, userId, requestOptions);
     }
 }

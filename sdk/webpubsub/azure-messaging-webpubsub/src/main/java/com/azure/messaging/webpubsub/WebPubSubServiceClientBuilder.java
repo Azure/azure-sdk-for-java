@@ -346,7 +346,7 @@ public final class WebPubSubServiceClientBuilder {
 
 
         if (pipeline != null) {
-            return new AzureWebPubSubServiceRestAPIImpl(pipeline, endpoint, serviceVersion.toString());
+            return new AzureWebPubSubServiceRestAPIImpl(pipeline, endpoint, serviceVersion);
         }
 
         // Global Env configuration store
@@ -396,7 +396,7 @@ public final class WebPubSubServiceClientBuilder {
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
-        return new AzureWebPubSubServiceRestAPIImpl(buildPipeline, endpoint, serviceVersion.toString());
+        return new AzureWebPubSubServiceRestAPIImpl(buildPipeline, endpoint, serviceVersion);
     }
 
 
