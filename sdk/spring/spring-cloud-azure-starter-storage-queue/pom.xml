@@ -13,6 +13,8 @@
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage-queue;current} -->
 
   <name>Spring Cloud Azure Starter Storage Queue</name>
+  <description>Spring Cloud Azure Starter Storage Queue</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -28,8 +30,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-storage-queue</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+      <artifactId>spring-integration-azure-storage-queue</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

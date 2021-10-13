@@ -11,10 +11,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-storage-queue</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-storage-queue;current} -->
+  <artifactId>spring-integration-azure-eventhubs</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
 
-  <name>Azure Spring Storage Queue</name>
+  <name>Spring Integration Azure Event Hubs</name>
+  <description>Spring Integration Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -25,22 +26,38 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-messaging</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging;current} -->
+      <artifactId>spring-integration-azure-core</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-messaging</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging;current} -->
+      <artifactId>spring-integration-azure-core</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-messaging-azure-eventhubs</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
+    </dependency>
+    <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
+    <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-queue</artifactId>
-      <version>12.11.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <optional>true</optional>
     </dependency>
 
+    <!-- Added this dependency to include necessary annotations used by reactor core.
+        Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+        which is used in @Nullable annotation in reactor core classes -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -51,6 +68,18 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -65,23 +94,6 @@
       <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.12.5</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -94,7 +106,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.12.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.mockito:mockito-core:[3.12.4]</include> <!-- {x-include-update;org.mockito:mockito-core;external_dependency} -->
                 <include>org.powermock:powermock-api-mockito2:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-api-mockito2;external_dependency} -->
                 <include>org.powermock:powermock-module-junit4:[2.0.9]</include> <!-- {x-include-update;org.powermock:powermock-module-junit4;external_dependency} -->
               </includes>
@@ -104,4 +116,5 @@
       </plugin>
     </plugins>
   </build>
+
 </project>

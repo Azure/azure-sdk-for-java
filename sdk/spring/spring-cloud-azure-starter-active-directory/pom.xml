@@ -8,8 +8,8 @@
   <artifactId>spring-cloud-azure-starter-active-directory</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-active-directory;current} -->
 
-  <name>Spring Cloud Azure Starter Azure AD</name>
-  <description>Spring Cloud Azure Starter Azure AD</description>
+  <name>Spring Cloud Azure Starter Active Directory</name>
+  <description>Spring Cloud Azure Starter Active Directory</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>

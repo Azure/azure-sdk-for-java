@@ -40,8 +40,8 @@
 		<!-- Event Hub -->
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+      <artifactId>spring-integration-azure-eventhubs</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -54,16 +54,16 @@
 		<!-- Service Bus -->
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-servicebus</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+      <artifactId>spring-integration-azure-servicebus</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
     <!-- Storage Queue -->
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-storage-queue</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+      <artifactId>spring-integration-azure-storage-queue</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 

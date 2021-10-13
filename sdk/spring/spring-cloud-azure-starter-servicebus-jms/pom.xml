@@ -8,8 +8,8 @@
   <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
 
-  <name>Spring Cloud Azure Starter Azure Service Bus JMS</name>
-  <description>Spring Cloud Azure Starter Azure Service Bus JMS</description>
+  <name>Spring Cloud Azure Starter Service Bus JMS</name>
+  <description>Spring Cloud Azure Starter Service Bus JMS</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>

@@ -11,10 +11,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-integration-core</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+  <artifactId>spring-integration-azure-core</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
 
-  <name>Azure Spring Integration Core</name>
+  <name>Spring Integration Azure Core</name>
+  <description>Spring Integration Azure Core</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -30,8 +31,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-messaging</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging;current} -->
+      <artifactId>spring-messaging-azure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.integration</groupId>

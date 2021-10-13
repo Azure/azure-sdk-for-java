@@ -8,8 +8,8 @@
   <artifactId>spring-cloud-azure-starter-storage</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
 
-  <name>Spring Cloud Azure Starter Azure Storage</name>
-  <description>Spring Cloud Azure Starter Azure Storage</description>
+  <name>Spring Cloud Azure Starter Storage</name>
+  <description>Spring Cloud Azure Starter Storage</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>

@@ -10,11 +10,13 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-integration-eventhubs</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
 
-  <name>Azure Spring Integration Event Hubs</name>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-integration-azure-storage-queue</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
+
+  <name>Spring Integration Azure Storage Queue</name>
+  <description>Spring Integration Azure Storage Queue</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -25,27 +27,13 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-core</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+      <artifactId>spring-integration-azure-core</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-core</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-eventhubs</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-eventhubs;current} -->
-    </dependency>
-    <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
-      <optional>true</optional>
+      <artifactId>spring-messaging-azure-storage-queue</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-storage-queue;current} -->
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -57,6 +45,7 @@
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -67,18 +56,6 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.19.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,5 +92,4 @@
       </plugin>
     </plugins>
   </build>
-
 </project>

@@ -14,8 +14,8 @@
   <artifactId>spring-cloud-azure-stream-binder-servicebus-queue</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-queue;current} -->
 
-  <name>Azure Spring Cloud Stream Service Bus Queue Binder</name>
-  <description>Azure Service Bus Queue binder for Spring Cloud Stream</description>
+  <name>Spring Cloud Azure Stream Binder Service Bus Queue</name>
+  <description>Spring Cloud Azure Stream Binder Service Bus Queue</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>

@@ -10,6 +10,8 @@
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cache;current} -->
 
   <name>Spring Cloud Azure Starter Cache</name>
+  <description>Spring Cloud Azure Starter Cache</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>

@@ -10,41 +10,48 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-servicebus</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-servicebus;current} -->
+  <artifactId>spring-messaging-azure-eventhubs</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-eventhubs;current} -->
 
-  <name>Azure Spring Service Bus</name>
+  <name>Spring Messaging Azure Event Hubs</name>
+  <description>Spring Messaging Azure Event Hubs</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.07</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-messaging</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging;current} -->
+      <artifactId>spring-messaging-azure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-messaging</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-messaging;current} -->
+      <artifactId>spring-messaging-azure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.4.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <artifactId>azure-messaging-eventhubs</artifactId>
+      <version>5.10.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+      <optional>true</optional>
+    </dependency>
+    <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -78,12 +85,14 @@
       <version>1.7.3</version> <!-- {x-version-update;io.micrometer:micrometer-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
+
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-      <scope>test</scope>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -103,15 +112,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.2.8</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -139,19 +142,6 @@
           </rules>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
-
 </project>

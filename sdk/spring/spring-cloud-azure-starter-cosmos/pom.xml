@@ -8,8 +8,8 @@
   <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
 
-  <name>Spring Cloud Azure Starter Azure Cosmos DB</name>
-  <description>Spring Cloud Azure Starter Azure Cosmos DB</description>
+  <name>Spring Cloud Azure Starter Cosmos DB</name>
+  <description>Spring Cloud Azure Starter Cosmos DB</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
