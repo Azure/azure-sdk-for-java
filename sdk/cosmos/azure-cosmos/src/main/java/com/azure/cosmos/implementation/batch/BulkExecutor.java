@@ -515,7 +515,7 @@ public final class BulkExecutor<TContext> {
                     ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
                     if (itemBulkOperation.getOperationType() == CosmosItemOperationType.READ ||
                         (itemBulkOperation.getRequestOptions() != null &&
-                        itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
                             itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled().booleanValue())) {
 
                         options.setContentResponseOnWriteEnabled(true);
