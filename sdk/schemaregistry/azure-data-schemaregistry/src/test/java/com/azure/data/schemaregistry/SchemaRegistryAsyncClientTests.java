@@ -103,8 +103,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertNotNull(response.getSchemaId());
-                schemaId.set(response.getSchemaId());
+                assertNotNull(response.getId());
+                schemaId.set(response.getId());
             }).verifyComplete();
 
 
@@ -117,7 +117,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client2.getSchema(schemaIdToGet))
             .assertNext(schema -> {
                 assertNotNull(schema.getProperties());
-                assertEquals(schemaIdToGet, schema.getProperties().getSchemaId());
+                assertEquals(schemaIdToGet, schema.getProperties().getId());
                 assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
 
                 // Replace white space.
@@ -146,15 +146,15 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertEquals(SchemaFormat.AVRO, response.getFormat());
-                assertNotNull(response.getSchemaId());
-                schemaId.set(response.getSchemaId());
+                assertNotNull(response.getId());
+                schemaId.set(response.getId());
             }).verifyComplete();
 
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContentModified, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertEquals(SchemaFormat.AVRO, response.getFormat());
-                assertNotNull(response.getSchemaId());
-                schemaId2.set(response.getSchemaId());
+                assertNotNull(response.getId());
+                schemaId2.set(response.getId());
             }).verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -184,7 +184,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, SchemaFormat.AVRO);
-                schemaId.set(response.getSchemaId());
+                schemaId.set(response.getId());
             }).verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -194,7 +194,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
-            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getSchemaId()))
+            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getId()))
             .verifyComplete();
     }
 
@@ -260,10 +260,10 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         assertEquals(format, actual.getProperties().getFormat());
 
-        assertNotNull(actual.getProperties().getSchemaId());
+        assertNotNull(actual.getProperties().getId());
 
         if (expectedSchemaId != null) {
-            assertEquals(expectedSchemaId, actual.getProperties().getSchemaId());
+            assertEquals(expectedSchemaId, actual.getProperties().getId());
         }
 
         // Replace white space.
@@ -277,7 +277,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotNull(actual);
 
         if (expectedSchemaId != null) {
-            assertEquals(expectedSchemaId, actual.getSchemaId());
+            assertEquals(expectedSchemaId, actual.getId());
         }
 
         assertEquals(schemaFormat, actual.getFormat());

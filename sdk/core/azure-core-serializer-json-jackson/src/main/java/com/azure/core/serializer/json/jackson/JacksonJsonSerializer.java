@@ -34,6 +34,10 @@ public final class JacksonJsonSerializer implements JsonSerializer, MemberNameCo
         this.mapper = mapper;
     }
 
+    ObjectMapperShim getMapper() {
+        return mapper;
+    }
+
     @Override
     public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
         if (data == null) {

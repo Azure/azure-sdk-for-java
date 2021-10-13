@@ -88,17 +88,19 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     public boolean shouldAttemptRedirect(HttpPipelineCallContext context,
                                          HttpResponse httpResponse, int tryCount,
                                          Set<String> attemptedRedirectUrls) {
-        String redirectUrl = tryGetRedirectHeader(httpResponse.getHeaders(), getLocationHeader());
 
-        if (isValidRedirectCount(tryCount)
-            && redirectUrl != null
-            && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)
-            && isValidRedirectStatusCode(httpResponse.getStatusCode())
+        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
+            && isValidRedirectCount(tryCount)
             && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
-            logger.verbose("[Redirecting] Try count: {}, Attempted Redirect URLs: {}", tryCount,
-                attemptedRedirectUrls.toString());
-            attemptedRedirectUrls.add(redirectUrl);
-            return true;
+            String redirectUrl = tryGetRedirectHeader(httpResponse.getHeaders(), getLocationHeader());
+            if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
+                logger.verbose("[Redirecting] Try count: {}, Attempted Redirect URLs: {}", tryCount,
+                    attemptedRedirectUrls.toString());
+                attemptedRedirectUrls.add(redirectUrl);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

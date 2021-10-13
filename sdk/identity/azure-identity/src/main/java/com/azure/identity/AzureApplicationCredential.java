@@ -19,7 +19,7 @@ import java.util.List;
  * </ol>
  */
 @Immutable
-public final class AzureApplicationCredential extends ChainedTokenCredential {
+final class AzureApplicationCredential extends ChainedTokenCredential {
     /**
      * Creates default AzureApplicationCredential instance to use. This will use environment variables to create
      * {@link EnvironmentCredential}

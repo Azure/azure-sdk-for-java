@@ -23,7 +23,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.deploymentType", required = true)
-    private DynamicsDeploymentType deploymentType;
+    private Object deploymentType;
 
     /*
      * The host name of the on-premises Common Data Service for Apps server.
@@ -65,7 +65,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * online scenario. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.authenticationType", required = true)
-    private DynamicsAuthenticationType authenticationType;
+    private Object authenticationType;
 
     /*
      * User name to access the Common Data Service for Apps instance. Type:
@@ -120,7 +120,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the deploymentType value.
      */
-    public DynamicsDeploymentType getDeploymentType() {
+    public Object getDeploymentType() {
         return this.deploymentType;
     }
 
@@ -132,7 +132,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @param deploymentType the deploymentType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService setDeploymentType(DynamicsDeploymentType deploymentType) {
+    public CommonDataServiceForAppsLinkedService setDeploymentType(Object deploymentType) {
         this.deploymentType = deploymentType;
         return this;
     }
@@ -236,7 +236,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      *
      * @return the authenticationType value.
      */
-    public DynamicsAuthenticationType getAuthenticationType() {
+    public Object getAuthenticationType() {
         return this.authenticationType;
     }
 
@@ -248,7 +248,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService setAuthenticationType(DynamicsAuthenticationType authenticationType) {
+    public CommonDataServiceForAppsLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
     }

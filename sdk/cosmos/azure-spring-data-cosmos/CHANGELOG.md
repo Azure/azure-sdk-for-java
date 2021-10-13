@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.13.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.12.0 (2021-09-24)
 #### New Features
 * Added support for UUID id type to spring data cosmos SDK.

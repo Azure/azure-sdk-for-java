@@ -82,7 +82,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         SchemaProperties properties = client.registerSchema("{schema-group}", "{schema-name}", schema,
             SchemaFormat.AVRO);
 
-        System.out.printf("Schema id: %s, schema format: %s%n", properties.getSchemaId(), properties.getFormat());
+        System.out.printf("Schema id: %s, schema format: %s%n", properties.getId(), properties.getFormat());
         // END: com.azure.data.schemaregistry.schemaregistryclient.registerschema
     }
 
@@ -96,7 +96,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         client.registerSchema("{schema-group}", "{schema-name}", schema, SchemaFormat.AVRO)
             .subscribe(properties -> {
-                System.out.printf("Schema id: %s, schema format: %s%n", properties.getSchemaId(),
+                System.out.printf("Schema id: %s, schema format: %s%n", properties.getId(),
                     properties.getFormat());
             });
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema
@@ -111,7 +111,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getSchema
         SchemaRegistrySchema schema = client.getSchema("{schema-id}");
 
-        System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getSchemaId(),
+        System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
             schema.getProperties().getFormat());
         System.out.println("Schema contents: " + schema.getSchemaDefinition());
         // END: com.azure.data.schemaregistry.schemaregistryclient.getSchema
@@ -125,7 +125,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema
         client.getSchema("{schema-id}").subscribe(schema -> {
-            System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getSchemaId(),
+            System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
                 schema.getProperties().getFormat());
             System.out.println("Schema contents: " + schema.getSchemaDefinition());
         });
@@ -138,13 +138,13 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
     public void getSchemaProperties() {
         SchemaRegistryClient client = buildClient();
 
-        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getSchemaId
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getSchemaProperties
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         SchemaProperties properties = client.getSchemaProperties("{schema-group}", "{schema-name}", schema,
             SchemaFormat.AVRO);
 
-        System.out.println("The schema id: " + properties.getSchemaId());
-        // END: com.azure.data.schemaregistry.schemaregistryclient.getSchemaId
+        System.out.println("The schema id: " + properties.getId());
+        // END: com.azure.data.schemaregistry.schemaregistryclient.getSchemaProperties
     }
 
     /**
@@ -153,13 +153,13 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
     public void getSchemaPropertiesAsync() {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
-        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaId
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         client.getSchemaProperties("{schema-group}", "{schema-name}", schema,
             SchemaFormat.AVRO).subscribe(properties -> {
-                System.out.println("The schema id: " + properties.getSchemaId());
+                System.out.println("The schema id: " + properties.getId());
             });
-        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaId
+        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties
     }
 
     private static SchemaRegistryAsyncClient buildAsyncClient() {
