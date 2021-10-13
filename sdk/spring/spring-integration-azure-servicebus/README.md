@@ -161,7 +161,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 
 <!-- Links -->
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md
-[package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-integration-servicebus
+[package]: https://mvnrepository.com/artifact/com.azure.spring/spring-integration-azure-servicebus
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-servicebus
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-integration-sample-servicebus
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging

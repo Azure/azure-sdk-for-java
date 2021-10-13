@@ -56,7 +56,7 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-integration-eventhubs/src
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-integration-azure-eventhubs/src
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-integration-eventhubs
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-eventhubs
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs

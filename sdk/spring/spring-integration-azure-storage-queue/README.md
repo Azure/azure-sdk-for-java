@@ -53,7 +53,7 @@ This project welcomes contributions and suggestions.  Most contributions require
 Please follow [instructions here][contributing_md] to build from source or contribute.
 
 <!-- Link -->
-[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-integration-storage-queue
+[src]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-integration-azure-storage-queue
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-integration-storage-queue
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-integration-storage-queue
 [sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/storage/azure-spring-integration-sample-storage-queue

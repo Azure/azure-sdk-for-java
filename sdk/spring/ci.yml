@@ -28,10 +28,10 @@ trigger:
       - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
       - sdk/spring/spring-messaging-azure-servicebus/pom.xml
       - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-      - sdk/spring/azure-spring-integration-core/pom.xml
-      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
-      - sdk/spring/azure-spring-integration-servicebus/pom.xml
-      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/spring-integration-azure-core/pom.xml
+      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
+      - sdk/spring/spring-integration-azure-servicebus/pom.xml
+      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
       - sdk/spring/spring-cloud-azure-core/pom.xml
       - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
       - sdk/spring/spring-cloud-azure-actuator/pom.xml
@@ -87,10 +87,10 @@ pr:
       - sdk/spring/spring-messaging-azure-eventhubs/pom.xml
       - sdk/spring/spring-messaging-azure-servicebus/pom.xml
       - sdk/spring/spring-messaging-azure-storage-queue/pom.xml
-      - sdk/spring/azure-spring-integration-core/pom.xml
-      - sdk/spring/azure-spring-integration-eventhubs/pom.xml
-      - sdk/spring/azure-spring-integration-servicebus/pom.xml
-      - sdk/spring/azure-spring-integration-storage-queue/pom.xml
+      - sdk/spring/spring-integration-azure-core/pom.xml
+      - sdk/spring/spring-integration-azure-eventhubs/pom.xml
+      - sdk/spring/spring-integration-azure-servicebus/pom.xml
+      - sdk/spring/spring-integration-azure-storage-queue/pom.xml
       - sdk/spring/spring-cloud-azure-core/pom.xml
       - sdk/spring/spring-cloud-azure-resourcemanager/pom.xml
       - sdk/spring/spring-cloud-azure-actuator/pom.xml
@@ -206,21 +206,21 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: azure-spring-integration-core
+      - name: spring-integration-azure-core
         groupId: com.azure.spring
-        safeName: azurespringintegrationcore
+        safeName: springintegrationazurecore
         skipPublishDocMs: true
-      - name: azure-spring-integration-eventhubs
+      - name: spring-integration-azure-eventhubs
         groupId: com.azure.spring
-        safeName: azurespringintegrationeventhubs
+        safeName: springintegrationazureeventhubs
         skipPublishDocMs: true
-      - name: azure-spring-integration-servicebus
+      - name: spring-integration-azure-servicebus
         groupId: com.azure.spring
-        safeName: azurespringintegrationservicebus
+        safeName: springintegrationazureservicebus
         skipPublishDocMs: true
-      - name: azure-spring-integration-storage-queue
+      - name: spring-integration-azure-storage-queue
         groupId: com.azure.spring
-        safeName: azurespringintegrationstoragequeue
+        safeName: springintegrationazurestoragequeue
       - name: spring-cloud-azure-messaging
         groupId: com.azure.spring
         safeName: springcloudazuremessaging
