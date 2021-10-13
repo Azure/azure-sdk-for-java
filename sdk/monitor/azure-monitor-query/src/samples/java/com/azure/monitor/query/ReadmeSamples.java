@@ -67,7 +67,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
                 new QueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
@@ -99,7 +99,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
                 new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
         for (CustomLogModel customLogModel : customLogModels) {
@@ -116,9 +116,9 @@ public class ReadmeSamples {
                 .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
-        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
-        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
+        String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
         LogsBatchQueryResultCollection batchResults = logsQueryClient
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -152,7 +152,7 @@ public class ReadmeSamples {
         LogsQueryOptions options = new LogsQueryOptions()
             .setServerTimeout(Duration.ofMinutes(10));
 
-        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
+        Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
     }
 
@@ -164,7 +164,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
+        Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
                 new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
                 Context.NONE);
@@ -180,7 +180,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        MetricsQueryResult metricsQueryResult = metricsQueryClient.query("{resource-uri}",
+        MetricsQueryResult metricsQueryResult = metricsQueryClient.queryResource("{resource-uri}",
                 Arrays.asList("SuccessfulCalls", "TotalCalls"));
 
         for (MetricResult metric : metricsQueryResult.getMetrics()) {
@@ -203,7 +203,7 @@ public class ReadmeSamples {
             .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-            .queryWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
+            .queryResourceWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
                 new MetricsQueryOptions()
                     .setGranularity(Duration.ofHours(1))
                     .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),

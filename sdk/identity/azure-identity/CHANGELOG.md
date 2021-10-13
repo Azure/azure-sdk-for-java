@@ -10,6 +10,13 @@
 
 ### Other Changes
 
+## 1.3.7 (2021-10-04)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.21.0
+
+
 ## 1.4.0-beta.1 (2021-09-13)
 ### Features Added
 

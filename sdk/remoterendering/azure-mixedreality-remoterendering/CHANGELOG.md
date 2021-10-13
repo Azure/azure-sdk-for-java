@@ -1,14 +1,12 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.1 (2021-10-07)
 
 ### Other Changes
+
+#### Dependency updates
+- Updated azure-core to 1.21.0.
+- Updated azure-core-http-netty to 1.11.1.
 
 ## 1.1.0 (2021-09-17)
 

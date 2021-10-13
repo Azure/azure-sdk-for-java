@@ -75,6 +75,10 @@ public class BlobClient extends BlobClientBase {
 
     private final BlobAsyncClient client;
 
+    private BlockBlobClient blockBlobClient;
+    private AppendBlobClient appendBlobClient;
+    private PageBlobClient pageBlobClient;
+
     /**
      * Protected constructor for use by {@link BlobClientBuilder}.
      * @param client the async blob client
@@ -136,9 +140,12 @@ public class BlobClient extends BlobClientBase {
      * @return A {@link AppendBlobClient} associated with this blob.
      */
     public AppendBlobClient getAppendBlobClient() {
-        return new SpecializedBlobClientBuilder()
-            .blobClient(this)
-            .buildAppendBlobClient();
+        if (appendBlobClient == null) {
+            appendBlobClient = new SpecializedBlobClientBuilder()
+                .blobClient(this)
+                .buildAppendBlobClient();
+        }
+        return appendBlobClient;
     }
 
     /**
@@ -147,9 +154,12 @@ public class BlobClient extends BlobClientBase {
      * @return A {@link BlockBlobClient} associated with this blob.
      */
     public BlockBlobClient getBlockBlobClient() {
-        return new SpecializedBlobClientBuilder()
-            .blobClient(this)
-            .buildBlockBlobClient();
+        if (blockBlobClient == null) {
+            blockBlobClient = new SpecializedBlobClientBuilder()
+                .blobClient(this)
+                .buildBlockBlobClient();
+        }
+        return blockBlobClient;
     }
 
     /**
@@ -158,9 +168,12 @@ public class BlobClient extends BlobClientBase {
      * @return A {@link PageBlobClient} associated with this blob.
      */
     public PageBlobClient getPageBlobClient() {
-        return new SpecializedBlobClientBuilder()
-            .blobClient(this)
-            .buildPageBlobClient();
+        if (pageBlobClient == null) {
+            pageBlobClient = new SpecializedBlobClientBuilder()
+                .blobClient(this)
+                .buildPageBlobClient();
+        }
+        return pageBlobClient;
     }
 
     /**

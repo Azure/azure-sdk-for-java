@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 2.1.1 (2021-09-28)
+
+### Bugs Fixed
+
+* Fixed usage of `null` for watch keys. Updates returned `null` labels automatically to `\0`.
+* Reworked Feature Flag watching to make sure all changes are detected. Such as new or deleted feature flags.
+
+### Other Changes
+
+* Updated Tracing to check for Key Vault and Dev usage.
+
 ## 2.1.0 (2021-09-05)
 
 * Add Health Indicator with the property `management.endpoint.health.azure-app-configuration.enabled` to enable the endpoint.
