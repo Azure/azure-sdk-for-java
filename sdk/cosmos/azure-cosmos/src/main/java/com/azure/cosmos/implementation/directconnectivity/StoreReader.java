@@ -771,6 +771,7 @@ public class StoreReader {
         } else {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
+            String activityId = "";
             if (cosmosException != null) {
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
@@ -778,6 +779,7 @@ public class StoreReader {
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
+
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     quorumAckedLSN = Long.parseLong(headerValue);
@@ -799,8 +801,8 @@ public class StoreReader {
                     requestCharge = Double.parseDouble(headerValue);
                 }
 
-                String activityId = "";
-                if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID)) != null) {
+                headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
+                if (!Strings.isNullOrEmpty(headerValue)) {
                     activityId = headerValue;
                 }
 
@@ -867,7 +869,7 @@ public class StoreReader {
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
-                        "",
+                         activityId,
                         /* currentReplicaSetSize: */ 0,
                         /* currentWriteQuorum: */ 0,
                         /* isValid: */ false,
