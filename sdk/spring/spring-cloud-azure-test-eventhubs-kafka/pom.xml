@@ -5,15 +5,15 @@
 
   <parent>
     <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-cloud-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-test-parent;current} -->
-    <relativePath>../azure-spring-cloud-test-parent</relativePath>
+    <artifactId>spring-cloud-azure-test-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-test-parent;current} -->
+    <relativePath>../spring-cloud-azure-test-parent</relativePath>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>spring-cloud-azure-test-eventhubs-kafka</artifactId>
   <groupId>com.azure.spring</groupId>
-  <version>1.0.0</version>  <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-kafka;dependency} -->
+  <version>1.0.0</version>  <!-- {x-version-update;com.azure.spring:spring-cloud-azure-sample-eventhubs-kafka;dependency} -->
 
   <name>spring-cloud-azure-test-eventhubs-kafka</name>
   <description>EventHubs Test project for Spring Cloud</description>

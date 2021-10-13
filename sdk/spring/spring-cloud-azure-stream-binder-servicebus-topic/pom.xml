@@ -14,8 +14,8 @@
   <artifactId>spring-cloud-azure-stream-binder-servicebus-topic</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-topic;current} -->
 
-  <name>Azure Spring Cloud Stream Service Bus Topic Binder</name>
-  <description>Azure Service Bus binder for Spring Cloud Stream</description>
+  <name>Spring Cloud Azure Stream Binder Service Bus Topic</name>
+  <description>Spring Cloud Azure Stream Binder Service Bus Topic</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -31,8 +31,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <artifactId>spring-cloud-azure-autoconfigure</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
 
     <dependency>
@@ -51,8 +51,8 @@
 
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-resourcemanager</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+      <artifactId>spring-cloud-azure-resourcemanager</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
