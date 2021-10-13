@@ -461,7 +461,7 @@ class SasClientTests extends APISpec {
             .setWritePermission(true)
 
         def builder = getContainerClientBuilder(cc.getBlobContainerUrl()).encryptionScope("testscope1")
-            .credential(env.primaryAccount.credential)
+            .credential(environment.primaryAccount.credential)
         builder = instrument(builder)
 
         def sharedKeyClient = builder.buildClient().getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -510,7 +510,7 @@ class SasClientTests extends APISpec {
 
         when:
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
-        def sas = getServiceClientBuilder(env.primaryAccount.credential, env.primaryAccount.blobEndpoint)
+        def sas = getServiceClientBuilder(environment.primaryAccount.credential, environment.primaryAccount.blobEndpoint)
             .encryptionScope("testscope1")
             .buildClient()
             .generateAccountSas(sasValues)
@@ -1082,9 +1082,9 @@ class SasClientTests extends APISpec {
 
         where:
         containerName | blobName | snapId | expiryTime           || expectedResource | expectedStringToSign
-        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nbs\nid\n\n\n\n\n"
-        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n"
-        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nc\n\n\n\n\n\n"
+        "c"           | "b"      | "id"   | OffsetDateTime.now() || "bs"             | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nbs\nid\n\n\n\n\n\n"
+        "c"           | "b"      | null   | OffsetDateTime.now() || "b"              | "\n\n%s\n" + "/blob/%s/c/b\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"
+        "c"           | null     | null   | OffsetDateTime.now() || "c"              | "\n\n%s\n" + "/blob/%s/c\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nc\n\n\n\n\n\n\n"
 
     }
 
