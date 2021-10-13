@@ -112,7 +112,7 @@ jobs:
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
           displayName: Dump Package properties
-          condition: and(succeeded(), eq(variables['SetDevVersion'],'true')
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
 
       - pwsh: |
           $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json

@@ -196,38 +196,38 @@ stages:
                           ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                           ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
 
-                    - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-                - deployment: PublishDocs
-                  displayName: Docs.MS Release
-                  condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-                  environment: githubio
-                  dependsOn: PublishPackage
+          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+            - deployment: PublishDocsMs
+              displayName: Docs.MS Release
+              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+              environment: githubio
+              dependsOn: PublishPackage
 
-                  pool:
-                    name: azsdk-pool-mms-ubuntu-2004-general
-                    vmImage: MMSUbuntu20.04
+              pool:
+                name: azsdk-pool-mms-ubuntu-2004-general
+                vmImage: MMSUbuntu20.04
 
-                  strategy:
-                    runOnce:
-                      deploy:
-                        steps:
-                          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                            parameters:
-                              SkipDefaultCheckout: true
-                              Paths:
-                                - sdk/**/*.md
-                          - download: current
-                          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
-                            parameters:
-                              PackageInfoLocations:
-                                - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
-                              WorkingDirectory: $(System.DefaultWorkingDirectory)
-                              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-                              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                              Language: 'python'
-                              SparseCheckoutPaths:
-                                - docs-ref-services/
-                                - metadata/
+              strategy:
+                runOnce:
+                  deploy:
+                    steps:
+                      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                        parameters:
+                          SkipDefaultCheckout: true
+                          Paths:
+                            - sdk/**/*.md
+                      - download: current
+                      - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+                        parameters:
+                          PackageInfoLocations:
+                            - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+                          WorkingDirectory: $(System.DefaultWorkingDirectory)
+                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          Language: 'java'
+                          SparseCheckoutPaths:
+                            - docs-ref-services/
+                            - metadata/
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
