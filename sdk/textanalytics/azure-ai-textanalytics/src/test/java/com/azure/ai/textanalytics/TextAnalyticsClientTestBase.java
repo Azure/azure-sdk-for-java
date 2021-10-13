@@ -1070,13 +1070,19 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new TextAnalyticsActions()
-                .setRecognizeEntitiesActions(new RecognizeEntitiesAction(), new RecognizeEntitiesAction())
-                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction(), new RecognizePiiEntitiesAction())
-                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction(), new ExtractKeyPhrasesAction())
-                .setExtractSummaryActions(new ExtractSummaryAction(), new ExtractSummaryAction())
-                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction(),
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractKeyPhrasesAction())
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractSummaryAction())
+                .setRecognizeLinkedEntitiesActions(
+                    new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
                     new RecognizeLinkedEntitiesAction())
-                .setAnalyzeSentimentActions(new AnalyzeSentimentAction(), new AnalyzeSentimentAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
+                    new AnalyzeSentimentAction())
         );
     }
 
