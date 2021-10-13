@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity;
+package com.azure.identity.implementation;
 
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
  * Defines currently available regional authorities, or "AutoDiscoverRegion" to auto-detect the region.
  */
+//TODO: Move to public package when ready for GA.
 public final class RegionalAuthority extends ExpandableStringEnum<RegionalAuthority> {
     /**
      * In cases where the region is not known ahead of time, attempts to automatically discover the appropriate
