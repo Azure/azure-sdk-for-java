@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.FormData;
 import com.azure.core.annotation.FormParam;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
@@ -569,5 +570,29 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return exceptionHashMap;
+    }
+
+    static class FormDataEntry {
+        private final FormData formData;
+        private final Integer parameterIndex;
+        private final Type javaType;
+
+        FormDataEntry(FormData formData, Integer parameterIndex, Type javaType) {
+            this.formData = formData;
+            this.parameterIndex = parameterIndex;
+            this.javaType = javaType;
+        }
+
+        public FormData getFormData() {
+            return formData;
+        }
+
+        public Integer getParameterIndex() {
+            return parameterIndex;
+        }
+
+        public Type getJavaType() {
+            return javaType;
+        }
     }
 }
