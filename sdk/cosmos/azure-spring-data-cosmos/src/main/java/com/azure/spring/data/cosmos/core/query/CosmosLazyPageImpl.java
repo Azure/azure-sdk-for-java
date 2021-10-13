@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -14,7 +16,9 @@ import java.util.function.Supplier;
  *
  * @param <T> the type of which the CosmosLazyPageImpl consists.
  */
-public class CosmosLazyPageImpl<T> extends PageImpl<T> {
+public class CosmosLazyPageImpl<T> extends PageImpl<T> implements Serializable {
+
+    private static final long serialVersionUID = -2805108120909259912L;
 
     private final String continuationToken;
     private final Supplier<Long> totalFunction;
@@ -49,6 +53,25 @@ public class CosmosLazyPageImpl<T> extends PageImpl<T> {
         return continuationToken == null;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        final CosmosLazyPageImpl<?> that = (CosmosLazyPageImpl<?>) o;
+        return continuationToken == that.continuationToken;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), continuationToken);
+    }
 
     /**
      * Factory for CosmosLazyPageImpl
