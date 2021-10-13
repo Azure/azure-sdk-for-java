@@ -38,7 +38,7 @@ config = {
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.5.0'),
             )
         },
-        'sdk/spring/azure-spring-cloud-test-parent/pom.xml': {
+        'sdk/spring/spring-cloud-azure-test-parent/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.4.10'),
             )

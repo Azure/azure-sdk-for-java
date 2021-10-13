@@ -14,7 +14,8 @@
   <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
   <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
 
-  <name>Azure Spring Cloud Stream Event Hubs binder Core</name>
+  <name>Spring Cloud Azure Stream Binder Event Hubs Core</name>
+  <description>Spring Cloud Azure Stream Binder Event Hubs Core</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -31,8 +32,8 @@
 
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-integration-eventhubs</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+      <artifactId>spring-integration-azure-eventhubs</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
     </dependency>
 
     <dependency>
@@ -44,8 +45,8 @@
 
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-resourcemanager</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-resourcemanager;current} -->
+      <artifactId>spring-cloud-azure-resourcemanager</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
             Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
