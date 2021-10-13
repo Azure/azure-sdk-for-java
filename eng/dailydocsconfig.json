@@ -1,0 +1,6 @@
+{
+    "target_repo": {
+        "url": "https://github.com/Azure/azure-docs-sdk-java",
+        "branch": "%%DailyDocsBranchName%%"
+    }
+}
