@@ -79,7 +79,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -233,7 +232,9 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<EntitiesTask> toEntitiesTask(TextAnalyticsActions actions) {
-        AtomicInteger taskNumber = new AtomicInteger();
+        if (actions == null || actions.getRecognizeEntitiesActions() == null) {
+            return null;
+        }
         return StreamSupport.stream(actions.getRecognizeEntitiesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -246,13 +247,15 @@ class AnalyzeActionsAsyncClient {
                             .setModelVersion(action.getModelVersion())
                             .setLoggingOptOut(action.isServiceLogsDisabled())
                             .setStringIndexType(StringIndexType.UTF16CODE_UNIT))
-                    .setTaskName(String.valueOf(taskNumber.getAndIncrement()));
+                    .setTaskName(action.getActionName());
                 return entitiesTask;
             }).collect(Collectors.toList());
     }
 
     private List<PiiTask> toPiiTask(TextAnalyticsActions actions) {
-        AtomicInteger taskNumber = new AtomicInteger();
+        if (actions == null || actions.getRecognizePiiEntitiesActions() == null) {
+            return null;
+        }
         return StreamSupport.stream(actions.getRecognizePiiEntitiesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -269,13 +272,15 @@ class AnalyzeActionsAsyncClient {
                                     : action.getDomainFilter().toString()))
                             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                             .setPiiCategories(toCategoriesFilter(action.getCategoriesFilter())))
-                    .setTaskName(String.valueOf(taskNumber.getAndIncrement()));
+                    .setTaskName(action.getActionName());
                 return piiTask;
             }).collect(Collectors.toList());
     }
 
     private List<KeyPhrasesTask> toKeyPhrasesTask(TextAnalyticsActions actions) {
-        AtomicInteger taskNumber = new AtomicInteger();
+        if (actions == null || actions.getExtractKeyPhrasesActions() == null) {
+            return null;
+        }
         return StreamSupport.stream(actions.getExtractKeyPhrasesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -287,13 +292,15 @@ class AnalyzeActionsAsyncClient {
                         new KeyPhrasesTaskParameters()
                             .setModelVersion(action.getModelVersion())
                             .setLoggingOptOut(action.isServiceLogsDisabled()))
-                    .setTaskName(String.valueOf(taskNumber.getAndIncrement()));
+                    .setTaskName(action.getActionName());
                 return keyPhrasesTask;
             }).collect(Collectors.toList());
     }
 
     private List<EntityLinkingTask> toEntityLinkingTask(TextAnalyticsActions actions) {
-        AtomicInteger taskNumber = new AtomicInteger();
+        if (actions == null || actions.getRecognizeLinkedEntitiesActions() == null) {
+            return null;
+        }
         return StreamSupport.stream(actions.getRecognizeLinkedEntitiesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -306,13 +313,15 @@ class AnalyzeActionsAsyncClient {
                             .setModelVersion(action.getModelVersion())
                             .setLoggingOptOut(action.isServiceLogsDisabled())
                             .setStringIndexType(StringIndexType.UTF16CODE_UNIT))
-                    .setTaskName(String.valueOf(taskNumber.getAndIncrement()));
+                    .setTaskName(action.getActionName());
                 return entityLinkingTask;
             }).collect(Collectors.toList());
     }
 
     private List<SentimentAnalysisTask> toSentimentAnalysisTask(TextAnalyticsActions actions) {
-        AtomicInteger taskNumber = new AtomicInteger();
+        if (actions == null || actions.getAnalyzeSentimentActions() == null) {
+            return null;
+        }
         return StreamSupport.stream(actions.getAnalyzeSentimentActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -325,13 +334,15 @@ class AnalyzeActionsAsyncClient {
                             .setModelVersion(action.getModelVersion())
                             .setLoggingOptOut(action.isServiceLogsDisabled())
                             .setStringIndexType(StringIndexType.UTF16CODE_UNIT))
-                    .setTaskName(String.valueOf(taskNumber.getAndIncrement()));
+                    .setTaskName(action.getActionName());
                 return sentimentAnalysisTask;
             }).collect(Collectors.toList());
     }
 
     private List<ExtractiveSummarizationTask> toExtractiveSummarizationTask(TextAnalyticsActions actions) {
-        AtomicInteger taskNumber = new AtomicInteger();
+        if (actions == null || actions.getExtractSummaryActions() == null) {
+            return null;
+        }
         return StreamSupport.stream(actions.getExtractSummaryActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -349,7 +360,7 @@ class AnalyzeActionsAsyncClient {
                             .setSortBy(action.getOrderBy() == null ? null
                                            : ExtractiveSummarizationTaskParametersSortBy.fromString(
                                 action.getOrderBy().toString())))
-                    .setTaskName(String.valueOf(taskNumber.getAndIncrement()));
+                    .setTaskName(action.getActionName());
                 return extractiveSummarizationTask;
             }).collect(Collectors.toList());
     }
@@ -480,6 +491,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizeEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeEntitiesResultCollectionResponse(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeEntitiesActionResults.add(actionResult);
@@ -495,6 +507,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizePiiEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizePiiEntitiesResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizePiiEntitiesActionResults.add(actionResult);
@@ -510,6 +523,7 @@ class AnalyzeActionsAsyncClient {
                     ExtractKeyPhrasesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toExtractKeyPhrasesResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 extractKeyPhrasesActionResults.add(actionResult);
@@ -525,6 +539,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizeLinkedEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeLinkedEntitiesResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeLinkedEntitiesActionResults.add(actionResult);
@@ -540,6 +555,7 @@ class AnalyzeActionsAsyncClient {
                     AnalyzeSentimentActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toAnalyzeSentimentResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 analyzeSentimentActionResults.add(actionResult);
@@ -556,6 +572,7 @@ class AnalyzeActionsAsyncClient {
                     ExtractSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toExtractSummaryResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 extractSummaryActionResults.add(actionResult);
