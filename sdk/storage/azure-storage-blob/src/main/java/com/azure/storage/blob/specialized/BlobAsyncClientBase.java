@@ -1122,7 +1122,7 @@ public class BlobAsyncClientBase {
                     },
                     finalOptions.getMaxRetryRequests(),
                     finalRange.getOffset()
-                ).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
+                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
 
                 return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), bufferFlux, blobDownloadHeaders);
