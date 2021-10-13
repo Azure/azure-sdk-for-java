@@ -232,9 +232,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<EntitiesTask> toEntitiesTask(TextAnalyticsActions actions) {
-        if (actions == null || actions.getRecognizeEntitiesActions() == null) {
-            return null;
-        }
         return StreamSupport.stream(actions.getRecognizeEntitiesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -253,9 +250,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<PiiTask> toPiiTask(TextAnalyticsActions actions) {
-        if (actions == null || actions.getRecognizePiiEntitiesActions() == null) {
-            return null;
-        }
         return StreamSupport.stream(actions.getRecognizePiiEntitiesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -278,9 +272,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<KeyPhrasesTask> toKeyPhrasesTask(TextAnalyticsActions actions) {
-        if (actions == null || actions.getExtractKeyPhrasesActions() == null) {
-            return null;
-        }
         return StreamSupport.stream(actions.getExtractKeyPhrasesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -298,9 +289,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<EntityLinkingTask> toEntityLinkingTask(TextAnalyticsActions actions) {
-        if (actions == null || actions.getRecognizeLinkedEntitiesActions() == null) {
-            return null;
-        }
         return StreamSupport.stream(actions.getRecognizeLinkedEntitiesActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -319,9 +307,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<SentimentAnalysisTask> toSentimentAnalysisTask(TextAnalyticsActions actions) {
-        if (actions == null || actions.getAnalyzeSentimentActions() == null) {
-            return null;
-        }
         return StreamSupport.stream(actions.getAnalyzeSentimentActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
@@ -340,9 +325,6 @@ class AnalyzeActionsAsyncClient {
     }
 
     private List<ExtractiveSummarizationTask> toExtractiveSummarizationTask(TextAnalyticsActions actions) {
-        if (actions == null || actions.getExtractSummaryActions() == null) {
-            return null;
-        }
         return StreamSupport.stream(actions.getExtractSummaryActions().spliterator(), false).map(
             action -> {
                 if (action == null) {
