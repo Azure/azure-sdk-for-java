@@ -3,7 +3,7 @@
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `exchangeTeamsToken` to provide the ability to exchange an AAD access token of a Teams User  for a Communication Identity access token
+- Added support for Microsoft 365 Teams identities
 
 ### Breaking Changes
 
