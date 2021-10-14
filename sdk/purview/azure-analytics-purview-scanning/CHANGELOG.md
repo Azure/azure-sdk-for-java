@@ -2,6 +2,14 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
+### Breaking Changes
+
+This is a new version of LLC SDK. Changes are
+
+- A sync client and an async client for each operation group.
+- Add `RequestOptions` and `Context` to client method parameters.
+- Return type of client method is always `Response` except for paging and long-running operations.
+- Allow users to set `ServiceVersion` in client builder.
 
 ## 1.0.0-beta.1 (2021-05-11)
 
