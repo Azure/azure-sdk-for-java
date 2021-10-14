@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    azure:
+      eventhub:
+        connection-string: ${EVENTHUB_CONNECTION_STRING_TEST_EVENTHUB}
+        processor:
+          checkpoint-store:
+            account-name: ${STORAGE_ACCOUNT_TEST_EVENTHUB}
+            account-key: ${STORAGE_ACCOUNT_KEY_TEST_EVENTHUB}
+    stream:
+      function:
+        definition: consume;supply
+      bindings:
+        consume-in-0:
+          group: $Default
+      eventhub:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint-mode: MANUAL
+      default:
+        producer:
+          errorChannelEnabled: true

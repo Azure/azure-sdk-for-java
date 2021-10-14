@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.test.aad.common;
 
-import com.azure.spring.utils.AzureCloudUrls;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -86,7 +85,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     public String httpGetWithIncrementalConsent(String endpoint) {
         driver.get((app.root() + endpoint));
 
-        String oauth2AuthorizationUrlFraction = String.format(AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE)
+        String oauth2AuthorizationUrlFraction = String.format(getBaseUrl(AZURE_CLOUD_TYPE)
             + "%s/oauth2/v2.0/" + "authorize?", AAD_TENANT_ID_1);
         wait.until(ExpectedConditions.urlContains(oauth2AuthorizationUrlFraction));
 
@@ -97,5 +96,20 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     public String getUsername() {
         return username;
+    }
+
+    public static String getBaseUrl(String cloudType) {
+        return cloudType.equals("Global") ? "https://login.microsoftonline.com/"
+            : "https://login.partner.microsoftonline.cn/";
+    }
+
+    public static String getGraphBaseUrl(String cloudType) {
+        return cloudType.equals("Global") ? "https://graph.microsoft.com/"
+            : "https://microsoftgraph.chinacloudapi.cn/";
+    }
+
+    public static String getServiceManagementBaseUrl(String cloudType) {
+        return cloudType.equals("Global") ? "https://management.azure.com/"
+            : "https://management.chinacloudapi.cn/";
     }
 }

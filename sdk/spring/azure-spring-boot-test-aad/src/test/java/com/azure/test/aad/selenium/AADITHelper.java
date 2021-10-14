@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.test.aad.selenium;
 
-import com.azure.spring.utils.AzureCloudUrls;
+import com.azure.test.aad.common.AADSeleniumITHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,8 +21,8 @@ public class AADITHelper {
         defaultProperties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
         defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
-        defaultProperties.put("azure.activedirectory.base-uri", AzureCloudUrls.getBaseUrl(AZURE_CLOUD_TYPE));
-        defaultProperties.put("azure.activedirectory.graph-base-uri", AzureCloudUrls.getGraphBaseUrl(AZURE_CLOUD_TYPE));
+        defaultProperties.put("azure.activedirectory.base-uri", AADSeleniumITHelper.getBaseUrl(AZURE_CLOUD_TYPE));
+        defaultProperties.put("azure.activedirectory.graph-base-uri", AADSeleniumITHelper.getGraphBaseUrl(AZURE_CLOUD_TYPE));
         return defaultProperties;
     }
 }

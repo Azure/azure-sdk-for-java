@@ -63,17 +63,12 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-boot-starter</artifactId>
+        <artifactId>azure-spring-cloud-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

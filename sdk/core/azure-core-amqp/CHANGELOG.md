@@ -4,9 +4,16 @@
 
 ### Features Added
 
+- Defer creation of AmqpException in switchIfEmpty to decrease creation of unused exception objects.
+- Updated tests to run in parallel.
+- Updated log messages so they are consistent in reporting connectionId.
+- Updated incorrect log messages in ReactorReceiver.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Fixed issue where RequestResponseChannel did not complete pending sends on disposal. So, any downstream subscribers would wait forever for a completion or error. This results in dependent senders or receivers not recovering from a disconnect or graceful closure.
 
 ### Other Changes
 

@@ -3,11 +3,11 @@
 
 package com.azure.test.cosmos;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration;
+import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import com.azure.spring.test.AppRunner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -30,15 +30,15 @@ public class CosmosIT {
     public void testCosmosStarterIsolating() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
-            app.property("azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
-            app.property("azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
-            app.property("azure.cosmos.populateQueryMetrics", String.valueOf(true));
+            app.property("spring.cloud.azure.cosmos.endpoint", AZURE_COSMOS_ENDPOINT);
+            app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
+            app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
+            app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
 
             //start app
             app.start();
             assertThrows(NoSuchBeanDefinitionException.class,
-                () -> app.getBean(AADAuthenticationFilterAutoConfiguration.class));
+                () -> app.getBean(AADAutoConfiguration.class));
         }
     }
 
@@ -46,10 +46,10 @@ public class CosmosIT {
     public void testCosmosOperation() {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             //set properties
-            app.property("azure.cosmos.uri", AZURE_COSMOS_ENDPOINT);
-            app.property("azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
-            app.property("azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
-            app.property("azure.cosmos.populateQueryMetrics", String.valueOf(true));
+            app.property("spring.cloud.azure.cosmos.endpoint", AZURE_COSMOS_ENDPOINT);
+            app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
+            app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
+            app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
 
             //start app
             app.start();
@@ -93,7 +93,7 @@ public class CosmosIT {
             Assertions.assertEquals(testUser.getLastName(), result.getLastName(),
                 "query result lastName doesn't match!");
 
-            LOGGER.info("findOne in User collection get result: {}", result.toString());
+            LOGGER.info("findOne in User collection get result: {}", result);
         }
     }
 }
