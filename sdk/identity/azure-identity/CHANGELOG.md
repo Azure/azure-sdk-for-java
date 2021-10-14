@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.4.0 (2021-10-14)
 
 ### Features Added
 - Added `tenantId` setter on `AzurePowerShellCredential` and `AzureCliCredential`
