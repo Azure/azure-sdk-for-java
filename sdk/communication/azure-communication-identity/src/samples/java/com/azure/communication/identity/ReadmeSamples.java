@@ -151,10 +151,13 @@ public class ReadmeSamples {
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());;
+            System.out.println(ex.getMessage());
         }
     }
 
+    /**
+     * Sample code for generating an AAD access token of a Teams User
+     */
     private static String generateTeamsToken() throws MalformedURLException, ExecutionException, InterruptedException {
         String token = "";
         try {
