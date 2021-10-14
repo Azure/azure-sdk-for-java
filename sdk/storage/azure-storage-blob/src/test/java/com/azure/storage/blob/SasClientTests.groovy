@@ -1121,23 +1121,4 @@ class SasClientTests extends APISpec {
         null                                                      | null             | SasProtocol.HTTPS_ONLY | null              || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n" + SasProtocol.HTTPS_ONLY + "\n" + Constants.SAS_SERVICE_VERSION + "\n\n"
         null                                                      | null             | null                   | "encryptionScope" || "%s" + "\nr\nb\no\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nencryptionScope\n"
     }
-
-    /**
-     * If this test fails it means that non-deprecated string to sign has new components.
-     * In that case we should hardcode version used for deprecated string to sign like we did for user delegation sas.
-     */
-    def "Remember about string to sign deprecation"() {
-        setup:
-        def client = sasClient
-        def values = new BlobServiceSasSignatureValues(namer.getUtcNow(), new BlobSasPermission())
-        values.setContainerName(sasClient.containerName)
-        values.setBlobName(sasClient.blobName)
-
-        when:
-        def deprecatedStringToSign = values.generateSasQueryParameters(environment.primaryAccount.credential).encode()
-        def stringToSign = client.generateSas(values)
-
-        then:
-        deprecatedStringToSign == stringToSign
-    }
 }
