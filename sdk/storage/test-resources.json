@@ -266,7 +266,7 @@
                 "name": "Premium_LRS",
                 "tier": "Premium"
             },
-            "kind": "StorageV2",
+            "kind": "FileStorage",
             "properties": {
                 "networkAcls": {
                     "bypass": "AzureServices",
