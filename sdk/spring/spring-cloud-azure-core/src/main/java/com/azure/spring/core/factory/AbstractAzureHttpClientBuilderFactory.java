@@ -6,14 +6,18 @@ package com.azure.spring.core.factory;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.spring.core.converter.AzureHttpLogOptionsConverter;
 import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,11 +32,14 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureHttpClientBuilderFactory.class);
+
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
     private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
+    private final AzureHttpLogOptionsConverter logOptionsConverter = new AzureHttpLogOptionsConverter();
 
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
@@ -40,10 +47,13 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected abstract BiConsumer<T, HttpPipeline> consumeHttpPipeline();
 
+    protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
+
     @Override
     protected void configureCore(T builder) {
         super.configureCore(builder);
         configureHttpClient(builder);
+        configureHttpLogOptions(builder);
     }
 
     protected void configureHttpClient(T builder) {
@@ -73,6 +83,18 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected void configureHttpHeaders(T builder) {
         this.httpClientOptions.setHeaders(getHeaders());
+    }
+
+    protected void configureHttpLogOptions(T builder) {
+        ClientProperties client = getAzureProperties().getClient();
+        if (client instanceof HttpClientProperties) {
+            HttpLogOptions logOptions = this.logOptionsConverter.convert(((HttpClientProperties) client).getLogging());
+
+            consumeHttpLogOptions().accept(builder, logOptions);
+        } else {
+            LOGGER.warn("{} is not a HttpClientProperties", client);
+        }
+
     }
 
     protected void configureHttpTransportProperties(T builder) {
