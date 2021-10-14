@@ -201,6 +201,13 @@
 
   <build>
     <plugins>
+      <!-- This looks silly but is needed to ensure antrun happens before the JAR plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+      </plugin>
+
       <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -313,6 +320,49 @@
 
       <build>
         <plugins>
+          <!-- Copy the pom file to output -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>copy-mr-classes-for-test</id>
+                <phase>process-classes</phase>
+                <configuration>
+                  <target>
+                    <copy todir="${packageOutputDirectory}/temp" overwrite="true">
+                      <fileset dir="${packageOutputDirectory}/classes"/>
+                    </copy>
+                    <copy todir="${packageOutputDirectory}/classes" overwrite="true">
+                      <fileset dir="${packageOutputDirectory}/classes/META-INF/versions/9"/>
+                    </copy>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+
+              <execution>
+                <id>revert-mr-classes-after-test</id>
+                <phase>package</phase>
+                <configuration>
+                  <target>
+                    <delete dir="${packageOutputDirectory}/classes"/>
+                    <copy todir="${packageOutputDirectory}/classes" overwrite="true" force="true">
+                      <fileset dir="${packageOutputDirectory}/temp"/>
+                    </copy>
+                    <delete dir="${packageOutputDirectory}/temp"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>

@@ -15,22 +15,7 @@ final class ReflectionUtils implements ReflectionUtilsApi {
     // Convenience pointer to the com.azure.core module.
     private static final Module CORE_MODULE = ReflectionUtils.class.getModule();
 
-    /**
-     * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
-     * <p>
-     * If Java 8 is being used this will always return {@link MethodHandles.Lookup#publicLookup()} as Java 8 doesn't
-     * have module boundaries that will prevent reflective access to the {@code targetClass}.
-     * <p>
-     * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
-     * containing the {@code targetClass} exports the package containing the class. Otherwise, the {@link
-     * MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing {@code
-     * targetClass}.
-     *
-     * @param targetClass The {@link Class} that will need to be reflectively accessed.
-     * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
-     * reflectively.
-     * @throws Throwable If the underlying reflective calls throw an exception.
-     */
+    @Override
     public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
         Module responseModule = targetClass.getModule();
 
@@ -58,6 +43,11 @@ final class ReflectionUtils implements ReflectionUtilsApi {
         }
 
         return LOOKUP;
+    }
+
+    @Override
+    public MethodHandles.Lookup privateLookupIn(Class<?> targetClass, MethodHandles.Lookup lookup) throws Throwable {
+        return MethodHandles.privateLookupIn(targetClass, lookup);
     }
 
     public int getJavaImplementationMajorVersion() {

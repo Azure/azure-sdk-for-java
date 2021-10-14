@@ -21,6 +21,17 @@ public interface ReflectionUtilsApi {
     MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable;
 
     /**
+     * Gets a {@link MethodHandles.Lookup} capable of doing a private lookup in the {@code targetClass}.
+     *
+     * @param targetClass The class being targeted to retrieve a {@link MethodHandles.Lookup} that has access to private
+     * classes and members.
+     * @param lookup The {@link MethodHandles.Lookup} for the caller.
+     * @return A {@link MethodHandles.Lookup} with access to private classes and members on the {@code targetClass}.
+     * @throws Throwable If an error occurs while attempting to create the lookup.
+     */
+    MethodHandles.Lookup privateLookupIn(Class<?> targetClass, MethodHandles.Lookup lookup) throws Throwable;
+
+    /**
      * Gets the Java implementation major version.
      *
      * @return The Java implementation major version.

@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -21,12 +22,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Constructs and configures {@link ObjectMapper} instances.
  */
 final class ObjectMapperFactory {
     private final ClientLogger logger = new ClientLogger(ObjectMapperFactory.class);
+
+    private static final Map<Package, MethodHandles.Lookup> PACKAGE_LOOKUP_MAP = new ConcurrentHashMap<>();
 
     private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
     private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
@@ -38,9 +43,7 @@ final class ObjectMapperFactory {
     private Object coercionActionAsNull;
     private boolean useReflectionToSetCoercion;
 
-    private static ObjectMapperFactory instance;
-
-    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
+    public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     private ObjectMapperFactory() {
         MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
@@ -110,11 +113,17 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createDefaultMapper() {
-        return new ObjectMapper();
+        return new ObjectMapper()
+            .registerModule(FastBeanModule.getModule())
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
+            .disable(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS);
     }
 
     public ObjectMapper createPrettyPrintMapper() {
-        return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        return new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT)
+            .registerModule(FastBeanModule.getModule())
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
+            .disable(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS);
     }
 
     public ObjectMapper createHeaderMapper() {
@@ -131,8 +140,10 @@ final class ObjectMapperFactory {
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
             .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(MapperFeature.CAN_OVERRIDE_ACCESS_MODIFIERS)
             .disable(MapperFeature.OVERRIDE_PUBLIC_ACCESS_MODIFIERS)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
+            .addModule(FastBeanModule.getModule())
             .addModule(new JavaTimeModule())
             .addModule(ByteArraySerializer.getModule())
             .addModule(Base64UrlSerializer.getModule())
@@ -151,5 +162,16 @@ final class ObjectMapperFactory {
             .visibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
 
         return mapper;
+    }
+
+    static MethodHandles.Lookup getLookupFor(Class<?> clazz) {
+        return PACKAGE_LOOKUP_MAP.computeIfAbsent(clazz.getPackage(), aPackage -> {
+            try {
+                return ReflectionUtilsApi.INSTANCE.privateLookupIn(clazz,
+                    ReflectionUtilsApi.INSTANCE.getLookupToUse(clazz));
+            } catch (Throwable throwable) {
+                throw new RuntimeException(throwable);
+            }
+        });
     }
 }

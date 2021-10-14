@@ -4,30 +4,36 @@
 package com.azure.core.implementation;
 
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
 
 /**
  * Utility methods that aid in performing reflective operations.
  */
+@SuppressWarnings("deprecation")
 final class ReflectionUtils implements ReflectionUtilsApi {
+    private static final Constructor<MethodHandles.Lookup> PRIVATE_LOOKUP_IN_CTOR;
 
-    /**
-     * Gets the {@link MethodHandles.Lookup} to use when performing reflective operations.
-     * <p>
-     * If Java 8 is being used this will always return {@link MethodHandles.Lookup#publicLookup()} as Java 8 doesn't
-     * have module boundaries that will prevent reflective access to the {@code targetClass}.
-     * <p>
-     * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
-     * containing the {@code targetClass} exports the package containing the class. Otherwise, the {@link
-     * MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing {@code
-     * targetClass}.
-     *
-     * @param targetClass The {@link Class} that will need to be reflectively accessed.
-     * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
-     * reflectively.
-     * @throws Throwable If the underlying reflective calls throw an exception.
-     */
+    static {
+        try {
+            PRIVATE_LOOKUP_IN_CTOR = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Failed to access the private constructor in MethodHandles.Lookup.", e);
+        }
+
+        if (!PRIVATE_LOOKUP_IN_CTOR.isAccessible()) {
+            PRIVATE_LOOKUP_IN_CTOR.setAccessible(true);
+        }
+    }
+
+    @Override
     public MethodHandles.Lookup getLookupToUse(Class<?> targetClass) throws Throwable {
+        // Always return the public lookup in Java 8.
         return MethodHandles.publicLookup();
+    }
+
+    @Override
+    public MethodHandles.Lookup privateLookupIn(Class<?> targetClass, MethodHandles.Lookup lookup) throws Throwable {
+        return PRIVATE_LOOKUP_IN_CTOR.newInstance(targetClass);
     }
 
     public int getJavaImplementationMajorVersion() {
