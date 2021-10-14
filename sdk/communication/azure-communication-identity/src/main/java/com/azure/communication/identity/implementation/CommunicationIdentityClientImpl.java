@@ -74,23 +74,31 @@ public final class CommunicationIdentityClientImpl {
         return this.communicationIdentities;
     }
 
-    /** Initializes an instance of CommunicationIdentityClient client. */
-    CommunicationIdentityClientImpl(String endpoint) {
+    /**
+     * Initializes an instance of CommunicationIdentityClient client.
+     *
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
+     */
+    CommunicationIdentityClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
      * Initializes an instance of CommunicationIdentityClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
      */
-    CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -98,12 +106,15 @@ public final class CommunicationIdentityClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
      */
-    CommunicationIdentityClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    CommunicationIdentityClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-31-preview";
+        this.apiVersion = apiVersion;
         this.communicationIdentities = new CommunicationIdentitiesImpl(this);
     }
 }
