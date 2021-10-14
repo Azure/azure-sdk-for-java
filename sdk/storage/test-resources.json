@@ -5,7 +5,7 @@
         "baseName": {
             "type": "String"
         },
-        "endpointSuffix": {
+        "storageEndpointSuffix": {
             "type": "string",
             "defaultValue": "core.windows.net"
         },
@@ -545,7 +545,7 @@
         },
         "PRIMARY_STORAGE_CONNECTION_STRING": {
           "type": "string",
-          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+          "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         },
         "SECONDARY_STORAGE_ACCOUNT_NAME": {
             "type": "string",
@@ -605,7 +605,7 @@
         },
         "STORAGE_DATA_LAKE_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('dataLakeAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('dataLakeAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
         },
         "STORAGE_DATA_LAKE_SOFT_DELETE_ACCOUNT_NAME": {
           "type": "string",
