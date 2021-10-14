@@ -7,13 +7,13 @@ package com.azure.communication.networktraversal.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CommunicationRelayConfigurationRequest model. */
+/** Request for a CommunicationRelayConfiguration. */
 @Fluent
 public final class CommunicationRelayConfigurationRequest {
     /*
      * An existing ACS identity.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id")
     private String id;
 
     /**
