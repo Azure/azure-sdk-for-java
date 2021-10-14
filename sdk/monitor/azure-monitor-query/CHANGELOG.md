@@ -1,18 +1,12 @@
 # Release History
 
-## 1.0.0 (2021-10-07)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `getMetricByName` API on `MetricsQueryResult` to get the metric result for a specific metric name.
-- Added `LogsQueryStatus` enum to specify if the query was successful, partially successful or failed.
 
 ### Breaking Changes
-- Changed `query` API name in `LogsQuery*Client` to `queryWorkspace`
-- Changed `query` API name in `MetricsQuery*Client` to `queryResource`
-- Changed `addQuery` API name in `LogsQueryBatch` to `addWorkspaceQuery`
-- Removed `status` from `LogsBatchQueryResult`
-- Throws exception if a logs query is partially successful with an option in `LogsQueryOptions` to disable this 
-  behavior.
+
+### Bugs Fixed
 
 ### Other Changes
 
