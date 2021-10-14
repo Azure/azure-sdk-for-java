@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.14.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.13.0 (2021-10-14)
 #### New Features
 * Added support for setting throughput on database creation.
