@@ -506,7 +506,6 @@ public final class BulkExecutor<TContext> {
         // bulk requests whenever at least one of the item operations requires a content response (either
         // because it is a read operation or because contentResponseOnWrite was enabled explicitly)
         if (!this.docClientWrapper.isContentResponseOnWriteEnabled() &&
-            serverRequest.getOperations() != null &&
             serverRequest.getOperations().size() > 0) {
 
             for (CosmosItemOperation itemOperation : serverRequest.getOperations()) {
