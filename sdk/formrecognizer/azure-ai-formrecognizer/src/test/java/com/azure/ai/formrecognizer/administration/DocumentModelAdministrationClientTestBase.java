@@ -15,6 +15,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -26,7 +27,6 @@ import java.time.Duration;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
@@ -48,7 +48,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
     }
 
     DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                DocumentAnalysisServiceVersion serviceVersion) {
+                                                                                DocumentAnalysisServiceVersion serviceVersion,
+                                                                                boolean useKeyCredential) {
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -59,7 +60,11 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+            }
         }
         return builder;
     }

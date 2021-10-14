@@ -469,7 +469,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -500,7 +500,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -533,7 +533,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -556,7 +556,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the server encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -961,7 +961,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
         String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -983,7 +983,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -1008,7 +1008,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName) {
         return beginRevalidateAsync(resourceGroupName, workspaceName, encryptionProtectorName).getSyncPoller();
@@ -1026,7 +1026,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName,
         String workspaceName,

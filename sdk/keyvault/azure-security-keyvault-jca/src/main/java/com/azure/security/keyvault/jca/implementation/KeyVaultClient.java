@@ -330,7 +330,7 @@ public class KeyVaultClient {
             LOGGER.exiting("KeyVaultClient", "getKey", null);
             return Optional.ofNullable(certificateBundle)
                            .map(CertificateBundle::getKid)
-                           .map(kid -> new KeyVaultPrivateKey(keyType, kid))
+                           .map(kid -> new KeyVaultPrivateKey(keyType, kid, this))
                            .orElse(null);
         }
         String certificateSecretUri = certificateBundle.getSid();

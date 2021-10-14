@@ -62,7 +62,7 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
-     * @throws NullPointerException If {@code documentUrl} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, AnalyzeResult>
@@ -90,7 +90,7 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation}returns
      * with an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code documentUrl} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, AnalyzeResult>
@@ -118,7 +118,7 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation}returns
      * with an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, AnalyzeResult>
@@ -147,7 +147,7 @@ public final class DocumentAnalysisClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DocumentOperationResult, AnalyzeResult>

@@ -37,6 +37,15 @@ import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeStatusOperatio
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimesClient;
 import com.azure.resourcemanager.synapse.fluent.IpFirewallRulesClient;
 import com.azure.resourcemanager.synapse.fluent.KeysClient;
+import com.azure.resourcemanager.synapse.fluent.KustoOperationsClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolAttachedDatabaseConfigurationsClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolChildResourcesClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolDataConnectionsClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasePrincipalAssignmentsClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasesClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolPrincipalAssignmentsClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolsClient;
+import com.azure.resourcemanager.synapse.fluent.KustoPoolsOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.LibrariesOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.OperationsClient;
@@ -933,6 +942,114 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         return this.sparkConfigurationsOperations;
     }
 
+    /** The KustoOperationsClient object to access its operations. */
+    private final KustoOperationsClient kustoOperations;
+
+    /**
+     * Gets the KustoOperationsClient object to access its operations.
+     *
+     * @return the KustoOperationsClient object.
+     */
+    public KustoOperationsClient getKustoOperations() {
+        return this.kustoOperations;
+    }
+
+    /** The KustoPoolsClient object to access its operations. */
+    private final KustoPoolsClient kustoPools;
+
+    /**
+     * Gets the KustoPoolsClient object to access its operations.
+     *
+     * @return the KustoPoolsClient object.
+     */
+    public KustoPoolsClient getKustoPools() {
+        return this.kustoPools;
+    }
+
+    /** The KustoPoolsOperationsClient object to access its operations. */
+    private final KustoPoolsOperationsClient kustoPoolsOperations;
+
+    /**
+     * Gets the KustoPoolsOperationsClient object to access its operations.
+     *
+     * @return the KustoPoolsOperationsClient object.
+     */
+    public KustoPoolsOperationsClient getKustoPoolsOperations() {
+        return this.kustoPoolsOperations;
+    }
+
+    /** The KustoPoolChildResourcesClient object to access its operations. */
+    private final KustoPoolChildResourcesClient kustoPoolChildResources;
+
+    /**
+     * Gets the KustoPoolChildResourcesClient object to access its operations.
+     *
+     * @return the KustoPoolChildResourcesClient object.
+     */
+    public KustoPoolChildResourcesClient getKustoPoolChildResources() {
+        return this.kustoPoolChildResources;
+    }
+
+    /** The KustoPoolAttachedDatabaseConfigurationsClient object to access its operations. */
+    private final KustoPoolAttachedDatabaseConfigurationsClient kustoPoolAttachedDatabaseConfigurations;
+
+    /**
+     * Gets the KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
+     *
+     * @return the KustoPoolAttachedDatabaseConfigurationsClient object.
+     */
+    public KustoPoolAttachedDatabaseConfigurationsClient getKustoPoolAttachedDatabaseConfigurations() {
+        return this.kustoPoolAttachedDatabaseConfigurations;
+    }
+
+    /** The KustoPoolDatabasesClient object to access its operations. */
+    private final KustoPoolDatabasesClient kustoPoolDatabases;
+
+    /**
+     * Gets the KustoPoolDatabasesClient object to access its operations.
+     *
+     * @return the KustoPoolDatabasesClient object.
+     */
+    public KustoPoolDatabasesClient getKustoPoolDatabases() {
+        return this.kustoPoolDatabases;
+    }
+
+    /** The KustoPoolDataConnectionsClient object to access its operations. */
+    private final KustoPoolDataConnectionsClient kustoPoolDataConnections;
+
+    /**
+     * Gets the KustoPoolDataConnectionsClient object to access its operations.
+     *
+     * @return the KustoPoolDataConnectionsClient object.
+     */
+    public KustoPoolDataConnectionsClient getKustoPoolDataConnections() {
+        return this.kustoPoolDataConnections;
+    }
+
+    /** The KustoPoolPrincipalAssignmentsClient object to access its operations. */
+    private final KustoPoolPrincipalAssignmentsClient kustoPoolPrincipalAssignments;
+
+    /**
+     * Gets the KustoPoolPrincipalAssignmentsClient object to access its operations.
+     *
+     * @return the KustoPoolPrincipalAssignmentsClient object.
+     */
+    public KustoPoolPrincipalAssignmentsClient getKustoPoolPrincipalAssignments() {
+        return this.kustoPoolPrincipalAssignments;
+    }
+
+    /** The KustoPoolDatabasePrincipalAssignmentsClient object to access its operations. */
+    private final KustoPoolDatabasePrincipalAssignmentsClient kustoPoolDatabasePrincipalAssignments;
+
+    /**
+     * Gets the KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
+     *
+     * @return the KustoPoolDatabasePrincipalAssignmentsClient object.
+     */
+    public KustoPoolDatabasePrincipalAssignmentsClient getKustoPoolDatabasePrincipalAssignments() {
+        return this.kustoPoolDatabasePrincipalAssignments;
+    }
+
     /**
      * Initializes an instance of SynapseManagementClient client.
      *
@@ -1027,6 +1144,15 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsClientImpl(this);
         this.sparkConfigurations = new SparkConfigurationsClientImpl(this);
         this.sparkConfigurationsOperations = new SparkConfigurationsOperationsClientImpl(this);
+        this.kustoOperations = new KustoOperationsClientImpl(this);
+        this.kustoPools = new KustoPoolsClientImpl(this);
+        this.kustoPoolsOperations = new KustoPoolsOperationsClientImpl(this);
+        this.kustoPoolChildResources = new KustoPoolChildResourcesClientImpl(this);
+        this.kustoPoolAttachedDatabaseConfigurations = new KustoPoolAttachedDatabaseConfigurationsClientImpl(this);
+        this.kustoPoolDatabases = new KustoPoolDatabasesClientImpl(this);
+        this.kustoPoolDataConnections = new KustoPoolDataConnectionsClientImpl(this);
+        this.kustoPoolPrincipalAssignments = new KustoPoolPrincipalAssignmentsClientImpl(this);
+        this.kustoPoolDatabasePrincipalAssignments = new KustoPoolDatabasePrincipalAssignmentsClientImpl(this);
     }
 
     /**

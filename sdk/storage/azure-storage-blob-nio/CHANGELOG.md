@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.10 (Unreleased)
+## 12.0.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.0.0-beta.10 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-storage-blob` to version `12.14.1`
 
 ## 12.0.0-beta.9 (2021-09-15)
 ### Other changes

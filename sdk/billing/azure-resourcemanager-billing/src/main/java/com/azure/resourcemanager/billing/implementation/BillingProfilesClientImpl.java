@@ -572,7 +572,7 @@ public final class BillingProfilesClientImpl implements BillingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingProfileInner>, BillingProfileInner> beginCreateOrUpdateAsync(
         String billingAccountName, String billingProfileName, BillingProfileInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -600,7 +600,7 @@ public final class BillingProfilesClientImpl implements BillingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BillingProfileInner>, BillingProfileInner> beginCreateOrUpdateAsync(
         String billingAccountName, String billingProfileName, BillingProfileInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -624,7 +624,7 @@ public final class BillingProfilesClientImpl implements BillingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingProfileInner>, BillingProfileInner> beginCreateOrUpdate(
         String billingAccountName, String billingProfileName, BillingProfileInner parameters) {
         return beginCreateOrUpdateAsync(billingAccountName, billingProfileName, parameters).getSyncPoller();
@@ -643,7 +643,7 @@ public final class BillingProfilesClientImpl implements BillingProfilesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a billing profile.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BillingProfileInner>, BillingProfileInner> beginCreateOrUpdate(
         String billingAccountName, String billingProfileName, BillingProfileInner parameters, Context context) {
         return beginCreateOrUpdateAsync(billingAccountName, billingProfileName, parameters, context).getSyncPoller();

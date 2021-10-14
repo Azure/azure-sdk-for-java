@@ -12,7 +12,7 @@ import java.util.Collection;
 /**
  * Cloud audiences available for {@link MetricsQueryClient}.
  */
-public final class MetricsQueryClientAudience extends ExpandableStringEnum<MetricsQueryClientAudience> {
+final class MetricsQueryClientAudience extends ExpandableStringEnum<MetricsQueryClientAudience> {
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for MetricsQueryClientAudience. */
     public static final MetricsQueryClientAudience AZURE_RESOURCE_MANAGER_CHINA = fromString("https://management.chinacloudapi.cn");
 

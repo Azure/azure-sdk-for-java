@@ -10,6 +10,13 @@
 
 ### Other Changes
 
+## 12.11.1 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `12.14.1` of `azure-storage-blob`
+- Updated to version 1.21.0 of `azure-core`
+
 ## 12.11.0 (2021-09-15)
 - GA release
 

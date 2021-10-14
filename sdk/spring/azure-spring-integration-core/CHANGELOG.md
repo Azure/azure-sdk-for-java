@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Deprecate RxJava and CompletableFuture support API, which will be dropped from version 4.0.0.
 
 ## 2.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.

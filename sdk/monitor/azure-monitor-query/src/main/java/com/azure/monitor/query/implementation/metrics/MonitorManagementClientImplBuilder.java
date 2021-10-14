@@ -21,7 +21,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.monitor.query.models.MetricsQueryClientAudience;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,6 @@ public final class MonitorManagementClientImplBuilder {
     private static final String SDK_VERSION = "version";
 
     private final Map<String, String> properties = CoreUtils.getProperties("azure-monitor-query.properties");
-    private String audience;
 
     /** Create an instance of the MonitorManagementClientImplBuilder. */
     public MonitorManagementClientImplBuilder() {
@@ -205,18 +203,6 @@ public final class MonitorManagementClientImplBuilder {
     }
 
     /**
-     * Sets the audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience will be
-     * used if the property is null.
-     * @param audience audience to use for authentication with Azure Active Directory. The Azure Public Cloud audience
-     * will be used if the property is null.
-     * @return the {@link MonitorManagementClientImplBuilder}.
-     */
-    public MonitorManagementClientImplBuilder audience(String audience) {
-        this.audience = audience;
-        return this;
-    }
-
-    /**
      * Builds an instance of MonitorManagementClientImpl with the provided parameters.
      *
      * @return an instance of MonitorManagementClientImpl.
@@ -253,11 +239,7 @@ public final class MonitorManagementClientImplBuilder {
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        String resolvedAudience = this.audience;
-        if (resolvedAudience == null) {
-            resolvedAudience = MetricsQueryClientAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD.toString();
-        }
-        resolvedAudience += "/.default";
+        String resolvedAudience = host + "/.default";
         BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
                 resolvedAudience);
         policies.add(tokenPolicy);
