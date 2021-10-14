@@ -935,6 +935,7 @@ class SasClientTests extends APISpec {
      individual parts later.
      */
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "blob sas impl util string to sign"() {
         when:
@@ -991,7 +992,7 @@ class SasClientTests extends APISpec {
         null                                                      | null       | null             | null                   | null     | null         | null          | null       | null       | null   | null        | "encryptionScope" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\nencryptionScope\n\n\n\n\n"
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_02_10")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "blob sas impl util string to sign user delegation key"() {
         when:
@@ -1060,6 +1061,7 @@ class SasClientTests extends APISpec {
         null                                                      | null                                   | null                                   | null                                                                  | null                                                                  | null       | null         | "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=" | null             | null                   | null     | null         | null          | null       | null       | null   | null        | null     | null  | "encryptionScope" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\nencryptionScope\n\n\n\n\n"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "blob sas impl util canonicalized resource"() {
         setup:
@@ -1088,6 +1090,7 @@ class SasClientTests extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "account sas impl util string to sign"() {
         when:
