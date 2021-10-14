@@ -5,15 +5,15 @@ package com.azure.core.util.polling;
 
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Objects;
+import java.time.OffsetDateTime;
 
 /**
  * Fallback polling strategy that doesn't poll but exits successfully if no other polling strategies are detected
@@ -24,13 +24,15 @@ import java.util.Objects;
  *           kept
  */
 public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
+    private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
+
     private final ObjectSerializer serializer;
 
     /**
      * Creates a status check polling strategy with a JSON serializer.
      */
     public StatusCheckPollingStrategy() {
-        this(new DefaultJsonSerializer());
+        this(DEFAULT_SERIALIZER);
     }
 
     /**
@@ -38,7 +40,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @param serializer a custom serializer for serializing and deserializing polling responses
      */
     public StatusCheckPollingStrategy(ObjectSerializer serializer) {
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null");
+        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
     }
 
     @Override
@@ -53,8 +55,7 @@ public class StatusCheckPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 || response.getStatusCode() == 201
                 || response.getStatusCode() == 202
                 || response.getStatusCode() == 204) {
-            String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
-            Duration retryAfter = retryAfterValue == null ? null : Duration.ofSeconds(Long.parseLong(retryAfterValue));
+            Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, value, retryAfter))
                 .switchIfEmpty(Mono.defer(() -> Mono.just(new PollResponse<>(

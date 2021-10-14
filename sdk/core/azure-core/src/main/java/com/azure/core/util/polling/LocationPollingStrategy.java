@@ -10,8 +10,10 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingConstants;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -21,6 +23,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -31,6 +34,9 @@ import java.util.Objects;
  *           kept
  */
 public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
+    private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
+
+    private final ClientLogger logger = new ClientLogger(LocationPollingStrategy.class);
 
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
@@ -39,9 +45,10 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * Creates an instance of the location polling strategy using a JSON serializer.
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
+     * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, new DefaultJsonSerializer());
+        this(httpPipeline, DEFAULT_SERIALIZER);
     }
 
     /**
@@ -49,10 +56,11 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
+     * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null");
+        this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
     }
 
     @Override
@@ -63,6 +71,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 new URL(locationHeader.getValue());
                 return Mono.just(true);
             } catch (MalformedURLException e) {
+                logger.info("Failed to parse Location header into a URL.", e);
                 return Mono.just(false);
             }
         }
@@ -116,9 +125,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
             return response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> {
                 pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
-                String retryAfterValue = response.getHeaders().getValue(PollingConstants.RETRY_AFTER);
-                Duration retryAfter = retryAfterValue == null ? null
-                    : Duration.ofSeconds(Long.parseLong(retryAfterValue));
+                Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
                 return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
                     .map(value -> new PollResponse<>(status, value, retryAfter));
             });
