@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.SERIES_KEY_FILTER;
-import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_TIME;
-import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.ANOMALY;
 import static com.azure.ai.metricsadvisor.models.FeedbackType.CHANGE_POINT;

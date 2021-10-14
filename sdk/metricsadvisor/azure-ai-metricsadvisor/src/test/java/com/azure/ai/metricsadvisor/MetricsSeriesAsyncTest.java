@@ -47,9 +47,11 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
+        List<String> actualDimensionValues = new ArrayList<String>();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME))
-            .expectNextCount(EXPECTED_DIMENSION_VALUES_COUNT - 1)
+            .thenConsumeWhile(actualDimensionValues::add)
             .verifyComplete();
+        assertEquals(EXPECTED_DIMENSION_VALUES_COUNT, actualDimensionValues.size());
     }
 
     /**

@@ -44,7 +44,7 @@ public final class NotificationHookTest extends NotificationHookTestBase {
         NotificationHook createdNotificationHook = client.createHook(CreateEmailHookInput.INSTANCE.hook);
         Assertions.assertNotNull(createdNotificationHook);
         assertCreateEmailHookOutput(createdNotificationHook);
-        // client.deleteHook(createdNotificationHook.getId());
+        client.deleteHook(createdNotificationHook.getId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
