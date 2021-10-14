@@ -19,7 +19,7 @@ npm install -g autorest
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest README.md --java --v4 --use=@autorest/java@4.0.2X
 ```
 
 ### Code generation settings

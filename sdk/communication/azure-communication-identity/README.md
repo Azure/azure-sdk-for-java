@@ -126,7 +126,7 @@ System.out.println("User id: " + user.getId());
 
 ### Getting a token for an existing user
 Use the `getToken` function to get a token for an existing user. The function
-also takes in a list of `CommunicationIdentityTokenScope`. Scope options include:
+also takes in a list of `CommunicationTokenScope`. Scope options include:
 - `chat` (Chat)
 - `voip` (Voice over IP)
 
@@ -170,7 +170,7 @@ Use the `deleteUser` function to delete a user.
 communicationIdentityClient.deleteUser(user);
 ```
 
-### Exchanging access token
+### Exchanging AAD access token of a Teams User for a Communication Identity access token
 Use the `exchangeTeamsToken` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L146 -->
