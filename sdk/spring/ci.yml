@@ -283,6 +283,8 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurestarterstreamservicebustopic
         skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-servicebus-queue
         groupId: com.azure.spring
         safeName: springcloudazurestreambinderservicebusqueue
@@ -291,10 +293,14 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurestarterstreamservicebustopic
         skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-stream-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestarterstreameventhubs
         skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubs
