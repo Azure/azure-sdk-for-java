@@ -2,10 +2,6 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
-### Features Added
-
-- Adopt new API version 2021-09-01. It adds some new operations.
-
 ### Breaking Changes
 
 This is a new version of LLC SDK. Changes are
