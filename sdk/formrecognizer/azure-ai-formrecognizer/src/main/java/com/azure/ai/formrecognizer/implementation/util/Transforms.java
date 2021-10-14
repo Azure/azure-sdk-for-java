@@ -45,6 +45,8 @@ import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.models.ResponseError;
+import com.azure.core.models.ResponseInnerError;
 import com.azure.core.util.CoreUtils;
 
 import java.time.LocalTime;
@@ -273,7 +275,7 @@ public class Transforms {
             return new HttpResponseException(
                 errorResponseException.getMessage(),
                 errorResponseException.getResponse(),
-                toFormRecognizerError(error)
+                toResponseError(error)
             );
         }
         return throwable;
@@ -577,6 +579,31 @@ public class Transforms {
             return formRecognizerError;
         }
         return null;
+    }
+
+    private static ResponseError toResponseError(Error error) {
+        if (error != null) {
+            ResponseError responseError = new ResponseError(error.getCode(), error.getMessage());
+
+            ResponseErrorHelper.setInnerError(responseError, toInnerError(error.getInnererror()));
+            FormRecognizerErrorHelper.setDetails(formRecognizerError, toErrorDetails(error.getDetails()));
+            FormRecognizerErrorHelper.setMessage(formRecognizerError, error.getMessage());
+            FormRecognizerErrorHelper.setTarget(formRecognizerError, error.getTarget());
+            return formRecognizerError;
+        }
+        return null;
+    }
+
+    private static ResponseInnerError toInnerError(
+        com.azure.ai.formrecognizer.implementation.models.InnerError serviceInnerError) {
+        if (serviceInnerError == null) {
+            return null;
+        }
+        ResponseInnerError innerError = new ResponseInnerError();
+        InnerErrorHelper.setCode(innerError, serviceInnerError.getCode());
+        InnerErrorHelper.setMessage(innerError, serviceInnerError.getMessage());
+        InnerErrorHelper.setInnerError(innerError, toInnerError(serviceInnerError.getInnererror()));
+        return innerError;
     }
 
     private static InnerError toInnerError(
