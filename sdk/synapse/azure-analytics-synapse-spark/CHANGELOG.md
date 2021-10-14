@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (2020-10-14)
+## 1.0.0-beta.5 (2021-10-14)
 
 ### New Features
 - Added `ClientOptions` to `SparkClientBuilder`
