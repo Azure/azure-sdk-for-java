@@ -20,7 +20,6 @@ import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -61,7 +60,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CreateFileSystem"() {
         setup:
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         def uri = getFileSystemUri()
 
@@ -92,7 +91,7 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = env.primaryAccount.credential
+        config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] = environment.primaryAccount.credential
         provider.newFileSystem(getFileSystemUri(), config)
 
         when:
@@ -105,10 +104,10 @@ class AzureFileSystemProviderTest extends APISpec {
     def "CreateFileSystem initial check fail"() {
         when:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
-        def badKey = env.primaryAccount.key.getBytes()
+        def badKey = environment.primaryAccount.key.getBytes()
         badKey[0]++
         config[AzureFileSystem.AZURE_STORAGE_SHARED_KEY_CREDENTIAL] =
-            new StorageSharedKeyCredential(env.primaryAccount.name, new String(badKey))
+            new StorageSharedKeyCredential(environment.primaryAccount.name, new String(badKey))
         provider.newFileSystem(getFileSystemUri(), config)
 
         then:

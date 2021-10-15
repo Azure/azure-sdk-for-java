@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.RouteType;
@@ -13,37 +12,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Network route contract used to pass routing information for a Virtual Network. */
-@JsonFlatten
 @Fluent
-public class VnetRouteInner extends ProxyOnlyResource {
+public final class VnetRouteInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetRouteInner.class);
 
     /*
-     * The starting address for this route. This may also include a CIDR
-     * notation, in which case the end address must not be specified.
+     * VnetRoute resource specific properties
      */
-    @JsonProperty(value = "properties.startAddress")
-    private String startAddress;
+    @JsonProperty(value = "properties")
+    private VnetRouteProperties innerProperties;
 
-    /*
-     * The ending address for this route. If the start address is specified in
-     * CIDR notation, this must be omitted.
-     */
-    @JsonProperty(value = "properties.endAddress")
-    private String endAddress;
-
-    /*
-     * The type of route this is:
-     * DEFAULT - By default, every app has routes to the local address ranges
-     * specified by RFC1918
-     * INHERITED - Routes inherited from the real Virtual Network routes
-     * STATIC - Static route set on the app only
+    /**
+     * Get the innerProperties property: VnetRoute resource specific properties.
      *
-     * These values will be used for syncing an app's routes with those from a
-     * Virtual Network.
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.routeType")
-    private RouteType routeType;
+    private VnetRouteProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VnetRouteInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the startAddress property: The starting address for this route. This may also include a CIDR notation, in
@@ -52,7 +45,7 @@ public class VnetRouteInner extends ProxyOnlyResource {
      * @return the startAddress value.
      */
     public String startAddress() {
-        return this.startAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().startAddress();
     }
 
     /**
@@ -63,7 +56,10 @@ public class VnetRouteInner extends ProxyOnlyResource {
      * @return the VnetRouteInner object itself.
      */
     public VnetRouteInner withStartAddress(String startAddress) {
-        this.startAddress = startAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetRouteProperties();
+        }
+        this.innerProperties().withStartAddress(startAddress);
         return this;
     }
 
@@ -74,7 +70,7 @@ public class VnetRouteInner extends ProxyOnlyResource {
      * @return the endAddress value.
      */
     public String endAddress() {
-        return this.endAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().endAddress();
     }
 
     /**
@@ -85,7 +81,10 @@ public class VnetRouteInner extends ProxyOnlyResource {
      * @return the VnetRouteInner object itself.
      */
     public VnetRouteInner withEndAddress(String endAddress) {
-        this.endAddress = endAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetRouteProperties();
+        }
+        this.innerProperties().withEndAddress(endAddress);
         return this;
     }
 
@@ -99,7 +98,7 @@ public class VnetRouteInner extends ProxyOnlyResource {
      * @return the routeType value.
      */
     public RouteType routeType() {
-        return this.routeType;
+        return this.innerProperties() == null ? null : this.innerProperties().routeType();
     }
 
     /**
@@ -113,14 +112,10 @@ public class VnetRouteInner extends ProxyOnlyResource {
      * @return the VnetRouteInner object itself.
      */
     public VnetRouteInner withRouteType(RouteType routeType) {
-        this.routeType = routeType;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VnetRouteInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetRouteProperties();
+        }
+        this.innerProperties().withRouteType(routeType);
         return this;
     }
 
@@ -132,5 +127,8 @@ public class VnetRouteInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

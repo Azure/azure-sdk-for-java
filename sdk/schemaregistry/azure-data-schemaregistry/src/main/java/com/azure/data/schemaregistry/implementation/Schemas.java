@@ -17,16 +17,19 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.schemaregistry.implementation.models.SchemaId;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdResponse;
+import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentResponse;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterResponse;
 import com.azure.data.schemaregistry.implementation.models.SerializationType;
 import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 /** An instance of this class provides access to all the operations defined in Schemas. */
 public final class Schemas {
@@ -55,6 +58,7 @@ public final class Schemas {
     private interface SchemasService {
         @Get("/$schemagroups/getSchemaById/{schema-id}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(ServiceErrorResponseException.class)
         Mono<SchemasGetByIdResponse> getById(
                 @HostParam("endpoint") String endpoint,
@@ -64,6 +68,7 @@ public final class Schemas {
 
         @Post("/$schemagroups/{group-name}/schemas/{schema-name}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(code = {404}, value = ResourceNotFoundException.class)
         @UnexpectedResponseExceptionType(ServiceErrorResponseException.class)
         Mono<SchemasQueryIdByContentResponse> queryIdByContent(
                 @HostParam("endpoint") String endpoint,
@@ -83,7 +88,7 @@ public final class Schemas {
                 @PathParam("schema-name") String schemaName,
                 @HeaderParam("Serialization-Type") SerializationType xSchemaType,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") String schemaContent,
+                @BodyParam("text/plain; charset=utf-8") String schemaContent,
                 Context context);
     }
 
@@ -125,7 +130,7 @@ public final class Schemas {
                 .flatMap(
                         (SchemasGetByIdResponse res) -> {
                             if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
+                                return Mono.just(new String(res.getValue(), StandardCharsets.UTF_8));
                             } else {
                                 return Mono.empty();
                             }

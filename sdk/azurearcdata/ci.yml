@@ -10,6 +10,9 @@ trigger:
   paths:
     include:
       - sdk/azurearcdata/
+    exclude:
+      - sdk/azurearcdata/pom.xml
+      - sdk/azurearcdata/azure-resourcemanager-azurearcdata/pom.xml
 
 pr:
   branches:
@@ -22,6 +25,9 @@ pr:
   paths:
     include:
       - sdk/azurearcdata/
+    exclude:
+      - sdk/azurearcdata/pom.xml
+      - sdk/azurearcdata/azure-resourcemanager-azurearcdata/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

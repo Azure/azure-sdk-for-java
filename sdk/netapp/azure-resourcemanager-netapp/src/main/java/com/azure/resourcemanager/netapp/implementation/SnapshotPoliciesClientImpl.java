@@ -335,7 +335,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -389,7 +389,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -441,7 +441,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,7 +466,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -482,7 +482,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -500,7 +500,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,7 +561,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -624,7 +624,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -650,7 +650,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -668,7 +668,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -691,7 +691,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -752,7 +752,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -815,7 +815,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -842,7 +842,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -871,7 +871,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -889,7 +889,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -912,7 +912,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -932,7 +932,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -957,7 +957,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -975,7 +975,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param body Snapshot policy object supplied in the body of the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -998,7 +998,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1050,7 +1050,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1100,7 +1100,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1121,7 +1121,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1144,7 +1144,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1161,7 +1161,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,7 +1179,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1197,7 +1197,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1217,7 +1217,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1232,7 +1232,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1248,7 +1248,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1302,7 +1302,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1354,7 +1354,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1379,7 +1379,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1396,7 +1396,7 @@ public final class SnapshotPoliciesClientImpl implements SnapshotPoliciesClient 
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
-     * @param snapshotPolicyName The name of the snapshot policy target.
+     * @param snapshotPolicyName The name of the snapshot policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

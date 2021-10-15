@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /** A copy activity source for SAP Cloud for Customer source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -90,7 +89,7 @@ public final class SapCloudForCustomerSource extends TabularSource {
 
     /** {@inheritDoc} */
     @Override
-    public SapCloudForCustomerSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+    public SapCloudForCustomerSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }

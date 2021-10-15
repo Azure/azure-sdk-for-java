@@ -16,6 +16,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
+ *
+ /**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosPatchOperations}
+ *
  * Grammar is a super set of this RFC: https://tools.ietf.org/html/rfc6902#section-4.1
  *
  * Contains a list of Patch operations to be applied on an item. It is applied in an atomic manner and we support all
@@ -45,6 +50,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  */
 @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 public final class CosmosPatchOperations {
 
     private final List<PatchOperation> patchOperations;
@@ -59,6 +65,7 @@ public final class CosmosPatchOperations {
      * @return A new instance of {@link CosmosPatchOperations}.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosPatchOperations create() {
         return new CosmosPatchOperations();
     }
@@ -88,6 +95,7 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public <T> CosmosPatchOperations add(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
@@ -119,6 +127,7 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public CosmosPatchOperations remove(String path) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -152,6 +161,7 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public <T> CosmosPatchOperations replace(String path, T value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -186,6 +196,7 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public <T> CosmosPatchOperations set(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
@@ -220,6 +231,7 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public CosmosPatchOperations increment(String path, long value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -253,6 +265,7 @@ public final class CosmosPatchOperations {
      * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public CosmosPatchOperations increment(String path, double value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);

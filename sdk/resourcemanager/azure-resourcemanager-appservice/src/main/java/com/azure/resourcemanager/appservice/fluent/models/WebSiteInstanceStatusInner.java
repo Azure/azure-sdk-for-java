@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ContainerInfo;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -15,46 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The WebSiteInstanceStatus model. */
-@JsonFlatten
 @Fluent
-public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
+public final class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebSiteInstanceStatusInner.class);
 
     /*
-     * The state property.
+     * WebSiteInstanceStatus resource specific properties
      */
-    @JsonProperty(value = "properties.state")
-    private SiteRuntimeState state;
+    @JsonProperty(value = "properties")
+    private WebSiteInstanceStatusProperties innerProperties;
 
-    /*
-     * Link to the GetStatusApi in Kudu
+    /**
+     * Get the innerProperties property: WebSiteInstanceStatus resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.statusUrl")
-    private String statusUrl;
+    private WebSiteInstanceStatusProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Link to the Diagnose and Solve Portal
-     */
-    @JsonProperty(value = "properties.detectorUrl")
-    private String detectorUrl;
-
-    /*
-     * Link to the console to web app instance
-     */
-    @JsonProperty(value = "properties.consoleUrl")
-    private String consoleUrl;
-
-    /*
-     * Link to the console to web app instance
-     */
-    @JsonProperty(value = "properties.healthCheckUrl")
-    private String healthCheckUrl;
-
-    /*
-     * Dictionary of <ContainerInfo>
-     */
-    @JsonProperty(value = "properties.containers")
-    private Map<String, ContainerInfo> containers;
+    /** {@inheritDoc} */
+    @Override
+    public WebSiteInstanceStatusInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the state property: The state property.
@@ -62,7 +46,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the state value.
      */
     public SiteRuntimeState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -72,7 +56,10 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withState(SiteRuntimeState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -82,7 +69,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the statusUrl value.
      */
     public String statusUrl() {
-        return this.statusUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().statusUrl();
     }
 
     /**
@@ -92,7 +79,10 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withStatusUrl(String statusUrl) {
-        this.statusUrl = statusUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withStatusUrl(statusUrl);
         return this;
     }
 
@@ -102,7 +92,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the detectorUrl value.
      */
     public String detectorUrl() {
-        return this.detectorUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().detectorUrl();
     }
 
     /**
@@ -112,7 +102,10 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withDetectorUrl(String detectorUrl) {
-        this.detectorUrl = detectorUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withDetectorUrl(detectorUrl);
         return this;
     }
 
@@ -122,7 +115,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the consoleUrl value.
      */
     public String consoleUrl() {
-        return this.consoleUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().consoleUrl();
     }
 
     /**
@@ -132,7 +125,10 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withConsoleUrl(String consoleUrl) {
-        this.consoleUrl = consoleUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withConsoleUrl(consoleUrl);
         return this;
     }
 
@@ -142,7 +138,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the healthCheckUrl value.
      */
     public String healthCheckUrl() {
-        return this.healthCheckUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().healthCheckUrl();
     }
 
     /**
@@ -152,7 +148,10 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withHealthCheckUrl(String healthCheckUrl) {
-        this.healthCheckUrl = healthCheckUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withHealthCheckUrl(healthCheckUrl);
         return this;
     }
 
@@ -162,7 +161,7 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the containers value.
      */
     public Map<String, ContainerInfo> containers() {
-        return this.containers;
+        return this.innerProperties() == null ? null : this.innerProperties().containers();
     }
 
     /**
@@ -172,14 +171,10 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
      * @return the WebSiteInstanceStatusInner object itself.
      */
     public WebSiteInstanceStatusInner withContainers(Map<String, ContainerInfo> containers) {
-        this.containers = containers;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public WebSiteInstanceStatusInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebSiteInstanceStatusProperties();
+        }
+        this.innerProperties().withContainers(containers);
         return this;
     }
 
@@ -191,15 +186,8 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (containers() != null) {
-            containers()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

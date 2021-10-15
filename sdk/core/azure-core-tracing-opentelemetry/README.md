@@ -22,7 +22,7 @@ documentation][OpenTelemetry] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.11</version>
+  <version>1.0.0-beta.15</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -39,7 +39,7 @@ A span represents a single operation in a trace. A span could be representative 
 
 ## Examples
 
-The following sections provides examples of using the azure-core-tracing-opentelemetry plugin with some of the Azure Java SDK libraries:
+The following sections provides examples of using the azure-core-tracing-opentelemetry plugin with a few Azure Java SDK libraries:
 
 ### Using the plugin package with HTTP client libraries
 
@@ -49,35 +49,35 @@ The following sections provides examples of using the azure-core-tracing-opentel
     The plugin package creates a root span to encapsulate all the child spans created in the calling methods when no parent span is passed in the context.
     This [sample][sample_key_vault] provides an example when no user parent span is passed.
 
-    ```java
-    // Get the Tracer Provider
-    static TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
-    private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
+```java
+// Get the Tracer Provider
+static TracerSdkProvider tracerProvider = OpenTelemetrySdk.getTracerProvider();
+private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
 
-    public static void main(String[] args) {
-       doClientWork();
-    }
+public static void main(String[] args) {
+   doClientWork();
+}
 
-    public static void doClientWork() {
-       SecretClient client = new SecretClientBuilder()
-         .endpoint("<your-vault-url>")
-         .credential(new DefaultAzureCredentialBuilder().build())
-         .buildClient();
+public static void doClientWork() {
+   SecretClient client = new SecretClientBuilder()
+     .endpoint("<your-vault-url>")
+     .credential(new DefaultAzureCredentialBuilder().build())
+     .buildClient();
 
-       Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-       try (Scope scope = TRACER.withSpan(span)) {
+   Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+   try (Scope scope = TRACER.withSpan(span)) {
 
-           // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
-           secretClient.setSecret(new Secret("secret_name", "secret_value));
+       // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+       secretClient.setSecret(new Secret("secret_name", "secret_value));
 
-           // Optionally, to specify the context you can use
-           // final Context traceContext = new Context(PARENT_SPAN_KEY, span);
-           // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
-       } finally {
-           span.end();
-       }
-    }
-    ```
+       // Optionally, to specify the context you can use
+       // final Context traceContext = new Context(PARENT_SPAN_KEY, span);
+       // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value", traceContext));
+   } finally {
+       span.end();
+   }
+}
+```
 
 ### Using the plugin package with AMQP client libraries
 

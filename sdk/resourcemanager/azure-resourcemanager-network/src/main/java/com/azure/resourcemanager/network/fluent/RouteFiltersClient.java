@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -299,7 +299,7 @@ public interface RouteFiltersClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update route filter tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,54 +307,42 @@ public interface RouteFiltersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RouteFilterInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String routeFilterName, Map<String, String> tags);
+        String resourceGroupName, String routeFilterName, TagsObject parameters);
 
     /**
      * Updates tags of a route filter.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update route filter tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteFilterInner> updateTagsAsync(String resourceGroupName, String routeFilterName, Map<String, String> tags);
+    Mono<RouteFilterInner> updateTagsAsync(String resourceGroupName, String routeFilterName, TagsObject parameters);
 
     /**
      * Updates tags of a route filter.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
+     * @param parameters Parameters supplied to update route filter tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteFilterInner> updateTagsAsync(String resourceGroupName, String routeFilterName);
+    RouteFilterInner updateTags(String resourceGroupName, String routeFilterName, TagsObject parameters);
 
     /**
      * Updates tags of a route filter.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route Filter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterInner updateTags(String resourceGroupName, String routeFilterName);
-
-    /**
-     * Updates tags of a route filter.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update route filter tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -363,7 +351,7 @@ public interface RouteFiltersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RouteFilterInner> updateTagsWithResponse(
-        String resourceGroupName, String routeFilterName, Map<String, String> tags, Context context);
+        String resourceGroupName, String routeFilterName, TagsObject parameters, Context context);
 
     /**
      * Gets all route filters in a resource group.

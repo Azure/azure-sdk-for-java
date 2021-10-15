@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ContainerNetworkInterfaceIpConfigurationPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ip configuration for a container network interface. */
-@JsonFlatten
 @Fluent
-public class ContainerNetworkInterfaceIpConfiguration {
+public final class ContainerNetworkInterfaceIpConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceIpConfiguration.class);
+
+    /*
+     * Properties of the container network interface IP configuration.
+     */
+    @JsonProperty(value = "properties")
+    private ContainerNetworkInterfaceIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * The name of the resource. This name can be used to access the resource.
@@ -34,12 +39,14 @@ public class ContainerNetworkInterfaceIpConfiguration {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * The provisioning state of the container network interface IP
-     * configuration resource.
+    /**
+     * Get the innerProperties property: Properties of the container network interface IP configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ContainerNetworkInterfaceIpConfigurationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource. This name can be used to access the resource.
@@ -86,7 +93,7 @@ public class ContainerNetworkInterfaceIpConfiguration {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -95,5 +102,8 @@ public class ContainerNetworkInterfaceIpConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

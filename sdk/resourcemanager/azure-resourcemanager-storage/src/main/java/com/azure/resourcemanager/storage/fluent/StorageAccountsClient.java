@@ -23,15 +23,15 @@ import com.azure.resourcemanager.storage.fluent.models.ListServiceSasResponseInn
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountListKeysResultInner;
 import com.azure.resourcemanager.storage.models.AccountSasParameters;
-import com.azure.resourcemanager.storage.models.BlobRestoreRange;
+import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
 import com.azure.resourcemanager.storage.models.ListKeyExpand;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
+import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountExpand;
+import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,43 +43,49 @@ public interface StorageAccountsClient
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name);
+    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        StorageAccountCheckNameAvailabilityParameters accountName);
 
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name);
+    Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
+        StorageAccountCheckNameAvailabilityParameters accountName);
 
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResultInner checkNameAvailability(String name);
+    CheckNameAvailabilityResultInner checkNameAvailability(StorageAccountCheckNameAvailabilityParameters accountName);
 
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,7 +93,8 @@ public interface StorageAccountsClient
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String name, Context context);
+    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        StorageAccountCheckNameAvailabilityParameters accountName, Context context);
 
     /**
      * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
@@ -635,8 +642,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -644,7 +650,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, String keyName);
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey);
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
@@ -653,8 +659,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -662,7 +667,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<StorageAccountListKeysResultInner> regenerateKeyAsync(
-        String resourceGroupName, String accountName, String keyName);
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey);
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
@@ -671,15 +676,15 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the ListKeys operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageAccountListKeysResultInner regenerateKey(String resourceGroupName, String accountName, String keyName);
+    StorageAccountListKeysResultInner regenerateKey(
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey);
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
@@ -688,8 +693,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -698,7 +702,10 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StorageAccountListKeysResultInner> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, String keyName, Context context);
+        String resourceGroupName,
+        String accountName,
+        StorageAccountRegenerateKeyParameters regenerateKey,
+        Context context);
 
     /**
      * List SAS credentials of a storage account.
@@ -964,8 +971,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -973,7 +979,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
     /**
      * Restore blobs in the specified blob ranges.
@@ -982,8 +988,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -991,7 +996,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
     /**
      * Restore blobs in the specified blob ranges.
@@ -1000,8 +1005,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1009,7 +1013,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
     /**
      * Restore blobs in the specified blob ranges.
@@ -1018,8 +1022,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1028,11 +1031,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context);
 
     /**
      * Restore blobs in the specified blob ranges.
@@ -1041,8 +1040,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1050,7 +1048,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
     /**
      * Restore blobs in the specified blob ranges.
@@ -1059,8 +1057,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1068,7 +1065,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BlobRestoreStatusInner restoreBlobRanges(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters);
 
     /**
      * Restore blobs in the specified blob ranges.
@@ -1077,8 +1074,7 @@ public interface StorageAccountsClient
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1087,11 +1083,7 @@ public interface StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BlobRestoreStatusInner restoreBlobRanges(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context);
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context);
 
     /**
      * Revoke user delegation keys.

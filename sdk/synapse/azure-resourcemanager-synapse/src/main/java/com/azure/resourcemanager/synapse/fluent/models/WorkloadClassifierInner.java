@@ -5,53 +5,30 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workload classifier operations for a data warehouse. */
-@JsonFlatten
 @Fluent
-public class WorkloadClassifierInner extends ProxyResource {
+public final class WorkloadClassifierInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadClassifierInner.class);
 
     /*
-     * The workload classifier member name.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.memberName")
-    private String memberName;
+    @JsonProperty(value = "properties")
+    private WorkloadClassifierProperties innerProperties;
 
-    /*
-     * The workload classifier label.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.label")
-    private String label;
-
-    /*
-     * The workload classifier context.
-     */
-    @JsonProperty(value = "properties.context")
-    private String context;
-
-    /*
-     * The workload classifier start time for classification.
-     */
-    @JsonProperty(value = "properties.startTime")
-    private String startTime;
-
-    /*
-     * The workload classifier end time for classification.
-     */
-    @JsonProperty(value = "properties.endTime")
-    private String endTime;
-
-    /*
-     * The workload classifier importance.
-     */
-    @JsonProperty(value = "properties.importance")
-    private String importance;
+    private WorkloadClassifierProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the memberName property: The workload classifier member name.
@@ -59,7 +36,7 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the memberName value.
      */
     public String memberName() {
-        return this.memberName;
+        return this.innerProperties() == null ? null : this.innerProperties().memberName();
     }
 
     /**
@@ -69,7 +46,10 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the WorkloadClassifierInner object itself.
      */
     public WorkloadClassifierInner withMemberName(String memberName) {
-        this.memberName = memberName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadClassifierProperties();
+        }
+        this.innerProperties().withMemberName(memberName);
         return this;
     }
 
@@ -79,7 +59,7 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the label value.
      */
     public String label() {
-        return this.label;
+        return this.innerProperties() == null ? null : this.innerProperties().label();
     }
 
     /**
@@ -89,7 +69,10 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the WorkloadClassifierInner object itself.
      */
     public WorkloadClassifierInner withLabel(String label) {
-        this.label = label;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadClassifierProperties();
+        }
+        this.innerProperties().withLabel(label);
         return this;
     }
 
@@ -99,7 +82,7 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the context value.
      */
     public String context() {
-        return this.context;
+        return this.innerProperties() == null ? null : this.innerProperties().context();
     }
 
     /**
@@ -109,7 +92,10 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the WorkloadClassifierInner object itself.
      */
     public WorkloadClassifierInner withContext(String context) {
-        this.context = context;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadClassifierProperties();
+        }
+        this.innerProperties().withContext(context);
         return this;
     }
 
@@ -119,7 +105,7 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the startTime value.
      */
     public String startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -129,7 +115,10 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the WorkloadClassifierInner object itself.
      */
     public WorkloadClassifierInner withStartTime(String startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadClassifierProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -139,7 +128,7 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the endTime value.
      */
     public String endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -149,7 +138,10 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the WorkloadClassifierInner object itself.
      */
     public WorkloadClassifierInner withEndTime(String endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadClassifierProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -159,7 +151,7 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the importance value.
      */
     public String importance() {
-        return this.importance;
+        return this.innerProperties() == null ? null : this.innerProperties().importance();
     }
 
     /**
@@ -169,7 +161,10 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @return the WorkloadClassifierInner object itself.
      */
     public WorkloadClassifierInner withImportance(String importance) {
-        this.importance = importance;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadClassifierProperties();
+        }
+        this.innerProperties().withImportance(importance);
         return this;
     }
 
@@ -179,5 +174,8 @@ public class WorkloadClassifierInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

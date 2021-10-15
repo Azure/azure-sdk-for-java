@@ -17,6 +17,7 @@ public final class AnalyzeActionsResult {
     private IterableStream<RecognizePiiEntitiesActionResult> recognizePiiEntitiesResults;
     private IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults;
     private IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults;
+    private IterableStream<ExtractSummaryActionResult> extractSummaryResults;
 
     static {
         AnalyzeActionsResultPropertiesHelper.setAccessor(
@@ -51,6 +52,13 @@ public final class AnalyzeActionsResult {
                     IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
                     analyzeActionsResult.setAnalyzeSentimentResults(analyzeSentimentResults);
                 }
+
+                @Override
+                public void setExtractSummaryResults(AnalyzeActionsResult analyzeActionsResult,
+                    IterableStream<ExtractSummaryActionResult> extractSummaryResult) {
+                    analyzeActionsResult.setExtractSummaryResults(extractSummaryResult);
+                }
+
             });
     }
 
@@ -102,6 +110,15 @@ public final class AnalyzeActionsResult {
         return this.analyzeSentimentResults;
     }
 
+    /**
+     * Gets the {@code extractSummaryResults} property: the extractive summarization actions results property.
+     *
+     * @return the extractSummaryResults value.
+     */
+    public IterableStream<ExtractSummaryActionResult> getExtractSummaryResults() {
+        return extractSummaryResults;
+    }
+
     private void setRecognizeEntitiesResults(
         IterableStream<RecognizeEntitiesActionResult> recognizeEntitiesResults) {
         this.recognizeEntitiesResults = recognizeEntitiesResults;
@@ -117,13 +134,15 @@ public final class AnalyzeActionsResult {
         this.recognizePiiEntitiesResults = recognizePiiEntitiesResults;
     }
 
-    private void setExtractKeyPhrasesResults(
-        IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
+    private void setExtractKeyPhrasesResults(IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesResults) {
         this.extractKeyPhrasesResults = extractKeyPhrasesResults;
     }
 
-    private void setAnalyzeSentimentResults(
-        IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
+    private void setAnalyzeSentimentResults(IterableStream<AnalyzeSentimentActionResult> analyzeSentimentResults) {
         this.analyzeSentimentResults = analyzeSentimentResults;
+    }
+
+    private void setExtractSummaryResults(IterableStream<ExtractSummaryActionResult> extractSummaryResults) {
+        this.extractSummaryResults = extractSummaryResults;
     }
 }

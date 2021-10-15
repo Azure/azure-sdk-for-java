@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -17,10 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network security rule. */
-@JsonFlatten
 @Fluent
-public class SecurityRuleInner extends SubResource {
+public final class SecurityRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleInner.class);
+
+    /*
+     * Properties of the security rule.
+     */
+    @JsonProperty(value = "properties")
+    private SecurityRulePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -41,111 +45,14 @@ public class SecurityRuleInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * A description for this rule. Restricted to 140 chars.
+    /**
+     * Get the innerProperties property: Properties of the security rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Network protocol this rule applies to.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private SecurityRuleProtocol protocol;
-
-    /*
-     * The source port or range. Integer or range between 0 and 65535. Asterisk
-     * '*' can also be used to match all ports.
-     */
-    @JsonProperty(value = "properties.sourcePortRange")
-    private String sourcePortRange;
-
-    /*
-     * The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
-     */
-    @JsonProperty(value = "properties.destinationPortRange")
-    private String destinationPortRange;
-
-    /*
-     * The CIDR or source IP range. Asterisk '*' can also be used to match all
-     * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer'
-     * and 'Internet' can also be used. If this is an ingress rule, specifies
-     * where network traffic originates from.
-     */
-    @JsonProperty(value = "properties.sourceAddressPrefix")
-    private String sourceAddressPrefix;
-
-    /*
-     * The CIDR or source IP ranges.
-     */
-    @JsonProperty(value = "properties.sourceAddressPrefixes")
-    private List<String> sourceAddressPrefixes;
-
-    /*
-     * The application security group specified as source.
-     */
-    @JsonProperty(value = "properties.sourceApplicationSecurityGroups")
-    private List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups;
-
-    /*
-     * The destination address prefix. CIDR or destination IP range. Asterisk
-     * '*' can also be used to match all source IPs. Default tags such as
-     * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
-     */
-    @JsonProperty(value = "properties.destinationAddressPrefix")
-    private String destinationAddressPrefix;
-
-    /*
-     * The destination address prefixes. CIDR or destination IP ranges.
-     */
-    @JsonProperty(value = "properties.destinationAddressPrefixes")
-    private List<String> destinationAddressPrefixes;
-
-    /*
-     * The application security group specified as destination.
-     */
-    @JsonProperty(value = "properties.destinationApplicationSecurityGroups")
-    private List<ApplicationSecurityGroupInner> destinationApplicationSecurityGroups;
-
-    /*
-     * The source port ranges.
-     */
-    @JsonProperty(value = "properties.sourcePortRanges")
-    private List<String> sourcePortRanges;
-
-    /*
-     * The destination port ranges.
-     */
-    @JsonProperty(value = "properties.destinationPortRanges")
-    private List<String> destinationPortRanges;
-
-    /*
-     * The network traffic is allowed or denied.
-     */
-    @JsonProperty(value = "properties.access")
-    private SecurityRuleAccess access;
-
-    /*
-     * The priority of the rule. The value can be between 100 and 4096. The
-     * priority number must be unique for each rule in the collection. The
-     * lower the priority number, the higher the priority of the rule.
-     */
-    @JsonProperty(value = "properties.priority")
-    private Integer priority;
-
-    /*
-     * The direction of the rule. The direction specifies if rule will be
-     * evaluated on incoming or outgoing traffic.
-     */
-    @JsonProperty(value = "properties.direction")
-    private SecurityRuleDirection direction;
-
-    /*
-     * The provisioning state of the security rule resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private SecurityRulePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -198,13 +105,20 @@ public class SecurityRuleInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SecurityRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
      *
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -214,7 +128,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -224,7 +141,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the protocol value.
      */
     public SecurityRuleProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -234,7 +151,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withProtocol(SecurityRuleProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -245,7 +165,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the sourcePortRange value.
      */
     public String sourcePortRange() {
-        return this.sourcePortRange;
+        return this.innerProperties() == null ? null : this.innerProperties().sourcePortRange();
     }
 
     /**
@@ -256,7 +176,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withSourcePortRange(String sourcePortRange) {
-        this.sourcePortRange = sourcePortRange;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withSourcePortRange(sourcePortRange);
         return this;
     }
 
@@ -267,7 +190,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the destinationPortRange value.
      */
     public String destinationPortRange() {
-        return this.destinationPortRange;
+        return this.innerProperties() == null ? null : this.innerProperties().destinationPortRange();
     }
 
     /**
@@ -278,7 +201,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withDestinationPortRange(String destinationPortRange) {
-        this.destinationPortRange = destinationPortRange;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDestinationPortRange(destinationPortRange);
         return this;
     }
 
@@ -290,7 +216,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the sourceAddressPrefix value.
      */
     public String sourceAddressPrefix() {
-        return this.sourceAddressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceAddressPrefix();
     }
 
     /**
@@ -302,7 +228,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withSourceAddressPrefix(String sourceAddressPrefix) {
-        this.sourceAddressPrefix = sourceAddressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withSourceAddressPrefix(sourceAddressPrefix);
         return this;
     }
 
@@ -312,7 +241,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the sourceAddressPrefixes value.
      */
     public List<String> sourceAddressPrefixes() {
-        return this.sourceAddressPrefixes;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceAddressPrefixes();
     }
 
     /**
@@ -322,7 +251,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withSourceAddressPrefixes(List<String> sourceAddressPrefixes) {
-        this.sourceAddressPrefixes = sourceAddressPrefixes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withSourceAddressPrefixes(sourceAddressPrefixes);
         return this;
     }
 
@@ -332,7 +264,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the sourceApplicationSecurityGroups value.
      */
     public List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups() {
-        return this.sourceApplicationSecurityGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceApplicationSecurityGroups();
     }
 
     /**
@@ -343,7 +275,10 @@ public class SecurityRuleInner extends SubResource {
      */
     public SecurityRuleInner withSourceApplicationSecurityGroups(
         List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups) {
-        this.sourceApplicationSecurityGroups = sourceApplicationSecurityGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withSourceApplicationSecurityGroups(sourceApplicationSecurityGroups);
         return this;
     }
 
@@ -355,7 +290,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the destinationAddressPrefix value.
      */
     public String destinationAddressPrefix() {
-        return this.destinationAddressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().destinationAddressPrefix();
     }
 
     /**
@@ -367,7 +302,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withDestinationAddressPrefix(String destinationAddressPrefix) {
-        this.destinationAddressPrefix = destinationAddressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDestinationAddressPrefix(destinationAddressPrefix);
         return this;
     }
 
@@ -377,7 +315,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the destinationAddressPrefixes value.
      */
     public List<String> destinationAddressPrefixes() {
-        return this.destinationAddressPrefixes;
+        return this.innerProperties() == null ? null : this.innerProperties().destinationAddressPrefixes();
     }
 
     /**
@@ -387,7 +325,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withDestinationAddressPrefixes(List<String> destinationAddressPrefixes) {
-        this.destinationAddressPrefixes = destinationAddressPrefixes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDestinationAddressPrefixes(destinationAddressPrefixes);
         return this;
     }
 
@@ -397,7 +338,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the destinationApplicationSecurityGroups value.
      */
     public List<ApplicationSecurityGroupInner> destinationApplicationSecurityGroups() {
-        return this.destinationApplicationSecurityGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().destinationApplicationSecurityGroups();
     }
 
     /**
@@ -408,7 +349,10 @@ public class SecurityRuleInner extends SubResource {
      */
     public SecurityRuleInner withDestinationApplicationSecurityGroups(
         List<ApplicationSecurityGroupInner> destinationApplicationSecurityGroups) {
-        this.destinationApplicationSecurityGroups = destinationApplicationSecurityGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDestinationApplicationSecurityGroups(destinationApplicationSecurityGroups);
         return this;
     }
 
@@ -418,7 +362,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the sourcePortRanges value.
      */
     public List<String> sourcePortRanges() {
-        return this.sourcePortRanges;
+        return this.innerProperties() == null ? null : this.innerProperties().sourcePortRanges();
     }
 
     /**
@@ -428,7 +372,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withSourcePortRanges(List<String> sourcePortRanges) {
-        this.sourcePortRanges = sourcePortRanges;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withSourcePortRanges(sourcePortRanges);
         return this;
     }
 
@@ -438,7 +385,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the destinationPortRanges value.
      */
     public List<String> destinationPortRanges() {
-        return this.destinationPortRanges;
+        return this.innerProperties() == null ? null : this.innerProperties().destinationPortRanges();
     }
 
     /**
@@ -448,7 +395,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withDestinationPortRanges(List<String> destinationPortRanges) {
-        this.destinationPortRanges = destinationPortRanges;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDestinationPortRanges(destinationPortRanges);
         return this;
     }
 
@@ -458,7 +408,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the access value.
      */
     public SecurityRuleAccess access() {
-        return this.access;
+        return this.innerProperties() == null ? null : this.innerProperties().access();
     }
 
     /**
@@ -468,7 +418,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withAccess(SecurityRuleAccess access) {
-        this.access = access;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withAccess(access);
         return this;
     }
 
@@ -480,7 +433,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the priority value.
      */
     public Integer priority() {
-        return this.priority;
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
     }
 
     /**
@@ -492,7 +445,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withPriority(Integer priority) {
-        this.priority = priority;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 
@@ -503,7 +459,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the direction value.
      */
     public SecurityRuleDirection direction() {
-        return this.direction;
+        return this.innerProperties() == null ? null : this.innerProperties().direction();
     }
 
     /**
@@ -514,7 +470,10 @@ public class SecurityRuleInner extends SubResource {
      * @return the SecurityRuleInner object itself.
      */
     public SecurityRuleInner withDirection(SecurityRuleDirection direction) {
-        this.direction = direction;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withDirection(direction);
         return this;
     }
 
@@ -524,14 +483,7 @@ public class SecurityRuleInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SecurityRuleInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -540,11 +492,8 @@ public class SecurityRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sourceApplicationSecurityGroups() != null) {
-            sourceApplicationSecurityGroups().forEach(e -> e.validate());
-        }
-        if (destinationApplicationSecurityGroups() != null) {
-            destinationApplicationSecurityGroups().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

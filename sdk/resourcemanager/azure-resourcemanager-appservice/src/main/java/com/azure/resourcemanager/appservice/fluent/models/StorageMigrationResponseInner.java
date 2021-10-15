@@ -4,34 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response for a migration of app content request. */
-@JsonFlatten
-@Immutable
-public class StorageMigrationResponseInner extends ProxyOnlyResource {
+@Fluent
+public final class StorageMigrationResponseInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageMigrationResponseInner.class);
 
     /*
-     * When server starts the migration process, it will return an operation ID
-     * identifying that particular migration operation.
+     * StorageMigrationResponse resource specific properties
      */
-    @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationId;
+    @JsonProperty(value = "properties")
+    private StorageMigrationResponseProperties innerProperties;
 
     /**
-     * Get the operationId property: When server starts the migration process, it will return an operation ID
-     * identifying that particular migration operation.
+     * Get the innerProperties property: StorageMigrationResponse resource specific properties.
      *
-     * @return the operationId value.
+     * @return the innerProperties value.
      */
-    public String operationId() {
-        return this.operationId;
+    private StorageMigrationResponseProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -42,6 +38,16 @@ public class StorageMigrationResponseInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the operationId property: When server starts the migration process, it will return an operation ID
+     * identifying that particular migration operation.
+     *
+     * @return the operationId value.
+     */
+    public String operationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().operationId();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -49,5 +55,8 @@ public class StorageMigrationResponseInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

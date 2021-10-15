@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RestoreOperationParameters {
     /*
-     * SAS token parameter object containing Azure storage resourceUri and
-     * token
+     * The sasTokenParameters property.
      */
     @JsonProperty(value = "sasTokenParameters", required = true)
     private SASTokenParameter sasTokenParameters;
@@ -25,7 +24,7 @@ public final class RestoreOperationParameters {
     private String folderToRestore;
 
     /**
-     * Get the sasTokenParameters property: SAS token parameter object containing Azure storage resourceUri and token.
+     * Get the sasTokenParameters property: The sasTokenParameters property.
      *
      * @return the sasTokenParameters value.
      */
@@ -34,7 +33,7 @@ public final class RestoreOperationParameters {
     }
 
     /**
-     * Set the sasTokenParameters property: SAS token parameter object containing Azure storage resourceUri and token.
+     * Set the sasTokenParameters property: The sasTokenParameters property.
      *
      * @param sasTokenParameters the sasTokenParameters value to set.
      * @return the RestoreOperationParameters object itself.

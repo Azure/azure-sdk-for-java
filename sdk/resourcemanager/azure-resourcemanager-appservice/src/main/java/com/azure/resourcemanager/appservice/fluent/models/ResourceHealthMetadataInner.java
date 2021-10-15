@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used for getting ResourceHealthCheck settings. */
-@JsonFlatten
 @Fluent
-public class ResourceHealthMetadataInner extends ProxyOnlyResource {
+public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceHealthMetadataInner.class);
 
     /*
-     * The category that the resource matches in the RHC Policy File
+     * ResourceHealthMetadata resource specific properties
      */
-    @JsonProperty(value = "properties.category")
-    private String category;
+    @JsonProperty(value = "properties")
+    private ResourceHealthMetadataProperties innerProperties;
 
-    /*
-     * Is there a health signal for the resource
+    /**
+     * Get the innerProperties property: ResourceHealthMetadata resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.signalAvailability")
-    private Boolean signalAvailability;
+    private ResourceHealthMetadataProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceHealthMetadataInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the category property: The category that the resource matches in the RHC Policy File.
@@ -35,7 +43,7 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
      * @return the category value.
      */
     public String category() {
-        return this.category;
+        return this.innerProperties() == null ? null : this.innerProperties().category();
     }
 
     /**
@@ -45,7 +53,10 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
      * @return the ResourceHealthMetadataInner object itself.
      */
     public ResourceHealthMetadataInner withCategory(String category) {
-        this.category = category;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ResourceHealthMetadataProperties();
+        }
+        this.innerProperties().withCategory(category);
         return this;
     }
 
@@ -55,7 +66,7 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
      * @return the signalAvailability value.
      */
     public Boolean signalAvailability() {
-        return this.signalAvailability;
+        return this.innerProperties() == null ? null : this.innerProperties().signalAvailability();
     }
 
     /**
@@ -65,14 +76,10 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
      * @return the ResourceHealthMetadataInner object itself.
      */
     public ResourceHealthMetadataInner withSignalAvailability(Boolean signalAvailability) {
-        this.signalAvailability = signalAvailability;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ResourceHealthMetadataInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ResourceHealthMetadataProperties();
+        }
+        this.innerProperties().withSignalAvailability(signalAvailability);
         return this;
     }
 
@@ -84,5 +91,8 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

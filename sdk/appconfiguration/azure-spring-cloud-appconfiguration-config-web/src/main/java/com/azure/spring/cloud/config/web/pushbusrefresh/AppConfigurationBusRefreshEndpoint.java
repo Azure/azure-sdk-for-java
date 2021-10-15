@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.web.pushbusrefresh;
 
-import static com.azure.spring.cloud.config.web.Constants.APPCONFIGURATION_REFRESH_BUS;
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_FORMAT_START;
-import static com.azure.spring.cloud.config.web.Constants.VALIDATION_CODE_KEY;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.APPCONFIGURATION_REFRESH_BUS;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_FORMAT_START;
+import static com.azure.spring.cloud.config.web.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
 
 import java.io.IOException;
 import java.util.Map;
@@ -34,14 +34,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
  */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH_BUS)
-public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
+public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
 
-    private final ObjectMapper objectmapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final AppConfigurationProperties appConfiguration;
 
+    /**
+     * Endpoint for triggering a refresh check for a single config store, across all registered instances.
+     * 
+     * @param context Service Bus event publisher
+     * @param appId Service Bus app id
+     * @param destinationFactory service bus destination factory
+     * @param appConfiguration properties set for client library.
+     */
     public AppConfigurationBusRefreshEndpoint(ApplicationEventPublisher context, String appId,
         Destination.Factory destinationFactory,
         AppConfigurationProperties appConfiguration) {
@@ -52,10 +60,10 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
     /**
      * Checks a HttpServletRequest to see if it is a refresh event. Validates token information. If request is a
      * validation request returns validation code.
-     * 
+     *
      * @param request Request checked for refresh.
      * @param response Response for request.
-     * @param allRequestParams request parameters needs to contain validation token. 
+     * @param allRequestParams request parameters needs to contain validation token.
      * @return 200 if refresh event triggered. 500 if invalid for any reason. Validation response if requested.
      * @throws IOException Unable to parse request info for validation.
      */
@@ -65,7 +73,7 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
         @RequestParam Map<String, String> allRequestParams) throws IOException {
         String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-        JsonNode kvReference = objectmapper.readTree(reference);
+        JsonNode kvReference = OBJECT_MAPPER.readTree(reference);
 
         AppConfigurationEndpoint validation;
         try {

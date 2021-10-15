@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeerings;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
@@ -83,7 +84,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
             .manager()
             .serviceClient()
             .getVirtualNetworks()
-            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
+            .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
     }
 
     @Override

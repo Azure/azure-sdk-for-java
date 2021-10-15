@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapi;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -11,12 +12,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 public abstract class AADResourceServerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    AADResourceServerProperties properties;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
         http.oauth2ResourceServer()
             .jwt()
-            .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
+            .jwtAuthenticationConverter(
+                new AADJwtBearerTokenAuthenticationConverter(
+                    properties.getPrincipalClaimName(), properties.getClaimToAuthorityPrefixMap()));
         // @formatter:off
     }
 

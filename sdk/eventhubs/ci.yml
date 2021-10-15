@@ -8,14 +8,17 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/ci.yml
+      - sdk/eventhubs/azure-messaging-eventhubs/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
+      - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
+      - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
     exclude:
-      - sdk/eventhubs/mgmt-v2015_08_01
-      - sdk/eventhubs/mgmt-v2017_04_01
-      - sdk/eventhubs/mgmt-v2018_01_01_preview
-      - sdk/eventhubs/microsoft-azure-eventhubs
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph
-      - sdk/eventhubs/microsoft-azure-eventhubs-extensions
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
 
 pr:
   branches:
@@ -26,14 +29,17 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/eventhubs/
+      - sdk/eventhubs/ci.yml
+      - sdk/eventhubs/azure-messaging-eventhubs/
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/
+      - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/
+      - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/
     exclude:
-      - sdk/eventhubs/mgmt-v2015_08_01
-      - sdk/eventhubs/mgmt-v2017_04_01
-      - sdk/eventhubs/mgmt-v2018_01_01_preview
-      - sdk/eventhubs/microsoft-azure-eventhubs
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph
-      - sdk/eventhubs/microsoft-azure-eventhubs-extensions
+      - sdk/eventhubs/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-track1-perf/pom.xml
+      - sdk/eventhubs/azure-messaging-eventhubs-track2-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

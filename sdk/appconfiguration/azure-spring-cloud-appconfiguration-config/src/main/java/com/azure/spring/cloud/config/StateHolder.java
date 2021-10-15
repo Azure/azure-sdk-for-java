@@ -43,7 +43,7 @@ final class StateHolder {
      */
     static void setState(String endpoint, List<ConfigurationSetting> watchKeys,
         Duration duration) {
-        STATE.put(endpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds())));
+        STATE.put(endpoint, new State(watchKeys, Math.toIntExact(duration.getSeconds()), endpoint));
     }
     
     /**
@@ -56,6 +56,14 @@ final class StateHolder {
         setState(endpoint + FEATURE_ENDPOINT, watchKeys, duration);
     }
 
+    /**
+     * @param state previous state to base off
+     * @param duration nextRefreshPeriod
+     */
+    static void setState(State state, Duration duration) {
+        STATE.put(state.getKey(), new State(state.getWatchKeys(), Math.toIntExact(duration.getSeconds()), state.getKey()));
+    }
+
     static void expireState(String endpoint) {
         String key = endpoint;
         State oldState = STATE.get(key);
@@ -63,7 +71,7 @@ final class StateHolder {
         long wait = (long) (random.nextDouble() * MAX_JITTER);
         long timeLeft = (int) ((oldState.getNextRefreshCheck().getTime() - (new Date().getTime())) / 1000);
         if (wait < timeLeft) {
-            STATE.put(key, new State(oldState.getWatchKeys(), (int) wait));
+            STATE.put(key, new State(oldState.getWatchKeys(), (int) wait, oldState.getKey()));
         }
     }
 

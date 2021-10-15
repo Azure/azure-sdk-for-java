@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,10 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Security Partner Provider resource. */
-@JsonFlatten
 @Fluent
-public class SecurityPartnerProviderInner extends Resource {
+public final class SecurityPartnerProviderInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityPartnerProviderInner.class);
+
+    /*
+     * Properties of the Security Partner Provider.
+     */
+    @JsonProperty(value = "properties")
+    private SecurityPartnerProviderPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -29,34 +33,19 @@ public class SecurityPartnerProviderInner extends Resource {
     private String etag;
 
     /*
-     * The provisioning state of the Security Partner Provider resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The security provider name.
-     */
-    @JsonProperty(value = "properties.securityProviderName")
-    private SecurityProviderName securityProviderName;
-
-    /*
-     * The connection status with the Security Partner Provider.
-     */
-    @JsonProperty(value = "properties.connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private SecurityPartnerProviderConnectionStatus connectionStatus;
-
-    /*
-     * The virtualHub to which the Security Partner Provider belongs.
-     */
-    @JsonProperty(value = "properties.virtualHub")
-    private SubResource virtualHub;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the Security Partner Provider.
+     *
+     * @return the innerProperties value.
+     */
+    private SecurityPartnerProviderPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -65,64 +54,6 @@ public class SecurityPartnerProviderInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the securityProviderName property: The security provider name.
-     *
-     * @return the securityProviderName value.
-     */
-    public SecurityProviderName securityProviderName() {
-        return this.securityProviderName;
-    }
-
-    /**
-     * Set the securityProviderName property: The security provider name.
-     *
-     * @param securityProviderName the securityProviderName value to set.
-     * @return the SecurityPartnerProviderInner object itself.
-     */
-    public SecurityPartnerProviderInner withSecurityProviderName(SecurityProviderName securityProviderName) {
-        this.securityProviderName = securityProviderName;
-        return this;
-    }
-
-    /**
-     * Get the connectionStatus property: The connection status with the Security Partner Provider.
-     *
-     * @return the connectionStatus value.
-     */
-    public SecurityPartnerProviderConnectionStatus connectionStatus() {
-        return this.connectionStatus;
-    }
-
-    /**
-     * Get the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
-     * @return the virtualHub value.
-     */
-    public SubResource virtualHub() {
-        return this.virtualHub;
-    }
-
-    /**
-     * Set the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
-     * @param virtualHub the virtualHub value to set.
-     * @return the SecurityPartnerProviderInner object itself.
-     */
-    public SecurityPartnerProviderInner withVirtualHub(SubResource virtualHub) {
-        this.virtualHub = virtualHub;
-        return this;
     }
 
     /**
@@ -160,10 +91,77 @@ public class SecurityPartnerProviderInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the securityProviderName property: The security provider name.
+     *
+     * @return the securityProviderName value.
+     */
+    public SecurityProviderName securityProviderName() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityProviderName();
+    }
+
+    /**
+     * Set the securityProviderName property: The security provider name.
+     *
+     * @param securityProviderName the securityProviderName value to set.
+     * @return the SecurityPartnerProviderInner object itself.
+     */
+    public SecurityPartnerProviderInner withSecurityProviderName(SecurityProviderName securityProviderName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityPartnerProviderPropertiesFormat();
+        }
+        this.innerProperties().withSecurityProviderName(securityProviderName);
+        return this;
+    }
+
+    /**
+     * Get the connectionStatus property: The connection status with the Security Partner Provider.
+     *
+     * @return the connectionStatus value.
+     */
+    public SecurityPartnerProviderConnectionStatus connectionStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectionStatus();
+    }
+
+    /**
+     * Get the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
+     *
+     * @return the virtualHub value.
+     */
+    public SubResource virtualHub() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualHub();
+    }
+
+    /**
+     * Set the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
+     *
+     * @param virtualHub the virtualHub value to set.
+     * @return the SecurityPartnerProviderInner object itself.
+     */
+    public SecurityPartnerProviderInner withVirtualHub(SubResource virtualHub) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityPartnerProviderPropertiesFormat();
+        }
+        this.innerProperties().withVirtualHub(virtualHub);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

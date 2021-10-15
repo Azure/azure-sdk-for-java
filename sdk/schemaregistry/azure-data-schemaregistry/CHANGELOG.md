@@ -1,13 +1,58 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.6 (2021-10-08)
+
+### Features added
+
+- Added `SchemaRegistrySchema`.
+- Added `SchemaRegistryVersion`.
+- Added back `Response<T>` overloads for `getSchema`, `getSchemaProperties`.
+
+### Breaking changes
+
+- Removed client-side caching.
+- Changed `getSchemaId` to `getSchemaProperties`.
+- Moved `SchemaProperties.getSchema()` to `SchemaRegistrySchema.getSchemaDefinition()`.
+- Changed `getSchema()` to return `String` instead of `byte[]`.
+- Changed `SerializationType` to `SchemaFormat`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
+
+## 1.0.0-beta.5 (2021-08-17)
+
+### Features added
+- Caching schemas based on schemaId.
+
+### Breaking changes
+- 4xx responses return their respective `HttpResponseException` rather than `IllegalStateException`
+- Removed `Response<T>` overloads for getSchema and getSchemaId because response could be cached.
+- `SchemaRegistryClientBuilder.maxCacheSize` is package-private.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core-serializer-avro-apache` dependency to `1.0.0-beta.13`.
 
 ## 1.0.0-beta.4 (2020-09-21)
 - Minor code cleanup and refactoring
 
 ## 1.0.0-beta.3 (2020-09-10)
-- Removed `SchemaRegistryCodec` and `SchemaRegistrySerializer` 
+- Removed `SchemaRegistryCodec` and `SchemaRegistrySerializer`
 - Updated Schema Registry client APIs to use `SchemaProperties`
 
 ## 1.0.0-beta.2 (2020-06-19)

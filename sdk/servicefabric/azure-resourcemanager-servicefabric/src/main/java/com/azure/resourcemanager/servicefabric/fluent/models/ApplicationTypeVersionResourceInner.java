@@ -5,38 +5,24 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** An application type version resource for the specified application type name resource. */
-@JsonFlatten
 @Fluent
-public class ApplicationTypeVersionResourceInner extends ProxyResource {
+public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeVersionResourceInner.class);
 
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response
+     * The properties of the application type version resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The URL to the application package
-     */
-    @JsonProperty(value = "properties.appPackageUrl")
-    private String appPackageUrl;
-
-    /*
-     * List of application type parameters that can be overridden when creating
-     * or updating the application.
-     */
-    @JsonProperty(value = "properties.defaultParameterList", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> defaultParameterList;
+    @JsonProperty(value = "properties")
+    private ApplicationTypeVersionResourceProperties innerProperties;
 
     /*
      * It will be deprecated in New API, resource location depends on the
@@ -49,6 +35,7 @@ public class ApplicationTypeVersionResourceInner extends ProxyResource {
      * Azure resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -57,44 +44,19 @@ public class ApplicationTypeVersionResourceInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     *
-     * @return the provisioningState value.
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
-     * Get the appPackageUrl property: The URL to the application package.
+     * Get the innerProperties property: The properties of the application type version resource.
      *
-     * @return the appPackageUrl value.
+     * @return the innerProperties value.
      */
-    public String appPackageUrl() {
-        return this.appPackageUrl;
-    }
-
-    /**
-     * Set the appPackageUrl property: The URL to the application package.
-     *
-     * @param appPackageUrl the appPackageUrl value to set.
-     * @return the ApplicationTypeVersionResourceInner object itself.
-     */
-    public ApplicationTypeVersionResourceInner withAppPackageUrl(String appPackageUrl) {
-        this.appPackageUrl = appPackageUrl;
-        return this;
-    }
-
-    /**
-     * Get the defaultParameterList property: List of application type parameters that can be overridden when creating
-     * or updating the application.
-     *
-     * @return the defaultParameterList value.
-     */
-    public Map<String, String> defaultParameterList() {
-        return this.defaultParameterList;
+    private ApplicationTypeVersionResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -147,10 +109,65 @@ public class ApplicationTypeVersionResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the appPackageUrl property: The URL to the application package.
+     *
+     * @return the appPackageUrl value.
+     */
+    public String appPackageUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().appPackageUrl();
+    }
+
+    /**
+     * Set the appPackageUrl property: The URL to the application package.
+     *
+     * @param appPackageUrl the appPackageUrl value to set.
+     * @return the ApplicationTypeVersionResourceInner object itself.
+     */
+    public ApplicationTypeVersionResourceInner withAppPackageUrl(String appPackageUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationTypeVersionResourceProperties();
+        }
+        this.innerProperties().withAppPackageUrl(appPackageUrl);
+        return this;
+    }
+
+    /**
+     * Get the defaultParameterList property: List of application type parameters that can be overridden when creating
+     * or updating the application.
+     *
+     * @return the defaultParameterList value.
+     */
+    public Map<String, String> defaultParameterList() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultParameterList();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

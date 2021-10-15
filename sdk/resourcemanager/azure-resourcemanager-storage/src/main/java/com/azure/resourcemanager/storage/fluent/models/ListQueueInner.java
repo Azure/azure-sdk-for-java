@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,16 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ListQueue model. */
-@JsonFlatten
 @Fluent
-public class ListQueueInner extends ProxyResource {
+public final class ListQueueInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueueInner.class);
 
     /*
-     * A name-value pair that represents queue metadata.
+     * List Queue resource properties.
      */
-    @JsonProperty(value = "properties.metadata")
-    private Map<String, String> metadata;
+    @JsonProperty(value = "properties")
+    private ListQueueProperties innerQueueProperties;
+
+    /**
+     * Get the innerQueueProperties property: List Queue resource properties.
+     *
+     * @return the innerQueueProperties value.
+     */
+    private ListQueueProperties innerQueueProperties() {
+        return this.innerQueueProperties;
+    }
 
     /**
      * Get the metadata property: A name-value pair that represents queue metadata.
@@ -30,7 +37,7 @@ public class ListQueueInner extends ProxyResource {
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
-        return this.metadata;
+        return this.innerQueueProperties() == null ? null : this.innerQueueProperties().metadata();
     }
 
     /**
@@ -40,7 +47,10 @@ public class ListQueueInner extends ProxyResource {
      * @return the ListQueueInner object itself.
      */
     public ListQueueInner withMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
+        if (this.innerQueueProperties() == null) {
+            this.innerQueueProperties = new ListQueueProperties();
+        }
+        this.innerQueueProperties().withMetadata(metadata);
         return this;
     }
 
@@ -50,5 +60,8 @@ public class ListQueueInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerQueueProperties() != null) {
+            innerQueueProperties().validate();
+        }
     }
 }

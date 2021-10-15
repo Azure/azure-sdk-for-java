@@ -376,6 +376,20 @@ public class EventProcessorClientBuilder {
     }
 
     /**
+     * Sets the count used by the receivers to control the number of events each consumer will actively receive
+     * and queue locally without regard to whether a receive operation is currently active.
+     *
+     * @param prefetchCount The number of events to queue locally.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code prefetchCount} is less than 1 or greater than 8000.
+     */
+    public EventProcessorClientBuilder prefetchCount(int prefetchCount) {
+        eventHubClientBuilder.prefetchCount(prefetchCount);
+        return this;
+    }
+
+    /**
      * The function that is called for each event received by this {@link EventProcessorClient}. The input contains the
      * partition context and the event data.
      *

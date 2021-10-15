@@ -57,7 +57,9 @@ public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, Comp
 
     @Override
     public PagedFlux<ComputeSku> listByRegionAsync(final Region region) {
-        return PagedConverter.mapPage(inner().listAsync(String.format("location eq '%s'", region.name())), this::wrapModel);
+        return PagedConverter.mapPage(
+            inner().listAsync(String.format("location eq '%s'", region.name()), null),
+            this::wrapModel);
     }
 
     public ResourceSkusClient inner() {
@@ -98,7 +100,7 @@ public final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, Comp
         final Region region, final ComputeResourceType resourceType) {
         return PagedConverter
             .flatMapPage(
-                wrapPageAsync(inner().listAsync(String.format("location eq '%s'", region.name()))),
+                wrapPageAsync(inner().listAsync(String.format("location eq '%s'", region.name()), null)),
                 computeSku -> {
                     if (computeSku.resourceType() != null && computeSku.resourceType().equals(resourceType)) {
                         return Mono.just(computeSku);

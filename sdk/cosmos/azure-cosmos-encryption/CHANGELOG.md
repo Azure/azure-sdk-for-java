@@ -1,7 +1,34 @@
-# Release History
+## Release History
 
-## 1.0.0-beta.7 (Unreleased)
+### 1.0.0-beta.10 (Unreleased)
 
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 1.0.0-beta.9 (2021-10-14)
+#### New Features
+* Added support for transaction batch.
+* Added support for aggregate query.
+* Updated `azure-cosmos` to version `4.20.0`.
+
+#### Key Bug Fixes
+* Fixed Json property name of ClientEncryptionKeyProperties.
+
+### 1.0.0-beta.8 (2021-09-09)
+#### New Features
+* Added change feed support for pull and push model.
+
+### 1.0.0-beta.7 (2021-08-16)
+#### New Features
+* Redesigned Database and Container encryption cache for staleness when recreating database and containers in encryption.
+
+#### Key Bug Fixes
+* Fixed encryption create with contentResponseOnWriteEnabled false
 
 ### 1.0.0-beta.6 (2021-06-11)
 #### New Features

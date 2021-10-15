@@ -85,7 +85,7 @@ public interface ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationInner parameters);
 
@@ -102,7 +102,7 @@ public interface ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(
         String resourceGroupName,
         String clusterName,
@@ -158,7 +158,7 @@ public interface ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName);
 
@@ -174,7 +174,7 @@ public interface ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName, Context context);
 

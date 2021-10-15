@@ -7,6 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -1479,7 +1480,7 @@ class VirtualMachineImpl
 
     @Override
     public String osUnmanagedDiskVhdUri() {
-        if (isManagedDiskEnabled()) {
+        if (isManagedDiskEnabled() || this.storageProfile().osDisk().vhd() == null) {
             return null;
         }
         return innerModel().storageProfile().osDisk().vhd().uri();
@@ -1854,7 +1855,8 @@ class VirtualMachineImpl
                     // same as createResourceAsync
                     prepareCreateResourceAsync().block();
                 },
-                this::reset);
+                this::reset,
+                Context.NONE);
     }
 
     @Override

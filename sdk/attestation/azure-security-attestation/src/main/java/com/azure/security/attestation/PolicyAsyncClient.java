@@ -7,10 +7,10 @@ package com.azure.security.attestation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.security.attestation.implementation.PoliciesImpl;
 import com.azure.security.attestation.models.AttestationType;
-import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyResponse;
 import reactor.core.publisher.Mono;
 
@@ -33,7 +33,7 @@ public final class PolicyAsyncClient {
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
@@ -48,7 +48,7 @@ public final class PolicyAsyncClient {
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
@@ -65,7 +65,7 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param newAttestationPolicy simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
@@ -82,7 +82,7 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param newAttestationPolicy simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
@@ -98,7 +98,7 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param policyJws simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
@@ -114,7 +114,7 @@ public final class PolicyAsyncClient {
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param policyJws simple string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */

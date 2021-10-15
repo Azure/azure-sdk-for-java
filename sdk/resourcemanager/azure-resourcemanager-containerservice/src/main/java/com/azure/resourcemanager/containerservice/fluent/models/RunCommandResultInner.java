@@ -4,63 +4,31 @@
 
 package com.azure.resourcemanager.containerservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** run command result. */
-@JsonFlatten
-@Immutable
-public class RunCommandResultInner {
+@Fluent
+public final class RunCommandResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandResultInner.class);
 
     /*
-     * command id.
+     * The command id.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * provisioning State
+     * Properties of command result.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * exit code of the command
-     */
-    @JsonProperty(value = "properties.exitCode", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer exitCode;
-
-    /*
-     * time when the command started.
-     */
-    @JsonProperty(value = "properties.startedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startedAt;
-
-    /*
-     * time when the command finished.
-     */
-    @JsonProperty(value = "properties.finishedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime finishedAt;
-
-    /*
-     * command output.
-     */
-    @JsonProperty(value = "properties.logs", access = JsonProperty.Access.WRITE_ONLY)
-    private String logs;
-
-    /*
-     * explain why provisioningState is set to failed (if so).
-     */
-    @JsonProperty(value = "properties.reason", access = JsonProperty.Access.WRITE_ONLY)
-    private String reason;
+    @JsonProperty(value = "properties")
+    private CommandResultProperties innerProperties;
 
     /**
-     * Get the id property: command id.
+     * Get the id property: The command id.
      *
      * @return the id value.
      */
@@ -69,57 +37,66 @@ public class RunCommandResultInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of command result.
+     *
+     * @return the innerProperties value.
+     */
+    private CommandResultProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the provisioningState property: provisioning State.
      *
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the exitCode property: exit code of the command.
+     * Get the exitCode property: The exit code of the command.
      *
      * @return the exitCode value.
      */
     public Integer exitCode() {
-        return this.exitCode;
+        return this.innerProperties() == null ? null : this.innerProperties().exitCode();
     }
 
     /**
-     * Get the startedAt property: time when the command started.
+     * Get the startedAt property: The time when the command started.
      *
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
-        return this.startedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().startedAt();
     }
 
     /**
-     * Get the finishedAt property: time when the command finished.
+     * Get the finishedAt property: The time when the command finished.
      *
      * @return the finishedAt value.
      */
     public OffsetDateTime finishedAt() {
-        return this.finishedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().finishedAt();
     }
 
     /**
-     * Get the logs property: command output.
+     * Get the logs property: The command output.
      *
      * @return the logs value.
      */
     public String logs() {
-        return this.logs;
+        return this.innerProperties() == null ? null : this.innerProperties().logs();
     }
 
     /**
-     * Get the reason property: explain why provisioningState is set to failed (if so).
+     * Get the reason property: An explanation of why provisioningState is set to failed (if so).
      *
      * @return the reason value.
      */
     public String reason() {
-        return this.reason;
+        return this.innerProperties() == null ? null : this.innerProperties().reason();
     }
 
     /**
@@ -128,5 +105,8 @@ public class RunCommandResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

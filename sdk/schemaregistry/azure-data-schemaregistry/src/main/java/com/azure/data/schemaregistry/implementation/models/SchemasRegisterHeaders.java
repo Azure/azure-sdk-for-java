@@ -12,110 +12,110 @@ public final class SchemasRegisterHeaders {
     /*
      * The X-Schema-Version property.
      */
-    @JsonProperty(value = "X-Schema-Version")
-    private Integer xSchemaVersion;
+    @JsonProperty(value = "schema-version")
+    private Integer schemaVersion;
 
     /*
      * The X-Schema-Type property.
      */
-    @JsonProperty(value = "X-Schema-Type")
-    private String xSchemaType;
+    @JsonProperty(value = "serialization-type")
+    private String schemaType;
 
     /*
      * The X-Schema-Id property.
      */
-    @JsonProperty(value = "X-Schema-Id")
-    private String xSchemaId;
+    @JsonProperty(value = "schema-id")
+    private String schemaId;
 
     /*
      * The X-Schema-Id-Location property.
      */
-    @JsonProperty(value = "X-Schema-Id-Location")
-    private String xSchemaIdLocation;
+    @JsonProperty(value = "schema-id-location")
+    private String schemaIdLocation;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
+    @JsonProperty(value = "location")
     private String location;
 
     /**
-     * Get the xSchemaVersion property: The X-Schema-Version property.
+     * Get the SchemaVersion property: The Schema-Version property.
      *
-     * @return the xSchemaVersion value.
+     * @return the SchemaVersion value.
      */
-    public Integer getXSchemaVersion() {
-        return this.xSchemaVersion;
+    public Integer getSchemaVersion() {
+        return this.schemaVersion;
     }
 
     /**
-     * Set the xSchemaVersion property: The X-Schema-Version property.
+     * Set the SchemaVersion property: The Schema-Version property.
      *
-     * @param xSchemaVersion the xSchemaVersion value to set.
+     * @param SchemaVersion the SchemaVersion value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
-    public SchemasRegisterHeaders setXSchemaVersion(Integer xSchemaVersion) {
-        this.xSchemaVersion = xSchemaVersion;
+    public SchemasRegisterHeaders setSchemaVersion(Integer SchemaVersion) {
+        this.schemaVersion = SchemaVersion;
         return this;
     }
 
     /**
-     * Get the xSchemaType property: The X-Schema-Type property.
+     * Get the SchemaType property: The Schema-Type property.
      *
-     * @return the xSchemaType value.
+     * @return the SchemaType value.
      */
-    public String getXSchemaType() {
-        return this.xSchemaType;
+    public String getSchemaType() {
+        return this.schemaType;
     }
 
     /**
-     * Set the xSchemaType property: The X-Schema-Type property.
+     * Set the SchemaType property: The Schema-Type property.
      *
-     * @param xSchemaType the xSchemaType value to set.
+     * @param SchemaType the SchemaType value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
-    public SchemasRegisterHeaders setXSchemaType(String xSchemaType) {
-        this.xSchemaType = xSchemaType;
+    public SchemasRegisterHeaders setSchemaType(String SchemaType) {
+        this.schemaType = SchemaType;
         return this;
     }
 
     /**
-     * Get the xSchemaId property: The X-Schema-Id property.
+     * Get the SchemaId property: The Schema-Id property.
      *
-     * @return the xSchemaId value.
+     * @return the SchemaId value.
      */
-    public String getXSchemaId() {
-        return this.xSchemaId;
+    public String getSchemaId() {
+        return this.schemaId;
     }
 
     /**
-     * Set the xSchemaId property: The X-Schema-Id property.
+     * Set the SchemaId property: The Schema-Id property.
      *
-     * @param xSchemaId the xSchemaId value to set.
+     * @param SchemaId the SchemaId value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
-    public SchemasRegisterHeaders setXSchemaId(String xSchemaId) {
-        this.xSchemaId = xSchemaId;
+    public SchemasRegisterHeaders setSchemaId(String SchemaId) {
+        this.schemaId = SchemaId;
         return this;
     }
 
     /**
-     * Get the xSchemaIdLocation property: The X-Schema-Id-Location property.
+     * Get the SchemaIdLocation property: The Schema-Id-Location property.
      *
-     * @return the xSchemaIdLocation value.
+     * @return the SchemaIdLocation value.
      */
-    public String getXSchemaIdLocation() {
-        return this.xSchemaIdLocation;
+    public String getSchemaIdLocation() {
+        return this.schemaIdLocation;
     }
 
     /**
-     * Set the xSchemaIdLocation property: The X-Schema-Id-Location property.
+     * Set the SchemaIdLocation property: The Schema-Id-Location property.
      *
-     * @param xSchemaIdLocation the xSchemaIdLocation value to set.
+     * @param SchemaIdLocation the SchemaIdLocation value to set.
      * @return the SchemasRegisterHeaders object itself.
      */
-    public SchemasRegisterHeaders setXSchemaIdLocation(String xSchemaIdLocation) {
-        this.xSchemaIdLocation = xSchemaIdLocation;
+    public SchemasRegisterHeaders setSchemaIdLocation(String SchemaIdLocation) {
+        this.schemaIdLocation = SchemaIdLocation;
         return this;
     }
 

@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.batch.ItemBulkOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Flux;
@@ -11,15 +12,19 @@ import reactor.core.publisher.Flux;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkOperations}
+ *
  * Utility for creating bulk operations which can be executed by calling
- * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkProcessingOptions)} .
+ * {@link CosmosAsyncContainer#processBulkOperations(Flux, BulkExecutionOptions)} .
  *
  * Also while creating these operation, if some options which are only for individual operation can be provided by passing
  * a {@link BulkItemRequestOptions} while creating the bulk operation.
  *
- * See also {@link BulkProcessingOptions}.
+ * See also {@link BulkExecutionOptions}.
  */
 @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 public final class BulkOperations {
 
     /**
@@ -33,10 +38,35 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getCreateItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
-        return getCreateItemOperation(item, partitionKey, new BulkItemRequestOptions());
+        return getCreateItemOperation(item, partitionKey, new BulkItemRequestOptions(), null);
+    }
+
+    /**
+     * Instantiate an operation for Creating item in Bulk execution.
+     *
+     * @param <T> The type of item to be created.
+     * @param <TContext> The type of context to be used.
+     *
+     * @param item A JSON serializable object that must contain an id property.
+     * @param partitionKey the partition key for the operation
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <T, TContext> CosmosItemOperation getCreateItemOperation(
+        T item,
+        PartitionKey partitionKey,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+        return getCreateItemOperation(item, partitionKey, new BulkItemRequestOptions(), context);
     }
 
     /**
@@ -51,6 +81,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getCreateItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -59,17 +90,46 @@ public final class BulkOperations {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
+        return getCreateItemOperation(item, partitionKey, requestOptions, null);
+    }
+
+    /**
+     * Instantiate an operation for Creating item in Bulk execution.
+     *
+     * @param <T> The type of item to be created.
+     * @param <TContext> The type of context to be used.
+     *
+     * @param item A JSON serializable object that must contain an id property.
+     * @param partitionKey the partition key for the operation.
+     * @param requestOptions The options for the item request.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <T, TContext> CosmosItemOperation getCreateItemOperation(
+        T item,
+        PartitionKey partitionKey,
+        BulkItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
         if (requestOptions == null) {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<T, TContext> ttContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.CREATE,
             null,
             partitionKey,
             requestOptions.toRequestOptions(),
-            item
+            item,
+            context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(ttContextItemBulkOperation);
     }
 
     /**
@@ -81,11 +141,36 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getDeleteItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
         return getDeleteItemOperation(id, partitionKey, new BulkItemRequestOptions());
+    }
+
+    /**
+     * Instantiate an operation for deleting item in Bulk execution.
+     *
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id The unique id of the item.
+     * @param partitionKey the partition key for the operation.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <TContext> CosmosItemOperation getDeleteItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        TContext context) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        return getDeleteItemOperation(id, partitionKey, new BulkItemRequestOptions(), context);
     }
 
     /**
@@ -98,6 +183,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -110,13 +196,45 @@ public final class BulkOperations {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        return getDeleteItemOperation(id, partitionKey, requestOptions, null);
+    }
+
+    /**
+     * Instantiate an operation for deleting item in Bulk execution.
+     *
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id The unique id of the item.
+     * @param partitionKey the partition key for the operation..
+     * @param requestOptions The options for the item request.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <TContext> CosmosItemOperation getDeleteItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        BulkItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        if (requestOptions == null) {
+            requestOptions = new BulkItemRequestOptions();
+        }
+
+        ItemBulkOperation<Object, TContext> objectTContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.DELETE,
             id,
             partitionKey,
             requestOptions.toRequestOptions(),
-            null
+            null,
+            context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(objectTContextItemBulkOperation);
     }
 
     /**
@@ -128,11 +246,36 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getReadItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return getReadItemOperation(id, partitionKey, new BulkItemRequestOptions());
+        return getReadItemOperation(id, partitionKey, new BulkItemRequestOptions(), null);
+    }
+
+    /**
+     * Instantiate an operation for read item in Bulk execution.
+     *
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id The unique id of the item.
+     * @param partitionKey the partition key for the operation.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <TContext> CosmosItemOperation getReadItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        TContext context) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        return getReadItemOperation(id, partitionKey, new BulkItemRequestOptions(), context);
     }
 
     /**
@@ -145,6 +288,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getReadItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -153,17 +297,45 @@ public final class BulkOperations {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
+        return getReadItemOperation(id, partitionKey, requestOptions, null);
+    }
+
+    /**
+     * Instantiate an operation for read item in Bulk execution.
+     *
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id The unique id of the item.
+     * @param partitionKey the partition key for the operation..
+     * @param requestOptions The options for the item request.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <TContext> CosmosItemOperation getReadItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        BulkItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
         if (requestOptions == null) {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<Object, TContext> objectTContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.READ,
             id,
             partitionKey,
             requestOptions.toRequestOptions(),
-            null
+            null,
+            context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(objectTContextItemBulkOperation);
     }
 
     /**
@@ -178,12 +350,41 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getReplaceItemOperation(String id, T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return getReplaceItemOperation(id, item, partitionKey, new BulkItemRequestOptions());
+        return getReplaceItemOperation(id, item, partitionKey, new BulkItemRequestOptions(), null);
+    }
+
+    /**
+     * Instantiate an operation for replace item in Bulk execution.
+     *
+     * @param <T> The type of item to be replaced.
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id The unique id of the item.
+     * @param item A JSON serializable object that must contain an id property.
+     * @param partitionKey the partition key for the operation.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <T, TContext> CosmosItemOperation getReplaceItemOperation(
+        String id,
+        T item,
+        PartitionKey partitionKey,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        return getReplaceItemOperation(id, item, partitionKey, new BulkItemRequestOptions(), context);
     }
 
     /**
@@ -199,6 +400,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
@@ -209,17 +411,49 @@ public final class BulkOperations {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
+        return getReplaceItemOperation(id, item, partitionKey, requestOptions,null);
+    }
+
+    /**
+     * Instantiate an operation for replace item in Bulk execution.
+     *
+     * @param <T> The type of item to be replaced.
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id The unique id of the item..
+     * @param item A JSON serializable object that must contain an id property.
+     * @param partitionKey the partition key for the operation.
+     * @param requestOptions The options for the item request.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <T, TContext> CosmosItemOperation getReplaceItemOperation(
+        String id,
+        T item,
+        PartitionKey partitionKey,
+        BulkItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
         if (requestOptions == null) {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<T>(
+        ItemBulkOperation<T, TContext> ttContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.REPLACE,
             id,
             partitionKey,
             requestOptions.toRequestOptions(),
-            item
+            item,
+            context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(ttContextItemBulkOperation);
     }
 
     /**
@@ -233,11 +467,37 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getUpsertItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return getUpsertItemOperation(item, partitionKey, new BulkItemRequestOptions());
+        return getUpsertItemOperation(item, partitionKey, new BulkItemRequestOptions(), null);
+    }
+
+    /**
+     * Instantiate an operation for upsert item in Bulk execution.
+     *
+     * @param <T> The type of item to be upserted.
+     * @param <TContext> The type of context to be used.
+     *
+     * @param item A JSON serializable object that must contain an id property.
+     * @param partitionKey the partition key for the operation.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <T, TContext> CosmosItemOperation getUpsertItemOperation(
+        T item,
+        PartitionKey partitionKey,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        return getUpsertItemOperation(item, partitionKey, new BulkItemRequestOptions(), context);
     }
 
     /**
@@ -252,6 +512,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static <T> CosmosItemOperation getUpsertItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -260,17 +521,46 @@ public final class BulkOperations {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
+        return getUpsertItemOperation(item, partitionKey, requestOptions, null);
+    }
+
+    /**
+     * Instantiate an operation for upsert item in Bulk execution.
+     *
+     * @param <T> The type of item to be upserted.
+     * @param <TContext> The type of context to be used.
+     *
+     * @param item A JSON serializable object that must contain an id property.
+     * @param partitionKey the partition key for the operation.
+     * @param requestOptions The options for the item request.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <T, TContext> CosmosItemOperation getUpsertItemOperation(
+        T item,
+        PartitionKey partitionKey,
+        BulkItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(item, "expected non-null item");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
         if (requestOptions == null) {
             requestOptions = new BulkItemRequestOptions();
         }
 
-        return new ItemBulkOperation<T>(
+        ItemBulkOperation<T, TContext> ttContextItemBulkOperation = new ItemBulkOperation<>(
             CosmosItemOperationType.UPSERT,
             null,
             partitionKey,
             requestOptions.toRequestOptions(),
-            item
+            item,
+            context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(ttContextItemBulkOperation);
     }
 
     /**
@@ -283,6 +573,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -292,7 +583,45 @@ public final class BulkOperations {
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
-        return getPatchItemOperation(id, partitionKey, cosmosPatchOperations, new BulkPatchItemRequestOptions());
+        return getPatchItemOperation(
+            id,
+            partitionKey,
+            cosmosPatchOperations,
+            new BulkPatchItemRequestOptions(),
+            null);
+    }
+
+    /**
+     * Instantiate an operation for a patch in Bulk execution.
+     *
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id  the item id.
+     * @param partitionKey the partition key for the operation.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially
+     *        applied to the referred Cosmos item.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <TContext> CosmosItemOperation getPatchItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        TContext context) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        return getPatchItemOperation(
+            id,
+            partitionKey,
+            cosmosPatchOperations,
+            new BulkPatchItemRequestOptions(),
+            context);
     }
 
     /**
@@ -306,6 +635,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public static CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -316,16 +646,48 @@ public final class BulkOperations {
         checkNotNull(partitionKey, "expected non-null partitionKey");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
+        return getPatchItemOperation(id, partitionKey, cosmosPatchOperations, requestOptions, null);
+    }
+
+    /**
+     * Instantiate an operation for a patch in Bulk execution.
+     *
+     * @param <TContext> The type of context to be used.
+     *
+     * @param id  the item id.
+     * @param partitionKey the partition key for the operation.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param requestOptions The options for the item request.
+     * @param context The caller provided context for this operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_18_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
+    public static <TContext> CosmosItemOperation getPatchItemOperation(
+        String id,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        BulkPatchItemRequestOptions requestOptions,
+        TContext context) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
         if (requestOptions == null) {
             requestOptions = new BulkPatchItemRequestOptions();
         }
 
-        return new ItemBulkOperation<>(
+        ItemBulkOperation<CosmosPatchOperations, TContext> cosmosPatchOperationsTContextItemBulkOperation =
+            new ItemBulkOperation<>(
             CosmosItemOperationType.PATCH,
             id,
             partitionKey,
             requestOptions.toRequestOptions(),
-            cosmosPatchOperations
+            cosmosPatchOperations,
+            context
         );
+        return BridgeInternal.toDeprecatedCosmosItemOperation(cosmosPatchOperationsTContextItemBulkOperation);
     }
 }

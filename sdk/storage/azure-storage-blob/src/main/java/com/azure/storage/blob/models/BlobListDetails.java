@@ -262,13 +262,13 @@ public final class BlobListDetails {
             details.add(ListBlobsIncludeItem.VERSIONS);
         }
         if (this.retrieveDeletedWithVersions) {
-            details.add(ListBlobsIncludeItem.DELETEDWITHVERSIONS);
+            details.add(ListBlobsIncludeItem.DELETED_WITH_VERSIONS);
         }
         if (this.retrieveImmutabilityPolicy) {
-            details.add(ListBlobsIncludeItem.IMMUTABILITYPOLICY);
+            details.add(ListBlobsIncludeItem.IMMUTABILITY_POLICY);
         }
         if (this.retrieveLegalHold) {
-            details.add(ListBlobsIncludeItem.LEGALHOLD);
+            details.add(ListBlobsIncludeItem.LEGAL_HOLD);
         }
         return details;
     }

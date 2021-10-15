@@ -80,7 +80,8 @@ class DocumentProducer<T extends Resource> {
                                 pageResult.getRequestCharge(),
                                 fetchExecutionRangeAccumulator.getExecutionRanges(),
                                 Arrays.asList(schedulingTimeSpanMap)
-                        ), pageResult.getActivityId());
+                        ), pageResult.getActivityId(),
+                    pageResult.getResponseHeaders().getOrDefault(HttpConstants.HttpHeaders.INDEX_UTILIZATION, null));
                 String pkrId = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
                 String queryMetricKey = feedRange.getRange().toString() + ",pkrId:" + pkrId;
                 BridgeInternal.putQueryMetricsIntoMap(pageResult, queryMetricKey, qm);

@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
@@ -13,6 +15,7 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
@@ -34,6 +37,7 @@ import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -42,6 +46,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
@@ -835,5 +840,186 @@ public final class ModelBridgeInternal {
 
         checkNotNull(options, "Argument 'options' must not be null.");
         options.setRequestContinuation(eTag);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getOperationValueForCosmosItemOperationType(CosmosItemOperationType cosmosItemOperationType) {
+        return cosmosItemOperationType.getOperationValue();
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosItemOperationType
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosItemOperationType toCosmosItemOperationType(com.azure.cosmos.CosmosItemOperationType cosmosItemOperationType) {
+        switch (cosmosItemOperationType) {
+            case CREATE:
+                return CosmosItemOperationType.CREATE;
+            case DELETE:
+                return CosmosItemOperationType.DELETE;
+            case PATCH:
+                return CosmosItemOperationType.PATCH;
+            case READ:
+                return CosmosItemOperationType.READ;
+            case UPSERT:
+                return CosmosItemOperationType.UPSERT;
+            case REPLACE:
+                return CosmosItemOperationType.REPLACE;
+            default:
+                throw new UnsupportedOperationException("CosmosOperationType : " + cosmosItemOperationType + " is not supported");
+        }
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosItemOperation
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosItemOperation toCosmosItemOperation(com.azure.cosmos.CosmosItemOperation cosmosItemOperation) {
+        return new CosmosItemOperation() {
+            @Override
+            public String getId() {
+                return cosmosItemOperation.getId();
+            }
+
+            @Override
+            public PartitionKey getPartitionKeyValue() {
+                return cosmosItemOperation.getPartitionKeyValue();
+            }
+
+            @Override
+            public CosmosItemOperationType getOperationType() {
+                return toCosmosItemOperationType(cosmosItemOperation.getOperationType());
+            }
+
+            @Override
+            public <T> T getItem() {
+                return cosmosItemOperation.getItem();
+            }
+
+            @Override
+            public <T> T getContext() {
+                return cosmosItemOperation.getContext();
+            }
+        };
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosBulkItemResponse
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkItemResponse toCosmosBulkItemResponse(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse) {
+        return new CosmosBulkItemResponse(cosmosBulkItemResponse.getETag(),
+            cosmosBulkItemResponse.getRequestCharge(),
+            ImplementationBridgeHelpers
+                .DeprecatedCosmosBulkItemResponseHelper
+                .getCosmosBulkItemResponseAccessor()
+                .getResourceObject(cosmosBulkItemResponse),
+            cosmosBulkItemResponse.getStatusCode(),
+            cosmosBulkItemResponse.getRetryAfterDuration(),
+            cosmosBulkItemResponse.getSubStatusCode(),
+            cosmosBulkItemResponse.getResponseHeaders(),
+            cosmosBulkItemResponse.getCosmosDiagnostics());
+    }
+
+    //  This is only temporary, and will be removed once we delete CosmosBulkOperationResponse
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> toCosmosBulkOperationResponse(com.azure.cosmos.CosmosBulkOperationResponse<TContext> cosmosBulkOperationResponse) {
+        return new CosmosBulkOperationResponse<TContext>(toCosmosItemOperation(cosmosBulkOperationResponse.getOperation()),
+            toCosmosBulkItemResponse(cosmosBulkOperationResponse.getResponse()),
+            cosmosBulkOperationResponse.getException(),
+            cosmosBulkOperationResponse.getBatchContext());
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBatchResponse createCosmosBatchResponse(
+        int responseStatusCode,
+        int responseSubStatusCode,
+        String errorMessage,
+        Map<String, String> responseHeaders,
+        CosmosDiagnostics cosmosDiagnostics) {
+
+        return new CosmosBatchResponse(
+            responseStatusCode,
+            responseSubStatusCode,
+            errorMessage,
+            responseHeaders,
+            cosmosDiagnostics);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBatchOperationResult createCosmosBatchResult(
+        String eTag,
+        double requestCharge,
+        ObjectNode resourceObject,
+        int statusCode,
+        Duration retryAfter,
+        int subStatusCode,
+        CosmosItemOperation cosmosItemOperation) {
+
+        return new CosmosBatchOperationResult(
+            eTag,
+            requestCharge,
+            resourceObject,
+            statusCode,
+            retryAfter,
+            subStatusCode,
+            cosmosItemOperation);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void addCosmosBatchResultInResponse(
+        CosmosBatchResponse cosmosBatchResponse,
+        List<CosmosBatchOperationResult> cosmosBatchOperationResults) {
+
+        cosmosBatchResponse.addAll(cosmosBatchOperationResults);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
+        return cosmosBatchRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkItemResponse createCosmosBulkItemResponse(
+        CosmosBatchOperationResult result,
+        CosmosBatchResponse response) {
+
+        return new CosmosBulkItemResponse(
+            result.getETag(),
+            result.getRequestCharge(),
+            result.getResourceObject(),
+            result.getStatusCode(),
+            result.getRetryAfterDuration(),
+            result.getSubStatusCode(),
+            response.getResponseHeaders(),
+            response.getDiagnostics());
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
+        CosmosItemOperation operation,
+        CosmosBulkItemResponse response,
+        TContext batchContext) {
+
+        return new CosmosBulkOperationResponse<>(
+            operation,
+            response,
+            batchContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
+        CosmosItemOperation operation,
+        Exception exception,
+        TContext batchContext) {
+
+        return new CosmosBulkOperationResponse<>(
+            operation,
+            exception,
+            batchContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static int getPayloadLength(CosmosBatchResponse cosmosBatchResponse) {
+        return cosmosBatchResponse.getResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
+        return cosmosPatchOperations.getPatchOperations();
     }
 }

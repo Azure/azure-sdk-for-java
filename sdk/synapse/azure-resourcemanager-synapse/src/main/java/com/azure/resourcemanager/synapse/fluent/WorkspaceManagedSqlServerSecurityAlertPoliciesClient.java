@@ -65,7 +65,7 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed Sql server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -85,7 +85,7 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed Sql server security alert policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerSecurityAlertPolicyInner>, ServerSecurityAlertPolicyInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,

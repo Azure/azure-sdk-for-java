@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyProperty;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of an ImmutabilityPolicy of a blob container. */
-@JsonFlatten
 @Fluent
-public class ImmutabilityPolicyProperties {
+public final class ImmutabilityPolicyProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyProperties.class);
+
+    /*
+     * The properties of an ImmutabilityPolicy of a blob container.
+     */
+    @JsonProperty(value = "properties")
+    private ImmutabilityPolicyProperty innerProperties;
 
     /*
      * ImmutabilityPolicy Etag.
@@ -29,30 +34,14 @@ public class ImmutabilityPolicyProperties {
     @JsonProperty(value = "updateHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateHistoryProperty> updateHistory;
 
-    /*
-     * The immutability period for the blobs in the container since the policy
-     * creation, in days.
+    /**
+     * Get the innerProperties property: The properties of an ImmutabilityPolicy of a blob container.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.immutabilityPeriodSinceCreationInDays")
-    private Integer immutabilityPeriodSinceCreationInDays;
-
-    /*
-     * The ImmutabilityPolicy state of a blob container, possible values
-     * include: Locked and Unlocked.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private ImmutabilityPolicyState state;
-
-    /*
-     * This property can only be changed for unlocked time-based retention
-     * policies. When enabled, new blocks can be written to an append blob
-     * while maintaining immutability protection and compliance. Only new
-     * blocks can be added and any existing blocks cannot be modified or
-     * deleted. This property cannot be changed with ExtendImmutabilityPolicy
-     * API
-     */
-    @JsonProperty(value = "properties.allowProtectedAppendWrites")
-    private Boolean allowProtectedAppendWrites;
+    private ImmutabilityPolicyProperty innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: ImmutabilityPolicy Etag.
@@ -79,7 +68,7 @@ public class ImmutabilityPolicyProperties {
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
-        return this.immutabilityPeriodSinceCreationInDays;
+        return this.innerProperties() == null ? null : this.innerProperties().immutabilityPeriodSinceCreationInDays();
     }
 
     /**
@@ -91,7 +80,10 @@ public class ImmutabilityPolicyProperties {
      */
     public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(
         Integer immutabilityPeriodSinceCreationInDays) {
-        this.immutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImmutabilityPolicyProperty();
+        }
+        this.innerProperties().withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays);
         return this;
     }
 
@@ -102,7 +94,7 @@ public class ImmutabilityPolicyProperties {
      * @return the state value.
      */
     public ImmutabilityPolicyState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -114,7 +106,7 @@ public class ImmutabilityPolicyProperties {
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
-        return this.allowProtectedAppendWrites;
+        return this.innerProperties() == null ? null : this.innerProperties().allowProtectedAppendWrites();
     }
 
     /**
@@ -127,7 +119,10 @@ public class ImmutabilityPolicyProperties {
      * @return the ImmutabilityPolicyProperties object itself.
      */
     public ImmutabilityPolicyProperties withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
-        this.allowProtectedAppendWrites = allowProtectedAppendWrites;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImmutabilityPolicyProperty();
+        }
+        this.innerProperties().withAllowProtectedAppendWrites(allowProtectedAppendWrites);
         return this;
     }
 
@@ -137,6 +132,9 @@ public class ImmutabilityPolicyProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (updateHistory() != null) {
             updateHistory().forEach(e -> e.validate());
         }

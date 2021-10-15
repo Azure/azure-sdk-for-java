@@ -14,7 +14,7 @@ Maven dependency for the Azure Synapse Access Control client library. Add it to 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-synapse-accesscontrol</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

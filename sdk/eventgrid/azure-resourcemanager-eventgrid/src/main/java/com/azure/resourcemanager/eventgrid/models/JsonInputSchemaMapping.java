@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.fluent.models.JsonInputSchemaMappingProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,50 +18,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inputSchemaMappingType")
 @JsonTypeName("Json")
-@JsonFlatten
 @Fluent
-public class JsonInputSchemaMapping extends InputSchemaMapping {
+public final class JsonInputSchemaMapping extends InputSchemaMapping {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonInputSchemaMapping.class);
 
     /*
-     * The mapping information for the Id property of the Event Grid Event.
+     * JSON Properties of the input schema mapping
      */
-    @JsonProperty(value = "properties.id")
-    private JsonField id;
+    @JsonProperty(value = "properties")
+    private JsonInputSchemaMappingProperties innerProperties;
 
-    /*
-     * The mapping information for the Topic property of the Event Grid Event.
+    /**
+     * Get the innerProperties property: JSON Properties of the input schema mapping.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.topic")
-    private JsonField topic;
-
-    /*
-     * The mapping information for the EventTime property of the Event Grid
-     * Event.
-     */
-    @JsonProperty(value = "properties.eventTime")
-    private JsonField eventTime;
-
-    /*
-     * The mapping information for the EventType property of the Event Grid
-     * Event.
-     */
-    @JsonProperty(value = "properties.eventType")
-    private JsonFieldWithDefault eventType;
-
-    /*
-     * The mapping information for the Subject property of the Event Grid
-     * Event.
-     */
-    @JsonProperty(value = "properties.subject")
-    private JsonFieldWithDefault subject;
-
-    /*
-     * The mapping information for the DataVersion property of the Event Grid
-     * Event.
-     */
-    @JsonProperty(value = "properties.dataVersion")
-    private JsonFieldWithDefault dataVersion;
+    private JsonInputSchemaMappingProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: The mapping information for the Id property of the Event Grid Event.
@@ -69,7 +43,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the id value.
      */
     public JsonField id() {
-        return this.id;
+        return this.innerProperties() == null ? null : this.innerProperties().id();
     }
 
     /**
@@ -79,7 +53,10 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the JsonInputSchemaMapping object itself.
      */
     public JsonInputSchemaMapping withId(JsonField id) {
-        this.id = id;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonInputSchemaMappingProperties();
+        }
+        this.innerProperties().withId(id);
         return this;
     }
 
@@ -89,7 +66,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the topic value.
      */
     public JsonField topic() {
-        return this.topic;
+        return this.innerProperties() == null ? null : this.innerProperties().topic();
     }
 
     /**
@@ -99,7 +76,10 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the JsonInputSchemaMapping object itself.
      */
     public JsonInputSchemaMapping withTopic(JsonField topic) {
-        this.topic = topic;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonInputSchemaMappingProperties();
+        }
+        this.innerProperties().withTopic(topic);
         return this;
     }
 
@@ -109,7 +89,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the eventTime value.
      */
     public JsonField eventTime() {
-        return this.eventTime;
+        return this.innerProperties() == null ? null : this.innerProperties().eventTime();
     }
 
     /**
@@ -119,7 +99,10 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the JsonInputSchemaMapping object itself.
      */
     public JsonInputSchemaMapping withEventTime(JsonField eventTime) {
-        this.eventTime = eventTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonInputSchemaMappingProperties();
+        }
+        this.innerProperties().withEventTime(eventTime);
         return this;
     }
 
@@ -129,7 +112,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the eventType value.
      */
     public JsonFieldWithDefault eventType() {
-        return this.eventType;
+        return this.innerProperties() == null ? null : this.innerProperties().eventType();
     }
 
     /**
@@ -139,7 +122,10 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the JsonInputSchemaMapping object itself.
      */
     public JsonInputSchemaMapping withEventType(JsonFieldWithDefault eventType) {
-        this.eventType = eventType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonInputSchemaMappingProperties();
+        }
+        this.innerProperties().withEventType(eventType);
         return this;
     }
 
@@ -149,7 +135,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the subject value.
      */
     public JsonFieldWithDefault subject() {
-        return this.subject;
+        return this.innerProperties() == null ? null : this.innerProperties().subject();
     }
 
     /**
@@ -159,7 +145,10 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the JsonInputSchemaMapping object itself.
      */
     public JsonInputSchemaMapping withSubject(JsonFieldWithDefault subject) {
-        this.subject = subject;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonInputSchemaMappingProperties();
+        }
+        this.innerProperties().withSubject(subject);
         return this;
     }
 
@@ -169,7 +158,7 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the dataVersion value.
      */
     public JsonFieldWithDefault dataVersion() {
-        return this.dataVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().dataVersion();
     }
 
     /**
@@ -179,7 +168,10 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
      * @return the JsonInputSchemaMapping object itself.
      */
     public JsonInputSchemaMapping withDataVersion(JsonFieldWithDefault dataVersion) {
-        this.dataVersion = dataVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JsonInputSchemaMappingProperties();
+        }
+        this.innerProperties().withDataVersion(dataVersion);
         return this;
     }
 
@@ -191,23 +183,8 @@ public class JsonInputSchemaMapping extends InputSchemaMapping {
     @Override
     public void validate() {
         super.validate();
-        if (id() != null) {
-            id().validate();
-        }
-        if (topic() != null) {
-            topic().validate();
-        }
-        if (eventTime() != null) {
-            eventTime().validate();
-        }
-        if (eventType() != null) {
-            eventType().validate();
-        }
-        if (subject() != null) {
-            subject().validate();
-        }
-        if (dataVersion() != null) {
-            dataVersion().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

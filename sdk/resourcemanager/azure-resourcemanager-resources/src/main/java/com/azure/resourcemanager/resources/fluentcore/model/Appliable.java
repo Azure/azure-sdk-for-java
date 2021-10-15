@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model;
 
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,7 +22,23 @@ public interface Appliable<T> extends Indexable {
     /**
      * Execute the update request asynchronously.
      *
-     * @return the handle to the REST call
+     * @return the publisher of the resource update request
      */
     Mono<T> applyAsync();
+
+    /**
+     * Execute the update request.
+     *
+     * @param context the {@link Context} of the request
+     * @return the updated resource
+     */
+    T apply(Context context);
+
+    /**
+     * Execute the update request asynchronously.
+     *
+     * @param context the {@link Context} of the request
+     * @return the publisher of the resource update request
+     */
+    Mono<T> applyAsync(Context context);
 }

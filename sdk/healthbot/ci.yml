@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/healthbot/
+    exclude:
+      - sdk/healthbot/pom.xml
+      - sdk/healthbot/azure-resourcemanager-healthbot/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/healthbot/
+    exclude:
+      - sdk/healthbot/pom.xml
+      - sdk/healthbot/azure-resourcemanager-healthbot/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

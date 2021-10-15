@@ -28,17 +28,23 @@ public class KeyVaultKeyLessRsaSignature extends AbstractKeyVaultKeyLessSignatur
         byte[] mHash = getDigestValue();
         String encode = Base64.getEncoder().encodeToString(mHash);
         //For all RSA type certificate in keyVault, we can use PS256 to encrypt.
-        return keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
+        if (keyVaultClient != null) {
+            return keyVaultClient.getSignedWithPrivateKey("PS256", encode, keyId);
+        }
+        return new byte[0];
     }
 
     @Override
     protected void engineSetParameter(AlgorithmParameterSpec params)
         throws InvalidAlgorithmParameterException {
-        if (params != null && !(params instanceof PSSParameterSpec)) {
+        if (params == null) {
+            throw new InvalidAlgorithmParameterException("Parameters cannot be null");
+        }
+        if (!(params instanceof PSSParameterSpec)) {
             throw new InvalidAlgorithmParameterException("No parameter accepted");
         }
         PSSParameterSpec signatureParameters = (PSSParameterSpec) params;
-        String newHashAlg = signatureParameters != null ? signatureParameters.getDigestAlgorithm() : null;
+        String newHashAlg = signatureParameters.getDigestAlgorithm();
         // re-allocate md if not yet assigned or algorithm changed
         if ((this.messageDigest == null) || !(this.messageDigest.getAlgorithm().equalsIgnoreCase(newHashAlg))) {
             try {

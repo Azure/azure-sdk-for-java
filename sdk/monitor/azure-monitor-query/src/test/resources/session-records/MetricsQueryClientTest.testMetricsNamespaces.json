@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com//subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces?api-version=2017-12-01-preview&startTime=2021-06-01T00%3A00Z",
+    "Uri" : "https://REDACTED.azure.com//subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces?api-version=2017-12-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (14.0.2; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-monitor-query/1.0.0-beta.5 (14.0.2; Windows 10; 10.0)"
     },
     "Response" : {
-      "content-length" : "829",
+      "content-length" : "457",
       "Server" : "Microsoft-IIS/10.0",
       "X-Content-Type-Options" : "nosniff",
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11999",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "41c50e57-6857-4ba3-b6e6-c1a5ad6c1143",
-      "Date" : "Mon, 07 Jun 2021 17:38:44 GMT",
+      "x-ms-correlation-request-id" : "11d7df07-a9c2-4b5a-bbcc-268172cbcc6e",
+      "Date" : "Mon, 04 Oct 2021 18:30:38 GMT",
       "Access-Control-Expose-Headers" : "Request-Context",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "WESTUS2:20210607T173845Z:41c50e57-6857-4ba3-b6e6-c1a5ad6c1143",
+      "x-ms-routing-request-id" : "WESTUS2:20211004T183039Z:11d7df07-a9c2-4b5a-bbcc-268172cbcc6e",
       "Vary" : "Accept-Encoding",
-      "x-ms-request-id" : "{41c50e57-6857-4ba3-b6e6-c1a5ad6c1143}",
-      "Body" : "{\"value\":[{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces/newNamespace\",\"name\":\"newNamespace\",\"type\":\"Microsoft.Insights/metricNamespaces\",\"classification\":\"Custom\",\"properties\":{\"metricNamespaceName\":\"newNamespace\"}},{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces/Microsoft.CognitiveServices-accounts\",\"name\":\"Microsoft.CognitiveServices-accounts\",\"type\":\"Microsoft.Insights/metricNamespaces\",\"classification\":\"Platform\",\"properties\":{\"metricNamespaceName\":\"Microsoft.CognitiveServices/accounts\"}}]}",
+      "x-ms-request-id" : "{11d7df07-a9c2-4b5a-bbcc-268172cbcc6e}",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricNamespaces/Microsoft.CognitiveServices-accounts\",\"name\":\"Microsoft.CognitiveServices-accounts\",\"type\":\"Microsoft.Insights/metricNamespaces\",\"classification\":\"Platform\",\"properties\":{\"metricNamespaceName\":\"Microsoft.CognitiveServices/accounts\"}}]}",
       "Content-Type" : "application/json",
       "Request-Context" : "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
       "X-Powered-By" : "ASP.NET"

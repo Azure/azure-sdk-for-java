@@ -20,7 +20,10 @@ import java.util.List;
     property = "type",
     defaultImpl = DataFlow.class)
 @JsonTypeName("DataFlow")
-@JsonSubTypes({@JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
+    @JsonSubTypes.Type(name = "WranglingDataFlow", value = WranglingDataFlow.class)
+})
 @Fluent
 public class DataFlow {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlow.class);

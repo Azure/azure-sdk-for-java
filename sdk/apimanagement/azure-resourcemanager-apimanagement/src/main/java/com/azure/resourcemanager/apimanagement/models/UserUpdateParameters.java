@@ -5,63 +5,124 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
+import com.azure.resourcemanager.apimanagement.fluent.models.UserUpdateParametersProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** User update parameters. */
-@JsonFlatten
 @Fluent
-public class UserUpdateParameters {
+public final class UserUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserUpdateParameters.class);
 
     /*
-     * Account state. Specifies whether the user is active or not. Blocked
-     * users are unable to sign into the developer portal or call any APIs of
-     * subscribed products. Default state is Active.
+     * User entity update contract properties.
      */
-    @JsonProperty(value = "properties.state")
-    private UserState state;
+    @JsonProperty(value = "properties")
+    private UserUpdateParametersProperties innerProperties;
 
-    /*
-     * Optional note about a user set by the administrator.
+    /**
+     * Get the innerProperties property: User entity update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.note")
-    private String note;
+    private UserUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Collection of user identities.
+    /**
+     * Get the email property: Email address. Must not be empty and must be unique within the service instance.
+     *
+     * @return the email value.
      */
-    @JsonProperty(value = "properties.identities")
-    private List<UserIdentityContractInner> identities;
+    public String email() {
+        return this.innerProperties() == null ? null : this.innerProperties().email();
+    }
 
-    /*
-     * Email address. Must not be empty and must be unique within the service
-     * instance.
+    /**
+     * Set the email property: Email address. Must not be empty and must be unique within the service instance.
+     *
+     * @param email the email value to set.
+     * @return the UserUpdateParameters object itself.
      */
-    @JsonProperty(value = "properties.email")
-    private String email;
+    public UserUpdateParameters withEmail(String email) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withEmail(email);
+        return this;
+    }
 
-    /*
-     * User Password.
+    /**
+     * Get the password property: User Password.
+     *
+     * @return the password value.
      */
-    @JsonProperty(value = "properties.password")
-    private String password;
+    public String password() {
+        return this.innerProperties() == null ? null : this.innerProperties().password();
+    }
 
-    /*
-     * First name.
+    /**
+     * Set the password property: User Password.
+     *
+     * @param password the password value to set.
+     * @return the UserUpdateParameters object itself.
      */
-    @JsonProperty(value = "properties.firstName")
-    private String firstName;
+    public UserUpdateParameters withPassword(String password) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withPassword(password);
+        return this;
+    }
 
-    /*
-     * Last name.
+    /**
+     * Get the firstName property: First name.
+     *
+     * @return the firstName value.
      */
-    @JsonProperty(value = "properties.lastName")
-    private String lastName;
+    public String firstName() {
+        return this.innerProperties() == null ? null : this.innerProperties().firstName();
+    }
+
+    /**
+     * Set the firstName property: First name.
+     *
+     * @param firstName the firstName value to set.
+     * @return the UserUpdateParameters object itself.
+     */
+    public UserUpdateParameters withFirstName(String firstName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withFirstName(firstName);
+        return this;
+    }
+
+    /**
+     * Get the lastName property: Last name.
+     *
+     * @return the lastName value.
+     */
+    public String lastName() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastName();
+    }
+
+    /**
+     * Set the lastName property: Last name.
+     *
+     * @param lastName the lastName value to set.
+     * @return the UserUpdateParameters object itself.
+     */
+    public UserUpdateParameters withLastName(String lastName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withLastName(lastName);
+        return this;
+    }
 
     /**
      * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
@@ -70,7 +131,7 @@ public class UserUpdateParameters {
      * @return the state value.
      */
     public UserState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -81,7 +142,10 @@ public class UserUpdateParameters {
      * @return the UserUpdateParameters object itself.
      */
     public UserUpdateParameters withState(UserState state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
@@ -91,7 +155,7 @@ public class UserUpdateParameters {
      * @return the note value.
      */
     public String note() {
-        return this.note;
+        return this.innerProperties() == null ? null : this.innerProperties().note();
     }
 
     /**
@@ -101,7 +165,10 @@ public class UserUpdateParameters {
      * @return the UserUpdateParameters object itself.
      */
     public UserUpdateParameters withNote(String note) {
-        this.note = note;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withNote(note);
         return this;
     }
 
@@ -111,7 +178,7 @@ public class UserUpdateParameters {
      * @return the identities value.
      */
     public List<UserIdentityContractInner> identities() {
-        return this.identities;
+        return this.innerProperties() == null ? null : this.innerProperties().identities();
     }
 
     /**
@@ -121,87 +188,10 @@ public class UserUpdateParameters {
      * @return the UserUpdateParameters object itself.
      */
     public UserUpdateParameters withIdentities(List<UserIdentityContractInner> identities) {
-        this.identities = identities;
-        return this;
-    }
-
-    /**
-     * Get the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
-     * @return the email value.
-     */
-    public String email() {
-        return this.email;
-    }
-
-    /**
-     * Set the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
-     * @param email the email value to set.
-     * @return the UserUpdateParameters object itself.
-     */
-    public UserUpdateParameters withEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    /**
-     * Get the password property: User Password.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Set the password property: User Password.
-     *
-     * @param password the password value to set.
-     * @return the UserUpdateParameters object itself.
-     */
-    public UserUpdateParameters withPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    /**
-     * Get the firstName property: First name.
-     *
-     * @return the firstName value.
-     */
-    public String firstName() {
-        return this.firstName;
-    }
-
-    /**
-     * Set the firstName property: First name.
-     *
-     * @param firstName the firstName value to set.
-     * @return the UserUpdateParameters object itself.
-     */
-    public UserUpdateParameters withFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
-
-    /**
-     * Get the lastName property: Last name.
-     *
-     * @return the lastName value.
-     */
-    public String lastName() {
-        return this.lastName;
-    }
-
-    /**
-     * Set the lastName property: Last name.
-     *
-     * @param lastName the lastName value to set.
-     * @return the UserUpdateParameters object itself.
-     */
-    public UserUpdateParameters withLastName(String lastName) {
-        this.lastName = lastName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserUpdateParametersProperties();
+        }
+        this.innerProperties().withIdentities(identities);
         return this;
     }
 
@@ -211,8 +201,8 @@ public class UserUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identities() != null) {
-            identities().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

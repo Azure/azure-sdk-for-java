@@ -117,7 +117,7 @@ public final class EventGridPublisherClientImpl {
      */
     @Host("{topicHostname}")
     @ServiceInterface(name = "EventGridPublisherCl")
-    private interface EventGridPublisherClientService {
+    public interface EventGridPublisherClientService {
         @Post("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

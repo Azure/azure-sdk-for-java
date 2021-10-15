@@ -36,7 +36,7 @@ public final class TestEnvironment {
         this.testMode = readTestModeFromEnvironment();
         this.serviceVersion = readServiceVersionFromEnvironment();
         this.httpClientType = readHttpClientTypeFromEnvironment();
-        System.out.println(String.format("Tests will run with %s http client", this.httpClientType));
+        System.out.printf("Tests will run with %s http client%n", this.httpClientType);
         this.resourceGroupName = Configuration.getGlobalConfiguration().get("STORAGE_RESOURCE_GROUP_NAME");
         this.subscriptionId = Configuration.getGlobalConfiguration().get("STORAGE_SUBSCRIPTION_ID");
         this.primaryAccount = readTestAccountFromEnvironment("PRIMARY_STORAGE_", this.testMode);
@@ -70,7 +70,7 @@ public final class TestEnvironment {
             testMode = TestMode.PLAYBACK;
         }
 
-        System.out.println(String.format("--------%s---------", testMode));
+        System.out.printf("--------%s---------%n", testMode);
         return testMode;
     }
 
@@ -80,7 +80,7 @@ public final class TestEnvironment {
             System.out.println("Tests will run with default service version");
             return null;
         } else {
-            System.out.println(String.format("Tests will run with %s service version", serviceVersion));
+            System.out.printf("Tests will run with %s service version%n", serviceVersion);
             return serviceVersion;
         }
     }

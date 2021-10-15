@@ -23,7 +23,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     private Boolean defaultProperty;
 
     /*
-     * Kubernetes version (major, minor, patch).
+     * The Kubernetes version (major.minor.patch).
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
@@ -55,7 +55,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @return the kubernetesVersion value.
      */
@@ -64,7 +64,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem object itself.

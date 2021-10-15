@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.MSDeployLogEntry;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -14,24 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** MSDeploy log. */
-@JsonFlatten
-@Immutable
-public class MSDeployLogInner extends ProxyOnlyResource {
+@Fluent
+public final class MSDeployLogInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployLogInner.class);
 
     /*
-     * List of log entry messages
+     * MSDeployLog resource specific properties
      */
-    @JsonProperty(value = "properties.entries", access = JsonProperty.Access.WRITE_ONLY)
-    private List<MSDeployLogEntry> entries;
+    @JsonProperty(value = "properties")
+    private MSDeployLogProperties innerProperties;
 
     /**
-     * Get the entries property: List of log entry messages.
+     * Get the innerProperties property: MSDeployLog resource specific properties.
      *
-     * @return the entries value.
+     * @return the innerProperties value.
      */
-    public List<MSDeployLogEntry> entries() {
-        return this.entries;
+    private MSDeployLogProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -42,6 +40,15 @@ public class MSDeployLogInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the entries property: List of log entry messages.
+     *
+     * @return the entries value.
+     */
+    public List<MSDeployLogEntry> entries() {
+        return this.innerProperties() == null ? null : this.innerProperties().entries();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -49,8 +56,8 @@ public class MSDeployLogInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (entries() != null) {
-            entries().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

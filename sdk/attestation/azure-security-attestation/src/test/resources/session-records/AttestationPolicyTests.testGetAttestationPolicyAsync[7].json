@@ -2,16 +2,18 @@
   "networkCallRecords" : [ {
     "Method" : "GET",
     "Uri" : "https://REDACTED.wus.attest.azure.net/policies/OpenEnclave?api-version=2020-10-01",
-    "Headers" : { },
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.9; Windows 10; 10.0)"
+    },
     "Response" : {
       "content-length" : "954",
       "Server" : "Kestrel",
       "x-ms-maa-service-version" : "1.10.01644.0004",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-67d25dc74560138d250ec6b4609519d8-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2MjYzOTA5ODUsImlhdCI6MTYyNjM4NzM4NSwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uYWFkLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI2Mzg3Mzg1LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.fp3FMGzmf2MYDa0NnvvFHLXETgw8PvtXbkyR-9R2lViPUG89SKr7yPxlQGrkdrm4GKtkljpZ4qgsL9XEF-XBlNxkdnt-W7JhwQZtiU58rTNqDxQitRw0CvS0g3FYWKTOfIPJb6k0hoAL8ag_hoBvoP3RoCVNR501QeGvyJwpMCW0JQakfinCjF0uCAN9PEGxj3QERwqv2bi38ayWxXB88Dj5-juqxeiTi1UP2Wc3Vm1aqDD-nkZGzJLaVSwhh2dwsMCygMnWEK2W56lBiiLvMUPkZ27iEixs4xBBxA8KLA1leq5bnFXUTKFqCG7pbSSX6QlAEJ5J_gcXGcbRM0_gug\"}",
-      "Date" : "Thu, 15 Jul 2021 22:16:25 GMT",
+      "x-ms-request-id" : "00-1caf3b624483df2b71eeb1c5b724a829-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsImtpZCI6InJQdEJHUldUbFBtenM1dTM1TDBRUkQ5V2R5bWVLUFJ4dGVUZVRsd04wRWM9IiwidHlwIjoiSldUIn0.eyJleHAiOjE2MjkxNTI4NTUsImlhdCI6MTYyOTE0OTI1NSwiaXNzIjoiaHR0cHM6Ly9qYWxhcnJ5b2F0dGVzdGF0aW9uYWFkLnd1cy5hdHRlc3QuYXp1cmUubmV0IiwibmJmIjoxNjI5MTQ5MjU1LCJ4LW1zLXBvbGljeSI6ImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.SwrnulXqsu6ICtLLWMctK1i1SrCPt1fOKdA8i_828qjMkpA45mX1dFX-R3bINRI5BPUwrJdPyC2raYHm0oGJRFcfDAtyqsLTysppAO70JkMH_NChJtYe3nhz3jWzFKc20-WSfx9x7tTgHlzAjh3jwU6AE_fb63-JHWj7aifz8Tcv5Xeg4qjc7RBs5ZGrjpoDA_NVDwk_jg5bis9jzir30QQVFJ-5yq4Kek-rH5OZT6VeMGbWaMnxJncHiCJklo5540TqrdalR7iwkj9BdLLPM54wvx7FdiVgtk44m8g2jpXWIgzDP8hGi9PeByzSpkEXEt3wQdGdcG8VUK7H4jO-Yw\"}",
+      "Date" : "Mon, 16 Aug 2021 21:27:35 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

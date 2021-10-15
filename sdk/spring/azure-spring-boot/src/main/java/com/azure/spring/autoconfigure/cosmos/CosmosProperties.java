@@ -8,20 +8,25 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.regex.Pattern;
 
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
 @ConfigurationProperties("azure.cosmos")
-public class CosmosProperties {
+public class CosmosProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);
+
+    public static final String URI_REGEX = "http[s]{0,1}://.*.documents.azure.com.*";
+
     /**
      * Document DB URI.
      */
@@ -70,6 +75,11 @@ public class CosmosProperties {
                 LOGGER.info("Response Diagnostics {}", responseDiagnostics);
             }
         };
+
+    @Override
+    public void afterPropertiesSet() {
+        validateUri();
+    }
 
     public String getUri() {
         return uri;
@@ -136,5 +146,13 @@ public class CosmosProperties {
 
     public void setConnectionMode(ConnectionMode connectionMode) {
         this.connectionMode = connectionMode;
+    }
+
+    private void validateUri() {
+        if (!Pattern.matches(URI_REGEX, uri)) {
+            throw new IllegalArgumentException("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
+                + "only sql/core api is supported, please check https://docs.microsoft.com/en-us/azure/cosmos-db/ "
+                + "for more info.");
+        }
     }
 }

@@ -5,32 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.UserTokenParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Get User Token parameters. */
-@JsonFlatten
 @Fluent
-public class UserTokenParameters {
+public final class UserTokenParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UserTokenParameters.class);
 
     /*
-     * The Key to be used to generate token for user.
+     * User Token Parameter contract properties.
      */
-    @JsonProperty(value = "properties.keyType")
-    private KeyType keyType;
+    @JsonProperty(value = "properties")
+    private UserTokenParameterProperties innerProperties;
 
-    /*
-     * The Expiry time of the Token. Maximum token expiry time is set to 30
-     * days. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ`
-     * as specified by the ISO 8601 standard.
+    /**
+     * Get the innerProperties property: User Token Parameter contract properties.
      *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.expiry")
-    private OffsetDateTime expiry;
+    private UserTokenParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the keyType property: The Key to be used to generate token for user.
@@ -38,7 +37,7 @@ public class UserTokenParameters {
      * @return the keyType value.
      */
     public KeyType keyType() {
-        return this.keyType;
+        return this.innerProperties() == null ? null : this.innerProperties().keyType();
     }
 
     /**
@@ -48,7 +47,10 @@ public class UserTokenParameters {
      * @return the UserTokenParameters object itself.
      */
     public UserTokenParameters withKeyType(KeyType keyType) {
-        this.keyType = keyType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserTokenParameterProperties();
+        }
+        this.innerProperties().withKeyType(keyType);
         return this;
     }
 
@@ -59,7 +61,7 @@ public class UserTokenParameters {
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
-        return this.expiry;
+        return this.innerProperties() == null ? null : this.innerProperties().expiry();
     }
 
     /**
@@ -70,7 +72,10 @@ public class UserTokenParameters {
      * @return the UserTokenParameters object itself.
      */
     public UserTokenParameters withExpiry(OffsetDateTime expiry) {
-        this.expiry = expiry;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserTokenParameterProperties();
+        }
+        this.innerProperties().withExpiry(expiry);
         return this;
     }
 
@@ -80,5 +85,8 @@ public class UserTokenParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

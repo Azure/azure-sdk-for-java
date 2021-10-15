@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.models.AnalysisDefinitionInner;
-import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionInner;
+import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.DiagnosticAnalysisInner;
 import com.azure.resourcemanager.appservice.fluent.models.DiagnosticCategoryInner;
@@ -243,7 +243,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                 + "/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DetectorDefinitionInner>> getSiteDetector(
+        Mono<Response<DetectorDefinitionResourceInner>> getSiteDetector(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("siteName") String siteName,
@@ -422,7 +422,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                 + "/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DetectorDefinitionInner>> getSiteDetectorSlot(
+        Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlot(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("siteName") String siteName,
@@ -2389,7 +2389,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsSinglePageAsync(
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSinglePageAsync(
         String resourceGroupName, String siteName, String diagnosticCategory) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2428,7 +2428,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .<PagedResponse<DetectorDefinitionInner>>map(
+            .<PagedResponse<DetectorDefinitionResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -2453,7 +2453,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsSinglePageAsync(
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSinglePageAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2513,7 +2513,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DetectorDefinitionInner> listSiteDetectorsAsync(
+    public PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsAsync(
         String resourceGroupName, String siteName, String diagnosticCategory) {
         return new PagedFlux<>(
             () -> listSiteDetectorsSinglePageAsync(resourceGroupName, siteName, diagnosticCategory),
@@ -2533,7 +2533,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorDefinitionInner> listSiteDetectorsAsync(
+    private PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, Context context) {
         return new PagedFlux<>(
             () -> listSiteDetectorsSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, context),
@@ -2552,7 +2552,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DetectorDefinitionInner> listSiteDetectors(
+    public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectors(
         String resourceGroupName, String siteName, String diagnosticCategory) {
         return new PagedIterable<>(listSiteDetectorsAsync(resourceGroupName, siteName, diagnosticCategory));
     }
@@ -2570,7 +2570,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DetectorDefinitionInner> listSiteDetectors(
+    public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectors(
         String resourceGroupName, String siteName, String diagnosticCategory, Context context) {
         return new PagedIterable<>(listSiteDetectorsAsync(resourceGroupName, siteName, diagnosticCategory, context));
     }
@@ -2585,10 +2585,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectorDefinitionInner>> getSiteDetectorWithResponseAsync(
+    public Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorWithResponseAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2645,10 +2645,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorDefinitionInner>> getSiteDetectorWithResponseAsync(
+    private Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorWithResponseAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2701,14 +2701,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectorDefinitionInner> getSiteDetectorAsync(
+    public Mono<DetectorDefinitionResourceInner> getSiteDetectorAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName) {
         return getSiteDetectorWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName)
             .flatMap(
-                (Response<DetectorDefinitionInner> res) -> {
+                (Response<DetectorDefinitionResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2727,10 +2727,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectorDefinitionInner getSiteDetector(
+    public DetectorDefinitionResourceInner getSiteDetector(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName) {
         return getSiteDetectorAsync(resourceGroupName, siteName, diagnosticCategory, detectorName).block();
     }
@@ -2746,10 +2746,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectorDefinitionInner> getSiteDetectorWithResponse(
+    public Response<DetectorDefinitionResourceInner> getSiteDetectorWithResponse(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, Context context) {
         return getSiteDetectorWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, context)
             .block();
@@ -4565,7 +4565,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsSlotSinglePageAsync(
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotSinglePageAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4608,7 +4608,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .<PagedResponse<DetectorDefinitionInner>>map(
+            .<PagedResponse<DetectorDefinitionResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -4634,7 +4634,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsSlotSinglePageAsync(
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotSinglePageAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4699,7 +4699,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DetectorDefinitionInner> listSiteDetectorsSlotAsync(
+    public PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot) {
         return new PagedFlux<>(
             () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot),
@@ -4720,7 +4720,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorDefinitionInner> listSiteDetectorsSlotAsync(
+    private PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
         return new PagedFlux<>(
             () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
@@ -4740,7 +4740,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DetectorDefinitionInner> listSiteDetectorsSlot(
+    public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot) {
         return new PagedIterable<>(listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot));
     }
@@ -4759,7 +4759,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DetectorDefinitionInner> listSiteDetectorsSlot(
+    public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(
         String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
         return new PagedIterable<>(
             listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot, context));
@@ -4776,10 +4776,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DetectorDefinitionInner>> getSiteDetectorSlotWithResponseAsync(
+    public Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -4841,10 +4841,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorDefinitionInner>> getSiteDetectorSlotWithResponseAsync(
+    private Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(
         String resourceGroupName,
         String siteName,
         String diagnosticCategory,
@@ -4907,14 +4907,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectorDefinitionInner> getSiteDetectorSlotAsync(
+    public Mono<DetectorDefinitionResourceInner> getSiteDetectorSlotAsync(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot) {
         return getSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, slot)
             .flatMap(
-                (Response<DetectorDefinitionInner> res) -> {
+                (Response<DetectorDefinitionResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -4934,10 +4934,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectorDefinitionInner getSiteDetectorSlot(
+    public DetectorDefinitionResourceInner getSiteDetectorSlot(
         String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot) {
         return getSiteDetectorSlotAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, slot).block();
     }
@@ -4954,10 +4954,10 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition.
+     * @return aRM resource for a detector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DetectorDefinitionInner> getSiteDetectorSlotWithResponse(
+    public Response<DetectorDefinitionResourceInner> getSiteDetectorSlotWithResponse(
         String resourceGroupName,
         String siteName,
         String diagnosticCategory,
@@ -5563,7 +5563,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -5576,7 +5576,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listSiteDetectorsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DetectorDefinitionInner>>map(
+            .<PagedResponse<DetectorDefinitionResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -5599,7 +5599,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsNextSinglePageAsync(
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -5858,7 +5858,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsSlotNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotNextSinglePageAsync(
+        String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -5872,7 +5873,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         return FluxUtil
             .withContext(
                 context -> service.listSiteDetectorsSlotNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DetectorDefinitionInner>>map(
+            .<PagedResponse<DetectorDefinitionResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -5895,7 +5896,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @return collection of Diagnostic Detectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionInner>> listSiteDetectorsSlotNextSinglePageAsync(
+    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));

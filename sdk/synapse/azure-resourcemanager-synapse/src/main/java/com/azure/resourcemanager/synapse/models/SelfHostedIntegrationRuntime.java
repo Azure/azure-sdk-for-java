@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeTypeProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,16 +15,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Self-hosted integration runtime. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SelfHosted")
-@JsonFlatten
 @Fluent
-public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
+public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntime.class);
 
     /*
-     * Linked integration runtime type from data factory
+     * When this property is not null, means this is a linked integration
+     * runtime. The property is used to access original integration runtime.
      */
-    @JsonProperty(value = "typeProperties.linkedInfo")
-    private LinkedIntegrationRuntimeType linkedInfo;
+    @JsonProperty(value = "typeProperties")
+    private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties;
+
+    /**
+     * Get the innerTypeProperties property: When this property is not null, means this is a linked integration runtime.
+     * The property is used to access original integration runtime.
+     *
+     * @return the innerTypeProperties value.
+     */
+    private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties() {
+        return this.innerTypeProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SelfHostedIntegrationRuntime withDescription(String description) {
+        super.withDescription(description);
+        return this;
+    }
 
     /**
      * Get the linkedInfo property: Linked integration runtime type from data factory.
@@ -32,7 +49,7 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
      * @return the linkedInfo value.
      */
     public LinkedIntegrationRuntimeType linkedInfo() {
-        return this.linkedInfo;
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().linkedInfo();
     }
 
     /**
@@ -42,14 +59,10 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
      * @return the SelfHostedIntegrationRuntime object itself.
      */
     public SelfHostedIntegrationRuntime withLinkedInfo(LinkedIntegrationRuntimeType linkedInfo) {
-        this.linkedInfo = linkedInfo;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SelfHostedIntegrationRuntime withDescription(String description) {
-        super.withDescription(description);
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SelfHostedIntegrationRuntimeTypeProperties();
+        }
+        this.innerTypeProperties().withLinkedInfo(linkedInfo);
         return this;
     }
 
@@ -61,8 +74,8 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     @Override
     public void validate() {
         super.validate();
-        if (linkedInfo() != null) {
-            linkedInfo().validate();
+        if (innerTypeProperties() != null) {
+            innerTypeProperties().validate();
         }
     }
 }

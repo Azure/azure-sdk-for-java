@@ -44,6 +44,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p>In this case, if consumer pass "a=b" as the value for param1 then the resolved url looks as expected:
  * "<code>http://wq.com/foo/paramblah/values?connectionString=a=b</code>"</p>
+ * 
+ * <p><strong>Example 3:</strong></p>
+ *
+ * <pre>
+ * {@literal @}GET("http://wq.com/foo/multiple/params")
+ *  String multipleParams(@QueryParam("avoid", multipleQueryParams = true) List&lt;String&gt; avoid);</pre>
+ *
+ * <p>The value of parameter avoid would look like this:
+ * "<code>http://wq.com/foo/multiple/params?avoid%3Dtest1{@literal &}avoid%3Dtest2{@literal &}avoid%3Dtest3</code>"</p>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
@@ -61,4 +70,12 @@ public @interface QueryParam {
      * @return Whether or not this query parameter is already encoded.
      */
     boolean encoded() default false;
+    /**
+     * A value true for this argument indicates that value of {@link QueryParam#value()} should not be
+     * converted to Json in case it is an array but instead sent as multiple values with same parameter
+     * name.
+     * @return Whether or not this query parameter list values should be sent as individual query
+     * params or as a single Json.
+     */
+    boolean multipleQueryParams() default false;
 }

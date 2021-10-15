@@ -26,7 +26,8 @@ import java.util.Map;
 @JsonTypeName("Activity")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
-    @JsonSubTypes.Type(name = "Execution", value = ExecutionActivity.class)
+    @JsonSubTypes.Type(name = "Execution", value = ExecutionActivity.class),
+    @JsonSubTypes.Type(name = "ExecuteWranglingDataflow", value = ExecuteWranglingDataflowActivity.class)
 })
 @Fluent
 public class Activity {

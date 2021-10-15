@@ -4,12 +4,15 @@
 package com.azure.spring.integration.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.SendOperation;
 import com.azure.spring.integration.servicebus.converter.ServiceBusMessageConverter;
 import com.azure.spring.integration.servicebus.factory.ServiceBusSenderFactory;
+import com.azure.spring.integration.servicebus.health.Instrumentation;
+import com.azure.spring.integration.servicebus.health.InstrumentationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -34,6 +37,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final CheckpointConfig CHECKPOINT_RECORD = CheckpointConfig.builder().checkpointMode(RECORD).build();
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
+    protected InstrumentationManager instrumentationManager = new InstrumentationManager();
     protected final T clientFactory;
     protected CheckpointConfig checkpointConfig = CHECKPOINT_RECORD;
     protected ServiceBusClientConfig clientConfig = ServiceBusClientConfig.builder().build();
@@ -54,13 +58,29 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
                                                  Message<U> message,
                                                  PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
+        ServiceBusSenderAsyncClient senderAsyncClient = null;
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
             String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
-        return this.clientFactory.getOrCreateSender(destination).sendMessage(serviceBusMessage).toFuture();
+        Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.PRODUCE);
+        try {
+            instrumentationManager.addHealthInstrumentation(instrumentation);
+            senderAsyncClient = this.clientFactory.getOrCreateSender(destination);
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
+        } catch (Exception e) {
+            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
+            LOGGER.error("ServiceBus senderAsyncClient startup failed, Caused by " + e.getMessage());
+            throw new ServiceBusRuntimeException("ServiceBus send client startup failed, Caused by " + e.getMessage(), e);
+        }
+
+        return senderAsyncClient.sendMessage(serviceBusMessage).toFuture();
+    }
+
+    public InstrumentationManager getInstrumentationManager() {
+        return instrumentationManager;
     }
 
     public CheckpointConfig getCheckpointConfig() {

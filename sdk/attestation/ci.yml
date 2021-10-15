@@ -8,9 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/attestation/
+      - sdk/attestation/ci.yml
+      - sdk/attestation/azure-resourcemanager-attestation/
+      - sdk/attestation/azure-security-attestation/
     exclude:
-      - sdk/attestation/mgmt-v2020_10_01
+      - sdk/attestation/pom.xml
+      - sdk/attestation/azure-resourcemanager-attestation/pom.xml
+      - sdk/attestation/azure-security-attestation/pom.xml
 
 pr:
   branches:
@@ -22,13 +26,12 @@ pr:
   paths:
     include:
       - sdk/attestation/ci.yml
-      - sdk/attestation/pom.xml
-      - sdk/attestation/test-resources.json
-      - sdk/attestation/tests.yml
-      - sdk/attestation/azure-security-attestation
-      - sdk/attestation/azure-resourcemanager-attestation
+      - sdk/attestation/azure-resourcemanager-attestation/
+      - sdk/attestation/azure-security-attestation/
     exclude:
-      - sdk/attestation/mgmt-v2020_10_01
+      - sdk/attestation/pom.xml
+      - sdk/attestation/azure-resourcemanager-attestation/pom.xml
+      - sdk/attestation/azure-security-attestation/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

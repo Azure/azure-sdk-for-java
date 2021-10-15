@@ -5,24 +5,42 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.ResponseBase;
 
-/** The result of an attestation operation. */
+/**
+ * The result of an attestation operation.
+ */
 @Fluent
-public final class AttestationResponse {
+public final class AttestationResponse<T> extends ResponseBase<Void, T> {
+
     /*
      * An RFC 7519 JSON Web Token, the body of which is an AttestationResult
      * object.
      */
-    @JsonProperty(value = "token")
-    private String token;
+    private AttestationToken token;
+
+    /**
+     * Creates a {@link ResponseBase}.
+     *
+     * @param request The HTTP request which resulted in this response.
+     * @param statusCode The status code of the HTTP response.
+     * @param headers The headers of the HTTP response.
+     * @param value The deserialized value of the HTTP response.
+     * @param token The Attestation Token which was returned from the service.
+     */
+    public AttestationResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value, AttestationToken token) {
+        super(request, statusCode, headers, value, null);
+        this.token = token;
+    }
 
     /**
      * Get the token property: An RFC 7519 JSON Web Token, the body of which is an AttestationResult object.
      *
      * @return the token value.
      */
-    public String getToken() {
+    public AttestationToken getToken() {
         return this.token;
     }
 
@@ -32,7 +50,7 @@ public final class AttestationResponse {
      * @param token the token value to set.
      * @return the AttestationResponse object itself.
      */
-    public AttestationResponse setToken(String token) {
+    public AttestationResponse<T> setToken(AttestationToken token) {
         this.token = token;
         return this;
     }
@@ -42,14 +60,6 @@ public final class AttestationResponse {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() { }
-
-    /**
-     * From Generated.
-     * @param generated generated type.
-     * @return implementation type.
-     */
-    public static AttestationResponse fromGenerated(com.azure.security.attestation.implementation.models.AttestationResponse generated) {
-        return new AttestationResponse().setToken(generated.getToken());
+    public void validate() {
     }
 }

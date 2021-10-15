@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubRoute;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** RouteTable resource in a virtual hub. */
-@JsonFlatten
 @Fluent
-public class HubRouteTableInner extends SubResource {
+public final class HubRouteTableInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubRouteTableInner.class);
+
+    /*
+     * Properties of the RouteTable resource.
+     */
+    @JsonProperty(value = "properties")
+    private HubRouteTableProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -39,35 +43,14 @@ public class HubRouteTableInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * List of all routes.
+    /**
+     * Get the innerProperties property: Properties of the RouteTable resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.routes")
-    private List<HubRoute> routes;
-
-    /*
-     * List of labels associated with this route table.
-     */
-    @JsonProperty(value = "properties.labels")
-    private List<String> labels;
-
-    /*
-     * List of all connections associated with this route table.
-     */
-    @JsonProperty(value = "properties.associatedConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> associatedConnections;
-
-    /*
-     * List of all connections that advertise to this route table.
-     */
-    @JsonProperty(value = "properties.propagatingConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> propagatingConnections;
-
-    /*
-     * The provisioning state of the RouteTable resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private HubRouteTableProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -109,13 +92,20 @@ public class HubRouteTableInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public HubRouteTableInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the routes property: List of all routes.
      *
      * @return the routes value.
      */
     public List<HubRoute> routes() {
-        return this.routes;
+        return this.innerProperties() == null ? null : this.innerProperties().routes();
     }
 
     /**
@@ -125,7 +115,10 @@ public class HubRouteTableInner extends SubResource {
      * @return the HubRouteTableInner object itself.
      */
     public HubRouteTableInner withRoutes(List<HubRoute> routes) {
-        this.routes = routes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubRouteTableProperties();
+        }
+        this.innerProperties().withRoutes(routes);
         return this;
     }
 
@@ -135,7 +128,7 @@ public class HubRouteTableInner extends SubResource {
      * @return the labels value.
      */
     public List<String> labels() {
-        return this.labels;
+        return this.innerProperties() == null ? null : this.innerProperties().labels();
     }
 
     /**
@@ -145,7 +138,10 @@ public class HubRouteTableInner extends SubResource {
      * @return the HubRouteTableInner object itself.
      */
     public HubRouteTableInner withLabels(List<String> labels) {
-        this.labels = labels;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubRouteTableProperties();
+        }
+        this.innerProperties().withLabels(labels);
         return this;
     }
 
@@ -155,7 +151,7 @@ public class HubRouteTableInner extends SubResource {
      * @return the associatedConnections value.
      */
     public List<String> associatedConnections() {
-        return this.associatedConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().associatedConnections();
     }
 
     /**
@@ -164,7 +160,7 @@ public class HubRouteTableInner extends SubResource {
      * @return the propagatingConnections value.
      */
     public List<String> propagatingConnections() {
-        return this.propagatingConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().propagatingConnections();
     }
 
     /**
@@ -173,14 +169,7 @@ public class HubRouteTableInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HubRouteTableInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -189,8 +178,8 @@ public class HubRouteTableInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (routes() != null) {
-            routes().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

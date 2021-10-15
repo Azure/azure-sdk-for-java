@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Route resource. */
-@JsonFlatten
 @Fluent
-public class RouteInner extends SubResource {
+public final class RouteInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteInner.class);
+
+    /*
+     * Properties of the route.
+     */
+    @JsonProperty(value = "properties")
+    private RoutePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -38,37 +42,14 @@ public class RouteInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * The destination CIDR to which the route applies.
+    /**
+     * Get the innerProperties property: Properties of the route.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.addressPrefix")
-    private String addressPrefix;
-
-    /*
-     * The type of Azure hop the packet should be sent to.
-     */
-    @JsonProperty(value = "properties.nextHopType")
-    private RouteNextHopType nextHopType;
-
-    /*
-     * The IP address packets should be forwarded to. Next hop values are only
-     * allowed in routes where the next hop type is VirtualAppliance.
-     */
-    @JsonProperty(value = "properties.nextHopIpAddress")
-    private String nextHopIpAddress;
-
-    /*
-     * The provisioning state of the route resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
-     */
-    @JsonProperty(value = "properties.hasBgpOverride")
-    private Boolean hasBgpOverride;
+    private RoutePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -121,13 +102,20 @@ public class RouteInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RouteInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the addressPrefix property: The destination CIDR to which the route applies.
      *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
-        return this.addressPrefix;
+        return this.innerProperties() == null ? null : this.innerProperties().addressPrefix();
     }
 
     /**
@@ -137,7 +125,10 @@ public class RouteInner extends SubResource {
      * @return the RouteInner object itself.
      */
     public RouteInner withAddressPrefix(String addressPrefix) {
-        this.addressPrefix = addressPrefix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePropertiesFormat();
+        }
+        this.innerProperties().withAddressPrefix(addressPrefix);
         return this;
     }
 
@@ -147,7 +138,7 @@ public class RouteInner extends SubResource {
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
-        return this.nextHopType;
+        return this.innerProperties() == null ? null : this.innerProperties().nextHopType();
     }
 
     /**
@@ -157,7 +148,10 @@ public class RouteInner extends SubResource {
      * @return the RouteInner object itself.
      */
     public RouteInner withNextHopType(RouteNextHopType nextHopType) {
-        this.nextHopType = nextHopType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePropertiesFormat();
+        }
+        this.innerProperties().withNextHopType(nextHopType);
         return this;
     }
 
@@ -168,7 +162,7 @@ public class RouteInner extends SubResource {
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
-        return this.nextHopIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().nextHopIpAddress();
     }
 
     /**
@@ -179,7 +173,10 @@ public class RouteInner extends SubResource {
      * @return the RouteInner object itself.
      */
     public RouteInner withNextHopIpAddress(String nextHopIpAddress) {
-        this.nextHopIpAddress = nextHopIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePropertiesFormat();
+        }
+        this.innerProperties().withNextHopIpAddress(nextHopIpAddress);
         return this;
     }
 
@@ -189,7 +186,7 @@ public class RouteInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -199,7 +196,7 @@ public class RouteInner extends SubResource {
      * @return the hasBgpOverride value.
      */
     public Boolean hasBgpOverride() {
-        return this.hasBgpOverride;
+        return this.innerProperties() == null ? null : this.innerProperties().hasBgpOverride();
     }
 
     /**
@@ -210,14 +207,10 @@ public class RouteInner extends SubResource {
      * @return the RouteInner object itself.
      */
     public RouteInner withHasBgpOverride(Boolean hasBgpOverride) {
-        this.hasBgpOverride = hasBgpOverride;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RouteInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoutePropertiesFormat();
+        }
+        this.innerProperties().withHasBgpOverride(hasBgpOverride);
         return this;
     }
 
@@ -227,5 +220,8 @@ public class RouteInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

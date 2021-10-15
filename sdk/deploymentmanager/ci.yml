@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/deploymentmanager/
+      - sdk/deploymentmanager/ci.yml
+      - sdk/deploymentmanager/azure-resourcemanager-deploymentmanager/
+    exclude:
+      - sdk/deploymentmanager/pom.xml
+      - sdk/deploymentmanager/azure-resourcemanager-deploymentmanager/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/deploymentmanager/
+      - sdk/deploymentmanager/ci.yml
+      - sdk/deploymentmanager/azure-resourcemanager-deploymentmanager/
+    exclude:
+      - sdk/deploymentmanager/pom.xml
+      - sdk/deploymentmanager/azure-resourcemanager-deploymentmanager/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

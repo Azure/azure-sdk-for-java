@@ -5,8 +5,6 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-import spock.lang.Requires
-import spock.lang.Shared
 
 class EncryptedBlobOutputStreamTest extends APISpec {
 
@@ -24,19 +22,19 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
         fakeKeyResolver = new FakeKeyResolver(fakeKey)
 
-        cc = getServiceClientBuilder(env.primaryAccount)
+        cc = getServiceClientBuilder(environment.primaryAccount)
             .buildClient()
             .getBlobContainerClient(generateContainerName())
         cc.create()
 
         def blobName = generateBlobName()
 
-        beac = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        beac = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl())
             .blobName(blobName)
             .buildEncryptedBlobAsyncClient()
 
-        bec = getEncryptedClientBuilder(fakeKey, null, env.primaryAccount.credential,
+        bec = getEncryptedClientBuilder(fakeKey, null, environment.primaryAccount.credential,
             cc.getBlobContainerUrl().toString())
             .blobName(blobName)
             .buildEncryptedBlobClient()
@@ -126,7 +124,7 @@ class EncryptedBlobOutputStreamTest extends APISpec {
         convertInputStreamToByteArray(bec.openInputStream()) == randomData
     }
 
-    def convertInputStreamToByteArray(InputStream inputStream) {
+    static def convertInputStreamToByteArray(InputStream inputStream) {
         int b
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream()
         try {

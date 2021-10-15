@@ -25,6 +25,7 @@ import com.azure.resourcemanager.redis.models.RedisFirewallRule;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.RedisLinkedServerCreateParameters;
 import com.azure.resourcemanager.redis.models.RedisRebootParameters;
+import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
 import com.azure.resourcemanager.redis.models.RedisUpdateParameters;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
@@ -187,7 +188,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     @Override
     public RedisAccessKeys regenerateKey(RedisKeyType keyType) {
         RedisAccessKeysInner response =
-            this.manager().serviceClient().getRedis().regenerateKey(this.resourceGroupName(), this.name(), keyType);
+            this.manager().serviceClient().getRedis().regenerateKey(this.resourceGroupName(), this.name(), new RedisRegenerateKeyParameters().withKeyType(keyType));
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
     }

@@ -5,40 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.VnetParametersProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The required set of inputs to validate a VNET. */
-@JsonFlatten
 @Fluent
-public class VnetParameters extends ProxyOnlyResource {
+public final class VnetParameters extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetParameters.class);
 
     /*
-     * The Resource Group of the VNET to be validated
+     * VnetParameters resource specific properties
      */
-    @JsonProperty(value = "properties.vnetResourceGroup")
-    private String vnetResourceGroup;
+    @JsonProperty(value = "properties")
+    private VnetParametersProperties innerProperties;
 
-    /*
-     * The name of the VNET to be validated
+    /**
+     * Get the innerProperties property: VnetParameters resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.vnetName")
-    private String vnetName;
+    private VnetParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The subnet name to be validated
-     */
-    @JsonProperty(value = "properties.vnetSubnetName")
-    private String vnetSubnetName;
-
-    /*
-     * The ARM Resource ID of the subnet to validate
-     */
-    @JsonProperty(value = "properties.subnetResourceId")
-    private String subnetResourceId;
+    /** {@inheritDoc} */
+    @Override
+    public VnetParameters withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the vnetResourceGroup property: The Resource Group of the VNET to be validated.
@@ -46,7 +43,7 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the vnetResourceGroup value.
      */
     public String vnetResourceGroup() {
-        return this.vnetResourceGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetResourceGroup();
     }
 
     /**
@@ -56,7 +53,10 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the VnetParameters object itself.
      */
     public VnetParameters withVnetResourceGroup(String vnetResourceGroup) {
-        this.vnetResourceGroup = vnetResourceGroup;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetParametersProperties();
+        }
+        this.innerProperties().withVnetResourceGroup(vnetResourceGroup);
         return this;
     }
 
@@ -66,7 +66,7 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the vnetName value.
      */
     public String vnetName() {
-        return this.vnetName;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetName();
     }
 
     /**
@@ -76,7 +76,10 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the VnetParameters object itself.
      */
     public VnetParameters withVnetName(String vnetName) {
-        this.vnetName = vnetName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetParametersProperties();
+        }
+        this.innerProperties().withVnetName(vnetName);
         return this;
     }
 
@@ -86,7 +89,7 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the vnetSubnetName value.
      */
     public String vnetSubnetName() {
-        return this.vnetSubnetName;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetSubnetName();
     }
 
     /**
@@ -96,7 +99,10 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the VnetParameters object itself.
      */
     public VnetParameters withVnetSubnetName(String vnetSubnetName) {
-        this.vnetSubnetName = vnetSubnetName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetParametersProperties();
+        }
+        this.innerProperties().withVnetSubnetName(vnetSubnetName);
         return this;
     }
 
@@ -106,7 +112,7 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the subnetResourceId value.
      */
     public String subnetResourceId() {
-        return this.subnetResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetResourceId();
     }
 
     /**
@@ -116,14 +122,10 @@ public class VnetParameters extends ProxyOnlyResource {
      * @return the VnetParameters object itself.
      */
     public VnetParameters withSubnetResourceId(String subnetResourceId) {
-        this.subnetResourceId = subnetResourceId;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VnetParameters withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetParametersProperties();
+        }
+        this.innerProperties().withSubnetResourceId(subnetResourceId);
         return this;
     }
 
@@ -135,5 +137,8 @@ public class VnetParameters extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

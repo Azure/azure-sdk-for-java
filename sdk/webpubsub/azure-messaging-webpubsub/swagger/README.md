@@ -4,7 +4,7 @@
 use: '@autorest/java@4.0.24'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/webpubsub/data-plane/WebPubSub/preview/2021-05-01-preview/webpubsub.json
 java: true
-output-folder: ..
+output-folder: .
 namespace: com.azure.messaging.webpubsub
 generate-client-interfaces: false
 sync-methods: all

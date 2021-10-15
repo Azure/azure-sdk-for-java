@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
+import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
 import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
@@ -20,115 +20,24 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Properties of the blob container, including Id, resource name, resource type, Etag. */
-@JsonFlatten
 @Fluent
-public class BlobContainerInner extends AzureEntityResource {
+public final class BlobContainerInner extends AzureEntityResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobContainerInner.class);
 
     /*
-     * The version of the deleted blob container.
+     * Properties of the blob container.
      */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
+    @JsonProperty(value = "properties")
+    private ContainerProperties innerContainerProperties;
 
-    /*
-     * Indicates whether the blob container was deleted.
+    /**
+     * Get the innerContainerProperties property: Properties of the blob container.
+     *
+     * @return the innerContainerProperties value.
      */
-    @JsonProperty(value = "properties.deleted", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean deleted;
-
-    /*
-     * Blob container deletion time.
-     */
-    @JsonProperty(value = "properties.deletedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime deletedTime;
-
-    /*
-     * Remaining retention days for soft deleted blob container.
-     */
-    @JsonProperty(value = "properties.remainingRetentionDays", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer remainingRetentionDays;
-
-    /*
-     * Default the container to use specified encryption scope for all writes.
-     */
-    @JsonProperty(value = "properties.defaultEncryptionScope")
-    private String defaultEncryptionScope;
-
-    /*
-     * Block override of encryption scope from the container default.
-     */
-    @JsonProperty(value = "properties.denyEncryptionScopeOverride")
-    private Boolean denyEncryptionScopeOverride;
-
-    /*
-     * Specifies whether data in the container may be accessed publicly and the
-     * level of access.
-     */
-    @JsonProperty(value = "properties.publicAccess")
-    private PublicAccess publicAccess;
-
-    /*
-     * Returns the date and time the container was last modified.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The lease status of the container.
-     */
-    @JsonProperty(value = "properties.leaseStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private LeaseStatus leaseStatus;
-
-    /*
-     * Lease state of the container.
-     */
-    @JsonProperty(value = "properties.leaseState", access = JsonProperty.Access.WRITE_ONLY)
-    private LeaseState leaseState;
-
-    /*
-     * Specifies whether the lease on a container is of infinite or fixed
-     * duration, only when the container is leased.
-     */
-    @JsonProperty(value = "properties.leaseDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private LeaseDuration leaseDuration;
-
-    /*
-     * A name-value pair to associate with the container as metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Map<String, String> metadata;
-
-    /*
-     * The ImmutabilityPolicy property of the container.
-     */
-    @JsonProperty(value = "properties.immutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private ImmutabilityPolicyProperties immutabilityPolicy;
-
-    /*
-     * The LegalHold property of the container.
-     */
-    @JsonProperty(value = "properties.legalHold", access = JsonProperty.Access.WRITE_ONLY)
-    private LegalHoldProperties legalHold;
-
-    /*
-     * The hasLegalHold public property is set to true by SRP if there are at
-     * least one existing tag. The hasLegalHold public property is set to false
-     * by SRP if all existing legal hold tags are cleared out. There can be a
-     * maximum of 1000 blob containers with hasLegalHold=true for a given
-     * account.
-     */
-    @JsonProperty(value = "properties.hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasLegalHold;
-
-    /*
-     * The hasImmutabilityPolicy public property is set to true by SRP if
-     * ImmutabilityPolicy has been created for this container. The
-     * hasImmutabilityPolicy public property is set to false by SRP if
-     * ImmutabilityPolicy has not been created for this container.
-     */
-    @JsonProperty(value = "properties.hasImmutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasImmutabilityPolicy;
+    private ContainerProperties innerContainerProperties() {
+        return this.innerContainerProperties;
+    }
 
     /**
      * Get the version property: The version of the deleted blob container.
@@ -136,7 +45,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().version();
     }
 
     /**
@@ -145,7 +54,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the deleted value.
      */
     public Boolean deleted() {
-        return this.deleted;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().deleted();
     }
 
     /**
@@ -154,7 +63,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the deletedTime value.
      */
     public OffsetDateTime deletedTime() {
-        return this.deletedTime;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().deletedTime();
     }
 
     /**
@@ -163,7 +72,9 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the remainingRetentionDays value.
      */
     public Integer remainingRetentionDays() {
-        return this.remainingRetentionDays;
+        return this.innerContainerProperties() == null
+            ? null
+            : this.innerContainerProperties().remainingRetentionDays();
     }
 
     /**
@@ -172,7 +83,9 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the defaultEncryptionScope value.
      */
     public String defaultEncryptionScope() {
-        return this.defaultEncryptionScope;
+        return this.innerContainerProperties() == null
+            ? null
+            : this.innerContainerProperties().defaultEncryptionScope();
     }
 
     /**
@@ -182,7 +95,10 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the BlobContainerInner object itself.
      */
     public BlobContainerInner withDefaultEncryptionScope(String defaultEncryptionScope) {
-        this.defaultEncryptionScope = defaultEncryptionScope;
+        if (this.innerContainerProperties() == null) {
+            this.innerContainerProperties = new ContainerProperties();
+        }
+        this.innerContainerProperties().withDefaultEncryptionScope(defaultEncryptionScope);
         return this;
     }
 
@@ -192,7 +108,9 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the denyEncryptionScopeOverride value.
      */
     public Boolean denyEncryptionScopeOverride() {
-        return this.denyEncryptionScopeOverride;
+        return this.innerContainerProperties() == null
+            ? null
+            : this.innerContainerProperties().denyEncryptionScopeOverride();
     }
 
     /**
@@ -202,7 +120,10 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the BlobContainerInner object itself.
      */
     public BlobContainerInner withDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
-        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+        if (this.innerContainerProperties() == null) {
+            this.innerContainerProperties = new ContainerProperties();
+        }
+        this.innerContainerProperties().withDenyEncryptionScopeOverride(denyEncryptionScopeOverride);
         return this;
     }
 
@@ -213,7 +134,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the publicAccess value.
      */
     public PublicAccess publicAccess() {
-        return this.publicAccess;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().publicAccess();
     }
 
     /**
@@ -224,7 +145,10 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the BlobContainerInner object itself.
      */
     public BlobContainerInner withPublicAccess(PublicAccess publicAccess) {
-        this.publicAccess = publicAccess;
+        if (this.innerContainerProperties() == null) {
+            this.innerContainerProperties = new ContainerProperties();
+        }
+        this.innerContainerProperties().withPublicAccess(publicAccess);
         return this;
     }
 
@@ -234,7 +158,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().lastModifiedTime();
     }
 
     /**
@@ -243,7 +167,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the leaseStatus value.
      */
     public LeaseStatus leaseStatus() {
-        return this.leaseStatus;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().leaseStatus();
     }
 
     /**
@@ -252,7 +176,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the leaseState value.
      */
     public LeaseState leaseState() {
-        return this.leaseState;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().leaseState();
     }
 
     /**
@@ -262,7 +186,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the leaseDuration value.
      */
     public LeaseDuration leaseDuration() {
-        return this.leaseDuration;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().leaseDuration();
     }
 
     /**
@@ -271,7 +195,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
-        return this.metadata;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().metadata();
     }
 
     /**
@@ -281,7 +205,10 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the BlobContainerInner object itself.
      */
     public BlobContainerInner withMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
+        if (this.innerContainerProperties() == null) {
+            this.innerContainerProperties = new ContainerProperties();
+        }
+        this.innerContainerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -291,7 +218,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the immutabilityPolicy value.
      */
     public ImmutabilityPolicyProperties immutabilityPolicy() {
-        return this.immutabilityPolicy;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().immutabilityPolicy();
     }
 
     /**
@@ -300,7 +227,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the legalHold value.
      */
     public LegalHoldProperties legalHold() {
-        return this.legalHold;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().legalHold();
     }
 
     /**
@@ -311,7 +238,7 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
-        return this.hasLegalHold;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().hasLegalHold();
     }
 
     /**
@@ -322,7 +249,37 @@ public class BlobContainerInner extends AzureEntityResource {
      * @return the hasImmutabilityPolicy value.
      */
     public Boolean hasImmutabilityPolicy() {
-        return this.hasImmutabilityPolicy;
+        return this.innerContainerProperties() == null ? null : this.innerContainerProperties().hasImmutabilityPolicy();
+    }
+
+    /**
+     * Get the immutableStorageWithVersioning property: The object level immutability property of the container. The
+     * property is immutable and can only be set to true at the container creation time. Existing containers must
+     * undergo a migration process.
+     *
+     * @return the immutableStorageWithVersioning value.
+     */
+    public ImmutableStorageWithVersioning immutableStorageWithVersioning() {
+        return this.innerContainerProperties() == null
+            ? null
+            : this.innerContainerProperties().immutableStorageWithVersioning();
+    }
+
+    /**
+     * Set the immutableStorageWithVersioning property: The object level immutability property of the container. The
+     * property is immutable and can only be set to true at the container creation time. Existing containers must
+     * undergo a migration process.
+     *
+     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
+     * @return the BlobContainerInner object itself.
+     */
+    public BlobContainerInner withImmutableStorageWithVersioning(
+        ImmutableStorageWithVersioning immutableStorageWithVersioning) {
+        if (this.innerContainerProperties() == null) {
+            this.innerContainerProperties = new ContainerProperties();
+        }
+        this.innerContainerProperties().withImmutableStorageWithVersioning(immutableStorageWithVersioning);
+        return this;
     }
 
     /**
@@ -333,11 +290,8 @@ public class BlobContainerInner extends AzureEntityResource {
     @Override
     public void validate() {
         super.validate();
-        if (immutabilityPolicy() != null) {
-            immutabilityPolicy().validate();
-        }
-        if (legalHold() != null) {
-            legalHold().validate();
+        if (innerContainerProperties() != null) {
+            innerContainerProperties().validate();
         }
     }
 }

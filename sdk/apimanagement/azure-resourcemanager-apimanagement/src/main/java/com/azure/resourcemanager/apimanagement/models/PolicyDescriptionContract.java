@@ -4,30 +4,32 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyDescriptionContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Policy description details. */
-@JsonFlatten
-@Immutable
-public class PolicyDescriptionContract extends ProxyResource {
+@Fluent
+public final class PolicyDescriptionContract extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDescriptionContract.class);
 
     /*
-     * Policy description.
+     * Policy description contract properties.
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    @JsonProperty(value = "properties")
+    private PolicyDescriptionContractProperties innerProperties;
 
-    /*
-     * Binary OR value of the Snippet scope.
+    /**
+     * Get the innerProperties property: Policy description contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scope", access = JsonProperty.Access.WRITE_ONLY)
-    private Long scope;
+    private PolicyDescriptionContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Policy description.
@@ -35,7 +37,7 @@ public class PolicyDescriptionContract extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -44,7 +46,7 @@ public class PolicyDescriptionContract extends ProxyResource {
      * @return the scope value.
      */
     public Long scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -53,5 +55,8 @@ public class PolicyDescriptionContract extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

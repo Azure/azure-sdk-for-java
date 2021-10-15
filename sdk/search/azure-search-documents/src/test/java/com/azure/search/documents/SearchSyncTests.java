@@ -406,7 +406,8 @@ public class SearchSyncTests extends SearchTestBase {
         client = getSearchClientBuilder(INDEX_NAME).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
+            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
+            .setOrderBy("HotelId asc");
         SearchPagedIterable results = client.search("*", searchOptions, Context.NONE);
         assertNotNull(results);
 
@@ -628,7 +629,8 @@ public class SearchSyncTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
             .setScoringParameters(new ScoringParameter("myloc", new GeoPoint(-122.0, 49.0)))
-            .setFilter("Rating eq 5 or Rating eq 1");
+            .setFilter("Rating eq 5 or Rating eq 1")
+            .setOrderBy("HotelId desc");
 
         List<Map<String, Object>> response = getSearchResults(client.search("hotel", searchOptions, Context.NONE));
         assertEquals(2, response.size());

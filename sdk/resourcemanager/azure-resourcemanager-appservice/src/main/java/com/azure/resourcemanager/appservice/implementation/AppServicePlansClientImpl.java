@@ -27,6 +27,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -42,7 +43,7 @@ import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionKeyInn
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionLimitsInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetGatewayInner;
-import com.azure.resourcemanager.appservice.fluent.models.VnetInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.VnetInfoResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetRouteInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlanCollection;
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
@@ -120,7 +121,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AppServicePlanInner>> getByResourceGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -316,11 +317,11 @@ public final class AppServicePlansClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
             @QueryParam("$skipToken") String skipToken,
             @QueryParam(value = "$filter", encoded = true) String filter,
             @QueryParam("$top") String top,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -349,9 +350,9 @@ public final class AppServicePlansClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
-            @QueryParam(value = "$filter", encoded = true) String filter,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -361,7 +362,7 @@ public final class AppServicePlansClientImpl
                 + "/{name}/virtualNetworkConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<List<VnetInfoInner>>> listVnets(
+        Mono<Response<List<VnetInfoResourceInner>>> listVnets(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -375,8 +376,8 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<VnetInfoInner>> getVnetFromServerFarm(
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarm(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
@@ -442,7 +443,7 @@ public final class AppServicePlansClientImpl
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<VnetRouteInner>>> getRouteForVnet(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -458,8 +459,8 @@ public final class AppServicePlansClientImpl
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200, 400, 404})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VnetRouteInner>> createOrUpdateVnetRoute(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -476,8 +477,8 @@ public final class AppServicePlansClientImpl
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteVnetRoute(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -493,8 +494,8 @@ public final class AppServicePlansClientImpl
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
                 + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        @ExpectedResponses({200, 400, 404})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VnetRouteInner>> updateVnetRoute(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -926,7 +927,7 @@ public final class AppServicePlansClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -975,7 +976,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -1020,7 +1021,7 @@ public final class AppServicePlansClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -1043,7 +1044,7 @@ public final class AppServicePlansClientImpl
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -1059,7 +1060,7 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return app Service plan.
      */
@@ -3076,11 +3077,11 @@ public final class AppServicePlansClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             name,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
                             skipToken,
                             filter,
                             top,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<SiteInner>>map(
@@ -3140,11 +3141,11 @@ public final class AppServicePlansClientImpl
                 this.client.getEndpoint(),
                 resourceGroupName,
                 name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
                 skipToken,
                 filter,
                 top,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -3455,9 +3456,9 @@ public final class AppServicePlansClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             name,
-                            filter,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            filter,
                             accept,
                             context))
             .<PagedResponse<CsmUsageQuotaInner>>map(
@@ -3514,9 +3515,9 @@ public final class AppServicePlansClientImpl
                 this.client.getEndpoint(),
                 resourceGroupName,
                 name,
-                filter,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                filter,
                 accept,
                 context)
             .map(
@@ -3631,10 +3632,11 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(String resourceGroupName, String name) {
+    public Mono<Response<List<VnetInfoResourceInner>>> listVnetsWithResponseAsync(
+        String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3679,10 +3681,10 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(
+    private Mono<Response<List<VnetInfoResourceInner>>> listVnetsWithResponseAsync(
         String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3724,13 +3726,13 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name) {
+    public Mono<List<VnetInfoResourceInner>> listVnetsAsync(String resourceGroupName, String name) {
         return listVnetsWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (Response<List<VnetInfoInner>> res) -> {
+                (Response<List<VnetInfoResourceInner>> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3747,10 +3749,10 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<VnetInfoInner> listVnets(String resourceGroupName, String name) {
+    public List<VnetInfoResourceInner> listVnets(String resourceGroupName, String name) {
         return listVnetsAsync(resourceGroupName, name).block();
     }
 
@@ -3763,10 +3765,11 @@ public final class AppServicePlansClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of VnetInfo.
+     * @return array of VnetInfoResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<VnetInfoInner>> listVnetsWithResponse(String resourceGroupName, String name, Context context) {
+    public Response<List<VnetInfoResourceInner>> listVnetsWithResponse(
+        String resourceGroupName, String name, Context context) {
         return listVnetsWithResponseAsync(resourceGroupName, name, context).block();
     }
 
@@ -3777,12 +3780,12 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
+    public Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3831,12 +3834,12 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
+    private Mono<Response<VnetInfoResourceInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -3881,15 +3884,16 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
+    public Mono<VnetInfoResourceInner> getVnetFromServerFarmAsync(
+        String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmWithResponseAsync(resourceGroupName, name, vnetName)
             .flatMap(
-                (Response<VnetInfoInner> res) -> {
+                (Response<VnetInfoResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3905,12 +3909,12 @@ public final class AppServicePlansClientImpl
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
+    public VnetInfoResourceInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmAsync(resourceGroupName, name, vnetName).block();
     }
 
@@ -3922,12 +3926,12 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network information contract.
+     * @return virtual Network information ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VnetInfoInner> getVnetFromServerFarmWithResponse(
+    public Response<VnetInfoResourceInner> getVnetFromServerFarmWithResponse(
         String resourceGroupName, String name, String vnetName, Context context) {
         return getVnetFromServerFarmWithResponseAsync(resourceGroupName, name, vnetName, context).block();
     }
@@ -4498,7 +4502,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -4557,7 +4561,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -4612,7 +4616,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -4638,7 +4642,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -4657,7 +4661,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of VnetRoute.
      */
@@ -4676,7 +4680,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -4742,7 +4746,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -4809,7 +4813,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -4836,7 +4840,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -4856,7 +4860,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -4880,7 +4884,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4939,7 +4943,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4994,7 +4998,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5012,7 +5016,7 @@ public final class AppServicePlansClientImpl
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5029,7 +5033,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -5048,7 +5052,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -5114,7 +5118,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -5181,7 +5185,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -5208,7 +5212,7 @@ public final class AppServicePlansClientImpl
      * @param routeName Name of the Virtual Network route.
      * @param route Definition of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
@@ -5228,7 +5232,7 @@ public final class AppServicePlansClientImpl
      * @param route Definition of the Virtual Network route.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */

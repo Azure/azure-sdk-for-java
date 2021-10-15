@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mediaservices/
+      - sdk/mediaservices/ci.yml
+      - sdk/mediaservices/azure-resourcemanager-mediaservices/
+    exclude:
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/azure-resourcemanager-mediaservices/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mediaservices/
+      - sdk/mediaservices/ci.yml
+      - sdk/mediaservices/azure-resourcemanager-mediaservices/
+    exclude:
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/azure-resourcemanager-mediaservices/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

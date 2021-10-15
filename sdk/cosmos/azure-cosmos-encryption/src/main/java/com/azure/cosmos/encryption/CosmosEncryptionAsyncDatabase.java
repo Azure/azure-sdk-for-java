@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.microsoft.data.encryption.cryptography.DataEncryptionKeyAlgorithm;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import com.microsoft.data.encryption.cryptography.KeyEncryptionKey;
 import com.microsoft.data.encryption.cryptography.MicrosoftDataEncryptionException;
@@ -78,6 +79,10 @@ public class CosmosEncryptionAsyncDatabase {
 
         if (StringUtils.isEmpty(encryptionAlgorithm)) {
             throw new IllegalArgumentException("encryptionAlgorithm is null or empty");
+        }
+
+        if (!encryptionAlgorithm.equals(DataEncryptionKeyAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.toString())) {
+            throw new IllegalArgumentException(String.format("Invalid Encryption Algorithm '%s'", encryptionAlgorithm));
         }
 
         EncryptionKeyStoreProvider encryptionKeyStoreProvider =

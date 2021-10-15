@@ -6,6 +6,7 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.botservice.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -46,10 +47,28 @@ public final class BotProperties {
     private String endpointVersion;
 
     /*
+     * Microsoft App Type for the bot
+     */
+    @JsonProperty(value = "msaAppType")
+    private MsaAppType msaAppType;
+
+    /*
      * Microsoft App Id for the bot
      */
     @JsonProperty(value = "msaAppId", required = true)
     private String msaAppId;
+
+    /*
+     * Microsoft App Tenant Id for the bot
+     */
+    @JsonProperty(value = "msaAppTenantId")
+    private String msaAppTenantId;
+
+    /*
+     * Microsoft App Managed Identity Resource Id for the bot
+     */
+    @JsonProperty(value = "msaAppMSIResourceId")
+    private String msaAppMsiResourceId;
 
     /*
      * Collection of channels for which the bot is configured
@@ -112,10 +131,23 @@ public final class BotProperties {
     private Boolean isIsolated;
 
     /*
+     * Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     */
+    @JsonProperty(value = "disableLocalAuth")
+    private Boolean disableLocalAuth;
+
+    /*
      * The channel schema transformation version for the bot
      */
     @JsonProperty(value = "schemaTransformationVersion")
     private String schemaTransformationVersion;
+
+    /*
+     * List of Private Endpoint Connections configured for the bot
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * Get the displayName property: The Name of the bot.
@@ -207,6 +239,26 @@ public final class BotProperties {
     }
 
     /**
+     * Get the msaAppType property: Microsoft App Type for the bot.
+     *
+     * @return the msaAppType value.
+     */
+    public MsaAppType msaAppType() {
+        return this.msaAppType;
+    }
+
+    /**
+     * Set the msaAppType property: Microsoft App Type for the bot.
+     *
+     * @param msaAppType the msaAppType value to set.
+     * @return the BotProperties object itself.
+     */
+    public BotProperties withMsaAppType(MsaAppType msaAppType) {
+        this.msaAppType = msaAppType;
+        return this;
+    }
+
+    /**
      * Get the msaAppId property: Microsoft App Id for the bot.
      *
      * @return the msaAppId value.
@@ -223,6 +275,46 @@ public final class BotProperties {
      */
     public BotProperties withMsaAppId(String msaAppId) {
         this.msaAppId = msaAppId;
+        return this;
+    }
+
+    /**
+     * Get the msaAppTenantId property: Microsoft App Tenant Id for the bot.
+     *
+     * @return the msaAppTenantId value.
+     */
+    public String msaAppTenantId() {
+        return this.msaAppTenantId;
+    }
+
+    /**
+     * Set the msaAppTenantId property: Microsoft App Tenant Id for the bot.
+     *
+     * @param msaAppTenantId the msaAppTenantId value to set.
+     * @return the BotProperties object itself.
+     */
+    public BotProperties withMsaAppTenantId(String msaAppTenantId) {
+        this.msaAppTenantId = msaAppTenantId;
+        return this;
+    }
+
+    /**
+     * Get the msaAppMsiResourceId property: Microsoft App Managed Identity Resource Id for the bot.
+     *
+     * @return the msaAppMsiResourceId value.
+     */
+    public String msaAppMsiResourceId() {
+        return this.msaAppMsiResourceId;
+    }
+
+    /**
+     * Set the msaAppMsiResourceId property: Microsoft App Managed Identity Resource Id for the bot.
+     *
+     * @param msaAppMsiResourceId the msaAppMsiResourceId value to set.
+     * @return the BotProperties object itself.
+     */
+    public BotProperties withMsaAppMsiResourceId(String msaAppMsiResourceId) {
+        this.msaAppMsiResourceId = msaAppMsiResourceId;
         return this;
     }
 
@@ -405,6 +497,28 @@ public final class BotProperties {
     }
 
     /**
+     * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.disableLocalAuth;
+    }
+
+    /**
+     * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
+     * exclusively for authentication.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the BotProperties object itself.
+     */
+    public BotProperties withDisableLocalAuth(Boolean disableLocalAuth) {
+        this.disableLocalAuth = disableLocalAuth;
+        return this;
+    }
+
+    /**
      * Get the schemaTransformationVersion property: The channel schema transformation version for the bot.
      *
      * @return the schemaTransformationVersion value.
@@ -422,6 +536,15 @@ public final class BotProperties {
     public BotProperties withSchemaTransformationVersion(String schemaTransformationVersion) {
         this.schemaTransformationVersion = schemaTransformationVersion;
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of Private Endpoint Connections configured for the bot.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**
@@ -444,6 +567,9 @@ public final class BotProperties {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property msaAppId in model BotProperties"));
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

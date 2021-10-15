@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/datafactory/
+      - sdk/datafactory/ci.yml
+      - sdk/datafactory/azure-resourcemanager-datafactory/
+    exclude:
+      - sdk/datafactory/pom.xml
+      - sdk/datafactory/azure-resourcemanager-datafactory/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/datafactory/
+      - sdk/datafactory/ci.yml
+      - sdk/datafactory/azure-resourcemanager-datafactory/
+    exclude:
+      - sdk/datafactory/pom.xml
+      - sdk/datafactory/azure-resourcemanager-datafactory/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

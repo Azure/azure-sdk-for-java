@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Inbound NAT rule of the load balancer. */
-@JsonFlatten
 @Fluent
-public class InboundNatRuleInner extends SubResource {
+public final class InboundNatRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRuleInner.class);
+
+    /*
+     * Properties of load balancer inbound nat rule.
+     */
+    @JsonProperty(value = "properties")
+    private InboundNatRulePropertiesFormatInner innerProperties;
 
     /*
      * The name of the resource that is unique within the set of inbound NAT
@@ -39,71 +43,14 @@ public class InboundNatRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * A reference to frontend IP addresses.
+    /**
+     * Get the innerProperties property: Properties of load balancer inbound nat rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.frontendIPConfiguration")
-    private SubResource frontendIpConfiguration;
-
-    /*
-     * A reference to a private IP address defined on a network interface of a
-     * VM. Traffic sent to the frontend port of each of the frontend IP
-     * configurations is forwarded to the backend IP.
-     */
-    @JsonProperty(value = "properties.backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkInterfaceIpConfigurationInner backendIpConfiguration;
-
-    /*
-     * The reference to the transport protocol used by the load balancing rule.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private TransportProtocol protocol;
-
-    /*
-     * The port for the external endpoint. Port numbers for each rule must be
-     * unique within the Load Balancer. Acceptable values range from 1 to
-     * 65534.
-     */
-    @JsonProperty(value = "properties.frontendPort")
-    private Integer frontendPort;
-
-    /*
-     * The port used for the internal endpoint. Acceptable values range from 1
-     * to 65535.
-     */
-    @JsonProperty(value = "properties.backendPort")
-    private Integer backendPort;
-
-    /*
-     * The timeout for the TCP idle connection. The value can be set between 4
-     * and 30 minutes. The default value is 4 minutes. This element is only
-     * used when the protocol is set to TCP.
-     */
-    @JsonProperty(value = "properties.idleTimeoutInMinutes")
-    private Integer idleTimeoutInMinutes;
-
-    /*
-     * Configures a virtual machine's endpoint for the floating IP capability
-     * required to configure a SQL AlwaysOn Availability Group. This setting is
-     * required when using the SQL AlwaysOn Availability Groups in SQL server.
-     * This setting can't be changed after you create the endpoint.
-     */
-    @JsonProperty(value = "properties.enableFloatingIP")
-    private Boolean enableFloatingIp;
-
-    /*
-     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is
-     * set to TCP.
-     */
-    @JsonProperty(value = "properties.enableTcpReset")
-    private Boolean enableTcpReset;
-
-    /*
-     * The provisioning state of the inbound NAT rule resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private InboundNatRulePropertiesFormatInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
@@ -145,13 +92,20 @@ public class InboundNatRuleInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public InboundNatRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
      *
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
-        return this.frontendIpConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().frontendIpConfiguration();
     }
 
     /**
@@ -161,7 +115,10 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withFrontendIpConfiguration(SubResource frontendIpConfiguration) {
-        this.frontendIpConfiguration = frontendIpConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withFrontendIpConfiguration(frontendIpConfiguration);
         return this;
     }
 
@@ -172,7 +129,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the backendIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner backendIpConfiguration() {
-        return this.backendIpConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().backendIpConfiguration();
     }
 
     /**
@@ -181,7 +138,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -191,7 +148,10 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withProtocol(TransportProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -202,7 +162,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
-        return this.frontendPort;
+        return this.innerProperties() == null ? null : this.innerProperties().frontendPort();
     }
 
     /**
@@ -213,7 +173,10 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withFrontendPort(Integer frontendPort) {
-        this.frontendPort = frontendPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withFrontendPort(frontendPort);
         return this;
     }
 
@@ -223,7 +186,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the backendPort value.
      */
     public Integer backendPort() {
-        return this.backendPort;
+        return this.innerProperties() == null ? null : this.innerProperties().backendPort();
     }
 
     /**
@@ -233,7 +196,10 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withBackendPort(Integer backendPort) {
-        this.backendPort = backendPort;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withBackendPort(backendPort);
         return this;
     }
 
@@ -244,7 +210,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
-        return this.idleTimeoutInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().idleTimeoutInMinutes();
     }
 
     /**
@@ -255,7 +221,10 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
-        this.idleTimeoutInMinutes = idleTimeoutInMinutes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
     }
 
@@ -267,7 +236,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
-        return this.enableFloatingIp;
+        return this.innerProperties() == null ? null : this.innerProperties().enableFloatingIp();
     }
 
     /**
@@ -279,7 +248,10 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withEnableFloatingIp(Boolean enableFloatingIp) {
-        this.enableFloatingIp = enableFloatingIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withEnableFloatingIp(enableFloatingIp);
         return this;
     }
 
@@ -290,7 +262,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
-        return this.enableTcpReset;
+        return this.innerProperties() == null ? null : this.innerProperties().enableTcpReset();
     }
 
     /**
@@ -301,7 +273,87 @@ public class InboundNatRuleInner extends SubResource {
      * @return the InboundNatRuleInner object itself.
      */
     public InboundNatRuleInner withEnableTcpReset(Boolean enableTcpReset) {
-        this.enableTcpReset = enableTcpReset;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withEnableTcpReset(enableTcpReset);
+        return this;
+    }
+
+    /**
+     * Get the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @return the frontendPortRangeStart value.
+     */
+    public Integer frontendPortRangeStart() {
+        return this.innerProperties() == null ? null : this.innerProperties().frontendPortRangeStart();
+    }
+
+    /**
+     * Set the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
+     * @return the InboundNatRuleInner object itself.
+     */
+    public InboundNatRuleInner withFrontendPortRangeStart(Integer frontendPortRangeStart) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withFrontendPortRangeStart(frontendPortRangeStart);
+        return this;
+    }
+
+    /**
+     * Get the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @return the frontendPortRangeEnd value.
+     */
+    public Integer frontendPortRangeEnd() {
+        return this.innerProperties() == null ? null : this.innerProperties().frontendPortRangeEnd();
+    }
+
+    /**
+     * Set the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
+     * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
+     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
+     *
+     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
+     * @return the InboundNatRuleInner object itself.
+     */
+    public InboundNatRuleInner withFrontendPortRangeEnd(Integer frontendPortRangeEnd) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withFrontendPortRangeEnd(frontendPortRangeEnd);
+        return this;
+    }
+
+    /**
+     * Get the backendAddressPool property: A reference to backendAddressPool resource.
+     *
+     * @return the backendAddressPool value.
+     */
+    public SubResource backendAddressPool() {
+        return this.innerProperties() == null ? null : this.innerProperties().backendAddressPool();
+    }
+
+    /**
+     * Set the backendAddressPool property: A reference to backendAddressPool resource.
+     *
+     * @param backendAddressPool the backendAddressPool value to set.
+     * @return the InboundNatRuleInner object itself.
+     */
+    public InboundNatRuleInner withBackendAddressPool(SubResource backendAddressPool) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withBackendAddressPool(backendAddressPool);
         return this;
     }
 
@@ -311,14 +363,7 @@ public class InboundNatRuleInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public InboundNatRuleInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -327,8 +372,8 @@ public class InboundNatRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (backendIpConfiguration() != null) {
-            backendIpConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

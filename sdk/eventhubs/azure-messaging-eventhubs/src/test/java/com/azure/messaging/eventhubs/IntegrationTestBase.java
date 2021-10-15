@@ -54,7 +54,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
         .mapToObj(String::valueOf)
         .collect(Collectors.toList());
-    protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    protected static final Duration TIMEOUT = Duration.ofMinutes(1);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
 
     protected final ClientLogger logger;
@@ -107,7 +107,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

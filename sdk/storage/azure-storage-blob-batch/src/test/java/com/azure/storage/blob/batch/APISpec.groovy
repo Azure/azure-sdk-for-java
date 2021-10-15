@@ -31,23 +31,23 @@ class APISpec extends StorageSpec {
     BlobServiceClient versionedBlobServiceClient
 
     def setup() {
-        primaryBlobServiceClient = getServiceClient(env.primaryAccount)
-        primaryBlobServiceAsyncClient = getServiceAsyncClient(env.primaryAccount)
-        versionedBlobServiceClient = getServiceClient(env.versionedAccount)
+        primaryBlobServiceClient = getServiceClient(environment.primaryAccount)
+        primaryBlobServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
+        versionedBlobServiceClient = getServiceClient(environment.versionedAccount)
     }
 
     def getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(env.primaryAccount.blobEndpoint)
+            .endpoint(environment.primaryAccount.blobEndpoint)
 
         instrument(builder)
 
-        if (env.testMode != TestMode.PLAYBACK) {
+        if (environment.testMode != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
             return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient()
         } else {
             // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(env.primaryAccount.credential).buildClient()
+            return builder.credential(environment.primaryAccount.credential).buildClient()
         }
     }
 

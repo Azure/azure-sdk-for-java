@@ -12,7 +12,7 @@ import com.azure.storage.file.datalake.models.FileRange;
  * Extended options that may be passed when opening a blob input stream.
  */
 @Fluent
-public class DataLakeFileInputStreamOptions {
+public final class DataLakeFileInputStreamOptions {
 
     private FileRange range;
     private DataLakeRequestConditions requestConditions;

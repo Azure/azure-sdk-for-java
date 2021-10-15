@@ -6,9 +6,14 @@ package com.azure.cosmos;
 import com.azure.cosmos.util.Beta;
 
 /**
+ *
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBatchItemRequestOptions}
+ *
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
 @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 public final class TransactionalBatchItemRequestOptions
         extends TransactionalBatchItemRequestOptionsBase {
 
@@ -22,6 +27,7 @@ public final class TransactionalBatchItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public TransactionalBatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;
@@ -34,6 +40,7 @@ public final class TransactionalBatchItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public TransactionalBatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;

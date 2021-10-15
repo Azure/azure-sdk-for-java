@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -65,6 +66,7 @@ public final class HttpPipelineProvider {
         HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(httpLogOptions, configuration));
+        policies.add(new AddHeadersFromContextPolicy());
         policies.add(new RequestIdPolicy());
         policies.add(new ReturnRequestIdHeaderPolicy(ReturnRequestIdHeaderPolicy.Option.COPY_CLIENT_REQUEST_ID));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);

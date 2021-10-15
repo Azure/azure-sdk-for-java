@@ -360,6 +360,15 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void schemeAndHostAndPathAndOneQueryParameterGetQuery() {
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B");
+        assertEquals(builder.getQuery().get("A"), "B");
+    }
+
+    @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterNameHasWhitespace() {
         final UrlBuilder builder = new UrlBuilder()
             .setScheme("http")
@@ -414,6 +423,28 @@ public class UrlBuilderTests {
             .setQueryParameter("C", "D")
             .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&C=D", builder.toString());
+    }
+
+    @Test
+    public void schemeAndHostAndPathAndTwoIdenticalQueryParameters() {
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
+            .setPath("index.html");
+        assertEquals("http://www.example.com/index.html?A=B&A=D", builder.toString());
+    }
+
+    @Test
+    public void schemeAndHostAndPathAndTwoIdenticalQueryParametersGetQuery() {
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .addQueryParameter("A", "B")
+            .addQueryParameter("A", "D")
+            .setPath("index.html");
+        assertEquals(builder.getQuery().get("A"), "B,D");
     }
 
     @Test
@@ -705,6 +736,12 @@ public class UrlBuilderTests {
     public void parseHostAndPathAndTwoQueryParameters() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1&b=2");
         assertEquals("www.bing.com/folder/index.html?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseHostAndPathAndTwoIdenticalQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1&a=2");
+        assertEquals("www.bing.com/folder/index.html?a=1&a=2", builder.toString());
     }
 
     @Test

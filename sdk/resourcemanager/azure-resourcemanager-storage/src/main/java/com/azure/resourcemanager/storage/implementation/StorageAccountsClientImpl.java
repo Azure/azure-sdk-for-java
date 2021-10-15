@@ -46,7 +46,6 @@ import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountListKeysResultInner;
 import com.azure.resourcemanager.storage.models.AccountSasParameters;
 import com.azure.resourcemanager.storage.models.BlobRestoreParameters;
-import com.azure.resourcemanager.storage.models.BlobRestoreRange;
 import com.azure.resourcemanager.storage.models.ListKeyExpand;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters;
@@ -56,8 +55,6 @@ import com.azure.resourcemanager.storage.models.StorageAccountListResult;
 import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import java.nio.ByteBuffer;
-import java.time.OffsetDateTime;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -324,14 +321,16 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        StorageAccountCheckNameAvailabilityParameters accountName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -344,12 +343,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        } else {
+            accountName.validate();
         }
         final String accept = "application/json";
-        StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -367,7 +366,8 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -376,7 +376,7 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String name, Context context) {
+        StorageAccountCheckNameAvailabilityParameters accountName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -389,12 +389,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        } else {
+            accountName.validate();
         }
         final String accept = "application/json";
-        StorageAccountCheckNameAvailabilityParameters accountName = new StorageAccountCheckNameAvailabilityParameters();
-        accountName.withName(name);
         context = this.client.mergeContext(context);
         return service
             .checkNameAvailability(
@@ -409,15 +409,17 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name) {
-        return checkNameAvailabilityWithResponseAsync(name)
+    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
+        StorageAccountCheckNameAvailabilityParameters accountName) {
+        return checkNameAvailabilityWithResponseAsync(accountName)
             .flatMap(
                 (Response<CheckNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -431,21 +433,24 @@ public final class StorageAccountsClientImpl
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(String name) {
-        return checkNameAvailabilityAsync(name).block();
+    public CheckNameAvailabilityResultInner checkNameAvailability(
+        StorageAccountCheckNameAvailabilityParameters accountName) {
+        return checkNameAvailabilityAsync(accountName).block();
     }
 
     /**
      * Checks that the storage account name is valid and is not already in use.
      *
-     * @param name The storage account name.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -453,8 +458,9 @@ public final class StorageAccountsClientImpl
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String name, Context context) {
-        return checkNameAvailabilityWithResponseAsync(name, context).block();
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        StorageAccountCheckNameAvailabilityParameters accountName, Context context) {
+        return checkNameAvailabilityWithResponseAsync(accountName, context).block();
     }
 
     /**
@@ -1844,8 +1850,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1853,7 +1858,7 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, String keyName) {
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1873,12 +1878,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
+        if (regenerateKey == null) {
+            return Mono.error(new IllegalArgumentException("Parameter regenerateKey is required and cannot be null."));
+        } else {
+            regenerateKey.validate();
         }
         final String accept = "application/json";
-        StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
-        regenerateKey.withKeyName(keyName);
         return FluxUtil
             .withContext(
                 context ->
@@ -1902,8 +1907,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1912,7 +1916,10 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageAccountListKeysResultInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String accountName, String keyName, Context context) {
+        String resourceGroupName,
+        String accountName,
+        StorageAccountRegenerateKeyParameters regenerateKey,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1932,12 +1939,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (keyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter keyName is required and cannot be null."));
+        if (regenerateKey == null) {
+            return Mono.error(new IllegalArgumentException("Parameter regenerateKey is required and cannot be null."));
+        } else {
+            regenerateKey.validate();
         }
         final String accept = "application/json";
-        StorageAccountRegenerateKeyParameters regenerateKey = new StorageAccountRegenerateKeyParameters();
-        regenerateKey.withKeyName(keyName);
         context = this.client.mergeContext(context);
         return service
             .regenerateKey(
@@ -1958,8 +1965,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1967,8 +1973,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountListKeysResultInner> regenerateKeyAsync(
-        String resourceGroupName, String accountName, String keyName) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, keyName)
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, regenerateKey)
             .flatMap(
                 (Response<StorageAccountListKeysResultInner> res) -> {
                     if (res.getValue() != null) {
@@ -1986,8 +1992,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1995,8 +2000,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAccountListKeysResultInner regenerateKey(
-        String resourceGroupName, String accountName, String keyName) {
-        return regenerateKeyAsync(resourceGroupName, accountName, keyName).block();
+        String resourceGroupName, String accountName, StorageAccountRegenerateKeyParameters regenerateKey) {
+        return regenerateKeyAsync(resourceGroupName, accountName, regenerateKey).block();
     }
 
     /**
@@ -2006,8 +2011,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1,
-     *     kerb2.
+     * @param regenerateKey Specifies name of the key which should be regenerated -- key1, key2, kerb1, kerb2.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2016,8 +2020,11 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageAccountListKeysResultInner> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, String keyName, Context context) {
-        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, keyName, context).block();
+        String resourceGroupName,
+        String accountName,
+        StorageAccountRegenerateKeyParameters regenerateKey,
+        Context context) {
+        return regenerateKeyWithResponseAsync(resourceGroupName, accountName, regenerateKey, context).block();
     }
 
     /**
@@ -2645,8 +2652,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2654,7 +2660,7 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2674,18 +2680,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (timeToRestore == null) {
-            return Mono.error(new IllegalArgumentException("Parameter timeToRestore is required and cannot be null."));
-        }
-        if (blobRanges == null) {
-            return Mono.error(new IllegalArgumentException("Parameter blobRanges is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            blobRanges.forEach(e -> e.validate());
+            parameters.validate();
         }
         final String accept = "application/json";
-        BlobRestoreParameters parameters = new BlobRestoreParameters();
-        parameters.withTimeToRestore(timeToRestore);
-        parameters.withBlobRanges(blobRanges);
         return FluxUtil
             .withContext(
                 context ->
@@ -2709,8 +2709,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2719,11 +2718,7 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restoreBlobRangesWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2743,18 +2738,12 @@ public final class StorageAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (timeToRestore == null) {
-            return Mono.error(new IllegalArgumentException("Parameter timeToRestore is required and cannot be null."));
-        }
-        if (blobRanges == null) {
-            return Mono.error(new IllegalArgumentException("Parameter blobRanges is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            blobRanges.forEach(e -> e.validate());
+            parameters.validate();
         }
         final String accept = "application/json";
-        BlobRestoreParameters parameters = new BlobRestoreParameters();
-        parameters.withTimeToRestore(timeToRestore);
-        parameters.withBlobRanges(blobRanges);
         context = this.client.mergeContext(context);
         return service
             .restoreBlobRanges(
@@ -2775,8 +2764,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2784,9 +2772,9 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
+            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
             .client
             .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResult(
@@ -2804,8 +2792,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2814,14 +2801,10 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
+            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, parameters, context);
         return this
             .client
             .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResult(
@@ -2839,8 +2822,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2848,8 +2830,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges).getSyncPoller();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
     /**
@@ -2859,8 +2841,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2869,13 +2850,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
-            .getSyncPoller();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2885,8 +2861,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2894,8 +2869,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2907,8 +2882,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2917,12 +2891,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2934,8 +2904,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2943,8 +2912,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobRestoreStatusInner restoreBlobRanges(
-        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        return restoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges).block();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters) {
+        return restoreBlobRangesAsync(resourceGroupName, accountName, parameters).block();
     }
 
     /**
@@ -2954,8 +2923,7 @@ public final class StorageAccountsClientImpl
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param timeToRestore Restore blob to the specified time.
-     * @param blobRanges Blob ranges to restore.
+     * @param parameters The parameters to provide for restore blob ranges.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2964,12 +2932,8 @@ public final class StorageAccountsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobRestoreStatusInner restoreBlobRanges(
-        String resourceGroupName,
-        String accountName,
-        OffsetDateTime timeToRestore,
-        List<BlobRestoreRange> blobRanges,
-        Context context) {
-        return restoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context).block();
+        String resourceGroupName, String accountName, BlobRestoreParameters parameters, Context context) {
+        return restoreBlobRangesAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**

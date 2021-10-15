@@ -17,6 +17,7 @@ import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -275,6 +276,6 @@ public class ReadmeSamples {
 
         TypingNotificationOptions options = new TypingNotificationOptions();
         options.setSenderDisplayName("Sender Display Name");
-        chatThreadClient.sendTypingNotification(options);
+        chatThreadClient.sendTypingNotificationWithResponse(options, Context.NONE);
     }
 }

@@ -16,19 +16,19 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeProfilePropertiesUpgradesItem.class);
 
     /*
-     * Kubernetes version (major, minor, patch).
+     * The Kubernetes version (major.minor.patch).
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
     /*
-     * Whether Kubernetes version is currently in preview.
+     * Whether the Kubernetes version is currently in preview.
      */
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @return the kubernetesVersion value.
      */
@@ -37,7 +37,7 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolUpgradeProfilePropertiesUpgradesItem object itself.
@@ -48,7 +48,7 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     }
 
     /**
-     * Get the isPreview property: Whether Kubernetes version is currently in preview.
+     * Get the isPreview property: Whether the Kubernetes version is currently in preview.
      *
      * @return the isPreview value.
      */
@@ -57,7 +57,7 @@ public final class AgentPoolUpgradeProfilePropertiesUpgradesItem {
     }
 
     /**
-     * Set the isPreview property: Whether Kubernetes version is currently in preview.
+     * Set the isPreview property: Whether the Kubernetes version is currently in preview.
      *
      * @param isPreview the isPreview value to set.
      * @return the AgentPoolUpgradeProfilePropertiesUpgradesItem object itself.

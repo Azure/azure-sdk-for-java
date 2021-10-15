@@ -34,6 +34,18 @@ public final class NamedValueContractImpl
         return this.innerModel().type();
     }
 
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String value() {
+        return this.innerModel().value();
+    }
+
+    public KeyVaultContractProperties keyVault() {
+        return this.innerModel().keyVault();
+    }
+
     public List<String> tags() {
         List<String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -45,18 +57,6 @@ public final class NamedValueContractImpl
 
     public Boolean secret() {
         return this.innerModel().secret();
-    }
-
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public String value() {
-        return this.innerModel().value();
-    }
-
-    public KeyVaultContractProperties keyVault() {
-        return this.innerModel().keyVault();
     }
 
     public NamedValueContractInner innerModel() {
@@ -196,16 +196,6 @@ public final class NamedValueContractImpl
         }
     }
 
-    public NamedValueContractImpl withSecret(Boolean secret) {
-        if (isInCreateMode()) {
-            this.createParameters.withSecret(secret);
-            return this;
-        } else {
-            this.updateParameters.withSecret(secret);
-            return this;
-        }
-    }
-
     public NamedValueContractImpl withDisplayName(String displayName) {
         if (isInCreateMode()) {
             this.createParameters.withDisplayName(displayName);
@@ -232,6 +222,16 @@ public final class NamedValueContractImpl
             return this;
         } else {
             this.updateParameters.withKeyVault(keyVault);
+            return this;
+        }
+    }
+
+    public NamedValueContractImpl withSecret(Boolean secret) {
+        if (isInCreateMode()) {
+            this.createParameters.withSecret(secret);
+            return this;
+        } else {
+            this.updateParameters.withSecret(secret);
             return this;
         }
     }
