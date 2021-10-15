@@ -9,8 +9,8 @@ import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
 import com.azure.ai.formrecognizer.administration.models.DocumentFieldSchema;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.administration.models.InnerError;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationInfo;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
@@ -25,7 +25,7 @@ import com.azure.ai.formrecognizer.implementation.models.OperationInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.BoundingRegion;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentEntity;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
@@ -46,7 +46,6 @@ import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.models.ResponseError;
-import com.azure.core.models.ResponseInnerError;
 import com.azure.core.util.CoreUtils;
 
 import java.time.LocalTime;
@@ -262,7 +261,7 @@ public class Transforms {
      * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exists. Otherwise, return
      * original {@link Throwable}.
      *
-     * @param throwable A {@link Throwable}.s
+     * @param throwable A {@link Throwable}.
      * @return A {@link HttpResponseException} or the original throwable type.
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
@@ -526,7 +525,7 @@ public class Transforms {
         ModelOperationHelper.setResourceLocation(modelOperation, getOperationResponse.getResourceLocation());
         Map<String, DocTypeInfo> docTypeMap = getStringDocTypeInfoMap(modelInfo);
         ModelOperationHelper.setDocTypes(modelOperation, docTypeMap);
-        FormRecognizerError error = toFormRecognizerError(getOperationResponse.getError());
+        DocumentModelOperationError error = toDocumentModelOperationError(getOperationResponse.getError());
         ModelOperationHelper.setError(modelOperation, error);
         return modelOperation;
     }
@@ -551,7 +550,7 @@ public class Transforms {
             }).collect(Collectors.toList());
     }
 
-    public static DocumentOperationResult toFormRecognizerOperationResult(
+    public static DocumentOperationResult toDocumentOperationResult(
         String operationLocation) {
         DocumentOperationResult documentOperationResult = new DocumentOperationResult();
         DocumentOperationResultHelper.setResultId(
@@ -561,67 +560,56 @@ public class Transforms {
         return documentOperationResult;
     }
 
-    public static DocumentAnalysisException toDocumentAnalysisException(Error error) {
-        DocumentAnalysisException documentAnalysisException = new DocumentAnalysisException();
-        FormRecognizerError formRecognizerError = toFormRecognizerError(error);
-        DocumentAnalysisExceptionHelper.setErrorInformation(documentAnalysisException, formRecognizerError);
-        return documentAnalysisException;
-    }
-
-    private static FormRecognizerError toFormRecognizerError(Error error) {
-        if (error != null) {
-            FormRecognizerError formRecognizerError = new FormRecognizerError();
-            FormRecognizerErrorHelper.setCode(formRecognizerError, error.getCode());
-            FormRecognizerErrorHelper.setInnerError(formRecognizerError, toInnerError(error.getInnererror()));
-            FormRecognizerErrorHelper.setDetails(formRecognizerError, toErrorDetails(error.getDetails()));
-            FormRecognizerErrorHelper.setMessage(formRecognizerError, error.getMessage());
-            FormRecognizerErrorHelper.setTarget(formRecognizerError, error.getTarget());
-            return formRecognizerError;
-        }
-        return null;
+    public static DocumentModelOperationException toDocumentModelOperationException(Error error) {
+        DocumentModelOperationException documentModelOperationException = new DocumentModelOperationException();
+        DocumentModelOperationError documentModelOperationError = toDocumentModelOperationError(error);
+        DocumentAnalysisExceptionHelper.setErrorInformation(documentModelOperationException,
+            documentModelOperationError);
+        return documentModelOperationException;
     }
 
     private static ResponseError toResponseError(Error error) {
-        if (error != null) {
-            ResponseError responseError = new ResponseError(error.getCode(), error.getMessage());
+        if (error == null) {
+            return null;
+        }
+        com.azure.ai.formrecognizer.implementation.models.InnerError innerError = error.getInnererror();
 
-            ResponseErrorHelper.setInnerError(responseError, toInnerError(error.getInnererror()));
-            FormRecognizerErrorHelper.setDetails(formRecognizerError, toErrorDetails(error.getDetails()));
-            FormRecognizerErrorHelper.setMessage(formRecognizerError, error.getMessage());
-            FormRecognizerErrorHelper.setTarget(formRecognizerError, error.getTarget());
-            return formRecognizerError;
+        if (innerError == null) {
+            return new ResponseError(error.getCode(), error.getMessage());
+        } else {
+            return new ResponseError(innerError.getCode(), innerError.getMessage());
+        }
+    }
+
+    private static DocumentModelOperationError toDocumentModelOperationError(Error error) {
+        if (error != null) {
+            DocumentModelOperationError documentModelOperationError = new DocumentModelOperationError();
+            FormRecognizerErrorHelper.setCode(documentModelOperationError, error.getCode());
+            FormRecognizerErrorHelper.setInnerError(documentModelOperationError, toInnerError(error.getInnererror()));
+            FormRecognizerErrorHelper.setDetails(documentModelOperationError, toErrorDetails(error.getDetails()));
+            FormRecognizerErrorHelper.setMessage(documentModelOperationError, error.getMessage());
+            FormRecognizerErrorHelper.setTarget(documentModelOperationError, error.getTarget());
+            return documentModelOperationError;
         }
         return null;
     }
 
-    private static ResponseInnerError toInnerError(
+    private static DocumentModelOperationInnerError toInnerError(
         com.azure.ai.formrecognizer.implementation.models.InnerError serviceInnerError) {
         if (serviceInnerError == null) {
             return null;
         }
-        ResponseInnerError innerError = new ResponseInnerError();
+        DocumentModelOperationInnerError innerError = new DocumentModelOperationInnerError();
         InnerErrorHelper.setCode(innerError, serviceInnerError.getCode());
         InnerErrorHelper.setMessage(innerError, serviceInnerError.getMessage());
         InnerErrorHelper.setInnerError(innerError, toInnerError(serviceInnerError.getInnererror()));
         return innerError;
     }
 
-    private static InnerError toInnerError(
-        com.azure.ai.formrecognizer.implementation.models.InnerError serviceInnerError) {
-        if (serviceInnerError == null) {
-            return null;
-        }
-        InnerError innerError = new InnerError();
-        InnerErrorHelper.setCode(innerError, serviceInnerError.getCode());
-        InnerErrorHelper.setMessage(innerError, serviceInnerError.getMessage());
-        InnerErrorHelper.setInnerError(innerError, toInnerError(serviceInnerError.getInnererror()));
-        return innerError;
-    }
-
-    private static List<FormRecognizerError> toErrorDetails(List<Error> details) {
+    private static List<DocumentModelOperationError> toErrorDetails(List<Error> details) {
         return !CoreUtils.isNullOrEmpty(details) ? details
             .stream()
-            .map(error -> toFormRecognizerError(error))
+            .map(error -> toDocumentModelOperationError(error))
             .collect(Collectors.toList()) : null;
     }
 }
