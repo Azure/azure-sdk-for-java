@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
@@ -310,8 +309,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                     new BuildModelOptions().setPrefix("subfolder"), Context.NONE)
                 .setPollInterval(durationTestMode));
 
-            final FormRecognizerError errorInformation = (FormRecognizerError) exception.getValue();
-            assertEquals("TrainingContentMissing", errorInformation.getInnerError().getCode());
+            final ResponseError responseError  = (ResponseError) exception.getValue();
+            assertEquals("TrainingContentMissing", responseError.getCode());
         });
     }
 
@@ -330,9 +329,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                         new BuildModelOptions().setPrefix("subfolders"), Context.NONE)
                     .setPollInterval(durationTestMode));
 
-            final DocumentModelOperationError errorInformation =
-                (DocumentModelOperationError) exception.getValue();
-            assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+            final ResponseError responseError = (ResponseError) exception.getValue();
+            assertEquals("TrainingContentMissing", responseError.getCode());
         });
     }
 

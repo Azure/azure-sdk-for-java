@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -888,9 +887,8 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         .getFinalResult());
                 adminClient.deleteModel(modelId);
 
-                DocumentModelOperationError responseError
-                    = (DocumentModelOperationError) httpResponseException.getValue();
-                Assertions.assertEquals("Invalid input file.", responseError.getMessage());
+                ResponseError responseError = (ResponseError) httpResponseException.getValue();
+                Assertions.assertEquals("InvalidContent", responseError.getCode());
             })));
     }
 

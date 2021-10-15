@@ -4,6 +4,7 @@
 
 ### Features Added
 - Update `HttpResponseException` to use azure-core `ResponseError`.
+- Added client validation to check for empty modelId passed by the user for `beginAnalyzeDocument` methods.
 
 ### Breaking Changes
 - Rename `DocumentAnalysisException`, `FormRecognizerError`, `InnerError` to 

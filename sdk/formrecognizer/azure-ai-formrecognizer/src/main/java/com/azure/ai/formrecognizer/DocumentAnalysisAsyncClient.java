@@ -124,7 +124,8 @@ public final class DocumentAnalysisAsyncClient {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
                     + " be null or empty"));
-            }            if (CoreUtils.isNullOrEmpty(modelId)) {
+            }
+            if (CoreUtils.isNullOrEmpty(modelId)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                     + " be null or empty"));
             }
