@@ -101,6 +101,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
+    private BlockBlobAsyncClient blockBlobAsyncClient;
+    private AppendBlobAsyncClient appendBlobAsyncClient;
+    private PageBlobAsyncClient pageBlobAsyncClient;
+
     /**
      * Protected constructor for use by {@link BlobClientBuilder}.
      *
@@ -233,7 +237,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link AppendBlobAsyncClient} associated with this blob.
      */
     public AppendBlobAsyncClient getAppendBlobAsyncClient() {
-        return prepareBuilder().buildAppendBlobAsyncClient();
+        if (appendBlobAsyncClient == null) {
+            appendBlobAsyncClient = prepareBuilder().buildAppendBlobAsyncClient();
+        }
+        return appendBlobAsyncClient;
     }
 
     /**
@@ -242,7 +249,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link BlockBlobAsyncClient} associated with this blob.
      */
     public BlockBlobAsyncClient getBlockBlobAsyncClient() {
-        return prepareBuilder().buildBlockBlobAsyncClient();
+        if (blockBlobAsyncClient == null) {
+            blockBlobAsyncClient = prepareBuilder().buildBlockBlobAsyncClient();
+        }
+        return blockBlobAsyncClient;
     }
 
     /**
@@ -251,7 +261,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @return A {@link PageBlobAsyncClient} associated with this blob.
      */
     public PageBlobAsyncClient getPageBlobAsyncClient() {
-        return prepareBuilder().buildPageBlobAsyncClient();
+        if (pageBlobAsyncClient == null) {
+            pageBlobAsyncClient = prepareBuilder().buildPageBlobAsyncClient();
+        }
+        return pageBlobAsyncClient;
     }
 
     private SpecializedBlobClientBuilder prepareBuilder() {

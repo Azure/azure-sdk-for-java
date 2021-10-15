@@ -15,13 +15,13 @@ import java.util.concurrent.ForkJoinPool;
  *
  * @see AzureApplicationCredential
  */
-public class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
+class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureApplicationCredentialBuilder> {
     private String managedIdentityClientId;
 
     /**
      * Creates an instance of a AzureApplicationCredentialBuilder.
      */
-    public AzureApplicationCredentialBuilder() {
+    AzureApplicationCredentialBuilder() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
         managedIdentityClientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
     }

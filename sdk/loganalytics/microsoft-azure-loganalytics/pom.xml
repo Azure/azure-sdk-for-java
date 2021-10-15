@@ -71,7 +71,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>
@@ -136,7 +136,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
                 <configuration>
                     <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.search</excludePackageNames>
                     <bottom>

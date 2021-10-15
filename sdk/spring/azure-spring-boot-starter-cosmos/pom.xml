@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.11.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
+      <version>3.13.0</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;dependency} -->
     </dependency>
   </dependencies>
 
@@ -71,7 +71,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>attach-javadocs</id>

@@ -11,7 +11,12 @@ import java.util.function.Supplier;
 
 /**
  * Azure implementation for check point callback.
+ *
+ * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API in
+ * {@link com.azure.spring.integration.core.api.reactor.AzureCheckpointer}. From version 4.0.0, the reactor API support
+ * will be moved to com.azure.spring.messaging.core.checkpoint.AzureCheckpointer.
  */
+@Deprecated
 public class AzureCheckpointer implements Checkpointer {
     private final Supplier<CompletableFuture<Void>> success;
     private final Supplier<CompletableFuture<Void>> fail;
