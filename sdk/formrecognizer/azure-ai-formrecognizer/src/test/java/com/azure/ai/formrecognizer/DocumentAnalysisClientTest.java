@@ -653,22 +653,16 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void analyzeCustomDocumentWithEmptyModelId(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
 
         dataRunner((data, dataLength) -> {
-            HttpResponseException errorResponseException = Assertions.assertThrows(HttpResponseException.class,
+            Assertions.assertThrows(IllegalArgumentException.class,
                 () -> client.beginAnalyzeDocument("",
                         data,
                         dataLength)
                     .setPollInterval(durationTestMode));
-            FormRecognizerError errorInformation
-                = (FormRecognizerError) errorResponseException.getValue();
-            Assertions.assertEquals(404, errorResponseException.getResponse().getStatusCode());
-            Assertions.assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
         }, INVOICE_6_PDF);
     }
 
@@ -914,7 +908,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
                 FormRecognizerError errorInformation
                     = (FormRecognizerError) httpResponseException.getValue();
-                Assertions.assertEquals("Invalid input file.", errorInformation.getMessage());
+                Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
             })));
     }
 

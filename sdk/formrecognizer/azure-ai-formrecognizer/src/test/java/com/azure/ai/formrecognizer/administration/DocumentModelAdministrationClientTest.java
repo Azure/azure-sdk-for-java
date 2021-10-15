@@ -334,7 +334,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
 
             final FormRecognizerError errorInformation =
                 (FormRecognizerError) exception.getValue();
-            assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+            assertEquals("TrainingContentMissing", errorInformation.getInnerError().getCode());
         });
     }
 
