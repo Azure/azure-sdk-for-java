@@ -13,10 +13,6 @@ Note the breaking changes below don't apply if you're upgrading from a previous 
 - Removed `RegionalAuthority` enum class.
 - Removed `allowMultiTenantAuthentication` method from Credential Builders. The Multi Tenant Authentication is enabled by default now.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.3.7 (2021-10-04)
 
 ### Other Changes

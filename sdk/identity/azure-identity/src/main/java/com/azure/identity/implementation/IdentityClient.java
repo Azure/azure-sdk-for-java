@@ -586,6 +586,7 @@ public class IdentityClient {
         return confidentialClientApplicationAccessor.getValue()
             .flatMap(confidentialClient -> Mono.fromFuture(() -> confidentialClient.acquireToken(OnBehalfOfParameters
                     .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
+                    .tenant(IdentityUtil.resolveTenantId(tenantId, request, options))
                     .build()))
                 .map(MsalToken::new));
     }
