@@ -19,21 +19,21 @@ public class ClientProperties {
 
     private final List<HeaderProperties> headers = new ArrayList<>();
 
-    private final Logging logging = new Logging();
+    private final LoggingProperties logging = new LoggingProperties();
 
     public String getApplicationId() {
         return applicationId;
-    }
-
-    public List<HeaderProperties> getHeaders() {
-        return headers;
     }
 
     public void setApplicationId(String applicationId) {
         this.applicationId = applicationId;
     }
 
-    public Logging getLogging() {
+    public List<HeaderProperties> getHeaders() {
+        return headers;
+    }
+
+    public LoggingProperties getLogging() {
         return logging;
     }
 
@@ -41,7 +41,7 @@ public class ClientProperties {
      * Options related to http logging. For example, if you want to log the http request or response, you could set the
      * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
      */
-    public static class Logging {
+    public static class LoggingProperties {
 
         private HttpLogDetailLevel level;
         private final Set<String> allowedHeaderNames = new HashSet<>();
@@ -71,6 +71,7 @@ public class ClientProperties {
         public void setPrettyPrintBody(Boolean prettyPrintBody) {
             this.prettyPrintBody = prettyPrintBody;
         }
+
     }
 
 }

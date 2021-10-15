@@ -8,12 +8,12 @@ import com.azure.spring.core.properties.client.ClientProperties;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link ClientProperties.Logging} to a {@link HttpLogOptions}.
+ * Converts a {@link ClientProperties.LoggingProperties} to a {@link HttpLogOptions}.
  */
-public final class AzureHttpLogOptionsConverter implements Converter<ClientProperties.Logging, HttpLogOptions> {
+public final class AzureHttpLogOptionsConverter implements Converter<ClientProperties.LoggingProperties, HttpLogOptions> {
 
     @Override
-    public HttpLogOptions convert(ClientProperties.Logging logging) {
+    public HttpLogOptions convert(ClientProperties.LoggingProperties logging) {
         HttpLogOptions logOptions = new HttpLogOptions();
 
         logOptions.setLogLevel(logging.getLevel());
