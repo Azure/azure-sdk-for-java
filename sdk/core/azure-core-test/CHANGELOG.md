@@ -1,14 +1,10 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.7.3 (2021-10-15)
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug where an exception may be thrown when recording test runs.
 
 ## 1.7.2 (2021-10-01)
 
