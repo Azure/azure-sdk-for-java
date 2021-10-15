@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TypeReferenceTests {
@@ -19,16 +18,17 @@ public class TypeReferenceTests {
         final TypeReference<HashMap<String, Object>> typeReference = new TypeReference<HashMap<String, Object>>() {};
         final Map<String, Object> expectedJavaType = new HashMap<String, Object>() {};
         assertEquals(expectedJavaType.getClass().getGenericSuperclass(), typeReference.getJavaType());
-        assertNull(typeReference.getClazz());
+        assertEquals(HashMap.class, typeReference.getJavaClass());
     }
 
     @Test
     public void createFactoryInstance() {
         TypeReference<Integer> typeReference = TypeReference.createInstance(int.class);
         assertEquals(int.class, typeReference.getJavaType());
-        assertEquals(int.class, typeReference.getClazz());
+        assertEquals(int.class, typeReference.getJavaClass());
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void createTypeReferenceWithoutType() {
         IllegalArgumentException thrown
